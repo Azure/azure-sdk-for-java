@@ -28,7 +28,8 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Check Hosted Service Name Availability operation response.
 */
-public class HostedServiceCheckNameAvailabilityResponse extends OperationResponse {
+public class HostedServiceCheckNameAvailabilityResponse extends OperationResponse
+{
     private boolean isAvailable;
     
     /**
@@ -37,7 +38,8 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * returns false for reserved or profane words.
     * @return The IsAvailable value.
     */
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return this.isAvailable;
     }
     
@@ -47,7 +49,8 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * returns false for reserved or profane words.
     * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(final boolean isAvailableValue) {
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
         this.isAvailable = isAvailableValue;
     }
     
@@ -57,7 +60,8 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * Describes why the name cannot be used to create the cloud service.
     * @return The Reason value.
     */
-    public String getReason() {
+    public String getReason()
+    {
         return this.reason;
     }
     
@@ -65,7 +69,8 @@ public class HostedServiceCheckNameAvailabilityResponse extends OperationRespons
     * Describes why the name cannot be used to create the cloud service.
     * @param reasonValue The Reason value.
     */
-    public void setReason(final String reasonValue) {
+    public void setReason(final String reasonValue)
+    {
         this.reason = reasonValue;
     }
 }

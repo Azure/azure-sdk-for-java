@@ -26,9 +26,11 @@ import com.microsoft.windowsazure.services.servicebus.implementation.ServiceBusR
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class Exports implements Builder.Exports {
+public class Exports implements Builder.Exports
+{
     @Override
-    public void register(Builder.Registry registry) {
+    public void register(Builder.Registry registry)
+    {
 
         // provide contract implementation
         registry.add(ServiceBusContract.class,
@@ -39,12 +41,14 @@ public class Exports implements Builder.Exports {
 
         // alter jersey client config for serviceBus
         registry.alter(ServiceBusContract.class, ClientConfig.class,
-                new Builder.Alteration<ClientConfig>() {
+                new Builder.Alteration<ClientConfig>()
+                {
 
                     @Override
                     public ClientConfig alter(String profile,
                             ClientConfig instance, Builder builder,
-                            Map<String, Object> properties) {
+                            Map<String, Object> properties)
+                    {
 
                         // enable this feature for unattributed json object
                         // serialization

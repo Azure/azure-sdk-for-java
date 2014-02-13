@@ -25,9 +25,11 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 import com.sun.jersey.api.client.Client;
 
-public class WrapRestProxyIntegrationTest {
+public class WrapRestProxyIntegrationTest
+{
     @Test
-    public void serviceCanBeCalledToCreateAccessToken() throws Exception {
+    public void serviceCanBeCalledToCreateAccessToken() throws Exception
+    {
         // Arrange
         Configuration config = Configuration.getInstance();
         overrideWithEnv(config, ServiceBusConfiguration.URI);
@@ -56,7 +58,8 @@ public class WrapRestProxyIntegrationTest {
         assertNotNull(result.getAccessToken());
     }
 
-    private static void overrideWithEnv(Configuration config, String key) {
+    private static void overrideWithEnv(Configuration config, String key)
+    {
         String value = System.getenv(key);
         if (value == null)
             return;

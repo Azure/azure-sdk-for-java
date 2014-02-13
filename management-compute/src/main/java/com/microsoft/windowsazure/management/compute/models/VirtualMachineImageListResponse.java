@@ -32,14 +32,16 @@ import java.util.Iterator;
 /**
 * The List OS Images operation response.
 */
-public class VirtualMachineImageListResponse extends OperationResponse implements Iterable<VirtualMachineImageListResponse.VirtualMachineImage> {
+public class VirtualMachineImageListResponse extends OperationResponse implements Iterable<VirtualMachineImageListResponse.VirtualMachineImage>
+{
     private ArrayList<VirtualMachineImageListResponse.VirtualMachineImage> images;
     
     /**
     * The virtual machine images associated with your subscription.
     * @return The Images value.
     */
-    public ArrayList<VirtualMachineImageListResponse.VirtualMachineImage> getImages() {
+    public ArrayList<VirtualMachineImageListResponse.VirtualMachineImage> getImages()
+    {
         return this.images;
     }
     
@@ -47,7 +49,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
     * The virtual machine images associated with your subscription.
     * @param imagesValue The Images value.
     */
-    public void setImages(final ArrayList<VirtualMachineImageListResponse.VirtualMachineImage> imagesValue) {
+    public void setImages(final ArrayList<VirtualMachineImageListResponse.VirtualMachineImage> imagesValue)
+    {
         this.images = imagesValue;
     }
     
@@ -55,7 +58,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
     * Initializes a new instance of the VirtualMachineImageListResponse class.
     *
     */
-    public VirtualMachineImageListResponse() {
+    public VirtualMachineImageListResponse()
+    {
         super();
         this.images = new ArrayList<VirtualMachineImageListResponse.VirtualMachineImage>();
     }
@@ -64,14 +68,16 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
     * Gets the sequence of Images.
     *
     */
-    public Iterator<VirtualMachineImageListResponse.VirtualMachineImage> iterator() {
+    public Iterator<VirtualMachineImageListResponse.VirtualMachineImage> iterator()
+    {
         return this.getImages().iterator();
     }
     
     /**
     * A virtual machine image associated with your subscription.
     */
-    public static class VirtualMachineImage {
+    public static class VirtualMachineImage
+    {
         private String affinityGroup;
         
         /**
@@ -82,7 +88,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * the response.  This value is NULL for platform images.
         * @return The AffinityGroup value.
         */
-        public String getAffinityGroup() {
+        public String getAffinityGroup()
+        {
             return this.affinityGroup;
         }
         
@@ -94,7 +101,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * the response.  This value is NULL for platform images.
         * @param affinityGroupValue The AffinityGroup value.
         */
-        public void setAffinityGroup(final String affinityGroupValue) {
+        public void setAffinityGroup(final String affinityGroupValue)
+        {
             this.affinityGroup = affinityGroupValue;
         }
         
@@ -105,7 +113,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * category User.
         * @return The Category value.
         */
-        public String getCategory() {
+        public String getCategory()
+        {
             return this.category;
         }
         
@@ -114,7 +123,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * category User.
         * @param categoryValue The Category value.
         */
-        public void setCategory(final String categoryValue) {
+        public void setCategory(final String categoryValue)
+        {
             this.category = categoryValue;
         }
         
@@ -124,7 +134,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies the description of the image.
         * @return The Description value.
         */
-        public String getDescription() {
+        public String getDescription()
+        {
             return this.description;
         }
         
@@ -132,7 +143,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies the description of the image.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue) {
+        public void setDescription(final String descriptionValue)
+        {
             this.description = descriptionValue;
         }
         
@@ -144,7 +156,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * that the value be a URL that points to a EULA.
         * @return The Eula value.
         */
-        public String getEula() {
+        public String getEula()
+        {
             return this.eula;
         }
         
@@ -154,7 +167,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * that the value be a URL that points to a EULA.
         * @param eulaValue The Eula value.
         */
-        public void setEula(final String eulaValue) {
+        public void setEula(final String eulaValue)
+        {
             this.eula = eulaValue;
         }
         
@@ -164,7 +178,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies a value that can be used to group images.
         * @return The ImageFamily value.
         */
-        public String getImageFamily() {
+        public String getImageFamily()
+        {
             return this.imageFamily;
         }
         
@@ -172,7 +187,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies a value that can be used to group images.
         * @param imageFamilyValue The ImageFamily value.
         */
-        public void setImageFamily(final String imageFamilyValue) {
+        public void setImageFamily(final String imageFamilyValue)
+        {
             this.imageFamily = imageFamilyValue;
         }
         
@@ -184,7 +200,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * machine. For additional details, see the PricingDetailLink element.
         * @return The IsPremium value.
         */
-        public Boolean isPremium() {
+        public Boolean isPremium()
+        {
             return this.isPremium;
         }
         
@@ -194,7 +211,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * machine. For additional details, see the PricingDetailLink element.
         * @param isPremiumValue The IsPremium value.
         */
-        public void setIsPremium(final Boolean isPremiumValue) {
+        public void setIsPremium(final Boolean isPremiumValue)
+        {
             this.isPremium = isPremiumValue;
         }
         
@@ -204,7 +222,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * An identifier for the image.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -212,7 +231,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * An identifier for the image.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -223,7 +243,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * available using version 2013-03-01 or higher.
         * @return The Language value.
         */
-        public String getLanguage() {
+        public String getLanguage()
+        {
             return this.language;
         }
         
@@ -232,7 +253,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * available using version 2013-03-01 or higher.
         * @param languageValue The Language value.
         */
-        public void setLanguage(final String languageValue) {
+        public void setLanguage(final String languageValue)
+        {
             this.language = languageValue;
         }
         
@@ -247,7 +269,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * this value is NULL for platform images.
         * @return The Location value.
         */
-        public String getLocation() {
+        public String getLocation()
+        {
             return this.location;
         }
         
@@ -260,7 +283,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * this value is NULL for platform images.
         * @param locationValue The Location value.
         */
-        public void setLocation(final String locationValue) {
+        public void setLocation(final String locationValue)
+        {
             this.location = locationValue;
         }
         
@@ -270,7 +294,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * The size, in GB, of the image.
         * @return The LogicalSizeInGB value.
         */
-        public double getLogicalSizeInGB() {
+        public double getLogicalSizeInGB()
+        {
             return this.logicalSizeInGB;
         }
         
@@ -278,7 +303,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * The size, in GB, of the image.
         * @param logicalSizeInGBValue The LogicalSizeInGB value.
         */
-        public void setLogicalSizeInGB(final double logicalSizeInGBValue) {
+        public void setLogicalSizeInGB(final double logicalSizeInGBValue)
+        {
             this.logicalSizeInGB = logicalSizeInGBValue;
         }
         
@@ -291,7 +317,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * http://example.blob.core.windows.net/disks/myimage.vhd
         * @return The MediaLinkUri value.
         */
-        public URI getMediaLinkUri() {
+        public URI getMediaLinkUri()
+        {
             return this.mediaLinkUri;
         }
         
@@ -302,7 +329,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * http://example.blob.core.windows.net/disks/myimage.vhd
         * @param mediaLinkUriValue The MediaLinkUri value.
         */
-        public void setMediaLinkUri(final URI mediaLinkUriValue) {
+        public void setMediaLinkUri(final URI mediaLinkUriValue)
+        {
             this.mediaLinkUri = mediaLinkUriValue;
         }
         
@@ -313,7 +341,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * when creating one or more virtual machines using the image.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -322,7 +351,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * when creating one or more virtual machines using the image.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -333,7 +363,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Linux, Windows.
         * @return The OperatingSystemType value.
         */
-        public String getOperatingSystemType() {
+        public String getOperatingSystemType()
+        {
             return this.operatingSystemType;
         }
         
@@ -342,7 +373,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Linux, Windows.
         * @param operatingSystemTypeValue The OperatingSystemType value.
         */
-        public void setOperatingSystemType(final String operatingSystemTypeValue) {
+        public void setOperatingSystemType(final String operatingSystemTypeValue)
+        {
             this.operatingSystemType = operatingSystemTypeValue;
         }
         
@@ -355,7 +387,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * using version 2012-12-01 or higher.
         * @return The PricingDetailUri value.
         */
-        public URI getPricingDetailUri() {
+        public URI getPricingDetailUri()
+        {
             return this.pricingDetailUri;
         }
         
@@ -366,7 +399,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * using version 2012-12-01 or higher.
         * @param pricingDetailUriValue The PricingDetailUri value.
         */
-        public void setPricingDetailUri(final URI pricingDetailUriValue) {
+        public void setPricingDetailUri(final URI pricingDetailUriValue)
+        {
             this.pricingDetailUri = pricingDetailUriValue;
         }
         
@@ -377,7 +411,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * policy related to the image.
         * @return The PrivacyUri value.
         */
-        public URI getPrivacyUri() {
+        public URI getPrivacyUri()
+        {
             return this.privacyUri;
         }
         
@@ -386,7 +421,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * policy related to the image.
         * @param privacyUriValue The PrivacyUri value.
         */
-        public void setPrivacyUri(final URI privacyUriValue) {
+        public void setPrivacyUri(final URI privacyUriValue)
+        {
             this.privacyUri = privacyUriValue;
         }
         
@@ -396,7 +432,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies the date when the image was added to the image repository.
         * @return The PublishedDate value.
         */
-        public Calendar getPublishedDate() {
+        public Calendar getPublishedDate()
+        {
             return this.publishedDate;
         }
         
@@ -404,7 +441,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * Specifies the date when the image was added to the image repository.
         * @param publishedDateValue The PublishedDate value.
         */
-        public void setPublishedDate(final Calendar publishedDateValue) {
+        public void setPublishedDate(final Calendar publishedDateValue)
+        {
             this.publishedDate = publishedDateValue;
         }
         
@@ -414,7 +452,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * The name of the publisher of this OS Image in Windows Azure.
         * @return The PublisherName value.
         */
-        public String getPublisherName() {
+        public String getPublisherName()
+        {
             return this.publisherName;
         }
         
@@ -422,7 +461,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * The name of the publisher of this OS Image in Windows Azure.
         * @param publisherNameValue The PublisherName value.
         */
-        public void setPublisherName(final String publisherNameValue) {
+        public void setPublisherName(final String publisherNameValue)
+        {
             this.publisherName = publisherNameValue;
         }
         
@@ -433,7 +473,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * created from the OS image.
         * @return The RecommendedVMSize value.
         */
-        public String getRecommendedVMSize() {
+        public String getRecommendedVMSize()
+        {
             return this.recommendedVMSize;
         }
         
@@ -442,7 +483,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * created from the OS image.
         * @param recommendedVMSizeValue The RecommendedVMSize value.
         */
-        public void setRecommendedVMSize(final String recommendedVMSizeValue) {
+        public void setRecommendedVMSize(final String recommendedVMSizeValue)
+        {
             this.recommendedVMSize = recommendedVMSizeValue;
         }
         
@@ -455,7 +497,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * higher.
         * @return The SmallIconUri value.
         */
-        public URI getSmallIconUri() {
+        public URI getSmallIconUri()
+        {
             return this.smallIconUri;
         }
         
@@ -466,7 +509,8 @@ public class VirtualMachineImageListResponse extends OperationResponse implement
         * higher.
         * @param smallIconUriValue The SmallIconUri value.
         */
-        public void setSmallIconUri(final URI smallIconUriValue) {
+        public void setSmallIconUri(final URI smallIconUriValue)
+        {
             this.smallIconUri = smallIconUriValue;
         }
     }

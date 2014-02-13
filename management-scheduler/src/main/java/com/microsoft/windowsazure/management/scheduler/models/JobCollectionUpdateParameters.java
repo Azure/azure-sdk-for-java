@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.scheduler.models;
 /**
 * Parameters supplied to the Update Job Collection operation.
 */
-public class JobCollectionUpdateParameters {
+public class JobCollectionUpdateParameters
+{
     private String eTag;
     
     /**
@@ -34,7 +35,8 @@ public class JobCollectionUpdateParameters {
     * ETag doesn't match.
     * @return The ETag value.
     */
-    public String getETag() {
+    public String getETag()
+    {
         return this.eTag;
     }
     
@@ -43,7 +45,8 @@ public class JobCollectionUpdateParameters {
     * ETag doesn't match.
     * @param eTagValue The ETag value.
     */
-    public void setETag(final String eTagValue) {
+    public void setETag(final String eTagValue)
+    {
         this.eTag = eTagValue;
     }
     
@@ -53,7 +56,8 @@ public class JobCollectionUpdateParameters {
     * Intrinsic settings for the scheduler job collections.
     * @return The IntrinsicSettings value.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings() {
+    public JobCollectionIntrinsicSettings getIntrinsicSettings()
+    {
         return this.intrinsicSettings;
     }
     
@@ -61,7 +65,8 @@ public class JobCollectionUpdateParameters {
     * Intrinsic settings for the scheduler job collections.
     * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
-    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
+    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue)
+    {
         this.intrinsicSettings = intrinsicSettingsValue;
     }
     
@@ -71,7 +76,8 @@ public class JobCollectionUpdateParameters {
     * Label for the resource.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -79,7 +85,8 @@ public class JobCollectionUpdateParameters {
     * Label for the resource.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -91,7 +98,8 @@ public class JobCollectionUpdateParameters {
     * registered as default.
     * @return The SchemaVersion value.
     */
-    public String getSchemaVersion() {
+    public String getSchemaVersion()
+    {
         return this.schemaVersion;
     }
     
@@ -101,7 +109,8 @@ public class JobCollectionUpdateParameters {
     * registered as default.
     * @param schemaVersionValue The SchemaVersion value.
     */
-    public void setSchemaVersion(final String schemaVersionValue) {
+    public void setSchemaVersion(final String schemaVersionValue)
+    {
         this.schemaVersion = schemaVersionValue;
     }
 }

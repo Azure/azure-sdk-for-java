@@ -25,10 +25,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.core.utils.InputStreamDataSource;
 
-public class StatusLineTest {
+public class StatusLineTest
+{
 
     @Test
-    public void testCanCreateStatus() throws Exception {
+    public void testCanCreateStatus() throws Exception
+    {
         // Arrange
         String httpResponse = "HTTP/1.1 200 OK";
         int expectedStatus = 200;
@@ -47,7 +49,8 @@ public class StatusLineTest {
     }
 
     @Test
-    public void testGetSetStatus() {
+    public void testGetSetStatus()
+    {
         // Arrange
         String httpResponse = "HTTP/1.1 200 OK";
         int expectedStatus = 300;
@@ -68,7 +71,8 @@ public class StatusLineTest {
     }
 
     @Test
-    public void testGetSetReason() {
+    public void testGetSetReason()
+    {
 
     }
 

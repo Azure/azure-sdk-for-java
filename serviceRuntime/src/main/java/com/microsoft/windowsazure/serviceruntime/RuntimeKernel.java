@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-class RuntimeKernel {
+class RuntimeKernel
+{
     private static RuntimeKernel theKernel;
 
     private final CurrentStateSerializer currentStateSerializer;
@@ -30,7 +31,8 @@ class RuntimeKernel {
     private final RuntimeVersionProtocolClient runtimeVersionProtocolClient;
     private final RuntimeVersionManager runtimeVersionManager;
 
-    private RuntimeKernel() {
+    private RuntimeKernel()
+    {
         this.currentStateSerializer = new XmlCurrentStateSerializer();
         this.goalStateDeserializer = new ChunkedGoalStateDeserializer();
         this.inputChannel = new FileInputChannel();
@@ -47,47 +49,58 @@ class RuntimeKernel {
                 runtimeVersionProtocolClient);
     }
 
-    public static RuntimeKernel getKernel() {
-        if (theKernel == null) {
+    public static RuntimeKernel getKernel()
+    {
+        if (theKernel == null)
+        {
             theKernel = new RuntimeKernel();
         }
 
         return theKernel;
     }
 
-    public CurrentStateSerializer getCurrentStateSerializer() {
+    public CurrentStateSerializer getCurrentStateSerializer()
+    {
         return currentStateSerializer;
     }
 
-    public GoalStateDeserializer getGoalStateDeserializer() {
+    public GoalStateDeserializer getGoalStateDeserializer()
+    {
         return goalStateDeserializer;
     }
 
-    public InputChannel getInputChannel() {
+    public InputChannel getInputChannel()
+    {
         return inputChannel;
     }
 
-    public OutputChannel getOutputChannel() {
+    public OutputChannel getOutputChannel()
+    {
         return outputChannel;
     }
 
-    public Protocol1RuntimeCurrentStateClient getProtocol1RuntimeCurrentStateClient() {
+    public Protocol1RuntimeCurrentStateClient getProtocol1RuntimeCurrentStateClient()
+    {
         return protocol1RuntimeCurrentStateClient;
     }
 
-    public RoleEnvironmentDataDeserializer getRoleEnvironmentDataDeserializer() {
+    public RoleEnvironmentDataDeserializer getRoleEnvironmentDataDeserializer()
+    {
         return roleEnvironmentDataDeserializer;
     }
 
-    public Protocol1RuntimeGoalStateClient getProtocol1RuntimeGoalStateClient() {
+    public Protocol1RuntimeGoalStateClient getProtocol1RuntimeGoalStateClient()
+    {
         return protocol1RuntimeGoalStateClient;
     }
 
-    public RuntimeVersionProtocolClient getRuntimeVersionProtocolClient() {
+    public RuntimeVersionProtocolClient getRuntimeVersionProtocolClient()
+    {
         return runtimeVersionProtocolClient;
     }
 
-    public RuntimeVersionManager getRuntimeVersionManager() {
+    public RuntimeVersionManager getRuntimeVersionManager()
+    {
         return runtimeVersionManager;
     }
 }

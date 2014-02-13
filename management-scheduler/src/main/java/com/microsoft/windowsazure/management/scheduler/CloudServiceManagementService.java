@@ -21,17 +21,19 @@ import com.microsoft.windowsazure.Configuration;
  * Access cloud service management functionality.
  * 
  */
-public final class CloudServiceManagementService {
-    private CloudServiceManagementService() {
+public final class CloudServiceManagementService
+{
+    private CloudServiceManagementService()
+    {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>CloudServiceManagementClient</code> API.
-     * 
      * @return An instance of the <code>CloudServiceManagementClient</code> API.
      */
-    public static CloudServiceManagementClient create() {
+    public static CloudServiceManagementClient create()
+    {
         return Configuration.getInstance().create(
                 CloudServiceManagementClient.class);
     }
@@ -39,25 +41,25 @@ public final class CloudServiceManagementService {
     /**
      * Creates an instance of the <code>CloudServiceManagementClient</code> API
      * using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>CloudServiceManagementClient</code> API.
      */
-    public static CloudServiceManagementClient create(final Configuration config) {
+    public static CloudServiceManagementClient create(final Configuration config)
+    {
         return config.create(CloudServiceManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>CloudServiceManagementClient</code> API.
-     * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of
-     *            the service management service.
+     *
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
      * @return An instance of the <code>CloudServiceManagementClient</code> API.
      */
-    public static CloudServiceManagementClient create(final String profile) {
+    public static CloudServiceManagementClient create(final String profile)
+    {
         return Configuration.getInstance().create(profile,
                 CloudServiceManagementClient.class);
     }
@@ -65,14 +67,14 @@ public final class CloudServiceManagementService {
     /**
      * Creates an instance of the <code>CloudServiceManagementClient</code> API
      * using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>CloudServiceManagementClient</code> API.
      */
     public static CloudServiceManagementClient create(final String profile,
-            final Configuration config) {
+            final Configuration config)
+    {
         return config.create(profile, CloudServiceManagementClient.class);
     }
 }

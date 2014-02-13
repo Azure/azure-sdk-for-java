@@ -26,35 +26,36 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import java.util.ArrayList;
 
 /**
- * Represents collection of metric definitions.
- */
-public class MetricDefinitionCollection {
+* Represents collection of metric definitions.
+*/
+public class MetricDefinitionCollection
+{
     private ArrayList<MetricDefinition> value;
-
+    
     /**
-     * The values for the metric definitions.
-     * 
-     * @return The Value value.
-     */
-    public ArrayList<MetricDefinition> getValue() {
+    * The values for the metric definitions.
+    * @return The Value value.
+    */
+    public ArrayList<MetricDefinition> getValue()
+    {
         return this.value;
     }
-
+    
     /**
-     * The values for the metric definitions.
-     * 
-     * @param valueValue
-     *            The Value value.
-     */
-    public void setValue(final ArrayList<MetricDefinition> valueValue) {
+    * The values for the metric definitions.
+    * @param valueValue The Value value.
+    */
+    public void setValue(final ArrayList<MetricDefinition> valueValue)
+    {
         this.value = valueValue;
     }
-
+    
     /**
-     * Initializes a new instance of the MetricDefinitionCollection class.
-     * 
-     */
-    public MetricDefinitionCollection() {
+    * Initializes a new instance of the MetricDefinitionCollection class.
+    *
+    */
+    public MetricDefinitionCollection()
+    {
         this.value = new ArrayList<MetricDefinition>();
     }
 }

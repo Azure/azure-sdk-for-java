@@ -27,7 +27,8 @@ import java.net.URISyntaxException;
  * The connection string is looked for first, falling back to separate config
  * values if not found.
  */
-class ServiceBusConnectionSettings {
+class ServiceBusConnectionSettings
+{
     private String uri;
     private String wrapUri;
     private String wrapName;
@@ -35,10 +36,13 @@ class ServiceBusConnectionSettings {
 
     public ServiceBusConnectionSettings(String connectionString, String uri,
             String wrapUri, String wrapName, String wrapPassword)
-            throws ConnectionStringSyntaxException, URISyntaxException {
-        if (connectionString != null) {
+            throws ConnectionStringSyntaxException, URISyntaxException
+    {
+        if (connectionString != null)
+        {
             parseConnectionString(connectionString);
-        } else {
+        } else
+        {
             this.uri = uri;
             this.wrapUri = wrapUri;
             this.wrapName = wrapName;
@@ -46,24 +50,29 @@ class ServiceBusConnectionSettings {
         }
     }
 
-    public String getUri() {
+    public String getUri()
+    {
         return uri;
     }
 
-    public String getWrapUri() {
+    public String getWrapUri()
+    {
         return wrapUri;
     }
 
-    public String getWrapName() {
+    public String getWrapName()
+    {
         return wrapName;
     }
 
-    public String getWrapPassword() {
+    public String getWrapPassword()
+    {
         return wrapPassword;
     }
 
     private boolean parseConnectionString(String connectionString)
-            throws URISyntaxException, ConnectionStringSyntaxException {
+            throws URISyntaxException, ConnectionStringSyntaxException
+    {
         ServiceBusConnectionString cs = new ServiceBusConnectionString(
                 connectionString);
         setUri(cs);
@@ -73,19 +82,23 @@ class ServiceBusConnectionSettings {
         return true;
     }
 
-    private void setUri(ServiceBusConnectionString connectionString) {
+    private void setUri(ServiceBusConnectionString connectionString)
+    {
         uri = connectionString.getEndpoint().replaceFirst("^sb://", "https://");
     }
 
     private void setWrapUri(ServiceBusConnectionString connectionString)
-            throws URISyntaxException {
+            throws URISyntaxException
+    {
         if (connectionString.getStsEndpoint() == null
-                || connectionString.getStsEndpoint().isEmpty()) {
+                || connectionString.getStsEndpoint().isEmpty())
+        {
             URI hostUri = new URI(uri);
             String namespace = hostUri.getHost().split("\\.")[0];
             wrapUri = "https://" + namespace
                     + "-sb.accesscontrol.windows.net/WRAPv0.9";
-        } else {
+        } else
+        {
             wrapUri = connectionString.getStsEndpoint().replaceAll("\\/$", "")
                     + "/WRAPv0.9";
         }

@@ -22,7 +22,8 @@ import java.net.URI;
  * they need it.
  * 
  */
-public interface EntityProxyData {
+public interface EntityProxyData
+{
     /**
      * Gets the absolute URI currently being used by proxy.
      * 

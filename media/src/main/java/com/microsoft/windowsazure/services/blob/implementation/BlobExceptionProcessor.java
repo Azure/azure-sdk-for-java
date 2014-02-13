@@ -45,65 +45,78 @@ import com.microsoft.windowsazure.exception.ServiceExceptionFactory;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public class BlobExceptionProcessor implements BlobContract {
+public class BlobExceptionProcessor implements BlobContract
+{
     private static Log log = LogFactory.getLog(BlobExceptionProcessor.class);
     private final BlobContract service;
 
     @Inject
-    public BlobExceptionProcessor(BlobRestProxy service) {
+    public BlobExceptionProcessor(BlobRestProxy service)
+    {
         this.service = service;
     }
 
-    public BlobExceptionProcessor(BlobContract service) {
+    public BlobExceptionProcessor(BlobContract service)
+    {
         this.service = service;
     }
 
     @Override
-    public BlobContract withFilter(ServiceFilter filter) {
+    public BlobContract withFilter(ServiceFilter filter)
+    {
         return new BlobExceptionProcessor(service.withFilter(filter));
     }
 
     @Override
     public BlobContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter) {
+            ServiceRequestFilter serviceRequestFilter)
+    {
         return new BlobExceptionProcessor(
                 service.withRequestFilterFirst(serviceRequestFilter));
     }
 
     @Override
     public BlobContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter) {
+            ServiceRequestFilter serviceRequestFilter)
+    {
         return new BlobExceptionProcessor(
                 service.withRequestFilterLast(serviceRequestFilter));
     }
 
     @Override
     public BlobContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter) {
+            ServiceResponseFilter serviceResponseFilter)
+    {
         return new BlobExceptionProcessor(
                 service.withResponseFilterFirst(serviceResponseFilter));
     }
 
     @Override
     public BlobContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter) {
+            ServiceResponseFilter serviceResponseFilter)
+    {
         return new BlobExceptionProcessor(
                 service.withResponseFilterLast(serviceResponseFilter));
     }
 
-    private ServiceException processCatch(ServiceException e) {
+    private ServiceException processCatch(ServiceException e)
+    {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("blob", e);
     }
 
     @Override
     public CreateBlobResult createBlockBlob(String container, String blob,
-            InputStream contentStream) throws ServiceException {
-        try {
+            InputStream contentStream) throws ServiceException
+    {
+        try
+        {
             return service.createBlockBlob(container, blob, contentStream);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -111,25 +124,33 @@ public class BlobExceptionProcessor implements BlobContract {
     @Override
     public CreateBlobResult createBlockBlob(String container, String blob,
             InputStream contentStream, CreateBlobOptions options)
-            throws ServiceException {
-        try {
+            throws ServiceException
+    {
+        try
+        {
             return service.createBlockBlob(container, blob, contentStream,
                     options);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
     public void createBlobBlock(String container, String blob, String blockId,
-            InputStream contentStream) throws ServiceException {
-        try {
+            InputStream contentStream) throws ServiceException
+    {
+        try
+        {
             service.createBlobBlock(container, blob, blockId, contentStream);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -137,25 +158,33 @@ public class BlobExceptionProcessor implements BlobContract {
     @Override
     public void createBlobBlock(String container, String blob, String blockId,
             InputStream contentStream, CreateBlobBlockOptions options)
-            throws ServiceException {
-        try {
+            throws ServiceException
+    {
+        try
+        {
             service.createBlobBlock(container, blob, blockId, contentStream,
                     options);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
     public void commitBlobBlocks(String container, String blob,
-            BlockList blockList) throws ServiceException {
-        try {
+            BlockList blockList) throws ServiceException
+    {
+        try
+        {
             service.commitBlobBlocks(container, blob, blockList);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -163,36 +192,42 @@ public class BlobExceptionProcessor implements BlobContract {
     @Override
     public void commitBlobBlocks(String container, String blob,
             BlockList blockList, CommitBlobBlocksOptions options)
-            throws ServiceException {
-        try {
+            throws ServiceException
+    {
+        try
+        {
             service.commitBlobBlocks(container, blob, blockList, options);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        } catch (ClientHandlerException e)
+        {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public void deleteBlob(String container, String blob)
-            throws ServiceException {
+    public void deleteBlob(String container, String blob) throws ServiceException {
         try {
             service.deleteBlob(container, blob);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public void deleteBlob(String container, String blob,
-            DeleteBlobOptions options) throws ServiceException {
+    public void deleteBlob(String container, String blob, DeleteBlobOptions options) throws ServiceException {
         try {
             service.deleteBlob(container, blob, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -201,21 +236,24 @@ public class BlobExceptionProcessor implements BlobContract {
     public ListContainersResult listContainers() throws ServiceException {
         try {
             return service.listContainers();
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public ListContainersResult listContainers(ListContainersOptions options)
-            throws ServiceException {
+    public ListContainersResult listContainers(ListContainersOptions options) throws ServiceException {
         try {
             return service.listContainers(options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -224,21 +262,24 @@ public class BlobExceptionProcessor implements BlobContract {
     public void createContainer(String container) throws ServiceException {
         try {
             service.createContainer(container);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public void createContainer(String container, CreateContainerOptions options)
-            throws ServiceException {
+    public void createContainer(String container, CreateContainerOptions options) throws ServiceException {
         try {
             service.createContainer(container, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -247,94 +288,104 @@ public class BlobExceptionProcessor implements BlobContract {
     public void deleteContainer(String container) throws ServiceException {
         try {
             service.deleteContainer(container);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public void deleteContainer(String container, DeleteContainerOptions options)
-            throws ServiceException {
+    public void deleteContainer(String container, DeleteContainerOptions options) throws ServiceException {
         try {
             service.deleteContainer(container, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public ListBlobBlocksResult listBlobBlocks(String container, String blob)
-            throws ServiceException {
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob) throws ServiceException {
         try {
             return service.listBlobBlocks(container, blob);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public ListBlobBlocksResult listBlobBlocks(String container, String blob,
-            ListBlobBlocksOptions options) throws ServiceException {
+    public ListBlobBlocksResult listBlobBlocks(String container, String blob, ListBlobBlocksOptions options)
+            throws ServiceException {
         try {
             return service.listBlobBlocks(container, blob, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public GetBlobPropertiesResult getBlobProperties(String container,
-            String blob) throws ServiceException {
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob) throws ServiceException {
         try {
             return service.getBlobProperties(container, blob);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public GetBlobPropertiesResult getBlobProperties(String container,
-            String blob, GetBlobPropertiesOptions options)
+    public GetBlobPropertiesResult getBlobProperties(String container, String blob, GetBlobPropertiesOptions options)
             throws ServiceException {
         try {
             return service.getBlobProperties(container, blob, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public GetBlobResult getBlob(String container, String blob)
-            throws ServiceException {
+    public GetBlobResult getBlob(String container, String blob) throws ServiceException {
         try {
             return service.getBlob(container, blob);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
 
     @Override
-    public GetBlobResult getBlob(String container, String blob,
-            GetBlobOptions options) throws ServiceException {
+    public GetBlobResult getBlob(String container, String blob, GetBlobOptions options) throws ServiceException {
         try {
             return service.getBlob(container, blob, options);
-        } catch (UniformInterfaceException e) {
+        }
+        catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e) {
+        }
+        catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }

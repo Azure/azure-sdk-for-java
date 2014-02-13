@@ -20,12 +20,14 @@ import java.util.EnumSet;
  * Permissions available to an access policy
  * 
  */
-public enum AccessPolicyPermission {
+public enum AccessPolicyPermission
+{
     NONE(0), READ(1), WRITE(2), DELETE(4), LIST(8);
 
     private int flagValue;
 
-    private AccessPolicyPermission(int value) {
+    private AccessPolicyPermission(int value)
+    {
         flagValue = value;
     }
 
@@ -34,7 +36,8 @@ public enum AccessPolicyPermission {
      * 
      * @return The integer permission value
      */
-    public int getFlagValue() {
+    public int getFlagValue()
+    {
         return flagValue;
     }
 
@@ -47,12 +50,15 @@ public enum AccessPolicyPermission {
      *            The bit vector of permissions
      * @return The set of permissions in an <code>EnumSet</code> object.
      */
-    public static EnumSet<AccessPolicyPermission> permissionsFromBits(int bits) {
+    public static EnumSet<AccessPolicyPermission> permissionsFromBits(int bits)
+    {
         EnumSet<AccessPolicyPermission> perms = EnumSet
                 .of(AccessPolicyPermission.NONE);
 
-        for (AccessPolicyPermission p : AccessPolicyPermission.values()) {
-            if ((bits & p.getFlagValue()) != 0) {
+        for (AccessPolicyPermission p : AccessPolicyPermission.values())
+        {
+            if ((bits & p.getFlagValue()) != 0)
+            {
                 perms.remove(AccessPolicyPermission.NONE);
                 perms.add(p);
             }
@@ -69,9 +75,11 @@ public enum AccessPolicyPermission {
      *            The permissions
      * @return The bit vector to go out over the wire.
      */
-    public static int bitsFromPermissions(EnumSet<AccessPolicyPermission> perms) {
+    public static int bitsFromPermissions(EnumSet<AccessPolicyPermission> perms)
+    {
         int result = 0;
-        for (AccessPolicyPermission p : perms) {
+        for (AccessPolicyPermission p : perms)
+        {
             result |= p.getFlagValue();
         }
 

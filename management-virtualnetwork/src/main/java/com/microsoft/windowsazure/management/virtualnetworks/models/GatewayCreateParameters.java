@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 /**
 * The parameters to the Gateway Create request.
 */
-public class GatewayCreateParameters {
+public class GatewayCreateParameters
+{
     private GatewayType gatewayType;
     
     /**
     * The routing type for this virtual network gateway.
     * @return The GatewayType value.
     */
-    public GatewayType getGatewayType() {
+    public GatewayType getGatewayType()
+    {
         return this.gatewayType;
     }
     
@@ -41,7 +43,8 @@ public class GatewayCreateParameters {
     * The routing type for this virtual network gateway.
     * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(final GatewayType gatewayTypeValue) {
+    public void setGatewayType(final GatewayType gatewayTypeValue)
+    {
         this.gatewayType = gatewayTypeValue;
     }
 }

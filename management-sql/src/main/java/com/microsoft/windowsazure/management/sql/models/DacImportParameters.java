@@ -28,14 +28,16 @@ import java.net.URI;
 /**
 * Parameters supplied to the DAC Import operation.
 */
-public class DacImportParameters {
+public class DacImportParameters
+{
     private String azureEdition;
     
     /**
     * The edition of this database.
     * @return The AzureEdition value.
     */
-    public String getAzureEdition() {
+    public String getAzureEdition()
+    {
         return this.azureEdition;
     }
     
@@ -43,7 +45,8 @@ public class DacImportParameters {
     * The edition of this database.
     * @param azureEditionValue The AzureEdition value.
     */
-    public void setAzureEdition(final String azureEditionValue) {
+    public void setAzureEdition(final String azureEditionValue)
+    {
         this.azureEdition = azureEditionValue;
     }
     
@@ -53,7 +56,8 @@ public class DacImportParameters {
     * Gets or sets credentials for getting the DAC.
     * @return The BlobCredentials value.
     */
-    public DacImportParameters.BlobCredentialsParameter getBlobCredentials() {
+    public DacImportParameters.BlobCredentialsParameter getBlobCredentials()
+    {
         return this.blobCredentials;
     }
     
@@ -61,7 +65,8 @@ public class DacImportParameters {
     * Gets or sets credentials for getting the DAC.
     * @param blobCredentialsValue The BlobCredentials value.
     */
-    public void setBlobCredentials(final DacImportParameters.BlobCredentialsParameter blobCredentialsValue) {
+    public void setBlobCredentials(final DacImportParameters.BlobCredentialsParameter blobCredentialsValue)
+    {
         this.blobCredentials = blobCredentialsValue;
     }
     
@@ -71,7 +76,8 @@ public class DacImportParameters {
     * Gets or sets connection information for the SQL Server Database.
     * @return The ConnectionInfo value.
     */
-    public DacImportParameters.ConnectionInfoParameter getConnectionInfo() {
+    public DacImportParameters.ConnectionInfoParameter getConnectionInfo()
+    {
         return this.connectionInfo;
     }
     
@@ -79,7 +85,8 @@ public class DacImportParameters {
     * Gets or sets connection information for the SQL Server Database.
     * @param connectionInfoValue The ConnectionInfo value.
     */
-    public void setConnectionInfo(final DacImportParameters.ConnectionInfoParameter connectionInfoValue) {
+    public void setConnectionInfo(final DacImportParameters.ConnectionInfoParameter connectionInfoValue)
+    {
         this.connectionInfo = connectionInfoValue;
     }
     
@@ -89,7 +96,8 @@ public class DacImportParameters {
     * Gets or sets the size of this database.
     * @return The DatabaseSizeInGB value.
     */
-    public int getDatabaseSizeInGB() {
+    public int getDatabaseSizeInGB()
+    {
         return this.databaseSizeInGB;
     }
     
@@ -97,21 +105,24 @@ public class DacImportParameters {
     * Gets or sets the size of this database.
     * @param databaseSizeInGBValue The DatabaseSizeInGB value.
     */
-    public void setDatabaseSizeInGB(final int databaseSizeInGBValue) {
+    public void setDatabaseSizeInGB(final int databaseSizeInGBValue)
+    {
         this.databaseSizeInGB = databaseSizeInGBValue;
     }
     
     /**
     * Credentials for getting the DAC.
     */
-    public static class BlobCredentialsParameter {
+    public static class BlobCredentialsParameter
+    {
         private String storageAccessKey;
         
         /**
         * Gets or sets the key for the Windows Azure Storage account.
         * @return The StorageAccessKey value.
         */
-        public String getStorageAccessKey() {
+        public String getStorageAccessKey()
+        {
             return this.storageAccessKey;
         }
         
@@ -119,7 +130,8 @@ public class DacImportParameters {
         * Gets or sets the key for the Windows Azure Storage account.
         * @param storageAccessKeyValue The StorageAccessKey value.
         */
-        public void setStorageAccessKey(final String storageAccessKeyValue) {
+        public void setStorageAccessKey(final String storageAccessKeyValue)
+        {
             this.storageAccessKey = storageAccessKeyValue;
         }
         
@@ -130,7 +142,8 @@ public class DacImportParameters {
         * Storage.
         * @return The Uri value.
         */
-        public URI getUri() {
+        public URI getUri()
+        {
             return this.uri;
         }
         
@@ -139,7 +152,8 @@ public class DacImportParameters {
         * Storage.
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue) {
+        public void setUri(final URI uriValue)
+        {
             this.uri = uriValue;
         }
     }
@@ -147,14 +161,16 @@ public class DacImportParameters {
     /**
     * Connection information for the SQL Server Database.
     */
-    public static class ConnectionInfoParameter {
+    public static class ConnectionInfoParameter
+    {
         private String databaseName;
         
         /**
         * Gets or sets the name of the database.
         * @return The DatabaseName value.
         */
-        public String getDatabaseName() {
+        public String getDatabaseName()
+        {
             return this.databaseName;
         }
         
@@ -162,7 +178,8 @@ public class DacImportParameters {
         * Gets or sets the name of the database.
         * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(final String databaseNameValue) {
+        public void setDatabaseName(final String databaseNameValue)
+        {
             this.databaseName = databaseNameValue;
         }
         
@@ -172,7 +189,8 @@ public class DacImportParameters {
         * Gets or sets the password for the database user.
         * @return The Password value.
         */
-        public String getPassword() {
+        public String getPassword()
+        {
             return this.password;
         }
         
@@ -180,7 +198,8 @@ public class DacImportParameters {
         * Gets or sets the password for the database user.
         * @param passwordValue The Password value.
         */
-        public void setPassword(final String passwordValue) {
+        public void setPassword(final String passwordValue)
+        {
             this.password = passwordValue;
         }
         
@@ -190,7 +209,8 @@ public class DacImportParameters {
         * Gets or sets the SQL server name.
         * @return The ServerName value.
         */
-        public String getServerName() {
+        public String getServerName()
+        {
             return this.serverName;
         }
         
@@ -198,7 +218,8 @@ public class DacImportParameters {
         * Gets or sets the SQL server name.
         * @param serverNameValue The ServerName value.
         */
-        public void setServerName(final String serverNameValue) {
+        public void setServerName(final String serverNameValue)
+        {
             this.serverName = serverNameValue;
         }
         
@@ -208,7 +229,8 @@ public class DacImportParameters {
         * Gets or sets the username of the database user.
         * @return The UserName value.
         */
-        public String getUserName() {
+        public String getUserName()
+        {
             return this.userName;
         }
         
@@ -216,7 +238,8 @@ public class DacImportParameters {
         * Gets or sets the username of the database user.
         * @param userNameValue The UserName value.
         */
-        public void setUserName(final String userNameValue) {
+        public void setUserName(final String userNameValue)
+        {
             this.userName = userNameValue;
         }
     }

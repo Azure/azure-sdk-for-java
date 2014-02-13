@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Update Deployment Status operation.
 */
-public class DeploymentUpdateStatusParameters {
+public class DeploymentUpdateStatusParameters
+{
     private UpdatedDeploymentStatus status;
     
     /**
     * Required. The new status of the deployment.
     * @return The Status value.
     */
-    public UpdatedDeploymentStatus getStatus() {
+    public UpdatedDeploymentStatus getStatus()
+    {
         return this.status;
     }
     
@@ -41,7 +43,8 @@ public class DeploymentUpdateStatusParameters {
     * Required. The new status of the deployment.
     * @param statusValue The Status value.
     */
-    public void setStatus(final UpdatedDeploymentStatus statusValue) {
+    public void setStatus(final UpdatedDeploymentStatus statusValue)
+    {
         this.status = statusValue;
     }
 }

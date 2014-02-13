@@ -24,10 +24,11 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * The type of Retry Policy
- */
-public enum RetryType {
+* The type of Retry Policy
+*/
+public enum RetryType
+{
     None,
-
+    
     Fixed,
 }

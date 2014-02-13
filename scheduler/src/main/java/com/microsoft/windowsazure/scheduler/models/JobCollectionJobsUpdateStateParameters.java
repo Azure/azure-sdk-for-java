@@ -24,23 +24,27 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * Parameters supplied to the Update Jobs State operation.
- */
-public class JobCollectionJobsUpdateStateParameters {
+* Parameters supplied to the Update Jobs State operation.
+*/
+public class JobCollectionJobsUpdateStateParameters
+{
     private JobState state;
-
-    public JobState getState() {
+    
+    public JobState getState()
+    {
         return this.state;
     }
-
-    public void setState(JobState state) {
+    
+    public void setState(JobState state)
+    {
         this.stateIsIncluded = true;
         this.state = state;
     }
-
+    
     private boolean stateIsIncluded;
-
-    public boolean isStateIsIncluded() {
+    
+    public boolean isStateIsIncluded()
+    {
         return this.stateIsIncluded;
     }
 }

@@ -27,8 +27,10 @@ import org.apache.http.HttpResponse;
  * via implementations of the ICloudTracingInterceptor interface. All tracing is
  * global.
  */
-public abstract class CloudTracing {
-    private CloudTracing() {
+public abstract class CloudTracing
+{
+    private CloudTracing()
+    {
     }
 
     /**
@@ -41,7 +43,8 @@ public abstract class CloudTracing {
      * 
      * @return the collection of tracing interceptors.
      */
-    public static List<CloudTracingInterceptor> getInterceptors() {
+    public static List<CloudTracingInterceptor> getInterceptors()
+    {
         return interceptors;
     }
 
@@ -49,14 +52,15 @@ public abstract class CloudTracing {
      * Gets a value indicating whether tracing is enabled. Tracing can be
      * disabled for performance.
      */
-    private static boolean isEnabled;
+	private static boolean isEnabled;
 
     /**
      * Gets the value indicating whether tracing is enabled.
      * 
      * @return Boolean value indicating if tracing is enabled.
      */
-    public static boolean getIsEnabled() {
+    public static boolean getIsEnabled()
+    {
         return isEnabled;
     }
 
@@ -66,11 +70,13 @@ public abstract class CloudTracing {
      * @param enabled
      *            Boolean value indicating if tracing is enabled.
      */
-    public static void setIsEnabled(final boolean enabled) {
+	public static void setIsEnabled(final boolean enabled)
+    {
         isEnabled = enabled;
     }
 
-    static {
+    static
+    {
         isEnabled = true;
         interceptors = Collections
                 .synchronizedList(new ArrayList<CloudTracingInterceptor>());
@@ -83,8 +89,10 @@ public abstract class CloudTracing {
      *            The tracing interceptor.
      */
     public static void addTracingInterceptor(
-            final CloudTracingInterceptor cloudTracingInterceptor) {
-        if (cloudTracingInterceptor == null) {
+            final CloudTracingInterceptor cloudTracingInterceptor)
+    {
+        if (cloudTracingInterceptor == null)
+        {
             throw new NullPointerException();
         }
 
@@ -100,8 +108,10 @@ public abstract class CloudTracing {
      *         otherwise.
      */
     public static boolean removeTracingInterceptor(
-            CloudTracingInterceptor cloudTracingInterceptor) {
-        if (cloudTracingInterceptor == null) {
+            CloudTracingInterceptor cloudTracingInterceptor)
+    {
+        if (cloudTracingInterceptor == null)
+        {
             throw new NullPointerException();
         }
 
@@ -110,30 +120,41 @@ public abstract class CloudTracing {
 
     private static long nextInvocationId = 0;
 
-    public static long getNextInvocationId() {
+    public static long getNextInvocationId()
+    {
         return ++nextInvocationId;
     }
 
-    public static void information(String message, Object... parameters) {
-        if (isEnabled) {
+    public static void information(String message, Object... parameters)
+    {
+        if (isEnabled)
+        {
             information(String.format(message, parameters));
         }
     }
 
-    public static void configuration(String source, String name, String value) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+    public static void configuration(String source, String name, String value)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.configuration(source, name, value);
                 }
             }
         }
     }
 
-    public static void information(String message) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+    public static void information(String message)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.information(message);
                 }
             }
@@ -141,20 +162,28 @@ public abstract class CloudTracing {
     }
 
     public static void enter(String invocationId, Object instance,
-            String method, HashMap<String, Object> parameters) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+            String method, HashMap<String, Object> parameters)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.enter(invocationId, instance, method, parameters);
                 }
             }
         }
     }
 
-    public static void sendRequest(String invocationId, HttpRequest request) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+    public static void sendRequest(String invocationId, HttpRequest request)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.sendRequest(invocationId, request);
                 }
             }
@@ -162,30 +191,42 @@ public abstract class CloudTracing {
     }
 
     public static void receiveResponse(String invocationId,
-            HttpResponse response) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+            HttpResponse response)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.receiveResponse(invocationId, response);
                 }
             }
         }
     }
 
-    public static void error(String invocationId, Exception ex) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+    public static void error(String invocationId, Exception ex)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.error(invocationId, ex);
                 }
             }
         }
     }
 
-    public static void exit(String invocationId, Object result) {
-        if (isEnabled) {
-            synchronized (interceptors) {
-                for (CloudTracingInterceptor writer : interceptors) {
+    public static void exit(String invocationId, Object result)
+    {
+        if (isEnabled)
+        {
+            synchronized (interceptors)
+            {
+                for (CloudTracingInterceptor writer : interceptors)
+                {
                     writer.exit(invocationId, result);
                 }
             }

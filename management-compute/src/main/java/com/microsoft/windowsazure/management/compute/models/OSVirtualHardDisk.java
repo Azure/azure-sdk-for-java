@@ -29,7 +29,8 @@ import java.net.URI;
 * The parameters Windows Azure uses to create theoperating system disk for the
 * virtual machine.
 */
-public class OSVirtualHardDisk {
+public class OSVirtualHardDisk
+{
     private String diskLabel;
     
     /**
@@ -37,7 +38,8 @@ public class OSVirtualHardDisk {
     * repository.
     * @return The DiskLabel value.
     */
-    public String getDiskLabel() {
+    public String getDiskLabel()
+    {
         return this.diskLabel;
     }
     
@@ -46,7 +48,8 @@ public class OSVirtualHardDisk {
     * repository.
     * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(final String diskLabelValue) {
+    public void setDiskLabel(final String diskLabelValue)
+    {
         this.diskLabel = diskLabelValue;
     }
     
@@ -56,7 +59,8 @@ public class OSVirtualHardDisk {
     * Specifies the name an operating system image in the image repository.
     * @return The DiskName value.
     */
-    public String getDiskName() {
+    public String getDiskName()
+    {
         return this.diskName;
     }
     
@@ -64,7 +68,8 @@ public class OSVirtualHardDisk {
     * Specifies the name an operating system image in the image repository.
     * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(final String diskNameValue) {
+    public void setDiskName(final String diskNameValue)
+    {
         this.diskName = diskNameValue;
     }
     
@@ -75,7 +80,8 @@ public class OSVirtualHardDisk {
     * for read/write efficiency.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
         return this.hostCaching;
     }
     
@@ -84,7 +90,8 @@ public class OSVirtualHardDisk {
     * for read/write efficiency.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
+    {
         this.hostCaching = hostCachingValue;
     }
     
@@ -95,7 +102,8 @@ public class OSVirtualHardDisk {
     * storage.
     * @return The MediaLink value.
     */
-    public URI getMediaLink() {
+    public URI getMediaLink()
+    {
         return this.mediaLink;
     }
     
@@ -104,7 +112,8 @@ public class OSVirtualHardDisk {
     * storage.
     * @param mediaLinkValue The MediaLink value.
     */
-    public void setMediaLink(final URI mediaLinkValue) {
+    public void setMediaLink(final URI mediaLinkValue)
+    {
         this.mediaLink = mediaLinkValue;
     }
     
@@ -114,7 +123,8 @@ public class OSVirtualHardDisk {
     * The operating system running in the virtual machine.
     * @return The OperatingSystem value.
     */
-    public String getOperatingSystem() {
+    public String getOperatingSystem()
+    {
         return this.operatingSystem;
     }
     
@@ -122,7 +132,8 @@ public class OSVirtualHardDisk {
     * The operating system running in the virtual machine.
     * @param operatingSystemValue The OperatingSystem value.
     */
-    public void setOperatingSystem(final String operatingSystemValue) {
+    public void setOperatingSystem(final String operatingSystemValue)
+    {
         this.operatingSystem = operatingSystemValue;
     }
     
@@ -133,7 +144,8 @@ public class OSVirtualHardDisk {
     * virtual machine.
     * @return The SourceImageName value.
     */
-    public String getSourceImageName() {
+    public String getSourceImageName()
+    {
         return this.sourceImageName;
     }
     
@@ -142,7 +154,8 @@ public class OSVirtualHardDisk {
     * virtual machine.
     * @param sourceImageNameValue The SourceImageName value.
     */
-    public void setSourceImageName(final String sourceImageNameValue) {
+    public void setSourceImageName(final String sourceImageNameValue)
+    {
         this.sourceImageName = sourceImageNameValue;
     }
 }

@@ -32,14 +32,16 @@ import org.mockito.stubbing.Answer;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.utils.DateFactory;
 
-public class OAuthTokenManagerTest {
+public class OAuthTokenManagerTest
+{
     private OAuthContract contract;
     private OAuthTokenManager client;
     private DateFactory dateFactory;
     private Calendar calendar;
 
     @Before
-    public void init() throws URISyntaxException {
+    public void init() throws URISyntaxException
+    {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
         dateFactory = mock(DateFactory.class);
@@ -55,22 +57,27 @@ public class OAuthTokenManagerTest {
         client = new OAuthTokenManager(contract, dateFactory, acsBaseUri,
                 accountName, accountPassword, scope);
 
-        when(dateFactory.getDate()).thenAnswer(new Answer<Date>() {
+        when(dateFactory.getDate()).thenAnswer(new Answer<Date>()
+        {
             @Override
-            public Date answer(InvocationOnMock invocation) throws Throwable {
+            public Date answer(InvocationOnMock invocation) throws Throwable
+            {
                 return calendar.getTime();
             }
         });
     }
 
     private void doIncrementingTokens() throws ServiceException,
-            URISyntaxException, IOException {
-        doAnswer(new Answer<OAuthTokenResponse>() {
+            URISyntaxException, IOException
+    {
+        doAnswer(new Answer<OAuthTokenResponse>()
+        {
             int count = 0;
 
             @Override
             public OAuthTokenResponse answer(InvocationOnMock invocation)
-                    throws Throwable {
+                    throws Throwable
+            {
                 ++count;
                 OAuthTokenResponse wrapResponse = new OAuthTokenResponse();
                 wrapResponse.setAccessToken("testaccesstoken1-" + count);
@@ -84,7 +91,8 @@ public class OAuthTokenManagerTest {
 
     @Test
     public void clientUsesContractToGetToken() throws ServiceException,
-            URISyntaxException, IOException {
+            URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 
@@ -98,7 +106,8 @@ public class OAuthTokenManagerTest {
 
     @Test
     public void clientWillNotCallMultipleTimesWhileAccessTokenIsValid()
-            throws ServiceException, URISyntaxException, IOException {
+            throws ServiceException, URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 
@@ -119,7 +128,8 @@ public class OAuthTokenManagerTest {
 
     @Test
     public void clientWillBeCalledWhenTokenIsHalfwayToExpiring()
-            throws ServiceException, URISyntaxException, IOException {
+            throws ServiceException, URISyntaxException, IOException
+    {
         // Arrange
         doIncrementingTokens();
 

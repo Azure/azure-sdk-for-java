@@ -75,13 +75,15 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * namespaces.
 */
-public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, NamespaceOperations {
+public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, NamespaceOperations
+{
     /**
     * Initializes a new instance of the NamespaceOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    NamespaceOperationsImpl(ServiceBusManagementClientImpl client) {
+    NamespaceOperationsImpl(ServiceBusManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -92,7 +94,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
     * @return The Client value.
     */
-    public ServiceBusManagementClientImpl getClient() {
+    public ServiceBusManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -108,10 +111,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * namespace name.
     */
     @Override
-    public Future<CheckNamespaceAvailabilityResponse> checkAvailabilityAsync(final String namespaceName) {
+    public Future<CheckNamespaceAvailabilityResponse> checkAvailabilityAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<CheckNamespaceAvailabilityResponse>() { 
             @Override
-            public CheckNamespaceAvailabilityResponse call() throws Exception {
+            public CheckNamespaceAvailabilityResponse call() throws Exception
+            {
                 return checkAvailability(namespaceName);
             }
          });
@@ -137,16 +142,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * namespace name.
     */
     @Override
-    public CheckNamespaceAvailabilityResponse checkAvailability(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public CheckNamespaceAvailabilityResponse checkAvailability(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -167,18 +175,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -196,16 +209,20 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement != null) {
+            if (entryElement != null)
+            {
                 NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement != null) {
+                if (contentElement != null)
+                {
                     NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceAvailability");
                     Element namespaceAvailabilityElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (namespaceAvailabilityElement != null) {
+                    if (namespaceAvailabilityElement != null)
+                    {
                         NodeList elements4 = namespaceAvailabilityElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Result");
                         Element resultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (resultElement != null) {
+                        if (resultElement != null)
+                        {
                             boolean resultInstance;
                             resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                             result.setIsAvailable(resultInstance);
@@ -213,7 +230,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = namespaceAvailabilityElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ReasonDetail");
                         Element reasonDetailElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (reasonDetailElement != null) {
+                        if (reasonDetailElement != null)
+                        {
                             String reasonDetailInstance;
                             reasonDetailInstance = reasonDetailElement.getTextContent();
                             result.setReasonDetails(reasonDetailInstance);
@@ -223,16 +241,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -249,10 +272,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public Future<ServiceBusNamespaceResponse> createAsync(final String namespaceName, final String region) {
+    public Future<ServiceBusNamespaceResponse> createAsync(final String namespaceName, final String region)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { 
             @Override
-            public ServiceBusNamespaceResponse call() throws Exception {
+            public ServiceBusNamespaceResponse call() throws Exception
+            {
                 return create(namespaceName, region);
             }
          });
@@ -281,16 +306,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public ServiceBusNamespaceResponse create(String namespaceName, String region) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -329,7 +357,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         Element namespaceDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
         contentElement.appendChild(namespaceDescriptionElement);
         
-        if (region != null) {
+        if (region != null)
+        {
             Element regionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
             regionElement.appendChild(requestDoc.createTextNode(region));
             namespaceDescriptionElement.appendChild(regionElement);
@@ -348,18 +377,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -377,19 +411,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement2 != null) {
+            if (entryElement2 != null)
+            {
                 NodeList elements2 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement2 != null) {
+                if (contentElement2 != null)
+                {
                     NodeList elements3 = contentElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
                     Element namespaceDescriptionElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (namespaceDescriptionElement2 != null) {
+                    if (namespaceDescriptionElement2 != null)
+                    {
                         ServiceBusNamespace namespaceDescriptionInstance = new ServiceBusNamespace();
                         result.setNamespace(namespaceDescriptionInstance);
                         
                         NodeList elements4 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Name");
                         Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (nameElement != null) {
+                        if (nameElement != null)
+                        {
                             String nameInstance;
                             nameInstance = nameElement.getTextContent();
                             namespaceDescriptionInstance.setName(nameInstance);
@@ -397,7 +435,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
                         Element regionElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (regionElement2 != null) {
+                        if (regionElement2 != null)
+                        {
                             String regionInstance;
                             regionInstance = regionElement2.getTextContent();
                             namespaceDescriptionInstance.setRegion(regionInstance);
@@ -405,7 +444,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements6 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                         Element statusElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (statusElement != null) {
+                        if (statusElement != null)
+                        {
                             String statusInstance;
                             statusInstance = statusElement.getTextContent();
                             namespaceDescriptionInstance.setStatus(statusInstance);
@@ -413,7 +453,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements7 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                         Element createdAtElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (createdAtElement != null) {
+                        if (createdAtElement != null)
+                        {
                             Calendar createdAtInstance;
                             createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             namespaceDescriptionInstance.setCreatedAt(createdAtInstance);
@@ -421,7 +462,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements8 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AcsManagementEndpoint");
                         Element acsManagementEndpointElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (acsManagementEndpointElement != null) {
+                        if (acsManagementEndpointElement != null)
+                        {
                             URI acsManagementEndpointInstance;
                             acsManagementEndpointInstance = new URI(acsManagementEndpointElement.getTextContent());
                             namespaceDescriptionInstance.setAcsManagementEndpoint(acsManagementEndpointInstance);
@@ -429,7 +471,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements9 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ServiceBusEndpoint");
                         Element serviceBusEndpointElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (serviceBusEndpointElement != null) {
+                        if (serviceBusEndpointElement != null)
+                        {
                             URI serviceBusEndpointInstance;
                             serviceBusEndpointInstance = new URI(serviceBusEndpointElement.getTextContent());
                             namespaceDescriptionInstance.setServiceBusEndpoint(serviceBusEndpointInstance);
@@ -437,7 +480,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements10 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionId");
                         Element subscriptionIdElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (subscriptionIdElement != null) {
+                        if (subscriptionIdElement != null)
+                        {
                             String subscriptionIdInstance;
                             subscriptionIdInstance = subscriptionIdElement.getTextContent();
                             namespaceDescriptionInstance.setSubscriptionId(subscriptionIdInstance);
@@ -445,7 +489,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements11 = namespaceDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                         Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (enabledElement != null) {
+                        if (enabledElement != null)
+                        {
                             boolean enabledInstance;
                             enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
@@ -455,16 +500,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -479,10 +529,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule) {
+    public Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
             @Override
-            public ServiceBusAuthorizationRuleResponse call() throws Exception {
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
                 return createAuthorizationRule(namespaceName, rule);
             }
          });
@@ -507,19 +559,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public ServiceBusAuthorizationRuleResponse createAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (rule == null) {
+        if (rule == null)
+        {
             throw new NullPointerException("rule");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -558,21 +614,25 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         Element sharedAccessAuthorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
         contentElement.appendChild(sharedAccessAuthorizationRuleElement);
         
-        if (rule.getClaimType() != null) {
+        if (rule.getClaimType() != null)
+        {
             Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
             claimTypeElement.appendChild(requestDoc.createTextNode(rule.getClaimType()));
             sharedAccessAuthorizationRuleElement.appendChild(claimTypeElement);
         }
         
-        if (rule.getClaimValue() != null) {
+        if (rule.getClaimValue() != null)
+        {
             Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
             claimValueElement.appendChild(requestDoc.createTextNode(rule.getClaimValue()));
             sharedAccessAuthorizationRuleElement.appendChild(claimValueElement);
         }
         
-        if (rule.getRights() != null) {
+        if (rule.getRights() != null)
+        {
             Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-            for (AccessRight rightsItem : rule.getRights()) {
+            for (AccessRight rightsItem : rule.getRights())
+            {
                 Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
                 rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
                 rightsSequenceElement.appendChild(rightsItemElement);
@@ -596,13 +656,15 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         revisionElement.appendChild(requestDoc.createTextNode(Integer.toString(rule.getRevision())));
         sharedAccessAuthorizationRuleElement.appendChild(revisionElement);
         
-        if (rule.getKeyName() != null) {
+        if (rule.getKeyName() != null)
+        {
             Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
             keyNameElement.appendChild(requestDoc.createTextNode(rule.getKeyName()));
             sharedAccessAuthorizationRuleElement.appendChild(keyNameElement);
         }
         
-        if (rule.getPrimaryKey() != null) {
+        if (rule.getPrimaryKey() != null)
+        {
             Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
             primaryKeyElement.appendChild(requestDoc.createTextNode(rule.getPrimaryKey()));
             sharedAccessAuthorizationRuleElement.appendChild(primaryKeyElement);
@@ -621,18 +683,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -650,19 +717,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement2 != null) {
+            if (entryElement2 != null)
+            {
                 NodeList elements2 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement2 != null) {
+                if (contentElement2 != null)
+                {
                     NodeList elements3 = contentElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
                     Element sharedAccessAuthorizationRuleElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (sharedAccessAuthorizationRuleElement2 != null) {
+                    if (sharedAccessAuthorizationRuleElement2 != null)
+                    {
                         ServiceBusSharedAccessAuthorizationRule sharedAccessAuthorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                         result.setAuthorizationRule(sharedAccessAuthorizationRuleInstance);
                         
                         NodeList elements4 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                         Element claimTypeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (claimTypeElement2 != null) {
+                        if (claimTypeElement2 != null)
+                        {
                             String claimTypeInstance;
                             claimTypeInstance = claimTypeElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -670,7 +741,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                         Element claimValueElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (claimValueElement2 != null) {
+                        if (claimValueElement2 != null)
+                        {
                             String claimValueInstance;
                             claimValueInstance = claimValueElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -678,8 +750,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements6 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                         Element rightsSequenceElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (rightsSequenceElement2 != null) {
-                            for (int i1 = 0; i1 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1) {
+                        if (rightsSequenceElement2 != null)
+                        {
+                            for (int i1 = 0; i1 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1)
+                            {
                                 org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i1));
                                 sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                             }
@@ -687,7 +761,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements7 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                         Element createdTimeElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (createdTimeElement2 != null) {
+                        if (createdTimeElement2 != null)
+                        {
                             Calendar createdTimeInstance;
                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -695,7 +770,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements8 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                         Element modifiedTimeElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (modifiedTimeElement2 != null) {
+                        if (modifiedTimeElement2 != null)
+                        {
                             Calendar modifiedTimeInstance;
                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -703,7 +779,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements9 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                         Element keyNameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (keyNameElement2 != null) {
+                        if (keyNameElement2 != null)
+                        {
                             String keyNameInstance;
                             keyNameInstance = keyNameElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setKeyName(keyNameInstance);
@@ -711,7 +788,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements10 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                         Element primaryKeyElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (primaryKeyElement2 != null) {
+                        if (primaryKeyElement2 != null)
+                        {
                             String primaryKeyInstance;
                             primaryKeyInstance = primaryKeyElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -719,7 +797,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements11 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                         Element secondaryKeyElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (secondaryKeyElement != null) {
+                        if (secondaryKeyElement != null)
+                        {
                             String secondaryKeyInstance;
                             secondaryKeyInstance = secondaryKeyElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -727,7 +806,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements12 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Revision");
                         Element revisionElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (revisionElement2 != null) {
+                        if (revisionElement2 != null)
+                        {
                             int revisionInstance;
                             revisionInstance = DatatypeConverter.parseInt(revisionElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
@@ -737,16 +817,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -764,10 +849,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String namespaceName) {
+    public Future<OperationResponse> deleteAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return delete(namespaceName);
             }
          });
@@ -789,16 +876,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * request ID.
     */
     @Override
-    public OperationResponse delete(String namespaceName) throws IOException, ServiceException {
+    public OperationResponse delete(String namespaceName) throws IOException, ServiceException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -818,18 +908,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -839,16 +934,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -864,10 +964,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAuthorizationRuleAsync(final String namespaceName, final String ruleName) {
+    public Future<OperationResponse> deleteAuthorizationRuleAsync(final String namespaceName, final String ruleName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return deleteAuthorizationRule(namespaceName, ruleName);
             }
          });
@@ -887,19 +989,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * request ID.
     */
     @Override
-    public OperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException {
+    public OperationResponse deleteAuthorizationRule(String namespaceName, String ruleName) throws IOException, ServiceException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (ruleName == null) {
+        if (ruleName == null)
+        {
             throw new NullPointerException("ruleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -918,18 +1024,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_NO_CONTENT) {
+            if (statusCode != HttpStatus.SC_NO_CONTENT)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -939,16 +1050,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -963,10 +1079,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public Future<ServiceBusNamespaceResponse> getAsync(final String namespaceName) {
+    public Future<ServiceBusNamespaceResponse> getAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceResponse>() { 
             @Override
-            public ServiceBusNamespaceResponse call() throws Exception {
+            public ServiceBusNamespaceResponse call() throws Exception
+            {
                 return get(namespaceName);
             }
          });
@@ -991,16 +1109,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to a request for a particular namespace.
     */
     @Override
-    public ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceBusNamespaceResponse get(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1020,18 +1141,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1049,19 +1175,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement != null) {
+            if (entryElement != null)
+            {
                 NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement != null) {
+                if (contentElement != null)
+                {
                     NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
                     Element namespaceDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (namespaceDescriptionElement != null) {
+                    if (namespaceDescriptionElement != null)
+                    {
                         ServiceBusNamespace namespaceDescriptionInstance = new ServiceBusNamespace();
                         result.setNamespace(namespaceDescriptionInstance);
                         
                         NodeList elements4 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Name");
                         Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (nameElement != null) {
+                        if (nameElement != null)
+                        {
                             String nameInstance;
                             nameInstance = nameElement.getTextContent();
                             namespaceDescriptionInstance.setName(nameInstance);
@@ -1069,7 +1199,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
                         Element regionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (regionElement != null) {
+                        if (regionElement != null)
+                        {
                             String regionInstance;
                             regionInstance = regionElement.getTextContent();
                             namespaceDescriptionInstance.setRegion(regionInstance);
@@ -1077,7 +1208,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements6 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                         Element statusElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (statusElement != null) {
+                        if (statusElement != null)
+                        {
                             String statusInstance;
                             statusInstance = statusElement.getTextContent();
                             namespaceDescriptionInstance.setStatus(statusInstance);
@@ -1085,7 +1217,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements7 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                         Element createdAtElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (createdAtElement != null) {
+                        if (createdAtElement != null)
+                        {
                             Calendar createdAtInstance;
                             createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             namespaceDescriptionInstance.setCreatedAt(createdAtInstance);
@@ -1093,7 +1226,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements8 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AcsManagementEndpoint");
                         Element acsManagementEndpointElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (acsManagementEndpointElement != null) {
+                        if (acsManagementEndpointElement != null)
+                        {
                             URI acsManagementEndpointInstance;
                             acsManagementEndpointInstance = new URI(acsManagementEndpointElement.getTextContent());
                             namespaceDescriptionInstance.setAcsManagementEndpoint(acsManagementEndpointInstance);
@@ -1101,7 +1235,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements9 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ServiceBusEndpoint");
                         Element serviceBusEndpointElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (serviceBusEndpointElement != null) {
+                        if (serviceBusEndpointElement != null)
+                        {
                             URI serviceBusEndpointInstance;
                             serviceBusEndpointInstance = new URI(serviceBusEndpointElement.getTextContent());
                             namespaceDescriptionInstance.setServiceBusEndpoint(serviceBusEndpointInstance);
@@ -1109,7 +1244,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements10 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionId");
                         Element subscriptionIdElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (subscriptionIdElement != null) {
+                        if (subscriptionIdElement != null)
+                        {
                             String subscriptionIdInstance;
                             subscriptionIdInstance = subscriptionIdElement.getTextContent();
                             namespaceDescriptionInstance.setSubscriptionId(subscriptionIdInstance);
@@ -1117,7 +1253,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements11 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                         Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (enabledElement != null) {
+                        if (enabledElement != null)
+                        {
                             boolean enabledInstance;
                             enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
@@ -1127,16 +1264,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1151,10 +1293,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(final String namespaceName, final String entityName) {
+    public Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(final String namespaceName, final String entityName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
             @Override
-            public ServiceBusAuthorizationRuleResponse call() throws Exception {
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
                 return getAuthorizationRule(namespaceName, entityName);
             }
          });
@@ -1177,19 +1321,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse getAuthorizationRule(String namespaceName, String entityName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServiceBusAuthorizationRuleResponse getAuthorizationRule(String namespaceName, String entityName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (entityName == null) {
+        if (entityName == null)
+        {
             throw new NullPointerException("entityName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1210,18 +1358,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1239,19 +1392,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement != null) {
+            if (entryElement != null)
+            {
                 NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement != null) {
+                if (contentElement != null)
+                {
                     NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
                     Element sharedAccessAuthorizationRuleElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (sharedAccessAuthorizationRuleElement != null) {
+                    if (sharedAccessAuthorizationRuleElement != null)
+                    {
                         ServiceBusSharedAccessAuthorizationRule sharedAccessAuthorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                         result.setAuthorizationRule(sharedAccessAuthorizationRuleInstance);
                         
                         NodeList elements4 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                         Element claimTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (claimTypeElement != null) {
+                        if (claimTypeElement != null)
+                        {
                             String claimTypeInstance;
                             claimTypeInstance = claimTypeElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -1259,7 +1416,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                         Element claimValueElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (claimValueElement != null) {
+                        if (claimValueElement != null)
+                        {
                             String claimValueInstance;
                             claimValueInstance = claimValueElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -1267,8 +1425,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements6 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                         Element rightsSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (rightsSequenceElement != null) {
-                            for (int i1 = 0; i1 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1) {
+                        if (rightsSequenceElement != null)
+                        {
+                            for (int i1 = 0; i1 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1)
+                            {
                                 org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i1));
                                 sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                             }
@@ -1276,7 +1436,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements7 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                         Element createdTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (createdTimeElement != null) {
+                        if (createdTimeElement != null)
+                        {
                             Calendar createdTimeInstance;
                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -1284,7 +1445,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements8 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                         Element modifiedTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (modifiedTimeElement != null) {
+                        if (modifiedTimeElement != null)
+                        {
                             Calendar modifiedTimeInstance;
                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -1292,7 +1454,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements9 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                         Element keyNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (keyNameElement != null) {
+                        if (keyNameElement != null)
+                        {
                             String keyNameInstance;
                             keyNameInstance = keyNameElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setKeyName(keyNameInstance);
@@ -1300,7 +1463,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements10 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                         Element primaryKeyElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (primaryKeyElement != null) {
+                        if (primaryKeyElement != null)
+                        {
                             String primaryKeyInstance;
                             primaryKeyInstance = primaryKeyElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -1308,7 +1472,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements11 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                         Element secondaryKeyElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (secondaryKeyElement != null) {
+                        if (secondaryKeyElement != null)
+                        {
                             String secondaryKeyInstance;
                             secondaryKeyInstance = secondaryKeyElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -1316,7 +1481,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements12 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Revision");
                         Element revisionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (revisionElement != null) {
+                        if (revisionElement != null)
+                        {
                             int revisionInstance;
                             revisionInstance = DatatypeConverter.parseInt(revisionElement.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
@@ -1326,16 +1492,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1352,10 +1523,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a list of namespaces.
     */
     @Override
-    public Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(final String namespaceName) {
+    public Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespaceDescriptionResponse>() { 
             @Override
-            public ServiceBusNamespaceDescriptionResponse call() throws Exception {
+            public ServiceBusNamespaceDescriptionResponse call() throws Exception
+            {
                 return getNamespaceDescription(namespaceName);
             }
          });
@@ -1380,16 +1553,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a list of namespaces.
     */
     @Override
-    public ServiceBusNamespaceDescriptionResponse getNamespaceDescription(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServiceBusNamespaceDescriptionResponse getNamespaceDescription(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1409,18 +1585,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1438,22 +1619,28 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         NamespaceDescription entryInstance = new NamespaceDescription();
                         result.getNamespaceDescriptions().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
                             Element connectionDetailElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (connectionDetailElement != null) {
+                            if (connectionDetailElement != null)
+                            {
                                 NodeList elements4 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (keyNameElement != null) {
+                                if (keyNameElement != null)
+                                {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
@@ -1461,7 +1648,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements5 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
                                 Element connectionStringElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (connectionStringElement != null) {
+                                if (connectionStringElement != null)
+                                {
                                     String connectionStringInstance;
                                     connectionStringInstance = connectionStringElement.getTextContent();
                                     entryInstance.setConnectionString(connectionStringInstance);
@@ -1469,7 +1657,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements6 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
                                 Element authorizationTypeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (authorizationTypeElement != null) {
+                                if (authorizationTypeElement != null)
+                                {
                                     String authorizationTypeInstance;
                                     authorizationTypeInstance = authorizationTypeElement.getTextContent();
                                     entryInstance.setAuthorizationType(authorizationTypeInstance);
@@ -1477,8 +1666,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements7 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
+                                if (rightsSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -1486,7 +1677,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements8 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryConnectionString");
                                 Element secondaryConnectionStringElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                if (secondaryConnectionStringElement != null) {
+                                if (secondaryConnectionStringElement != null)
+                                {
                                     String secondaryConnectionStringInstance;
                                     secondaryConnectionStringInstance = secondaryConnectionStringElement.getTextContent();
                                     entryInstance.setSecondaryConnectionString(secondaryConnectionStringInstance);
@@ -1498,16 +1690,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1521,10 +1718,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to the request for a listing of namespaces.
     */
     @Override
-    public Future<ServiceBusNamespacesResponse> listAsync() {
+    public Future<ServiceBusNamespacesResponse> listAsync()
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNamespacesResponse>() { 
             @Override
-            public ServiceBusNamespacesResponse call() throws Exception {
+            public ServiceBusNamespacesResponse call() throws Exception
+            {
                 return list();
             }
          });
@@ -1548,13 +1747,15 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return The response to the request for a listing of namespaces.
     */
     @Override
-    public ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceBusNamespacesResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -1573,18 +1774,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1602,22 +1808,28 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusNamespace entryInstance = new ServiceBusNamespace();
                         result.getNamespaces().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NamespaceDescription");
                             Element namespaceDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (namespaceDescriptionElement != null) {
+                            if (namespaceDescriptionElement != null)
+                            {
                                 NodeList elements4 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Name");
                                 Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (nameElement != null) {
+                                if (nameElement != null)
+                                {
                                     String nameInstance;
                                     nameInstance = nameElement.getTextContent();
                                     entryInstance.setName(nameInstance);
@@ -1625,7 +1837,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements5 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Region");
                                 Element regionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (regionElement != null) {
+                                if (regionElement != null)
+                                {
                                     String regionInstance;
                                     regionInstance = regionElement.getTextContent();
                                     entryInstance.setRegion(regionInstance);
@@ -1633,7 +1846,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements6 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                                 Element statusElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (statusElement != null) {
+                                if (statusElement != null)
+                                {
                                     String statusInstance;
                                     statusInstance = statusElement.getTextContent();
                                     entryInstance.setStatus(statusInstance);
@@ -1641,7 +1855,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements7 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                                 Element createdAtElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (createdAtElement != null) {
+                                if (createdAtElement != null)
+                                {
                                     Calendar createdAtInstance;
                                     createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                                     entryInstance.setCreatedAt(createdAtInstance);
@@ -1649,7 +1864,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements8 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AcsManagementEndpoint");
                                 Element acsManagementEndpointElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                if (acsManagementEndpointElement != null) {
+                                if (acsManagementEndpointElement != null)
+                                {
                                     URI acsManagementEndpointInstance;
                                     acsManagementEndpointInstance = new URI(acsManagementEndpointElement.getTextContent());
                                     entryInstance.setAcsManagementEndpoint(acsManagementEndpointInstance);
@@ -1657,7 +1873,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements9 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ServiceBusEndpoint");
                                 Element serviceBusEndpointElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                                if (serviceBusEndpointElement != null) {
+                                if (serviceBusEndpointElement != null)
+                                {
                                     URI serviceBusEndpointInstance;
                                     serviceBusEndpointInstance = new URI(serviceBusEndpointElement.getTextContent());
                                     entryInstance.setServiceBusEndpoint(serviceBusEndpointInstance);
@@ -1665,7 +1882,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements10 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionId");
                                 Element subscriptionIdElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                                if (subscriptionIdElement != null) {
+                                if (subscriptionIdElement != null)
+                                {
                                     String subscriptionIdInstance;
                                     subscriptionIdInstance = subscriptionIdElement.getTextContent();
                                     entryInstance.setSubscriptionId(subscriptionIdInstance);
@@ -1673,7 +1891,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements11 = namespaceDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                                 Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (enabledElement != null) {
+                                if (enabledElement != null)
+                                {
                                     boolean enabledInstance;
                                     enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                                     entryInstance.setEnabled(enabledInstance);
@@ -1685,16 +1904,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1708,10 +1932,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a list of authorization rules.
     */
     @Override
-    public Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(final String namespaceName) {
+    public Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRulesResponse>() { 
             @Override
-            public ServiceBusAuthorizationRulesResponse call() throws Exception {
+            public ServiceBusAuthorizationRulesResponse call() throws Exception
+            {
                 return listAuthorizationRules(namespaceName);
             }
          });
@@ -1733,16 +1959,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a list of authorization rules.
     */
     @Override
-    public ServiceBusAuthorizationRulesResponse listAuthorizationRules(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServiceBusAuthorizationRulesResponse listAuthorizationRules(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1762,18 +1991,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1791,22 +2025,28 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusSharedAccessAuthorizationRule entryInstance = new ServiceBusSharedAccessAuthorizationRule();
                         result.getAuthorizationRules().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
                             Element sharedAccessAuthorizationRuleElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (sharedAccessAuthorizationRuleElement != null) {
+                            if (sharedAccessAuthorizationRuleElement != null)
+                            {
                                 NodeList elements4 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 Element claimTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (claimTypeElement != null) {
+                                if (claimTypeElement != null)
+                                {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement.getTextContent();
                                     entryInstance.setClaimType(claimTypeInstance);
@@ -1814,7 +2054,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements5 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 Element claimValueElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (claimValueElement != null) {
+                                if (claimValueElement != null)
+                                {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement.getTextContent();
                                     entryInstance.setClaimValue(claimValueInstance);
@@ -1822,8 +2063,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements6 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
+                                if (rightsSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -1831,7 +2074,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements7 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 Element createdTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (createdTimeElement != null) {
+                                if (createdTimeElement != null)
+                                {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     entryInstance.setCreatedTime(createdTimeInstance);
@@ -1839,7 +2083,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements8 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 Element modifiedTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                if (modifiedTimeElement != null) {
+                                if (modifiedTimeElement != null)
+                                {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     entryInstance.setModifiedTime(modifiedTimeInstance);
@@ -1847,7 +2092,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements9 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                                if (keyNameElement != null) {
+                                if (keyNameElement != null)
+                                {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
@@ -1855,7 +2101,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements10 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 Element primaryKeyElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                                if (primaryKeyElement != null) {
+                                if (primaryKeyElement != null)
+                                {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement.getTextContent();
                                     entryInstance.setPrimaryKey(primaryKeyInstance);
@@ -1863,7 +2110,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements11 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 Element secondaryKeyElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (secondaryKeyElement != null) {
+                                if (secondaryKeyElement != null)
+                                {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement.getTextContent();
                                     entryInstance.setSecondaryKey(secondaryKeyInstance);
@@ -1871,7 +2119,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 
                                 NodeList elements12 = sharedAccessAuthorizationRuleElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Revision");
                                 Element revisionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (revisionElement != null) {
+                                if (revisionElement != null)
+                                {
                                     int revisionInstance;
                                     revisionInstance = DatatypeConverter.parseInt(revisionElement.getTextContent());
                                     entryInstance.setRevision(revisionInstance);
@@ -1883,16 +2132,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1907,10 +2161,12 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule) {
+    public Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(final String namespaceName, final ServiceBusSharedAccessAuthorizationRule rule)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusAuthorizationRuleResponse>() { 
             @Override
-            public ServiceBusAuthorizationRuleResponse call() throws Exception {
+            public ServiceBusAuthorizationRuleResponse call() throws Exception
+            {
                 return updateAuthorizationRule(namespaceName, rule);
             }
          });
@@ -1935,16 +2191,19 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
     * @return A response to a request for a particular authorization rule.
     */
     @Override
-    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public ServiceBusAuthorizationRuleResponse updateAuthorizationRule(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1971,7 +2230,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        if (rule != null) {
+        if (rule != null)
+        {
             Element entryElement = requestDoc.createElementNS("http://www.w3.org/2005/Atom", "entry");
             requestDoc.appendChild(entryElement);
             
@@ -1985,21 +2245,25 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             Element sharedAccessAuthorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
             contentElement.appendChild(sharedAccessAuthorizationRuleElement);
             
-            if (rule.getClaimType() != null) {
+            if (rule.getClaimType() != null)
+            {
                 Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                 claimTypeElement.appendChild(requestDoc.createTextNode(rule.getClaimType()));
                 sharedAccessAuthorizationRuleElement.appendChild(claimTypeElement);
             }
             
-            if (rule.getClaimValue() != null) {
+            if (rule.getClaimValue() != null)
+            {
                 Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                 claimValueElement.appendChild(requestDoc.createTextNode(rule.getClaimValue()));
                 sharedAccessAuthorizationRuleElement.appendChild(claimValueElement);
             }
             
-            if (rule.getRights() != null) {
+            if (rule.getRights() != null)
+            {
                 Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                for (AccessRight rightsItem : rule.getRights()) {
+                for (AccessRight rightsItem : rule.getRights())
+                {
                     Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
                     rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
                     rightsSequenceElement.appendChild(rightsItemElement);
@@ -2023,13 +2287,15 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             revisionElement.appendChild(requestDoc.createTextNode(Integer.toString(rule.getRevision())));
             sharedAccessAuthorizationRuleElement.appendChild(revisionElement);
             
-            if (rule.getKeyName() != null) {
+            if (rule.getKeyName() != null)
+            {
                 Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                 keyNameElement.appendChild(requestDoc.createTextNode(rule.getKeyName()));
                 sharedAccessAuthorizationRuleElement.appendChild(keyNameElement);
             }
             
-            if (rule.getPrimaryKey() != null) {
+            if (rule.getPrimaryKey() != null)
+            {
                 Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                 primaryKeyElement.appendChild(requestDoc.createTextNode(rule.getPrimaryKey()));
                 sharedAccessAuthorizationRuleElement.appendChild(primaryKeyElement);
@@ -2049,18 +2315,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2078,19 +2349,23 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement2 != null) {
+            if (entryElement2 != null)
+            {
                 NodeList elements2 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (contentElement2 != null) {
+                if (contentElement2 != null)
+                {
                     NodeList elements3 = contentElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SharedAccessAuthorizationRule");
                     Element sharedAccessAuthorizationRuleElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (sharedAccessAuthorizationRuleElement2 != null) {
+                    if (sharedAccessAuthorizationRuleElement2 != null)
+                    {
                         ServiceBusSharedAccessAuthorizationRule sharedAccessAuthorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                         result.setAuthorizationRule(sharedAccessAuthorizationRuleInstance);
                         
                         NodeList elements4 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                         Element claimTypeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (claimTypeElement2 != null) {
+                        if (claimTypeElement2 != null)
+                        {
                             String claimTypeInstance;
                             claimTypeInstance = claimTypeElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -2098,7 +2373,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements5 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                         Element claimValueElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (claimValueElement2 != null) {
+                        if (claimValueElement2 != null)
+                        {
                             String claimValueInstance;
                             claimValueInstance = claimValueElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -2106,8 +2382,10 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements6 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                         Element rightsSequenceElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (rightsSequenceElement2 != null) {
-                            for (int i1 = 0; i1 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1) {
+                        if (rightsSequenceElement2 != null)
+                        {
+                            for (int i1 = 0; i1 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i1 = i1 + 1)
+                            {
                                 org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i1));
                                 sharedAccessAuthorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                             }
@@ -2115,7 +2393,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements7 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                         Element createdTimeElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (createdTimeElement2 != null) {
+                        if (createdTimeElement2 != null)
+                        {
                             Calendar createdTimeInstance;
                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -2123,7 +2402,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements8 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                         Element modifiedTimeElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (modifiedTimeElement2 != null) {
+                        if (modifiedTimeElement2 != null)
+                        {
                             Calendar modifiedTimeInstance;
                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -2131,7 +2411,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements9 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                         Element keyNameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (keyNameElement2 != null) {
+                        if (keyNameElement2 != null)
+                        {
                             String keyNameInstance;
                             keyNameInstance = keyNameElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setKeyName(keyNameInstance);
@@ -2139,7 +2420,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements10 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                         Element primaryKeyElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (primaryKeyElement2 != null) {
+                        if (primaryKeyElement2 != null)
+                        {
                             String primaryKeyInstance;
                             primaryKeyInstance = primaryKeyElement2.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -2147,7 +2429,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements11 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                         Element secondaryKeyElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (secondaryKeyElement != null) {
+                        if (secondaryKeyElement != null)
+                        {
                             String secondaryKeyInstance;
                             secondaryKeyInstance = secondaryKeyElement.getTextContent();
                             sharedAccessAuthorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -2155,7 +2438,8 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         
                         NodeList elements12 = sharedAccessAuthorizationRuleElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Revision");
                         Element revisionElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (revisionElement2 != null) {
+                        if (revisionElement2 != null)
+                        {
                             int revisionInstance;
                             revisionInstance = DatatypeConverter.parseInt(revisionElement2.getTextContent());
                             sharedAccessAuthorizationRuleInstance.setRevision(revisionInstance);
@@ -2165,16 +2449,21 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

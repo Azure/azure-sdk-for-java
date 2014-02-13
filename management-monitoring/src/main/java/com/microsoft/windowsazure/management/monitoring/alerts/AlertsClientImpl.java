@@ -32,147 +32,132 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class AlertsClientImpl extends ServiceClient<AlertsClient> implements
-        AlertsClient {
+public class AlertsClientImpl extends ServiceClient<AlertsClient> implements AlertsClient
+{
     private URI baseUri;
-
+    
     /**
-     * Optional base uri parameter for Azure REST.
-     * 
-     * @return The BaseUri value.
-     */
-    public URI getBaseUri() {
+    * Optional base uri parameter for Azure REST.
+    * @return The BaseUri value.
+    */
+    public URI getBaseUri()
+    {
         return this.baseUri;
     }
-
+    
     private SubscriptionCloudCredentials credentials;
-
+    
     /**
-     * When you create a Windows Azure subscription, it is uniquely identified
-     * by a subscription ID. The subscription ID forms part of the URI for every
-     * call that you make to the Service Management API. The Windows Azure
-     * Service ManagementAPI use mutual authentication of management
-     * certificates over SSL to ensure that a request made to the service is
-     * secure. No anonymous requests are allowed.
-     * 
-     * @return The Credentials value.
-     */
-    public SubscriptionCloudCredentials getCredentials() {
+    * When you create a Windows Azure subscription, it is uniquely identified
+    * by a subscription ID. The subscription ID forms part of the URI for
+    * every call that you make to the Service Management API.  The Windows
+    * Azure Service ManagementAPI use mutual authentication of management
+    * certificates over SSL to ensure that a request made to the service is
+    * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
+    */
+    public SubscriptionCloudCredentials getCredentials()
+    {
         return this.credentials;
     }
-
+    
     private IncidentOperations incidents;
-
+    
     /**
-     * Operations for managing the alert incidents.
-     * 
-     * @return The IncidentsOperations value.
-     */
-    public IncidentOperations getIncidentsOperations() {
+    * Operations for managing the alert incidents.
+    * @return The IncidentsOperations value.
+    */
+    public IncidentOperations getIncidentsOperations()
+    {
         return this.incidents;
     }
-
+    
     private RuleOperations rules;
-
+    
     /**
-     * Operations for managing the alert rules.
-     * 
-     * @return The RulesOperations value.
-     */
-    public RuleOperations getRulesOperations() {
+    * Operations for managing the alert rules.
+    * @return The RulesOperations value.
+    */
+    public RuleOperations getRulesOperations()
+    {
         return this.rules;
     }
-
+    
     /**
-     * Initializes a new instance of the AlertsClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    private AlertsClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService) {
+    * Initializes a new instance of the AlertsClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    private AlertsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         super(httpBuilder, executorService);
         this.incidents = new IncidentOperationsImpl(this);
         this.rules = new RuleOperationsImpl(this);
     }
-
+    
     /**
-     * Initializes a new instance of the AlertsClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     * @param credentials
-     *            When you create a Windows Azure subscription, it is uniquely
-     *            identified by a subscription ID. The subscription ID forms
-     *            part of the URI for every call that you make to the Service
-     *            Management API. The Windows Azure Service ManagementAPI use
-     *            mutual authentication of management certificates over SSL to
-     *            ensure that a request made to the service is secure. No
-     *            anonymous requests are allowed.
-     * @param baseUri
-     *            Optional base uri parameter for Azure REST.
-     */
-    public AlertsClientImpl(HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            SubscriptionCloudCredentials credentials, URI baseUri) {
+    * Initializes a new instance of the AlertsClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @param credentials When you create a Windows Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Windows Azure Service ManagementAPI use mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure.  No anonymous requests are allowed.
+    * @param baseUri Optional base uri parameter for Azure REST.
+    */
+    public AlertsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null) {
+        if (baseUri == null)
+        {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
         this.baseUri = baseUri;
     }
-
+    
     /**
-     * Initializes a new instance of the AlertsClientImpl class. Initializes a
-     * new instance of the AlertsClientImpl class.
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     * @param credentials
-     *            When you create a Windows Azure subscription, it is uniquely
-     *            identified by a subscription ID. The subscription ID forms
-     *            part of the URI for every call that you make to the Service
-     *            Management API. The Windows Azure Service ManagementAPI use
-     *            mutual authentication of management certificates over SSL to
-     *            ensure that a request made to the service is secure. No
-     *            anonymous requests are allowed.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     */
+    * Initializes a new instance of the AlertsClientImpl class.
+    * Initializes a new instance of the AlertsClientImpl class.
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    * @param credentials When you create a Windows Azure subscription, it is
+    * uniquely identified by a subscription ID. The subscription ID forms part
+    * of the URI for every call that you make to the Service Management API.
+    * The Windows Azure Service ManagementAPI use mutual authentication of
+    * management certificates over SSL to ensure that a request made to the
+    * service is secure.  No anonymous requests are allowed.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    */
     @Inject
-    public AlertsClientImpl(
-            HttpClientBuilder httpBuilder,
-            ExecutorService executorService,
-            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials)
-            throws java.net.URISyntaxException {
+    public AlertsClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
         this.baseUri = new URI("https://management.core.windows.net");
     }
-
+    
     /**
-     * 
-     * @param httpBuilder
-     *            The HTTP client builder.
-     * @param executorService
-     *            The executor service.
-     */
-    protected AlertsClientImpl newInstance(HttpClientBuilder httpBuilder,
-            ExecutorService executorService) {
-        return new AlertsClientImpl(httpBuilder, executorService,
-                this.getCredentials(), this.getBaseUri());
+    *
+    * @param httpBuilder The HTTP client builder.
+    * @param executorService The executor service.
+    */
+    protected AlertsClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
+        return new AlertsClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
 }

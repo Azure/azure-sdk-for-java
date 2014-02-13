@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-interface RuntimeGoalStateClient {
+interface RuntimeGoalStateClient
+{
     public GoalState getCurrentGoalState() throws InterruptedException;
 
     public RoleEnvironmentData getRoleEnvironmentData()

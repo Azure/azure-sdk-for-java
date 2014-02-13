@@ -22,7 +22,8 @@ import com.microsoft.windowsazure.core.utils.ParsedConnectionString;
  * Class that parses the fields present in a service bus connection string.
  * 
  */
-public class ServiceBusConnectionString extends ParsedConnectionString {
+public class ServiceBusConnectionString extends ParsedConnectionString
+{
 
     /**
      * Construct the {@link ServiceBusConnectionString} instance with the data
@@ -34,7 +35,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * @throws ConnectionStringSyntaxException
      */
     public ServiceBusConnectionString(String connectionString)
-            throws ConnectionStringSyntaxException {
+            throws ConnectionStringSyntaxException
+    {
         super(connectionString);
     }
 
@@ -48,7 +50,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @return the endpoint
      */
-    public String getEndpoint() {
+    public String getEndpoint()
+    {
         return endpoint;
     }
 
@@ -57,7 +60,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @param endpoint
      */
-    public void setEndpoint(String endpoint) {
+    public void setEndpoint(String endpoint)
+    {
         this.endpoint = endpoint;
     }
 
@@ -66,7 +70,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @return the sts endpoint
      */
-    public String getStsEndpoint() {
+    public String getStsEndpoint()
+    {
         return stsEndpoint;
     }
 
@@ -75,7 +80,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @param stsEndpoint
      */
-    public void setStsEndpoint(String stsEndpoint) {
+    public void setStsEndpoint(String stsEndpoint)
+    {
         this.stsEndpoint = stsEndpoint;
     }
 
@@ -84,7 +90,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @return the issuer
      */
-    public String getSharedSecretIssuer() {
+    public String getSharedSecretIssuer()
+    {
         return sharedSecretIssuer;
     }
 
@@ -93,7 +100,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @param sharedSecretIssuer
      */
-    public void setSharedSecretIssuer(String sharedSecretIssuer) {
+    public void setSharedSecretIssuer(String sharedSecretIssuer)
+    {
         this.sharedSecretIssuer = sharedSecretIssuer;
     }
 
@@ -102,7 +110,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @return the shared secret value
      */
-    public String getSharedSecretValue() {
+    public String getSharedSecretValue()
+    {
         return sharedSecretValue;
     }
 
@@ -111,7 +120,8 @@ public class ServiceBusConnectionString extends ParsedConnectionString {
      * 
      * @param sharedSecretValue
      */
-    public void setSharedSecretValue(String sharedSecretValue) {
+    public void setSharedSecretValue(String sharedSecretValue)
+    {
         this.sharedSecretValue = sharedSecretValue;
     }
 }

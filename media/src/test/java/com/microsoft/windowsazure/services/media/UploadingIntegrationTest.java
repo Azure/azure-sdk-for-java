@@ -39,13 +39,15 @@ import com.microsoft.windowsazure.services.media.models.LocatorInfo;
  * Testing uploading in various permutations.
  * 
  */
-public class UploadingIntegrationTest extends IntegrationTestBase {
+public class UploadingIntegrationTest extends IntegrationTestBase
+{
     private static WritableBlobContainerContract blobWriter;
     private static byte[] firstPrimes = new byte[] { 2, 3, 5, 7, 11, 13, 17,
             19, 23, 29 };
 
     @BeforeClass
-    public static void setup() throws Exception {
+    public static void setup() throws Exception
+    {
         IntegrationTestBase.setup();
 
         AssetInfo asset = service.create(Asset.create().setName(
@@ -65,13 +67,15 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canUploadBlockBlob() throws Exception {
+    public void canUploadBlockBlob() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlockBlob("uploadBlockBlobTest", blobContent);
     }
 
     @Test
-    public void canUploadBlockBlobWithOptions() throws Exception {
+    public void canUploadBlockBlobWithOptions() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         CreateBlobOptions options = new CreateBlobOptions().addMetadata(
                 "testMetadataKey", "testMetadataValue");
@@ -80,13 +84,15 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canCreateBlobBlock() throws Exception {
+    public void canCreateBlobBlock() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlobBlock("canCreateBlobBlock", "123", blobContent);
     }
 
     @Test
-    public void canCreateBlobBlockWithOptions() throws Exception {
+    public void canCreateBlobBlockWithOptions() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         CreateBlobBlockOptions options = new CreateBlobBlockOptions()
                 .setTimeout(100);
@@ -95,13 +101,15 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canCommitBlobBlocks() throws Exception {
+    public void canCommitBlobBlocks() throws Exception
+    {
         BlockList blockList = new BlockList();
         blobWriter.commitBlobBlocks("canCommitBlobBlocks", blockList);
     }
 
     @Test
-    public void canCommitBlobBlocksWithOptions() throws Exception {
+    public void canCommitBlobBlocksWithOptions() throws Exception
+    {
         BlockList blockList = new BlockList();
         CommitBlobBlocksOptions options = new CommitBlobBlocksOptions()
                 .setBlobContentType("text/html;charset=ISO-8859-1");
@@ -110,7 +118,8 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canUploadBlockBlobWithExplicitRetry() throws Exception {
+    public void canUploadBlockBlobWithExplicitRetry() throws Exception
+    {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlockBlob("canUploadBlockBlobWithExplicitRetry1",
                 blobContent);

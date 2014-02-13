@@ -40,12 +40,13 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/hh780776.aspx for more
 * information)
 */
-public interface ServiceBusManagementClient extends FilterableService<ServiceBusManagementClient> {
+public interface ServiceBusManagementClient extends FilterableService<ServiceBusManagementClient>
+{
     /**
     * The URI used as the base for all Service Bus requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri();
+    URI getBaseUri(); 
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -56,42 +57,42 @@ public interface ServiceBusManagementClient extends FilterableService<ServiceBus
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials();
+    SubscriptionCloudCredentials getCredentials(); 
     
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus namespaces.
     * @return The NamespacesOperations value.
     */
-    NamespaceOperations getNamespacesOperations();
+    NamespaceOperations getNamespacesOperations(); 
     
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus notification hubs.
     * @return The NotificationHubsOperations value.
     */
-    NotificationHubOperations getNotificationHubsOperations();
+    NotificationHubOperations getNotificationHubsOperations(); 
     
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus queues.
     * @return The QueuesOperations value.
     */
-    QueueOperations getQueuesOperations();
+    QueueOperations getQueuesOperations(); 
     
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus relays.
     * @return The RelaysOperations value.
     */
-    RelayOperations getRelaysOperations();
+    RelayOperations getRelaysOperations(); 
     
     /**
     * The Service Bus Management API includes operations for managing Service
     * Bus topics for a namespace.
     * @return The TopicsOperations value.
     */
-    TopicOperations getTopicsOperations();
+    TopicOperations getTopicsOperations(); 
     
     /**
     * The Get Operation Status operation returns the status of thespecified

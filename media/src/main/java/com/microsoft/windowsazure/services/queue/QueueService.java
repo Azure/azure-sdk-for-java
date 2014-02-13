@@ -20,11 +20,13 @@ import com.microsoft.windowsazure.Configuration;
  * A class for static factory methods that return instances implementing
  * {@link QueueContract}.
  */
-public class QueueService {
+public class QueueService
+{
     /**
      * Private default constructor.
      */
-    private QueueService() {
+    private QueueService()
+    {
     }
 
     /**
@@ -37,7 +39,8 @@ public class QueueService {
      * @return An instance implementing {@link QueueContract} for interacting
      *         with the queue service.
      */
-    public static QueueContract create() {
+    public static QueueContract create()
+    {
         return create(null, Configuration.getInstance());
     }
 
@@ -55,7 +58,8 @@ public class QueueService {
      * @return An instance implementing {@link QueueContract} for interacting
      *         with the queue service.
      */
-    public static QueueContract create(Configuration config) {
+    public static QueueContract create(Configuration config)
+    {
         return create(null, config);
     }
 
@@ -74,7 +78,8 @@ public class QueueService {
      * @return An instance implementing {@link QueueContract} for interacting
      *         with the queue service.
      */
-    public static QueueContract create(String profile) {
+    public static QueueContract create(String profile)
+    {
         return create(profile, Configuration.getInstance());
     }
 
@@ -96,7 +101,8 @@ public class QueueService {
      * @return An instance implementing {@link QueueContract} for interacting
      *         with the queue service.
      */
-    public static QueueContract create(String profile, Configuration config) {
+    public static QueueContract create(String profile, Configuration config)
+    {
         return config.create(profile, QueueContract.class);
     }
 }

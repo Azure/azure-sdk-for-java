@@ -45,7 +45,8 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate content key entities.
  * 
  */
-public class ContentKey {
+public class ContentKey
+{
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "ContentKeys";
@@ -53,7 +54,8 @@ public class ContentKey {
     /**
      * Instantiates a new content key.
      */
-    private ContentKey() {
+    private ContentKey()
+    {
     }
 
     /**
@@ -68,7 +70,8 @@ public class ContentKey {
      * @return The operation
      */
     public static Creator create(String id, ContentKeyType contentKeyType,
-            String encryptedContentKey) {
+            String encryptedContentKey)
+    {
         return new Creator(id, contentKeyType, encryptedContentKey);
     }
 
@@ -77,7 +80,8 @@ public class ContentKey {
      */
     public static class Creator extends
             EntityOperationSingleResultBase<ContentKeyInfo> implements
-            EntityCreateOperation<ContentKeyInfo> {
+            EntityCreateOperation<ContentKeyInfo>
+    {
 
         /** The id. */
         private final String id;
@@ -111,7 +115,8 @@ public class ContentKey {
          *            the encrypted content key
          */
         public Creator(String id, ContentKeyType contentKeyType,
-                String encryptedContentKey) {
+                String encryptedContentKey)
+        {
             super(ENTITY_SET, ContentKeyInfo.class);
 
             this.id = id;
@@ -126,13 +131,16 @@ public class ContentKey {
          * EntityCreateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() {
+        public Object getRequestContents()
+        {
             ContentKeyRestType contentKeyRestType = new ContentKeyRestType();
             contentKeyRestType.setId(id);
-            if (contentKeyType != null) {
+            if (contentKeyType != null)
+            {
                 contentKeyRestType.setContentKeyType(contentKeyType.getCode());
             }
-            if (protectionKeyType != null) {
+            if (protectionKeyType != null)
+            {
                 contentKeyRestType.setProtectionKeyType(protectionKeyType
                         .getCode());
             }
@@ -150,7 +158,8 @@ public class ContentKey {
          *            the name
          * @return the creator
          */
-        public Creator setName(String name) {
+        public Creator setName(String name)
+        {
             this.name = name;
             return this;
         }
@@ -162,7 +171,8 @@ public class ContentKey {
          *            the checksum
          * @return the creator
          */
-        public Creator setChecksum(String checksum) {
+        public Creator setChecksum(String checksum)
+        {
             this.checksum = checksum;
             return this;
         }
@@ -174,7 +184,8 @@ public class ContentKey {
          *            the protection key id
          * @return the creator
          */
-        public Creator setProtectionKeyId(String protectionKeyId) {
+        public Creator setProtectionKeyId(String protectionKeyId)
+        {
             this.protectionKeyId = protectionKeyId;
             return this;
         }
@@ -186,7 +197,8 @@ public class ContentKey {
          *            the protection key type
          * @return the creator
          */
-        public Creator setProtectionKeyType(ProtectionKeyType protectionKeyType) {
+        public Creator setProtectionKeyType(ProtectionKeyType protectionKeyType)
+        {
             this.protectionKeyType = protectionKeyType;
             return this;
         }
@@ -199,7 +211,8 @@ public class ContentKey {
      *            id of content key to retrieve
      * @return the operation
      */
-    public static EntityGetOperation<ContentKeyInfo> get(String contentKeyId) {
+    public static EntityGetOperation<ContentKeyInfo> get(String contentKeyId)
+    {
         return new DefaultGetOperation<ContentKeyInfo>(ENTITY_SET,
                 contentKeyId, ContentKeyInfo.class);
     }
@@ -209,9 +222,11 @@ public class ContentKey {
      * 
      * @return the operation
      */
-    public static DefaultListOperation<ContentKeyInfo> list() {
+    public static DefaultListOperation<ContentKeyInfo> list()
+    {
         return new DefaultListOperation<ContentKeyInfo>(ENTITY_SET,
-                new GenericType<ListResult<ContentKeyInfo>>() {
+                new GenericType<ListResult<ContentKeyInfo>>()
+                {
                 });
     }
 
@@ -224,9 +239,11 @@ public class ContentKey {
      * @return The list operation.
      */
     public static DefaultListOperation<ContentKeyInfo> list(
-            LinkInfo<ContentKeyInfo> link) {
+            LinkInfo<ContentKeyInfo> link)
+    {
         return new DefaultListOperation<ContentKeyInfo>(link.getHref(),
-                new GenericType<ListResult<ContentKeyInfo>>() {
+                new GenericType<ListResult<ContentKeyInfo>>()
+                {
                 });
     }
 
@@ -237,7 +254,8 @@ public class ContentKey {
      *            id of content key to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String contentKeyId) {
+    public static EntityDeleteOperation delete(String contentKeyId)
+    {
         return new DefaultDeleteOperation(ENTITY_SET, contentKeyId);
     }
 
@@ -251,7 +269,8 @@ public class ContentKey {
      * @return the entity action operation
      */
     public static EntityTypeActionOperation<String> rebind(String contentKeyId,
-            String x509Certificate) {
+            String x509Certificate)
+    {
         return new RebindContentKeyActionOperation(contentKeyId,
                 x509Certificate);
     }
@@ -263,24 +282,29 @@ public class ContentKey {
      *            the content key id
      * @return the entity action operation
      */
-    public static EntityTypeActionOperation<String> rebind(String contentKeyId) {
+    public static EntityTypeActionOperation<String> rebind(String contentKeyId)
+    {
         return rebind(contentKeyId, "");
     }
 
     private static class RebindContentKeyActionOperation extends
-            DefaultEntityTypeActionOperation<String> {
+            DefaultEntityTypeActionOperation<String>
+    {
         private final JAXBContext jaxbContext;
 
         private final Unmarshaller unmarshaller;
 
         public RebindContentKeyActionOperation(String contentKeyId,
-                String x509Certificate) {
+                String x509Certificate)
+        {
             super("RebindContentKey");
 
             String escapedContentKeyId;
-            try {
+            try
+            {
                 escapedContentKeyId = URLEncoder.encode(contentKeyId, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
+            } catch (UnsupportedEncodingException e)
+            {
                 throw new InvalidParameterException(
                         "UTF-8 encoding is not supported.");
             }
@@ -288,35 +312,43 @@ public class ContentKey {
                     + "'");
             this.addQueryParameter("id", "'" + escapedContentKeyId + "'");
 
-            try {
+            try
+            {
                 jaxbContext = JAXBContext
                         .newInstance(RebindContentKeyType.class);
-            } catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
 
-            try {
+            try
+            {
                 unmarshaller = jaxbContext.createUnmarshaller();
-            } catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
         }
 
         @Override
-        public String processTypeResponse(ClientResponse clientResponse) {
+        public String processTypeResponse(ClientResponse clientResponse)
+        {
             PipelineHelpers.ThrowIfNotSuccess(clientResponse);
             RebindContentKeyType rebindContentKeyType = parseResponse(clientResponse);
             return rebindContentKeyType.getContentKey();
         }
 
-        private RebindContentKeyType parseResponse(ClientResponse clientResponse) {
+        private RebindContentKeyType parseResponse(ClientResponse clientResponse)
+        {
             InputStream inputStream = clientResponse.getEntityInputStream();
             JAXBElement<RebindContentKeyType> rebindContentKeyTypeJaxbElement;
-            try {
+            try
+            {
                 rebindContentKeyTypeJaxbElement = unmarshaller.unmarshal(
                         new StreamSource(inputStream),
                         RebindContentKeyType.class);
-            } catch (JAXBException e) {
+            } catch (JAXBException e)
+            {
                 throw new RuntimeException(e);
             }
             return rebindContentKeyTypeJaxbElement.getValue();

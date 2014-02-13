@@ -24,40 +24,45 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * Parameters supplied to the List Jobs operation.
- */
-public class JobListParameters {
+* Parameters supplied to the List Jobs operation.
+*/
+public class JobListParameters
+{
     private Integer skip;
-
+    
     /**
-     * Specify the (0-based) index of the job list from which to begin
-     * requesting entries.
-     */
-    public Integer getSkip() {
+    * Specify the (0-based) index of the job list from which to begin
+    * requesting entries.
+    */
+    public Integer getSkip()
+    {
         return this.skip;
     }
-
+    
     /**
-     * Specify the (0-based) index of the job list from which to begin
-     * requesting entries.
-     */
-    public void setSkip(Integer skip) {
+    * Specify the (0-based) index of the job list from which to begin
+    * requesting entries.
+    */
+    public void setSkip(Integer skip)
+    {
         this.skip = skip;
     }
-
+    
     private Integer top;
-
+    
     /**
-     * Specify the number of jobs to request, in the of range [1..100].
-     */
-    public Integer getTop() {
+    * Specify the number of jobs to request, in the of range [1..100].
+    */
+    public Integer getTop()
+    {
         return this.top;
     }
-
+    
     /**
-     * Specify the number of jobs to request, in the of range [1..100].
-     */
-    public void setTop(Integer top) {
+    * Specify the number of jobs to request, in the of range [1..100].
+    */
+    public void setTop(Integer top)
+    {
         this.top = top;
     }
 }

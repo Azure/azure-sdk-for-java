@@ -21,10 +21,12 @@ import java.net.URI;
 
 import org.junit.Test;
 
-public class ResourceLocationManagerTest {
+public class ResourceLocationManagerTest
+{
 
     @Test
-    public void testCanCreateWithBaseUri() throws Exception {
+    public void testCanCreateWithBaseUri() throws Exception
+    {
         String baseUri = "https://base.uri.example";
         ResourceLocationManager m = new ResourceLocationManager(baseUri);
 
@@ -33,7 +35,8 @@ public class ResourceLocationManagerTest {
 
     @Test
     public void testWhenCallingGetRedirectedURI_shouldReturnURIWithBaseURIPreprended()
-            throws Exception {
+            throws Exception
+    {
         String baseURI = "http://base.uri.example/path/";
         ResourceLocationManager m = new ResourceLocationManager(baseURI);
 
@@ -46,7 +49,8 @@ public class ResourceLocationManagerTest {
 
     @Test
     public void settingBaseURIAfterRedirecting_shouldReturnURIWithNewBaseURI()
-            throws Exception {
+            throws Exception
+    {
         String baseURI = "http://base.uri.example/path/";
         String redirectedBaseURI = "http://other.uri.example/API/";
         ResourceLocationManager m = new ResourceLocationManager(baseURI);

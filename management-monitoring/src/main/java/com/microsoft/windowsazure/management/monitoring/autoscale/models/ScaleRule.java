@@ -24,48 +24,47 @@
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
 /**
- * A rule that provide the triggers and parameters for the scaling action.
- */
-public class ScaleRule {
+* A rule that provide the triggers and parameters for the scaling action.
+*/
+public class ScaleRule
+{
     private MetricTrigger metricTrigger;
-
+    
     /**
-     * The metrics that are used to determine when a scaling action occurs.
-     * 
-     * @return The MetricTrigger value.
-     */
-    public MetricTrigger getMetricTrigger() {
+    * The metrics that are used to determine when a scaling action occurs.
+    * @return The MetricTrigger value.
+    */
+    public MetricTrigger getMetricTrigger()
+    {
         return this.metricTrigger;
     }
-
+    
     /**
-     * The metrics that are used to determine when a scaling action occurs.
-     * 
-     * @param metricTriggerValue
-     *            The MetricTrigger value.
-     */
-    public void setMetricTrigger(final MetricTrigger metricTriggerValue) {
+    * The metrics that are used to determine when a scaling action occurs.
+    * @param metricTriggerValue The MetricTrigger value.
+    */
+    public void setMetricTrigger(final MetricTrigger metricTriggerValue)
+    {
         this.metricTrigger = metricTriggerValue;
     }
-
+    
     private ScaleAction scaleAction;
-
+    
     /**
-     * The parameters for the scaling action.
-     * 
-     * @return The ScaleAction value.
-     */
-    public ScaleAction getScaleAction() {
+    * The parameters for the scaling action.
+    * @return The ScaleAction value.
+    */
+    public ScaleAction getScaleAction()
+    {
         return this.scaleAction;
     }
-
+    
     /**
-     * The parameters for the scaling action.
-     * 
-     * @param scaleActionValue
-     *            The ScaleAction value.
-     */
-    public void setScaleAction(final ScaleAction scaleActionValue) {
+    * The parameters for the scaling action.
+    * @param scaleActionValue The ScaleAction value.
+    */
+    public void setScaleAction(final ScaleAction scaleActionValue)
+    {
         this.scaleAction = scaleActionValue;
     }
 }

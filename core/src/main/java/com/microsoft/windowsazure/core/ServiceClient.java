@@ -25,17 +25,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 public abstract class ServiceClient<TClient> implements
-        FilterableService<TClient>, Closeable {
+        FilterableService<TClient>, Closeable
+{
     private final ExecutorService executorService;
 
-    public ExecutorService getExecutorService() {
+    public ExecutorService getExecutorService()
+    {
         return this.executorService;
     }
 
     protected CloseableHttpClient httpClient;
 
-    public CloseableHttpClient getHttpClient() {
-        if (this.httpClient == null) {
+    public CloseableHttpClient getHttpClient()
+    {
+        if (this.httpClient == null)
+        {
             this.httpClient = httpClientBuilder.build();
         }
 
@@ -45,7 +49,8 @@ public abstract class ServiceClient<TClient> implements
     private final HttpClientBuilder httpClientBuilder;
 
     protected ServiceClient(HttpClientBuilder httpClientBuilder,
-            ExecutorService executorService) {
+            ExecutorService executorService)
+    {
         this.httpClientBuilder = httpClientBuilder;
         this.executorService = executorService;
     }
@@ -55,7 +60,8 @@ public abstract class ServiceClient<TClient> implements
 
     @Override
     public TClient withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter) {
+            ServiceRequestFilter serviceRequestFilter)
+    {
         httpClientBuilder
                 .addInterceptorFirst(new HttpRequestInterceptorAdapter(
                         serviceRequestFilter));
@@ -64,7 +70,8 @@ public abstract class ServiceClient<TClient> implements
 
     @Override
     public TClient withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter) {
+            ServiceRequestFilter serviceRequestFilter)
+    {
         httpClientBuilder.addInterceptorLast(new HttpRequestInterceptorAdapter(
                 serviceRequestFilter));
         return this.newInstance(httpClientBuilder, executorService);
@@ -72,7 +79,8 @@ public abstract class ServiceClient<TClient> implements
 
     @Override
     public TClient withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter) {
+            ServiceResponseFilter serviceResponseFilter)
+    {
         httpClientBuilder
                 .addInterceptorFirst(new HttpResponseInterceptorAdapter(
                         serviceResponseFilter));
@@ -81,7 +89,8 @@ public abstract class ServiceClient<TClient> implements
 
     @Override
     public TClient withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter) {
+            ServiceResponseFilter serviceResponseFilter)
+    {
         httpClientBuilder
                 .addInterceptorLast(new HttpResponseInterceptorAdapter(
                         serviceResponseFilter));
@@ -89,9 +98,11 @@ public abstract class ServiceClient<TClient> implements
     }
 
     @Override
-    public void close() throws IOException {
-        if (httpClient != null) {
-            httpClient.close();
-        }
+    public void close() throws IOException
+    {
+    	if (httpClient != null)
+    	{
+    		httpClient.close();
+    	}
     }
 }

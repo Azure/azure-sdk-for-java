@@ -24,16 +24,17 @@
 package com.microsoft.windowsazure.management.monitoring.models;
 
 /**
- * Metric namespace value.
- */
-public class MetricNamespace {
+* Metric namespace value.
+*/
+public class MetricNamespace
+{
     /**
-     * Empty namespace.
-     */
+    * Empty namespace.
+    */
     public static final String None = "";
-
+    
     /**
-     * Endpoint monitoring metric namespace.
-     */
+    * Endpoint monitoring metric namespace.
+    */
     public static final String EndpointMonitoring = "WindowsAzure.Availability";
 }

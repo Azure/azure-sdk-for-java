@@ -22,9 +22,11 @@ import javax.xml.namespace.QName;
  * throughout the serialization of media services entities.
  */
 
-public final class Constants {
+public final class Constants
+{
 
-    private Constants() {
+    private Constants()
+    {
     }
 
     /**

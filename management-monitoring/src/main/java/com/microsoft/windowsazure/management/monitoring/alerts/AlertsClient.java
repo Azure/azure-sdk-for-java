@@ -27,37 +27,34 @@ import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import java.net.URI;
 
-public interface AlertsClient extends FilterableService<AlertsClient> {
+public interface AlertsClient extends FilterableService<AlertsClient>
+{
     /**
-     * Optional base uri parameter for Azure REST.
-     * 
-     * @return The BaseUri value.
-     */
-    URI getBaseUri();
-
+    * Optional base uri parameter for Azure REST.
+    * @return The BaseUri value.
+    */
+    URI getBaseUri(); 
+    
     /**
-     * When you create a Windows Azure subscription, it is uniquely identified
-     * by a subscription ID. The subscription ID forms part of the URI for every
-     * call that you make to the Service Management API. The Windows Azure
-     * Service ManagementAPI use mutual authentication of management
-     * certificates over SSL to ensure that a request made to the service is
-     * secure. No anonymous requests are allowed.
-     * 
-     * @return The Credentials value.
-     */
-    SubscriptionCloudCredentials getCredentials();
-
+    * When you create a Windows Azure subscription, it is uniquely identified
+    * by a subscription ID. The subscription ID forms part of the URI for
+    * every call that you make to the Service Management API.  The Windows
+    * Azure Service ManagementAPI use mutual authentication of management
+    * certificates over SSL to ensure that a request made to the service is
+    * secure.  No anonymous requests are allowed.
+    * @return The Credentials value.
+    */
+    SubscriptionCloudCredentials getCredentials(); 
+    
     /**
-     * Operations for managing the alert incidents.
-     * 
-     * @return The IncidentsOperations value.
-     */
-    IncidentOperations getIncidentsOperations();
-
+    * Operations for managing the alert incidents.
+    * @return The IncidentsOperations value.
+    */
+    IncidentOperations getIncidentsOperations(); 
+    
     /**
-     * Operations for managing the alert rules.
-     * 
-     * @return The RulesOperations value.
-     */
-    RuleOperations getRulesOperations();
+    * Operations for managing the alert rules.
+    * @return The RulesOperations value.
+    */
+    RuleOperations getRulesOperations(); 
 }

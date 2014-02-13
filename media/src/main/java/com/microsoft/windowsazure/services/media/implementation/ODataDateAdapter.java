@@ -27,12 +27,14 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  * Adapter to convert OData time zone conventions into Java Dates and back.
  * 
  */
-public class ODataDateAdapter extends XmlAdapter<String, Date> {
+public class ODataDateAdapter extends XmlAdapter<String, Date>
+{
 
     private static final Pattern HAS_TIMEZONE_REGEX;
     private static final TimeZone UTC;
 
-    static {
+    static
+    {
         HAS_TIMEZONE_REGEX = Pattern.compile("^.*(\\+|-)\\d\\d:\\d\\d$");
 
         UTC = TimeZone.getDefault();
@@ -40,8 +42,10 @@ public class ODataDateAdapter extends XmlAdapter<String, Date> {
     }
 
     @Override
-    public Date unmarshal(String dateString) throws Exception {
-        if (!hasTimezone(dateString)) {
+    public Date unmarshal(String dateString) throws Exception
+    {
+        if (!hasTimezone(dateString))
+        {
             dateString += "Z";
         }
         Calendar parsedDate = DatatypeConverter.parseDateTime(dateString);
@@ -49,14 +53,16 @@ public class ODataDateAdapter extends XmlAdapter<String, Date> {
     }
 
     @Override
-    public String marshal(Date date) throws Exception {
+    public String marshal(Date date) throws Exception
+    {
         Calendar dateToMarshal = Calendar.getInstance();
         dateToMarshal.setTime(date);
         dateToMarshal.setTimeZone(UTC);
         return DatatypeConverter.printDateTime(dateToMarshal);
     }
 
-    private boolean hasTimezone(String dateString) {
+    private boolean hasTimezone(String dateString)
+    {
         return dateString.endsWith("Z")
                 || HAS_TIMEZONE_REGEX.matcher(dateString).matches();
     }

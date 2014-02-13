@@ -41,12 +41,13 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface ComputeManagementClient extends FilterableService<ComputeManagementClient> {
+public interface ComputeManagementClient extends FilterableService<ComputeManagementClient>
+{
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri();
+    URI getBaseUri(); 
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -57,7 +58,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials();
+    SubscriptionCloudCredentials getCredentials(); 
     
     /**
     * The Service Management API includes operations for managing the
@@ -66,7 +67,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The DeploymentsOperations value.
     */
-    DeploymentOperations getDeploymentsOperations();
+    DeploymentOperations getDeploymentsOperations(); 
     
     /**
     * The Service Management API includes operations for managing the hosted
@@ -75,7 +76,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The HostedServicesOperations value.
     */
-    HostedServiceOperations getHostedServicesOperations();
+    HostedServiceOperations getHostedServicesOperations(); 
     
     /**
     * Operations for determining the version of the Windows Azure Guest
@@ -84,7 +85,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The OperatingSystemsOperations value.
     */
-    OperatingSystemOperations getOperatingSystemsOperations();
+    OperatingSystemOperations getOperatingSystemsOperations(); 
     
     /**
     * Operations for managing service certificates for your subscription.  (see
@@ -92,7 +93,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The ServiceCertificatesOperations value.
     */
-    ServiceCertificateOperations getServiceCertificatesOperations();
+    ServiceCertificateOperations getServiceCertificatesOperations(); 
     
     /**
     * The Service Management API includes operations for managing the disks in
@@ -101,7 +102,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The VirtualMachineDisksOperations value.
     */
-    VirtualMachineDiskOperations getVirtualMachineDisksOperations();
+    VirtualMachineDiskOperations getVirtualMachineDisksOperations(); 
     
     /**
     * The Service Management API includes operations for managing the virtual
@@ -110,7 +111,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The VirtualMachineExtensionsOperations value.
     */
-    VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations();
+    VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations(); 
     
     /**
     * The Service Management API includes operations for managing the OS images
@@ -119,7 +120,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The VirtualMachineImagesOperations value.
     */
-    VirtualMachineImageOperations getVirtualMachineImagesOperations();
+    VirtualMachineImageOperations getVirtualMachineImagesOperations(); 
     
     /**
     * The Service Management API includes operations for managing the virtual
@@ -128,7 +129,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * more information)
     * @return The VirtualMachinesOperations value.
     */
-    VirtualMachineOperations getVirtualMachinesOperations();
+    VirtualMachineOperations getVirtualMachinesOperations(); 
     
     /**
     * The Get Operation Status operation returns the status of thespecified

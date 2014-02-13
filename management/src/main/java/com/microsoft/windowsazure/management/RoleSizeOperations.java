@@ -34,7 +34,8 @@ import org.xml.sax.SAXException;
 * The Service Management API includes operations for listing the available role
 * sizes for VMs in your subscription.
 */
-public interface RoleSizeOperations {
+public interface RoleSizeOperations
+{
     /**
     * The List Role Sizes operation lists all of the role sizes that are valid
     * for your subscription.

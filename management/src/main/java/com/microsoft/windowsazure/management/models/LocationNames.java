@@ -28,7 +28,8 @@ package com.microsoft.windowsazure.management.models;
 * the latest locations available to your subscription from the List Locations
 * Operation.
 */
-public class LocationNames {
+public class LocationNames
+{
     public static final String WestEurope = "West Europe";
     
     public static final String SoutheastAsia = "Southeast Asia";

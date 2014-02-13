@@ -25,80 +25,86 @@ package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
 import java.util.ArrayList;
 
-public class RecurrentSchedule {
+public class RecurrentSchedule
+{
     private ArrayList<String> days;
-
+    
     /**
-     * @return The Days value.
-     */
-    public ArrayList<String> getDays() {
+    * @return The Days value.
+    */
+    public ArrayList<String> getDays()
+    {
         return this.days;
     }
-
+    
     /**
-     * @param daysValue
-     *            The Days value.
-     */
-    public void setDays(final ArrayList<String> daysValue) {
+    * @param daysValue The Days value.
+    */
+    public void setDays(final ArrayList<String> daysValue)
+    {
         this.days = daysValue;
     }
-
+    
     private ArrayList<Integer> hours;
-
+    
     /**
-     * @return The Hours value.
-     */
-    public ArrayList<Integer> getHours() {
+    * @return The Hours value.
+    */
+    public ArrayList<Integer> getHours()
+    {
         return this.hours;
     }
-
+    
     /**
-     * @param hoursValue
-     *            The Hours value.
-     */
-    public void setHours(final ArrayList<Integer> hoursValue) {
+    * @param hoursValue The Hours value.
+    */
+    public void setHours(final ArrayList<Integer> hoursValue)
+    {
         this.hours = hoursValue;
     }
-
+    
     private ArrayList<Integer> minutes;
-
+    
     /**
-     * @return The Minutes value.
-     */
-    public ArrayList<Integer> getMinutes() {
+    * @return The Minutes value.
+    */
+    public ArrayList<Integer> getMinutes()
+    {
         return this.minutes;
     }
-
+    
     /**
-     * @param minutesValue
-     *            The Minutes value.
-     */
-    public void setMinutes(final ArrayList<Integer> minutesValue) {
+    * @param minutesValue The Minutes value.
+    */
+    public void setMinutes(final ArrayList<Integer> minutesValue)
+    {
         this.minutes = minutesValue;
     }
-
+    
     private String timeZone;
-
+    
     /**
-     * @return The TimeZone value.
-     */
-    public String getTimeZone() {
+    * @return The TimeZone value.
+    */
+    public String getTimeZone()
+    {
         return this.timeZone;
     }
-
+    
     /**
-     * @param timeZoneValue
-     *            The TimeZone value.
-     */
-    public void setTimeZone(final String timeZoneValue) {
+    * @param timeZoneValue The TimeZone value.
+    */
+    public void setTimeZone(final String timeZoneValue)
+    {
         this.timeZone = timeZoneValue;
     }
-
+    
     /**
-     * Initializes a new instance of the RecurrentSchedule class.
-     * 
-     */
-    public RecurrentSchedule() {
+    * Initializes a new instance of the RecurrentSchedule class.
+    *
+    */
+    public RecurrentSchedule()
+    {
         this.days = new ArrayList<String>();
         this.hours = new ArrayList<Integer>();
         this.minutes = new ArrayList<Integer>();

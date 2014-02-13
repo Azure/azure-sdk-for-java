@@ -29,14 +29,16 @@ import java.util.ArrayList;
 /**
 * The set of parameters required to update a load balanced endpoint set.
 */
-public class VirtualMachineUpdateLoadBalancedSetParameters {
+public class VirtualMachineUpdateLoadBalancedSetParameters
+{
     private ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpoints;
     
     /**
     * A list of load balanced InputEndpoints to update.
     * @return The LoadBalancedEndpoints value.
     */
-    public ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> getLoadBalancedEndpoints() {
+    public ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> getLoadBalancedEndpoints()
+    {
         return this.loadBalancedEndpoints;
     }
     
@@ -44,7 +46,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     * A list of load balanced InputEndpoints to update.
     * @param loadBalancedEndpointsValue The LoadBalancedEndpoints value.
     */
-    public void setLoadBalancedEndpoints(final ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpointsValue) {
+    public void setLoadBalancedEndpoints(final ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpointsValue)
+    {
         this.loadBalancedEndpoints = loadBalancedEndpointsValue;
     }
     
@@ -53,14 +56,16 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     * VirtualMachineUpdateLoadBalancedSetParameters class.
     *
     */
-    public VirtualMachineUpdateLoadBalancedSetParameters() {
+    public VirtualMachineUpdateLoadBalancedSetParameters()
+    {
         this.loadBalancedEndpoints = new ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint>();
     }
     
     /**
     * The modeled external endpoint for a persistent VM role.
     */
-    public static class InputEndpoint {
+    public static class InputEndpoint
+    {
         private Boolean enableDirectServerReturn;
         
         /**
@@ -68,7 +73,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Server Return
         * @return The EnableDirectServerReturn value.
         */
-        public Boolean isEnableDirectServerReturn() {
+        public Boolean isEnableDirectServerReturn()
+        {
             return this.enableDirectServerReturn;
         }
         
@@ -78,7 +84,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * @param enableDirectServerReturnValue The EnableDirectServerReturn
         * value.
         */
-        public void setEnableDirectServerReturn(final Boolean enableDirectServerReturnValue) {
+        public void setEnableDirectServerReturn(final Boolean enableDirectServerReturnValue)
+        {
             this.enableDirectServerReturn = enableDirectServerReturnValue;
         }
         
@@ -93,7 +100,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * a BadRequest error will be returned.
         * @return The LoadBalancedEndpointSetName value.
         */
-        public String getLoadBalancedEndpointSetName() {
+        public String getLoadBalancedEndpointSetName()
+        {
             return this.loadBalancedEndpointSetName;
         }
         
@@ -107,7 +115,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * @param loadBalancedEndpointSetNameValue The
         * LoadBalancedEndpointSetName value.
         */
-        public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue) {
+        public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue)
+        {
             this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
         }
         
@@ -121,7 +130,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * definition  will be retained.
         * @return The LoadBalancerProbe value.
         */
-        public LoadBalancerProbe getLoadBalancerProbe() {
+        public LoadBalancerProbe getLoadBalancerProbe()
+        {
             return this.loadBalancerProbe;
         }
         
@@ -133,7 +143,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * definition  will be retained.
         * @param loadBalancerProbeValue The LoadBalancerProbe value.
         */
-        public void setLoadBalancerProbe(final LoadBalancerProbe loadBalancerProbeValue) {
+        public void setLoadBalancerProbe(final LoadBalancerProbe loadBalancerProbeValue)
+        {
             this.loadBalancerProbe = loadBalancerProbeValue;
         }
         
@@ -149,7 +160,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * port (or probe port) on a role a BadRequestwill be returned.
         * @return The LocalPort value.
         */
-        public Integer getLocalPort() {
+        public Integer getLocalPort()
+        {
             return this.localPort;
         }
         
@@ -163,7 +175,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * port (or probe port) on a role a BadRequestwill be returned.
         * @param localPortValue The LocalPort value.
         */
-        public void setLocalPort(final Integer localPortValue) {
+        public void setLocalPort(final Integer localPortValue)
+        {
             this.localPort = localPortValue;
         }
         
@@ -174,7 +187,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * specified
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -183,7 +197,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * specified
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -195,7 +210,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * combination must be specified for each InputEndpoint in the list.
         * @return The Port value.
         */
-        public Integer getPort() {
+        public Integer getPort()
+        {
             return this.port;
         }
         
@@ -205,7 +221,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * combination must be specified for each InputEndpoint in the list.
         * @param portValue The Port value.
         */
-        public void setPort(final Integer portValue) {
+        public void setPort(final Integer portValue)
+        {
             this.port = portValue;
         }
         
@@ -215,7 +232,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Specifies the transport protocol for the endpoint.
         * @return The Protocol value.
         */
-        public String getProtocol() {
+        public String getProtocol()
+        {
             return this.protocol;
         }
         
@@ -223,7 +241,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Specifies the transport protocol for the endpoint.
         * @param protocolValue The Protocol value.
         */
-        public void setProtocol(final String protocolValue) {
+        public void setProtocol(final String protocolValue)
+        {
             this.protocol = protocolValue;
         }
         
@@ -236,7 +255,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * are set as specified. There is no merge done with existing ACLs.
         * @return The Rules value.
         */
-        public ArrayList<AccessControlListRule> getRules() {
+        public ArrayList<AccessControlListRule> getRules()
+        {
             return this.rules;
         }
         
@@ -247,7 +267,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * are set as specified. There is no merge done with existing ACLs.
         * @param rulesValue The Rules value.
         */
-        public void setRules(final ArrayList<AccessControlListRule> rulesValue) {
+        public void setRules(final ArrayList<AccessControlListRule> rulesValue)
+        {
             this.rules = rulesValue;
         }
         
@@ -257,7 +278,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * The virtual IP address of the endpoint.
         * @return The VirtualIPAddress value.
         */
-        public InetAddress getVirtualIPAddress() {
+        public InetAddress getVirtualIPAddress()
+        {
             return this.virtualIPAddress;
         }
         
@@ -265,7 +287,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * The virtual IP address of the endpoint.
         * @param virtualIPAddressValue The VirtualIPAddress value.
         */
-        public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {
+        public void setVirtualIPAddress(final InetAddress virtualIPAddressValue)
+        {
             this.virtualIPAddress = virtualIPAddressValue;
         }
         
@@ -273,7 +296,8 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         * Initializes a new instance of the InputEndpoint class.
         *
         */
-        public InputEndpoint() {
+        public InputEndpoint()
+        {
             this.rules = new ArrayList<AccessControlListRule>();
         }
     }

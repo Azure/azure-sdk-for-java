@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get DNS Suffix operation response.
 */
-public class WebSpacesGetDnsSuffixResponse extends OperationResponse {
+public class WebSpacesGetDnsSuffixResponse extends OperationResponse
+{
     private String dnsSuffix;
     
     /**
     * The DNS Suffix used for the web space.
     * @return The DnsSuffix value.
     */
-    public String getDnsSuffix() {
+    public String getDnsSuffix()
+    {
         return this.dnsSuffix;
     }
     
@@ -43,7 +45,8 @@ public class WebSpacesGetDnsSuffixResponse extends OperationResponse {
     * The DNS Suffix used for the web space.
     * @param dnsSuffixValue The DnsSuffix value.
     */
-    public void setDnsSuffix(final String dnsSuffixValue) {
+    public void setDnsSuffix(final String dnsSuffixValue)
+    {
         this.dnsSuffix = dnsSuffixValue;
     }
 }

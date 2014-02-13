@@ -43,7 +43,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-public interface GatewayOperations {
+public interface GatewayOperations
+{
     /**
     * To connect to, disconnect from, or test your connection to a local
     * network site, access the connection resource representing the local

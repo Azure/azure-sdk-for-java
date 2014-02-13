@@ -37,7 +37,8 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * notification hubs.
 */
-public interface NotificationHubOperations {
+public interface NotificationHubOperations
+{
     /**
     * Lists the notification hubs associated with a namespace.
     *

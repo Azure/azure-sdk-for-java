@@ -24,71 +24,69 @@
 package com.microsoft.windowsazure.management.monitoring.metrics.models;
 
 /**
- * A metric setting get response.
- */
-public class MetricSetting {
+* A metric setting get response.
+*/
+public class MetricSetting
+{
     private String namespace;
-
+    
     /**
-     * The metric settings namespace. For endpoint monitoring metrics the
-     * namespace value is WindowsAzure.Availability
-     * 
-     * @return The Namespace value.
-     */
-    public String getNamespace() {
+    * The metric settings namespace. For endpoint monitoring metrics the
+    * namespace value is WindowsAzure.Availability
+    * @return The Namespace value.
+    */
+    public String getNamespace()
+    {
         return this.namespace;
     }
-
+    
     /**
-     * The metric settings namespace. For endpoint monitoring metrics the
-     * namespace value is WindowsAzure.Availability
-     * 
-     * @param namespaceValue
-     *            The Namespace value.
-     */
-    public void setNamespace(final String namespaceValue) {
+    * The metric settings namespace. For endpoint monitoring metrics the
+    * namespace value is WindowsAzure.Availability
+    * @param namespaceValue The Namespace value.
+    */
+    public void setNamespace(final String namespaceValue)
+    {
         this.namespace = namespaceValue;
     }
-
+    
     private String resourceId;
-
+    
     /**
-     * The resource id of the service.
-     * 
-     * @return The ResourceId value.
-     */
-    public String getResourceId() {
+    * The resource id of the service.
+    * @return The ResourceId value.
+    */
+    public String getResourceId()
+    {
         return this.resourceId;
     }
-
+    
     /**
-     * The resource id of the service.
-     * 
-     * @param resourceIdValue
-     *            The ResourceId value.
-     */
-    public void setResourceId(final String resourceIdValue) {
+    * The resource id of the service.
+    * @param resourceIdValue The ResourceId value.
+    */
+    public void setResourceId(final String resourceIdValue)
+    {
         this.resourceId = resourceIdValue;
     }
-
+    
     private MetricSettingValue value;
-
+    
     /**
-     * The metric settings value.
-     * 
-     * @return The Value value.
-     */
-    public MetricSettingValue getValue() {
+    * The metric settings value.
+    * @return The Value value.
+    */
+    public MetricSettingValue getValue()
+    {
         return this.value;
     }
-
+    
     /**
-     * The metric settings value.
-     * 
-     * @param valueValue
-     *            The Value value.
-     */
-    public void setValue(final MetricSettingValue valueValue) {
+    * The metric settings value.
+    * @param valueValue The Value value.
+    */
+    public void setValue(final MetricSettingValue valueValue)
+    {
         this.value = valueValue;
     }
 }

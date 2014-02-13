@@ -32,90 +32,71 @@ import java.text.ParseException;
 import java.util.concurrent.Future;
 
 /**
- * Operations for managing the autoscale settings.
- */
-public interface SettingOperations {
+* Operations for managing the autoscale settings.
+*/
+public interface SettingOperations
+{
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @param parameters
-     *            Parameters supplied to the operation.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse createOrUpdate(String resourceId,
-            AutoscaleSettingCreateOrUpdateParameters parameters)
-            throws IOException, ServiceException;
-
+    *
+    * @param resourceId The resource ID.
+    * @param parameters Parameters supplied to the operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse createOrUpdate(String resourceId, AutoscaleSettingCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @param parameters
-     *            Parameters supplied to the operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> createOrUpdateAsync(String resourceId,
-            AutoscaleSettingCreateOrUpdateParameters parameters);
-
+    *
+    * @param resourceId The resource ID.
+    * @param parameters Parameters supplied to the operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> createOrUpdateAsync(String resourceId, AutoscaleSettingCreateOrUpdateParameters parameters);
+    
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse delete(String resourceId) throws IOException,
-            ServiceException;
-
+    *
+    * @param resourceId The resource ID.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse delete(String resourceId) throws IOException, ServiceException;
+    
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param resourceId The resource ID.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> deleteAsync(String resourceId);
-
+    
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    AutoscaleSettingGetResponse get(String resourceId) throws IOException,
-            ServiceException, ParseException;
-
+    *
+    * @param resourceId The resource ID.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    AutoscaleSettingGetResponse get(String resourceId) throws IOException, ServiceException, ParseException;
+    
     /**
-     * 
-     * @param resourceId
-     *            The resource ID.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param resourceId The resource ID.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<AutoscaleSettingGetResponse> getAsync(String resourceId);
 }

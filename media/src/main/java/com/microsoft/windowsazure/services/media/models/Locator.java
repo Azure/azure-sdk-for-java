@@ -32,7 +32,8 @@ import com.sun.jersey.api.client.GenericType;
 /**
  * Implementation of Locator entity.
  */
-public class Locator {
+public class Locator
+{
 
     /** The Constant ENTITY_SET. */
     private final static String ENTITY_SET = "Locators";
@@ -40,7 +41,8 @@ public class Locator {
     /**
      * Instantiates a new locator.
      */
-    private Locator() {
+    private Locator()
+    {
     }
 
     /**
@@ -55,7 +57,8 @@ public class Locator {
      * @return the operation
      */
     public static Creator create(String accessPolicyId, String assetId,
-            LocatorType locatorType) {
+            LocatorType locatorType)
+    {
         return new Creator(accessPolicyId, assetId, locatorType);
     }
 
@@ -64,7 +67,8 @@ public class Locator {
      */
     public static class Creator extends
             EntityOperationSingleResultBase<LocatorInfo> implements
-            EntityCreateOperation<LocatorInfo> {
+            EntityCreateOperation<LocatorInfo>
+    {
 
         /** The access policy id. */
         private final String accessPolicyId;
@@ -101,7 +105,8 @@ public class Locator {
          *            the locator type
          */
         protected Creator(String accessPolicyId, String assetId,
-                LocatorType locatorType) {
+                LocatorType locatorType)
+        {
             super(ENTITY_SET, LocatorInfo.class);
             this.accessPolicyId = accessPolicyId;
             this.assetId = assetId;
@@ -115,7 +120,8 @@ public class Locator {
          * EntityCreateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() {
+        public Object getRequestContents()
+        {
             return new LocatorRestType().setId(id)
                     .setAccessPolicyId(accessPolicyId).setAssetId(assetId)
                     .setStartTime(startDateTime).setType(locatorType.getCode())
@@ -131,7 +137,8 @@ public class Locator {
          *            the base uri
          * @return the creator
          */
-        public Creator setBaseUri(String baseUri) {
+        public Creator setBaseUri(String baseUri)
+        {
             this.baseUri = baseUri;
             return this;
         }
@@ -143,7 +150,8 @@ public class Locator {
          *            the path
          * @return the creator
          */
-        public Creator setPath(String path) {
+        public Creator setPath(String path)
+        {
             this.path = path;
             return this;
         }
@@ -155,7 +163,8 @@ public class Locator {
          *            The date/time
          * @return The creator instance (for function chaining)
          */
-        public Creator setStartDateTime(Date startDateTime) {
+        public Creator setStartDateTime(Date startDateTime)
+        {
             this.startDateTime = startDateTime;
             return this;
         }
@@ -167,7 +176,8 @@ public class Locator {
          *            the content access component
          * @return The creator instance
          */
-        public Creator setContentAccessComponent(String contentAccessComponent) {
+        public Creator setContentAccessComponent(String contentAccessComponent)
+        {
             this.contentAccessComponent = contentAccessComponent;
             return this;
         }
@@ -179,7 +189,8 @@ public class Locator {
          *            the id
          * @return the entity creation operation
          */
-        public EntityCreateOperation<LocatorInfo> setId(String id) {
+        public EntityCreateOperation<LocatorInfo> setId(String id)
+        {
             this.id = id;
             return this;
         }
@@ -192,7 +203,8 @@ public class Locator {
      *            id of locator to retrieve
      * @return the get operation
      */
-    public static EntityGetOperation<LocatorInfo> get(String locatorId) {
+    public static EntityGetOperation<LocatorInfo> get(String locatorId)
+    {
         return new DefaultGetOperation<LocatorInfo>(ENTITY_SET, locatorId,
                 LocatorInfo.class);
     }
@@ -202,9 +214,11 @@ public class Locator {
      * 
      * @return the list operation
      */
-    public static DefaultListOperation<LocatorInfo> list() {
+    public static DefaultListOperation<LocatorInfo> list()
+    {
         return new DefaultListOperation<LocatorInfo>(ENTITY_SET,
-                new GenericType<ListResult<LocatorInfo>>() {
+                new GenericType<ListResult<LocatorInfo>>()
+                {
                 });
     }
 
@@ -216,9 +230,11 @@ public class Locator {
      * @return The list operation.
      */
     public static DefaultListOperation<LocatorInfo> list(
-            LinkInfo<LocatorInfo> link) {
+            LinkInfo<LocatorInfo> link)
+    {
         return new DefaultListOperation<LocatorInfo>(link.getHref(),
-                new GenericType<ListResult<LocatorInfo>>() {
+                new GenericType<ListResult<LocatorInfo>>()
+                {
                 });
     }
 
@@ -229,7 +245,8 @@ public class Locator {
      *            id of locator to update
      * @return the update operation
      */
-    public static Updater update(String locatorId) {
+    public static Updater update(String locatorId)
+    {
         return new Updater(locatorId);
     }
 
@@ -237,7 +254,8 @@ public class Locator {
      * The Class Updater.
      */
     public static class Updater extends EntityOperationBase implements
-            EntityUpdateOperation {
+            EntityUpdateOperation
+    {
 
         /** The start date time. */
         private Date startDateTime;
@@ -248,7 +266,8 @@ public class Locator {
          * @param locatorId
          *            the locator id
          */
-        public Updater(String locatorId) {
+        public Updater(String locatorId)
+        {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
                     locatorId));
         }
@@ -260,7 +279,8 @@ public class Locator {
          * EntityUpdateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents() {
+        public Object getRequestContents()
+        {
             return new LocatorRestType().setStartTime(startDateTime);
         }
 
@@ -273,7 +293,8 @@ public class Locator {
          * .entityoperations.EntityProxyData)
          */
         @Override
-        public void setProxyData(EntityProxyData proxyData) {
+        public void setProxyData(EntityProxyData proxyData)
+        {
             // Deliberately empty
         }
 
@@ -284,7 +305,8 @@ public class Locator {
          *            the date & time
          * @return Updater instance
          */
-        public Updater setStartDateTime(Date startDateTime) {
+        public Updater setStartDateTime(Date startDateTime)
+        {
             this.startDateTime = startDateTime;
             return this;
         }
@@ -297,7 +319,8 @@ public class Locator {
      *            id of locator to delete
      * @return the operation
      */
-    public static EntityDeleteOperation delete(String locatorId) {
+    public static EntityDeleteOperation delete(String locatorId)
+    {
         return new DefaultDeleteOperation(ENTITY_SET, locatorId);
     }
 }

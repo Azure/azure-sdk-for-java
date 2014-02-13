@@ -33,107 +33,87 @@ import java.text.ParseException;
 import java.util.concurrent.Future;
 
 /**
- * Operations for managing the alert rules.
- */
-public interface RuleOperations {
+* Operations for managing the alert rules.
+*/
+public interface RuleOperations
+{
     /**
-     * 
-     * @param parameters
-     *            The rule to create or update.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters)
-            throws IOException, ServiceException;
-
+    *
+    * @param parameters The rule to create or update.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws IOException, ServiceException;
+    
     /**
-     * 
-     * @param parameters
-     *            The rule to create or update.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> createOrUpdateAsync(
-            RuleCreateOrUpdateParameters parameters);
-
+    *
+    * @param parameters The rule to create or update.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> createOrUpdateAsync(RuleCreateOrUpdateParameters parameters);
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to delete.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse delete(String ruleId) throws IOException,
-            ServiceException;
-
+    *
+    * @param ruleId The id of the rule to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse delete(String ruleId) throws IOException, ServiceException;
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to delete.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param ruleId The id of the rule to delete.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> deleteAsync(String ruleId);
-
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to retrieve.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The Get Rule operation response.
-     */
-    RuleGetResponse get(String ruleId) throws IOException, ServiceException,
-            ParseException;
-
+    *
+    * @param ruleId The id of the rule to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The Get Rule operation response.
+    */
+    RuleGetResponse get(String ruleId) throws IOException, ServiceException, ParseException;
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to retrieve.
-     * @return The Get Rule operation response.
-     */
+    *
+    * @param ruleId The id of the rule to retrieve.
+    * @return The Get Rule operation response.
+    */
     Future<RuleGetResponse> getAsync(String ruleId);
-
+    
     /**
-     * List the alert rules within a subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The List Rules operation response.
-     */
-    RuleListResponse list() throws IOException, ServiceException,
-            ParseException;
-
+    * List the alert rules within a subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The List Rules operation response.
+    */
+    RuleListResponse list() throws IOException, ServiceException, ParseException;
+    
     /**
-     * List the alert rules within a subscription.
-     * 
-     * @return The List Rules operation response.
-     */
+    * List the alert rules within a subscription.
+    *
+    * @return The List Rules operation response.
+    */
     Future<RuleListResponse> listAsync();
 }

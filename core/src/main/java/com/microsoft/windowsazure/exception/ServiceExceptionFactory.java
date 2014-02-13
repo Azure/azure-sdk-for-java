@@ -21,20 +21,26 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public final class ServiceExceptionFactory {
+public final class ServiceExceptionFactory
+{
     public static ServiceException process(String serviceName,
-            ServiceException exception) {
+            ServiceException exception)
+    {
         Throwable cause = exception.getCause();
 
-        for (Throwable scan = cause; scan != null; scan = scan.getCause()) {
+        for (Throwable scan = cause; scan != null; scan = scan.getCause())
+        {
             Class<?> scanClass = scan.getClass();
-            if (ServiceException.class.isAssignableFrom(scanClass)) {
+            if (ServiceException.class.isAssignableFrom(scanClass))
+            {
                 return populate(exception, serviceName, (ServiceException) scan);
             } else if (UniformInterfaceException.class
-                    .isAssignableFrom(scanClass)) {
+                    .isAssignableFrom(scanClass))
+            {
                 return populate(exception, serviceName,
                         (UniformInterfaceException) scan);
-            } else if (SocketTimeoutException.class.isAssignableFrom(scanClass)) {
+            } else if (SocketTimeoutException.class.isAssignableFrom(scanClass))
+            {
                 return populate(exception, serviceName,
                         (SocketTimeoutException) scan);
             }
@@ -46,30 +52,39 @@ public final class ServiceExceptionFactory {
     }
 
     static ServiceException populate(ServiceException exception,
-            String serviceName, UniformInterfaceException cause) {
+            String serviceName, UniformInterfaceException cause)
+    {
         exception.setServiceName(serviceName);
 
-        if (cause != null) {
+        if (cause != null)
+        {
             ClientResponse response = cause.getResponse();
-            if (response != null) {
+            if (response != null)
+            {
                 // Set status
                 Status status = response.getClientResponseStatus();
-                if (status == null) {
+                if (status == null)
+                {
                     status = Status.fromStatusCode(response.getStatus());
                 }
-                if (status == null) {
+                if (status == null)
+                {
                     exception.setHttpStatusCode(response.getStatus());
-                } else {
+                } else
+                {
                     exception.setHttpStatusCode(status.getStatusCode());
                     exception.setHttpReasonPhrase(status.getReasonPhrase());
                 }
 
                 // Set raw response body
-                if (response.hasEntity()) {
-                    try {
+                if (response.hasEntity())
+                {
+                    try
+                    {
                         String body = response.getEntity(String.class);
                         exception.setRawResponseBody(body);
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         // Skip exceptions as getting the response body as a
                         // string is a best effort thing
                     }
@@ -80,7 +95,8 @@ public final class ServiceExceptionFactory {
     }
 
     static ServiceException populate(final ServiceException exception,
-            final String serviceName, final ServiceException cause) {
+            final String serviceName, final ServiceException cause)
+    {
         exception.setServiceName(cause.getServiceName());
         exception.setHttpStatusCode(cause.getHttpStatusCode());
         exception.setHttpReasonPhrase(cause.getHttpReasonPhrase());
@@ -92,7 +108,8 @@ public final class ServiceExceptionFactory {
     }
 
     static ServiceException populate(ServiceException exception,
-            String serviceName, SocketTimeoutException cause) {
+            String serviceName, SocketTimeoutException cause)
+    {
         ServiceTimeoutException newException = new ServiceTimeoutException(
                 cause.getMessage(), cause);
         newException.setServiceName(serviceName);

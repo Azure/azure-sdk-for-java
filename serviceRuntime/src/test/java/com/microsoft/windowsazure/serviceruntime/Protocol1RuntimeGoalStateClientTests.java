@@ -26,19 +26,23 @@ import org.junit.Test;
 /**
  *
  */
-public class Protocol1RuntimeGoalStateClientTests {
+public class Protocol1RuntimeGoalStateClientTests
+{
     private final List<GoalState> goalStates = new LinkedList<GoalState>();
 
     @Test
-    public void addGoalStateChangedListenerAddsListener() {
+    public void addGoalStateChangedListenerAddsListener()
+    {
         Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
                 null, null);
 
         GoalStateDeserializer goalStateDeserializer = new ChunkedGoalStateDeserializer();
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
@@ -66,24 +70,30 @@ public class Protocol1RuntimeGoalStateClientTests {
                 currentStateClient, goalStateDeserializer,
                 roleEnvironmentDeserializer, inputChannel);
 
-        client.addGoalStateChangedListener(new GoalStateChangedListener() {
+        client.addGoalStateChangedListener(new GoalStateChangedListener()
+        {
             @Override
-            public void goalStateChanged(GoalState newGoalState) {
+            public void goalStateChanged(GoalState newGoalState)
+            {
                 goalStates.add(newGoalState);
             }
         });
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(200);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
@@ -92,25 +102,31 @@ public class Protocol1RuntimeGoalStateClientTests {
     }
 
     @Test
-    public void goalStateClientRestartsThread() {
+    public void goalStateClientRestartsThread()
+    {
         Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
                 null, null);
 
-        GoalStateDeserializer goalStateDeserializer = new GoalStateDeserializer() {
+        GoalStateDeserializer goalStateDeserializer = new GoalStateDeserializer()
+        {
             private final ChunkedGoalStateDeserializer deserializer = new ChunkedGoalStateDeserializer();
 
             @Override
-            public void initialize(InputStream inputStream) {
+            public void initialize(InputStream inputStream)
+            {
                 deserializer.initialize(inputStream);
             }
 
             @Override
-            public GoalState deserialize() {
+            public GoalState deserialize()
+            {
                 GoalState goalState = deserializer.deserialize();
 
-                try {
+                try
+                {
                     Thread.sleep(200);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
 
@@ -120,9 +136,11 @@ public class Protocol1RuntimeGoalStateClientTests {
             }
         };
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
@@ -143,27 +161,35 @@ public class Protocol1RuntimeGoalStateClientTests {
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(2000);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
@@ -171,7 +197,8 @@ public class Protocol1RuntimeGoalStateClientTests {
     }
 
     @Test
-    public void getRoleEnvironmentDataReturnsDeserializedData() {
+    public void getRoleEnvironmentDataReturnsDeserializedData()
+    {
         Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
                 null, null);
 
@@ -180,9 +207,11 @@ public class Protocol1RuntimeGoalStateClientTests {
         final RoleEnvironmentData data = new RoleEnvironmentData(null, null,
                 null, null, null, false);
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return data;
             }
         };
@@ -201,23 +230,28 @@ public class Protocol1RuntimeGoalStateClientTests {
                 currentStateClient, goalStateDeserializer,
                 roleEnvironmentDeserializer, inputChannel);
 
-        try {
+        try
+        {
             assertThat(client.getRoleEnvironmentData(), is(data));
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void removeGoalStateChangedListenerRemovesListener() {
+    public void removeGoalStateChangedListenerRemovesListener()
+    {
         Protocol1RuntimeCurrentStateClient currentStateClient = new Protocol1RuntimeCurrentStateClient(
                 null, null);
 
         GoalStateDeserializer goalStateDeserializer = new ChunkedGoalStateDeserializer();
 
-        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer() {
+        RoleEnvironmentDataDeserializer roleEnvironmentDeserializer = new RoleEnvironmentDataDeserializer()
+        {
             @Override
-            public RoleEnvironmentData deserialize(InputStream stream) {
+            public RoleEnvironmentData deserialize(InputStream stream)
+            {
                 return null;
             }
         };
@@ -245,9 +279,11 @@ public class Protocol1RuntimeGoalStateClientTests {
                 currentStateClient, goalStateDeserializer,
                 roleEnvironmentDeserializer, inputChannel);
 
-        GoalStateChangedListener listener = new GoalStateChangedListener() {
+        GoalStateChangedListener listener = new GoalStateChangedListener()
+        {
             @Override
-            public void goalStateChanged(GoalState newGoalState) {
+            public void goalStateChanged(GoalState newGoalState)
+            {
                 goalStates.add(newGoalState);
             }
         };
@@ -257,15 +293,19 @@ public class Protocol1RuntimeGoalStateClientTests {
 
         goalStates.clear();
 
-        try {
+        try
+        {
             client.getCurrentGoalState();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
-        try {
+        try
+        {
             Thread.sleep(200);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 

@@ -24,16 +24,17 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * The action of this execution, MainAction or ErrorAction.
- */
-public enum JobHistoryActionName {
+* The action of this execution, MainAction or ErrorAction.
+*/
+public enum JobHistoryActionName
+{
     /**
-     * An execution attempt of the primary action.
-     */
+    * An execution attempt of the primary action.
+    */
     MainAction,
-
+    
     /**
-     * An execution attempt of the error action.
-     */
+    * An execution attempt of the error action.
+    */
     ErrorAction,
 }

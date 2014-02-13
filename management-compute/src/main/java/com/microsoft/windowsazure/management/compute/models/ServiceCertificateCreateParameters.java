@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Create Service Certificate operation.
 */
-public class ServiceCertificateCreateParameters {
+public class ServiceCertificateCreateParameters
+{
     private CertificateFormat certificateFormat;
     
     /**
@@ -34,7 +35,8 @@ public class ServiceCertificateCreateParameters {
     * file formats.
     * @return The CertificateFormat value.
     */
-    public CertificateFormat getCertificateFormat() {
+    public CertificateFormat getCertificateFormat()
+    {
         return this.certificateFormat;
     }
     
@@ -43,7 +45,8 @@ public class ServiceCertificateCreateParameters {
     * file formats.
     * @param certificateFormatValue The CertificateFormat value.
     */
-    public void setCertificateFormat(final CertificateFormat certificateFormatValue) {
+    public void setCertificateFormat(final CertificateFormat certificateFormatValue)
+    {
         this.certificateFormat = certificateFormatValue;
     }
     
@@ -53,7 +56,8 @@ public class ServiceCertificateCreateParameters {
     * The pfx or .cer file.
     * @return The Data value.
     */
-    public byte[] getData() {
+    public byte[] getData()
+    {
         return this.data;
     }
     
@@ -61,7 +65,8 @@ public class ServiceCertificateCreateParameters {
     * The pfx or .cer file.
     * @param dataValue The Data value.
     */
-    public void setData(final byte[] dataValue) {
+    public void setData(final byte[] dataValue)
+    {
         this.data = dataValue;
     }
     
@@ -72,7 +77,8 @@ public class ServiceCertificateCreateParameters {
     * a password.
     * @return The Password value.
     */
-    public String getPassword() {
+    public String getPassword()
+    {
         return this.password;
     }
     
@@ -81,7 +87,8 @@ public class ServiceCertificateCreateParameters {
     * a password.
     * @param passwordValue The Password value.
     */
-    public void setPassword(final String passwordValue) {
+    public void setPassword(final String passwordValue)
+    {
         this.password = passwordValue;
     }
 }

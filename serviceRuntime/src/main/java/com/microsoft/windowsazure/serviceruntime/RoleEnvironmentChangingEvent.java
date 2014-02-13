@@ -37,11 +37,13 @@ import java.util.Collection;
  * @see RoleEnvironmentChangingListener
  * @see RoleEnvironmentChangedEvent
  */
-public class RoleEnvironmentChangingEvent {
+public class RoleEnvironmentChangingEvent
+{
     private final Collection<RoleEnvironmentChange> changes;
     private boolean cancelled;
 
-    RoleEnvironmentChangingEvent(Collection<RoleEnvironmentChange> changes) {
+    RoleEnvironmentChangingEvent(Collection<RoleEnvironmentChange> changes)
+    {
         this.changes = changes;
 
         cancelled = false;
@@ -54,11 +56,13 @@ public class RoleEnvironmentChangingEvent {
      * configuration changes are applied when the instance restarts.
      * 
      */
-    public void cancel() {
+    public void cancel()
+    {
         cancelled = true;
     }
 
-    boolean isCancelled() {
+    boolean isCancelled()
+    {
         return cancelled;
     }
 
@@ -73,7 +77,8 @@ public class RoleEnvironmentChangingEvent {
      * 
      * @see RoleEnvironmentChange
      */
-    public Collection<RoleEnvironmentChange> getChanges() {
+    public Collection<RoleEnvironmentChange> getChanges()
+    {
         return changes;
     }
 }

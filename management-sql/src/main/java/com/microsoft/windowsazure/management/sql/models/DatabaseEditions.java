@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.sql.models;
 /**
 * Specifies the edition of the SQL database.
 */
-public class DatabaseEditions {
+public class DatabaseEditions
+{
     /**
     * The Web Edition Database is best suited for small Web applications and
     * workgroup or departmental applications. This edition supports a database

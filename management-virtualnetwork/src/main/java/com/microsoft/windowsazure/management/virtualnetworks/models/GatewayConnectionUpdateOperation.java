@@ -28,7 +28,8 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 * Disconnect or Test to connect to a local network, disconnect from a local
 * network, or test the gateway’s connection to a local network site.
 */
-public enum GatewayConnectionUpdateOperation {
+public enum GatewayConnectionUpdateOperation
+{
     Connect,
     
     Disconnect,

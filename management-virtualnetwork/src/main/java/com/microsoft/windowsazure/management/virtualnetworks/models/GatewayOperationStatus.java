@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 /**
 * The status of the asynchronous request.
 */
-public enum GatewayOperationStatus {
+public enum GatewayOperationStatus
+{
     /**
     * The asynchronous request is in progress.
     */

@@ -28,20 +28,23 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * A standard storage response including an HTTP status code and request ID.
 */
-public class GatewayOperationResponse extends OperationResponse {
+public class GatewayOperationResponse extends OperationResponse
+{
     private String operationId;
     
     /**
     * @return The OperationId value.
     */
-    public String getOperationId() {
+    public String getOperationId()
+    {
         return this.operationId;
     }
     
     /**
     * @param operationIdValue The OperationId value.
     */
-    public void setOperationId(final String operationIdValue) {
+    public void setOperationId(final String operationIdValue)
+    {
         this.operationId = operationIdValue;
     }
 }

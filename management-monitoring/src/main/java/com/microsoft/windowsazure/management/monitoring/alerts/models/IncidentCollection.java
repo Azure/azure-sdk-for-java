@@ -26,35 +26,36 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import java.util.ArrayList;
 
 /**
- * Alert incidents collection.
- */
-public class IncidentCollection {
+* Alert incidents collection.
+*/
+public class IncidentCollection
+{
     private ArrayList<Incident> value;
-
+    
     /**
-     * Incident collection.
-     * 
-     * @return The Value value.
-     */
-    public ArrayList<Incident> getValue() {
+    * Incident collection.
+    * @return The Value value.
+    */
+    public ArrayList<Incident> getValue()
+    {
         return this.value;
     }
-
+    
     /**
-     * Incident collection.
-     * 
-     * @param valueValue
-     *            The Value value.
-     */
-    public void setValue(final ArrayList<Incident> valueValue) {
+    * Incident collection.
+    * @param valueValue The Value value.
+    */
+    public void setValue(final ArrayList<Incident> valueValue)
+    {
         this.value = valueValue;
     }
-
+    
     /**
-     * Initializes a new instance of the IncidentCollection class.
-     * 
-     */
-    public IncidentCollection() {
+    * Initializes a new instance of the IncidentCollection class.
+    *
+    */
+    public IncidentCollection()
+    {
         this.value = new ArrayList<Incident>();
     }
 }

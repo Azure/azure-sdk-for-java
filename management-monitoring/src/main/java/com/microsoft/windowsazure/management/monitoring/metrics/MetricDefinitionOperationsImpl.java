@@ -48,143 +48,130 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
-public class MetricDefinitionOperationsImpl implements
-        ServiceOperations<MetricsClientImpl>, MetricDefinitionOperations {
+public class MetricDefinitionOperationsImpl implements ServiceOperations<MetricsClientImpl>, MetricDefinitionOperations
+{
     /**
-     * Initializes a new instance of the MetricDefinitionOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
-    MetricDefinitionOperationsImpl(MetricsClientImpl client) {
+    * Initializes a new instance of the MetricDefinitionOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
+    MetricDefinitionOperationsImpl(MetricsClientImpl client)
+    {
         this.client = client;
     }
-
+    
     private MetricsClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
-     * 
-     * @return The Client value.
-     */
-    public MetricsClientImpl getClient() {
+    * Gets a reference to the
+    * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
+    * @return The Client value.
+    */
+    public MetricsClientImpl getClient()
+    {
         return this.client;
     }
-
+    
     /**
-     * The List Metric Definitions operation lists the metric definitions for
-     * the resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.The resource id can be built using the
-     *            resource id builder class under utilities
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.The value is either null or
-     *            WindowsAzure.Availability.WindowsAzure.Availability returns
-     *            the metric definitions for endpoint monitoring metrics
-     * @return The List Metric Definitions operation response.
-     */
+    * The List Metric Definitions operation lists the metric definitions for
+    * the resource.
+    *
+    * @param resourceId The id of the resource.The resource id can be built
+    * using the resource id builder class under utilities
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.The value is either
+    * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
+    * metric definitions for endpoint monitoring metrics
+    * @return The List Metric Definitions operation response.
+    */
     @Override
-    public Future<MetricDefinitionListResponse> listAsync(
-            final String resourceId, final ArrayList<String> metricNames,
-            final String metricNamespace) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<MetricDefinitionListResponse>() {
-                    @Override
-                    public MetricDefinitionListResponse call() throws Exception {
-                        return list(resourceId, metricNames, metricNamespace);
-                    }
-                });
+    public Future<MetricDefinitionListResponse> listAsync(final String resourceId, final ArrayList<String> metricNames, final String metricNamespace)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<MetricDefinitionListResponse>() { 
+            @Override
+            public MetricDefinitionListResponse call() throws Exception
+            {
+                return list(resourceId, metricNames, metricNamespace);
+            }
+         });
     }
-
+    
     /**
-     * The List Metric Definitions operation lists the metric definitions for
-     * the resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.The resource id can be built using the
-     *            resource id builder class under utilities
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.The value is either null or
-     *            WindowsAzure.Availability.WindowsAzure.Availability returns
-     *            the metric definitions for endpoint monitoring metrics
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The List Metric Definitions operation response.
-     */
+    * The List Metric Definitions operation lists the metric definitions for
+    * the resource.
+    *
+    * @param resourceId The id of the resource.The resource id can be built
+    * using the resource id builder class under utilities
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.The value is either
+    * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
+    * metric definitions for endpoint monitoring metrics
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The List Metric Definitions operation response.
+    */
     @Override
-    public MetricDefinitionListResponse list(String resourceId,
-            ArrayList<String> metricNames, String metricNamespace)
-            throws IOException, ServiceException, URISyntaxException,
-            ParseException {
+    public MetricDefinitionListResponse list(String resourceId, ArrayList<String> metricNames, String metricNamespace) throws IOException, ServiceException, URISyntaxException, ParseException
+    {
         // Validate
-        if (resourceId == null) {
+        if (resourceId == null)
+        {
             throw new NullPointerException("resourceId");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
             tracingParameters.put("metricNames", metricNames);
             tracingParameters.put("metricNamespace", metricNamespace);
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/metricdefinitions/query?&resourceId="
-                + resourceId + "&namespace=" + metricNamespace + "&names="
-                + CommaStringBuilder.join(metricNames);
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricdefinitions/query?&resourceId=" + resourceId + "&namespace=" + metricNamespace + "&names=" + CommaStringBuilder.join(metricNames);
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             MetricDefinitionListResponse result = null;
             // Deserialize Response
@@ -192,139 +179,129 @@ public class MetricDefinitionOperationsImpl implements
             result = new MetricDefinitionListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-
-            if (responseDoc != null) {
+            
+            if (responseDoc != null)
+            {
                 MetricDefinitionCollection metricDefinitionCollectionInstance = new MetricDefinitionCollection();
                 result.setMetricDefinitionCollection(metricDefinitionCollectionInstance);
-
+                
                 ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
-                if (valueArray != null) {
-                    for (JsonNode valueValue : valueArray) {
+                if (valueArray != null)
+                {
+                    for (JsonNode valueValue : valueArray)
+                    {
                         MetricDefinition metricDefinitionInstance = new MetricDefinition();
-                        metricDefinitionCollectionInstance.getValue().add(
-                                metricDefinitionInstance);
-
+                        metricDefinitionCollectionInstance.getValue().add(metricDefinitionInstance);
+                        
                         JsonNode nameValue = valueValue.get("Name");
-                        if (nameValue != null) {
+                        if (nameValue != null)
+                        {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             metricDefinitionInstance.setName(nameInstance);
                         }
-
+                        
                         JsonNode namespaceValue = valueValue.get("Namespace");
-                        if (namespaceValue != null) {
+                        if (namespaceValue != null)
+                        {
                             String namespaceInstance;
                             namespaceInstance = namespaceValue.getTextValue();
-                            metricDefinitionInstance
-                                    .setNamespace(namespaceInstance);
+                            metricDefinitionInstance.setNamespace(namespaceInstance);
                         }
-
-                        JsonNode resourceIdSuffixValue = valueValue
-                                .get("ResourceIdSuffix");
-                        if (resourceIdSuffixValue != null) {
+                        
+                        JsonNode resourceIdSuffixValue = valueValue.get("ResourceIdSuffix");
+                        if (resourceIdSuffixValue != null)
+                        {
                             String resourceIdSuffixInstance;
-                            resourceIdSuffixInstance = resourceIdSuffixValue
-                                    .getTextValue();
-                            metricDefinitionInstance
-                                    .setResourceIdSuffix(resourceIdSuffixInstance);
+                            resourceIdSuffixInstance = resourceIdSuffixValue.getTextValue();
+                            metricDefinitionInstance.setResourceIdSuffix(resourceIdSuffixInstance);
                         }
-
-                        JsonNode displayNameValue = valueValue
-                                .get("DisplayName");
-                        if (displayNameValue != null) {
+                        
+                        JsonNode displayNameValue = valueValue.get("DisplayName");
+                        if (displayNameValue != null)
+                        {
                             String displayNameInstance;
-                            displayNameInstance = displayNameValue
-                                    .getTextValue();
-                            metricDefinitionInstance
-                                    .setDisplayName(displayNameInstance);
+                            displayNameInstance = displayNameValue.getTextValue();
+                            metricDefinitionInstance.setDisplayName(displayNameInstance);
                         }
-
+                        
                         JsonNode unitValue = valueValue.get("Unit");
-                        if (unitValue != null) {
+                        if (unitValue != null)
+                        {
                             String unitInstance;
                             unitInstance = unitValue.getTextValue();
                             metricDefinitionInstance.setUnit(unitInstance);
                         }
-
-                        JsonNode primaryAggregationValue = valueValue
-                                .get("PrimaryAggregation");
-                        if (primaryAggregationValue != null) {
+                        
+                        JsonNode primaryAggregationValue = valueValue.get("PrimaryAggregation");
+                        if (primaryAggregationValue != null)
+                        {
                             String primaryAggregationInstance;
-                            primaryAggregationInstance = primaryAggregationValue
-                                    .getTextValue();
-                            metricDefinitionInstance
-                                    .setPrimaryAggregation(primaryAggregationInstance);
+                            primaryAggregationInstance = primaryAggregationValue.getTextValue();
+                            metricDefinitionInstance.setPrimaryAggregation(primaryAggregationInstance);
                         }
-
-                        ArrayNode metricAvailabilitiesArray = ((ArrayNode) valueValue
-                                .get("MetricAvailabilities"));
-                        if (metricAvailabilitiesArray != null) {
-                            for (JsonNode metricAvailabilitiesValue : metricAvailabilitiesArray) {
+                        
+                        ArrayNode metricAvailabilitiesArray = ((ArrayNode) valueValue.get("MetricAvailabilities"));
+                        if (metricAvailabilitiesArray != null)
+                        {
+                            for (JsonNode metricAvailabilitiesValue : metricAvailabilitiesArray)
+                            {
                                 MetricAvailability metricAvailabilityInstance = new MetricAvailability();
-                                metricDefinitionInstance
-                                        .getMetricAvailabilities().add(
-                                                metricAvailabilityInstance);
-
-                                JsonNode timeGrainValue = metricAvailabilitiesValue
-                                        .get("TimeGrain");
-                                if (timeGrainValue != null) {
+                                metricDefinitionInstance.getMetricAvailabilities().add(metricAvailabilityInstance);
+                                
+                                JsonNode timeGrainValue = metricAvailabilitiesValue.get("TimeGrain");
+                                if (timeGrainValue != null)
+                                {
                                     Duration timeGrainInstance;
-                                    timeGrainInstance = TimeSpan8601Converter
-                                            .parse(timeGrainValue
-                                                    .getTextValue());
-                                    metricAvailabilityInstance
-                                            .setTimeGrain(timeGrainInstance);
+                                    timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
+                                    metricAvailabilityInstance.setTimeGrain(timeGrainInstance);
                                 }
-
-                                JsonNode retentionValue = metricAvailabilitiesValue
-                                        .get("Retention");
-                                if (retentionValue != null) {
+                                
+                                JsonNode retentionValue = metricAvailabilitiesValue.get("Retention");
+                                if (retentionValue != null)
+                                {
                                     Duration retentionInstance;
-                                    retentionInstance = TimeSpan8601Converter
-                                            .parse(retentionValue
-                                                    .getTextValue());
-                                    metricAvailabilityInstance
-                                            .setRetention(retentionInstance);
+                                    retentionInstance = TimeSpan8601Converter.parse(retentionValue.getTextValue());
+                                    metricAvailabilityInstance.setRetention(retentionInstance);
                                 }
                             }
                         }
-
-                        JsonNode minimumAlertableTimeWindowValue = valueValue
-                                .get("MinimumAlertableTimeWindow");
-                        if (minimumAlertableTimeWindowValue != null) {
+                        
+                        JsonNode minimumAlertableTimeWindowValue = valueValue.get("MinimumAlertableTimeWindow");
+                        if (minimumAlertableTimeWindowValue != null)
+                        {
                             Duration minimumAlertableTimeWindowInstance;
-                            minimumAlertableTimeWindowInstance = TimeSpan8601Converter
-                                    .parse(minimumAlertableTimeWindowValue
-                                            .getTextValue());
-                            metricDefinitionInstance
-                                    .setMinimumAlertableTimeWindow(minimumAlertableTimeWindowInstance);
+                            minimumAlertableTimeWindowInstance = TimeSpan8601Converter.parse(minimumAlertableTimeWindowValue.getTextValue());
+                            metricDefinitionInstance.setMinimumAlertableTimeWindow(minimumAlertableTimeWindowInstance);
                         }
-
-                        JsonNode isAlertableValue = valueValue
-                                .get("IsAlertable");
-                        if (isAlertableValue != null) {
+                        
+                        JsonNode isAlertableValue = valueValue.get("IsAlertable");
+                        if (isAlertableValue != null)
+                        {
                             boolean isAlertableInstance;
-                            isAlertableInstance = isAlertableValue
-                                    .getBooleanValue();
-                            metricDefinitionInstance
-                                    .setIsAlertable(isAlertableInstance);
+                            isAlertableInstance = isAlertableValue.getBooleanValue();
+                            metricDefinitionInstance.setIsAlertable(isAlertableInstance);
                         }
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

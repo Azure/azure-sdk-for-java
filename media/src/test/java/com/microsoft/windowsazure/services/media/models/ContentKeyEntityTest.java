@@ -30,19 +30,22 @@ import com.microsoft.windowsazure.services.media.implementation.content.ContentK
  * Tests for the ContentKey entity
  * 
  */
-public class ContentKeyEntityTest {
+public class ContentKeyEntityTest
+{
     private final String testContentKeyId = "nb:kid:UUID:c82307be-1a81-4554-ba7d-cf6dfa735a5a";
     private final ContentKeyType testContentKeyType = ContentKeyType.StorageEncryption;
     private final String testEncryptedContentKey = "testEncryptedContentKey";
     private final String testExpectedContentKeyUri = String.format(
             "ContentKeys('%s')", URLEncoder.encode(testContentKeyId, "UTF-8"));
 
-    public ContentKeyEntityTest() throws Exception {
+    public ContentKeyEntityTest() throws Exception
+    {
 
     }
 
     @Test
-    public void createContentKeyHasCorrectUrl() throws Exception {
+    public void createContentKeyHasCorrectUrl() throws Exception
+    {
         EntityCreateOperation<ContentKeyInfo> creator = ContentKey.create(
                 testContentKeyId, testContentKeyType, testEncryptedContentKey);
 
@@ -50,7 +53,8 @@ public class ContentKeyEntityTest {
     }
 
     @Test
-    public void createContentKeyHasCorrectPayload() throws Exception {
+    public void createContentKeyHasCorrectPayload() throws Exception
+    {
         ContentKeyRestType contentKeyRestType = (ContentKeyRestType) ContentKey
                 .create(testContentKeyId, testContentKeyType,
                         testEncryptedContentKey).getRequestContents();
@@ -69,13 +73,15 @@ public class ContentKeyEntityTest {
     }
 
     @Test
-    public void getContentKeyGivesExpectedUri() throws Exception {
+    public void getContentKeyGivesExpectedUri() throws Exception
+    {
         assertEquals(testExpectedContentKeyUri, ContentKey
                 .get(testContentKeyId).getUri());
     }
 
     @Test
-    public void listContentKeyReturnsExpectedUri() {
+    public void listContentKeyReturnsExpectedUri()
+    {
         EntityListOperation<ContentKeyInfo> lister = ContentKey.list();
 
         assertEquals("ContentKeys", lister.getUri());
@@ -84,7 +90,8 @@ public class ContentKeyEntityTest {
     }
 
     @Test
-    public void listContentKeyCanTakeQueryParameters() {
+    public void listContentKeyCanTakeQueryParameters()
+    {
 
         EntityListOperation<ContentKeyInfo> lister = ContentKey.list()
                 .setTop(10).setSkip(2);
@@ -95,7 +102,8 @@ public class ContentKeyEntityTest {
     }
 
     @Test
-    public void ContentKeyDeleteReturnsExpectedUri() throws Exception {
+    public void ContentKeyDeleteReturnsExpectedUri() throws Exception
+    {
         EntityDeleteOperation deleter = ContentKey.delete(testContentKeyId);
         assertEquals(testExpectedContentKeyUri, deleter.getUri());
     }

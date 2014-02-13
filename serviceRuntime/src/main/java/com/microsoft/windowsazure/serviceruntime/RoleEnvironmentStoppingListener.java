@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * Represents the listener for the stopping event.
  */
-public interface RoleEnvironmentStoppingListener {
+public interface RoleEnvironmentStoppingListener
+{
     /**
      * Occurs when the role instance is about to be stopped.
      * <p>

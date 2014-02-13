@@ -56,13 +56,15 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * notification hubs.
 */
-public class NotificationHubOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, NotificationHubOperations {
+public class NotificationHubOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, NotificationHubOperations
+{
     /**
     * Initializes a new instance of the NotificationHubOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    NotificationHubOperationsImpl(ServiceBusManagementClientImpl client) {
+    NotificationHubOperationsImpl(ServiceBusManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -73,7 +75,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
     * @return The Client value.
     */
-    public ServiceBusManagementClientImpl getClient() {
+    public ServiceBusManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -86,10 +89,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * request ID.
     */
     @Override
-    public Future<ServiceBusNotificationHubResponse> getAsync(final String namespaceName, final String notificationHubName) {
+    public Future<ServiceBusNotificationHubResponse> getAsync(final String namespaceName, final String notificationHubName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubResponse>() { 
             @Override
-            public ServiceBusNotificationHubResponse call() throws Exception {
+            public ServiceBusNotificationHubResponse call() throws Exception
+            {
                 return get(namespaceName, notificationHubName);
             }
          });
@@ -114,19 +119,23 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * request ID.
     */
     @Override
-    public ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceBusNotificationHubResponse get(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (notificationHubName == null) {
+        if (notificationHubName == null)
+        {
             throw new NullPointerException("notificationHubName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -145,18 +154,23 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -174,24 +188,29 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement != null) {
+            if (entryElement != null)
+            {
                 NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                 Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (titleElement != null) {
+                if (titleElement != null)
+                {
                 }
                 
                 NodeList elements3 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (contentElement != null) {
+                if (contentElement != null)
+                {
                     NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
                     Element notificationHubDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (notificationHubDescriptionElement != null) {
+                    if (notificationHubDescriptionElement != null)
+                    {
                         ServiceBusNotificationHub notificationHubDescriptionInstance = new ServiceBusNotificationHub();
                         result.setNotificationHub(notificationHubDescriptionInstance);
                         
                         NodeList elements5 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
                         Element registrationTtlElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (registrationTtlElement != null) {
+                        if (registrationTtlElement != null)
+                        {
                             String registrationTtlInstance;
                             registrationTtlInstance = registrationTtlElement.getTextContent();
                             notificationHubDescriptionInstance.setRegistrationTtl(registrationTtlInstance);
@@ -199,15 +218,18 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                         
                         NodeList elements6 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                         Element authorizationRulesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (authorizationRulesSequenceElement != null) {
-                            for (int i1 = 0; i1 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1) {
+                        if (authorizationRulesSequenceElement != null)
+                        {
+                            for (int i1 = 0; i1 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1)
+                            {
                                 org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i1));
                                 ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                 notificationHubDescriptionInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                 
                                 NodeList elements7 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 Element claimTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (claimTypeElement != null) {
+                                if (claimTypeElement != null)
+                                {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement.getTextContent();
                                     authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -215,7 +237,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements8 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 Element claimValueElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                if (claimValueElement != null) {
+                                if (claimValueElement != null)
+                                {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement.getTextContent();
                                     authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -223,8 +246,10 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements9 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
+                                if (rightsSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -232,7 +257,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements10 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 Element createdTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                                if (createdTimeElement != null) {
+                                if (createdTimeElement != null)
+                                {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -240,7 +266,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements11 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (keyNameElement != null) {
+                                if (keyNameElement != null)
+                                {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -248,7 +275,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements12 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 Element modifiedTimeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (modifiedTimeElement != null) {
+                                if (modifiedTimeElement != null)
+                                {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -256,7 +284,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements13 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 Element primaryKeyElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                if (primaryKeyElement != null) {
+                                if (primaryKeyElement != null)
+                                {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement.getTextContent();
                                     authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -264,7 +293,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 Element secondaryKeyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (secondaryKeyElement != null) {
+                                if (secondaryKeyElement != null)
+                                {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement.getTextContent();
                                     authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -276,16 +306,21 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -299,10 +334,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String notificationHubName) {
+    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String notificationHubName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
             @Override
-            public ServiceBusConnectionDetailsResponse call() throws Exception {
+            public ServiceBusConnectionDetailsResponse call() throws Exception
+            {
                 return getConnectionDetails(namespaceName, notificationHubName);
             }
          });
@@ -324,19 +361,23 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String notificationHubName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (notificationHubName == null) {
+        if (notificationHubName == null)
+        {
             throw new NullPointerException("notificationHubName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -355,18 +396,23 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -384,22 +430,28 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
                         result.getConnectionDetails().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
                             Element connectionDetailElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (connectionDetailElement != null) {
+                            if (connectionDetailElement != null)
+                            {
                                 NodeList elements4 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (keyNameElement != null) {
+                                if (keyNameElement != null)
+                                {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
@@ -407,7 +459,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements5 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
                                 Element connectionStringElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (connectionStringElement != null) {
+                                if (connectionStringElement != null)
+                                {
                                     String connectionStringInstance;
                                     connectionStringInstance = connectionStringElement.getTextContent();
                                     entryInstance.setConnectionString(connectionStringInstance);
@@ -415,7 +468,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements6 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
                                 Element authorizationTypeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (authorizationTypeElement != null) {
+                                if (authorizationTypeElement != null)
+                                {
                                     String authorizationTypeInstance;
                                     authorizationTypeInstance = authorizationTypeElement.getTextContent();
                                     entryInstance.setAuthorizationType(authorizationTypeInstance);
@@ -423,8 +477,10 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements7 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
+                                if (rightsSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -436,16 +492,21 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -459,10 +520,12 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * request ID.
     */
     @Override
-    public Future<ServiceBusNotificationHubsResponse> listAsync(final String namespaceName) {
+    public Future<ServiceBusNotificationHubsResponse> listAsync(final String namespaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusNotificationHubsResponse>() { 
             @Override
-            public ServiceBusNotificationHubsResponse call() throws Exception {
+            public ServiceBusNotificationHubsResponse call() throws Exception
+            {
                 return list(namespaceName);
             }
          });
@@ -486,16 +549,19 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
     * request ID.
     */
     @Override
-    public ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceBusNotificationHubsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -513,18 +579,23 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -542,16 +613,20 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusNotificationHub entryInstance = new ServiceBusNotificationHub();
                         result.getNotificationHubs().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                         Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (titleElement != null) {
+                        if (titleElement != null)
+                        {
                             String titleInstance;
                             titleInstance = titleElement.getTextContent();
                             entryInstance.setName(titleInstance);
@@ -559,13 +634,16 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                         
                         NodeList elements3 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
                             Element notificationHubDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                            if (notificationHubDescriptionElement != null) {
+                            if (notificationHubDescriptionElement != null)
+                            {
                                 NodeList elements5 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
                                 Element registrationTtlElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (registrationTtlElement != null) {
+                                if (registrationTtlElement != null)
+                                {
                                     String registrationTtlInstance;
                                     registrationTtlInstance = registrationTtlElement.getTextContent();
                                     entryInstance.setRegistrationTtl(registrationTtlInstance);
@@ -573,15 +651,18 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                 
                                 NodeList elements6 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                                 Element authorizationRulesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (authorizationRulesSequenceElement != null) {
-                                    for (int i2 = 0; i2 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i2 = i2 + 1) {
+                                if (authorizationRulesSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i2));
                                         ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                         entryInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                         
                                         NodeList elements7 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                         Element claimTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                        if (claimTypeElement != null) {
+                                        if (claimTypeElement != null)
+                                        {
                                             String claimTypeInstance;
                                             claimTypeInstance = claimTypeElement.getTextContent();
                                             authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -589,7 +670,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements8 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                         Element claimValueElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                        if (claimValueElement != null) {
+                                        if (claimValueElement != null)
+                                        {
                                             String claimValueInstance;
                                             claimValueInstance = claimValueElement.getTextContent();
                                             authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -597,8 +679,10 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements9 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                         Element rightsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                                        if (rightsSequenceElement != null) {
-                                            for (int i3 = 0; i3 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i3 = i3 + 1) {
+                                        if (rightsSequenceElement != null)
+                                        {
+                                            for (int i3 = 0; i3 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i3 = i3 + 1)
+                                            {
                                                 org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i3));
                                                 authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                             }
@@ -606,7 +690,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements10 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                         Element createdTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                                        if (createdTimeElement != null) {
+                                        if (createdTimeElement != null)
+                                        {
                                             Calendar createdTimeInstance;
                                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -614,7 +699,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements11 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                         Element keyNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                        if (keyNameElement != null) {
+                                        if (keyNameElement != null)
+                                        {
                                             String keyNameInstance;
                                             keyNameInstance = keyNameElement.getTextContent();
                                             authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -622,7 +708,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements12 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                         Element modifiedTimeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                        if (modifiedTimeElement != null) {
+                                        if (modifiedTimeElement != null)
+                                        {
                                             Calendar modifiedTimeInstance;
                                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -630,7 +717,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements13 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                         Element primaryKeyElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                        if (primaryKeyElement != null) {
+                                        if (primaryKeyElement != null)
+                                        {
                                             String primaryKeyInstance;
                                             primaryKeyInstance = primaryKeyElement.getTextContent();
                                             authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -638,7 +726,8 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
                                         
                                         NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                         Element secondaryKeyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                        if (secondaryKeyElement != null) {
+                                        if (secondaryKeyElement != null)
+                                        {
                                             String secondaryKeyInstance;
                                             secondaryKeyInstance = secondaryKeyElement.getTextContent();
                                             authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -652,16 +741,21 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

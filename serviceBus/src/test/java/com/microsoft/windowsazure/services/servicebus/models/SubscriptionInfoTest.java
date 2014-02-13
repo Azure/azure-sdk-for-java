@@ -28,20 +28,25 @@ import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.servicebus.implementation.RuleDescription;
 
-public class SubscriptionInfoTest {
+public class SubscriptionInfoTest
+{
 
-    private Duration createDuration(int milliSeconds) {
+    private Duration createDuration(int milliSeconds)
+    {
         DatatypeFactory datatypeFactory;
-        try {
+        try
+        {
             datatypeFactory = DatatypeFactory.newInstance();
-        } catch (DatatypeConfigurationException e) {
+        } catch (DatatypeConfigurationException e)
+        {
             throw new RuntimeException(e);
         }
         return datatypeFactory.newDuration(milliSeconds);
     }
 
     @Test
-    public void testGetSetLockDuration() {
+    public void testGetSetLockDuration()
+    {
         // Arrange
         Duration expectedLockDuration = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -56,7 +61,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetRequiresSession() {
+    public void testGetSetRequiresSession()
+    {
         // Arrange
         Boolean expectedRequiresSession = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -70,7 +76,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetDefaultMessageTimeToLive() {
+    public void testGetSetDefaultMessageTimeToLive()
+    {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -86,7 +93,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetDeadLetteringOnMessageExpiration() {
+    public void testGetSetDeadLetteringOnMessageExpiration()
+    {
         // Arrange
         Boolean expectedDeadLetteringOnMessageExpiration = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -103,7 +111,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetDeadLetteringOnFilterEvaluationExceptions() {
+    public void testGetSetDeadLetteringOnFilterEvaluationExceptions()
+    {
         // Arrange
         Boolean expectedDeadLetteringOnFilterEvaluationExceptions = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -120,7 +129,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetDefaultRuleDescription() {
+    public void testGetSetDefaultRuleDescription()
+    {
         // Arrange
         RuleDescription expectedDefaultRuleDescription = new RuleDescription();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -136,7 +146,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetMessageCount() {
+    public void testGetSetMessageCount()
+    {
         // Arrange
         Long expectedMessageCount = 1024L;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -150,7 +161,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetMaxDeliveryCount() {
+    public void testGetSetMaxDeliveryCount()
+    {
         // Arrange
         Integer expectedMaxDeliveryCount = 1024;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -164,7 +176,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetEnableBatchedOperations() {
+    public void testGetSetEnableBatchedOperations()
+    {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -180,7 +193,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetStatus() {
+    public void testGetSetStatus()
+    {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -194,7 +208,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetCreatedAt() {
+    public void testGetSetCreatedAt()
+    {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -208,7 +223,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetUpdatedAt() {
+    public void testGetSetUpdatedAt()
+    {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -222,7 +238,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetAccessedAt() {
+    public void testGetSetAccessedAt()
+    {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -236,7 +253,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetUserMetadata() {
+    public void testGetSetUserMetadata()
+    {
         // Arrange
         String expectedUserMetadata = "expectedUserMetaData";
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -250,7 +268,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetAutoDeleteOnIdle() {
+    public void testGetSetAutoDeleteOnIdle()
+    {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();
@@ -265,7 +284,8 @@ public class SubscriptionInfoTest {
     }
 
     @Test
-    public void testGetSetEntityAvailabilityStatus() {
+    public void testGetSetEntityAvailabilityStatus()
+    {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
         SubscriptionInfo SubscriptionInfo = new SubscriptionInfo();

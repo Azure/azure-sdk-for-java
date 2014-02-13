@@ -25,16 +25,19 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CustomPropertiesMapperTest {
+public class CustomPropertiesMapperTest
+{
     private CustomPropertiesMapper mapper;
 
     @Before
-    public void init() {
+    public void init()
+    {
         mapper = new CustomPropertiesMapper();
     }
 
     @Test
-    public void stringValuesShouldComeThroughInQuotes() {
+    public void stringValuesShouldComeThroughInQuotes()
+    {
         // Arrange
 
         // Act
@@ -45,7 +48,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void nonStringValuesShouldNotHaveQuotes() {
+    public void nonStringValuesShouldNotHaveQuotes()
+    {
         // Arrange
 
         // Act
@@ -56,7 +60,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void supportedJavaTypesHaveExpectedRepresentations() {
+    public void supportedJavaTypesHaveExpectedRepresentations()
+    {
         // Arrange
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.set(1971, Calendar.OCTOBER, 14, 12, 34, 56);
@@ -88,7 +93,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void valuesComeBackAsStringsWhenInQuotes() throws ParseException {
+    public void valuesComeBackAsStringsWhenInQuotes() throws ParseException
+    {
         // Arrange
 
         // Act
@@ -100,7 +106,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void nonStringTypesWillBeParsedAsNumeric() throws ParseException {
+    public void nonStringTypesWillBeParsedAsNumeric() throws ParseException
+    {
         // Arrange
 
         // Act
@@ -112,7 +119,8 @@ public class CustomPropertiesMapperTest {
     }
 
     @Test
-    public void supportedFormatsHaveExpectedJavaTypes() throws ParseException {
+    public void supportedFormatsHaveExpectedJavaTypes() throws ParseException
+    {
         // Arrange
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         cal.set(1971, Calendar.OCTOBER, 14, 12, 34, 56);

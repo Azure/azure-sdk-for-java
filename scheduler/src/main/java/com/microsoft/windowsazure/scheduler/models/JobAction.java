@@ -24,86 +24,97 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
- * Action to invoke for the job.
- */
-public class JobAction {
+* Action to invoke for the job.
+*/
+public class JobAction
+{
     private JobErrorAction errorAction;
-
+    
     /**
-     * Error Action for the job.
-     */
-    public JobErrorAction getErrorAction() {
+    * Error Action for the job.
+    */
+    public JobErrorAction getErrorAction()
+    {
         return this.errorAction;
     }
-
+    
     /**
-     * Error Action for the job.
-     */
-    public void setErrorAction(JobErrorAction errorAction) {
+    * Error Action for the job.
+    */
+    public void setErrorAction(JobErrorAction errorAction)
+    {
         this.errorAction = errorAction;
     }
-
+    
     private JobQueueMessage queueMessage;
-
+    
     /**
-     * Queue and message for a queue message action type.
-     */
-    public JobQueueMessage getQueueMessage() {
+    * Queue and message for a queue message action type.
+    */
+    public JobQueueMessage getQueueMessage()
+    {
         return this.queueMessage;
     }
-
+    
     /**
-     * Queue and message for a queue message action type.
-     */
-    public void setQueueMessage(JobQueueMessage queueMessage) {
+    * Queue and message for a queue message action type.
+    */
+    public void setQueueMessage(JobQueueMessage queueMessage)
+    {
         this.queueMessage = queueMessage;
     }
-
+    
     private JobHttpRequest request;
-
+    
     /**
-     * Request for a http or https action type.
-     */
-    public JobHttpRequest getRequest() {
+    * Request for a http or https action type.
+    */
+    public JobHttpRequest getRequest()
+    {
         return this.request;
     }
-
+    
     /**
-     * Request for a http or https action type.
-     */
-    public void setRequest(JobHttpRequest request) {
+    * Request for a http or https action type.
+    */
+    public void setRequest(JobHttpRequest request)
+    {
         this.request = request;
     }
-
+    
     private RetryPolicy retryPolicy;
-
+    
     /**
-     * Retry Policy for the job action.
-     */
-    public RetryPolicy getRetryPolicy() {
+    * Retry Policy for the job action.
+    */
+    public RetryPolicy getRetryPolicy()
+    {
         return this.retryPolicy;
     }
-
+    
     /**
-     * Retry Policy for the job action.
-     */
-    public void setRetryPolicy(RetryPolicy retryPolicy) {
+    * Retry Policy for the job action.
+    */
+    public void setRetryPolicy(RetryPolicy retryPolicy)
+    {
         this.retryPolicy = retryPolicy;
     }
-
+    
     private JobActionType type;
-
+    
     /**
-     * Type of action. Can be one of http, https, storageQueue.
-     */
-    public JobActionType getType() {
+    * Type of action. Can be one of http, https, storageQueue.
+    */
+    public JobActionType getType()
+    {
         return this.type;
     }
-
+    
     /**
-     * Type of action. Can be one of http, https, storageQueue.
-     */
-    public void setType(JobActionType type) {
+    * Type of action. Can be one of http, https, storageQueue.
+    */
+    public void setType(JobActionType type)
+    {
         this.type = type;
     }
 }

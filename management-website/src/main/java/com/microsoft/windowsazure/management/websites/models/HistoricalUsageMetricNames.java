@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * Supported historical usage metric names.
 */
-public class HistoricalUsageMetricNames {
+public class HistoricalUsageMetricNames
+{
     public static final String CpuTime = "CpuTime";
     
     public static final String BytesReceived = "BytesReceived";

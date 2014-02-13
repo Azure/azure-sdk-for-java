@@ -27,7 +27,8 @@ package com.microsoft.windowsazure.management.compute.models;
 * Optional. Specifies the values to use to join the virtual machine to the
 * domain.
 */
-public class DomainJoinCredentials {
+public class DomainJoinCredentials
+{
     private String domain;
     
     /**
@@ -38,7 +39,8 @@ public class DomainJoinCredentials {
     * fully-qualified-DNS-domain\\username format.  Example: example.com
     * @return The Domain value.
     */
-    public String getDomain() {
+    public String getDomain()
+    {
         return this.domain;
     }
     
@@ -50,7 +52,8 @@ public class DomainJoinCredentials {
     * fully-qualified-DNS-domain\\username format.  Example: example.com
     * @param domainValue The Domain value.
     */
-    public void setDomain(final String domainValue) {
+    public void setDomain(final String domainValue)
+    {
         this.domain = domainValue;
     }
     
@@ -60,7 +63,8 @@ public class DomainJoinCredentials {
     * Required. Specifies the password to use to join the domain.
     * @return The Password value.
     */
-    public String getPassword() {
+    public String getPassword()
+    {
         return this.password;
     }
     
@@ -68,7 +72,8 @@ public class DomainJoinCredentials {
     * Required. Specifies the password to use to join the domain.
     * @param passwordValue The Password value.
     */
-    public void setPassword(final String passwordValue) {
+    public void setPassword(final String passwordValue)
+    {
         this.password = passwordValue;
     }
     
@@ -79,7 +84,8 @@ public class DomainJoinCredentials {
     * the domain.
     * @return The UserName value.
     */
-    public String getUserName() {
+    public String getUserName()
+    {
         return this.userName;
     }
     
@@ -88,7 +94,8 @@ public class DomainJoinCredentials {
     * the domain.
     * @param userNameValue The UserName value.
     */
-    public void setUserName(final String userNameValue) {
+    public void setUserName(final String userNameValue)
+    {
         this.userName = userNameValue;
     }
 }

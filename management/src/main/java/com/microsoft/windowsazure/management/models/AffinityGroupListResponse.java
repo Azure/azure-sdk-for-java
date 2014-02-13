@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The List Affinity Groups operation response.
 */
-public class AffinityGroupListResponse extends OperationResponse implements Iterable<AffinityGroupListResponse.AffinityGroup> {
+public class AffinityGroupListResponse extends OperationResponse implements Iterable<AffinityGroupListResponse.AffinityGroup>
+{
     private ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups;
     
     /**
     * The affinity groups associated with the specified subscription.
     * @return The AffinityGroups value.
     */
-    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups() {
+    public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups()
+    {
         return this.affinityGroups;
     }
     
@@ -45,7 +47,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     * The affinity groups associated with the specified subscription.
     * @param affinityGroupsValue The AffinityGroups value.
     */
-    public void setAffinityGroups(final ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroupsValue) {
+    public void setAffinityGroups(final ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroupsValue)
+    {
         this.affinityGroups = affinityGroupsValue;
     }
     
@@ -53,7 +56,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     * Initializes a new instance of the AffinityGroupListResponse class.
     *
     */
-    public AffinityGroupListResponse() {
+    public AffinityGroupListResponse()
+    {
         super();
         this.affinityGroups = new ArrayList<AffinityGroupListResponse.AffinityGroup>();
     }
@@ -62,14 +66,16 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     * Gets the sequence of AffinityGroups.
     *
     */
-    public Iterator<AffinityGroupListResponse.AffinityGroup> iterator() {
+    public Iterator<AffinityGroupListResponse.AffinityGroup> iterator()
+    {
         return this.getAffinityGroups().iterator();
     }
     
     /**
     * An affinity group associated with the specified subscription.
     */
-    public static class AffinityGroup {
+    public static class AffinityGroup
+    {
         private ArrayList<String> capabilities;
         
         /**
@@ -79,7 +85,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * present.
         * @return The Capabilities value.
         */
-        public ArrayList<String> getCapabilities() {
+        public ArrayList<String> getCapabilities()
+        {
             return this.capabilities;
         }
         
@@ -90,7 +97,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * present.
         * @param capabilitiesValue The Capabilities value.
         */
-        public void setCapabilities(final ArrayList<String> capabilitiesValue) {
+        public void setCapabilities(final ArrayList<String> capabilitiesValue)
+        {
             this.capabilities = capabilitiesValue;
         }
         
@@ -100,7 +108,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user supplied description of this affinity group.
         * @return The Description value.
         */
-        public String getDescription() {
+        public String getDescription()
+        {
             return this.description;
         }
         
@@ -108,7 +117,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user supplied description of this affinity group.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue) {
+        public void setDescription(final String descriptionValue)
+        {
             this.description = descriptionValue;
         }
         
@@ -119,7 +129,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * encoded string.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -128,7 +139,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * encoded string.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -139,7 +151,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * in.
         * @return The Location value.
         */
-        public String getLocation() {
+        public String getLocation()
+        {
             return this.location;
         }
         
@@ -148,7 +161,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * in.
         * @param locationValue The Location value.
         */
-        public void setLocation(final String locationValue) {
+        public void setLocation(final String locationValue)
+        {
             this.location = locationValue;
         }
         
@@ -158,7 +172,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user supplied name of the affinity group.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -166,7 +181,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * The user supplied name of the affinity group.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -174,7 +190,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         * Initializes a new instance of the AffinityGroup class.
         *
         */
-        public AffinityGroup() {
+        public AffinityGroup()
+        {
             this.capabilities = new ArrayList<String>();
         }
     }

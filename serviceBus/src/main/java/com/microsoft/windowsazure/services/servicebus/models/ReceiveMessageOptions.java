@@ -19,7 +19,8 @@ package com.microsoft.windowsazure.services.servicebus.models;
  * Specifies options when receiving messages.
  * 
  */
-public class ReceiveMessageOptions {
+public class ReceiveMessageOptions
+{
     Integer timeout;
     private ReceiveMode receiveMode = ReceiveMode.RECEIVE_AND_DELETE;
 
@@ -33,7 +34,8 @@ public class ReceiveMessageOptions {
      * 
      * @return The timeout, in seconds.
      */
-    public Integer getTimeout() {
+    public Integer getTimeout()
+    {
         return timeout;
     }
 
@@ -46,7 +48,8 @@ public class ReceiveMessageOptions {
      * @return A <code>ReceiveMessageOptions</code> object that represents the
      *         updated receive message options.
      */
-    public ReceiveMessageOptions setTimeout(Integer timeout) {
+    public ReceiveMessageOptions setTimeout(Integer timeout)
+    {
         this.timeout = timeout;
         return this;
     }
@@ -56,7 +59,8 @@ public class ReceiveMessageOptions {
      * 
      * @return A {@link ReceiveMode} value that represents the receive mode.
      */
-    public ReceiveMode getReceiveMode() {
+    public ReceiveMode getReceiveMode()
+    {
         return receiveMode;
     }
 
@@ -69,7 +73,8 @@ public class ReceiveMessageOptions {
      * @return A <code>ReceiveMessageOptions</code> object that represents the
      *         updated receive message options.
      */
-    public ReceiveMessageOptions setReceiveMode(ReceiveMode receiveMode) {
+    public ReceiveMessageOptions setReceiveMode(ReceiveMode receiveMode)
+    {
         this.receiveMode = receiveMode;
         return this;
     }
@@ -81,7 +86,8 @@ public class ReceiveMessageOptions {
      *         {@link ReceiveMode#RECEIVE_AND_DELETE}; otherwise,
      *         <code>false</code>.
      */
-    public boolean isReceiveAndDelete() {
+    public boolean isReceiveAndDelete()
+    {
         return receiveMode == ReceiveMode.RECEIVE_AND_DELETE;
     }
 
@@ -91,7 +97,8 @@ public class ReceiveMessageOptions {
      * @return A <code>ReceiveMessageOptions</code> object that represents the
      *         updated receive message options.
      */
-    public ReceiveMessageOptions setReceiveAndDelete() {
+    public ReceiveMessageOptions setReceiveAndDelete()
+    {
         this.receiveMode = ReceiveMode.RECEIVE_AND_DELETE;
         return this;
     }
@@ -102,7 +109,8 @@ public class ReceiveMessageOptions {
      * @return <code>true</code> if the receive mode is
      *         {@link ReceiveMode#PEEK_LOCK}; otherwise, <code>false</code>.
      */
-    public boolean isPeekLock() {
+    public boolean isPeekLock()
+    {
         return receiveMode == ReceiveMode.PEEK_LOCK;
     }
 
@@ -112,7 +120,8 @@ public class ReceiveMessageOptions {
      * @return A <code>ReceiveMessageOptions</code> object that represents the
      *         updated receive message options.
      */
-    public ReceiveMessageOptions setPeekLock() {
+    public ReceiveMessageOptions setPeekLock()
+    {
         this.receiveMode = ReceiveMode.PEEK_LOCK;
         return this;
     }

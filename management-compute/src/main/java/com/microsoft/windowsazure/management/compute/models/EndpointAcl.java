@@ -28,14 +28,16 @@ import java.util.ArrayList;
 /**
 * The set of access control rules for the endpoint.
 */
-public class EndpointAcl {
+public class EndpointAcl
+{
     private ArrayList<AccessControlListRule> rules;
     
     /**
     * The set of access control rules for the endpoint.
     * @return The Rules value.
     */
-    public ArrayList<AccessControlListRule> getRules() {
+    public ArrayList<AccessControlListRule> getRules()
+    {
         return this.rules;
     }
     
@@ -43,7 +45,8 @@ public class EndpointAcl {
     * The set of access control rules for the endpoint.
     * @param rulesValue The Rules value.
     */
-    public void setRules(final ArrayList<AccessControlListRule> rulesValue) {
+    public void setRules(final ArrayList<AccessControlListRule> rulesValue)
+    {
         this.rules = rulesValue;
     }
     
@@ -51,7 +54,8 @@ public class EndpointAcl {
     * Initializes a new instance of the EndpointAcl class.
     *
     */
-    public EndpointAcl() {
+    public EndpointAcl()
+    {
         this.rules = new ArrayList<AccessControlListRule>();
     }
 }

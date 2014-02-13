@@ -26,12 +26,12 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.ManagementConfiguration;
 import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.HostingResources;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OperationStatus;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,14 +62,16 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public class ComputeManagementClientImpl extends ServiceClient<ComputeManagementClient> implements ComputeManagementClient {
+public class ComputeManagementClientImpl extends ServiceClient<ComputeManagementClient> implements ComputeManagementClient
+{
     private URI baseUri;
     
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri() {
+    public URI getBaseUri()
+    {
         return this.baseUri;
     }
     
@@ -84,7 +86,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() {
+    public SubscriptionCloudCredentials getCredentials()
+    {
         return this.credentials;
     }
     
@@ -97,7 +100,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The DeploymentsOperations value.
     */
-    public DeploymentOperations getDeploymentsOperations() {
+    public DeploymentOperations getDeploymentsOperations()
+    {
         return this.deployments;
     }
     
@@ -110,7 +114,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The HostedServicesOperations value.
     */
-    public HostedServiceOperations getHostedServicesOperations() {
+    public HostedServiceOperations getHostedServicesOperations()
+    {
         return this.hostedServices;
     }
     
@@ -123,7 +128,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The OperatingSystemsOperations value.
     */
-    public OperatingSystemOperations getOperatingSystemsOperations() {
+    public OperatingSystemOperations getOperatingSystemsOperations()
+    {
         return this.operatingSystems;
     }
     
@@ -135,7 +141,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The ServiceCertificatesOperations value.
     */
-    public ServiceCertificateOperations getServiceCertificatesOperations() {
+    public ServiceCertificateOperations getServiceCertificatesOperations()
+    {
         return this.serviceCertificates;
     }
     
@@ -148,7 +155,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The VirtualMachineDisksOperations value.
     */
-    public VirtualMachineDiskOperations getVirtualMachineDisksOperations() {
+    public VirtualMachineDiskOperations getVirtualMachineDisksOperations()
+    {
         return this.virtualMachineDisks;
     }
     
@@ -161,7 +169,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The VirtualMachineExtensionsOperations value.
     */
-    public VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations() {
+    public VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations()
+    {
         return this.virtualMachineExtensions;
     }
     
@@ -174,7 +183,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The VirtualMachineImagesOperations value.
     */
-    public VirtualMachineImageOperations getVirtualMachineImagesOperations() {
+    public VirtualMachineImageOperations getVirtualMachineImagesOperations()
+    {
         return this.virtualMachineImages;
     }
     
@@ -187,7 +197,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * more information)
     * @return The VirtualMachinesOperations value.
     */
-    public VirtualMachineOperations getVirtualMachinesOperations() {
+    public VirtualMachineOperations getVirtualMachinesOperations()
+    {
         return this.virtualMachines;
     }
     
@@ -197,7 +208,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    private ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         super(httpBuilder, executorService);
         this.deployments = new DeploymentOperationsImpl(this);
         this.hostedServices = new HostedServiceOperationsImpl(this);
@@ -223,12 +235,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param baseUri The URI used as the base for all Service Management
     * requests.
     */
-    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
+    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null) {
+        if (baseUri == null)
+        {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -251,9 +266,11 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * the response.
     */
     @Inject
-    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
+    public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -265,7 +282,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected ComputeManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    protected ComputeManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         return new ComputeManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -291,10 +309,12 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> getOperationStatusAsync(final String requestId) {
+    public Future<ComputeOperationStatusResponse> getOperationStatusAsync(final String requestId)
+    {
         return this.getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public ComputeOperationStatusResponse call() throws Exception
+            {
                 return getOperationStatus(requestId);
             }
          });
@@ -330,16 +350,19 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (requestId == null) {
+        if (requestId == null)
+        {
             throw new NullPointerException("requestId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
@@ -357,18 +380,23 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -386,10 +414,12 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null) {
+            if (operationElement != null)
+            {
                 NodeList elements2 = operationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -397,7 +427,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null) {
+                if (statusElement != null)
+                {
                     OperationStatus statusInstance;
                     statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -405,7 +436,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 
                 NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null) {
+                if (httpStatusCodeElement != null)
+                {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -413,13 +445,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 
                 NodeList elements5 = operationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null) {
+                if (errorElement != null)
+                {
                     ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null) {
+                    if (codeElement != null)
+                    {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -427,7 +461,8 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null) {
+                    if (messageElement != null)
+                    {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -436,16 +471,21 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -457,11 +497,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to parse.
     * @return The enum value.
     */
-     static CertificateFormat parseCertificateFormat(String value) {
-        if ("pfx".equals(value)) {
+     static CertificateFormat parseCertificateFormat(String value)
+    {
+        if ("pfx".equals(value))
+        {
             return CertificateFormat.Pfx;
         }
-        if ("cer".equals(value)) {
+        if ("cer".equals(value))
+        {
             return CertificateFormat.Cer;
         }
         throw new IllegalArgumentException("value");
@@ -473,11 +516,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to convert to a string.
     * @return The enum value as a string.
     */
-     static String certificateFormatToString(CertificateFormat value) {
-        if (value == CertificateFormat.Pfx) {
+     static String certificateFormatToString(CertificateFormat value)
+    {
+        if (value == CertificateFormat.Pfx)
+        {
             return "pfx";
         }
-        if (value == CertificateFormat.Cer) {
+        if (value == CertificateFormat.Cer)
+        {
             return "cer";
         }
         throw new IllegalArgumentException("value");
@@ -489,14 +535,18 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to parse.
     * @return The enum value.
     */
-     static HostingResources parseHostingResources(String value) {
-        if ("WebRole".equals(value)) {
+     static HostingResources parseHostingResources(String value)
+    {
+        if ("WebRole".equals(value))
+        {
             return HostingResources.WebRole;
         }
-        if ("WorkerRole".equals(value)) {
+        if ("WorkerRole".equals(value))
+        {
             return HostingResources.WorkerRole;
         }
-        if ("WebRole|WorkerRole".equals(value)) {
+        if ("WebRole|WorkerRole".equals(value))
+        {
             return HostingResources.WebOrWorkerRole;
         }
         throw new IllegalArgumentException("value");
@@ -508,14 +558,18 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to convert to a string.
     * @return The enum value as a string.
     */
-     static String hostingResourcesToString(HostingResources value) {
-        if (value == HostingResources.WebRole) {
+     static String hostingResourcesToString(HostingResources value)
+    {
+        if (value == HostingResources.WebRole)
+        {
             return "WebRole";
         }
-        if (value == HostingResources.WorkerRole) {
+        if (value == HostingResources.WorkerRole)
+        {
             return "WorkerRole";
         }
-        if (value == HostingResources.WebOrWorkerRole) {
+        if (value == HostingResources.WebOrWorkerRole)
+        {
             return "WebRole|WorkerRole";
         }
         throw new IllegalArgumentException("value");
@@ -527,11 +581,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to parse.
     * @return The enum value.
     */
-     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
-        if ("tcp".equals(value)) {
+     static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value)
+    {
+        if ("tcp".equals(value))
+        {
             return LoadBalancerProbeTransportProtocol.Tcp;
         }
-        if ("http".equals(value)) {
+        if ("http".equals(value))
+        {
             return LoadBalancerProbeTransportProtocol.Http;
         }
         throw new IllegalArgumentException("value");
@@ -543,11 +600,14 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @param value The value to convert to a string.
     * @return The enum value as a string.
     */
-     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value) {
-        if (value == LoadBalancerProbeTransportProtocol.Tcp) {
+     static String loadBalancerProbeTransportProtocolToString(LoadBalancerProbeTransportProtocol value)
+    {
+        if (value == LoadBalancerProbeTransportProtocol.Tcp)
+        {
             return "tcp";
         }
-        if (value == LoadBalancerProbeTransportProtocol.Http) {
+        if (value == LoadBalancerProbeTransportProtocol.Http)
+        {
             return "http";
         }
         throw new IllegalArgumentException("value");

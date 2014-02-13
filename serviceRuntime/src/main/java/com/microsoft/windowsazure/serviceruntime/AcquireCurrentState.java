@@ -20,28 +20,33 @@ import java.util.Calendar;
 /**
  * 
  */
-class AcquireCurrentState extends CurrentState {
+class AcquireCurrentState extends CurrentState
+{
     private final BigInteger incarnation;
     private final CurrentStatus status;
     private final Calendar expiration;
 
     public AcquireCurrentState(String clientId, BigInteger incarnation,
-            CurrentStatus status, Calendar expiration) {
+            CurrentStatus status, Calendar expiration)
+    {
         super(clientId);
         this.incarnation = incarnation;
         this.status = status;
         this.expiration = expiration;
     }
 
-    public BigInteger getIncarnation() {
+    public BigInteger getIncarnation()
+    {
         return incarnation;
     }
 
-    public CurrentStatus getStatus() {
+    public CurrentStatus getStatus()
+    {
         return status;
     }
 
-    public Calendar getExpiration() {
+    public Calendar getExpiration()
+    {
         return expiration;
     }
 }

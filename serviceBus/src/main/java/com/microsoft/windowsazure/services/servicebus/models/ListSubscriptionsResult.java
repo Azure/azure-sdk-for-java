@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * Represents the result of a <code>listSubscriptions</code> operation.
  */
-public class ListSubscriptionsResult {
+public class ListSubscriptionsResult
+{
 
     private List<SubscriptionInfo> items;
 
@@ -29,7 +30,8 @@ public class ListSubscriptionsResult {
      * @return A <code>List</code> of {@link SubscriptionInfo} objects that
      *         represent the items in the result list.
      */
-    public List<SubscriptionInfo> getItems() {
+    public List<SubscriptionInfo> getItems()
+    {
         return items;
     }
 
@@ -41,7 +43,8 @@ public class ListSubscriptionsResult {
      *            {@link SubscriptionInfo} objects assigned as the value of the
      *            result.
      */
-    public void setItems(List<SubscriptionInfo> items) {
+    public void setItems(List<SubscriptionInfo> items)
+    {
         this.items = items;
     }
 }

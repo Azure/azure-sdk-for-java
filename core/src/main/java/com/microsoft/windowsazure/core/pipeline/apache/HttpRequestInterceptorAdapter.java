@@ -19,15 +19,18 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-public class HttpRequestInterceptorAdapter implements HttpRequestInterceptor {
+public class HttpRequestInterceptorAdapter implements HttpRequestInterceptor
+{
     private ServiceRequestFilter filter;
 
-    public HttpRequestInterceptorAdapter(ServiceRequestFilter filter) {
+    public HttpRequestInterceptorAdapter(ServiceRequestFilter filter)
+    {
         this.filter = filter;
     }
 
     @Override
-    public void process(HttpRequest request, HttpContext context) {
+    public void process(HttpRequest request, HttpContext context)
+    {
         filter.filter(new HttpServiceRequestContext(request, context));
     }
 }

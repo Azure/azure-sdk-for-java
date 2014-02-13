@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * The deployment environment in which this deployment is running.
 */
-public enum DeploymentSlot {
+public enum DeploymentSlot
+{
     Staging,
     
     Production,

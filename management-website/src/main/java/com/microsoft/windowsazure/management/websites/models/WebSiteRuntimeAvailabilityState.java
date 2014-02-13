@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The runtime availability of a website.
 */
-public enum WebSiteRuntimeAvailabilityState {
+public enum WebSiteRuntimeAvailabilityState
+{
     /**
     * The web site is running correctly.
     */

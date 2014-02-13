@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Parameters for the shutdown roles operation.
 */
-public class VirtualMachineShutdownRolesParameters {
+public class VirtualMachineShutdownRolesParameters
+{
     private PostShutdownAction postShutdownAction;
     
     /**
@@ -36,7 +37,8 @@ public class VirtualMachineShutdownRolesParameters {
     * or StoppedDeallocated
     * @return The PostShutdownAction value.
     */
-    public PostShutdownAction getPostShutdownAction() {
+    public PostShutdownAction getPostShutdownAction()
+    {
         return this.postShutdownAction;
     }
     
@@ -45,7 +47,8 @@ public class VirtualMachineShutdownRolesParameters {
     * or StoppedDeallocated
     * @param postShutdownActionValue The PostShutdownAction value.
     */
-    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue) {
+    public void setPostShutdownAction(final PostShutdownAction postShutdownActionValue)
+    {
         this.postShutdownAction = postShutdownActionValue;
     }
     
@@ -55,7 +58,8 @@ public class VirtualMachineShutdownRolesParameters {
     * The set of roles to shut down.
     * @return The Roles value.
     */
-    public ArrayList<String> getRoles() {
+    public ArrayList<String> getRoles()
+    {
         return this.roles;
     }
     
@@ -63,7 +67,8 @@ public class VirtualMachineShutdownRolesParameters {
     * The set of roles to shut down.
     * @param rolesValue The Roles value.
     */
-    public void setRoles(final ArrayList<String> rolesValue) {
+    public void setRoles(final ArrayList<String> rolesValue)
+    {
         this.roles = rolesValue;
     }
     
@@ -72,7 +77,8 @@ public class VirtualMachineShutdownRolesParameters {
     * class.
     *
     */
-    public VirtualMachineShutdownRolesParameters() {
+    public VirtualMachineShutdownRolesParameters()
+    {
         this.roles = new ArrayList<String>();
     }
 }

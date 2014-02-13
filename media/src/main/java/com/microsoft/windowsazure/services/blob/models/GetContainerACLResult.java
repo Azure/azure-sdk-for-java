@@ -27,7 +27,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Container ACL</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class GetContainerACLResult {
+public class GetContainerACLResult
+{
     private ContainerACL containerACL;
 
     /**
@@ -38,7 +39,8 @@ public class GetContainerACLResult {
      *         level and container-level access policies returned by the
      *         request.
      */
-    public ContainerACL getContainerACL() {
+    public ContainerACL getContainerACL()
+    {
         return containerACL;
     }
 
@@ -55,7 +57,8 @@ public class GetContainerACLResult {
      *            level and container-level access policies returned by the
      *            request.
      */
-    public void setValue(ContainerACL containerACL) {
+    public void setValue(ContainerACL containerACL)
+    {
         this.containerACL = containerACL;
     }
 }

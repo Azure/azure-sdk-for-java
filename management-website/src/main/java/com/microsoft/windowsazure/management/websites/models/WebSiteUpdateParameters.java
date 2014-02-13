@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Parameters supplied to the Update Web Site operation.
 */
-public class WebSiteUpdateParameters {
+public class WebSiteUpdateParameters
+{
     private WebSpaceAvailabilityState availabilityState;
     
     /**
@@ -39,7 +40,8 @@ public class WebSiteUpdateParameters {
     * the site is available and that detailed site information is unavailable.
     * @return The AvailabilityState value.
     */
-    public WebSpaceAvailabilityState getAvailabilityState() {
+    public WebSpaceAvailabilityState getAvailabilityState()
+    {
         return this.availabilityState;
     }
     
@@ -51,7 +53,8 @@ public class WebSiteUpdateParameters {
     * the site is available and that detailed site information is unavailable.
     * @param availabilityStateValue The AvailabilityState value.
     */
-    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
+    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue)
+    {
         this.availabilityState = availabilityStateValue;
     }
     
@@ -62,7 +65,8 @@ public class WebSiteUpdateParameters {
     * Dedicated.
     * @return The ComputeMode value.
     */
-    public WebSiteComputeMode getComputeMode() {
+    public WebSiteComputeMode getComputeMode()
+    {
         return this.computeMode;
     }
     
@@ -71,7 +75,8 @@ public class WebSiteUpdateParameters {
     * Dedicated.
     * @param computeModeValue The ComputeMode value.
     */
-    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
+    public void setComputeMode(final WebSiteComputeMode computeModeValue)
+    {
         this.computeMode = computeModeValue;
     }
     
@@ -82,7 +87,8 @@ public class WebSiteUpdateParameters {
     * false disables the site (takes the site off line).
     * @return The Enabled value.
     */
-    public Boolean isEnabled() {
+    public Boolean isEnabled()
+    {
         return this.enabled;
     }
     
@@ -91,7 +97,8 @@ public class WebSiteUpdateParameters {
     * false disables the site (takes the site off line).
     * @param enabledValue The Enabled value.
     */
-    public void setEnabled(final Boolean enabledValue) {
+    public void setEnabled(final Boolean enabledValue)
+    {
         this.enabled = enabledValue;
     }
     
@@ -106,7 +113,8 @@ public class WebSiteUpdateParameters {
     * one that you wangt to delete.
     * @return The HostNames value.
     */
-    public ArrayList<String> getHostNames() {
+    public ArrayList<String> getHostNames()
+    {
         return this.hostNames;
     }
     
@@ -119,7 +127,8 @@ public class WebSiteUpdateParameters {
     * one that you wangt to delete.
     * @param hostNamesValue The HostNames value.
     */
-    public void setHostNames(final ArrayList<String> hostNamesValue) {
+    public void setHostNames(final ArrayList<String> hostNamesValue)
+    {
         this.hostNames = hostNamesValue;
     }
     
@@ -129,7 +138,8 @@ public class WebSiteUpdateParameters {
     * SSL states bound to the website.
     * @return The HostNameSslStates value.
     */
-    public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates() {
+    public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates()
+    {
         return this.hostNameSslStates;
     }
     
@@ -137,7 +147,8 @@ public class WebSiteUpdateParameters {
     * SSL states bound to the website.
     * @param hostNameSslStatesValue The HostNameSslStates value.
     */
-    public void setHostNameSslStates(final ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStatesValue) {
+    public void setHostNameSslStates(final ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStatesValue)
+    {
         this.hostNameSslStates = hostNameSslStatesValue;
     }
     
@@ -151,7 +162,8 @@ public class WebSiteUpdateParameters {
     * from provisioning. This typically occurs only for free sites.
     * @return The RuntimeAvailabilityState value.
     */
-    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
+    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState()
+    {
         return this.runtimeAvailabilityState;
     }
     
@@ -163,7 +175,8 @@ public class WebSiteUpdateParameters {
     * from provisioning. This typically occurs only for free sites.
     * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
     */
-    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
+    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue)
+    {
         this.runtimeAvailabilityState = runtimeAvailabilityStateValue;
     }
     
@@ -173,7 +186,8 @@ public class WebSiteUpdateParameters {
     * String. If a server farm exists, this value is DefaultServerFarm.
     * @return The ServerFarm value.
     */
-    public String getServerFarm() {
+    public String getServerFarm()
+    {
         return this.serverFarm;
     }
     
@@ -181,7 +195,8 @@ public class WebSiteUpdateParameters {
     * String. If a server farm exists, this value is DefaultServerFarm.
     * @param serverFarmValue The ServerFarm value.
     */
-    public void setServerFarm(final String serverFarmValue) {
+    public void setServerFarm(final String serverFarmValue)
+    {
         this.serverFarm = serverFarmValue;
     }
     
@@ -194,7 +209,8 @@ public class WebSiteUpdateParameters {
     * mode uses the ComputeMode setting.
     * @return The SiteMode value.
     */
-    public WebSiteMode getSiteMode() {
+    public WebSiteMode getSiteMode()
+    {
         return this.siteMode;
     }
     
@@ -205,7 +221,8 @@ public class WebSiteUpdateParameters {
     * mode uses the ComputeMode setting.
     * @param siteModeValue The SiteMode value.
     */
-    public void setSiteMode(final WebSiteMode siteModeValue) {
+    public void setSiteMode(final WebSiteMode siteModeValue)
+    {
         this.siteMode = siteModeValue;
     }
     
@@ -215,7 +232,8 @@ public class WebSiteUpdateParameters {
     * SSL certificates bound to the web site.
     * @return The SslCertificates value.
     */
-    public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates() {
+    public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates()
+    {
         return this.sslCertificates;
     }
     
@@ -223,7 +241,8 @@ public class WebSiteUpdateParameters {
     * SSL certificates bound to the web site.
     * @param sslCertificatesValue The SslCertificates value.
     */
-    public void setSslCertificates(final ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificatesValue) {
+    public void setSslCertificates(final ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificatesValue)
+    {
         this.sslCertificates = sslCertificatesValue;
     }
     
@@ -234,7 +253,8 @@ public class WebSiteUpdateParameters {
     * include Stopped, Running or QuotaExceeded.
     * @return The State value.
     */
-    public String getState() {
+    public String getState()
+    {
         return this.state;
     }
     
@@ -243,7 +263,8 @@ public class WebSiteUpdateParameters {
     * include Stopped, Running or QuotaExceeded.
     * @param stateValue The State value.
     */
-    public void setState(final String stateValue) {
+    public void setState(final String stateValue)
+    {
         this.state = stateValue;
     }
     
@@ -251,7 +272,8 @@ public class WebSiteUpdateParameters {
     * Initializes a new instance of the WebSiteUpdateParameters class.
     *
     */
-    public WebSiteUpdateParameters() {
+    public WebSiteUpdateParameters()
+    {
         this.hostNames = new ArrayList<String>();
         this.hostNameSslStates = new ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState>();
         this.sslCertificates = new ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate>();
@@ -260,7 +282,8 @@ public class WebSiteUpdateParameters {
     /**
     * SSL states bound to a website.
     */
-    public static class WebSiteHostNameSslState {
+    public static class WebSiteHostNameSslState
+    {
         private WebSiteSslState sslState;
         
         /**
@@ -268,7 +291,8 @@ public class WebSiteUpdateParameters {
         * IpBasedEnabled.
         * @return The SslState value.
         */
-        public WebSiteSslState getSslState() {
+        public WebSiteSslState getSslState()
+        {
             return this.sslState;
         }
         
@@ -277,7 +301,8 @@ public class WebSiteUpdateParameters {
         * IpBasedEnabled.
         * @param sslStateValue The SslState value.
         */
-        public void setSslState(final WebSiteSslState sslStateValue) {
+        public void setSslState(final WebSiteSslState sslStateValue)
+        {
             this.sslState = sslStateValue;
         }
         
@@ -287,7 +312,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the thumbprint of the SSL certificate.
         * @return The Thumbprint value.
         */
-        public String getThumbprint() {
+        public String getThumbprint()
+        {
             return this.thumbprint;
         }
         
@@ -295,7 +321,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the thumbprint of the SSL certificate.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue) {
+        public void setThumbprint(final String thumbprintValue)
+        {
             this.thumbprint = thumbprintValue;
         }
         
@@ -304,14 +331,16 @@ public class WebSiteUpdateParameters {
         /**
         * @return The ToUpdate value.
         */
-        public Boolean isToUpdate() {
+        public Boolean isToUpdate()
+        {
             return this.toUpdate;
         }
         
         /**
         * @param toUpdateValue The ToUpdate value.
         */
-        public void setToUpdate(final Boolean toUpdateValue) {
+        public void setToUpdate(final Boolean toUpdateValue)
+        {
             this.toUpdate = toUpdateValue;
         }
     }
@@ -319,14 +348,16 @@ public class WebSiteUpdateParameters {
     /**
     * Contains SSL certificate properties.
     */
-    public static class WebSiteSslCertificate {
+    public static class WebSiteSslCertificate
+    {
         private Boolean isToBeDeleted;
         
         /**
         * Boolean. true if the certificate is to be deleted.
         * @return The IsToBeDeleted value.
         */
-        public Boolean isToBeDeleted() {
+        public Boolean isToBeDeleted()
+        {
             return this.isToBeDeleted;
         }
         
@@ -334,7 +365,8 @@ public class WebSiteUpdateParameters {
         * Boolean. true if the certificate is to be deleted.
         * @param isToBeDeletedValue The IsToBeDeleted value.
         */
-        public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
+        public void setIsToBeDeleted(final Boolean isToBeDeletedValue)
+        {
             this.isToBeDeleted = isToBeDeletedValue;
         }
         
@@ -344,7 +376,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the password for the certificate.
         * @return The Password value.
         */
-        public String getPassword() {
+        public String getPassword()
+        {
             return this.password;
         }
         
@@ -352,7 +385,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the password for the certificate.
         * @param passwordValue The Password value.
         */
-        public void setPassword(final String passwordValue) {
+        public void setPassword(final String passwordValue)
+        {
             this.password = passwordValue;
         }
         
@@ -362,7 +396,8 @@ public class WebSiteUpdateParameters {
         * A base64Binary value that contains the PfxBlob of the certificate.
         * @return The PfxBlob value.
         */
-        public byte[] getPfxBlob() {
+        public byte[] getPfxBlob()
+        {
             return this.pfxBlob;
         }
         
@@ -370,7 +405,8 @@ public class WebSiteUpdateParameters {
         * A base64Binary value that contains the PfxBlob of the certificate.
         * @param pfxBlobValue The PfxBlob value.
         */
-        public void setPfxBlob(final byte[] pfxBlobValue) {
+        public void setPfxBlob(final byte[] pfxBlobValue)
+        {
             this.pfxBlob = pfxBlobValue;
         }
         
@@ -380,7 +416,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the certificate thumbprint.
         * @return The Thumbprint value.
         */
-        public String getThumbprint() {
+        public String getThumbprint()
+        {
             return this.thumbprint;
         }
         
@@ -388,7 +425,8 @@ public class WebSiteUpdateParameters {
         * A string that contains the certificate thumbprint.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue) {
+        public void setThumbprint(final String thumbprintValue)
+        {
             this.thumbprint = thumbprintValue;
         }
     }

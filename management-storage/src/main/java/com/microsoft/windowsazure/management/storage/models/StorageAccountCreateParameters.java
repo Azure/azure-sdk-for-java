@@ -28,7 +28,8 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Create Storage Account operation.
 */
-public class StorageAccountCreateParameters {
+public class StorageAccountCreateParameters
+{
     private String affinityGroup;
     
     /**
@@ -38,7 +39,8 @@ public class StorageAccountCreateParameters {
     * available affinity groups, use the List Affinity Groups operation.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() {
+    public String getAffinityGroup()
+    {
         return this.affinityGroup;
     }
     
@@ -49,7 +51,8 @@ public class StorageAccountCreateParameters {
     * available affinity groups, use the List Affinity Groups operation.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue) {
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -60,7 +63,8 @@ public class StorageAccountCreateParameters {
     * up to 1024 characters in length.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -69,7 +73,8 @@ public class StorageAccountCreateParameters {
     * up to 1024 characters in length.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -88,7 +93,8 @@ public class StorageAccountCreateParameters {
     * property value has a maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -105,7 +111,8 @@ public class StorageAccountCreateParameters {
     * property value has a maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -119,7 +126,8 @@ public class StorageAccountCreateParameters {
     * enable resilience in the face of catastrophic service loss.
     * @return The GeoReplicationEnabled value.
     */
-    public boolean isGeoReplicationEnabled() {
+    public boolean isGeoReplicationEnabled()
+    {
         return this.geoReplicationEnabled;
     }
     
@@ -131,7 +139,8 @@ public class StorageAccountCreateParameters {
     * enable resilience in the face of catastrophic service loss.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
+    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue)
+    {
         this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
@@ -143,10 +152,14 @@ public class StorageAccountCreateParameters {
     * used identify the storage account for yourtracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
-        if (this.label == null) {
+    public String getLabel()
+    {
+        if (this.label == null)
+        {
             return this.getServiceName();
-        } else {
+        }
+        else
+        {
             return this.label;
         }
     }
@@ -157,7 +170,8 @@ public class StorageAccountCreateParameters {
     * used identify the storage account for yourtracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -170,7 +184,8 @@ public class StorageAccountCreateParameters {
     * available locations, use the List Locations operation.
     * @return The Location value.
     */
-    public String getLocation() {
+    public String getLocation()
+    {
         return this.location;
     }
     
@@ -181,7 +196,8 @@ public class StorageAccountCreateParameters {
     * available locations, use the List Locations operation.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue) {
+    public void setLocation(final String locationValue)
+    {
         this.location = locationValue;
     }
     
@@ -196,7 +212,8 @@ public class StorageAccountCreateParameters {
     * http://ServiceName.blob.core.windows.net/mycontainer/
     * @return The ServiceName value.
     */
-    public String getServiceName() {
+    public String getServiceName()
+    {
         return this.serviceName;
     }
     
@@ -209,7 +226,8 @@ public class StorageAccountCreateParameters {
     * http://ServiceName.blob.core.windows.net/mycontainer/
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue) {
+    public void setServiceName(final String serviceNameValue)
+    {
         this.serviceName = serviceNameValue;
     }
     
@@ -217,7 +235,8 @@ public class StorageAccountCreateParameters {
     * Initializes a new instance of the StorageAccountCreateParameters class.
     *
     */
-    public StorageAccountCreateParameters() {
+    public StorageAccountCreateParameters()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

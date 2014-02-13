@@ -25,7 +25,8 @@ import java.util.TimeZone;
 /*
  * "not quite" ISO 8601 date time conversion routines
  */
-public class ISO8601DateConverter {
+public class ISO8601DateConverter
+{
     // Note: because of the trailing "0000000", this is not quite ISO 8601
     // compatible
     private static final String DATETIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -33,33 +34,40 @@ public class ISO8601DateConverter {
     private static final String DATETIME_PATTERN_NO_S = "yyyy-MM-dd'T'HH:mm'Z'";
     private static final String DATETIME_PATTERN_TO_DECIMAL = "yyyy-MM-dd'T'HH:mm:ss.";
 
-    public String format(Date date) {
+    public String format(Date date)
+    {
         DateFormat iso8601Format = new SimpleDateFormat(DATETIME_PATTERN,
                 Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format.format(date);
     }
 
-    public String shortFormat(Date date) {
+    public String shortFormat(Date date)
+    {
         DateFormat iso8601Format = new SimpleDateFormat(SHORT_DATETIME_PATTERN,
                 Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format.format(date);
     }
 
-    public Date parse(String date) throws ParseException {
-        if (date == null) {
+    public Date parse(String date) throws ParseException
+    {
+        if (date == null)
+        {
             return null;
         }
 
         int length = date.length();
-        if (length == 17) {
+        if (length == 17)
+        {
             // [2012-01-04T23:21Z] length = 17
             return parseDateFromString(date, DATETIME_PATTERN_NO_S);
-        } else if (length == 20) {
+        } else if (length == 20)
+        {
             // [2012-01-04T23:21:59Z] length = 20
             return parseDateFromString(date, SHORT_DATETIME_PATTERN);
-        } else if (length >= 22 && length <= 28) {
+        } else if (length >= 22 && length <= 28)
+        {
             // [2012-01-04T23:21:59.1Z] length = 22
             // [2012-01-04T23:21:59.1234567Z] length = 28
             // Need to handle the milliseconds gently.
@@ -75,16 +83,18 @@ public class ISO8601DateConverter {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timeInMS);
             return calendar.getTime();
-        } else {
+        } else
+        {
             throw new IllegalArgumentException(String.format(
                     "Invalid Date String: %s", date));
         }
     }
 
     private static Date parseDateFromString(final String value,
-            final String pattern) throws ParseException {
-        final DateFormat iso8601Format = new SimpleDateFormat(pattern,
-                Locale.US);
+            final String pattern) throws ParseException
+    {
+        final DateFormat iso8601Format =
+                new SimpleDateFormat(pattern, Locale.US);
         iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return iso8601Format.parse(value);
     }

@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.store.models;
 /**
 * Represents the data passed to the Update Store Resource API method.
 */
-public class AddOnUpdateParameters {
+public class AddOnUpdateParameters
+{
     private String plan;
     
     /**
     * The selected plan for this store addon.
     * @return The Plan value.
     */
-    public String getPlan() {
+    public String getPlan()
+    {
         return this.plan;
     }
     
@@ -41,7 +43,8 @@ public class AddOnUpdateParameters {
     * The selected plan for this store addon.
     * @param planValue The Plan value.
     */
-    public void setPlan(final String planValue) {
+    public void setPlan(final String planValue)
+    {
         this.plan = planValue;
     }
     
@@ -51,7 +54,8 @@ public class AddOnUpdateParameters {
     * The promotion code for this store addon.
     * @return The PromotionCode value.
     */
-    public String getPromotionCode() {
+    public String getPromotionCode()
+    {
         return this.promotionCode;
     }
     
@@ -59,7 +63,8 @@ public class AddOnUpdateParameters {
     * The promotion code for this store addon.
     * @param promotionCodeValue The PromotionCode value.
     */
-    public void setPromotionCode(final String promotionCodeValue) {
+    public void setPromotionCode(final String promotionCodeValue)
+    {
         this.promotionCode = promotionCodeValue;
     }
     
@@ -69,7 +74,8 @@ public class AddOnUpdateParameters {
     * The type of store item to be created.
     * @return The Type value.
     */
-    public String getType() {
+    public String getType()
+    {
         return this.type;
     }
     
@@ -77,7 +83,8 @@ public class AddOnUpdateParameters {
     * The type of store item to be created.
     * @param typeValue The Type value.
     */
-    public void setType(final String typeValue) {
+    public void setType(final String typeValue)
+    {
         this.type = typeValue;
     }
 }

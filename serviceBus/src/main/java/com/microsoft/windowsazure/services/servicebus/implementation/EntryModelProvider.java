@@ -32,17 +32,20 @@ import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
 import com.sun.jersey.spi.MessageBodyWorkers;
 
 public class EntryModelProvider extends
-        AbstractMessageReaderWriterProvider<EntryModel<?>> {
+        AbstractMessageReaderWriterProvider<EntryModel<?>>
+{
 
     MessageBodyWorkers workers;
 
-    public EntryModelProvider(@Context MessageBodyWorkers workers) {
+    public EntryModelProvider(@Context MessageBodyWorkers workers)
+    {
         this.workers = workers;
     }
 
     @Override
     public boolean isReadable(Class<?> type, Type genericType,
-            Annotation[] annotations, MediaType mediaType) {
+            Annotation[] annotations, MediaType mediaType)
+    {
         return EntryModel.class.isAssignableFrom(type);
     }
 
@@ -50,7 +53,8 @@ public class EntryModelProvider extends
     public EntryModel<?> readFrom(Class<EntryModel<?>> type, Type genericType,
             Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-            throws IOException, WebApplicationException {
+            throws IOException, WebApplicationException
+    {
 
         MessageBodyReader<Entry> reader = workers.getMessageBodyReader(
                 Entry.class, Entry.class, annotations, mediaType);
@@ -60,22 +64,28 @@ public class EntryModelProvider extends
 
         // these exceptions are masked as a RuntimeException because they cannot
         // be thrown by this override
-        try {
+        try
+        {
             return type.getConstructor(Entry.class).newInstance(entry);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException e)
+        {
             throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e)
+        {
             throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e)
+        {
             throw new RuntimeException(e);
-        } catch (InstantiationException e) {
+        } catch (InstantiationException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType,
-            Annotation[] annotations, MediaType mediaType) {
+            Annotation[] annotations, MediaType mediaType)
+    {
         return EntryModel.class.isAssignableFrom(type);
     }
 
@@ -84,7 +94,8 @@ public class EntryModelProvider extends
             Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, Object> httpHeaders,
             OutputStream entityStream) throws IOException,
-            WebApplicationException {
+            WebApplicationException
+    {
 
         Entry entry = t.getEntry();
 

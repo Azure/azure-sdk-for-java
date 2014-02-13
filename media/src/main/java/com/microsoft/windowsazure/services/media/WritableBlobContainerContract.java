@@ -29,7 +29,8 @@ import com.microsoft.windowsazure.exception.ServiceException;
  * The Interface WritableBlobContainerContract.
  */
 public interface WritableBlobContainerContract extends
-        JerseyFilterableService<WritableBlobContainerContract> {
+        JerseyFilterableService<WritableBlobContainerContract>
+{
 
     /**
      * Creates the block blob.

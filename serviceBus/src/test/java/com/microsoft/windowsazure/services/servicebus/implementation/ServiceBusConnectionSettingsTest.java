@@ -22,10 +22,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 
-public class ServiceBusConnectionSettingsTest {
+public class ServiceBusConnectionSettingsTest
+{
 
     @Test
-    public void settingsAreParsedFromConnectionString() throws Exception {
+    public void settingsAreParsedFromConnectionString() throws Exception
+    {
         String ns = "myNamespace";
         String issuer = "myissuer";
         String secret = "mysecret";
@@ -44,21 +46,24 @@ public class ServiceBusConnectionSettingsTest {
         assertEquals(secret, settings.getWrapPassword());
     }
 
-    private String getConnectionString(String ns, String issuer, String secret) {
+    private String getConnectionString(String ns, String issuer, String secret)
+    {
         return String
                 .format("Endpoint=sb://%1$s.servicebus.windows.net/;SharedSecretIssuer=%2$s;SharedSecretValue=%3$s",
                         ns, issuer, secret);
     }
 
     private String getConnectionString(String ns, String stsEndpoint,
-            String issuer, String secret) {
+            String issuer, String secret)
+    {
         return String
                 .format("Endpoint=sb://%1$s.servicebus.windows.net/;StsEndpoint=https://%1$s%4$s;SharedSecretIssuer=%2$s;SharedSecretValue=%3$s",
                         ns, issuer, secret, stsEndpoint);
     }
 
     @Test
-    public void settingsAreUsedFromConnectionStringInConfig() throws Exception {
+    public void settingsAreUsedFromConnectionStringInConfig() throws Exception
+    {
         Configuration config = Configuration.load();
         ServiceBusConfiguration.configureWithConnectionString(null, config,
                 getConnectionString("myNamespace", "owner", "secret"));
@@ -77,7 +82,8 @@ public class ServiceBusConnectionSettingsTest {
 
     @Test
     public void settingsAreUsedFromIndividualSettingsInConfiguration()
-            throws Exception {
+            throws Exception
+    {
         Configuration config = Configuration.load();
 
         ServiceBusConfiguration.configureWithWrapAuthentication(config,
@@ -98,7 +104,8 @@ public class ServiceBusConnectionSettingsTest {
 
     @Test
     public void settingsPreferConnectionStringIfBothPresentInConfiguration()
-            throws Exception {
+            throws Exception
+    {
         Configuration config = Configuration.load();
 
         ServiceBusConfiguration.configureWithWrapAuthentication(config,
@@ -122,7 +129,8 @@ public class ServiceBusConnectionSettingsTest {
     }
 
     @Test
-    public void canSetStSEndPointInConnectionString() throws Exception {
+    public void canSetStSEndPointInConnectionString() throws Exception
+    {
         ServiceBusConnectionSettings settings = new ServiceBusConnectionSettings(
                 getConnectionString("myNs", "-some.accesscontrol.net", "owner",
                         "secret"), null, null, null, null);

@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 /**
 * Preview Only. Parameters supplied to the Create Reserved IP operation.
 */
-public class NetworkReservedIPCreateParameters {
+public class NetworkReservedIPCreateParameters
+{
     private String affinityGroup;
     
     /**
@@ -34,7 +35,8 @@ public class NetworkReservedIPCreateParameters {
     * virtual network exists.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() {
+    public String getAffinityGroup()
+    {
         return this.affinityGroup;
     }
     
@@ -43,7 +45,8 @@ public class NetworkReservedIPCreateParameters {
     * virtual network exists.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue) {
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -53,7 +56,8 @@ public class NetworkReservedIPCreateParameters {
     * The name of the deployment the IP belongs to, if being used.
     * @return The DeploymentName value.
     */
-    public String getDeploymentName() {
+    public String getDeploymentName()
+    {
         return this.deploymentName;
     }
     
@@ -61,7 +65,8 @@ public class NetworkReservedIPCreateParameters {
     * The name of the deployment the IP belongs to, if being used.
     * @param deploymentNameValue The DeploymentName value.
     */
-    public void setDeploymentName(final String deploymentNameValue) {
+    public void setDeploymentName(final String deploymentNameValue)
+    {
         this.deploymentName = deploymentNameValue;
     }
     
@@ -71,7 +76,8 @@ public class NetworkReservedIPCreateParameters {
     * The friendly identifier of the site.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -79,7 +85,8 @@ public class NetworkReservedIPCreateParameters {
     * The friendly identifier of the site.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -89,7 +96,8 @@ public class NetworkReservedIPCreateParameters {
     * Name of the reserved IP.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -97,7 +105,8 @@ public class NetworkReservedIPCreateParameters {
     * Name of the reserved IP.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -107,7 +116,8 @@ public class NetworkReservedIPCreateParameters {
     * The name of the service the IP belongs to, if being used.
     * @return The ServiceName value.
     */
-    public String getServiceName() {
+    public String getServiceName()
+    {
         return this.serviceName;
     }
     
@@ -115,7 +125,8 @@ public class NetworkReservedIPCreateParameters {
     * The name of the service the IP belongs to, if being used.
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue) {
+    public void setServiceName(final String serviceNameValue)
+    {
         this.serviceName = serviceNameValue;
     }
 }

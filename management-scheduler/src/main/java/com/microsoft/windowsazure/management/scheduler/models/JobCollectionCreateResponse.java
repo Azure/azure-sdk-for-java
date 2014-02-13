@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Create Job Collection operation response.
 */
-public class JobCollectionCreateResponse extends OperationResponse {
+public class JobCollectionCreateResponse extends OperationResponse
+{
     private String eTag;
     
     /**
     * ETag of the Job Collection.
     * @return The ETag value.
     */
-    public String getETag() {
+    public String getETag()
+    {
         return this.eTag;
     }
     
@@ -43,7 +45,8 @@ public class JobCollectionCreateResponse extends OperationResponse {
     * ETag of the Job Collection.
     * @param eTagValue The ETag value.
     */
-    public void setETag(final String eTagValue) {
+    public void setETag(final String eTagValue)
+    {
         this.eTag = eTagValue;
     }
 }

@@ -27,7 +27,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * the content language, the MD5 hash, a cache control value, blob metadata, a
  * blob lease ID, and any access conditions for the operation.
  */
-public class CommitBlobBlocksOptions extends BlobServiceOptions {
+public class CommitBlobBlocksOptions extends BlobServiceOptions
+{
     private String blobContentType;
     private String blobContentEncoding;
     private String blobContentLanguage;
@@ -49,7 +50,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
     @Override
-    public CommitBlobBlocksOptions setTimeout(Integer timeout) {
+    public CommitBlobBlocksOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -61,7 +63,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the MIME content type value set, if
      *         any.
      */
-    public String getBlobContentType() {
+    public String getBlobContentType()
+    {
         return blobContentType;
     }
 
@@ -80,7 +83,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            set.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions setBlobContentType(String blobContentType) {
+    public CommitBlobBlocksOptions setBlobContentType(String blobContentType)
+    {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -92,7 +96,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP content encoding value set,
      *         if any.
      */
-    public String getBlobContentEncoding() {
+    public String getBlobContentEncoding()
+    {
         return blobContentEncoding;
     }
 
@@ -114,7 +119,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
     public CommitBlobBlocksOptions setBlobContentEncoding(
-            String blobContentEncoding) {
+            String blobContentEncoding)
+    {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -126,7 +132,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP content language header
      *         value set, if any.
      */
-    public String getBlobContentLanguage() {
+    public String getBlobContentLanguage()
+    {
         return blobContentLanguage;
     }
 
@@ -146,7 +153,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
     public CommitBlobBlocksOptions setBlobContentLanguage(
-            String blobContentLanguage) {
+            String blobContentLanguage)
+    {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -158,7 +166,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the MD5 hash value for the blob
      *         content set, if any.
      */
-    public String getBlobContentMD5() {
+    public String getBlobContentMD5()
+    {
         return blobContentMD5;
     }
 
@@ -180,7 +189,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            content to set.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions setBlobContentMD5(String blobContentMD5) {
+    public CommitBlobBlocksOptions setBlobContentMD5(String blobContentMD5)
+    {
         this.blobContentMD5 = blobContentMD5;
         return this;
     }
@@ -192,7 +202,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP cache control value set, if
      *         any.
      */
-    public String getBlobCacheControl() {
+    public String getBlobCacheControl()
+    {
         return blobCacheControl;
     }
 
@@ -210,7 +221,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            set.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions setBlobCacheControl(String blobCacheControl) {
+    public CommitBlobBlocksOptions setBlobCacheControl(String blobCacheControl)
+    {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -222,7 +234,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link HashMap} of name-value pairs of {@link String}
      *         containing the blob metadata set, if any.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -242,7 +255,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            containing the blob metadata to set.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions setMetadata(HashMap<String, String> metadata) {
+    public CommitBlobBlocksOptions setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
         return this;
     }
@@ -259,7 +273,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            name-value pair to add to the metadata collection.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions addMetadata(String key, String value) {
+    public CommitBlobBlocksOptions addMetadata(String key, String value)
+    {
         this.getMetadata().put(key, value);
         return this;
     }
@@ -270,7 +285,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -286,7 +302,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
-    public CommitBlobBlocksOptions setLeaseId(String leaseId) {
+    public CommitBlobBlocksOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -298,7 +315,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -318,7 +336,8 @@ public class CommitBlobBlocksOptions extends BlobServiceOptions {
      * @return A reference to this {@link CommitBlobBlocksOptions} instance.
      */
     public CommitBlobBlocksOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

@@ -39,7 +39,8 @@ import org.xml.sax.SAXException;
 * Includes operations for importing and exporting SQL Databases into and out of
 * Windows Azure blob storage.
 */
-public interface DacOperations {
+public interface DacOperations
+{
     /**
     * Export DAC into Windows Azure blob storage.
     *

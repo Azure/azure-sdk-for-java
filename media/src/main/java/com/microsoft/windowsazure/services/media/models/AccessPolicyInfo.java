@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.services.media.implementation.content.AccessPo
  * Type containing data about access policies.
  * 
  */
-public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
+public class AccessPolicyInfo extends ODataEntity<AccessPolicyType>
+{
 
     /**
      * Creates a new {@link AccessPolicyInfo} wrapping the given ATOM entry and
@@ -37,7 +38,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * @param content
      *            Content with the AccessPolicy data
      */
-    public AccessPolicyInfo(EntryType entry, AccessPolicyType content) {
+    public AccessPolicyInfo(EntryType entry, AccessPolicyType content)
+    {
         super(entry, content);
     }
 
@@ -46,7 +48,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the id.
      */
-    public String getId() {
+    public String getId()
+    {
         return getContent().getId();
     }
 
@@ -55,7 +58,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the date.
      */
-    public Date getCreated() {
+    public Date getCreated()
+    {
         return getContent().getCreated();
     }
 
@@ -64,7 +68,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the date.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return getContent().getLastModified();
     }
 
@@ -73,7 +78,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the name.
      */
-    public String getName() {
+    public String getName()
+    {
         return getContent().getName();
     }
 
@@ -82,7 +88,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the duration.
      */
-    public double getDurationInMinutes() {
+    public double getDurationInMinutes()
+    {
         return getContent().getDurationInMinutes();
     }
 
@@ -91,7 +98,8 @@ public class AccessPolicyInfo extends ODataEntity<AccessPolicyType> {
      * 
      * @return the permissions.
      */
-    public EnumSet<AccessPolicyPermission> getPermissions() {
+    public EnumSet<AccessPolicyPermission> getPermissions()
+    {
         return AccessPolicyPermission.permissionsFromBits(getContent()
                 .getPermissions());
     }

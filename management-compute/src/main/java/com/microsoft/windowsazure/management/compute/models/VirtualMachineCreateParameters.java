@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Parameters supplied to the Create Virtual Machine operation.
 */
-public class VirtualMachineCreateParameters {
+public class VirtualMachineCreateParameters
+{
     private String availabilitySetName;
     
     /**
@@ -39,7 +40,8 @@ public class VirtualMachineCreateParameters {
     * availability.
     * @return The AvailabilitySetName value.
     */
-    public String getAvailabilitySetName() {
+    public String getAvailabilitySetName()
+    {
         return this.availabilitySetName;
     }
     
@@ -51,7 +53,8 @@ public class VirtualMachineCreateParameters {
     * availability.
     * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(final String availabilitySetNameValue) {
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
+    {
         this.availabilitySetName = availabilitySetNameValue;
     }
     
@@ -62,7 +65,8 @@ public class VirtualMachineCreateParameters {
     * application configuration settings.
     * @return The ConfigurationSets value.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() {
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
         return this.configurationSets;
     }
     
@@ -71,7 +75,8 @@ public class VirtualMachineCreateParameters {
     * application configuration settings.
     * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue) {
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
+    {
         this.configurationSets = configurationSetsValue;
     }
     
@@ -82,7 +87,8 @@ public class VirtualMachineCreateParameters {
     * the virtual machine.
     * @return The DataVirtualHardDisks value.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
         return this.dataVirtualHardDisks;
     }
     
@@ -91,7 +97,8 @@ public class VirtualMachineCreateParameters {
     * the virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
+    {
         this.dataVirtualHardDisks = dataVirtualHardDisksValue;
     }
     
@@ -102,7 +109,8 @@ public class VirtualMachineCreateParameters {
     * disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() {
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
         return this.oSVirtualHardDisk;
     }
     
@@ -111,7 +119,8 @@ public class VirtualMachineCreateParameters {
     * disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
+    {
         this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
     
@@ -123,7 +132,8 @@ public class VirtualMachineCreateParameters {
     * aVirtual Machine, this service must be installed.
     * @return The ProvisionGuestAgent value.
     */
-    public Boolean isProvisionGuestAgent() {
+    public Boolean isProvisionGuestAgent()
+    {
         return this.provisionGuestAgent;
     }
     
@@ -133,7 +143,8 @@ public class VirtualMachineCreateParameters {
     * aVirtual Machine, this service must be installed.
     * @param provisionGuestAgentValue The ProvisionGuestAgent value.
     */
-    public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue) {
+    public void setProvisionGuestAgent(final Boolean provisionGuestAgentValue)
+    {
         this.provisionGuestAgent = provisionGuestAgentValue;
     }
     
@@ -145,7 +156,8 @@ public class VirtualMachineCreateParameters {
     * ProvisionGuestAgent is set to true.
     * @return The ResourceExtensionReferences value.
     */
-    public ArrayList<ResourceExtensionReference> getResourceExtensionReferences() {
+    public ArrayList<ResourceExtensionReference> getResourceExtensionReferences()
+    {
         return this.resourceExtensionReferences;
     }
     
@@ -156,7 +168,8 @@ public class VirtualMachineCreateParameters {
     * @param resourceExtensionReferencesValue The ResourceExtensionReferences
     * value.
     */
-    public void setResourceExtensionReferences(final ArrayList<ResourceExtensionReference> resourceExtensionReferencesValue) {
+    public void setResourceExtensionReferences(final ArrayList<ResourceExtensionReference> resourceExtensionReferencesValue)
+    {
         this.resourceExtensionReferences = resourceExtensionReferencesValue;
     }
     
@@ -167,7 +180,8 @@ public class VirtualMachineCreateParameters {
     * unique within the deployment.
     * @return The RoleName value.
     */
-    public String getRoleName() {
+    public String getRoleName()
+    {
         return this.roleName;
     }
     
@@ -176,7 +190,8 @@ public class VirtualMachineCreateParameters {
     * unique within the deployment.
     * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(final String roleNameValue) {
+    public void setRoleName(final String roleNameValue)
+    {
         this.roleName = roleNameValue;
     }
     
@@ -186,7 +201,8 @@ public class VirtualMachineCreateParameters {
     * The size of the virtual machine.
     * @return The RoleSize value.
     */
-    public String getRoleSize() {
+    public String getRoleSize()
+    {
         return this.roleSize;
     }
     
@@ -194,7 +210,8 @@ public class VirtualMachineCreateParameters {
     * The size of the virtual machine.
     * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(final String roleSizeValue) {
+    public void setRoleSize(final String roleSizeValue)
+    {
         this.roleSize = roleSizeValue;
     }
     
@@ -202,7 +219,8 @@ public class VirtualMachineCreateParameters {
     * Initializes a new instance of the VirtualMachineCreateParameters class.
     *
     */
-    public VirtualMachineCreateParameters() {
+    public VirtualMachineCreateParameters()
+    {
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
         this.resourceExtensionReferences = new ArrayList<ResourceExtensionReference>();

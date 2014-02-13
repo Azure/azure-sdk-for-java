@@ -28,14 +28,16 @@ import java.net.InetAddress;
 /**
 * Information about a DNS Server in the virtual network.
 */
-public class DnsServer {
+public class DnsServer
+{
     private InetAddress address;
     
     /**
     * The DNS server address.
     * @return The Address value.
     */
-    public InetAddress getAddress() {
+    public InetAddress getAddress()
+    {
         return this.address;
     }
     
@@ -43,7 +45,8 @@ public class DnsServer {
     * The DNS server address.
     * @param addressValue The Address value.
     */
-    public void setAddress(final InetAddress addressValue) {
+    public void setAddress(final InetAddress addressValue)
+    {
         this.address = addressValue;
     }
     
@@ -53,7 +56,8 @@ public class DnsServer {
     * The name of the DNS server.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -61,7 +65,8 @@ public class DnsServer {
     * The name of the DNS server.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
 }

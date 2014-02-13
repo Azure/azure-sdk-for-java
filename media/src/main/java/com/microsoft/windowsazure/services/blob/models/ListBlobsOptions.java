@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.exception.ServiceException;
  * hierarchies, and whether to include blob metadata, blob snapshots, and
  * uncommitted blobs in the results.
  */
-public class ListBlobsOptions extends BlobServiceOptions {
+public class ListBlobsOptions extends BlobServiceOptions
+{
     private String prefix;
     private String marker;
     private int maxResults;
@@ -47,7 +48,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
     @Override
-    public ListBlobsOptions setTimeout(Integer timeout) {
+    public ListBlobsOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -61,7 +63,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A {@link String} containing the prefix used to filter the blob
      *         names returned, if any.
      */
-    public String getPrefix() {
+    public String getPrefix()
+    {
         return prefix;
     }
 
@@ -77,7 +80,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            A {@link String} containing a prefix to use to filter the blob
      *            names returned.
      */
-    public ListBlobsOptions setPrefix(String prefix) {
+    public ListBlobsOptions setPrefix(String prefix)
+    {
         this.prefix = prefix;
         return this;
     }
@@ -90,7 +94,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A {@link String} containing the marker value to use to specify
      *         the beginning of the request results, if any.
      */
-    public String getMarker() {
+    public String getMarker()
+    {
         return marker;
     }
 
@@ -120,7 +125,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            the beginning of the request results.
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
-    public ListBlobsOptions setMarker(String marker) {
+    public ListBlobsOptions setMarker(String marker)
+    {
         this.marker = marker;
         return this;
     }
@@ -132,7 +138,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return The maximum number of results to return. If the value is zero,
      *         the server will return up to 5,000 items.
      */
-    public int getMaxResults() {
+    public int getMaxResults()
+    {
         return maxResults;
     }
 
@@ -164,7 +171,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            The maximum number of results to return.
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
-    public ListBlobsOptions setMaxResults(int maxResults) {
+    public ListBlobsOptions setMaxResults(int maxResults)
+    {
         this.maxResults = maxResults;
         return this;
     }
@@ -175,7 +183,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the delimiter value, if any.
      */
-    public String getDelimiter() {
+    public String getDelimiter()
+    {
         return delimiter;
     }
 
@@ -226,7 +235,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            grouping virtual blob hierarchy.
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
-    public ListBlobsOptions setDelimiter(String delimiter) {
+    public ListBlobsOptions setDelimiter(String delimiter)
+    {
         this.delimiter = delimiter;
         return this;
     }
@@ -238,7 +248,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A value of <code>true</code> to include blob metadata with a
      *         response, otherwise, <code>false</code>.
      */
-    public boolean isIncludeMetadata() {
+    public boolean isIncludeMetadata()
+    {
         return includeMetadata;
     }
 
@@ -251,7 +262,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            a response, otherwise, <code>false</code>.
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
-    public ListBlobsOptions setIncludeMetadata(boolean includeMetadata) {
+    public ListBlobsOptions setIncludeMetadata(boolean includeMetadata)
+    {
         this.includeMetadata = includeMetadata;
         return this;
     }
@@ -263,7 +275,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A value of <code>true</code> to include blob metadata with a
      *         response, otherwise, <code>false</code>.
      */
-    public boolean isIncludeSnapshots() {
+    public boolean isIncludeSnapshots()
+    {
         return includeSnapshots;
     }
 
@@ -280,7 +293,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      *            a response, otherwise, <code>false</code>.
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
-    public ListBlobsOptions setIncludeSnapshots(boolean includeSnapshots) {
+    public ListBlobsOptions setIncludeSnapshots(boolean includeSnapshots)
+    {
         this.includeSnapshots = includeSnapshots;
         return this;
     }
@@ -292,7 +306,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A value of <code>true</code> to include uncommitted blobs with a
      *         response, otherwise, <code>false</code>.
      */
-    public boolean isIncludeUncommittedBlobs() {
+    public boolean isIncludeUncommittedBlobs()
+    {
         return includeUncommittedBlobs;
     }
 
@@ -311,7 +326,8 @@ public class ListBlobsOptions extends BlobServiceOptions {
      * @return A reference to this {@link ListBlobsOptions} instance.
      */
     public ListBlobsOptions setIncludeUncommittedBlobs(
-            boolean includeUncommittedBlobs) {
+            boolean includeUncommittedBlobs)
+    {
         this.includeUncommittedBlobs = includeUncommittedBlobs;
         return this;
     }

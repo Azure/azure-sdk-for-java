@@ -20,20 +20,25 @@ import org.hamcrest.Description;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public class ServiceExceptionMatcher extends BaseMatcher<ServiceException> {
+public class ServiceExceptionMatcher extends BaseMatcher<ServiceException>
+{
     private final int httpStatusCode;
 
-    public ServiceExceptionMatcher(int httpStatusCode) {
+    public ServiceExceptionMatcher(int httpStatusCode)
+    {
         this.httpStatusCode = httpStatusCode;
     }
 
     @Override
-    public boolean matches(Object item) {
-        if (item == null || item.getClass() != ServiceException.class) {
+    public boolean matches(Object item)
+    {
+        if (item == null || item.getClass() != ServiceException.class)
+        {
             return false;
         }
 
-        if (((ServiceException) item).getHttpStatusCode() != this.httpStatusCode) {
+        if (((ServiceException) item).getHttpStatusCode() != this.httpStatusCode)
+        {
             return false;
         }
 
@@ -41,7 +46,8 @@ public class ServiceExceptionMatcher extends BaseMatcher<ServiceException> {
     }
 
     @Override
-    public void describeTo(Description description) {
+    public void describeTo(Description description)
+    {
         description.appendText("Must be ServiceException with status code"
                 + this.httpStatusCode);
     }

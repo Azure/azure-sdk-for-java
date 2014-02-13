@@ -31,7 +31,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Blob</a> documentation on MSDN for details of the underlying Blob Service
  * REST API operation.
  */
-public class CreateBlobResult {
+public class CreateBlobResult
+{
     private String etag;
     private Date lastModified;
 
@@ -41,7 +42,8 @@ public class CreateBlobResult {
      * @return A {@link String} containing the server-assigned ETag value for
      *         the snapshot.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
@@ -56,7 +58,8 @@ public class CreateBlobResult {
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
@@ -66,7 +69,8 @@ public class CreateBlobResult {
      * @return A {@link java.util.Date} containing the last modified time of the
      *         blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
@@ -81,7 +85,8 @@ public class CreateBlobResult {
      *            A {@link java.util.Date} containing the last modified time of
      *            the snapshot.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 }

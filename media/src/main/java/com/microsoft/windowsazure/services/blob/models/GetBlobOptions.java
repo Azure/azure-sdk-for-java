@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * an active lease, an optional start and end range for blob content to return,
  * and any access conditions to satisfy.
  */
-public class GetBlobOptions extends BlobServiceOptions {
+public class GetBlobOptions extends BlobServiceOptions
+{
     private String snapshot;
     private String leaseId;
     private boolean computeRangeMD5;
@@ -46,7 +47,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return A reference to this {@link GetBlobOptions} instance.
      */
     @Override
-    public GetBlobOptions setTimeout(Integer timeout) {
+    public GetBlobOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -58,7 +60,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to get.
      */
-    public String getSnapshot() {
+    public String getSnapshot()
+    {
         return snapshot;
     }
 
@@ -77,7 +80,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      *            the blob snapshot to get.
      * @return A reference to this {@link GetBlobOptions} instance.
      */
-    public GetBlobOptions setSnapshot(String snapshot) {
+    public GetBlobOptions setSnapshot(String snapshot)
+    {
         this.snapshot = snapshot;
         return this;
     }
@@ -88,7 +92,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -104,7 +109,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link GetBlobOptions} instance.
      */
-    public GetBlobOptions setLeaseId(String leaseId) {
+    public GetBlobOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -117,7 +123,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return A flag value of <code>true</code> to get the MD5 hash value for
      *         the specified range, otherwise <code>false</code>.
      */
-    public boolean isComputeRangeMD5() {
+    public boolean isComputeRangeMD5()
+    {
         return computeRangeMD5;
     }
 
@@ -138,7 +145,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      *            <code>false</code>.
      * @return A reference to this {@link GetBlobOptions} instance.
      */
-    public GetBlobOptions setComputeRangeMD5(boolean computeRangeMD5) {
+    public GetBlobOptions setComputeRangeMD5(boolean computeRangeMD5)
+    {
         this.computeRangeMD5 = computeRangeMD5;
         return this;
     }
@@ -150,7 +158,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return The beginning offset value in bytes for the blob content range to
      *         return.
      */
-    public Long getRangeStart() {
+    public Long getRangeStart()
+    {
         return rangeStart;
     }
 
@@ -172,7 +181,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      *            to return, inclusive.
      * @return A reference to this {@link GetBlobOptions} instance.
      */
-    public GetBlobOptions setRangeStart(Long rangeStart) {
+    public GetBlobOptions setRangeStart(Long rangeStart)
+    {
         this.rangeStart = rangeStart;
         return this;
     }
@@ -184,7 +194,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return The ending offset value in bytes for the blob content range to
      *         return.
      */
-    public Long getRangeEnd() {
+    public Long getRangeEnd()
+    {
         return rangeEnd;
     }
 
@@ -203,7 +214,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      *            return, inclusive.
      * @return A reference to this {@link GetBlobOptions} instance.
      */
-    public GetBlobOptions setRangeEnd(Long rangeEnd) {
+    public GetBlobOptions setRangeEnd(Long rangeEnd)
+    {
         this.rangeEnd = rangeEnd;
         return this;
     }
@@ -214,7 +226,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -231,7 +244,8 @@ public class GetBlobOptions extends BlobServiceOptions {
      * @return A reference to this {@link GetBlobOptions} instance.
      */
     public GetBlobOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

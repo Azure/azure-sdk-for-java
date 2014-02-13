@@ -30,7 +30,8 @@ import java.util.ArrayList;
 /**
 * The Get Affinity Group operation response.
 */
-public class AffinityGroupGetResponse extends OperationResponse {
+public class AffinityGroupGetResponse extends OperationResponse
+{
     private ArrayList<String> capabilities;
     
     /**
@@ -39,7 +40,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * by this element. Otherwise, this element will not be present.
     * @return The Capabilities value.
     */
-    public ArrayList<String> getCapabilities() {
+    public ArrayList<String> getCapabilities()
+    {
         return this.capabilities;
     }
     
@@ -49,7 +51,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * by this element. Otherwise, this element will not be present.
     * @param capabilitiesValue The Capabilities value.
     */
-    public void setCapabilities(final ArrayList<String> capabilitiesValue) {
+    public void setCapabilities(final ArrayList<String> capabilitiesValue)
+    {
         this.capabilities = capabilitiesValue;
     }
     
@@ -59,7 +62,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The user supplied description of this affinity group.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -67,7 +71,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The user supplied description of this affinity group.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -77,7 +82,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The hosted services associated with this affinity group.
     * @return The HostedServices value.
     */
-    public ArrayList<AffinityGroupGetResponse.HostedServiceReference> getHostedServices() {
+    public ArrayList<AffinityGroupGetResponse.HostedServiceReference> getHostedServices()
+    {
         return this.hostedServices;
     }
     
@@ -85,7 +91,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The hosted services associated with this affinity group.
     * @param hostedServicesValue The HostedServices value.
     */
-    public void setHostedServices(final ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServicesValue) {
+    public void setHostedServices(final ArrayList<AffinityGroupGetResponse.HostedServiceReference> hostedServicesValue)
+    {
         this.hostedServices = hostedServicesValue;
     }
     
@@ -96,7 +103,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * encoded string.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -105,7 +113,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * encoded string.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -116,7 +125,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * with.
     * @return The Location value.
     */
-    public String getLocation() {
+    public String getLocation()
+    {
         return this.location;
     }
     
@@ -125,7 +135,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * with.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue) {
+    public void setLocation(final String locationValue)
+    {
         this.location = locationValue;
     }
     
@@ -135,7 +146,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The user supplied name of the affinity group.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -143,7 +155,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The user supplied name of the affinity group.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -153,7 +166,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The storage services associated with this affinity group.
     * @return The StorageServices value.
     */
-    public ArrayList<AffinityGroupGetResponse.StorageServiceReference> getStorageServices() {
+    public ArrayList<AffinityGroupGetResponse.StorageServiceReference> getStorageServices()
+    {
         return this.storageServices;
     }
     
@@ -161,7 +175,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * The storage services associated with this affinity group.
     * @param storageServicesValue The StorageServices value.
     */
-    public void setStorageServices(final ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServicesValue) {
+    public void setStorageServices(final ArrayList<AffinityGroupGetResponse.StorageServiceReference> storageServicesValue)
+    {
         this.storageServices = storageServicesValue;
     }
     
@@ -169,7 +184,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
     * Initializes a new instance of the AffinityGroupGetResponse class.
     *
     */
-    public AffinityGroupGetResponse() {
+    public AffinityGroupGetResponse()
+    {
         super();
         this.capabilities = new ArrayList<String>();
         this.hostedServices = new ArrayList<AffinityGroupGetResponse.HostedServiceReference>();
@@ -179,14 +195,16 @@ public class AffinityGroupGetResponse extends OperationResponse {
     /**
     * Reference to a hosted service associated with an affinity group.
     */
-    public static class HostedServiceReference {
+    public static class HostedServiceReference
+    {
         private String serviceName;
         
         /**
         * The name of the hosted service.
         * @return The ServiceName value.
         */
-        public String getServiceName() {
+        public String getServiceName()
+        {
             return this.serviceName;
         }
         
@@ -194,7 +212,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * The name of the hosted service.
         * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(final String serviceNameValue) {
+        public void setServiceName(final String serviceNameValue)
+        {
             this.serviceName = serviceNameValue;
         }
         
@@ -205,7 +224,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * Service Properties requests against the hosted service.
         * @return The Uri value.
         */
-        public URI getUri() {
+        public URI getUri()
+        {
             return this.uri;
         }
         
@@ -214,7 +234,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * Service Properties requests against the hosted service.
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue) {
+        public void setUri(final URI uriValue)
+        {
             this.uri = uriValue;
         }
     }
@@ -222,14 +243,16 @@ public class AffinityGroupGetResponse extends OperationResponse {
     /**
     * Reference to a storage service associated with an affinity group.
     */
-    public static class StorageServiceReference {
+    public static class StorageServiceReference
+    {
         private String serviceName;
         
         /**
         * The user supplied name of the storage account.
         * @return The ServiceName value.
         */
-        public String getServiceName() {
+        public String getServiceName()
+        {
             return this.serviceName;
         }
         
@@ -237,7 +260,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * The user supplied name of the storage account.
         * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(final String serviceNameValue) {
+        public void setServiceName(final String serviceNameValue)
+        {
             this.serviceName = serviceNameValue;
         }
         
@@ -248,7 +272,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * Account Properties requests against the storage account.
         * @return The Uri value.
         */
-        public URI getUri() {
+        public URI getUri()
+        {
             return this.uri;
         }
         
@@ -257,7 +282,8 @@ public class AffinityGroupGetResponse extends OperationResponse {
         * Account Properties requests against the storage account.
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue) {
+        public void setUri(final URI uriValue)
+        {
             this.uri = uriValue;
         }
     }

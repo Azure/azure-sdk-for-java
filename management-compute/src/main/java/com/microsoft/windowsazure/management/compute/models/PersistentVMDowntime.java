@@ -29,14 +29,16 @@ import java.util.Calendar;
 * Contains information about when the virtual machine has been started and
 * stopped.
 */
-public class PersistentVMDowntime {
+public class PersistentVMDowntime
+{
     private Calendar endTime;
     
     /**
     * The time that the virtual machine was stopped.
     * @return The EndTime value.
     */
-    public Calendar getEndTime() {
+    public Calendar getEndTime()
+    {
         return this.endTime;
     }
     
@@ -44,7 +46,8 @@ public class PersistentVMDowntime {
     * The time that the virtual machine was stopped.
     * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(final Calendar endTimeValue) {
+    public void setEndTime(final Calendar endTimeValue)
+    {
         this.endTime = endTimeValue;
     }
     
@@ -54,7 +57,8 @@ public class PersistentVMDowntime {
     * The time that the virtual machine was started.
     * @return The StartTime value.
     */
-    public Calendar getStartTime() {
+    public Calendar getStartTime()
+    {
         return this.startTime;
     }
     
@@ -62,7 +66,8 @@ public class PersistentVMDowntime {
     * The time that the virtual machine was started.
     * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(final Calendar startTimeValue) {
+    public void setStartTime(final Calendar startTimeValue)
+    {
         this.startTime = startTimeValue;
     }
     
@@ -72,7 +77,8 @@ public class PersistentVMDowntime {
     * The status of the virtual machine.
     * @return The Status value.
     */
-    public String getStatus() {
+    public String getStatus()
+    {
         return this.status;
     }
     
@@ -80,7 +86,8 @@ public class PersistentVMDowntime {
     * The status of the virtual machine.
     * @param statusValue The Status value.
     */
-    public void setStatus(final String statusValue) {
+    public void setStatus(final String statusValue)
+    {
         this.status = statusValue;
     }
 }

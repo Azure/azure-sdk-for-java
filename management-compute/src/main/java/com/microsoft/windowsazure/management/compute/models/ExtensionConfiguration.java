@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Represents an extension that is added to the cloud service.
 */
-public class ExtensionConfiguration {
+public class ExtensionConfiguration
+{
     private ArrayList<ExtensionConfiguration.Extension> allRoles;
     
     /**
@@ -36,7 +37,8 @@ public class ExtensionConfiguration {
     * a deployment.
     * @return The AllRoles value.
     */
-    public ArrayList<ExtensionConfiguration.Extension> getAllRoles() {
+    public ArrayList<ExtensionConfiguration.Extension> getAllRoles()
+    {
         return this.allRoles;
     }
     
@@ -45,7 +47,8 @@ public class ExtensionConfiguration {
     * a deployment.
     * @param allRolesValue The AllRoles value.
     */
-    public void setAllRoles(final ArrayList<ExtensionConfiguration.Extension> allRolesValue) {
+    public void setAllRoles(final ArrayList<ExtensionConfiguration.Extension> allRolesValue)
+    {
         this.allRoles = allRolesValue;
     }
     
@@ -56,7 +59,8 @@ public class ExtensionConfiguration {
     * roles in a deployment.
     * @return The NamedRoles value.
     */
-    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles() {
+    public ArrayList<ExtensionConfiguration.NamedRole> getNamedRoles()
+    {
         return this.namedRoles;
     }
     
@@ -65,7 +69,8 @@ public class ExtensionConfiguration {
     * roles in a deployment.
     * @param namedRolesValue The NamedRoles value.
     */
-    public void setNamedRoles(final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue) {
+    public void setNamedRoles(final ArrayList<ExtensionConfiguration.NamedRole> namedRolesValue)
+    {
         this.namedRoles = namedRolesValue;
     }
     
@@ -73,7 +78,8 @@ public class ExtensionConfiguration {
     * Initializes a new instance of the ExtensionConfiguration class.
     *
     */
-    public ExtensionConfiguration() {
+    public ExtensionConfiguration()
+    {
         this.allRoles = new ArrayList<ExtensionConfiguration.Extension>();
         this.namedRoles = new ArrayList<ExtensionConfiguration.NamedRole>();
     }
@@ -82,7 +88,8 @@ public class ExtensionConfiguration {
     * Represents an extension that is to be deployed to a role in a cloud
     * service.
     */
-    public static class Extension {
+    public static class Extension
+    {
         private String id;
         
         /**
@@ -92,7 +99,8 @@ public class ExtensionConfiguration {
         * Extensions.
         * @return The Id value.
         */
-        public String getId() {
+        public String getId()
+        {
             return this.id;
         }
         
@@ -103,7 +111,8 @@ public class ExtensionConfiguration {
         * Extensions.
         * @param idValue The Id value.
         */
-        public void setId(final String idValue) {
+        public void setId(final String idValue)
+        {
             this.id = idValue;
         }
     }
@@ -112,7 +121,8 @@ public class ExtensionConfiguration {
     * Specifies a list of extensions that are applied to specific roles in a
     * deployment.
     */
-    public static class NamedRole {
+    public static class NamedRole
+    {
         private ArrayList<ExtensionConfiguration.Extension> extensions;
         
         /**
@@ -120,7 +130,8 @@ public class ExtensionConfiguration {
         * a cloud service.
         * @return The Extensions value.
         */
-        public ArrayList<ExtensionConfiguration.Extension> getExtensions() {
+        public ArrayList<ExtensionConfiguration.Extension> getExtensions()
+        {
             return this.extensions;
         }
         
@@ -129,7 +140,8 @@ public class ExtensionConfiguration {
         * a cloud service.
         * @param extensionsValue The Extensions value.
         */
-        public void setExtensions(final ArrayList<ExtensionConfiguration.Extension> extensionsValue) {
+        public void setExtensions(final ArrayList<ExtensionConfiguration.Extension> extensionsValue)
+        {
             this.extensions = extensionsValue;
         }
         
@@ -139,7 +151,8 @@ public class ExtensionConfiguration {
         * Required. Specifies the name of the role.
         * @return The RoleName value.
         */
-        public String getRoleName() {
+        public String getRoleName()
+        {
             return this.roleName;
         }
         
@@ -147,7 +160,8 @@ public class ExtensionConfiguration {
         * Required. Specifies the name of the role.
         * @param roleNameValue The RoleName value.
         */
-        public void setRoleName(final String roleNameValue) {
+        public void setRoleName(final String roleNameValue)
+        {
             this.roleName = roleNameValue;
         }
         
@@ -155,7 +169,8 @@ public class ExtensionConfiguration {
         * Initializes a new instance of the NamedRole class.
         *
         */
-        public NamedRole() {
+        public NamedRole()
+        {
             this.extensions = new ArrayList<ExtensionConfiguration.Extension>();
         }
     }

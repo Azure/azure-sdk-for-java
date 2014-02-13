@@ -51,14 +51,16 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
 * information)
 */
-public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineExtensionOperations {
+public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineExtensionOperations
+{
     /**
     * Initializes a new instance of the VirtualMachineExtensionOperationsImpl
     * class.
     *
     * @param client Reference to the service client.
     */
-    VirtualMachineExtensionOperationsImpl(ComputeManagementClientImpl client) {
+    VirtualMachineExtensionOperationsImpl(ComputeManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -69,7 +71,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient() {
+    public ComputeManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -85,10 +88,12 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The List Resource Extensions operation response.
     */
     @Override
-    public Future<VirtualMachineExtensionListResponse> listAsync() {
+    public Future<VirtualMachineExtensionListResponse> listAsync()
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineExtensionListResponse>() { 
             @Override
-            public VirtualMachineExtensionListResponse call() throws Exception {
+            public VirtualMachineExtensionListResponse call() throws Exception
+            {
                 return list();
             }
          });
@@ -116,13 +121,15 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The List Resource Extensions operation response.
     */
     @Override
-    public VirtualMachineExtensionListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineExtensionListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -139,18 +146,23 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -168,15 +180,18 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             
             NodeList elements = responseDoc.getElementsByTagName("ResourceExtensions");
             Element resourceExtensionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").getLength(); i1 = i1 + 1) {
+            if (resourceExtensionsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").item(i1));
                     VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
                     result.getResourceExtensions().add(resourceExtensionInstance);
                     
                     NodeList elements2 = resourceExtensionsElement.getElementsByTagName("Publisher");
                     Element publisherElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (publisherElement != null) {
+                    if (publisherElement != null)
+                    {
                         String publisherInstance;
                         publisherInstance = publisherElement.getTextContent();
                         resourceExtensionInstance.setPublisher(publisherInstance);
@@ -184,7 +199,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements3 = resourceExtensionsElement.getElementsByTagName("Name");
                     Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         resourceExtensionInstance.setName(nameInstance);
@@ -192,7 +208,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements4 = resourceExtensionsElement.getElementsByTagName("Version");
                     Element versionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (versionElement != null) {
+                    if (versionElement != null)
+                    {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         resourceExtensionInstance.setVersion(versionInstance);
@@ -200,7 +217,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements5 = resourceExtensionsElement.getElementsByTagName("Label");
                     Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (labelElement != null) {
+                    if (labelElement != null)
+                    {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         resourceExtensionInstance.setLabel(labelInstance);
@@ -208,7 +226,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements6 = resourceExtensionsElement.getElementsByTagName("Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (descriptionElement != null) {
+                    if (descriptionElement != null)
+                    {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         resourceExtensionInstance.setDescription(descriptionInstance);
@@ -216,7 +235,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements7 = resourceExtensionsElement.getElementsByTagName("PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (publicConfigurationSchemaElement != null) {
+                    if (publicConfigurationSchemaElement != null)
+                    {
                         String publicConfigurationSchemaInstance;
                         publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
@@ -224,7 +244,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements8 = resourceExtensionsElement.getElementsByTagName("PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (privateConfigurationSchemaElement != null) {
+                    if (privateConfigurationSchemaElement != null)
+                    {
                         String privateConfigurationSchemaInstance;
                         privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
@@ -232,7 +253,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements9 = resourceExtensionsElement.getElementsByTagName("SampleConfig");
                     Element sampleConfigElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sampleConfigElement != null) {
+                    if (sampleConfigElement != null)
+                    {
                         String sampleConfigInstance;
                         sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
@@ -241,16 +263,21 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -270,10 +297,12 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The List Resource Extensions operation response.
     */
     @Override
-    public Future<VirtualMachineExtensionListResponse> listVersionsAsync(final String publisherName, final String extensionName) {
+    public Future<VirtualMachineExtensionListResponse> listVersionsAsync(final String publisherName, final String extensionName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineExtensionListResponse>() { 
             @Override
-            public VirtualMachineExtensionListResponse call() throws Exception {
+            public VirtualMachineExtensionListResponse call() throws Exception
+            {
                 return listVersions(publisherName, extensionName);
             }
          });
@@ -301,19 +330,23 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * @return The List Resource Extensions operation response.
     */
     @Override
-    public VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (publisherName == null) {
+        if (publisherName == null)
+        {
             throw new NullPointerException("publisherName");
         }
-        if (extensionName == null) {
+        if (extensionName == null)
+        {
             throw new NullPointerException("extensionName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("publisherName", publisherName);
@@ -332,18 +365,23 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -361,15 +399,18 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             
             NodeList elements = responseDoc.getElementsByTagName("ResourceExtensions");
             Element resourceExtensionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").getLength(); i1 = i1 + 1) {
+            if (resourceExtensionsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) resourceExtensionsSequenceElement.getElementsByTagName("ResourceExtension").item(i1));
                     VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
                     result.getResourceExtensions().add(resourceExtensionInstance);
                     
                     NodeList elements2 = resourceExtensionsElement.getElementsByTagName("Publisher");
                     Element publisherElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (publisherElement != null) {
+                    if (publisherElement != null)
+                    {
                         String publisherInstance;
                         publisherInstance = publisherElement.getTextContent();
                         resourceExtensionInstance.setPublisher(publisherInstance);
@@ -377,7 +418,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements3 = resourceExtensionsElement.getElementsByTagName("Name");
                     Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         resourceExtensionInstance.setName(nameInstance);
@@ -385,7 +427,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements4 = resourceExtensionsElement.getElementsByTagName("Version");
                     Element versionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (versionElement != null) {
+                    if (versionElement != null)
+                    {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         resourceExtensionInstance.setVersion(versionInstance);
@@ -393,7 +436,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements5 = resourceExtensionsElement.getElementsByTagName("Label");
                     Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (labelElement != null) {
+                    if (labelElement != null)
+                    {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         resourceExtensionInstance.setLabel(labelInstance);
@@ -401,7 +445,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements6 = resourceExtensionsElement.getElementsByTagName("Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (descriptionElement != null) {
+                    if (descriptionElement != null)
+                    {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         resourceExtensionInstance.setDescription(descriptionInstance);
@@ -409,7 +454,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements7 = resourceExtensionsElement.getElementsByTagName("PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (publicConfigurationSchemaElement != null) {
+                    if (publicConfigurationSchemaElement != null)
+                    {
                         String publicConfigurationSchemaInstance;
                         publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
@@ -417,7 +463,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements8 = resourceExtensionsElement.getElementsByTagName("PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (privateConfigurationSchemaElement != null) {
+                    if (privateConfigurationSchemaElement != null)
+                    {
                         String privateConfigurationSchemaInstance;
                         privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
@@ -425,7 +472,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     
                     NodeList elements9 = resourceExtensionsElement.getElementsByTagName("SampleConfig");
                     Element sampleConfigElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sampleConfigElement != null) {
+                    if (sampleConfigElement != null)
+                    {
                         String sampleConfigInstance;
                         sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
@@ -434,16 +482,21 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

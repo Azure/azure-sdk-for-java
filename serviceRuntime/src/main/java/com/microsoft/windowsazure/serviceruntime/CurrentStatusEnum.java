@@ -48,7 +48,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "CurrentStatusEnum")
 @XmlEnum
-enum CurrentStatusEnum {
+enum CurrentStatusEnum
+{
 
     @XmlEnumValue("Started")
     STARTED("Started"), @XmlEnumValue("Busy")
@@ -57,17 +58,22 @@ enum CurrentStatusEnum {
     STOPPED("Stopped");
     private final String value;
 
-    CurrentStatusEnum(String v) {
+    CurrentStatusEnum(String v)
+    {
         value = v;
     }
 
-    public String value() {
+    public String value()
+    {
         return value;
     }
 
-    public static CurrentStatusEnum fromValue(String v) {
-        for (CurrentStatusEnum c : CurrentStatusEnum.values()) {
-            if (c.value.equals(v)) {
+    public static CurrentStatusEnum fromValue(String v)
+    {
+        for (CurrentStatusEnum c : CurrentStatusEnum.values())
+        {
+            if (c.value.equals(v))
+            {
                 return c;
             }
         }

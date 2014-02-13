@@ -21,7 +21,8 @@ import java.security.InvalidParameterException;
  * Enum describing options for creating tasks
  * 
  */
-public enum TaskOption {
+public enum TaskOption
+{
 
     /**
      * None
@@ -35,7 +36,8 @@ public enum TaskOption {
 
     private int code;
 
-    private TaskOption(int code) {
+    private TaskOption(int code)
+    {
         this.code = code;
     }
 
@@ -44,7 +46,8 @@ public enum TaskOption {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return code;
     }
 
@@ -55,8 +58,10 @@ public enum TaskOption {
      *            the code
      * @return the enum value
      */
-    public static TaskOption fromCode(int code) {
-        switch (code) {
+    public static TaskOption fromCode(int code)
+    {
+        switch (code)
+        {
         case 0:
             return None;
         case 1:

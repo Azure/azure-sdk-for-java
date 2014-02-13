@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Objects that provide system or application data.
 */
-public class ConfigurationSet {
+public class ConfigurationSet
+{
     private String adminPassword;
     
     /**
@@ -36,7 +37,8 @@ public class ConfigurationSet {
     * use for the virtual machine.
     * @return The AdminPassword value.
     */
-    public String getAdminPassword() {
+    public String getAdminPassword()
+    {
         return this.adminPassword;
     }
     
@@ -45,7 +47,8 @@ public class ConfigurationSet {
     * use for the virtual machine.
     * @param adminPasswordValue The AdminPassword value.
     */
-    public void setAdminPassword(final String adminPasswordValue) {
+    public void setAdminPassword(final String adminPasswordValue)
+    {
         this.adminPassword = adminPasswordValue;
     }
     
@@ -57,7 +60,8 @@ public class ConfigurationSet {
     * 2013-03-01.
     * @return The AdminUserName value.
     */
-    public String getAdminUserName() {
+    public String getAdminUserName()
+    {
         return this.adminUserName;
     }
     
@@ -67,7 +71,8 @@ public class ConfigurationSet {
     * 2013-03-01.
     * @param adminUserNameValue The AdminUserName value.
     */
-    public void setAdminUserName(final String adminUserNameValue) {
+    public void setAdminUserName(final String adminUserNameValue)
+    {
         this.adminUserName = adminUserNameValue;
     }
     
@@ -80,7 +85,8 @@ public class ConfigurationSet {
     * element is only used with the WindowsProvisioningConfiguration set.
     * @return The ComputerName value.
     */
-    public String getComputerName() {
+    public String getComputerName()
+    {
         return this.computerName;
     }
     
@@ -91,7 +97,8 @@ public class ConfigurationSet {
     * element is only used with the WindowsProvisioningConfiguration set.
     * @param computerNameValue The ComputerName value.
     */
-    public void setComputerName(final String computerNameValue) {
+    public void setComputerName(final String computerNameValue)
+    {
         this.computerName = computerNameValue;
     }
     
@@ -101,7 +108,8 @@ public class ConfigurationSet {
     * Specifies the configuration type for the configuration set.
     * @return The ConfigurationSetType value.
     */
-    public String getConfigurationSetType() {
+    public String getConfigurationSetType()
+    {
         return this.configurationSetType;
     }
     
@@ -109,7 +117,8 @@ public class ConfigurationSet {
     * Specifies the configuration type for the configuration set.
     * @param configurationSetTypeValue The ConfigurationSetType value.
     */
-    public void setConfigurationSetType(final String configurationSetTypeValue) {
+    public void setConfigurationSetType(final String configurationSetTypeValue)
+    {
         this.configurationSetType = configurationSetTypeValue;
     }
     
@@ -121,7 +130,8 @@ public class ConfigurationSet {
     * LinuxProvisioningConfiguration set. By default this value is set to true.
     * @return The DisableSshPasswordAuthentication value.
     */
-    public Boolean isDisableSshPasswordAuthentication() {
+    public Boolean isDisableSshPasswordAuthentication()
+    {
         return this.disableSshPasswordAuthentication;
     }
     
@@ -132,7 +142,8 @@ public class ConfigurationSet {
     * @param disableSshPasswordAuthenticationValue The
     * DisableSshPasswordAuthentication value.
     */
-    public void setDisableSshPasswordAuthentication(final Boolean disableSshPasswordAuthenticationValue) {
+    public void setDisableSshPasswordAuthentication(final Boolean disableSshPasswordAuthenticationValue)
+    {
         this.disableSshPasswordAuthentication = disableSshPasswordAuthenticationValue;
     }
     
@@ -144,7 +155,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set.
     * @return The DomainJoin value.
     */
-    public DomainJoinSettings getDomainJoin() {
+    public DomainJoinSettings getDomainJoin()
+    {
         return this.domainJoin;
     }
     
@@ -154,7 +166,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set.
     * @param domainJoinValue The DomainJoin value.
     */
-    public void setDomainJoin(final DomainJoinSettings domainJoinValue) {
+    public void setDomainJoin(final DomainJoinSettings domainJoinValue)
+    {
         this.domainJoin = domainJoinValue;
     }
     
@@ -166,7 +179,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set. The default value is false.
     * @return The EnableAutomaticUpdates value.
     */
-    public Boolean isEnableAutomaticUpdates() {
+    public Boolean isEnableAutomaticUpdates()
+    {
         return this.enableAutomaticUpdates;
     }
     
@@ -176,7 +190,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set. The default value is false.
     * @param enableAutomaticUpdatesValue The EnableAutomaticUpdates value.
     */
-    public void setEnableAutomaticUpdates(final Boolean enableAutomaticUpdatesValue) {
+    public void setEnableAutomaticUpdates(final Boolean enableAutomaticUpdatesValue)
+    {
         this.enableAutomaticUpdates = enableAutomaticUpdatesValue;
     }
     
@@ -188,7 +203,8 @@ public class ConfigurationSet {
     * used with the LinuxProvisioningConfiguration set.
     * @return The HostName value.
     */
-    public String getHostName() {
+    public String getHostName()
+    {
         return this.hostName;
     }
     
@@ -198,7 +214,8 @@ public class ConfigurationSet {
     * used with the LinuxProvisioningConfiguration set.
     * @param hostNameValue The HostName value.
     */
-    public void setHostName(final String hostNameValue) {
+    public void setHostName(final String hostNameValue)
+    {
         this.hostName = hostNameValue;
     }
     
@@ -209,7 +226,8 @@ public class ConfigurationSet {
     * This element is only used with the NetworkConfigurationSet type.
     * @return The InputEndpoints value.
     */
-    public ArrayList<InputEndpoint> getInputEndpoints() {
+    public ArrayList<InputEndpoint> getInputEndpoints()
+    {
         return this.inputEndpoints;
     }
     
@@ -218,7 +236,8 @@ public class ConfigurationSet {
     * This element is only used with the NetworkConfigurationSet type.
     * @param inputEndpointsValue The InputEndpoints value.
     */
-    public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue) {
+    public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue)
+    {
         this.inputEndpoints = inputEndpointsValue;
     }
     
@@ -229,7 +248,8 @@ public class ConfigurationSet {
     * administrator logs in.
     * @return The ResetPasswordOnFirstLogon value.
     */
-    public Boolean isResetPasswordOnFirstLogon() {
+    public Boolean isResetPasswordOnFirstLogon()
+    {
         return this.resetPasswordOnFirstLogon;
     }
     
@@ -238,7 +258,8 @@ public class ConfigurationSet {
     * administrator logs in.
     * @param resetPasswordOnFirstLogonValue The ResetPasswordOnFirstLogon value.
     */
-    public void setResetPasswordOnFirstLogon(final Boolean resetPasswordOnFirstLogonValue) {
+    public void setResetPasswordOnFirstLogon(final Boolean resetPasswordOnFirstLogonValue)
+    {
         this.resetPasswordOnFirstLogon = resetPasswordOnFirstLogonValue;
     }
     
@@ -250,7 +271,8 @@ public class ConfigurationSet {
     * LinuxProvisioningConfiguration set.
     * @return The SshSettings value.
     */
-    public SshSettings getSshSettings() {
+    public SshSettings getSshSettings()
+    {
         return this.sshSettings;
     }
     
@@ -260,7 +282,8 @@ public class ConfigurationSet {
     * LinuxProvisioningConfiguration set.
     * @param sshSettingsValue The SshSettings value.
     */
-    public void setSshSettings(final SshSettings sshSettingsValue) {
+    public void setSshSettings(final SshSettings sshSettingsValue)
+    {
         this.sshSettings = sshSettingsValue;
     }
     
@@ -271,7 +294,8 @@ public class ConfigurationSet {
     * VM in a VNet's SubNet, for example: 10.0.0.4.
     * @return The StaticVirtualNetworkIPAddress value.
     */
-    public String getStaticVirtualNetworkIPAddress() {
+    public String getStaticVirtualNetworkIPAddress()
+    {
         return this.staticVirtualNetworkIPAddress;
     }
     
@@ -281,7 +305,8 @@ public class ConfigurationSet {
     * @param staticVirtualNetworkIPAddressValue The
     * StaticVirtualNetworkIPAddress value.
     */
-    public void setStaticVirtualNetworkIPAddress(final String staticVirtualNetworkIPAddressValue) {
+    public void setStaticVirtualNetworkIPAddress(final String staticVirtualNetworkIPAddressValue)
+    {
         this.staticVirtualNetworkIPAddress = staticVirtualNetworkIPAddressValue;
     }
     
@@ -293,7 +318,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set.
     * @return The StoredCertificateSettings value.
     */
-    public ArrayList<StoredCertificateSettings> getStoredCertificateSettings() {
+    public ArrayList<StoredCertificateSettings> getStoredCertificateSettings()
+    {
         return this.storedCertificateSettings;
     }
     
@@ -303,7 +329,8 @@ public class ConfigurationSet {
     * WindowsProvisioningConfiguration set.
     * @param storedCertificateSettingsValue The StoredCertificateSettings value.
     */
-    public void setStoredCertificateSettings(final ArrayList<StoredCertificateSettings> storedCertificateSettingsValue) {
+    public void setStoredCertificateSettings(final ArrayList<StoredCertificateSettings> storedCertificateSettingsValue)
+    {
         this.storedCertificateSettings = storedCertificateSettingsValue;
     }
     
@@ -314,7 +341,8 @@ public class ConfigurationSet {
     * This element is only used with the NetworkConfigurationSet type.
     * @return The SubnetNames value.
     */
-    public ArrayList<String> getSubnetNames() {
+    public ArrayList<String> getSubnetNames()
+    {
         return this.subnetNames;
     }
     
@@ -323,7 +351,8 @@ public class ConfigurationSet {
     * This element is only used with the NetworkConfigurationSet type.
     * @param subnetNamesValue The SubnetNames value.
     */
-    public void setSubnetNames(final ArrayList<String> subnetNamesValue) {
+    public void setSubnetNames(final ArrayList<String> subnetNamesValue)
+    {
         this.subnetNames = subnetNamesValue;
     }
     
@@ -341,7 +370,8 @@ public class ConfigurationSet {
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     * @return The TimeZone value.
     */
-    public String getTimeZone() {
+    public String getTimeZone()
+    {
         return this.timeZone;
     }
     
@@ -357,7 +387,8 @@ public class ConfigurationSet {
     * by default on Windows 7, Windows Server 2008, and Windows Server 2008 R2.
     * @param timeZoneValue The TimeZone value.
     */
-    public void setTimeZone(final String timeZoneValue) {
+    public void setTimeZone(final String timeZoneValue)
+    {
         this.timeZone = timeZoneValue;
     }
     
@@ -370,7 +401,8 @@ public class ConfigurationSet {
     * LinuxProvisioningConfiguration set.
     * @return The UserName value.
     */
-    public String getUserName() {
+    public String getUserName()
+    {
         return this.userName;
     }
     
@@ -381,7 +413,8 @@ public class ConfigurationSet {
     * LinuxProvisioningConfiguration set.
     * @param userNameValue The UserName value.
     */
-    public void setUserName(final String userNameValue) {
+    public void setUserName(final String userNameValue)
+    {
         this.userName = userNameValue;
     }
     
@@ -393,7 +426,8 @@ public class ConfigurationSet {
     * used with the LinuxProvisioningConfiguration set.
     * @return The UserPassword value.
     */
-    public String getUserPassword() {
+    public String getUserPassword()
+    {
         return this.userPassword;
     }
     
@@ -403,7 +437,8 @@ public class ConfigurationSet {
     * used with the LinuxProvisioningConfiguration set.
     * @param userPasswordValue The UserPassword value.
     */
-    public void setUserPassword(final String userPasswordValue) {
+    public void setUserPassword(final String userPasswordValue)
+    {
         this.userPassword = userPasswordValue;
     }
     
@@ -414,7 +449,8 @@ public class ConfigurationSet {
     * machine, which enables remote Windows PowerShell.
     * @return The WindowsRemoteManagement value.
     */
-    public WindowsRemoteManagementSettings getWindowsRemoteManagement() {
+    public WindowsRemoteManagementSettings getWindowsRemoteManagement()
+    {
         return this.windowsRemoteManagement;
     }
     
@@ -423,7 +459,8 @@ public class ConfigurationSet {
     * machine, which enables remote Windows PowerShell.
     * @param windowsRemoteManagementValue The WindowsRemoteManagement value.
     */
-    public void setWindowsRemoteManagement(final WindowsRemoteManagementSettings windowsRemoteManagementValue) {
+    public void setWindowsRemoteManagement(final WindowsRemoteManagementSettings windowsRemoteManagementValue)
+    {
         this.windowsRemoteManagement = windowsRemoteManagementValue;
     }
     
@@ -431,7 +468,8 @@ public class ConfigurationSet {
     * Initializes a new instance of the ConfigurationSet class.
     *
     */
-    public ConfigurationSet() {
+    public ConfigurationSet()
+    {
         this.inputEndpoints = new ArrayList<InputEndpoint>();
         this.storedCertificateSettings = new ArrayList<StoredCertificateSettings>();
         this.subnetNames = new ArrayList<String>();

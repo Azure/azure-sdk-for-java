@@ -24,71 +24,69 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 /**
- * A rule metric data source.
- */
-public class RuleMetricDataSource extends RuleDataSource {
+* A rule metric data source.
+*/
+public class RuleMetricDataSource extends RuleDataSource
+{
     private String metricName;
-
+    
     /**
-     * Metric name.
-     * 
-     * @return The MetricName value.
-     */
-    public String getMetricName() {
+    * Metric name.
+    * @return The MetricName value.
+    */
+    public String getMetricName()
+    {
         return this.metricName;
     }
-
+    
     /**
-     * Metric name.
-     * 
-     * @param metricNameValue
-     *            The MetricName value.
-     */
-    public void setMetricName(final String metricNameValue) {
+    * Metric name.
+    * @param metricNameValue The MetricName value.
+    */
+    public void setMetricName(final String metricNameValue)
+    {
         this.metricName = metricNameValue;
     }
-
+    
     private String metricNamespace;
-
+    
     /**
-     * Metric namespace. When creating a rule on endpoint monitoring metrics,
-     * WindowsAzure.Availability namespace is required.
-     * 
-     * @return The MetricNamespace value.
-     */
-    public String getMetricNamespace() {
+    * Metric namespace. When creating a rule on endpoint monitoring metrics,
+    * WindowsAzure.Availability namespace is required.
+    * @return The MetricNamespace value.
+    */
+    public String getMetricNamespace()
+    {
         return this.metricNamespace;
     }
-
+    
     /**
-     * Metric namespace. When creating a rule on endpoint monitoring metrics,
-     * WindowsAzure.Availability namespace is required.
-     * 
-     * @param metricNamespaceValue
-     *            The MetricNamespace value.
-     */
-    public void setMetricNamespace(final String metricNamespaceValue) {
+    * Metric namespace. When creating a rule on endpoint monitoring metrics,
+    * WindowsAzure.Availability namespace is required.
+    * @param metricNamespaceValue The MetricNamespace value.
+    */
+    public void setMetricNamespace(final String metricNamespaceValue)
+    {
         this.metricNamespace = metricNamespaceValue;
     }
-
+    
     private String resourceId;
-
+    
     /**
-     * Metric resource id.
-     * 
-     * @return The ResourceId value.
-     */
-    public String getResourceId() {
+    * Metric resource id.
+    * @return The ResourceId value.
+    */
+    public String getResourceId()
+    {
         return this.resourceId;
     }
-
+    
     /**
-     * Metric resource id.
-     * 
-     * @param resourceIdValue
-     *            The ResourceId value.
-     */
-    public void setResourceId(final String resourceIdValue) {
+    * Metric resource id.
+    * @param resourceIdValue The ResourceId value.
+    */
+    public void setResourceId(final String resourceIdValue)
+    {
         this.resourceId = resourceIdValue;
     }
 }

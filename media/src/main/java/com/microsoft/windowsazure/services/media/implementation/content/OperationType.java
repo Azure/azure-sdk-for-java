@@ -25,7 +25,8 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OperationType implements MediaServiceDTO {
+public class OperationType implements MediaServiceDTO
+{
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -52,7 +53,8 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -63,7 +65,8 @@ public class OperationType implements MediaServiceDTO {
      *            the id to set
      * @return the operation type
      */
-    public OperationType setId(String id) {
+    public OperationType setId(String id)
+    {
         this.id = id;
         return this;
     }
@@ -73,7 +76,8 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the target entity id
      */
-    public String getTargetEntityId() {
+    public String getTargetEntityId()
+    {
         return targetEntityId;
     }
 
@@ -84,7 +88,8 @@ public class OperationType implements MediaServiceDTO {
      *            the target entity id
      * @return the operation type
      */
-    public OperationType setTargetEntityId(String targetEntityId) {
+    public OperationType setTargetEntityId(String targetEntityId)
+    {
         this.targetEntityId = targetEntityId;
         return this;
     }
@@ -94,7 +99,8 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the state
      */
-    public String getState() {
+    public String getState()
+    {
         return state;
     }
 
@@ -105,7 +111,8 @@ public class OperationType implements MediaServiceDTO {
      *            the state to set
      * @return the operation type
      */
-    public OperationType setState(String state) {
+    public OperationType setState(String state)
+    {
         this.state = state;
         return this;
     }
@@ -115,7 +122,8 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the error code
      */
-    public String getErrorCode() {
+    public String getErrorCode()
+    {
         return this.errorCode;
     }
 
@@ -126,7 +134,8 @@ public class OperationType implements MediaServiceDTO {
      *            the error code
      * @return the operation type
      */
-    public OperationType setErrorCode(String errorCode) {
+    public OperationType setErrorCode(String errorCode)
+    {
         this.errorCode = errorCode;
         return this;
     }
@@ -136,7 +145,8 @@ public class OperationType implements MediaServiceDTO {
      * 
      * @return the error message
      */
-    public String getErrorMessage() {
+    public String getErrorMessage()
+    {
         return this.errorMessage;
     }
 
@@ -147,7 +157,8 @@ public class OperationType implements MediaServiceDTO {
      *            the error message
      * @return the operation type
      */
-    public OperationType setErrorMessage(String errorMessage) {
+    public OperationType setErrorMessage(String errorMessage)
+    {
         this.errorMessage = errorMessage;
         return this;
     }

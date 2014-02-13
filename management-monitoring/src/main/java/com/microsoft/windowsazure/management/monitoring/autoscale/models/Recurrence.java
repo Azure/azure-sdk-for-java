@@ -23,38 +23,41 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public class Recurrence {
+public class Recurrence
+{
     private RecurrenceFrequency frequency;
-
+    
     /**
-     * @return The Frequency value.
-     */
-    public RecurrenceFrequency getFrequency() {
+    * @return The Frequency value.
+    */
+    public RecurrenceFrequency getFrequency()
+    {
         return this.frequency;
     }
-
+    
     /**
-     * @param frequencyValue
-     *            The Frequency value.
-     */
-    public void setFrequency(final RecurrenceFrequency frequencyValue) {
+    * @param frequencyValue The Frequency value.
+    */
+    public void setFrequency(final RecurrenceFrequency frequencyValue)
+    {
         this.frequency = frequencyValue;
     }
-
+    
     private RecurrentSchedule schedule;
-
+    
     /**
-     * @return The Schedule value.
-     */
-    public RecurrentSchedule getSchedule() {
+    * @return The Schedule value.
+    */
+    public RecurrentSchedule getSchedule()
+    {
         return this.schedule;
     }
-
+    
     /**
-     * @param scheduleValue
-     *            The Schedule value.
-     */
-    public void setSchedule(final RecurrentSchedule scheduleValue) {
+    * @param scheduleValue The Schedule value.
+    */
+    public void setSchedule(final RecurrentSchedule scheduleValue)
+    {
         this.schedule = scheduleValue;
     }
 }

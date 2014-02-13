@@ -24,46 +24,47 @@
 package com.microsoft.windowsazure.management.monitoring.models;
 
 /**
- * Endpoint monitoring location.
- */
-public class EndpointMonitoringLocation {
+* Endpoint monitoring location.
+*/
+public class EndpointMonitoringLocation
+{
     /**
-     * Location - Chicago, IL USA.
-     */
+    * Location - Chicago, IL USA.
+    */
     public static final String USChicagoIL = "us-il-ch1-azr";
-
+    
     /**
-     * Location - San Antonio, TX USA.
-     */
+    * Location - San Antonio, TX USA.
+    */
     public static final String USSanAntonioTX = "us-tx-sn1-azr";
-
+    
     /**
-     * Location - San Jose, CA USA.
-     */
+    * Location - San Jose, CA USA.
+    */
     public static final String USSanJoseCA = "us-ca-sjc-azr";
-
+    
     /**
-     * Location - Ashburn, VA USA.
-     */
+    * Location - Ashburn, VA USA.
+    */
     public static final String USAshburnVA = "us-va-ash-azr";
-
+    
     /**
-     * Location - Dublin, Ireland.
-     */
+    * Location - Dublin, Ireland.
+    */
     public static final String IEDublin = "emea-gb-db3-azr";
-
+    
     /**
-     * Location - Amsterdam, Netherlands.
-     */
+    * Location - Amsterdam, Netherlands.
+    */
     public static final String NLAmsterdam = "emea-nl-ams-azr";
-
+    
     /**
-     * Location - Hongkong.
-     */
+    * Location - Hongkong.
+    */
     public static final String HKHongkong = "apac-hk-hkn-azr";
-
+    
     /**
-     * Location - Singapore.
-     */
+    * Location - Singapore.
+    */
     public static final String SGSingapore = "apac-sg-sin-azr";
 }

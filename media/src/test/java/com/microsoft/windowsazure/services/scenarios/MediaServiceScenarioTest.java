@@ -38,7 +38,8 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.Task;
 import com.microsoft.windowsazure.services.scenarios.MediaServiceWrapper.EncoderType;
 
-public class MediaServiceScenarioTest extends ScenarioTestBase {
+public class MediaServiceScenarioTest extends ScenarioTestBase
+{
     private static final String rootTestAssetPrefix = "testAssetPrefix-";
     private static final String testJobPrefix = "testJobPrefix";
     private static String testAssetPrefix;
@@ -46,7 +47,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     private static MediaServiceValidation validator;
 
     @BeforeClass
-    public static void setup() throws ServiceException {
+    public static void setup() throws ServiceException
+    {
         ScenarioTestBase.initializeConfig();
         MediaContract service = MediaService.create(config);
         wrapper = new MediaServiceWrapper(service);
@@ -55,14 +57,16 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @AfterClass
-    public static void cleanup() throws ServiceException {
+    public static void cleanup() throws ServiceException
+    {
         wrapper.removeAllAssetsWithPrefix(rootTestAssetPrefix);
         wrapper.removeAllAccessPoliciesWithPrefix();
         wrapper.removeAllJobWithPrefix(testJobPrefix);
     }
 
     @Test
-    public void newAsset() throws Exception {
+    public void newAsset() throws Exception
+    {
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "newAsset",
                 AssetOption.None);
         validator.validateAsset(asset, testAssetPrefix + "newAsset",
@@ -70,11 +74,13 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void pageOverAssets() throws ServiceException {
+    public void pageOverAssets() throws ServiceException
+    {
         signalSetupStarting();
         String rootName = testAssetPrefix + "pageOverAssets";
         List<String> assetNames = createListOfAssetNames(rootName, 4);
-        for (String assetName : assetNames) {
+        for (String assetName : assetNames)
+        {
             wrapper.createAsset(assetName, AssetOption.None);
         }
         signalSetupFinished();
@@ -85,7 +91,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void uploadFiles() throws Exception {
+    public void uploadFiles() throws Exception
+    {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "uploadFiles",
                 AssetOption.None);
@@ -96,7 +103,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void uploadEncryptedFiles() throws Exception {
+    public void uploadEncryptedFiles() throws Exception
+    {
         signalSetupStarting();
         byte[] aesKey = getNewAesKey();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix
@@ -109,7 +117,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void downloadFiles() throws Exception {
+    public void downloadFiles() throws Exception
+    {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(
                 testAssetPrefix + "downloadFiles", AssetOption.None);
@@ -122,7 +131,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void createJob() throws Exception {
+    public void createJob() throws Exception
+    {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix + "createJob",
                 AssetOption.None);
@@ -135,7 +145,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void transformAsset() throws Exception {
+    public void transformAsset() throws Exception
+    {
         signalSetupStarting();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix
                 + "transformAsset", AssetOption.None);
@@ -155,7 +166,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     @Test
-    public void transformEncryptedAsset() throws Exception {
+    public void transformEncryptedAsset() throws Exception
+    {
         signalSetupStarting();
         byte[] aesKey = getNewAesKey();
         AssetInfo asset = wrapper.createAsset(testAssetPrefix
@@ -185,7 +197,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         validator.validateAssetFiles(getTestAssetFiles(), actualFileStreams);
     }
 
-    private byte[] getNewAesKey() {
+    private byte[] getNewAesKey()
+    {
         // Media Services requires 256-bit (32-byte) keys for AES encryption.
         Random random = new Random();
         byte[] aesKey = new byte[32];
@@ -194,9 +207,12 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     private void waitForJobToFinish(JobInfo job) throws InterruptedException,
-            ServiceException {
-        for (int counter = 0; !wrapper.isJobFinished(job); counter++) {
-            if (counter > 30) {
+            ServiceException
+    {
+        for (int counter = 0; !wrapper.isJobFinished(job); counter++)
+        {
+            if (counter > 30)
+            {
                 fail("Took took long for the job to finish");
             }
             Thread.sleep(10000);
@@ -204,7 +220,8 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
     }
 
     private List<Task.CreateBatchOperation> createTasks()
-            throws ServiceException {
+            throws ServiceException
+    {
         List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
 
         tasks.add(wrapper.createTaskOptions("Decryptor", 0, 0,
@@ -214,16 +231,19 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         return tasks;
     }
 
-    private Hashtable<String, InputStream> getTestAssetFiles() {
+    private Hashtable<String, InputStream> getTestAssetFiles()
+    {
         Hashtable<String, InputStream> inputFiles = new Hashtable<String, InputStream>();
         inputFiles.put("MPEG4-H264.mp4",
                 getClass().getResourceAsStream("/media/MPEG4-H264.mp4"));
         return inputFiles;
     }
 
-    private List<String> createListOfAssetNames(String rootName, int count) {
+    private List<String> createListOfAssetNames(String rootName, int count)
+    {
         List<String> assetNames = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             assetNames.add(rootName + i);
         }
         return assetNames;

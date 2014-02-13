@@ -23,9 +23,11 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.servicebus.ServiceBusConfiguration;
 
-public class WrapTokenManagerIntegrationTest {
+public class WrapTokenManagerIntegrationTest
+{
     @Test
-    public void wrapClientWillAcquireAccessToken() throws Exception {
+    public void wrapClientWillAcquireAccessToken() throws Exception
+    {
         // Arrange
         Configuration config = Configuration.load();
         overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
@@ -40,7 +42,8 @@ public class WrapTokenManagerIntegrationTest {
         Assert.assertNotNull(accessToken);
     }
 
-    private static void overrideWithEnv(Configuration config, String key) {
+    private static void overrideWithEnv(Configuration config, String key)
+    {
         String value = System.getenv(key);
         if (value == null)
             return;

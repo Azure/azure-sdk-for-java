@@ -21,7 +21,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * A class representing OAuth token response.
  * 
  */
-public class OAuthTokenResponse {
+public class OAuthTokenResponse
+{
 
     private String accessToken;
     private String scope;
@@ -34,42 +35,50 @@ public class OAuthTokenResponse {
      * @param tokenType
      */
     @JsonProperty("token_type")
-    public void setTokenType(String tokenType) {
+    public void setTokenType(String tokenType)
+    {
         this.tokenType = tokenType;
     }
 
     @JsonProperty("token_type")
-    public String getTokenType() {
+    public String getTokenType()
+    {
         return tokenType;
     }
 
     @JsonProperty("expires_in")
-    public long getExpiresIn() {
+    public long getExpiresIn()
+    {
         return expiresIn;
     }
 
     @JsonProperty("expires_in")
-    public void setExpiresIn(long expiresIn) {
+    public void setExpiresIn(long expiresIn)
+    {
         this.expiresIn = expiresIn;
     }
 
     @JsonProperty("access_token")
-    public String getAccessToken() {
+    public String getAccessToken()
+    {
         return accessToken;
     }
 
     @JsonProperty("access_token")
-    public void setAccessToken(String accessToken) {
+    public void setAccessToken(String accessToken)
+    {
         this.accessToken = accessToken;
     }
 
     @JsonProperty("scope")
-    public String getScope() {
+    public String getScope()
+    {
         return scope;
     }
 
     @JsonProperty("scope")
-    public void setScope(String scope) {
+    public void setScope(String scope)
+    {
         this.scope = scope;
     }
 }

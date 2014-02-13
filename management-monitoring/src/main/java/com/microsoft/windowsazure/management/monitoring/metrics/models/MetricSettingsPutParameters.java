@@ -24,27 +24,27 @@
 package com.microsoft.windowsazure.management.monitoring.metrics.models;
 
 /**
- * Parameters supplied to the Put Metric Settings operation.
- */
-public class MetricSettingsPutParameters {
+* Parameters supplied to the Put Metric Settings operation.
+*/
+public class MetricSettingsPutParameters
+{
     private MetricSetting metricSetting;
-
+    
     /**
-     * Required. The metric setting.
-     * 
-     * @return The MetricSetting value.
-     */
-    public MetricSetting getMetricSetting() {
+    * Required. The metric setting.
+    * @return The MetricSetting value.
+    */
+    public MetricSetting getMetricSetting()
+    {
         return this.metricSetting;
     }
-
+    
     /**
-     * Required. The metric setting.
-     * 
-     * @param metricSettingValue
-     *            The MetricSetting value.
-     */
-    public void setMetricSetting(final MetricSetting metricSettingValue) {
+    * Required. The metric setting.
+    * @param metricSettingValue The MetricSetting value.
+    */
+    public void setMetricSetting(final MetricSetting metricSettingValue)
+    {
         this.metricSetting = metricSettingValue;
     }
 }

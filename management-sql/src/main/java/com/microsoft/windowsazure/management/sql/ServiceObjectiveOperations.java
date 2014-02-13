@@ -35,7 +35,8 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for getting Service
 * Objective for a subscription.
 */
-public interface ServiceObjectiveOperations {
+public interface ServiceObjectiveOperations
+{
     /**
     * Returns information about a certain Service Objective on a given Id.
     *

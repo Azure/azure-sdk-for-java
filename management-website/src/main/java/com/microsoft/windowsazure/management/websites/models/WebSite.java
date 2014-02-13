@@ -32,14 +32,16 @@ import java.util.HashMap;
 /**
 * Describes a website.
 */
-public class WebSite {
+public class WebSite
+{
     private boolean adminEnabled;
     
     /**
     * Read-only. This value is always true.
     * @return The AdminEnabled value.
     */
-    public boolean isAdminEnabled() {
+    public boolean isAdminEnabled()
+    {
         return this.adminEnabled;
     }
     
@@ -47,7 +49,8 @@ public class WebSite {
     * Read-only. This value is always true.
     * @param adminEnabledValue The AdminEnabled value.
     */
-    public void setAdminEnabled(final boolean adminEnabledValue) {
+    public void setAdminEnabled(final boolean adminEnabledValue)
+    {
         this.adminEnabled = adminEnabledValue;
     }
     
@@ -61,7 +64,8 @@ public class WebSite {
     * the site is available and that detailed site information is unavailable.
     * @return The AvailabilityState value.
     */
-    public WebSpaceAvailabilityState getAvailabilityState() {
+    public WebSpaceAvailabilityState getAvailabilityState()
+    {
         return this.availabilityState;
     }
     
@@ -73,7 +77,8 @@ public class WebSite {
     * the site is available and that detailed site information is unavailable.
     * @param availabilityStateValue The AvailabilityState value.
     */
-    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
+    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue)
+    {
         this.availabilityState = availabilityStateValue;
     }
     
@@ -84,7 +89,8 @@ public class WebSite {
     * Dedicated.
     * @return The ComputeMode value.
     */
-    public WebSiteComputeMode getComputeMode() {
+    public WebSiteComputeMode getComputeMode()
+    {
         return this.computeMode;
     }
     
@@ -93,7 +99,8 @@ public class WebSite {
     * Dedicated.
     * @param computeModeValue The ComputeMode value.
     */
-    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
+    public void setComputeMode(final WebSiteComputeMode computeModeValue)
+    {
         this.computeMode = computeModeValue;
     }
     
@@ -104,7 +111,8 @@ public class WebSite {
     * false disables the site (takes the site off line).
     * @return The Enabled value.
     */
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return this.enabled;
     }
     
@@ -113,7 +121,8 @@ public class WebSite {
     * false disables the site (takes the site off line).
     * @param enabledValue The Enabled value.
     */
-    public void setEnabled(final boolean enabledValue) {
+    public void setEnabled(final boolean enabledValue)
+    {
         this.enabled = enabledValue;
     }
     
@@ -125,7 +134,8 @@ public class WebSite {
     * [SiteName].scm.azurewebsites.net.
     * @return The EnabledHostNames value.
     */
-    public ArrayList<String> getEnabledHostNames() {
+    public ArrayList<String> getEnabledHostNames()
+    {
         return this.enabledHostNames;
     }
     
@@ -135,7 +145,8 @@ public class WebSite {
     * [SiteName].scm.azurewebsites.net.
     * @param enabledHostNamesValue The EnabledHostNames value.
     */
-    public void setEnabledHostNames(final ArrayList<String> enabledHostNamesValue) {
+    public void setEnabledHostNames(final ArrayList<String> enabledHostNamesValue)
+    {
         this.enabledHostNames = enabledHostNamesValue;
     }
     
@@ -150,7 +161,8 @@ public class WebSite {
     * one that you wangt to delete.
     * @return The HostNames value.
     */
-    public ArrayList<String> getHostNames() {
+    public ArrayList<String> getHostNames()
+    {
         return this.hostNames;
     }
     
@@ -163,7 +175,8 @@ public class WebSite {
     * one that you wangt to delete.
     * @param hostNamesValue The HostNames value.
     */
-    public void setHostNames(final ArrayList<String> hostNamesValue) {
+    public void setHostNames(final ArrayList<String> hostNamesValue)
+    {
         this.hostNames = hostNamesValue;
     }
     
@@ -173,7 +186,8 @@ public class WebSite {
     * SSL states bound to the website.
     * @return The HostNameSslStates value.
     */
-    public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates() {
+    public ArrayList<WebSite.WebSiteHostNameSslState> getHostNameSslStates()
+    {
         return this.hostNameSslStates;
     }
     
@@ -181,7 +195,8 @@ public class WebSite {
     * SSL states bound to the website.
     * @param hostNameSslStatesValue The HostNameSslStates value.
     */
-    public void setHostNameSslStates(final ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStatesValue) {
+    public void setHostNameSslStates(final ArrayList<WebSite.WebSiteHostNameSslState> hostNameSslStatesValue)
+    {
         this.hostNameSslStates = hostNameSslStatesValue;
     }
     
@@ -192,7 +207,8 @@ public class WebSite {
     * time the web site was modified.
     * @return The LastModifiedTimeUtc value.
     */
-    public Calendar getLastModifiedTimeUtc() {
+    public Calendar getLastModifiedTimeUtc()
+    {
         return this.lastModifiedTimeUtc;
     }
     
@@ -201,7 +217,8 @@ public class WebSite {
     * time the web site was modified.
     * @param lastModifiedTimeUtcValue The LastModifiedTimeUtc value.
     */
-    public void setLastModifiedTimeUtc(final Calendar lastModifiedTimeUtcValue) {
+    public void setLastModifiedTimeUtc(final Calendar lastModifiedTimeUtcValue)
+    {
         this.lastModifiedTimeUtc = lastModifiedTimeUtcValue;
     }
     
@@ -211,7 +228,8 @@ public class WebSite {
     * The name of the web site.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -219,7 +237,8 @@ public class WebSite {
     * The name of the web site.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -229,7 +248,8 @@ public class WebSite {
     * Owner of the web site.
     * @return The Owner value.
     */
-    public String getOwner() {
+    public String getOwner()
+    {
         return this.owner;
     }
     
@@ -237,7 +257,8 @@ public class WebSite {
     * Owner of the web site.
     * @param ownerValue The Owner value.
     */
-    public void setOwner(final String ownerValue) {
+    public void setOwner(final String ownerValue)
+    {
         this.owner = ownerValue;
     }
     
@@ -247,7 +268,8 @@ public class WebSite {
     * The name of the repository web site.
     * @return The RepositorySiteName value.
     */
-    public String getRepositorySiteName() {
+    public String getRepositorySiteName()
+    {
         return this.repositorySiteName;
     }
     
@@ -255,7 +277,8 @@ public class WebSite {
     * The name of the repository web site.
     * @param repositorySiteNameValue The RepositorySiteName value.
     */
-    public void setRepositorySiteName(final String repositorySiteNameValue) {
+    public void setRepositorySiteName(final String repositorySiteNameValue)
+    {
         this.repositorySiteName = repositorySiteNameValue;
     }
     
@@ -269,7 +292,8 @@ public class WebSite {
     * from provisioning. This typically occurs only for free sites.
     * @return The RuntimeAvailabilityState value.
     */
-    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
+    public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState()
+    {
         return this.runtimeAvailabilityState;
     }
     
@@ -281,7 +305,8 @@ public class WebSite {
     * from provisioning. This typically occurs only for free sites.
     * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
     */
-    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
+    public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue)
+    {
         this.runtimeAvailabilityState = runtimeAvailabilityStateValue;
     }
     
@@ -291,7 +316,8 @@ public class WebSite {
     * String. If a server farm exists, this value is DefaultServerFarm.
     * @return The ServerFarm value.
     */
-    public String getServerFarm() {
+    public String getServerFarm()
+    {
         return this.serverFarm;
     }
     
@@ -299,7 +325,8 @@ public class WebSite {
     * String. If a server farm exists, this value is DefaultServerFarm.
     * @param serverFarmValue The ServerFarm value.
     */
-    public void setServerFarm(final String serverFarmValue) {
+    public void setServerFarm(final String serverFarmValue)
+    {
         this.serverFarm = serverFarmValue;
     }
     
@@ -312,7 +339,8 @@ public class WebSite {
     * mode uses the ComputeMode setting.
     * @return The SiteMode value.
     */
-    public WebSiteMode getSiteMode() {
+    public WebSiteMode getSiteMode()
+    {
         return this.siteMode;
     }
     
@@ -323,7 +351,8 @@ public class WebSite {
     * mode uses the ComputeMode setting.
     * @param siteModeValue The SiteMode value.
     */
-    public void setSiteMode(final WebSiteMode siteModeValue) {
+    public void setSiteMode(final WebSiteMode siteModeValue)
+    {
         this.siteMode = siteModeValue;
     }
     
@@ -333,7 +362,8 @@ public class WebSite {
     * Contains AppSettings, Metadata, and Properties for a site.
     * @return The SiteProperties value.
     */
-    public WebSite.WebSiteProperties getSiteProperties() {
+    public WebSite.WebSiteProperties getSiteProperties()
+    {
         return this.siteProperties;
     }
     
@@ -341,7 +371,8 @@ public class WebSite {
     * Contains AppSettings, Metadata, and Properties for a site.
     * @param sitePropertiesValue The SiteProperties value.
     */
-    public void setSiteProperties(final WebSite.WebSiteProperties sitePropertiesValue) {
+    public void setSiteProperties(final WebSite.WebSiteProperties sitePropertiesValue)
+    {
         this.siteProperties = sitePropertiesValue;
     }
     
@@ -351,7 +382,8 @@ public class WebSite {
     * SSL certificates bound to the web site.
     * @return The SslCertificates value.
     */
-    public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates() {
+    public ArrayList<WebSite.WebSiteSslCertificate> getSslCertificates()
+    {
         return this.sslCertificates;
     }
     
@@ -359,7 +391,8 @@ public class WebSite {
     * SSL certificates bound to the web site.
     * @param sslCertificatesValue The SslCertificates value.
     */
-    public void setSslCertificates(final ArrayList<WebSite.WebSiteSslCertificate> sslCertificatesValue) {
+    public void setSslCertificates(final ArrayList<WebSite.WebSiteSslCertificate> sslCertificatesValue)
+    {
         this.sslCertificates = sslCertificatesValue;
     }
     
@@ -370,7 +403,8 @@ public class WebSite {
     * Stopped or Running.
     * @return The State value.
     */
-    public String getState() {
+    public String getState()
+    {
         return this.state;
     }
     
@@ -379,7 +413,8 @@ public class WebSite {
     * Stopped or Running.
     * @param stateValue The State value.
     */
-    public void setState(final String stateValue) {
+    public void setState(final String stateValue)
+    {
         this.state = stateValue;
     }
     
@@ -390,7 +425,8 @@ public class WebSite {
     * the subscription ID, webspace name, and site name.
     * @return The Uri value.
     */
-    public URI getUri() {
+    public URI getUri()
+    {
         return this.uri;
     }
     
@@ -399,7 +435,8 @@ public class WebSite {
     * the subscription ID, webspace name, and site name.
     * @param uriValue The Uri value.
     */
-    public void setUri(final URI uriValue) {
+    public void setUri(final URI uriValue)
+    {
         this.uri = uriValue;
     }
     
@@ -410,7 +447,8 @@ public class WebSite {
     * UsageState value changes to Exceeded and the site goes off line.
     * @return The UsageState value.
     */
-    public WebSiteUsageState getUsageState() {
+    public WebSiteUsageState getUsageState()
+    {
         return this.usageState;
     }
     
@@ -419,7 +457,8 @@ public class WebSite {
     * UsageState value changes to Exceeded and the site goes off line.
     * @param usageStateValue The UsageState value.
     */
-    public void setUsageState(final WebSiteUsageState usageStateValue) {
+    public void setUsageState(final WebSiteUsageState usageStateValue)
+    {
         this.usageState = usageStateValue;
     }
     
@@ -430,7 +469,8 @@ public class WebSite {
     * is read-only.
     * @return The WebSpace value.
     */
-    public String getWebSpace() {
+    public String getWebSpace()
+    {
         return this.webSpace;
     }
     
@@ -439,7 +479,8 @@ public class WebSite {
     * is read-only.
     * @param webSpaceValue The WebSpace value.
     */
-    public void setWebSpace(final String webSpaceValue) {
+    public void setWebSpace(final String webSpaceValue)
+    {
         this.webSpace = webSpaceValue;
     }
     
@@ -447,7 +488,8 @@ public class WebSite {
     * Initializes a new instance of the WebSite class.
     *
     */
-    public WebSite() {
+    public WebSite()
+    {
         this.enabledHostNames = new ArrayList<String>();
         this.hostNames = new ArrayList<String>();
         this.hostNameSslStates = new ArrayList<WebSite.WebSiteHostNameSslState>();
@@ -457,14 +499,16 @@ public class WebSite {
     /**
     * SSL states bound to a website.
     */
-    public static class WebSiteHostNameSslState {
+    public static class WebSiteHostNameSslState
+    {
         private String name;
         
         /**
         * The URL of the web site.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -472,7 +516,8 @@ public class WebSite {
         * The URL of the web site.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -483,7 +528,8 @@ public class WebSite {
         * IpBasedEnabled.
         * @return The SslState value.
         */
-        public WebSiteSslState getSslState() {
+        public WebSiteSslState getSslState()
+        {
             return this.sslState;
         }
         
@@ -492,7 +538,8 @@ public class WebSite {
         * IpBasedEnabled.
         * @param sslStateValue The SslState value.
         */
-        public void setSslState(final WebSiteSslState sslStateValue) {
+        public void setSslState(final WebSiteSslState sslStateValue)
+        {
             this.sslState = sslStateValue;
         }
         
@@ -502,7 +549,8 @@ public class WebSite {
         * A string that contains the thumbprint of the SSL certificate.
         * @return The Thumbprint value.
         */
-        public String getThumbprint() {
+        public String getThumbprint()
+        {
             return this.thumbprint;
         }
         
@@ -510,7 +558,8 @@ public class WebSite {
         * A string that contains the thumbprint of the SSL certificate.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue) {
+        public void setThumbprint(final String thumbprintValue)
+        {
             this.thumbprint = thumbprintValue;
         }
         
@@ -521,7 +570,8 @@ public class WebSite {
         * IP SSL.
         * @return The VirtualIP value.
         */
-        public InetAddress getVirtualIP() {
+        public InetAddress getVirtualIP()
+        {
             return this.virtualIP;
         }
         
@@ -530,12 +580,14 @@ public class WebSite {
         * IP SSL.
         * @param virtualIPValue The VirtualIP value.
         */
-        public void setVirtualIP(final InetAddress virtualIPValue) {
+        public void setVirtualIP(final InetAddress virtualIPValue)
+        {
             this.virtualIP = virtualIPValue;
         }
     }
     
-    public static class WebSiteProperties {
+    public static class WebSiteProperties
+    {
         private HashMap<String, String> appSettings;
         
         /**
@@ -543,7 +595,8 @@ public class WebSite {
         * site.
         * @return The AppSettings value.
         */
-        public HashMap<String, String> getAppSettings() {
+        public HashMap<String, String> getAppSettings()
+        {
             return this.appSettings;
         }
         
@@ -552,7 +605,8 @@ public class WebSite {
         * site.
         * @param appSettingsValue The AppSettings value.
         */
-        public void setAppSettings(final HashMap<String, String> appSettingsValue) {
+        public void setAppSettings(final HashMap<String, String> appSettingsValue)
+        {
             this.appSettings = appSettingsValue;
         }
         
@@ -563,7 +617,8 @@ public class WebSite {
         * site.
         * @return The Metadata value.
         */
-        public HashMap<String, String> getMetadata() {
+        public HashMap<String, String> getMetadata()
+        {
             return this.metadata;
         }
         
@@ -572,7 +627,8 @@ public class WebSite {
         * site.
         * @param metadataValue The Metadata value.
         */
-        public void setMetadata(final HashMap<String, String> metadataValue) {
+        public void setMetadata(final HashMap<String, String> metadataValue)
+        {
             this.metadata = metadataValue;
         }
         
@@ -582,7 +638,8 @@ public class WebSite {
         * A set of name/value pairs that contain properties for a site.
         * @return The Properties value.
         */
-        public HashMap<String, String> getProperties() {
+        public HashMap<String, String> getProperties()
+        {
             return this.properties;
         }
         
@@ -590,7 +647,8 @@ public class WebSite {
         * A set of name/value pairs that contain properties for a site.
         * @param propertiesValue The Properties value.
         */
-        public void setProperties(final HashMap<String, String> propertiesValue) {
+        public void setProperties(final HashMap<String, String> propertiesValue)
+        {
             this.properties = propertiesValue;
         }
         
@@ -598,7 +656,8 @@ public class WebSite {
         * Initializes a new instance of the WebSiteProperties class.
         *
         */
-        public WebSiteProperties() {
+        public WebSiteProperties()
+        {
             this.appSettings = new HashMap<String, String>();
             this.metadata = new HashMap<String, String>();
             this.properties = new HashMap<String, String>();
@@ -608,14 +667,16 @@ public class WebSite {
     /**
     * Contains SSL certificate properties.
     */
-    public static class WebSiteSslCertificate {
+    public static class WebSiteSslCertificate
+    {
         private Calendar expirationDate;
         
         /**
         * A dateTime value that contains the expiration date of the certificate.
         * @return The ExpirationDate value.
         */
-        public Calendar getExpirationDate() {
+        public Calendar getExpirationDate()
+        {
             return this.expirationDate;
         }
         
@@ -623,7 +684,8 @@ public class WebSite {
         * A dateTime value that contains the expiration date of the certificate.
         * @param expirationDateValue The ExpirationDate value.
         */
-        public void setExpirationDate(final Calendar expirationDateValue) {
+        public void setExpirationDate(final Calendar expirationDateValue)
+        {
             this.expirationDate = expirationDateValue;
         }
         
@@ -633,7 +695,8 @@ public class WebSite {
         * A string that contains the friendly name of the certificate.
         * @return The FriendlyName value.
         */
-        public String getFriendlyName() {
+        public String getFriendlyName()
+        {
             return this.friendlyName;
         }
         
@@ -641,7 +704,8 @@ public class WebSite {
         * A string that contains the friendly name of the certificate.
         * @param friendlyNameValue The FriendlyName value.
         */
-        public void setFriendlyName(final String friendlyNameValue) {
+        public void setFriendlyName(final String friendlyNameValue)
+        {
             this.friendlyName = friendlyNameValue;
         }
         
@@ -652,7 +716,8 @@ public class WebSite {
         * certificate is bound.
         * @return The HostNames value.
         */
-        public ArrayList<String> getHostNames() {
+        public ArrayList<String> getHostNames()
+        {
             return this.hostNames;
         }
         
@@ -661,7 +726,8 @@ public class WebSite {
         * certificate is bound.
         * @param hostNamesValue The HostNames value.
         */
-        public void setHostNames(final ArrayList<String> hostNamesValue) {
+        public void setHostNames(final ArrayList<String> hostNamesValue)
+        {
             this.hostNames = hostNamesValue;
         }
         
@@ -672,7 +738,8 @@ public class WebSite {
         * issued.
         * @return The IssueDate value.
         */
-        public Calendar getIssueDate() {
+        public Calendar getIssueDate()
+        {
             return this.issueDate;
         }
         
@@ -681,7 +748,8 @@ public class WebSite {
         * issued.
         * @param issueDateValue The IssueDate value.
         */
-        public void setIssueDate(final Calendar issueDateValue) {
+        public void setIssueDate(final Calendar issueDateValue)
+        {
             this.issueDate = issueDateValue;
         }
         
@@ -691,7 +759,8 @@ public class WebSite {
         * A string that identifies the issuer of the certificate.
         * @return The Issuer value.
         */
-        public String getIssuer() {
+        public String getIssuer()
+        {
             return this.issuer;
         }
         
@@ -699,7 +768,8 @@ public class WebSite {
         * A string that identifies the issuer of the certificate.
         * @param issuerValue The Issuer value.
         */
-        public void setIssuer(final String issuerValue) {
+        public void setIssuer(final String issuerValue)
+        {
             this.issuer = issuerValue;
         }
         
@@ -709,7 +779,8 @@ public class WebSite {
         * Boolean. true if the certificate is to be deleted.
         * @return The IsToBeDeleted value.
         */
-        public Boolean isToBeDeleted() {
+        public Boolean isToBeDeleted()
+        {
             return this.isToBeDeleted;
         }
         
@@ -717,7 +788,8 @@ public class WebSite {
         * Boolean. true if the certificate is to be deleted.
         * @param isToBeDeletedValue The IsToBeDeleted value.
         */
-        public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
+        public void setIsToBeDeleted(final Boolean isToBeDeletedValue)
+        {
             this.isToBeDeleted = isToBeDeletedValue;
         }
         
@@ -727,7 +799,8 @@ public class WebSite {
         * Boolean. true if the certificate is valid; otherwise, false.
         * @return The IsValid value.
         */
-        public Boolean isValid() {
+        public Boolean isValid()
+        {
             return this.isValid;
         }
         
@@ -735,7 +808,8 @@ public class WebSite {
         * Boolean. true if the certificate is valid; otherwise, false.
         * @param isValidValue The IsValid value.
         */
-        public void setIsValid(final Boolean isValidValue) {
+        public void setIsValid(final Boolean isValidValue)
+        {
             this.isValid = isValidValue;
         }
         
@@ -745,7 +819,8 @@ public class WebSite {
         * A string that contains the password for the certificate.
         * @return The Password value.
         */
-        public String getPassword() {
+        public String getPassword()
+        {
             return this.password;
         }
         
@@ -753,7 +828,8 @@ public class WebSite {
         * A string that contains the password for the certificate.
         * @param passwordValue The Password value.
         */
-        public void setPassword(final String passwordValue) {
+        public void setPassword(final String passwordValue)
+        {
             this.password = passwordValue;
         }
         
@@ -763,7 +839,8 @@ public class WebSite {
         * A base64Binary value that contains the PfxBlob of the certificate.
         * @return The PfxBlob value.
         */
-        public byte[] getPfxBlob() {
+        public byte[] getPfxBlob()
+        {
             return this.pfxBlob;
         }
         
@@ -771,7 +848,8 @@ public class WebSite {
         * A base64Binary value that contains the PfxBlob of the certificate.
         * @param pfxBlobValue The PfxBlob value.
         */
-        public void setPfxBlob(final byte[] pfxBlobValue) {
+        public void setPfxBlob(final byte[] pfxBlobValue)
+        {
             this.pfxBlob = pfxBlobValue;
         }
         
@@ -782,7 +860,8 @@ public class WebSite {
         * certificate is bound.
         * @return The SelfLinkUri value.
         */
-        public URI getSelfLinkUri() {
+        public URI getSelfLinkUri()
+        {
             return this.selfLinkUri;
         }
         
@@ -791,7 +870,8 @@ public class WebSite {
         * certificate is bound.
         * @param selfLinkUriValue The SelfLinkUri value.
         */
-        public void setSelfLinkUri(final URI selfLinkUriValue) {
+        public void setSelfLinkUri(final URI selfLinkUriValue)
+        {
             this.selfLinkUri = selfLinkUriValue;
         }
         
@@ -802,7 +882,8 @@ public class WebSite {
         * is bound.
         * @return The SiteName value.
         */
-        public String getSiteName() {
+        public String getSiteName()
+        {
             return this.siteName;
         }
         
@@ -811,7 +892,8 @@ public class WebSite {
         * is bound.
         * @param siteNameValue The SiteName value.
         */
-        public void setSiteName(final String siteNameValue) {
+        public void setSiteName(final String siteNameValue)
+        {
             this.siteName = siteNameValue;
         }
         
@@ -822,7 +904,8 @@ public class WebSite {
         * was issued.
         * @return The SubjectName value.
         */
-        public String getSubjectName() {
+        public String getSubjectName()
+        {
             return this.subjectName;
         }
         
@@ -831,7 +914,8 @@ public class WebSite {
         * was issued.
         * @param subjectNameValue The SubjectName value.
         */
-        public void setSubjectName(final String subjectNameValue) {
+        public void setSubjectName(final String subjectNameValue)
+        {
             this.subjectName = subjectNameValue;
         }
         
@@ -841,7 +925,8 @@ public class WebSite {
         * A string that contains the certificate thumbprint.
         * @return The Thumbprint value.
         */
-        public String getThumbprint() {
+        public String getThumbprint()
+        {
             return this.thumbprint;
         }
         
@@ -849,7 +934,8 @@ public class WebSite {
         * A string that contains the certificate thumbprint.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue) {
+        public void setThumbprint(final String thumbprintValue)
+        {
             this.thumbprint = thumbprintValue;
         }
         
@@ -857,7 +943,8 @@ public class WebSite {
         * Initializes a new instance of the WebSiteSslCertificate class.
         *
         */
-        public WebSiteSslCertificate() {
+        public WebSiteSslCertificate()
+        {
             this.hostNames = new ArrayList<String>();
         }
     }

@@ -24,33 +24,34 @@
 package com.microsoft.windowsazure.management.scheduler.models;
 
 /**
- * Specifies the state for a cloud service resource.
- */
-public class GetCloudServiceResourceState {
+* Specifies the state for a cloud service resource.
+*/
+public class GetCloudServiceResourceState
+{
     /**
-     * The resource state is unknown, there may have been a communicaiton
-     * failure, or the resource has not yet been processed.
-     */
+    * The resource state is unknown, there may have been a communicaiton
+    * failure, or the resource has not yet been processed.
+    */
     public static final String Unknown = "Unknown";
-
+    
     /**
-     * The resource provider did not respond with information for the resource.
-     */
+    * The resource provider did not respond with information for the resource.
+    */
     public static final String NotFound = "NotFound";
-
+    
     /**
-     * The resource has started and is running fine.
-     */
+    * The resource has started and is running fine.
+    */
     public static final String Started = "Started";
-
+    
     /**
-     * The resource was stopped due to an issue.
-     */
+    * The resource was stopped due to an issue.
+    */
     public static final String Stopped = "Stopped";
-
+    
     /**
-     * The resource was temporarily put on hold. This may be due to a monetary
-     * event.
-     */
+    * The resource was temporarily put on hold. This may be due to a monetary
+    * event.
+    */
     public static final String Paused = "Paused";
 }

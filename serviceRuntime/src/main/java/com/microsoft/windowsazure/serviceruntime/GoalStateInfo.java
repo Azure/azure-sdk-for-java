@@ -60,7 +60,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "GoalStateInfo", propOrder = {
 
 })
-class GoalStateInfo {
+class GoalStateInfo
+{
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
@@ -82,7 +83,8 @@ class GoalStateInfo {
      * @return possible object is {@link BigInteger }
      * 
      */
-    public BigInteger getIncarnation() {
+    public BigInteger getIncarnation()
+    {
         return incarnation;
     }
 
@@ -93,7 +95,8 @@ class GoalStateInfo {
      *            allowed object is {@link BigInteger }
      * 
      */
-    public void setIncarnation(BigInteger value) {
+    public void setIncarnation(BigInteger value)
+    {
         this.incarnation = value;
     }
 
@@ -103,7 +106,8 @@ class GoalStateInfo {
      * @return possible object is {@link ExpectedStateEnum }
      * 
      */
-    public ExpectedStateEnum getExpectedState() {
+    public ExpectedStateEnum getExpectedState()
+    {
         return expectedState;
     }
 
@@ -114,7 +118,8 @@ class GoalStateInfo {
      *            allowed object is {@link ExpectedStateEnum }
      * 
      */
-    public void setExpectedState(ExpectedStateEnum value) {
+    public void setExpectedState(ExpectedStateEnum value)
+    {
         this.expectedState = value;
     }
 
@@ -124,7 +129,8 @@ class GoalStateInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getRoleEnvironmentPath() {
+    public String getRoleEnvironmentPath()
+    {
         return roleEnvironmentPath;
     }
 
@@ -135,7 +141,8 @@ class GoalStateInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setRoleEnvironmentPath(String value) {
+    public void setRoleEnvironmentPath(String value)
+    {
         this.roleEnvironmentPath = value;
     }
 
@@ -145,7 +152,8 @@ class GoalStateInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getCurrentStateEndpoint() {
+    public String getCurrentStateEndpoint()
+    {
         return currentStateEndpoint;
     }
 
@@ -156,7 +164,8 @@ class GoalStateInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setCurrentStateEndpoint(String value) {
+    public void setCurrentStateEndpoint(String value)
+    {
         this.currentStateEndpoint = value;
     }
 
@@ -166,7 +175,8 @@ class GoalStateInfo {
      * @return possible object is {@link String }
      * 
      */
-    public Calendar getDeadline() {
+    public Calendar getDeadline()
+    {
         return deadline;
     }
 
@@ -177,7 +187,8 @@ class GoalStateInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setDeadline(Calendar value) {
+    public void setDeadline(Calendar value)
+    {
         this.deadline = value;
     }
 

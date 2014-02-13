@@ -26,50 +26,61 @@ import java.util.logging.Logger;
 import javax.net.ssl.SSLContext;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 
-public class CertificateCloudCredentials extends SubscriptionCloudCredentials {
+public class CertificateCloudCredentials extends SubscriptionCloudCredentials
+{
     private String _subscriptionId;
     private KeyStoreCredential _keyStoreCredential;
 
-    public CertificateCloudCredentials(String subscriptionId) {
+    public CertificateCloudCredentials(String subscriptionId)
+    {
         this._subscriptionId = subscriptionId;
     }
 
     public CertificateCloudCredentials(String subscriptionId,
-            KeyStoreCredential keyStoreCredential) {
+            KeyStoreCredential keyStoreCredential)
+    {
         this._subscriptionId = subscriptionId;
         this._keyStoreCredential = keyStoreCredential;
     }
 
     @Override
-    public String getSubscriptionId() {
+    public String getSubscriptionId()
+    {
         return _subscriptionId;
     }
 
-    public void setSubscriptionId(String subscriptionId) {
+    public void setSubscriptionId(String subscriptionId)
+    {
         _subscriptionId = subscriptionId;
     }
 
-    public KeyStoreCredential getKeyStoreCredential() {
+    public KeyStoreCredential getKeyStoreCredential()
+    {
         return _keyStoreCredential;
     }
 
-    public void setKeyStoreCredential(KeyStoreCredential keyStoreCredential) {
+    public void setKeyStoreCredential(KeyStoreCredential keyStoreCredential)
+    {
         _keyStoreCredential = keyStoreCredential;
     }
 
     @Override
-    public <T> void applyConfig(String profile, Map<String, Object> properties) {
+    public <T> void applyConfig(String profile, Map<String, Object> properties)
+    {
         SSLContext sslcontext;
-        try {
+        try
+        {
             sslcontext = SSLContextFactory.create(this.getKeyStoreCredential());
             properties
                     .put(profile
                             + ApacheConfigurationProperties.PROPERTY_SSL_CONNECTION_SOCKET_FACTORY,
                             new SSLConnectionSocketFactory(sslcontext));
-        } catch (GeneralSecurityException ex) {
+        } catch (GeneralSecurityException ex)
+        {
             Logger.getLogger(CertificateCloudCredentials.class.getName()).log(
                     Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (IOException ex)
+        {
             Logger.getLogger(CertificateCloudCredentials.class.getName()).log(
                     Level.SEVERE, null, ex);
         }

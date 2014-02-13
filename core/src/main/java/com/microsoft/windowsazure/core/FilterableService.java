@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.core;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 
-public interface FilterableService<T> {
+public interface FilterableService<T>
+{
     T withRequestFilterFirst(ServiceRequestFilter serviceRequestFilter);
 
     T withRequestFilterLast(ServiceRequestFilter serviceRequestFilter);

@@ -31,14 +31,16 @@ import java.util.ArrayList;
 * A response that indicates the availability of a static IP address, and if
 * not, provide a list of suggestions.
 */
-public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
+public class NetworkStaticIPAvailabilityResponse extends OperationResponse
+{
     private ArrayList<InetAddress> availableAddresses;
     
     /**
     * The list of the available IP addresses.
     * @return The AvailableAddresses value.
     */
-    public ArrayList<InetAddress> getAvailableAddresses() {
+    public ArrayList<InetAddress> getAvailableAddresses()
+    {
         return this.availableAddresses;
     }
     
@@ -46,7 +48,8 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     * The list of the available IP addresses.
     * @param availableAddressesValue The AvailableAddresses value.
     */
-    public void setAvailableAddresses(final ArrayList<InetAddress> availableAddressesValue) {
+    public void setAvailableAddresses(final ArrayList<InetAddress> availableAddressesValue)
+    {
         this.availableAddresses = availableAddressesValue;
     }
     
@@ -56,7 +59,8 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     * Whether the IP address is available.
     * @return The IsAvailable value.
     */
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return this.isAvailable;
     }
     
@@ -64,7 +68,8 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     * Whether the IP address is available.
     * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(final boolean isAvailableValue) {
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
         this.isAvailable = isAvailableValue;
     }
     
@@ -73,7 +78,8 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     * class.
     *
     */
-    public NetworkStaticIPAvailabilityResponse() {
+    public NetworkStaticIPAvailabilityResponse()
+    {
         super();
         this.availableAddresses = new ArrayList<InetAddress>();
     }

@@ -23,10 +23,12 @@ import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 
-public class RedirectFilter extends IdempotentClientFilter {
+public class RedirectFilter extends IdempotentClientFilter
+{
     private final ResourceLocationManager locationManager;
 
-    public RedirectFilter(ResourceLocationManager locationManager) {
+    public RedirectFilter(ResourceLocationManager locationManager)
+    {
         this.locationManager = locationManager;
     }
 
@@ -38,8 +40,10 @@ public class RedirectFilter extends IdempotentClientFilter {
      * (com.sun.jersey.api.client.ClientRequest)
      */
     @Override
-    public ClientResponse doHandle(ClientRequest request) {
-        if (request == null) {
+    public ClientResponse doHandle(ClientRequest request)
+    {
+        if (request == null)
+        {
             throw new IllegalArgumentException("Request should not be null");
         }
 
@@ -47,14 +51,18 @@ public class RedirectFilter extends IdempotentClientFilter {
         request.setURI(locationManager.getRedirectedURI(originalURI));
 
         ClientResponse response = getNext().handle(request);
-        while (response.getClientResponseStatus() == ClientResponse.Status.MOVED_PERMANENTLY) {
-            try {
+        while (response.getClientResponseStatus() == ClientResponse.Status.MOVED_PERMANENTLY)
+        {
+            try
+            {
                 locationManager.setRedirectedURI(response.getHeaders()
                         .getFirst("Location"));
-            } catch (NullPointerException e) {
+            } catch (NullPointerException e)
+            {
                 throw new ClientHandlerException(
                         "HTTP Redirect did not include Location header");
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException e)
+            {
                 throw new ClientHandlerException(
                         "HTTP Redirect location is not a valid URI");
             }
@@ -65,7 +73,8 @@ public class RedirectFilter extends IdempotentClientFilter {
         return response;
     }
 
-    public URI getBaseURI() {
+    public URI getBaseURI()
+    {
         return this.locationManager.getBaseURI();
     }
 }

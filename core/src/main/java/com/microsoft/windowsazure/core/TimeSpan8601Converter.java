@@ -19,16 +19,21 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-public class TimeSpan8601Converter {
-    public static String format(Duration duration) {
+public class TimeSpan8601Converter
+{
+    public static String format(Duration duration)
+    {
         return duration.toString();
     }
 
-    public static Duration parse(String duration) {
-        try {
+    public static Duration parse(String duration)
+    {
+        try
+        {
             DatatypeFactory factory = DatatypeFactory.newInstance();
             return factory.newDuration(duration);
-        } catch (DatatypeConfigurationException e) {
+        } catch (DatatypeConfigurationException e)
+        {
             String msg = String.format(
                     "The value \"%s\" is not a valid ISO8601 duration.",
                     duration);

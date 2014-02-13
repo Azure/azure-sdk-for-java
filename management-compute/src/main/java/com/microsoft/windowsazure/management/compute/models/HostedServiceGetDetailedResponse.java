@@ -31,14 +31,16 @@ import java.util.HashMap;
 /**
 * The detailed Get Hosted Service operation response.
 */
-public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
+public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse
+{
     private ArrayList<HostedServiceGetDetailedResponse.Deployment> deployments;
     
     /**
     * The deployments that exist in the cloud service.
     * @return The Deployments value.
     */
-    public ArrayList<HostedServiceGetDetailedResponse.Deployment> getDeployments() {
+    public ArrayList<HostedServiceGetDetailedResponse.Deployment> getDeployments()
+    {
         return this.deployments;
     }
     
@@ -46,7 +48,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     * The deployments that exist in the cloud service.
     * @param deploymentsValue The Deployments value.
     */
-    public void setDeployments(final ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentsValue) {
+    public void setDeployments(final ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentsValue)
+    {
         this.deployments = deploymentsValue;
     }
     
@@ -54,7 +57,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     * Initializes a new instance of the HostedServiceGetDetailedResponse class.
     *
     */
-    public HostedServiceGetDetailedResponse() {
+    public HostedServiceGetDetailedResponse()
+    {
         super();
         this.deployments = new ArrayList<HostedServiceGetDetailedResponse.Deployment>();
     }
@@ -62,14 +66,16 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     /**
     * A deployment that exists in the cloud service.
     */
-    public static class Deployment {
+    public static class Deployment
+    {
         private String configuration;
         
         /**
         * The configuration file of the deployment.
         * @return The Configuration value.
         */
-        public String getConfiguration() {
+        public String getConfiguration()
+        {
             return this.configuration;
         }
         
@@ -77,7 +83,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The configuration file of the deployment.
         * @param configurationValue The Configuration value.
         */
-        public void setConfiguration(final String configurationValue) {
+        public void setConfiguration(final String configurationValue)
+        {
             this.configuration = configurationValue;
         }
         
@@ -87,7 +94,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The time that the deployment was created.
         * @return The CreatedTime value.
         */
-        public Calendar getCreatedTime() {
+        public Calendar getCreatedTime()
+        {
             return this.createdTime;
         }
         
@@ -95,7 +103,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The time that the deployment was created.
         * @param createdTimeValue The CreatedTime value.
         */
-        public void setCreatedTime(final Calendar createdTimeValue) {
+        public void setCreatedTime(final Calendar createdTimeValue)
+        {
             this.createdTime = createdTimeValue;
         }
         
@@ -105,7 +114,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The deployment environment in which this deployment is running.
         * @return The DeploymentSlot value.
         */
-        public DeploymentSlot getDeploymentSlot() {
+        public DeploymentSlot getDeploymentSlot()
+        {
             return this.deploymentSlot;
         }
         
@@ -113,7 +123,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The deployment environment in which this deployment is running.
         * @param deploymentSlotValue The DeploymentSlot value.
         */
-        public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue) {
+        public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue)
+        {
             this.deploymentSlot = deploymentSlotValue;
         }
         
@@ -123,7 +134,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The custom DNS settings that are specified for deployment.
         * @return The DnsSettings value.
         */
-        public DnsSettings getDnsSettings() {
+        public DnsSettings getDnsSettings()
+        {
             return this.dnsSettings;
         }
         
@@ -131,7 +143,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The custom DNS settings that are specified for deployment.
         * @param dnsSettingsValue The DnsSettings value.
         */
-        public void setDnsSettings(final DnsSettings dnsSettingsValue) {
+        public void setDnsSettings(final DnsSettings dnsSettingsValue)
+        {
             this.dnsSettings = dnsSettingsValue;
         }
         
@@ -150,7 +163,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * extended property value has a maximum length of 255 characters.
         * @return The ExtendedProperties value.
         */
-        public HashMap<String, String> getExtendedProperties() {
+        public HashMap<String, String> getExtendedProperties()
+        {
             return this.extendedProperties;
         }
         
@@ -167,7 +181,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * extended property value has a maximum length of 255 characters.
         * @param extendedPropertiesValue The ExtendedProperties value.
         */
-        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+        {
             this.extendedProperties = extendedPropertiesValue;
         }
         
@@ -178,7 +193,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * identify the deployment for your tracking purposes.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -187,7 +203,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * identify the deployment for your tracking purposes.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -197,7 +214,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The last time that the deployment was modified.
         * @return The LastModifiedTime value.
         */
-        public String getLastModifiedTime() {
+        public String getLastModifiedTime()
+        {
             return this.lastModifiedTime;
         }
         
@@ -205,7 +223,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The last time that the deployment was modified.
         * @param lastModifiedTimeValue The LastModifiedTime value.
         */
-        public void setLastModifiedTime(final String lastModifiedTimeValue) {
+        public void setLastModifiedTime(final String lastModifiedTimeValue)
+        {
             this.lastModifiedTime = lastModifiedTimeValue;
         }
         
@@ -217,7 +236,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * updating the deployment; otherwise false.
         * @return The Locked value.
         */
-        public boolean isLocked() {
+        public boolean isLocked()
+        {
             return this.locked;
         }
         
@@ -227,7 +247,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * updating the deployment; otherwise false.
         * @param lockedValue The Locked value.
         */
-        public void setLocked(final boolean lockedValue) {
+        public void setLocked(final boolean lockedValue)
+        {
             this.locked = lockedValue;
         }
         
@@ -236,14 +257,16 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         /**
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
         /**
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -254,7 +277,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * and stopped.
         * @return The PersistentVMDowntime value.
         */
-        public PersistentVMDowntime getPersistentVMDowntime() {
+        public PersistentVMDowntime getPersistentVMDowntime()
+        {
             return this.persistentVMDowntime;
         }
         
@@ -263,7 +287,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * and stopped.
         * @param persistentVMDowntimeValue The PersistentVMDowntime value.
         */
-        public void setPersistentVMDowntime(final PersistentVMDowntime persistentVMDowntimeValue) {
+        public void setPersistentVMDowntime(final PersistentVMDowntime persistentVMDowntimeValue)
+        {
             this.persistentVMDowntime = persistentVMDowntimeValue;
         }
         
@@ -273,7 +298,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The unique identifier for this deployment.
         * @return The PrivateId value.
         */
-        public String getPrivateId() {
+        public String getPrivateId()
+        {
             return this.privateId;
         }
         
@@ -281,7 +307,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The unique identifier for this deployment.
         * @param privateIdValue The PrivateId value.
         */
-        public void setPrivateId(final String privateIdValue) {
+        public void setPrivateId(final String privateIdValue)
+        {
             this.privateId = privateIdValue;
         }
         
@@ -291,7 +318,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The list of role instances in the deployment.
         * @return The RoleInstances value.
         */
-        public ArrayList<RoleInstance> getRoleInstances() {
+        public ArrayList<RoleInstance> getRoleInstances()
+        {
             return this.roleInstances;
         }
         
@@ -299,7 +327,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The list of role instances in the deployment.
         * @param roleInstancesValue The RoleInstances value.
         */
-        public void setRoleInstances(final ArrayList<RoleInstance> roleInstancesValue) {
+        public void setRoleInstances(final ArrayList<RoleInstance> roleInstancesValue)
+        {
             this.roleInstances = roleInstancesValue;
         }
         
@@ -309,7 +338,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The list of roles in the deployment.
         * @return The Roles value.
         */
-        public ArrayList<Role> getRoles() {
+        public ArrayList<Role> getRoles()
+        {
             return this.roles;
         }
         
@@ -317,7 +347,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The list of roles in the deployment.
         * @param rolesValue The Roles value.
         */
-        public void setRoles(final ArrayList<Role> rolesValue) {
+        public void setRoles(final ArrayList<Role> rolesValue)
+        {
             this.roles = rolesValue;
         }
         
@@ -328,7 +359,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * at this time. True if the operation is allowed; otherwise false.
         * @return The RollbackAllowed value.
         */
-        public boolean isRollbackAllowed() {
+        public boolean isRollbackAllowed()
+        {
             return this.rollbackAllowed;
         }
         
@@ -337,7 +369,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * at this time. True if the operation is allowed; otherwise false.
         * @param rollbackAllowedValue The RollbackAllowed value.
         */
-        public void setRollbackAllowed(final boolean rollbackAllowedValue) {
+        public void setRollbackAllowed(final boolean rollbackAllowedValue)
+        {
             this.rollbackAllowed = rollbackAllowedValue;
         }
         
@@ -350,7 +383,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * used to create the package.
         * @return The SdkVersion value.
         */
-        public String getSdkVersion() {
+        public String getSdkVersion()
+        {
             return this.sdkVersion;
         }
         
@@ -361,7 +395,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * used to create the package.
         * @param sdkVersionValue The SdkVersion value.
         */
-        public void setSdkVersion(final String sdkVersionValue) {
+        public void setSdkVersion(final String sdkVersionValue)
+        {
             this.sdkVersion = sdkVersionValue;
         }
         
@@ -371,7 +406,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The status of the deployment.
         * @return The Status value.
         */
-        public DeploymentStatus getStatus() {
+        public DeploymentStatus getStatus()
+        {
             return this.status;
         }
         
@@ -379,7 +415,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The status of the deployment.
         * @param statusValue The Status value.
         */
-        public void setStatus(final DeploymentStatus statusValue) {
+        public void setStatus(final DeploymentStatus statusValue)
+        {
             this.status = statusValue;
         }
         
@@ -389,7 +426,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The number of upgrade domains available to this cloud service.
         * @return The UpgradeDomainCount value.
         */
-        public int getUpgradeDomainCount() {
+        public int getUpgradeDomainCount()
+        {
             return this.upgradeDomainCount;
         }
         
@@ -397,7 +435,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The number of upgrade domains available to this cloud service.
         * @param upgradeDomainCountValue The UpgradeDomainCount value.
         */
-        public void setUpgradeDomainCount(final int upgradeDomainCountValue) {
+        public void setUpgradeDomainCount(final int upgradeDomainCountValue)
+        {
             this.upgradeDomainCount = upgradeDomainCountValue;
         }
         
@@ -407,7 +446,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * Specifies information about an update occurring on the deployment.
         * @return The UpgradeStatus value.
         */
-        public UpgradeStatus getUpgradeStatus() {
+        public UpgradeStatus getUpgradeStatus()
+        {
             return this.upgradeStatus;
         }
         
@@ -415,7 +455,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * Specifies information about an update occurring on the deployment.
         * @param upgradeStatusValue The UpgradeStatus value.
         */
-        public void setUpgradeStatus(final UpgradeStatus upgradeStatusValue) {
+        public void setUpgradeStatus(final UpgradeStatus upgradeStatusValue)
+        {
             this.upgradeStatus = upgradeStatusValue;
         }
         
@@ -427,7 +468,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * calling: http://MyService.cloudapp.net
         * @return The Uri value.
         */
-        public URI getUri() {
+        public URI getUri()
+        {
             return this.uri;
         }
         
@@ -437,7 +479,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * calling: http://MyService.cloudapp.net
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue) {
+        public void setUri(final URI uriValue)
+        {
             this.uri = uriValue;
         }
         
@@ -447,7 +490,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The virtual IP addresses that are specified for thedeployment.
         * @return The VirtualIPAddresses value.
         */
-        public ArrayList<VirtualIPAddress> getVirtualIPAddresses() {
+        public ArrayList<VirtualIPAddress> getVirtualIPAddresses()
+        {
             return this.virtualIPAddresses;
         }
         
@@ -455,7 +499,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The virtual IP addresses that are specified for thedeployment.
         * @param virtualIPAddressesValue The VirtualIPAddresses value.
         */
-        public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue) {
+        public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue)
+        {
             this.virtualIPAddresses = virtualIPAddressesValue;
         }
         
@@ -465,7 +510,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The name of the Virtual Network that the virtual machine connects to.
         * @return The VirtualNetworkName value.
         */
-        public String getVirtualNetworkName() {
+        public String getVirtualNetworkName()
+        {
             return this.virtualNetworkName;
         }
         
@@ -473,7 +519,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * The name of the Virtual Network that the virtual machine connects to.
         * @param virtualNetworkNameValue The VirtualNetworkName value.
         */
-        public void setVirtualNetworkName(final String virtualNetworkNameValue) {
+        public void setVirtualNetworkName(final String virtualNetworkNameValue)
+        {
             this.virtualNetworkName = virtualNetworkNameValue;
         }
         
@@ -481,7 +528,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         * Initializes a new instance of the Deployment class.
         *
         */
-        public Deployment() {
+        public Deployment()
+        {
             this.extendedProperties = new HashMap<String, String>();
             this.roleInstances = new ArrayList<RoleInstance>();
             this.roles = new ArrayList<Role>();

@@ -29,7 +29,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Blob</a> documentation on MSDN for details of the underlying Blob Service
  * REST API operation.
  */
-public class GetBlobResult {
+public class GetBlobResult
+{
     private InputStream contentStream;
     private BlobProperties properties;
     private HashMap<String, String> metadata;
@@ -40,7 +41,8 @@ public class GetBlobResult {
      * @return An {@link InputStream} instance containing the content of the
      *         blob.
      */
-    public InputStream getContentStream() {
+    public InputStream getContentStream()
+    {
         return contentStream;
     }
 
@@ -55,7 +57,8 @@ public class GetBlobResult {
      *            An {@link InputStream} instance containing the content of the
      *            blob.
      */
-    public void setContentStream(InputStream contentStream) {
+    public void setContentStream(InputStream contentStream)
+    {
         this.contentStream = contentStream;
     }
 
@@ -65,7 +68,8 @@ public class GetBlobResult {
      * @return A {@link BlobProperties} instance containing the properties of
      *         the blob.
      */
-    public BlobProperties getProperties() {
+    public BlobProperties getProperties()
+    {
         return properties;
     }
 
@@ -80,7 +84,8 @@ public class GetBlobResult {
      *            A {@link BlobProperties} instance containing the properties of
      *            the blob.
      */
-    public void setProperties(BlobProperties properties) {
+    public void setProperties(BlobProperties properties)
+    {
         this.properties = properties;
     }
 
@@ -91,7 +96,8 @@ public class GetBlobResult {
      * @return A {@link java.util.HashMap} of key-value pairs of {@link String}
      *         containing the names and values of the blob metadata.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -108,7 +114,8 @@ public class GetBlobResult {
      *            {@link String} containing the names and values of the blob
      *            metadata.
      */
-    public void setMetadata(HashMap<String, String> metadata) {
+    public void setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 }

@@ -24,27 +24,27 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 /**
- * Parameters supplied to the Create or Update Rule operation.
- */
-public class RuleCreateOrUpdateParameters {
+* Parameters supplied to the Create or Update Rule operation.
+*/
+public class RuleCreateOrUpdateParameters
+{
     private Rule rule;
-
+    
     /**
-     * The rule to create or update.
-     * 
-     * @return The Rule value.
-     */
-    public Rule getRule() {
+    * The rule to create or update.
+    * @return The Rule value.
+    */
+    public Rule getRule()
+    {
         return this.rule;
     }
-
+    
     /**
-     * The rule to create or update.
-     * 
-     * @param ruleValue
-     *            The Rule value.
-     */
-    public void setRule(final Rule ruleValue) {
+    * The rule to create or update.
+    * @param ruleValue The Rule value.
+    */
+    public void setRule(final Rule ruleValue)
+    {
         this.rule = ruleValue;
     }
 }

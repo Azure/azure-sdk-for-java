@@ -20,14 +20,16 @@ import com.microsoft.windowsazure.exception.ServiceException;
 /**
  * Exception indicating a service operation has timed out.
  */
-public class ServiceTimeoutException extends ServiceException {
+public class ServiceTimeoutException extends ServiceException
+{
 
     private static final long serialVersionUID = 6612846403178749361L;
 
     /**
      * Construct a ServiceTimeoutException instance with default parameters.
      */
-    public ServiceTimeoutException() {
+    public ServiceTimeoutException()
+    {
     }
 
     /**
@@ -36,7 +38,8 @@ public class ServiceTimeoutException extends ServiceException {
      * @param message
      *            Exception message
      */
-    public ServiceTimeoutException(String message) {
+    public ServiceTimeoutException(String message)
+    {
         super(message);
     }
 
@@ -49,7 +52,8 @@ public class ServiceTimeoutException extends ServiceException {
      * @param cause
      *            Exception that caused this exception to occur
      */
-    public ServiceTimeoutException(String message, Throwable cause) {
+    public ServiceTimeoutException(String message, Throwable cause)
+    {
         super(message, cause);
     }
 
@@ -59,7 +63,8 @@ public class ServiceTimeoutException extends ServiceException {
      * @param cause
      *            Exception that caused this exception to occur
      */
-    public ServiceTimeoutException(Throwable cause) {
+    public ServiceTimeoutException(Throwable cause)
+    {
         super(cause);
     }
 }

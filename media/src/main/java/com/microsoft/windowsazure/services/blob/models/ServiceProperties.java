@@ -29,7 +29,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * methods to set the values of the service properties.
  */
 @XmlRootElement(name = "StorageServiceProperties")
-public class ServiceProperties {
+public class ServiceProperties
+{
     private Logging logging = new Logging();
     private Metrics metrics = new Metrics();
     private String defaultServiceVersion;
@@ -40,7 +41,8 @@ public class ServiceProperties {
      * @return A {@link Logging} instance containing the logging options.
      */
     @XmlElement(name = "Logging")
-    public Logging getLogging() {
+    public Logging getLogging()
+    {
         return logging;
     }
 
@@ -51,7 +53,8 @@ public class ServiceProperties {
      *            A {@link Logging} instance containing the logging options.
      * @return A reference to this {@link ServiceProperties} instance.
      */
-    public ServiceProperties setLogging(Logging logging) {
+    public ServiceProperties setLogging(Logging logging)
+    {
         this.logging = logging;
         return this;
     }
@@ -62,7 +65,8 @@ public class ServiceProperties {
      * @return A {@link Metrics} instance containing the metrics options.
      */
     @XmlElement(name = "Metrics")
-    public Metrics getMetrics() {
+    public Metrics getMetrics()
+    {
         return metrics;
     }
 
@@ -73,7 +77,8 @@ public class ServiceProperties {
      *            A {@link Metrics} instance containing the metrics options.
      * @return A reference to this {@link ServiceProperties} instance.
      */
-    public ServiceProperties setMetrics(Metrics metrics) {
+    public ServiceProperties setMetrics(Metrics metrics)
+    {
         this.metrics = metrics;
         return this;
     }
@@ -86,7 +91,8 @@ public class ServiceProperties {
      *         used for operations on the storage account.
      */
     @XmlElement(name = "DefaultServiceVersion")
-    public String getDefaultServiceVersion() {
+    public String getDefaultServiceVersion()
+    {
         return defaultServiceVersion;
     }
 
@@ -107,7 +113,8 @@ public class ServiceProperties {
      * @return A reference to this {@link ServiceProperties} instance.
      */
     public ServiceProperties setDefaultServiceVersion(
-            String defaultServiceVersion) {
+            String defaultServiceVersion)
+    {
         this.defaultServiceVersion = defaultServiceVersion;
         return this;
     }
@@ -115,7 +122,8 @@ public class ServiceProperties {
     /**
      * Represents the logging options that can be set on a storage account.
      */
-    public static class Logging {
+    public static class Logging
+    {
         private String version;
         private Boolean delete;
         private Boolean read;
@@ -129,7 +137,8 @@ public class ServiceProperties {
          * @return The {@link RetentionPolicy} set on the storage account.
          */
         @XmlElement(name = "RetentionPolicy")
-        public RetentionPolicy getRetentionPolicy() {
+        public RetentionPolicy getRetentionPolicy()
+        {
             return retentionPolicy;
         }
 
@@ -141,7 +150,8 @@ public class ServiceProperties {
          *            The {@link RetentionPolicy} to set on the storage account.
          * @return A reference to this {@link Logging} instance.
          */
-        public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Logging setRetentionPolicy(RetentionPolicy retentionPolicy)
+        {
             this.retentionPolicy = retentionPolicy;
             return this;
         }
@@ -153,7 +163,8 @@ public class ServiceProperties {
          *         logged; otherwise, <code>false</code>.
          */
         @XmlElement(name = "Write")
-        public boolean isWrite() {
+        public boolean isWrite()
+        {
             return write;
         }
 
@@ -165,7 +176,8 @@ public class ServiceProperties {
          *            operations; otherwise, <code>false</code>.
          * @return A reference to this {@link Logging} instance.
          */
-        public Logging setWrite(boolean write) {
+        public Logging setWrite(boolean write)
+        {
             this.write = write;
             return this;
         }
@@ -177,7 +189,8 @@ public class ServiceProperties {
          *         logged; otherwise, <code>false</code>.
          */
         @XmlElement(name = "Read")
-        public boolean isRead() {
+        public boolean isRead()
+        {
             return read;
         }
 
@@ -189,7 +202,8 @@ public class ServiceProperties {
          *            operations; otherwise, <code>false</code>.
          * @return A reference to this {@link Logging} instance.
          */
-        public Logging setRead(boolean read) {
+        public Logging setRead(boolean read)
+        {
             this.read = read;
             return this;
         }
@@ -201,7 +215,8 @@ public class ServiceProperties {
          *         are logged; otherwise, <code>false</code>.
          */
         @XmlElement(name = "Delete")
-        public boolean isDelete() {
+        public boolean isDelete()
+        {
             return delete;
         }
 
@@ -213,7 +228,8 @@ public class ServiceProperties {
          *            operations; otherwise, <code>false</code>.
          * @return A reference to this {@link Logging} instance.
          */
-        public Logging setDelete(boolean delete) {
+        public Logging setDelete(boolean delete)
+        {
             this.delete = delete;
             return this;
         }
@@ -225,7 +241,8 @@ public class ServiceProperties {
          *         on the storage account.
          */
         @XmlElement(name = "Version")
-        public String getVersion() {
+        public String getVersion()
+        {
             return version;
         }
 
@@ -237,7 +254,8 @@ public class ServiceProperties {
          *            configured on the storage account.
          * @return A reference to this {@link Logging} instance.
          */
-        public Logging setVersion(String version) {
+        public Logging setVersion(String version)
+        {
             this.version = version;
             return this;
         }
@@ -246,7 +264,8 @@ public class ServiceProperties {
     /**
      * Represents the metrics options that can be set on a storage account.
      */
-    public static class Metrics {
+    public static class Metrics
+    {
         private String version;
         private boolean enabled;
         private Boolean includeAPIs;
@@ -259,7 +278,8 @@ public class ServiceProperties {
          * @return The {@link RetentionPolicy} set on the storage account.
          */
         @XmlElement(name = "RetentionPolicy")
-        public RetentionPolicy getRetentionPolicy() {
+        public RetentionPolicy getRetentionPolicy()
+        {
             return retentionPolicy;
         }
 
@@ -271,7 +291,8 @@ public class ServiceProperties {
          *            The {@link RetentionPolicy} to set on the storage account.
          * @return A reference to this {@link Metrics} instance.
          */
-        public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy) {
+        public Metrics setRetentionPolicy(RetentionPolicy retentionPolicy)
+        {
             this.retentionPolicy = retentionPolicy;
             return this;
         }
@@ -285,7 +306,8 @@ public class ServiceProperties {
          *         <code>false</code>.
          */
         @XmlElement(name = "IncludeAPIs")
-        public Boolean isIncludeAPIs() {
+        public Boolean isIncludeAPIs()
+        {
             return includeAPIs;
         }
 
@@ -300,7 +322,8 @@ public class ServiceProperties {
          *            <code>false</code>.
          * @return A reference to this {@link Metrics} instance.
          */
-        public Metrics setIncludeAPIs(Boolean includeAPIs) {
+        public Metrics setIncludeAPIs(Boolean includeAPIs)
+        {
             this.includeAPIs = includeAPIs;
             return this;
         }
@@ -313,7 +336,8 @@ public class ServiceProperties {
          *         the storage account; otherwise, <code>false</code>.
          */
         @XmlElement(name = "Enabled")
-        public boolean isEnabled() {
+        public boolean isEnabled()
+        {
             return enabled;
         }
 
@@ -326,7 +350,8 @@ public class ServiceProperties {
          *            for the storage account; otherwise, <code>false</code>.
          * @return A reference to this {@link Metrics} instance.
          */
-        public Metrics setEnabled(boolean enabled) {
+        public Metrics setEnabled(boolean enabled)
+        {
             this.enabled = enabled;
             return this;
         }
@@ -339,7 +364,8 @@ public class ServiceProperties {
          *         configured on the storage account.
          */
         @XmlElement(name = "Version")
-        public String getVersion() {
+        public String getVersion()
+        {
             return version;
         }
 
@@ -352,7 +378,8 @@ public class ServiceProperties {
          *            Analytics configured on the storage account.
          * @return A reference to this {@link Metrics} instance.
          */
-        public Metrics setVersion(String version) {
+        public Metrics setVersion(String version)
+        {
             this.version = version;
             return this;
         }
@@ -362,7 +389,8 @@ public class ServiceProperties {
      * Represents the optional retention policy that can be applied to logging
      * or metrics on the storage account.
      */
-    public static class RetentionPolicy {
+    public static class RetentionPolicy
+    {
         private boolean enabled;
         private Integer days; // nullable, because optional if "enabled" is
                               // false
@@ -375,7 +403,8 @@ public class ServiceProperties {
          *         logging is enabled, or <code>null</code>.
          */
         @XmlElement(name = "Days")
-        public Integer getDays() {
+        public Integer getDays()
+        {
             return days;
         }
 
@@ -389,7 +418,8 @@ public class ServiceProperties {
          *            The number of days to retain logging or metrics data.
          * @return A reference to this {@link RetentionPolicy} instance.
          */
-        public RetentionPolicy setDays(Integer days) {
+        public RetentionPolicy setDays(Integer days)
+        {
             this.days = days;
             return this;
         }
@@ -401,7 +431,8 @@ public class ServiceProperties {
          *         enabled; otherwise, <code>false</code>.
          */
         @XmlElement(name = "Enabled")
-        public boolean isEnabled() {
+        public boolean isEnabled()
+        {
             return enabled;
         }
 
@@ -413,7 +444,8 @@ public class ServiceProperties {
          *            retention policy; otherwise, <code>false</code>.
          * @return A reference to this {@link RetentionPolicy} instance.
          */
-        public RetentionPolicy setEnabled(boolean enabled) {
+        public RetentionPolicy setEnabled(boolean enabled)
+        {
             this.enabled = enabled;
             return this;
         }

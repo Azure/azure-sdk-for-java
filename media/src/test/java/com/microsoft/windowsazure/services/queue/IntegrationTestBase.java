@@ -16,8 +16,10 @@ package com.microsoft.windowsazure.services.queue;
 
 import com.microsoft.windowsazure.Configuration;
 
-public abstract class IntegrationTestBase {
-    protected static Configuration createConfiguration() {
+public abstract class IntegrationTestBase
+{
+    protected static Configuration createConfiguration()
+    {
         Configuration config = Configuration.getInstance();
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME);
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY);
@@ -25,7 +27,8 @@ public abstract class IntegrationTestBase {
         return config;
     }
 
-    private static void overrideWithEnv(Configuration config, String key) {
+    private static void overrideWithEnv(Configuration config, String key)
+    {
         String value = System.getenv(key);
         if (value == null)
             return;
@@ -33,7 +36,8 @@ public abstract class IntegrationTestBase {
         config.setProperty(key, value);
     }
 
-    protected static boolean isRunningWithEmulator(Configuration config) {
+    protected static boolean isRunningWithEmulator(Configuration config)
+    {
         String accountName = "devstoreaccount1";
         String accountKey = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
 

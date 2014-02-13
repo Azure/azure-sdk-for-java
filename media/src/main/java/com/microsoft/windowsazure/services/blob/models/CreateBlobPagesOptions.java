@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * a blob lease ID to create pages in a blob with an active lease, an optional
  * MD5 hash for the content, and any access conditions to satisfy.
  */
-public class CreateBlobPagesOptions extends BlobServiceOptions {
+public class CreateBlobPagesOptions extends BlobServiceOptions
+{
     private String leaseId;
     private String contentMD5;
     private AccessConditionHeader accessCondition;
@@ -41,7 +42,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      * @return A reference to this {@link CreateBlobPagesOptions} instance.
      */
     @Override
-    public CreateBlobPagesOptions setTimeout(Integer timeout) {
+    public CreateBlobPagesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -52,7 +54,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -68,7 +71,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CreateBlobPagesOptions} instance.
      */
-    public CreateBlobPagesOptions setLeaseId(String leaseId) {
+    public CreateBlobPagesOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -80,7 +84,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the MD5 hash value for the block
      *         content set, if any.
      */
-    public String getContentMD5() {
+    public String getContentMD5()
+    {
         return contentMD5;
     }
 
@@ -100,7 +105,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      *            content to set.
      * @return A reference to this {@link CreateBlobPagesOptions} instance.
      */
-    public CreateBlobPagesOptions setContentMD5(String contentMD5) {
+    public CreateBlobPagesOptions setContentMD5(String contentMD5)
+    {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -112,7 +118,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -129,7 +136,8 @@ public class CreateBlobPagesOptions extends BlobServiceOptions {
      * @return A reference to this {@link CreateBlobPagesOptions} instance.
      */
     public CreateBlobPagesOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

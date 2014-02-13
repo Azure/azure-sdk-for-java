@@ -20,8 +20,10 @@ import com.microsoft.windowsazure.Configuration;
  * A class for static factory methods that return instances implementing
  * {@link BlobContract}.
  */
-public class BlobService {
-    private BlobService() {
+public class BlobService
+{
+    private BlobService()
+    {
     }
 
     /**
@@ -34,7 +36,8 @@ public class BlobService {
      * @return An instance implementing {@link BlobContract} for interacting
      *         with the blob service.
      */
-    public static BlobContract create() {
+    public static BlobContract create()
+    {
         return create(null, Configuration.getInstance());
     }
 
@@ -52,7 +55,8 @@ public class BlobService {
      * @return An instance implementing {@link BlobContract} for interacting
      *         with the blob service.
      */
-    public static BlobContract create(Configuration config) {
+    public static BlobContract create(Configuration config)
+    {
         return create(null, config);
     }
 
@@ -71,7 +75,8 @@ public class BlobService {
      * @return An instance implementing {@link BlobContract} for interacting
      *         with the blob service.
      */
-    public static BlobContract create(String profile) {
+    public static BlobContract create(String profile)
+    {
         return create(profile, Configuration.getInstance());
     }
 
@@ -93,7 +98,8 @@ public class BlobService {
      * @return An instance implementing {@link BlobContract} for interacting
      *         with the blob service.
      */
-    public static BlobContract create(String profile, Configuration config) {
+    public static BlobContract create(String profile, Configuration config)
+    {
         return config.create(profile, BlobContract.class);
     }
 }

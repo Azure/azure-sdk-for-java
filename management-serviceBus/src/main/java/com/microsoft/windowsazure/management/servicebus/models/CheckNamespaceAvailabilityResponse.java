@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The response to a query for the availability status of a namespace name.
 */
-public class CheckNamespaceAvailabilityResponse extends OperationResponse {
+public class CheckNamespaceAvailabilityResponse extends OperationResponse
+{
     private boolean isAvailable;
     
     /**
     * Whether or not the namespace is available.
     * @return The IsAvailable value.
     */
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return this.isAvailable;
     }
     
@@ -43,7 +45,8 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     * Whether or not the namespace is available.
     * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(final boolean isAvailableValue) {
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
         this.isAvailable = isAvailableValue;
     }
     
@@ -53,7 +56,8 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     * The reason the namespace is unavailable.
     * @return The ReasonDetails value.
     */
-    public String getReasonDetails() {
+    public String getReasonDetails()
+    {
         return this.reasonDetails;
     }
     
@@ -61,7 +65,8 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     * The reason the namespace is unavailable.
     * @param reasonDetailsValue The ReasonDetails value.
     */
-    public void setReasonDetails(final String reasonDetailsValue) {
+    public void setReasonDetails(final String reasonDetailsValue)
+    {
         this.reasonDetails = reasonDetailsValue;
     }
 }

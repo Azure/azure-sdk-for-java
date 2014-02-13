@@ -39,7 +39,8 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * topics for a namespace.
 */
-public interface TopicOperations {
+public interface TopicOperations
+{
     /**
     * Creates a new topic. Once created, this topic resource manifest is
     * immutable. This operation is not idempotent. Repeating the create call,

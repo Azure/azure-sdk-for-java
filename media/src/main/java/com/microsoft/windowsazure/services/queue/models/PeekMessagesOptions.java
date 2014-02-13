@@ -22,7 +22,8 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * request. These options include a server response timeout for the request and
  * the number of messages to peek from the queue.
  */
-public class PeekMessagesOptions extends QueueServiceOptions {
+public class PeekMessagesOptions extends QueueServiceOptions
+{
     private Integer numberOfMessages;
 
     /**
@@ -37,7 +38,8 @@ public class PeekMessagesOptions extends QueueServiceOptions {
      * @return A reference to this {@link PeekMessagesOptions} instance.
      */
     @Override
-    public PeekMessagesOptions setTimeout(Integer timeout) {
+    public PeekMessagesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -49,7 +51,8 @@ public class PeekMessagesOptions extends QueueServiceOptions {
      * 
      * @return The number of messages to return in the response.
      */
-    public Integer getNumberOfMessages() {
+    public Integer getNumberOfMessages()
+    {
         return numberOfMessages;
     }
 
@@ -67,7 +70,8 @@ public class PeekMessagesOptions extends QueueServiceOptions {
      *            must be in the range from 0 to 32.
      * @return A reference to this {@link PeekMessagesOptions} instance.
      */
-    public PeekMessagesOptions setNumberOfMessages(Integer numberOfMessages) {
+    public PeekMessagesOptions setNumberOfMessages(Integer numberOfMessages)
+    {
         this.numberOfMessages = numberOfMessages;
         return this;
     }

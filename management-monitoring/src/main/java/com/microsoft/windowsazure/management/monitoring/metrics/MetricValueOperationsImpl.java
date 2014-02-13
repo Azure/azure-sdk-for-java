@@ -51,113 +51,96 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
-public class MetricValueOperationsImpl implements
-        ServiceOperations<MetricsClientImpl>, MetricValueOperations {
+public class MetricValueOperationsImpl implements ServiceOperations<MetricsClientImpl>, MetricValueOperations
+{
     /**
-     * Initializes a new instance of the MetricValueOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
-    MetricValueOperationsImpl(MetricsClientImpl client) {
+    * Initializes a new instance of the MetricValueOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
+    MetricValueOperationsImpl(MetricsClientImpl client)
+    {
         this.client = client;
     }
-
+    
     private MetricsClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
-     * 
-     * @return The Client value.
-     */
-    public MetricsClientImpl getClient() {
+    * Gets a reference to the
+    * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
+    * @return The Client value.
+    */
+    public MetricsClientImpl getClient()
+    {
         return this.client;
     }
-
+    
     /**
-     * The List Metric Value operation lists the metric value sets for the
-     * resource metrics.
-     * 
-     * @param resourceId
-     *            The id of the resource.
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.
-     * @param timeGrain
-     *            The time grain of the metrics.
-     * @param startTime
-     *            The start time (in UTC) of the metrics.
-     * @param endTime
-     *            The end time (in UTC) of the metrics.
-     * @return The List Metric values operation response.
-     */
+    * The List Metric Value operation lists the metric value sets for the
+    * resource metrics.
+    *
+    * @param resourceId The id of the resource.
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.
+    * @param timeGrain The time grain of the metrics.
+    * @param startTime The start time (in UTC) of the metrics.
+    * @param endTime The end time (in UTC) of the metrics.
+    * @return The List Metric values operation response.
+    */
     @Override
-    public Future<MetricValueListResponse> listAsync(final String resourceId,
-            final ArrayList<String> metricNames, final String metricNamespace,
-            final Duration timeGrain, final Calendar startTime,
-            final Calendar endTime) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<MetricValueListResponse>() {
-                    @Override
-                    public MetricValueListResponse call() throws Exception {
-                        return list(resourceId, metricNames, metricNamespace,
-                                timeGrain, startTime, endTime);
-                    }
-                });
+    public Future<MetricValueListResponse> listAsync(final String resourceId, final ArrayList<String> metricNames, final String metricNamespace, final Duration timeGrain, final Calendar startTime, final Calendar endTime)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<MetricValueListResponse>() { 
+            @Override
+            public MetricValueListResponse call() throws Exception
+            {
+                return list(resourceId, metricNames, metricNamespace, timeGrain, startTime, endTime);
+            }
+         });
     }
-
+    
     /**
-     * The List Metric Value operation lists the metric value sets for the
-     * resource metrics.
-     * 
-     * @param resourceId
-     *            The id of the resource.
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.
-     * @param timeGrain
-     *            The time grain of the metrics.
-     * @param startTime
-     *            The start time (in UTC) of the metrics.
-     * @param endTime
-     *            The end time (in UTC) of the metrics.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The List Metric values operation response.
-     */
+    * The List Metric Value operation lists the metric value sets for the
+    * resource metrics.
+    *
+    * @param resourceId The id of the resource.
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.
+    * @param timeGrain The time grain of the metrics.
+    * @param startTime The start time (in UTC) of the metrics.
+    * @param endTime The end time (in UTC) of the metrics.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The List Metric values operation response.
+    */
     @Override
-    public MetricValueListResponse list(String resourceId,
-            ArrayList<String> metricNames, String metricNamespace,
-            Duration timeGrain, Calendar startTime, Calendar endTime)
-            throws IOException, ServiceException, URISyntaxException,
-            ParseException {
+    public MetricValueListResponse list(String resourceId, ArrayList<String> metricNames, String metricNamespace, Duration timeGrain, Calendar startTime, Calendar endTime) throws IOException, ServiceException, URISyntaxException, ParseException
+    {
         // Validate
-        if (resourceId == null) {
+        if (resourceId == null)
+        {
             throw new NullPointerException("resourceId");
         }
-        if (metricNames == null) {
+        if (metricNames == null)
+        {
             throw new NullPointerException("metricNames");
         }
-        if (metricNames.size() <= 0) {
+        if (metricNames.size() <= 0)
+        {
             throw new IllegalArgumentException("metricNames cannot be empty.");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
@@ -166,55 +149,47 @@ public class MetricValueOperationsImpl implements
             tracingParameters.put("timeGrain", timeGrain);
             tracingParameters.put("startTime", startTime);
             tracingParameters.put("endTime", endTime);
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mmZ");
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
         simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/metricvalues/query?&resourceId="
-                + resourceId + "&namespace=" + metricNamespace + "&names="
-                + CommaStringBuilder.join(metricNames) + "&timeGrain="
-                + TimeSpan8601Converter.format(timeGrain) + "&startTime="
-                + simpleDateFormat.format(startTime.getTime()) + "&endTime="
-                + simpleDateFormat2.format(endTime.getTime());
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricvalues/query?&resourceId=" + resourceId + "&namespace=" + metricNamespace + "&names=" + CommaStringBuilder.join(metricNames) + "&timeGrain=" + TimeSpan8601Converter.format(timeGrain) + "&startTime=" + simpleDateFormat.format(startTime.getTime()) + "&endTime=" + simpleDateFormat2.format(endTime.getTime());
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             MetricValueListResponse result = null;
             // Deserialize Response
@@ -222,168 +197,152 @@ public class MetricValueOperationsImpl implements
             result = new MetricValueListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-
-            if (responseDoc != null) {
+            
+            if (responseDoc != null)
+            {
                 MetricValueSetCollection metricValueSetCollectionInstance = new MetricValueSetCollection();
                 result.setMetricValueSetCollection(metricValueSetCollectionInstance);
-
+                
                 ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
-                if (valueArray != null) {
-                    for (JsonNode valueValue : valueArray) {
+                if (valueArray != null)
+                {
+                    for (JsonNode valueValue : valueArray)
+                    {
                         MetricValueSet metricValueSetInstance = new MetricValueSet();
-                        metricValueSetCollectionInstance.getValue().add(
-                                metricValueSetInstance);
-
+                        metricValueSetCollectionInstance.getValue().add(metricValueSetInstance);
+                        
                         JsonNode nameValue = valueValue.get("Name");
-                        if (nameValue != null) {
+                        if (nameValue != null)
+                        {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             metricValueSetInstance.setName(nameInstance);
                         }
-
+                        
                         JsonNode namespaceValue = valueValue.get("Namespace");
-                        if (namespaceValue != null) {
+                        if (namespaceValue != null)
+                        {
                             String namespaceInstance;
                             namespaceInstance = namespaceValue.getTextValue();
-                            metricValueSetInstance
-                                    .setNamespace(namespaceInstance);
+                            metricValueSetInstance.setNamespace(namespaceInstance);
                         }
-
-                        JsonNode displayNameValue = valueValue
-                                .get("DisplayName");
-                        if (displayNameValue != null) {
+                        
+                        JsonNode displayNameValue = valueValue.get("DisplayName");
+                        if (displayNameValue != null)
+                        {
                             String displayNameInstance;
-                            displayNameInstance = displayNameValue
-                                    .getTextValue();
-                            metricValueSetInstance
-                                    .setDisplayName(displayNameInstance);
+                            displayNameInstance = displayNameValue.getTextValue();
+                            metricValueSetInstance.setDisplayName(displayNameInstance);
                         }
-
+                        
                         JsonNode unitValue = valueValue.get("Unit");
-                        if (unitValue != null) {
+                        if (unitValue != null)
+                        {
                             String unitInstance;
                             unitInstance = unitValue.getTextValue();
                             metricValueSetInstance.setUnit(unitInstance);
                         }
-
-                        JsonNode primaryAggregationValue = valueValue
-                                .get("PrimaryAggregation");
-                        if (primaryAggregationValue != null) {
+                        
+                        JsonNode primaryAggregationValue = valueValue.get("PrimaryAggregation");
+                        if (primaryAggregationValue != null)
+                        {
                             String primaryAggregationInstance;
-                            primaryAggregationInstance = primaryAggregationValue
-                                    .getTextValue();
-                            metricValueSetInstance
-                                    .setPrimaryAggregation(primaryAggregationInstance);
+                            primaryAggregationInstance = primaryAggregationValue.getTextValue();
+                            metricValueSetInstance.setPrimaryAggregation(primaryAggregationInstance);
                         }
-
+                        
                         JsonNode timeGrainValue = valueValue.get("TimeGrain");
-                        if (timeGrainValue != null) {
+                        if (timeGrainValue != null)
+                        {
                             Duration timeGrainInstance;
-                            timeGrainInstance = TimeSpan8601Converter
-                                    .parse(timeGrainValue.getTextValue());
-                            metricValueSetInstance
-                                    .setTimeGrain(timeGrainInstance);
+                            timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
+                            metricValueSetInstance.setTimeGrain(timeGrainInstance);
                         }
-
+                        
                         JsonNode startTimeValue = valueValue.get("StartTime");
-                        if (startTimeValue != null) {
+                        if (startTimeValue != null)
+                        {
                             Calendar startTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
-                                    "EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat3
-                                    .parse(startTimeValue.getTextValue()));
+                            calendar.setTime(simpleDateFormat3.parse(startTimeValue.getTextValue()));
                             startTimeInstance = calendar;
-                            metricValueSetInstance
-                                    .setStartTime(startTimeInstance);
+                            metricValueSetInstance.setStartTime(startTimeInstance);
                         }
-
+                        
                         JsonNode endTimeValue = valueValue.get("EndTime");
-                        if (endTimeValue != null) {
+                        if (endTimeValue != null)
+                        {
                             Calendar endTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
-                                    "EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat4
-                                    .parse(endTimeValue.getTextValue()));
+                            calendar2.setTime(simpleDateFormat4.parse(endTimeValue.getTextValue()));
                             endTimeInstance = calendar2;
                             metricValueSetInstance.setEndTime(endTimeInstance);
                         }
-
-                        ArrayNode metricValuesArray = ((ArrayNode) valueValue
-                                .get("MetricValues"));
-                        if (metricValuesArray != null) {
-                            for (JsonNode metricValuesValue : metricValuesArray) {
+                        
+                        ArrayNode metricValuesArray = ((ArrayNode) valueValue.get("MetricValues"));
+                        if (metricValuesArray != null)
+                        {
+                            for (JsonNode metricValuesValue : metricValuesArray)
+                            {
                                 MetricValue metricValueInstance = new MetricValue();
-                                metricValueSetInstance.getMetricValues().add(
-                                        metricValueInstance);
-
-                                JsonNode timestampValue = metricValuesValue
-                                        .get("Timestamp");
-                                if (timestampValue != null) {
+                                metricValueSetInstance.getMetricValues().add(metricValueInstance);
+                                
+                                JsonNode timestampValue = metricValuesValue.get("Timestamp");
+                                if (timestampValue != null)
+                                {
                                     Calendar timestampInstance;
-                                    SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat(
-                                            "EEE MMM dd HH:mm:ss z yyyy");
+                                    SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                                     Calendar calendar3 = Calendar.getInstance();
-                                    calendar3.setTime(simpleDateFormat5
-                                            .parse(timestampValue
-                                                    .getTextValue()));
+                                    calendar3.setTime(simpleDateFormat5.parse(timestampValue.getTextValue()));
                                     timestampInstance = calendar3;
-                                    metricValueInstance
-                                            .setTimestamp(timestampInstance);
+                                    metricValueInstance.setTimestamp(timestampInstance);
                                 }
-
-                                JsonNode averageValue = metricValuesValue
-                                        .get("Average");
-                                if (averageValue != null) {
+                                
+                                JsonNode averageValue = metricValuesValue.get("Average");
+                                if (averageValue != null)
+                                {
                                     double averageInstance;
-                                    averageInstance = averageValue
-                                            .getDoubleValue();
-                                    metricValueInstance
-                                            .setAverage(averageInstance);
+                                    averageInstance = averageValue.getDoubleValue();
+                                    metricValueInstance.setAverage(averageInstance);
                                 }
-
-                                JsonNode minimumValue = metricValuesValue
-                                        .get("Minimum");
-                                if (minimumValue != null) {
+                                
+                                JsonNode minimumValue = metricValuesValue.get("Minimum");
+                                if (minimumValue != null)
+                                {
                                     double minimumInstance;
-                                    minimumInstance = minimumValue
-                                            .getDoubleValue();
-                                    metricValueInstance
-                                            .setMinimum(minimumInstance);
+                                    minimumInstance = minimumValue.getDoubleValue();
+                                    metricValueInstance.setMinimum(minimumInstance);
                                 }
-
-                                JsonNode maximumValue = metricValuesValue
-                                        .get("Maximum");
-                                if (maximumValue != null) {
+                                
+                                JsonNode maximumValue = metricValuesValue.get("Maximum");
+                                if (maximumValue != null)
+                                {
                                     double maximumInstance;
-                                    maximumInstance = maximumValue
-                                            .getDoubleValue();
-                                    metricValueInstance
-                                            .setMaximum(maximumInstance);
+                                    maximumInstance = maximumValue.getDoubleValue();
+                                    metricValueInstance.setMaximum(maximumInstance);
                                 }
-
-                                JsonNode totalValue = metricValuesValue
-                                        .get("Total");
-                                if (totalValue != null) {
+                                
+                                JsonNode totalValue = metricValuesValue.get("Total");
+                                if (totalValue != null)
+                                {
                                     double totalInstance;
                                     totalInstance = totalValue.getDoubleValue();
                                     metricValueInstance.setTotal(totalInstance);
                                 }
-
-                                JsonNode annotationValue = metricValuesValue
-                                        .get("Annotation");
-                                if (annotationValue != null) {
+                                
+                                JsonNode annotationValue = metricValuesValue.get("Annotation");
+                                if (annotationValue != null)
+                                {
                                     String annotationInstance;
-                                    annotationInstance = annotationValue
-                                            .getTextValue();
-                                    metricValueInstance
-                                            .setAnnotation(annotationInstance);
+                                    annotationInstance = annotationValue.getTextValue();
+                                    metricValueInstance.setAnnotation(annotationInstance);
                                 }
-
-                                JsonNode countValue = metricValuesValue
-                                        .get("Count");
-                                if (countValue != null) {
+                                
+                                JsonNode countValue = metricValuesValue.get("Count");
+                                if (countValue != null)
+                                {
                                     int countInstance;
                                     countInstance = countValue.getIntValue();
                                     metricValueInstance.setCount(countInstance);
@@ -393,19 +352,23 @@ public class MetricValueOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

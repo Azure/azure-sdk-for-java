@@ -27,12 +27,14 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * 
  */
 public class DefaultListOperation<T> extends EntityOperationBase implements
-        EntityListOperation<T> {
+        EntityListOperation<T>
+{
     private final MultivaluedMap<String, String> queryParameters;
     private final GenericType<ListResult<T>> responseType;
 
     public DefaultListOperation(String entityUri,
-            GenericType<ListResult<T>> responseType) {
+            GenericType<ListResult<T>> responseType)
+    {
         super(entityUri);
         queryParameters = new MultivaluedMapImpl();
         this.responseType = responseType;
@@ -40,7 +42,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
 
     public DefaultListOperation(String entityUri,
             GenericType<ListResult<T>> responseType,
-            MultivaluedMap<String, String> queryParameters) {
+            MultivaluedMap<String, String> queryParameters)
+    {
         this(entityUri, responseType);
         this.queryParameters.putAll(queryParameters);
     }
@@ -52,7 +55,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      *            number of values to return
      * @return this
      */
-    public DefaultListOperation<T> setTop(int topValue) {
+    public DefaultListOperation<T> setTop(int topValue)
+    {
         queryParameters.add("$top", Integer.toString(topValue));
         return this;
     }
@@ -64,7 +68,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      *            the number of values to skip
      * @return this
      */
-    public DefaultListOperation<T> setSkip(int skipValue) {
+    public DefaultListOperation<T> setSkip(int skipValue)
+    {
         queryParameters.add("$skip", Integer.toString(skipValue));
         return this;
     }
@@ -79,7 +84,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      * @return this
      */
     public DefaultListOperation<T> set(String parameterName,
-            String parameterValue) {
+            String parameterValue)
+    {
         queryParameters.add(parameterName, parameterValue);
         return this;
     }
@@ -92,7 +98,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      * #getQueryParameters()
      */
     @Override
-    public MultivaluedMap<String, String> getQueryParameters() {
+    public MultivaluedMap<String, String> getQueryParameters()
+    {
         return queryParameters;
     }
 
@@ -104,7 +111,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      * #getResponseGenericType()
      */
     @Override
-    public GenericType<ListResult<T>> getResponseGenericType() {
+    public GenericType<ListResult<T>> getResponseGenericType()
+    {
         return responseType;
     }
 
@@ -115,7 +123,8 @@ public class DefaultListOperation<T> extends EntityOperationBase implements
      * EntityOperationBase#processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException {
+    public Object processResponse(Object rawResponse) throws ServiceException
+    {
         return rawResponse;
     }
 }

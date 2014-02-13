@@ -42,7 +42,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
 * information)
 */
-public interface ManagementCertificateOperations {
+public interface ManagementCertificateOperations
+{
     /**
     * The Add Management Certificate operation adds a certificate to the list
     * of management certificates. Management certificates, which are also

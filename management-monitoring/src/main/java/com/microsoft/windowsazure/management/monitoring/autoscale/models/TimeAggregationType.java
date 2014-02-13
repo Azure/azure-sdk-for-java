@@ -23,16 +23,17 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum TimeAggregationType {
+public enum TimeAggregationType
+{
     Average,
-
+    
     Minimum,
-
+    
     Maximum,
-
+    
     Last,
-
+    
     Total,
-
+    
     Count,
 }

@@ -29,14 +29,16 @@ import java.util.Calendar;
 /**
 * An authorization rule.
 */
-public class ServiceBusSharedAccessAuthorizationRule {
+public class ServiceBusSharedAccessAuthorizationRule
+{
     private String claimType;
     
     /**
     * The type of the claim.
     * @return The ClaimType value.
     */
-    public String getClaimType() {
+    public String getClaimType()
+    {
         return this.claimType;
     }
     
@@ -44,7 +46,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The type of the claim.
     * @param claimTypeValue The ClaimType value.
     */
-    public void setClaimType(final String claimTypeValue) {
+    public void setClaimType(final String claimTypeValue)
+    {
         this.claimType = claimTypeValue;
     }
     
@@ -54,7 +57,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The value of the claim.
     * @return The ClaimValue value.
     */
-    public String getClaimValue() {
+    public String getClaimValue()
+    {
         return this.claimValue;
     }
     
@@ -62,7 +66,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The value of the claim.
     * @param claimValueValue The ClaimValue value.
     */
-    public void setClaimValue(final String claimValueValue) {
+    public void setClaimValue(final String claimValueValue)
+    {
         this.claimValue = claimValueValue;
     }
     
@@ -72,7 +77,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The time at which the authorization rule was created.
     * @return The CreatedTime value.
     */
-    public Calendar getCreatedTime() {
+    public Calendar getCreatedTime()
+    {
         return this.createdTime;
     }
     
@@ -80,7 +86,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The time at which the authorization rule was created.
     * @param createdTimeValue The CreatedTime value.
     */
-    public void setCreatedTime(final Calendar createdTimeValue) {
+    public void setCreatedTime(final Calendar createdTimeValue)
+    {
         this.createdTime = createdTimeValue;
     }
     
@@ -90,7 +97,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The name of the key that was used.
     * @return The KeyName value.
     */
-    public String getKeyName() {
+    public String getKeyName()
+    {
         return this.keyName;
     }
     
@@ -98,7 +106,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The name of the key that was used.
     * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(final String keyNameValue) {
+    public void setKeyName(final String keyNameValue)
+    {
         this.keyName = keyNameValue;
     }
     
@@ -108,7 +117,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The most recent time the rule was updated.
     * @return The ModifiedTime value.
     */
-    public Calendar getModifiedTime() {
+    public Calendar getModifiedTime()
+    {
         return this.modifiedTime;
     }
     
@@ -116,7 +126,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The most recent time the rule was updated.
     * @param modifiedTimeValue The ModifiedTime value.
     */
-    public void setModifiedTime(final Calendar modifiedTimeValue) {
+    public void setModifiedTime(final Calendar modifiedTimeValue)
+    {
         this.modifiedTime = modifiedTimeValue;
     }
     
@@ -126,7 +137,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The primary key that was used.
     * @return The PrimaryKey value.
     */
-    public String getPrimaryKey() {
+    public String getPrimaryKey()
+    {
         return this.primaryKey;
     }
     
@@ -134,7 +146,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The primary key that was used.
     * @param primaryKeyValue The PrimaryKey value.
     */
-    public void setPrimaryKey(final String primaryKeyValue) {
+    public void setPrimaryKey(final String primaryKeyValue)
+    {
         this.primaryKey = primaryKeyValue;
     }
     
@@ -144,7 +157,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The revision number for the rule.
     * @return The Revision value.
     */
-    public int getRevision() {
+    public int getRevision()
+    {
         return this.revision;
     }
     
@@ -152,7 +166,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The revision number for the rule.
     * @param revisionValue The Revision value.
     */
-    public void setRevision(final int revisionValue) {
+    public void setRevision(final int revisionValue)
+    {
         this.revision = revisionValue;
     }
     
@@ -162,7 +177,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The rights associated with the rule.
     * @return The Rights value.
     */
-    public ArrayList<AccessRight> getRights() {
+    public ArrayList<AccessRight> getRights()
+    {
         return this.rights;
     }
     
@@ -170,7 +186,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The rights associated with the rule.
     * @param rightsValue The Rights value.
     */
-    public void setRights(final ArrayList<AccessRight> rightsValue) {
+    public void setRights(final ArrayList<AccessRight> rightsValue)
+    {
         this.rights = rightsValue;
     }
     
@@ -180,7 +197,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The secondary key that was used.
     * @return The SecondaryKey value.
     */
-    public String getSecondaryKey() {
+    public String getSecondaryKey()
+    {
         return this.secondaryKey;
     }
     
@@ -188,7 +206,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * The secondary key that was used.
     * @param secondaryKeyValue The SecondaryKey value.
     */
-    public void setSecondaryKey(final String secondaryKeyValue) {
+    public void setSecondaryKey(final String secondaryKeyValue)
+    {
         this.secondaryKey = secondaryKeyValue;
     }
     
@@ -197,7 +216,8 @@ public class ServiceBusSharedAccessAuthorizationRule {
     * class.
     *
     */
-    public ServiceBusSharedAccessAuthorizationRule() {
+    public ServiceBusSharedAccessAuthorizationRule()
+    {
         this.rights = new ArrayList<AccessRight>();
     }
 }

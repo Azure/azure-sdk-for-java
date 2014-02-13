@@ -21,10 +21,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
 
-public class MediaConfigurationTest {
+public class MediaConfigurationTest
+{
 
     @Test
-    public void createMediaConfigurationTestSuccess() {
+    public void createMediaConfigurationTestSuccess()
+    {
         // Arrange
 
         // Act
@@ -47,7 +49,8 @@ public class MediaConfigurationTest {
     }
 
     @Test
-    public void createMediaConfigurationPassingExistingConfigurationSuccess() {
+    public void createMediaConfigurationPassingExistingConfigurationSuccess()
+    {
         // Arrange
         Configuration preConfiguration = new Configuration();
         preConfiguration.setProperty("preexistingName", "preexistingValue");
@@ -73,7 +76,8 @@ public class MediaConfigurationTest {
     }
 
     @Test
-    public void createMediaConfigurationWithProfileConfigurationSuccess() {
+    public void createMediaConfigurationWithProfileConfigurationSuccess()
+    {
         // Arrange
         Configuration preConfiguration = new Configuration();
         preConfiguration.setProperty("preexistingName", "preexistingValue");

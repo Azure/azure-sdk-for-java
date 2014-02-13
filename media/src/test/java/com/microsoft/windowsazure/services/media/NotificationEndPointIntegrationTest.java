@@ -27,13 +27,15 @@ import com.microsoft.windowsazure.services.media.models.EndPointType;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPoint;
 import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo;
 
-public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
+public class NotificationEndPointIntegrationTest extends IntegrationTestBase
+{
     private final String validButNonexistNotificationEndPointId = "notificationEndPointId";
     private final String testNotificationEndPointPrefix = "testNotificationEndPointPrefix";
     private final String testEndPointAddress = "testendpointaddress";
 
     private void verifyNotificationEndPointInfosEqual(String message,
-            NotificationEndPointInfo expected, NotificationEndPointInfo actual) {
+            NotificationEndPointInfo expected, NotificationEndPointInfo actual)
+    {
         verifyNotificationEndPointProperties(message, expected.getName(),
                 expected.getEndPointType(), expected.getEndPointAddress(),
                 actual);
@@ -41,7 +43,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
 
     private void verifyNotificationEndPointProperties(String message,
             String name, EndPointType endPointType, String endPointAddress,
-            NotificationEndPointInfo notificationEndPointInfo) {
+            NotificationEndPointInfo notificationEndPointInfo)
+    {
         assertNotNull(message, notificationEndPointInfo);
         assertEquals(message + " Name", name,
                 notificationEndPointInfo.getName());
@@ -55,7 +58,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canCreateNotificationEndPoint() throws Exception {
+    public void canCreateNotificationEndPoint() throws Exception
+    {
         String testName = testNotificationEndPointPrefix + "CanCreate";
 
         NotificationEndPointInfo actualNotificationEndPoint = service
@@ -69,7 +73,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canCreateNotificationEndPointWithReadPermissions()
-            throws Exception {
+            throws Exception
+    {
         String testName = testNotificationEndPointPrefix + "CanCreate";
 
         NotificationEndPointInfo actualNotificationEndPoint = service
@@ -82,7 +87,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canGetSingleNotificationEndPointById() throws Exception {
+    public void canGetSingleNotificationEndPointById() throws Exception
+    {
         String expectedName = testNotificationEndPointPrefix + "GetOne";
         NotificationEndPointInfo expectedNotificationEndPointInfo = service
                 .create(NotificationEndPoint.create(expectedName,
@@ -100,7 +106,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canGetSingleNotificationEndPointByInvalidId() throws Exception {
+    public void canGetSingleNotificationEndPointByInvalidId() throws Exception
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(NotificationEndPoint.get(invalidId));
@@ -108,7 +115,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void cannotGetSingleNotificationEndPointByNonexistId()
-            throws Exception {
+            throws Exception
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(NotificationEndPoint
@@ -116,13 +124,15 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canRetrieveListOfNotificationEndPoints() throws Exception {
+    public void canRetrieveListOfNotificationEndPoints() throws Exception
+    {
         String[] notificationEndPointNames = new String[] {
                 testNotificationEndPointPrefix + "ListOne",
                 testNotificationEndPointPrefix + "ListTwo" };
 
         List<NotificationEndPointInfo> expectedNotificationEndPoints = new ArrayList<NotificationEndPointInfo>();
-        for (int i = 0; i < notificationEndPointNames.length; i++) {
+        for (int i = 0; i < notificationEndPointNames.length; i++)
+        {
             NotificationEndPointInfo notificationEndPointInfo = service
                     .create(NotificationEndPoint.create(
                             notificationEndPointNames[i],
@@ -135,10 +145,12 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
 
         verifyListResultContains("listNotificationEndPoints",
                 expectedNotificationEndPoints, actualAccessPolicies,
-                new ComponentDelegate() {
+                new ComponentDelegate()
+                {
                     @Override
                     public void verifyEquals(String message, Object expected,
-                            Object actual) {
+                            Object actual)
+                    {
                         verifyNotificationEndPointInfosEqual(message,
                                 (NotificationEndPointInfo) expected,
                                 (NotificationEndPointInfo) actual);
@@ -148,7 +160,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void canUseQueryParametersWhenListingNotificationEndPoints()
-            throws Exception {
+            throws Exception
+    {
         String[] notificationEndPointNames = new String[] {
                 testNotificationEndPointPrefix + "ListThree",
                 testNotificationEndPointPrefix + "ListFour",
@@ -157,7 +170,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
                 testNotificationEndPointPrefix + "ListSeven" };
 
         List<NotificationEndPointInfo> expectedNotificationEndPointInfos = new ArrayList<NotificationEndPointInfo>();
-        for (int i = 0; i < notificationEndPointNames.length; i++) {
+        for (int i = 0; i < notificationEndPointNames.length; i++)
+        {
             NotificationEndPointInfo notificationEndPointInfo = service
                     .create(NotificationEndPoint.create(
                             notificationEndPointNames[i],
@@ -172,7 +186,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canDeleteNotificationEndPointById() throws Exception {
+    public void canDeleteNotificationEndPointById() throws Exception
+    {
         String testNotificationEndPointName = testNotificationEndPointPrefix
                 + "ToDelete";
         NotificationEndPointInfo notificationEndPointToBeDeleted = service
@@ -191,7 +206,8 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
                 listPoliciesResult.size());
 
         for (NotificationEndPointInfo policy : service
-                .list(NotificationEndPoint.list())) {
+                .list(NotificationEndPoint.list()))
+        {
             assertFalse(notificationEndPointToBeDeleted.getId().equals(
                     policy.getId()));
         }
@@ -203,14 +219,16 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canDeleteNotificationEndPointByInvalidId() throws Exception {
+    public void canDeleteNotificationEndPointByInvalidId() throws Exception
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(NotificationEndPoint.delete(invalidId));
     }
 
     @Test
-    public void cannotDeleteNotificationEndPointByNonexistId() throws Exception {
+    public void cannotDeleteNotificationEndPointByNonexistId() throws Exception
+    {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.delete(NotificationEndPoint

@@ -65,13 +65,15 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for managing SQL
 * Databases for a subscription.
 */
-public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperations {
+public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperations
+{
     /**
     * Initializes a new instance of the DatabaseOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    DatabaseOperationsImpl(SqlManagementClientImpl client) {
+    DatabaseOperationsImpl(SqlManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -82,7 +84,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() {
+    public SqlManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -96,10 +99,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<DatabaseCreateResponse> createAsync(final String serverName, final DatabaseCreateParameters parameters) {
+    public Future<DatabaseCreateResponse> createAsync(final String serverName, final DatabaseCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseCreateResponse>() { 
             @Override
-            public DatabaseCreateResponse call() throws Exception {
+            public DatabaseCreateResponse call() throws Exception
+            {
                 return create(serverName, parameters);
             }
          });
@@ -125,28 +130,35 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getCollationName() == null) {
+        if (parameters.getCollationName() == null)
+        {
             throw new NullPointerException("parameters.CollationName");
         }
-        if (parameters.getEdition() == null) {
+        if (parameters.getEdition() == null)
+        {
             throw new NullPointerException("parameters.Edition");
         }
-        if (parameters.getName() == null) {
+        if (parameters.getName() == null)
+        {
             throw new NullPointerException("parameters.Name");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -189,7 +201,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         collationNameElement.appendChild(requestDoc.createTextNode(parameters.getCollationName()));
         serviceResourceElement.appendChild(collationNameElement);
         
-        if (parameters.getServiceObjectiveId() != null) {
+        if (parameters.getServiceObjectiveId() != null)
+        {
             Element serviceObjectiveIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
             serviceObjectiveIdElement.appendChild(requestDoc.createTextNode(parameters.getServiceObjectiveId()));
             serviceResourceElement.appendChild(serviceObjectiveIdElement);
@@ -208,18 +221,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -237,10 +255,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement2 != null) {
+            if (serviceResourceElement2 != null)
+            {
                 NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -248,7 +268,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements3 = serviceResourceElement2.getElementsByTagName("Id");
                 Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     int idInstance;
                     idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                     result.setId(idInstance);
@@ -256,7 +277,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements4 = serviceResourceElement2.getElementsByTagName("Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -264,7 +286,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements5 = serviceResourceElement2.getElementsByTagName("State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -272,7 +295,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements6 = serviceResourceElement2.getElementsByTagName("Edition");
                 Element editionElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (editionElement2 != null) {
+                if (editionElement2 != null)
+                {
                     String editionInstance;
                     editionInstance = editionElement2.getTextContent();
                     result.setEdition(editionInstance);
@@ -280,7 +304,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements7 = serviceResourceElement2.getElementsByTagName("MaxSizeGB");
                 Element maxSizeGBElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (maxSizeGBElement2 != null) {
+                if (maxSizeGBElement2 != null)
+                {
                     long maxSizeGBInstance;
                     maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement2.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
@@ -288,7 +313,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements8 = serviceResourceElement2.getElementsByTagName("CollationName");
                 Element collationNameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (collationNameElement2 != null) {
+                if (collationNameElement2 != null)
+                {
                     String collationNameInstance;
                     collationNameInstance = collationNameElement2.getTextContent();
                     result.setCollationName(collationNameInstance);
@@ -296,7 +322,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements9 = serviceResourceElement2.getElementsByTagName("CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (creationDateElement != null) {
+                if (creationDateElement != null)
+                {
                     Calendar creationDateInstance;
                     creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
@@ -304,7 +331,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements10 = serviceResourceElement2.getElementsByTagName("IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (isFederationRootElement != null) {
+                if (isFederationRootElement != null)
+                {
                     boolean isFederationRootInstance;
                     isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
@@ -312,7 +340,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements11 = serviceResourceElement2.getElementsByTagName("IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (isSystemObjectElement != null) {
+                if (isSystemObjectElement != null)
+                {
                     boolean isSystemObjectInstance;
                     isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
@@ -320,7 +349,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements12 = serviceResourceElement2.getElementsByTagName("SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (sizeMBElement != null) {
+                if (sizeMBElement != null)
+                {
                     String sizeMBInstance;
                     sizeMBInstance = sizeMBElement.getTextContent();
                     result.setSizeMB(sizeMBInstance);
@@ -328,7 +358,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements13 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorCodeElement != null) {
+                if (serviceObjectiveAssignmentErrorCodeElement != null)
+                {
                     String serviceObjectiveAssignmentErrorCodeInstance;
                     serviceObjectiveAssignmentErrorCodeInstance = serviceObjectiveAssignmentErrorCodeElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
@@ -336,7 +367,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements14 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
+                if (serviceObjectiveAssignmentErrorDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
                     serviceObjectiveAssignmentErrorDescriptionInstance = serviceObjectiveAssignmentErrorDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
@@ -344,7 +376,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements15 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (serviceObjectiveAssignmentStateElement != null) {
+                if (serviceObjectiveAssignmentStateElement != null)
+                {
                     String serviceObjectiveAssignmentStateInstance;
                     serviceObjectiveAssignmentStateInstance = serviceObjectiveAssignmentStateElement.getTextContent();
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
@@ -352,7 +385,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements16 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (serviceObjectiveAssignmentStateDescriptionElement != null) {
+                if (serviceObjectiveAssignmentStateDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
                     serviceObjectiveAssignmentStateDescriptionInstance = serviceObjectiveAssignmentStateDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
@@ -360,7 +394,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements17 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (serviceObjectiveAssignmentSuccessDateElement != null) {
+                if (serviceObjectiveAssignmentSuccessDateElement != null)
+                {
                     String serviceObjectiveAssignmentSuccessDateInstance;
                     serviceObjectiveAssignmentSuccessDateInstance = serviceObjectiveAssignmentSuccessDateElement.getTextContent();
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
@@ -368,7 +403,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements18 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveId");
                 Element serviceObjectiveIdElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                if (serviceObjectiveIdElement2 != null) {
+                if (serviceObjectiveIdElement2 != null)
+                {
                     String serviceObjectiveIdInstance;
                     serviceObjectiveIdInstance = serviceObjectiveIdElement2.getTextContent();
                     result.setServiceObjectiveId(serviceObjectiveIdInstance);
@@ -376,16 +412,21 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -402,10 +443,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serverName, final String databaseName) {
+    public Future<OperationResponse> deleteAsync(final String serverName, final String databaseName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return delete(serverName, databaseName);
             }
          });
@@ -426,19 +469,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException {
+    public OperationResponse delete(String serverName, String databaseName) throws IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (databaseName == null) {
+        if (databaseName == null)
+        {
             throw new NullPointerException("databaseName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -457,18 +504,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -478,16 +530,21 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -503,10 +560,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<DatabaseGetResponse> getAsync(final String serverName, final String databaseName) {
+    public Future<DatabaseGetResponse> getAsync(final String serverName, final String databaseName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseGetResponse>() { 
             @Override
-            public DatabaseGetResponse call() throws Exception {
+            public DatabaseGetResponse call() throws Exception
+            {
                 return get(serverName, databaseName);
             }
          });
@@ -530,19 +589,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (databaseName == null) {
+        if (databaseName == null)
+        {
             throw new NullPointerException("databaseName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -561,18 +624,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -590,10 +658,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement != null) {
+            if (serviceResourceElement != null)
+            {
                 NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null) {
+                if (nameElement != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -601,7 +671,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements3 = serviceResourceElement.getElementsByTagName("Id");
                 Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     int idInstance;
                     idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                     result.setId(idInstance);
@@ -609,7 +680,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements4 = serviceResourceElement.getElementsByTagName("Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -617,7 +689,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements5 = serviceResourceElement.getElementsByTagName("State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -625,7 +698,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements6 = serviceResourceElement.getElementsByTagName("Edition");
                 Element editionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (editionElement != null) {
+                if (editionElement != null)
+                {
                     String editionInstance;
                     editionInstance = editionElement.getTextContent();
                     result.setEdition(editionInstance);
@@ -633,7 +707,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements7 = serviceResourceElement.getElementsByTagName("MaxSizeGB");
                 Element maxSizeGBElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (maxSizeGBElement != null) {
+                if (maxSizeGBElement != null)
+                {
                     long maxSizeGBInstance;
                     maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
@@ -641,7 +716,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements8 = serviceResourceElement.getElementsByTagName("CollationName");
                 Element collationNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (collationNameElement != null) {
+                if (collationNameElement != null)
+                {
                     String collationNameInstance;
                     collationNameInstance = collationNameElement.getTextContent();
                     result.setCollationName(collationNameInstance);
@@ -649,7 +725,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements9 = serviceResourceElement.getElementsByTagName("CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (creationDateElement != null) {
+                if (creationDateElement != null)
+                {
                     Calendar creationDateInstance;
                     creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
@@ -657,7 +734,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements10 = serviceResourceElement.getElementsByTagName("IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (isFederationRootElement != null) {
+                if (isFederationRootElement != null)
+                {
                     boolean isFederationRootInstance;
                     isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
@@ -665,7 +743,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements11 = serviceResourceElement.getElementsByTagName("IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (isSystemObjectElement != null) {
+                if (isSystemObjectElement != null)
+                {
                     boolean isSystemObjectInstance;
                     isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
@@ -673,7 +752,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements12 = serviceResourceElement.getElementsByTagName("SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (sizeMBElement != null) {
+                if (sizeMBElement != null)
+                {
                     String sizeMBInstance;
                     sizeMBInstance = sizeMBElement.getTextContent();
                     result.setSizeMB(sizeMBInstance);
@@ -681,7 +761,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements13 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorCodeElement != null) {
+                if (serviceObjectiveAssignmentErrorCodeElement != null)
+                {
                     String serviceObjectiveAssignmentErrorCodeInstance;
                     serviceObjectiveAssignmentErrorCodeInstance = serviceObjectiveAssignmentErrorCodeElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
@@ -689,7 +770,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements14 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
+                if (serviceObjectiveAssignmentErrorDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
                     serviceObjectiveAssignmentErrorDescriptionInstance = serviceObjectiveAssignmentErrorDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
@@ -697,7 +779,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements15 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (serviceObjectiveAssignmentStateElement != null) {
+                if (serviceObjectiveAssignmentStateElement != null)
+                {
                     String serviceObjectiveAssignmentStateInstance;
                     serviceObjectiveAssignmentStateInstance = serviceObjectiveAssignmentStateElement.getTextContent();
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
@@ -705,7 +788,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements16 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (serviceObjectiveAssignmentStateDescriptionElement != null) {
+                if (serviceObjectiveAssignmentStateDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
                     serviceObjectiveAssignmentStateDescriptionInstance = serviceObjectiveAssignmentStateDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
@@ -713,7 +797,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements17 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (serviceObjectiveAssignmentSuccessDateElement != null) {
+                if (serviceObjectiveAssignmentSuccessDateElement != null)
+                {
                     String serviceObjectiveAssignmentSuccessDateInstance;
                     serviceObjectiveAssignmentSuccessDateInstance = serviceObjectiveAssignmentSuccessDateElement.getTextContent();
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
@@ -721,7 +806,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements18 = serviceResourceElement.getElementsByTagName("ServiceObjectiveId");
                 Element serviceObjectiveIdElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                if (serviceObjectiveIdElement != null) {
+                if (serviceObjectiveIdElement != null)
+                {
                     String serviceObjectiveIdInstance;
                     serviceObjectiveIdInstance = serviceObjectiveIdElement.getTextContent();
                     result.setServiceObjectiveId(serviceObjectiveIdInstance);
@@ -729,16 +815,21 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -751,10 +842,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * @return Response containing the list of databases for a given server.
     */
     @Override
-    public Future<DatabaseListResponse> listAsync(final String serverName) {
+    public Future<DatabaseListResponse> listAsync(final String serverName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseListResponse>() { 
             @Override
-            public DatabaseListResponse call() throws Exception {
+            public DatabaseListResponse call() throws Exception
+            {
                 return list(serverName);
             }
          });
@@ -775,16 +868,19 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * @return Response containing the list of databases for a given server.
     */
     @Override
-    public DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public DatabaseListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -802,18 +898,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -831,15 +932,18 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     DatabaseListResponse.Database serviceResourceInstance = new DatabaseListResponse.Database();
                     result.getDatabases().add(serviceResourceInstance);
                     
                     NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
@@ -847,7 +951,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements3 = serviceResourcesElement.getElementsByTagName("Id");
                     Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (idElement != null) {
+                    if (idElement != null)
+                    {
                         int idInstance;
                         idInstance = DatatypeConverter.parseInt(idElement.getTextContent());
                         serviceResourceInstance.setId(idInstance);
@@ -855,7 +960,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements4 = serviceResourcesElement.getElementsByTagName("Type");
                     Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (typeElement != null) {
+                    if (typeElement != null)
+                    {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
@@ -863,7 +969,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements5 = serviceResourcesElement.getElementsByTagName("State");
                     Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (stateElement != null) {
+                    if (stateElement != null)
+                    {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
@@ -871,7 +978,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements6 = serviceResourcesElement.getElementsByTagName("Edition");
                     Element editionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (editionElement != null) {
+                    if (editionElement != null)
+                    {
                         String editionInstance;
                         editionInstance = editionElement.getTextContent();
                         serviceResourceInstance.setEdition(editionInstance);
@@ -879,7 +987,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements7 = serviceResourcesElement.getElementsByTagName("MaxSizeGB");
                     Element maxSizeGBElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (maxSizeGBElement != null) {
+                    if (maxSizeGBElement != null)
+                    {
                         long maxSizeGBInstance;
                         maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement.getTextContent());
                         serviceResourceInstance.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
@@ -887,7 +996,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements8 = serviceResourcesElement.getElementsByTagName("CollationName");
                     Element collationNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (collationNameElement != null) {
+                    if (collationNameElement != null)
+                    {
                         String collationNameInstance;
                         collationNameInstance = collationNameElement.getTextContent();
                         serviceResourceInstance.setCollationName(collationNameInstance);
@@ -895,7 +1005,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements9 = serviceResourcesElement.getElementsByTagName("CreationDate");
                     Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (creationDateElement != null) {
+                    if (creationDateElement != null)
+                    {
                         Calendar creationDateInstance;
                         creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                         serviceResourceInstance.setCreationDate(creationDateInstance);
@@ -903,7 +1014,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements10 = serviceResourcesElement.getElementsByTagName("IsFederationRoot");
                     Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (isFederationRootElement != null) {
+                    if (isFederationRootElement != null)
+                    {
                         boolean isFederationRootInstance;
                         isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                         serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
@@ -911,7 +1023,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements11 = serviceResourcesElement.getElementsByTagName("IsSystemObject");
                     Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (isSystemObjectElement != null) {
+                    if (isSystemObjectElement != null)
+                    {
                         boolean isSystemObjectInstance;
                         isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                         serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
@@ -919,7 +1032,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements12 = serviceResourcesElement.getElementsByTagName("SizeMB");
                     Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (sizeMBElement != null) {
+                    if (sizeMBElement != null)
+                    {
                         String sizeMBInstance;
                         sizeMBInstance = sizeMBElement.getTextContent();
                         serviceResourceInstance.setSizeMB(sizeMBInstance);
@@ -927,7 +1041,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements13 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
                     Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (serviceObjectiveAssignmentErrorCodeElement != null) {
+                    if (serviceObjectiveAssignmentErrorCodeElement != null)
+                    {
                         String serviceObjectiveAssignmentErrorCodeInstance;
                         serviceObjectiveAssignmentErrorCodeInstance = serviceObjectiveAssignmentErrorCodeElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
@@ -935,7 +1050,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements14 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
                     Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
+                    if (serviceObjectiveAssignmentErrorDescriptionElement != null)
+                    {
                         String serviceObjectiveAssignmentErrorDescriptionInstance;
                         serviceObjectiveAssignmentErrorDescriptionInstance = serviceObjectiveAssignmentErrorDescriptionElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
@@ -943,7 +1059,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements15 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentState");
                     Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (serviceObjectiveAssignmentStateElement != null) {
+                    if (serviceObjectiveAssignmentStateElement != null)
+                    {
                         String serviceObjectiveAssignmentStateInstance;
                         serviceObjectiveAssignmentStateInstance = serviceObjectiveAssignmentStateElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
@@ -951,7 +1068,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements16 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
                     Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (serviceObjectiveAssignmentStateDescriptionElement != null) {
+                    if (serviceObjectiveAssignmentStateDescriptionElement != null)
+                    {
                         String serviceObjectiveAssignmentStateDescriptionInstance;
                         serviceObjectiveAssignmentStateDescriptionInstance = serviceObjectiveAssignmentStateDescriptionElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
@@ -959,7 +1077,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements17 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
                     Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (serviceObjectiveAssignmentSuccessDateElement != null) {
+                    if (serviceObjectiveAssignmentSuccessDateElement != null)
+                    {
                         String serviceObjectiveAssignmentSuccessDateInstance;
                         serviceObjectiveAssignmentSuccessDateInstance = serviceObjectiveAssignmentSuccessDateElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
@@ -967,7 +1086,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     
                     NodeList elements18 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveId");
                     Element serviceObjectiveIdElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                    if (serviceObjectiveIdElement != null) {
+                    if (serviceObjectiveIdElement != null)
+                    {
                         String serviceObjectiveIdInstance;
                         serviceObjectiveIdInstance = serviceObjectiveIdElement.getTextContent();
                         serviceResourceInstance.setServiceObjectiveId(serviceObjectiveIdInstance);
@@ -976,16 +1096,21 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1001,10 +1126,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public Future<DatabaseUpdateResponse> updateAsync(final String serverName, final String databaseName, final DatabaseUpdateParameters parameters) {
+    public Future<DatabaseUpdateResponse> updateAsync(final String serverName, final String databaseName, final DatabaseUpdateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseUpdateResponse>() { 
             @Override
-            public DatabaseUpdateResponse call() throws Exception {
+            public DatabaseUpdateResponse call() throws Exception
+            {
                 return update(serverName, databaseName, parameters);
             }
          });
@@ -1030,28 +1157,35 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
     * request ID.
     */
     @Override
-    public DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (databaseName == null) {
+        if (databaseName == null)
+        {
             throw new NullPointerException("databaseName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getCollationName() == null) {
+        if (parameters.getCollationName() == null)
+        {
             throw new NullPointerException("parameters.CollationName");
         }
-        if (parameters.getEdition() == null) {
+        if (parameters.getEdition() == null)
+        {
             throw new NullPointerException("parameters.Edition");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -1079,7 +1213,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         Element serviceResourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
         requestDoc.appendChild(serviceResourceElement);
         
-        if (parameters.getName() != null) {
+        if (parameters.getName() != null)
+        {
             Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
             nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
             serviceResourceElement.appendChild(nameElement);
@@ -1101,7 +1236,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         collationNameElement.appendChild(requestDoc.createTextNode(parameters.getCollationName()));
         serviceResourceElement.appendChild(collationNameElement);
         
-        if (parameters.getServiceObjectiveId() != null) {
+        if (parameters.getServiceObjectiveId() != null)
+        {
             Element serviceObjectiveIdElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
             serviceObjectiveIdElement.appendChild(requestDoc.createTextNode(parameters.getServiceObjectiveId()));
             serviceResourceElement.appendChild(serviceObjectiveIdElement);
@@ -1120,18 +1256,23 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1149,10 +1290,12 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement2 != null) {
+            if (serviceResourceElement2 != null)
+            {
                 NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -1160,7 +1303,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements3 = serviceResourceElement2.getElementsByTagName("Id");
                 Element idElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (idElement2 != null) {
+                if (idElement2 != null)
+                {
                     int idInstance;
                     idInstance = DatatypeConverter.parseInt(idElement2.getTextContent());
                     result.setId(idInstance);
@@ -1168,7 +1312,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements4 = serviceResourceElement2.getElementsByTagName("Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -1176,7 +1321,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements5 = serviceResourceElement2.getElementsByTagName("State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -1184,7 +1330,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements6 = serviceResourceElement2.getElementsByTagName("Edition");
                 Element editionElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (editionElement2 != null) {
+                if (editionElement2 != null)
+                {
                     String editionInstance;
                     editionInstance = editionElement2.getTextContent();
                     result.setEdition(editionInstance);
@@ -1192,7 +1339,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements7 = serviceResourceElement2.getElementsByTagName("MaxSizeGB");
                 Element maxSizeGBElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (maxSizeGBElement2 != null) {
+                if (maxSizeGBElement2 != null)
+                {
                     long maxSizeGBInstance;
                     maxSizeGBInstance = DatatypeConverter.parseLong(maxSizeGBElement2.getTextContent());
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
@@ -1200,7 +1348,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements8 = serviceResourceElement2.getElementsByTagName("CollationName");
                 Element collationNameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (collationNameElement2 != null) {
+                if (collationNameElement2 != null)
+                {
                     String collationNameInstance;
                     collationNameInstance = collationNameElement2.getTextContent();
                     result.setCollationName(collationNameInstance);
@@ -1208,7 +1357,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements9 = serviceResourceElement2.getElementsByTagName("CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (creationDateElement != null) {
+                if (creationDateElement != null)
+                {
                     Calendar creationDateInstance;
                     creationDateInstance = DatatypeConverter.parseDateTime(creationDateElement.getTextContent());
                     result.setCreationDate(creationDateInstance);
@@ -1216,7 +1366,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements10 = serviceResourceElement2.getElementsByTagName("IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (isFederationRootElement != null) {
+                if (isFederationRootElement != null)
+                {
                     boolean isFederationRootInstance;
                     isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
                     result.setIsFederationRoot(isFederationRootInstance);
@@ -1224,7 +1375,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements11 = serviceResourceElement2.getElementsByTagName("IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (isSystemObjectElement != null) {
+                if (isSystemObjectElement != null)
+                {
                     boolean isSystemObjectInstance;
                     isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
                     result.setIsSystemObject(isSystemObjectInstance);
@@ -1232,7 +1384,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements12 = serviceResourceElement2.getElementsByTagName("SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (sizeMBElement != null) {
+                if (sizeMBElement != null)
+                {
                     String sizeMBInstance;
                     sizeMBInstance = sizeMBElement.getTextContent();
                     result.setSizeMB(sizeMBInstance);
@@ -1240,7 +1393,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements13 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorCodeElement != null) {
+                if (serviceObjectiveAssignmentErrorCodeElement != null)
+                {
                     String serviceObjectiveAssignmentErrorCodeInstance;
                     serviceObjectiveAssignmentErrorCodeInstance = serviceObjectiveAssignmentErrorCodeElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
@@ -1248,7 +1402,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements14 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
+                if (serviceObjectiveAssignmentErrorDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
                     serviceObjectiveAssignmentErrorDescriptionInstance = serviceObjectiveAssignmentErrorDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
@@ -1256,7 +1411,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements15 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (serviceObjectiveAssignmentStateElement != null) {
+                if (serviceObjectiveAssignmentStateElement != null)
+                {
                     String serviceObjectiveAssignmentStateInstance;
                     serviceObjectiveAssignmentStateInstance = serviceObjectiveAssignmentStateElement.getTextContent();
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
@@ -1264,7 +1420,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements16 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (serviceObjectiveAssignmentStateDescriptionElement != null) {
+                if (serviceObjectiveAssignmentStateDescriptionElement != null)
+                {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
                     serviceObjectiveAssignmentStateDescriptionInstance = serviceObjectiveAssignmentStateDescriptionElement.getTextContent();
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
@@ -1272,7 +1429,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements17 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (serviceObjectiveAssignmentSuccessDateElement != null) {
+                if (serviceObjectiveAssignmentSuccessDateElement != null)
+                {
                     String serviceObjectiveAssignmentSuccessDateInstance;
                     serviceObjectiveAssignmentSuccessDateInstance = serviceObjectiveAssignmentSuccessDateElement.getTextContent();
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
@@ -1280,7 +1438,8 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 
                 NodeList elements18 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveId");
                 Element serviceObjectiveIdElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                if (serviceObjectiveIdElement2 != null) {
+                if (serviceObjectiveIdElement2 != null)
+                {
                     String serviceObjectiveIdInstance;
                     serviceObjectiveIdInstance = serviceObjectiveIdElement2.getTextContent();
                     result.setServiceObjectiveId(serviceObjectiveIdInstance);
@@ -1288,16 +1447,21 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

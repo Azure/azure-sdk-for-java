@@ -31,14 +31,16 @@ import java.util.Iterator;
 /**
 * The Get Web Site Historical Usage Metrics operation response.
 */
-public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> {
+public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>
+{
     private ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetrics;
     
     /**
     * Historical metric snapshots for the web site.
     * @return The UsageMetrics value.
     */
-    public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> getUsageMetrics() {
+    public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> getUsageMetrics()
+    {
         return this.usageMetrics;
     }
     
@@ -46,7 +48,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     * Historical metric snapshots for the web site.
     * @param usageMetricsValue The UsageMetrics value.
     */
-    public void setUsageMetrics(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetricsValue) {
+    public void setUsageMetrics(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> usageMetricsValue)
+    {
         this.usageMetrics = usageMetricsValue;
     }
     
@@ -55,7 +58,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     * WebSiteGetHistoricalUsageMetricsResponse class.
     *
     */
-    public WebSiteGetHistoricalUsageMetricsResponse() {
+    public WebSiteGetHistoricalUsageMetricsResponse()
+    {
         super();
         this.usageMetrics = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric>();
     }
@@ -64,21 +68,24 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     * Gets the sequence of UsageMetrics.
     *
     */
-    public Iterator<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> iterator() {
+    public Iterator<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric> iterator()
+    {
         return this.getUsageMetrics().iterator();
     }
     
     /**
     * Historical metric snapshot for the web site.
     */
-    public static class HistoricalUsageMetric {
+    public static class HistoricalUsageMetric
+    {
         private String code;
         
         /**
         * Reports whether the metric data was returned successfully.
         * @return The Code value.
         */
-        public String getCode() {
+        public String getCode()
+        {
             return this.code;
         }
         
@@ -86,7 +93,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Reports whether the metric data was returned successfully.
         * @param codeValue The Code value.
         */
-        public void setCode(final String codeValue) {
+        public void setCode(final String codeValue)
+        {
             this.code = codeValue;
         }
         
@@ -96,7 +104,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Historical metric snapshot data for the web site.
         * @return The Data value.
         */
-        public WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData getData() {
+        public WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData getData()
+        {
             return this.data;
         }
         
@@ -104,7 +113,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Historical metric snapshot data for the web site.
         * @param dataValue The Data value.
         */
-        public void setData(final WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataValue) {
+        public void setData(final WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataValue)
+        {
             this.data = dataValue;
         }
         
@@ -114,7 +124,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * A string for optional message content.
         * @return The Message value.
         */
-        public String getMessage() {
+        public String getMessage()
+        {
             return this.message;
         }
         
@@ -122,7 +133,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * A string for optional message content.
         * @param messageValue The Message value.
         */
-        public void setMessage(final String messageValue) {
+        public void setMessage(final String messageValue)
+        {
             this.message = messageValue;
         }
     }
@@ -130,14 +142,16 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     /**
     * Historical metric snapshot data for the web site.
     */
-    public static class HistoricalUsageMetricData {
+    public static class HistoricalUsageMetricData
+    {
         private String displayName;
         
         /**
         * The display name of the metric, including spaces.
         * @return The DisplayName value.
         */
-        public String getDisplayName() {
+        public String getDisplayName()
+        {
             return this.displayName;
         }
         
@@ -145,7 +159,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The display name of the metric, including spaces.
         * @param displayNameValue The DisplayName value.
         */
-        public void setDisplayName(final String displayNameValue) {
+        public void setDisplayName(final String displayNameValue)
+        {
             this.displayName = displayNameValue;
         }
         
@@ -155,7 +170,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The end time of the data reported.
         * @return The EndTime value.
         */
-        public Calendar getEndTime() {
+        public Calendar getEndTime()
+        {
             return this.endTime;
         }
         
@@ -163,7 +179,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The end time of the data reported.
         * @param endTimeValue The EndTime value.
         */
-        public void setEndTime(final Calendar endTimeValue) {
+        public void setEndTime(final Calendar endTimeValue)
+        {
             this.endTime = endTimeValue;
         }
         
@@ -173,7 +190,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The name of the metric.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -181,7 +199,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The name of the metric.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -191,7 +210,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The primary data aggregation type. This value is usually Total.
         * @return The PrimaryAggregationType value.
         */
-        public String getPrimaryAggregationType() {
+        public String getPrimaryAggregationType()
+        {
             return this.primaryAggregationType;
         }
         
@@ -199,7 +219,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The primary data aggregation type. This value is usually Total.
         * @param primaryAggregationTypeValue The PrimaryAggregationType value.
         */
-        public void setPrimaryAggregationType(final String primaryAggregationTypeValue) {
+        public void setPrimaryAggregationType(final String primaryAggregationTypeValue)
+        {
             this.primaryAggregationType = primaryAggregationTypeValue;
         }
         
@@ -209,7 +230,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The start time of the data reported.
         * @return The StartTime value.
         */
-        public Calendar getStartTime() {
+        public Calendar getStartTime()
+        {
             return this.startTime;
         }
         
@@ -217,7 +239,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The start time of the data reported.
         * @param startTimeValue The StartTime value.
         */
-        public void setStartTime(final Calendar startTimeValue) {
+        public void setStartTime(final Calendar startTimeValue)
+        {
             this.startTime = startTimeValue;
         }
         
@@ -228,7 +251,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * For more information, see Supported Rollups.
         * @return The TimeGrain value.
         */
-        public String getTimeGrain() {
+        public String getTimeGrain()
+        {
             return this.timeGrain;
         }
         
@@ -237,7 +261,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * For more information, see Supported Rollups.
         * @param timeGrainValue The TimeGrain value.
         */
-        public void setTimeGrain(final String timeGrainValue) {
+        public void setTimeGrain(final String timeGrainValue)
+        {
             this.timeGrain = timeGrainValue;
         }
         
@@ -248,7 +273,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * bytes, or count).
         * @return The Unit value.
         */
-        public String getUnit() {
+        public String getUnit()
+        {
             return this.unit;
         }
         
@@ -257,7 +283,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * bytes, or count).
         * @param unitValue The Unit value.
         */
-        public void setUnit(final String unitValue) {
+        public void setUnit(final String unitValue)
+        {
             this.unit = unitValue;
         }
         
@@ -267,7 +294,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * One or more MetricSample elements.
         * @return The Values value.
         */
-        public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> getValues() {
+        public ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> getValues()
+        {
             return this.values;
         }
         
@@ -275,7 +303,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * One or more MetricSample elements.
         * @param valuesValue The Values value.
         */
-        public void setValues(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> valuesValue) {
+        public void setValues(final ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample> valuesValue)
+        {
             this.values = valuesValue;
         }
         
@@ -283,7 +312,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Initializes a new instance of the HistoricalUsageMetricData class.
         *
         */
-        public HistoricalUsageMetricData() {
+        public HistoricalUsageMetricData()
+        {
             this.values = new ArrayList<WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample>();
         }
     }
@@ -291,14 +321,16 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
     /**
     * Historical metric snapshot data sample.
     */
-    public static class HistoricalUsageMetricSample {
+    public static class HistoricalUsageMetricSample
+    {
         private int count;
         
         /**
         * The metric sample count. This value is usually 1.
         * @return The Count value.
         */
-        public int getCount() {
+        public int getCount()
+        {
             return this.count;
         }
         
@@ -306,7 +338,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * The metric sample count. This value is usually 1.
         * @param countValue The Count value.
         */
-        public void setCount(final int countValue) {
+        public void setCount(final int countValue)
+        {
             this.count = countValue;
         }
         
@@ -316,7 +349,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Maximum value recorded.
         * @return The Maximum value.
         */
-        public String getMaximum() {
+        public String getMaximum()
+        {
             return this.maximum;
         }
         
@@ -324,7 +358,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Maximum value recorded.
         * @param maximumValue The Maximum value.
         */
-        public void setMaximum(final String maximumValue) {
+        public void setMaximum(final String maximumValue)
+        {
             this.maximum = maximumValue;
         }
         
@@ -334,7 +369,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Minimum value recorded.
         * @return The Minimum value.
         */
-        public String getMinimum() {
+        public String getMinimum()
+        {
             return this.minimum;
         }
         
@@ -342,7 +378,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Minimum value recorded.
         * @param minimumValue The Minimum value.
         */
-        public void setMinimum(final String minimumValue) {
+        public void setMinimum(final String minimumValue)
+        {
             this.minimum = minimumValue;
         }
         
@@ -352,7 +389,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Time the metric was taken.
         * @return The TimeCreated value.
         */
-        public Calendar getTimeCreated() {
+        public Calendar getTimeCreated()
+        {
             return this.timeCreated;
         }
         
@@ -360,7 +398,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Time the metric was taken.
         * @param timeCreatedValue The TimeCreated value.
         */
-        public void setTimeCreated(final Calendar timeCreatedValue) {
+        public void setTimeCreated(final Calendar timeCreatedValue)
+        {
             this.timeCreated = timeCreatedValue;
         }
         
@@ -370,7 +409,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Value of the metric sample for the time taken.
         * @return The Total value.
         */
-        public String getTotal() {
+        public String getTotal()
+        {
             return this.total;
         }
         
@@ -378,7 +418,8 @@ public class WebSiteGetHistoricalUsageMetricsResponse extends OperationResponse 
         * Value of the metric sample for the time taken.
         * @param totalValue The Total value.
         */
-        public void setTotal(final String totalValue) {
+        public void setTotal(final String totalValue)
+        {
             this.total = totalValue;
         }
     }

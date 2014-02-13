@@ -35,7 +35,8 @@ import com.microsoft.windowsazure.core.OperationResponse;
 * includes the HTTP status code for the failed request, and also includes
 * error information regarding the failure.
 */
-public class AddOnOperationStatusResponse extends OperationResponse {
+public class AddOnOperationStatusResponse extends OperationResponse
+{
     private AddOnOperationStatusResponse.ErrorDetails error;
     
     /**
@@ -44,7 +45,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * regarding the failure.
     * @return The Error value.
     */
-    public AddOnOperationStatusResponse.ErrorDetails getError() {
+    public AddOnOperationStatusResponse.ErrorDetails getError()
+    {
         return this.error;
     }
     
@@ -54,7 +56,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * regarding the failure.
     * @param errorValue The Error value.
     */
-    public void setError(final AddOnOperationStatusResponse.ErrorDetails errorValue) {
+    public void setError(final AddOnOperationStatusResponse.ErrorDetails errorValue)
+    {
         this.error = errorValue;
     }
     
@@ -64,7 +67,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * The HTTP status code for the asynchronous request.
     * @return The HttpStatusCode value.
     */
-    public Integer getHttpStatusCode() {
+    public Integer getHttpStatusCode()
+    {
         return this.httpStatusCode;
     }
     
@@ -72,7 +76,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * The HTTP status code for the asynchronous request.
     * @param httpStatusCodeValue The HttpStatusCode value.
     */
-    public void setHttpStatusCode(final Integer httpStatusCodeValue) {
+    public void setHttpStatusCode(final Integer httpStatusCodeValue)
+    {
         this.httpStatusCode = httpStatusCodeValue;
     }
     
@@ -83,7 +88,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * x-ms-request-id response header of the asynchronous request.
     * @return The Id value.
     */
-    public String getId() {
+    public String getId()
+    {
         return this.id;
     }
     
@@ -92,7 +98,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * x-ms-request-id response header of the asynchronous request.
     * @param idValue The Id value.
     */
-    public void setId(final String idValue) {
+    public void setId(final String idValue)
+    {
         this.id = idValue;
     }
     
@@ -102,7 +109,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * The status of the asynchronous request.
     * @return The Status value.
     */
-    public OperationStatus getStatus() {
+    public OperationStatus getStatus()
+    {
         return this.status;
     }
     
@@ -110,7 +118,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * The status of the asynchronous request.
     * @param statusValue The Status value.
     */
-    public void setStatus(final OperationStatus statusValue) {
+    public void setStatus(final OperationStatus statusValue)
+    {
         this.status = statusValue;
     }
     
@@ -119,7 +128,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
     * status code for the failed request, and also includes error information
     * regarding the failure.
     */
-    public static class ErrorDetails {
+    public static class ErrorDetails
+    {
         private String code;
         
         /**
@@ -127,7 +137,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
         * request failed.
         * @return The Code value.
         */
-        public String getCode() {
+        public String getCode()
+        {
             return this.code;
         }
         
@@ -136,7 +147,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
         * request failed.
         * @param codeValue The Code value.
         */
-        public void setCode(final String codeValue) {
+        public void setCode(final String codeValue)
+        {
             this.code = codeValue;
         }
         
@@ -147,7 +159,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
         * request failed.
         * @return The Message value.
         */
-        public String getMessage() {
+        public String getMessage()
+        {
             return this.message;
         }
         
@@ -156,7 +169,8 @@ public class AddOnOperationStatusResponse extends OperationResponse {
         * request failed.
         * @param messageValue The Message value.
         */
-        public void setMessage(final String messageValue) {
+        public void setMessage(final String messageValue)
+        {
             this.message = messageValue;
         }
     }

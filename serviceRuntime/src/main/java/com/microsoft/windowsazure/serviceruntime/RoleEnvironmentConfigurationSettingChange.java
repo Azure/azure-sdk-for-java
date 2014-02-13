@@ -20,11 +20,13 @@ package com.microsoft.windowsazure.serviceruntime;
  * @see RoleEnvironmentTopologyChange
  */
 public class RoleEnvironmentConfigurationSettingChange extends
-        RoleEnvironmentChange {
+        RoleEnvironmentChange
+{
 
     private String settingName;
 
-    RoleEnvironmentConfigurationSettingChange(String settingName) {
+    RoleEnvironmentConfigurationSettingChange(String settingName)
+    {
         this.settingName = settingName;
     }
 
@@ -34,7 +36,8 @@ public class RoleEnvironmentConfigurationSettingChange extends
      * @return A <code>String</code> object that represents the name of the
      *         configuration setting that has been changed.
      */
-    public String getConfigurationSettingName() {
+    public String getConfigurationSettingName()
+    {
         return settingName;
     }
 

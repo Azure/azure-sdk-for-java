@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * for the operation, a blob lease ID, and any access conditions for the
  * operation.
  */
-public class SetBlobMetadataOptions extends BlobServiceOptions {
+public class SetBlobMetadataOptions extends BlobServiceOptions
+{
     private String leaseId;
     private AccessConditionHeader accessCondition;
 
@@ -40,7 +41,8 @@ public class SetBlobMetadataOptions extends BlobServiceOptions {
      * @return A reference to this {@link SetBlobMetadataOptions} instance.
      */
     @Override
-    public SetBlobMetadataOptions setTimeout(Integer timeout) {
+    public SetBlobMetadataOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -51,7 +53,8 @@ public class SetBlobMetadataOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -67,7 +70,8 @@ public class SetBlobMetadataOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link SetBlobMetadataOptions} instance.
      */
-    public SetBlobMetadataOptions setLeaseId(String leaseId) {
+    public SetBlobMetadataOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -79,7 +83,8 @@ public class SetBlobMetadataOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -99,7 +104,8 @@ public class SetBlobMetadataOptions extends BlobServiceOptions {
      * @return A reference to this {@link SetBlobMetadataOptions} instance.
      */
     public SetBlobMetadataOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

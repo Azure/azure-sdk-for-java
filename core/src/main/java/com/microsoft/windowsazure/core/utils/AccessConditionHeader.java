@@ -22,7 +22,8 @@ import com.microsoft.windowsazure.core.RFC1123DateConverter;
  * Represents a set of access conditions for operations that use storage
  * services.
  */
-public final class AccessConditionHeader {
+public final class AccessConditionHeader
+{
 
     /**
      * Specifies an access condition with no conditions set.
@@ -49,7 +50,8 @@ public final class AccessConditionHeader {
      * @return An <code>AccessCondition</code> object that represents the
      *         <i>If-Match</i> condition.
      */
-    public static AccessConditionHeader ifMatch(String etag) {
+    public static AccessConditionHeader ifMatch(String etag)
+    {
         return new AccessConditionHeader(AccessConditionHeaderType.IF_MATCH,
                 etag);
     }
@@ -74,7 +76,8 @@ public final class AccessConditionHeader {
      * @return An <code>AccessCondition</code> object that represents the
      *         <i>If-Modified-Since</i> condition.
      */
-    public static AccessConditionHeader ifModifiedSince(Date lastMotified) {
+    public static AccessConditionHeader ifModifiedSince(Date lastMotified)
+    {
         return new AccessConditionHeader(
                 AccessConditionHeaderType.IF_MODIFIED_SINCE,
                 new RFC1123DateConverter().format(lastMotified));
@@ -99,7 +102,8 @@ public final class AccessConditionHeader {
      * @return An <code>AccessCondition</code> object that represents the
      *         <i>If-None-Match</i> condition.
      */
-    public static AccessConditionHeader ifNoneMatch(String etag) {
+    public static AccessConditionHeader ifNoneMatch(String etag)
+    {
         return new AccessConditionHeader(
                 AccessConditionHeaderType.IF_NONE_MATCH, etag);
     }
@@ -124,7 +128,8 @@ public final class AccessConditionHeader {
      * @return An <code>AccessCondition</code> object that represents the
      *         <i>If-Unmodified-Since</i> condition.
      */
-    public static AccessConditionHeader ifNotModifiedSince(Date lastMotified) {
+    public static AccessConditionHeader ifNotModifiedSince(Date lastMotified)
+    {
         return new AccessConditionHeader(
                 AccessConditionHeaderType.IF_UNMODIFIED_SINCE,
                 new RFC1123DateConverter().format(lastMotified));
@@ -143,7 +148,8 @@ public final class AccessConditionHeader {
     /**
      * Creates an instance of the <code>AccessCondition</code> class.
      */
-    protected AccessConditionHeader() {
+    protected AccessConditionHeader()
+    {
         // Empty Default Ctor
     }
 
@@ -158,7 +164,8 @@ public final class AccessConditionHeader {
      *            A <code>String</code> that represents the value of the header.
      */
     protected AccessConditionHeader(AccessConditionHeaderType headerType,
-            String value) {
+            String value)
+    {
         this.setHeader(headerType);
         this.setValue(value);
     }
@@ -170,7 +177,8 @@ public final class AccessConditionHeader {
      * @return The {@link AccessConditionHeaderType} set in this
      *         <code>AccessCondition</code> instance.
      */
-    public AccessConditionHeaderType getHeader() {
+    public AccessConditionHeaderType getHeader()
+    {
         return header;
     }
 
@@ -182,7 +190,8 @@ public final class AccessConditionHeader {
      *            The {@link AccessConditionHeaderType} to set in this
      *            <code>AccessCondition</code> instance.
      */
-    public void setHeader(AccessConditionHeaderType header) {
+    public void setHeader(AccessConditionHeaderType header)
+    {
         this.header = header;
     }
 
@@ -193,7 +202,8 @@ public final class AccessConditionHeader {
      * @return A {@link String} containing the access condition value set in
      *         this <code>AccessCondition</code> instance.
      */
-    public String getValue() {
+    public String getValue()
+    {
         return value;
     }
 
@@ -205,7 +215,8 @@ public final class AccessConditionHeader {
      *            A {@link String} containing the access condition value to set
      *            in this <code>AccessCondition</code> instance.
      */
-    public void setValue(String value) {
+    public void setValue(String value)
+    {
         this.value = value;
     }
 }

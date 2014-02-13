@@ -23,7 +23,8 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * number of messages to retrieve from the queue, and the visibility timeout to
  * set on the retrieved messages.
  */
-public class ListMessagesOptions extends QueueServiceOptions {
+public class ListMessagesOptions extends QueueServiceOptions
+{
     private Integer numberOfMessages;
     private Integer visibilityTimeoutInSeconds;
 
@@ -39,7 +40,8 @@ public class ListMessagesOptions extends QueueServiceOptions {
      * @return A reference to this {@link ListMessagesOptions} instance.
      */
     @Override
-    public ListMessagesOptions setTimeout(Integer timeout) {
+    public ListMessagesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -50,7 +52,8 @@ public class ListMessagesOptions extends QueueServiceOptions {
      * 
      * @return The number of messages requested.
      */
-    public Integer getNumberOfMessages() {
+    public Integer getNumberOfMessages()
+    {
         return numberOfMessages;
     }
 
@@ -66,7 +69,8 @@ public class ListMessagesOptions extends QueueServiceOptions {
      *            is 0 to 32.
      * @return A reference to this {@link ListMessagesOptions} instance.
      */
-    public ListMessagesOptions setNumberOfMessages(Integer numberOfMessages) {
+    public ListMessagesOptions setNumberOfMessages(Integer numberOfMessages)
+    {
         this.numberOfMessages = numberOfMessages;
         return this;
     }
@@ -78,7 +82,8 @@ public class ListMessagesOptions extends QueueServiceOptions {
      * @return The visibility timeout to set on the messages requested from the
      *         queue.
      */
-    public Integer getVisibilityTimeoutInSeconds() {
+    public Integer getVisibilityTimeoutInSeconds()
+    {
         return visibilityTimeoutInSeconds;
     }
 
@@ -95,7 +100,8 @@ public class ListMessagesOptions extends QueueServiceOptions {
      * @return A reference to this {@link ListMessagesOptions} instance.
      */
     public ListMessagesOptions setVisibilityTimeoutInSeconds(
-            Integer visibilityTimeoutInSeconds) {
+            Integer visibilityTimeoutInSeconds)
+    {
         this.visibilityTimeoutInSeconds = visibilityTimeoutInSeconds;
         return this;
     }

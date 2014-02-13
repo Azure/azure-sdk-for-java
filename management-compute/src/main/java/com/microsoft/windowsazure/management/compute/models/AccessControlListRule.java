@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * An access control rule for a public endpoint.
 */
-public class AccessControlListRule {
+public class AccessControlListRule
+{
     private String action;
     
     /**
     * the action allowed by this Access Control List Rule.
     * @return The Action value.
     */
-    public String getAction() {
+    public String getAction()
+    {
         return this.action;
     }
     
@@ -41,7 +43,8 @@ public class AccessControlListRule {
     * the action allowed by this Access Control List Rule.
     * @param actionValue The Action value.
     */
-    public void setAction(final String actionValue) {
+    public void setAction(final String actionValue)
+    {
         this.action = actionValue;
     }
     
@@ -51,7 +54,8 @@ public class AccessControlListRule {
     * the description for this Access Control List Rule.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -59,7 +63,8 @@ public class AccessControlListRule {
     * the description for this Access Control List Rule.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -69,7 +74,8 @@ public class AccessControlListRule {
     * the order of application for this Access Control List Rule.
     * @return The Order value.
     */
-    public Integer getOrder() {
+    public Integer getOrder()
+    {
         return this.order;
     }
     
@@ -77,7 +83,8 @@ public class AccessControlListRule {
     * the order of application for this Access Control List Rule.
     * @param orderValue The Order value.
     */
-    public void setOrder(final Integer orderValue) {
+    public void setOrder(final Integer orderValue)
+    {
         this.order = orderValue;
     }
     
@@ -88,7 +95,8 @@ public class AccessControlListRule {
     * Rule.
     * @return The RemoteSubnet value.
     */
-    public String getRemoteSubnet() {
+    public String getRemoteSubnet()
+    {
         return this.remoteSubnet;
     }
     
@@ -97,7 +105,8 @@ public class AccessControlListRule {
     * Rule.
     * @param remoteSubnetValue The RemoteSubnet value.
     */
-    public void setRemoteSubnet(final String remoteSubnetValue) {
+    public void setRemoteSubnet(final String remoteSubnetValue)
+    {
         this.remoteSubnet = remoteSubnetValue;
     }
 }

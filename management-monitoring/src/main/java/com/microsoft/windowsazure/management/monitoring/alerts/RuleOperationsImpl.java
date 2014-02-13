@@ -60,209 +60,194 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
- * Operations for managing the alert rules.
- */
-public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>,
-        RuleOperations {
+* Operations for managing the alert rules.
+*/
+public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>, RuleOperations
+{
     /**
-     * Initializes a new instance of the RuleOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
-    RuleOperationsImpl(AlertsClientImpl client) {
+    * Initializes a new instance of the RuleOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
+    RuleOperationsImpl(AlertsClientImpl client)
+    {
         this.client = client;
     }
-
+    
     private AlertsClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
-     * 
-     * @return The Client value.
-     */
-    public AlertsClientImpl getClient() {
+    * Gets a reference to the
+    * microsoft.windowsazure.management.monitoring.alerts.AlertsClientImpl.
+    * @return The Client value.
+    */
+    public AlertsClientImpl getClient()
+    {
         return this.client;
     }
-
+    
     /**
-     * 
-     * @param parameters
-     *            The rule to create or update.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param parameters The rule to create or update.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> createOrUpdateAsync(
-            final RuleCreateOrUpdateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return createOrUpdate(parameters);
-                    }
-                });
+    public Future<OperationResponse> createOrUpdateAsync(final RuleCreateOrUpdateParameters parameters)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return createOrUpdate(parameters);
+            }
+         });
     }
-
+    
     /**
-     * 
-     * @param parameters
-     *            The rule to create or update.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param parameters The rule to create or update.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse createOrUpdate(
-            RuleCreateOrUpdateParameters parameters) throws IOException,
-            ServiceException {
+    public OperationResponse createOrUpdate(RuleCreateOrUpdateParameters parameters) throws IOException, ServiceException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/alertrules/"
-                + parameters.getRule().getId();
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/alertrules/" + parameters.getRule().getId();
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-
-        if (parameters.getRule() != null) {
+        
+        if (parameters.getRule() != null)
+        {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode ruleValue = objectMapper.createObjectNode();
             requestDoc = ruleValue;
-
-            if (parameters.getRule().getId() != null) {
+            
+            if (parameters.getRule().getId() != null)
+            {
                 ruleValue.put("Id", parameters.getRule().getId());
             }
-
-            if (parameters.getRule().getName() != null) {
+            
+            if (parameters.getRule().getName() != null)
+            {
                 ruleValue.put("Name", parameters.getRule().getName());
             }
-
-            if (parameters.getRule().getDescription() != null) {
-                ruleValue.put("Description", parameters.getRule()
-                        .getDescription());
+            
+            if (parameters.getRule().getDescription() != null)
+            {
+                ruleValue.put("Description", parameters.getRule().getDescription());
             }
-
+            
             ruleValue.put("IsEnabled", parameters.getRule().isEnabled());
-
-            if (parameters.getRule().getCondition() != null) {
+            
+            if (parameters.getRule().getCondition() != null)
+            {
                 ObjectNode conditionValue = objectMapper.createObjectNode();
                 ruleValue.put("Condition", conditionValue);
-                conditionValue.put("odata.type", parameters.getRule()
-                        .getCondition().getClass().getName());
-                if (parameters.getRule().getCondition().getClass()
-                        .isInstance(ThresholdRuleCondition.class)) {
-                    ThresholdRuleCondition derived = ((ThresholdRuleCondition) parameters
-                            .getRule().getCondition());
-
-                    if (derived.getDataSource() != null) {
-                        ObjectNode dataSourceValue = objectMapper
-                                .createObjectNode();
+                conditionValue.put("odata.type", parameters.getRule().getCondition().getClass().getName());
+                if (parameters.getRule().getCondition().getClass().isInstance(ThresholdRuleCondition.class))
+                {
+                    ThresholdRuleCondition derived = ((ThresholdRuleCondition) parameters.getRule().getCondition());
+                    
+                    if (derived.getDataSource() != null)
+                    {
+                        ObjectNode dataSourceValue = objectMapper.createObjectNode();
                         conditionValue.put("DataSource", dataSourceValue);
-                        dataSourceValue.put("odata.type", derived
-                                .getDataSource().getClass().getName());
-                        if (derived.getDataSource().getClass()
-                                .isInstance(RuleMetricDataSource.class)) {
-                            RuleMetricDataSource derived2 = ((RuleMetricDataSource) derived
-                                    .getDataSource());
-
-                            if (derived2.getResourceId() != null) {
-                                dataSourceValue.put("ResourceId",
-                                        derived2.getResourceId());
+                        dataSourceValue.put("odata.type", derived.getDataSource().getClass().getName());
+                        if (derived.getDataSource().getClass().isInstance(RuleMetricDataSource.class))
+                        {
+                            RuleMetricDataSource derived2 = ((RuleMetricDataSource) derived.getDataSource());
+                            
+                            if (derived2.getResourceId() != null)
+                            {
+                                dataSourceValue.put("ResourceId", derived2.getResourceId());
                             }
-
-                            if (derived2.getMetricNamespace() != null) {
-                                dataSourceValue.put("MetricNamespace",
-                                        derived2.getMetricNamespace());
+                            
+                            if (derived2.getMetricNamespace() != null)
+                            {
+                                dataSourceValue.put("MetricNamespace", derived2.getMetricNamespace());
                             }
-
-                            if (derived2.getMetricName() != null) {
-                                dataSourceValue.put("MetricName",
-                                        derived2.getMetricName());
+                            
+                            if (derived2.getMetricName() != null)
+                            {
+                                dataSourceValue.put("MetricName", derived2.getMetricName());
                             }
                         }
                     }
-
-                    conditionValue.put("Operator", derived.getOperator()
-                            .toString());
-
+                    
+                    conditionValue.put("Operator", derived.getOperator().toString());
+                    
                     conditionValue.put("Threshold", derived.getThreshold());
-
-                    conditionValue.put("WindowSize", TimeSpan8601Converter
-                            .format(derived.getWindowSize()));
+                    
+                    conditionValue.put("WindowSize", TimeSpan8601Converter.format(derived.getWindowSize()));
                 }
             }
-
-            if (parameters.getRule().getActions() != null) {
+            
+            if (parameters.getRule().getActions() != null)
+            {
                 ArrayNode actionsArray = objectMapper.createArrayNode();
-                for (RuleAction actionsItem : parameters.getRule().getActions()) {
-                    ObjectNode ruleActionValue = objectMapper
-                            .createObjectNode();
+                for (RuleAction actionsItem : parameters.getRule().getActions())
+                {
+                    ObjectNode ruleActionValue = objectMapper.createObjectNode();
                     actionsArray.add(ruleActionValue);
-                    ruleActionValue.put("odata.type", actionsItem.getClass()
-                            .getName());
-                    if (actionsItem.getClass()
-                            .isInstance(RuleEmailAction.class)) {
+                    ruleActionValue.put("odata.type", actionsItem.getClass().getName());
+                    if (actionsItem.getClass().isInstance(RuleEmailAction.class))
+                    {
                         RuleEmailAction derived3 = ((RuleEmailAction) actionsItem);
-
-                        ruleActionValue.put("SendToServiceOwners",
-                                derived3.isSendToServiceOwners());
-
-                        if (derived3.getCustomEmails() != null) {
-                            ArrayNode customEmailsArray = objectMapper
-                                    .createArrayNode();
-                            for (String customEmailsItem : derived3
-                                    .getCustomEmails()) {
+                        
+                        ruleActionValue.put("SendToServiceOwners", derived3.isSendToServiceOwners());
+                        
+                        if (derived3.getCustomEmails() != null)
+                        {
+                            ArrayNode customEmailsArray = objectMapper.createArrayNode();
+                            for (String customEmailsItem : derived3.getCustomEmails())
+                            {
                                 customEmailsArray.add(customEmailsItem);
                             }
-                            ruleActionValue.put("CustomEmails",
-                                    customEmailsArray);
+                            ruleActionValue.put("CustomEmails", customEmailsArray);
                         }
                     }
                 }
                 ruleValue.put("Actions", actionsArray);
             }
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd'T'HH:mmZ");
+            
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            ruleValue.put(
-                    "LastUpdatedTime",
-                    simpleDateFormat.format(parameters.getRule()
-                            .getLastUpdatedTime().getTime()));
+            ruleValue.put("LastUpdatedTime", simpleDateFormat.format(parameters.getRule().getLastUpdatedTime().getTime()));
         }
-
+        
         ObjectMapper objectMapper2 = new ObjectMapper();
         StringWriter stringWriter = new StringWriter();
         objectMapper2.writeValue(stringWriter, requestDoc);
@@ -270,241 +255,245 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>,
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK
-                    && statusCode != HttpStatus.SC_CREATED) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to delete.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param ruleId The id of the rule to delete.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> deleteAsync(final String ruleId) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return delete(ruleId);
-                    }
-                });
+    public Future<OperationResponse> deleteAsync(final String ruleId)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return delete(ruleId);
+            }
+         });
     }
-
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to delete.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    *
+    * @param ruleId The id of the rule to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse delete(String ruleId) throws IOException,
-            ServiceException {
+    public OperationResponse delete(String ruleId) throws IOException, ServiceException
+    {
         // Validate
-        if (ruleId == null) {
+        if (ruleId == null)
+        {
             throw new NullPointerException("ruleId");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ruleId", ruleId);
-            CloudTracing.enter(invocationId, this, "deleteAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/alertrules/" + ruleId;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/alertrules/" + ruleId;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to retrieve.
-     * @return The Get Rule operation response.
-     */
+    *
+    * @param ruleId The id of the rule to retrieve.
+    * @return The Get Rule operation response.
+    */
     @Override
-    public Future<RuleGetResponse> getAsync(final String ruleId) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<RuleGetResponse>() {
-                    @Override
-                    public RuleGetResponse call() throws Exception {
-                        return get(ruleId);
-                    }
-                });
+    public Future<RuleGetResponse> getAsync(final String ruleId)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<RuleGetResponse>() { 
+            @Override
+            public RuleGetResponse call() throws Exception
+            {
+                return get(ruleId);
+            }
+         });
     }
-
+    
     /**
-     * 
-     * @param ruleId
-     *            The id of the rule to retrieve.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The Get Rule operation response.
-     */
+    *
+    * @param ruleId The id of the rule to retrieve.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The Get Rule operation response.
+    */
     @Override
-    public RuleGetResponse get(String ruleId) throws IOException,
-            ServiceException, ParseException {
+    public RuleGetResponse get(String ruleId) throws IOException, ServiceException, ParseException
+    {
         // Validate
-        if (ruleId == null) {
+        if (ruleId == null)
+        {
             throw new NullPointerException("ruleId");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ruleId", ruleId);
-            CloudTracing.enter(invocationId, this, "getAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/alertrules/" + ruleId;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/alertrules/" + ruleId;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             RuleGetResponse result = null;
             // Deserialize Response
@@ -512,265 +501,256 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>,
             result = new RuleGetResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-
-            if (responseDoc != null) {
+            
+            if (responseDoc != null)
+            {
                 Rule ruleInstance = new Rule();
                 result.setRule(ruleInstance);
-
+                
                 JsonNode idValue = responseDoc.get("Id");
-                if (idValue != null) {
+                if (idValue != null)
+                {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     ruleInstance.setId(idInstance);
                 }
-
+                
                 JsonNode nameValue = responseDoc.get("Name");
-                if (nameValue != null) {
+                if (nameValue != null)
+                {
                     String nameInstance;
                     nameInstance = nameValue.getTextValue();
                     ruleInstance.setName(nameInstance);
                 }
-
+                
                 JsonNode descriptionValue = responseDoc.get("Description");
-                if (descriptionValue != null) {
+                if (descriptionValue != null)
+                {
                     String descriptionInstance;
                     descriptionInstance = descriptionValue.getTextValue();
                     ruleInstance.setDescription(descriptionInstance);
                 }
-
+                
                 JsonNode isEnabledValue = responseDoc.get("IsEnabled");
-                if (isEnabledValue != null) {
+                if (isEnabledValue != null)
+                {
                     boolean isEnabledInstance;
                     isEnabledInstance = isEnabledValue.getBooleanValue();
                     ruleInstance.setIsEnabled(isEnabledInstance);
                 }
-
+                
                 JsonNode conditionValue = responseDoc.get("Condition");
-                if (conditionValue != null) {
-                    String typeName = conditionValue.get("odata.type")
-                            .getTextValue();
-                    if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition") {
+                if (conditionValue != null)
+                {
+                    String typeName = conditionValue.get("odata.type").getTextValue();
+                    if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                    {
                         ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-
-                        JsonNode dataSourceValue = conditionValue
-                                .get("DataSource");
-                        if (dataSourceValue != null) {
-                            String typeName2 = dataSourceValue
-                                    .get("odata.type").getTextValue();
-                            if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource") {
+                        
+                        JsonNode dataSourceValue = conditionValue.get("DataSource");
+                        if (dataSourceValue != null)
+                        {
+                            String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                            if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
+                            {
                                 RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-
-                                JsonNode resourceIdValue = dataSourceValue
-                                        .get("ResourceId");
-                                if (resourceIdValue != null) {
+                                
+                                JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                if (resourceIdValue != null)
+                                {
                                     String resourceIdInstance;
-                                    resourceIdInstance = resourceIdValue
-                                            .getTextValue();
-                                    ruleMetricDataSourceInstance
-                                            .setResourceId(resourceIdInstance);
+                                    resourceIdInstance = resourceIdValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
                                 }
-
-                                JsonNode metricNamespaceValue = dataSourceValue
-                                        .get("MetricNamespace");
-                                if (metricNamespaceValue != null) {
+                                
+                                JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                if (metricNamespaceValue != null)
+                                {
                                     String metricNamespaceInstance;
-                                    metricNamespaceInstance = metricNamespaceValue
-                                            .getTextValue();
-                                    ruleMetricDataSourceInstance
-                                            .setMetricNamespace(metricNamespaceInstance);
+                                    metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
                                 }
-
-                                JsonNode metricNameValue = dataSourceValue
-                                        .get("MetricName");
-                                if (metricNameValue != null) {
+                                
+                                JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                if (metricNameValue != null)
+                                {
                                     String metricNameInstance;
-                                    metricNameInstance = metricNameValue
-                                            .getTextValue();
-                                    ruleMetricDataSourceInstance
-                                            .setMetricName(metricNameInstance);
+                                    metricNameInstance = metricNameValue.getTextValue();
+                                    ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
                                 }
-                                thresholdRuleConditionInstance
-                                        .setDataSource(ruleMetricDataSourceInstance);
+                                thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
                             }
                         }
-
+                        
                         JsonNode operatorValue = conditionValue.get("Operator");
-                        if (operatorValue != null) {
+                        if (operatorValue != null)
+                        {
                             ConditionOperator operatorInstance;
-                            operatorInstance = ConditionOperator
-                                    .valueOf(operatorValue.getTextValue());
-                            thresholdRuleConditionInstance
-                                    .setOperator(operatorInstance);
+                            operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                            thresholdRuleConditionInstance.setOperator(operatorInstance);
                         }
-
-                        JsonNode thresholdValue = conditionValue
-                                .get("Threshold");
-                        if (thresholdValue != null) {
+                        
+                        JsonNode thresholdValue = conditionValue.get("Threshold");
+                        if (thresholdValue != null)
+                        {
                             double thresholdInstance;
                             thresholdInstance = thresholdValue.getDoubleValue();
-                            thresholdRuleConditionInstance
-                                    .setThreshold(thresholdInstance);
+                            thresholdRuleConditionInstance.setThreshold(thresholdInstance);
                         }
-
-                        JsonNode windowSizeValue = conditionValue
-                                .get("WindowSize");
-                        if (windowSizeValue != null) {
+                        
+                        JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                        if (windowSizeValue != null)
+                        {
                             Duration windowSizeInstance;
-                            windowSizeInstance = TimeSpan8601Converter
-                                    .parse(windowSizeValue.getTextValue());
-                            thresholdRuleConditionInstance
-                                    .setWindowSize(windowSizeInstance);
+                            windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                            thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
                         }
-                        ruleInstance
-                                .setCondition(thresholdRuleConditionInstance);
+                        ruleInstance.setCondition(thresholdRuleConditionInstance);
                     }
                 }
-
-                ArrayNode actionsArray = ((ArrayNode) responseDoc
-                        .get("Actions"));
-                if (actionsArray != null) {
-                    for (JsonNode actionsValue : actionsArray) {
-                        String typeName3 = actionsValue.get("odata.type")
-                                .getTextValue();
-                        if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction") {
+                
+                ArrayNode actionsArray = ((ArrayNode) responseDoc.get("Actions"));
+                if (actionsArray != null)
+                {
+                    for (JsonNode actionsValue : actionsArray)
+                    {
+                        String typeName3 = actionsValue.get("odata.type").getTextValue();
+                        if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                        {
                             RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
-
-                            JsonNode sendToServiceOwnersValue = actionsValue
-                                    .get("SendToServiceOwners");
-                            if (sendToServiceOwnersValue != null) {
+                            
+                            JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                            if (sendToServiceOwnersValue != null)
+                            {
                                 boolean sendToServiceOwnersInstance;
-                                sendToServiceOwnersInstance = sendToServiceOwnersValue
-                                        .getBooleanValue();
-                                ruleEmailActionInstance
-                                        .setSendToServiceOwners(sendToServiceOwnersInstance);
+                                sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
                             }
-
-                            ArrayNode customEmailsArray = ((ArrayNode) actionsValue
-                                    .get("CustomEmails"));
-                            if (customEmailsArray != null) {
-                                for (JsonNode customEmailsValue : customEmailsArray) {
-                                    ruleEmailActionInstance.getCustomEmails()
-                                            .add(customEmailsValue
-                                                    .getTextValue());
+                            
+                            ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                            if (customEmailsArray != null)
+                            {
+                                for (JsonNode customEmailsValue : customEmailsArray)
+                                {
+                                    ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
                                 }
                             }
-                            ruleInstance.getActions().add(
-                                    ruleEmailActionInstance);
+                            ruleInstance.getActions().add(ruleEmailActionInstance);
                         }
                     }
                 }
-
-                JsonNode lastUpdatedTimeValue = responseDoc
-                        .get("LastUpdatedTime");
-                if (lastUpdatedTimeValue != null) {
+                
+                JsonNode lastUpdatedTimeValue = responseDoc.get("LastUpdatedTime");
+                if (lastUpdatedTimeValue != null)
+                {
                     Calendar lastUpdatedTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                            "EEE MMM dd HH:mm:ss z yyyy");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat
-                            .parse(lastUpdatedTimeValue.getTextValue()));
+                    calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
                     lastUpdatedTimeInstance = calendar;
                     ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
                 }
             }
-
+            
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-
+    
     /**
-     * List the alert rules within a subscription.
-     * 
-     * @return The List Rules operation response.
-     */
+    * List the alert rules within a subscription.
+    *
+    * @return The List Rules operation response.
+    */
     @Override
-    public Future<RuleListResponse> listAsync() {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<RuleListResponse>() {
-                    @Override
-                    public RuleListResponse call() throws Exception {
-                        return list();
-                    }
-                });
+    public Future<RuleListResponse> listAsync()
+    {
+        return this.getClient().getExecutorService().submit(new Callable<RuleListResponse>() { 
+            @Override
+            public RuleListResponse call() throws Exception
+            {
+                return list();
+            }
+         });
     }
-
+    
     /**
-     * List the alert rules within a subscription.
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The List Rules operation response.
-     */
+    * List the alert rules within a subscription.
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The List Rules operation response.
+    */
     @Override
-    public RuleListResponse list() throws IOException, ServiceException,
-            ParseException {
+    public RuleListResponse list() throws IOException, ServiceException, ParseException
+    {
         // Validate
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/alertrules";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/alertrules";
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             RuleListResponse result = null;
             // Deserialize Response
@@ -778,194 +758,180 @@ public class RuleOperationsImpl implements ServiceOperations<AlertsClientImpl>,
             result = new RuleListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-
-            if (responseDoc != null) {
+            
+            if (responseDoc != null)
+            {
                 ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
-                if (valueArray != null) {
-                    for (JsonNode valueValue : valueArray) {
+                if (valueArray != null)
+                {
+                    for (JsonNode valueValue : valueArray)
+                    {
                         Rule ruleInstance = new Rule();
                         result.getValue().add(ruleInstance);
-
+                        
                         JsonNode idValue = valueValue.get("Id");
-                        if (idValue != null) {
+                        if (idValue != null)
+                        {
                             String idInstance;
                             idInstance = idValue.getTextValue();
                             ruleInstance.setId(idInstance);
                         }
-
+                        
                         JsonNode nameValue = valueValue.get("Name");
-                        if (nameValue != null) {
+                        if (nameValue != null)
+                        {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             ruleInstance.setName(nameInstance);
                         }
-
-                        JsonNode descriptionValue = valueValue
-                                .get("Description");
-                        if (descriptionValue != null) {
+                        
+                        JsonNode descriptionValue = valueValue.get("Description");
+                        if (descriptionValue != null)
+                        {
                             String descriptionInstance;
-                            descriptionInstance = descriptionValue
-                                    .getTextValue();
+                            descriptionInstance = descriptionValue.getTextValue();
                             ruleInstance.setDescription(descriptionInstance);
                         }
-
+                        
                         JsonNode isEnabledValue = valueValue.get("IsEnabled");
-                        if (isEnabledValue != null) {
+                        if (isEnabledValue != null)
+                        {
                             boolean isEnabledInstance;
-                            isEnabledInstance = isEnabledValue
-                                    .getBooleanValue();
+                            isEnabledInstance = isEnabledValue.getBooleanValue();
                             ruleInstance.setIsEnabled(isEnabledInstance);
                         }
-
+                        
                         JsonNode conditionValue = valueValue.get("Condition");
-                        if (conditionValue != null) {
-                            String typeName = conditionValue.get("odata.type")
-                                    .getTextValue();
-                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition") {
+                        if (conditionValue != null)
+                        {
+                            String typeName = conditionValue.get("odata.type").getTextValue();
+                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.ThresholdRuleCondition")
+                            {
                                 ThresholdRuleCondition thresholdRuleConditionInstance = new ThresholdRuleCondition();
-
-                                JsonNode dataSourceValue = conditionValue
-                                        .get("DataSource");
-                                if (dataSourceValue != null) {
-                                    String typeName2 = dataSourceValue.get(
-                                            "odata.type").getTextValue();
-                                    if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource") {
+                                
+                                JsonNode dataSourceValue = conditionValue.get("DataSource");
+                                if (dataSourceValue != null)
+                                {
+                                    String typeName2 = dataSourceValue.get("odata.type").getTextValue();
+                                    if (typeName2 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleMetricDataSource")
+                                    {
                                         RuleMetricDataSource ruleMetricDataSourceInstance = new RuleMetricDataSource();
-
-                                        JsonNode resourceIdValue = dataSourceValue
-                                                .get("ResourceId");
-                                        if (resourceIdValue != null) {
+                                        
+                                        JsonNode resourceIdValue = dataSourceValue.get("ResourceId");
+                                        if (resourceIdValue != null)
+                                        {
                                             String resourceIdInstance;
-                                            resourceIdInstance = resourceIdValue
-                                                    .getTextValue();
-                                            ruleMetricDataSourceInstance
-                                                    .setResourceId(resourceIdInstance);
+                                            resourceIdInstance = resourceIdValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setResourceId(resourceIdInstance);
                                         }
-
-                                        JsonNode metricNamespaceValue = dataSourceValue
-                                                .get("MetricNamespace");
-                                        if (metricNamespaceValue != null) {
+                                        
+                                        JsonNode metricNamespaceValue = dataSourceValue.get("MetricNamespace");
+                                        if (metricNamespaceValue != null)
+                                        {
                                             String metricNamespaceInstance;
-                                            metricNamespaceInstance = metricNamespaceValue
-                                                    .getTextValue();
-                                            ruleMetricDataSourceInstance
-                                                    .setMetricNamespace(metricNamespaceInstance);
+                                            metricNamespaceInstance = metricNamespaceValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricNamespace(metricNamespaceInstance);
                                         }
-
-                                        JsonNode metricNameValue = dataSourceValue
-                                                .get("MetricName");
-                                        if (metricNameValue != null) {
+                                        
+                                        JsonNode metricNameValue = dataSourceValue.get("MetricName");
+                                        if (metricNameValue != null)
+                                        {
                                             String metricNameInstance;
-                                            metricNameInstance = metricNameValue
-                                                    .getTextValue();
-                                            ruleMetricDataSourceInstance
-                                                    .setMetricName(metricNameInstance);
+                                            metricNameInstance = metricNameValue.getTextValue();
+                                            ruleMetricDataSourceInstance.setMetricName(metricNameInstance);
                                         }
-                                        thresholdRuleConditionInstance
-                                                .setDataSource(ruleMetricDataSourceInstance);
+                                        thresholdRuleConditionInstance.setDataSource(ruleMetricDataSourceInstance);
                                     }
                                 }
-
-                                JsonNode operatorValue = conditionValue
-                                        .get("Operator");
-                                if (operatorValue != null) {
+                                
+                                JsonNode operatorValue = conditionValue.get("Operator");
+                                if (operatorValue != null)
+                                {
                                     ConditionOperator operatorInstance;
-                                    operatorInstance = ConditionOperator
-                                            .valueOf(operatorValue
-                                                    .getTextValue());
-                                    thresholdRuleConditionInstance
-                                            .setOperator(operatorInstance);
+                                    operatorInstance = ConditionOperator.valueOf(operatorValue.getTextValue());
+                                    thresholdRuleConditionInstance.setOperator(operatorInstance);
                                 }
-
-                                JsonNode thresholdValue = conditionValue
-                                        .get("Threshold");
-                                if (thresholdValue != null) {
+                                
+                                JsonNode thresholdValue = conditionValue.get("Threshold");
+                                if (thresholdValue != null)
+                                {
                                     double thresholdInstance;
-                                    thresholdInstance = thresholdValue
-                                            .getDoubleValue();
-                                    thresholdRuleConditionInstance
-                                            .setThreshold(thresholdInstance);
+                                    thresholdInstance = thresholdValue.getDoubleValue();
+                                    thresholdRuleConditionInstance.setThreshold(thresholdInstance);
                                 }
-
-                                JsonNode windowSizeValue = conditionValue
-                                        .get("WindowSize");
-                                if (windowSizeValue != null) {
+                                
+                                JsonNode windowSizeValue = conditionValue.get("WindowSize");
+                                if (windowSizeValue != null)
+                                {
                                     Duration windowSizeInstance;
-                                    windowSizeInstance = TimeSpan8601Converter
-                                            .parse(windowSizeValue
-                                                    .getTextValue());
-                                    thresholdRuleConditionInstance
-                                            .setWindowSize(windowSizeInstance);
+                                    windowSizeInstance = TimeSpan8601Converter.parse(windowSizeValue.getTextValue());
+                                    thresholdRuleConditionInstance.setWindowSize(windowSizeInstance);
                                 }
-                                ruleInstance
-                                        .setCondition(thresholdRuleConditionInstance);
+                                ruleInstance.setCondition(thresholdRuleConditionInstance);
                             }
                         }
-
-                        ArrayNode actionsArray = ((ArrayNode) valueValue
-                                .get("Actions"));
-                        if (actionsArray != null) {
-                            for (JsonNode actionsValue : actionsArray) {
-                                String typeName3 = actionsValue.get(
-                                        "odata.type").getTextValue();
-                                if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction") {
+                        
+                        ArrayNode actionsArray = ((ArrayNode) valueValue.get("Actions"));
+                        if (actionsArray != null)
+                        {
+                            for (JsonNode actionsValue : actionsArray)
+                            {
+                                String typeName3 = actionsValue.get("odata.type").getTextValue();
+                                if (typeName3 == "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.RuleEmailAction")
+                                {
                                     RuleEmailAction ruleEmailActionInstance = new RuleEmailAction();
-
-                                    JsonNode sendToServiceOwnersValue = actionsValue
-                                            .get("SendToServiceOwners");
-                                    if (sendToServiceOwnersValue != null) {
+                                    
+                                    JsonNode sendToServiceOwnersValue = actionsValue.get("SendToServiceOwners");
+                                    if (sendToServiceOwnersValue != null)
+                                    {
                                         boolean sendToServiceOwnersInstance;
-                                        sendToServiceOwnersInstance = sendToServiceOwnersValue
-                                                .getBooleanValue();
-                                        ruleEmailActionInstance
-                                                .setSendToServiceOwners(sendToServiceOwnersInstance);
+                                        sendToServiceOwnersInstance = sendToServiceOwnersValue.getBooleanValue();
+                                        ruleEmailActionInstance.setSendToServiceOwners(sendToServiceOwnersInstance);
                                     }
-
-                                    ArrayNode customEmailsArray = ((ArrayNode) actionsValue
-                                            .get("CustomEmails"));
-                                    if (customEmailsArray != null) {
-                                        for (JsonNode customEmailsValue : customEmailsArray) {
-                                            ruleEmailActionInstance
-                                                    .getCustomEmails()
-                                                    .add(customEmailsValue
-                                                            .getTextValue());
+                                    
+                                    ArrayNode customEmailsArray = ((ArrayNode) actionsValue.get("CustomEmails"));
+                                    if (customEmailsArray != null)
+                                    {
+                                        for (JsonNode customEmailsValue : customEmailsArray)
+                                        {
+                                            ruleEmailActionInstance.getCustomEmails().add(customEmailsValue.getTextValue());
                                         }
                                     }
-                                    ruleInstance.getActions().add(
-                                            ruleEmailActionInstance);
+                                    ruleInstance.getActions().add(ruleEmailActionInstance);
                                 }
                             }
                         }
-
-                        JsonNode lastUpdatedTimeValue = valueValue
-                                .get("LastUpdatedTime");
-                        if (lastUpdatedTimeValue != null) {
+                        
+                        JsonNode lastUpdatedTimeValue = valueValue.get("LastUpdatedTime");
+                        if (lastUpdatedTimeValue != null)
+                        {
                             Calendar lastUpdatedTimeInstance;
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-                                    "EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(simpleDateFormat
-                                    .parse(lastUpdatedTimeValue.getTextValue()));
+                            calendar.setTime(simpleDateFormat.parse(lastUpdatedTimeValue.getTextValue()));
                             lastUpdatedTimeInstance = calendar;
-                            ruleInstance
-                                    .setLastUpdatedTime(lastUpdatedTimeInstance);
+                            ruleInstance.setLastUpdatedTime(lastUpdatedTimeInstance);
                         }
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

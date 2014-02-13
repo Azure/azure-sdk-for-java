@@ -28,7 +28,8 @@ package com.microsoft.windowsazure.management.compute.models;
 * machine will be joined. This element is only used with the
 * WindowsProvisioningConfiguration set.
 */
-public class DomainJoinSettings {
+public class DomainJoinSettings
+{
     private DomainJoinCredentials credentials;
     
     /**
@@ -36,7 +37,8 @@ public class DomainJoinSettings {
     * domain.
     * @return The Credentials value.
     */
-    public DomainJoinCredentials getCredentials() {
+    public DomainJoinCredentials getCredentials()
+    {
         return this.credentials;
     }
     
@@ -45,7 +47,8 @@ public class DomainJoinSettings {
     * domain.
     * @param credentialsValue The Credentials value.
     */
-    public void setCredentials(final DomainJoinCredentials credentialsValue) {
+    public void setCredentials(final DomainJoinCredentials credentialsValue)
+    {
         this.credentials = credentialsValue;
     }
     
@@ -55,7 +58,8 @@ public class DomainJoinSettings {
     * Optional. Specifies the domain to join.
     * @return The DomainToJoin value.
     */
-    public String getDomainToJoin() {
+    public String getDomainToJoin()
+    {
         return this.domainToJoin;
     }
     
@@ -63,7 +67,8 @@ public class DomainJoinSettings {
     * Optional. Specifies the domain to join.
     * @param domainToJoinValue The DomainToJoin value.
     */
-    public void setDomainToJoin(final String domainToJoinValue) {
+    public void setDomainToJoin(final String domainToJoinValue)
+    {
         this.domainToJoin = domainToJoinValue;
     }
     
@@ -77,7 +82,8 @@ public class DomainJoinSettings {
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
     * @return The LdapMachineObjectOU value.
     */
-    public String getLdapMachineObjectOU() {
+    public String getLdapMachineObjectOU()
+    {
         return this.ldapMachineObjectOU;
     }
     
@@ -89,7 +95,8 @@ public class DomainJoinSettings {
     * Example: OU=MyOu,OU=MyParentOu,DC=example.com,DC=MyCompany,DC=com
     * @param ldapMachineObjectOUValue The LdapMachineObjectOU value.
     */
-    public void setLdapMachineObjectOU(final String ldapMachineObjectOUValue) {
+    public void setLdapMachineObjectOU(final String ldapMachineObjectOUValue)
+    {
         this.ldapMachineObjectOU = ldapMachineObjectOUValue;
     }
     
@@ -99,7 +106,8 @@ public class DomainJoinSettings {
     * Additional information for domain join provisioning.
     * @return The Provisioning value.
     */
-    public DomainJoinProvisioning getProvisioning() {
+    public DomainJoinProvisioning getProvisioning()
+    {
         return this.provisioning;
     }
     
@@ -107,7 +115,8 @@ public class DomainJoinSettings {
     * Additional information for domain join provisioning.
     * @param provisioningValue The Provisioning value.
     */
-    public void setProvisioning(final DomainJoinProvisioning provisioningValue) {
+    public void setProvisioning(final DomainJoinProvisioning provisioningValue)
+    {
         this.provisioning = provisioningValue;
     }
 }

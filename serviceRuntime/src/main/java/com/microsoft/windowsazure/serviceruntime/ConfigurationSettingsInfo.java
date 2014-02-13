@@ -52,7 +52,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ConfigurationSettingsInfo", propOrder = { "configurationSetting" })
-class ConfigurationSettingsInfo {
+class ConfigurationSettingsInfo
+{
 
     @XmlElement(name = "ConfigurationSetting")
     protected List<ConfigurationSettingInfo> configurationSetting;
@@ -80,8 +81,10 @@ class ConfigurationSettingsInfo {
      * 
      * 
      */
-    public List<ConfigurationSettingInfo> getConfigurationSetting() {
-        if (configurationSetting == null) {
+    public List<ConfigurationSettingInfo> getConfigurationSetting()
+    {
+        if (configurationSetting == null)
+        {
             configurationSetting = new ArrayList<ConfigurationSettingInfo>();
         }
         return this.configurationSetting;

@@ -24,75 +24,67 @@
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
 /**
- * The number of instances that can be used in the scaling action.
- */
-public class ScaleCapacity {
+* The number of instances that can be used in the scaling action.
+*/
+public class ScaleCapacity
+{
     private String defaultValue;
-
+    
     /**
-     * The default number of instances that are available for the scaling
-     * action.
-     * 
-     * @return The Default value.
-     */
-    public String getDefault() {
+    * The default number of instances that are available for the scaling action.
+    * @return The Default value.
+    */
+    public String getDefault()
+    {
         return this.defaultValue;
     }
-
+    
     /**
-     * The default number of instances that are available for the scaling
-     * action.
-     * 
-     * @param defaultValue
-     *            The Default value.
-     */
-    public void setDefault(final String defaultValue) {
+    * The default number of instances that are available for the scaling action.
+    * @param defaultValue The Default value.
+    */
+    public void setDefault(final String defaultValue)
+    {
         this.defaultValue = defaultValue;
     }
-
+    
     private String maximum;
-
+    
     /**
-     * The maximum number of instances that are available for the scaling
-     * action.
-     * 
-     * @return The Maximum value.
-     */
-    public String getMaximum() {
+    * The maximum number of instances that are available for the scaling action.
+    * @return The Maximum value.
+    */
+    public String getMaximum()
+    {
         return this.maximum;
     }
-
+    
     /**
-     * The maximum number of instances that are available for the scaling
-     * action.
-     * 
-     * @param maximumValue
-     *            The Maximum value.
-     */
-    public void setMaximum(final String maximumValue) {
+    * The maximum number of instances that are available for the scaling action.
+    * @param maximumValue The Maximum value.
+    */
+    public void setMaximum(final String maximumValue)
+    {
         this.maximum = maximumValue;
     }
-
+    
     private String minimum;
-
+    
     /**
-     * The minimum number of instances that are available for the scaling
-     * action.
-     * 
-     * @return The Minimum value.
-     */
-    public String getMinimum() {
+    * The minimum number of instances that are available for the scaling action.
+    * @return The Minimum value.
+    */
+    public String getMinimum()
+    {
         return this.minimum;
     }
-
+    
     /**
-     * The minimum number of instances that are available for the scaling
-     * action.
-     * 
-     * @param minimumValue
-     *            The Minimum value.
-     */
-    public void setMinimum(final String minimumValue) {
+    * The minimum number of instances that are available for the scaling action.
+    * @param minimumValue The Minimum value.
+    */
+    public void setMinimum(final String minimumValue)
+    {
         this.minimum = minimumValue;
     }
 }

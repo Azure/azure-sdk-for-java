@@ -35,7 +35,8 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public interface NetworkOperations {
+public interface NetworkOperations
+{
     /**
     * The Set Network Configuration operation asynchronously configures the
     * virtual network  (see

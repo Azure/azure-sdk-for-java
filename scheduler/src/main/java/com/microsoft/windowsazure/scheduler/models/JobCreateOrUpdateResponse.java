@@ -26,22 +26,25 @@ package com.microsoft.windowsazure.scheduler.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Update Job operation response.
- */
-public class JobCreateOrUpdateResponse extends OperationResponse {
+* The Update Job operation response.
+*/
+public class JobCreateOrUpdateResponse extends OperationResponse
+{
     private Job job;
-
+    
     /**
-     * The updated job.
-     */
-    public Job getJob() {
+    * The updated job.
+    */
+    public Job getJob()
+    {
         return this.job;
     }
-
+    
     /**
-     * The updated job.
-     */
-    public void setJob(Job job) {
+    * The updated job.
+    */
+    public void setJob(Job job)
+    {
         this.job = job;
     }
 }

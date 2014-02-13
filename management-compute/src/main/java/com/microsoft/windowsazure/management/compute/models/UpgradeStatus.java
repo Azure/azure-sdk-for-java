@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Contains upgrade details of the deployment.
 */
-public class UpgradeStatus {
+public class UpgradeStatus
+{
     private int currentUpgradeDomain;
     
     /**
@@ -35,7 +36,8 @@ public class UpgradeStatus {
     * has an ID of 0, the second has an ID of 1, and so on.
     * @return The CurrentUpgradeDomain value.
     */
-    public int getCurrentUpgradeDomain() {
+    public int getCurrentUpgradeDomain()
+    {
         return this.currentUpgradeDomain;
     }
     
@@ -45,7 +47,8 @@ public class UpgradeStatus {
     * has an ID of 0, the second has an ID of 1, and so on.
     * @param currentUpgradeDomainValue The CurrentUpgradeDomain value.
     */
-    public void setCurrentUpgradeDomain(final int currentUpgradeDomainValue) {
+    public void setCurrentUpgradeDomain(final int currentUpgradeDomainValue)
+    {
         this.currentUpgradeDomain = currentUpgradeDomainValue;
     }
     
@@ -55,7 +58,8 @@ public class UpgradeStatus {
     * The current state of the upgrade. Possible values are Before and During
     * @return The CurrentUpgradeDomainState value.
     */
-    public UpgradeDomainState getCurrentUpgradeDomainState() {
+    public UpgradeDomainState getCurrentUpgradeDomainState()
+    {
         return this.currentUpgradeDomainState;
     }
     
@@ -63,7 +67,8 @@ public class UpgradeStatus {
     * The current state of the upgrade. Possible values are Before and During
     * @param currentUpgradeDomainStateValue The CurrentUpgradeDomainState value.
     */
-    public void setCurrentUpgradeDomainState(final UpgradeDomainState currentUpgradeDomainStateValue) {
+    public void setCurrentUpgradeDomainState(final UpgradeDomainState currentUpgradeDomainStateValue)
+    {
         this.currentUpgradeDomainState = currentUpgradeDomainStateValue;
     }
     
@@ -73,7 +78,8 @@ public class UpgradeStatus {
     * The type of the upgrade. Possible values are Auto and Manual.
     * @return The UpgradeType value.
     */
-    public DeploymentUpgradeType getUpgradeType() {
+    public DeploymentUpgradeType getUpgradeType()
+    {
         return this.upgradeType;
     }
     
@@ -81,7 +87,8 @@ public class UpgradeStatus {
     * The type of the upgrade. Possible values are Auto and Manual.
     * @param upgradeTypeValue The UpgradeType value.
     */
-    public void setUpgradeType(final DeploymentUpgradeType upgradeTypeValue) {
+    public void setUpgradeType(final DeploymentUpgradeType upgradeTypeValue)
+    {
         this.upgradeType = upgradeTypeValue;
     }
 }

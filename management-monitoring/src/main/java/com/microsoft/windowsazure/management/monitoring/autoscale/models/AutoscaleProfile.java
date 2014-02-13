@@ -26,125 +26,122 @@ package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 import java.util.ArrayList;
 
 /**
- * Autoscale profile.
- */
-public class AutoscaleProfile {
+* Autoscale profile.
+*/
+public class AutoscaleProfile
+{
     private ScaleCapacity capacity;
-
+    
     /**
-     * The number of instances that can be used in the scaling action.
-     * 
-     * @return The Capacity value.
-     */
-    public ScaleCapacity getCapacity() {
+    * The number of instances that can be used in the scaling action.
+    * @return The Capacity value.
+    */
+    public ScaleCapacity getCapacity()
+    {
         return this.capacity;
     }
-
+    
     /**
-     * The number of instances that can be used in the scaling action.
-     * 
-     * @param capacityValue
-     *            The Capacity value.
-     */
-    public void setCapacity(final ScaleCapacity capacityValue) {
+    * The number of instances that can be used in the scaling action.
+    * @param capacityValue The Capacity value.
+    */
+    public void setCapacity(final ScaleCapacity capacityValue)
+    {
         this.capacity = capacityValue;
     }
-
+    
     private TimeWindow fixedDate;
-
+    
     /**
-     * A specific date for the scaling action. This element is not used if the
-     * Recurrence element is used.
-     * 
-     * @return The FixedDate value.
-     */
-    public TimeWindow getFixedDate() {
+    * A specific date for the scaling action. This element is not used if the
+    * Recurrence element is used.
+    * @return The FixedDate value.
+    */
+    public TimeWindow getFixedDate()
+    {
         return this.fixedDate;
     }
-
+    
     /**
-     * A specific date for the scaling action. This element is not used if the
-     * Recurrence element is used.
-     * 
-     * @param fixedDateValue
-     *            The FixedDate value.
-     */
-    public void setFixedDate(final TimeWindow fixedDateValue) {
+    * A specific date for the scaling action. This element is not used if the
+    * Recurrence element is used.
+    * @param fixedDateValue The FixedDate value.
+    */
+    public void setFixedDate(final TimeWindow fixedDateValue)
+    {
         this.fixedDate = fixedDateValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * The name of the profile.
-     * 
-     * @return The Name value.
-     */
-    public String getName() {
+    * The name of the profile.
+    * @return The Name value.
+    */
+    public String getName()
+    {
         return this.name;
     }
-
+    
     /**
-     * The name of the profile.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
-    public void setName(final String nameValue) {
+    * The name of the profile.
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
-
+    
     private Recurrence recurrence;
-
+    
     /**
-     * The frequency and schedule for the scaling action. This element is not
-     * used if the FixedDate element is used.
-     * 
-     * @return The Recurrence value.
-     */
-    public Recurrence getRecurrence() {
+    * The frequency and schedule for the scaling action. This element is not
+    * used if the FixedDate element is used.
+    * @return The Recurrence value.
+    */
+    public Recurrence getRecurrence()
+    {
         return this.recurrence;
     }
-
+    
     /**
-     * The frequency and schedule for the scaling action. This element is not
-     * used if the FixedDate element is used.
-     * 
-     * @param recurrenceValue
-     *            The Recurrence value.
-     */
-    public void setRecurrence(final Recurrence recurrenceValue) {
+    * The frequency and schedule for the scaling action. This element is not
+    * used if the FixedDate element is used.
+    * @param recurrenceValue The Recurrence value.
+    */
+    public void setRecurrence(final Recurrence recurrenceValue)
+    {
         this.recurrence = recurrenceValue;
     }
-
+    
     private ArrayList<ScaleRule> rules;
-
+    
     /**
-     * A collection of rules that provide the triggers and parameters for the
-     * scaling action.
-     * 
-     * @return The Rules value.
-     */
-    public ArrayList<ScaleRule> getRules() {
+    * A collection of rules that provide the triggers and parameters for the
+    * scaling action.
+    * @return The Rules value.
+    */
+    public ArrayList<ScaleRule> getRules()
+    {
         return this.rules;
     }
-
+    
     /**
-     * A collection of rules that provide the triggers and parameters for the
-     * scaling action.
-     * 
-     * @param rulesValue
-     *            The Rules value.
-     */
-    public void setRules(final ArrayList<ScaleRule> rulesValue) {
+    * A collection of rules that provide the triggers and parameters for the
+    * scaling action.
+    * @param rulesValue The Rules value.
+    */
+    public void setRules(final ArrayList<ScaleRule> rulesValue)
+    {
         this.rules = rulesValue;
     }
-
+    
     /**
-     * Initializes a new instance of the AutoscaleProfile class.
-     * 
-     */
-    public AutoscaleProfile() {
+    * Initializes a new instance of the AutoscaleProfile class.
+    *
+    */
+    public AutoscaleProfile()
+    {
         this.rules = new ArrayList<ScaleRule>();
     }
 }

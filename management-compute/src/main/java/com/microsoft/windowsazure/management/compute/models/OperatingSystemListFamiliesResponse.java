@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The List Operating System Families operation response.
 */
-public class OperatingSystemListFamiliesResponse extends OperationResponse implements Iterable<OperatingSystemListFamiliesResponse.OperatingSystemFamily> {
+public class OperatingSystemListFamiliesResponse extends OperationResponse implements Iterable<OperatingSystemListFamiliesResponse.OperatingSystemFamily>
+{
     private ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamilies;
     
     /**
     * The operating system families that are valid for your subscription.
     * @return The OperatingSystemFamilies value.
     */
-    public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> getOperatingSystemFamilies() {
+    public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> getOperatingSystemFamilies()
+    {
         return this.operatingSystemFamilies;
     }
     
@@ -45,7 +47,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     * The operating system families that are valid for your subscription.
     * @param operatingSystemFamiliesValue The OperatingSystemFamilies value.
     */
-    public void setOperatingSystemFamilies(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamiliesValue) {
+    public void setOperatingSystemFamilies(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamiliesValue)
+    {
         this.operatingSystemFamilies = operatingSystemFamiliesValue;
     }
     
@@ -54,7 +57,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     * class.
     *
     */
-    public OperatingSystemListFamiliesResponse() {
+    public OperatingSystemListFamiliesResponse()
+    {
         super();
         this.operatingSystemFamilies = new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily>();
     }
@@ -63,14 +67,16 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     * Gets the sequence of OperatingSystemFamilies.
     *
     */
-    public Iterator<OperatingSystemListFamiliesResponse.OperatingSystemFamily> iterator() {
+    public Iterator<OperatingSystemListFamiliesResponse.OperatingSystemFamily> iterator()
+    {
         return this.getOperatingSystemFamilies().iterator();
     }
     
     /**
     * An operating system that is valid for your subscription.
     */
-    public static class OperatingSystem {
+    public static class OperatingSystem
+    {
         private boolean isActive;
         
         /**
@@ -89,7 +95,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * use auto-upgrade to manage operating system upgrades.
         * @return The IsActive value.
         */
-        public boolean isActive() {
+        public boolean isActive()
+        {
             return this.isActive;
         }
         
@@ -109,7 +116,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * use auto-upgrade to manage operating system upgrades.
         * @param isActiveValue The IsActive value.
         */
-        public void setIsActive(final boolean isActiveValue) {
+        public void setIsActive(final boolean isActiveValue)
+        {
             this.isActive = isActiveValue;
         }
         
@@ -125,7 +133,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * IsDefault is set to false.
         * @return The IsDefault value.
         */
-        public boolean isDefault() {
+        public boolean isDefault()
+        {
             return this.isDefault;
         }
         
@@ -139,7 +148,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * IsDefault is set to false.
         * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(final boolean isDefaultValue) {
+        public void setIsDefault(final boolean isDefaultValue)
+        {
             this.isDefault = isDefaultValue;
         }
         
@@ -149,7 +159,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * The label of the operating system version.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -157,7 +168,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * The label of the operating system version.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -171,7 +183,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * details.
         * @return The Version value.
         */
-        public String getVersion() {
+        public String getVersion()
+        {
             return this.version;
         }
         
@@ -183,7 +196,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * details.
         * @param versionValue The Version value.
         */
-        public void setVersion(final String versionValue) {
+        public void setVersion(final String versionValue)
+        {
             this.version = versionValue;
         }
     }
@@ -191,14 +205,16 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     /**
     * An operating system family that is valid for your subscription.
     */
-    public static class OperatingSystemFamily {
+    public static class OperatingSystemFamily
+    {
         private String label;
         
         /**
         * The label of the operating system family.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -206,7 +222,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * The label of the operating system family.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -220,7 +237,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * that is substantially compatible with Windows Server 2008 R2.
         * @return The Name value.
         */
-        public int getName() {
+        public int getName()
+        {
             return this.name;
         }
         
@@ -232,7 +250,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * that is substantially compatible with Windows Server 2008 R2.
         * @param nameValue The Name value.
         */
-        public void setName(final int nameValue) {
+        public void setName(final int nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -243,7 +262,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * this family.
         * @return The OperatingSystems value.
         */
-        public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> getOperatingSystems() {
+        public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> getOperatingSystems()
+        {
             return this.operatingSystems;
         }
         
@@ -252,7 +272,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * this family.
         * @param operatingSystemsValue The OperatingSystems value.
         */
-        public void setOperatingSystems(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystemsValue) {
+        public void setOperatingSystems(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystemsValue)
+        {
             this.operatingSystems = operatingSystemsValue;
         }
         
@@ -260,7 +281,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         * Initializes a new instance of the OperatingSystemFamily class.
         *
         */
-        public OperatingSystemFamily() {
+        public OperatingSystemFamily()
+        {
             this.operatingSystems = new ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem>();
         }
     }

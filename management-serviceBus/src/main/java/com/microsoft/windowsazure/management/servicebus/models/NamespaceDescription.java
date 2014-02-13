@@ -28,14 +28,16 @@ import java.util.ArrayList;
 /**
 * A response to a request for a particular namespace.
 */
-public class NamespaceDescription {
+public class NamespaceDescription
+{
     private String authorizationType;
     
     /**
     * The authorization type.
     * @return The AuthorizationType value.
     */
-    public String getAuthorizationType() {
+    public String getAuthorizationType()
+    {
         return this.authorizationType;
     }
     
@@ -43,7 +45,8 @@ public class NamespaceDescription {
     * The authorization type.
     * @param authorizationTypeValue The AuthorizationType value.
     */
-    public void setAuthorizationType(final String authorizationTypeValue) {
+    public void setAuthorizationType(final String authorizationTypeValue)
+    {
         this.authorizationType = authorizationTypeValue;
     }
     
@@ -55,7 +58,8 @@ public class NamespaceDescription {
     * more information)
     * @return The ConnectionString value.
     */
-    public String getConnectionString() {
+    public String getConnectionString()
+    {
         return this.connectionString;
     }
     
@@ -65,7 +69,8 @@ public class NamespaceDescription {
     * more information)
     * @param connectionStringValue The ConnectionString value.
     */
-    public void setConnectionString(final String connectionStringValue) {
+    public void setConnectionString(final String connectionStringValue)
+    {
         this.connectionString = connectionStringValue;
     }
     
@@ -77,7 +82,8 @@ public class NamespaceDescription {
     * more information)
     * @return The KeyName value.
     */
-    public String getKeyName() {
+    public String getKeyName()
+    {
         return this.keyName;
     }
     
@@ -87,7 +93,8 @@ public class NamespaceDescription {
     * more information)
     * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(final String keyNameValue) {
+    public void setKeyName(final String keyNameValue)
+    {
         this.keyName = keyNameValue;
     }
     
@@ -97,7 +104,8 @@ public class NamespaceDescription {
     * The rights associated with a namespace.
     * @return The Rights value.
     */
-    public ArrayList<AccessRight> getRights() {
+    public ArrayList<AccessRight> getRights()
+    {
         return this.rights;
     }
     
@@ -105,7 +113,8 @@ public class NamespaceDescription {
     * The rights associated with a namespace.
     * @param rightsValue The Rights value.
     */
-    public void setRights(final ArrayList<AccessRight> rightsValue) {
+    public void setRights(final ArrayList<AccessRight> rightsValue)
+    {
         this.rights = rightsValue;
     }
     
@@ -115,7 +124,8 @@ public class NamespaceDescription {
     * Secondary namespace connection string.
     * @return The SecondaryConnectionString value.
     */
-    public String getSecondaryConnectionString() {
+    public String getSecondaryConnectionString()
+    {
         return this.secondaryConnectionString;
     }
     
@@ -123,7 +133,8 @@ public class NamespaceDescription {
     * Secondary namespace connection string.
     * @param secondaryConnectionStringValue The SecondaryConnectionString value.
     */
-    public void setSecondaryConnectionString(final String secondaryConnectionStringValue) {
+    public void setSecondaryConnectionString(final String secondaryConnectionStringValue)
+    {
         this.secondaryConnectionString = secondaryConnectionStringValue;
     }
     
@@ -131,7 +142,8 @@ public class NamespaceDescription {
     * Initializes a new instance of the NamespaceDescription class.
     *
     */
-    public NamespaceDescription() {
+    public NamespaceDescription()
+    {
         this.rights = new ArrayList<AccessRight>();
     }
 }

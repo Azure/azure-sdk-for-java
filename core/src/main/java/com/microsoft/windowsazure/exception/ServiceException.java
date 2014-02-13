@@ -35,9 +35,10 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Exception indicates an error while executing a service operation.
- */
-public class ServiceException extends Exception {
+* The Service Exception indicates an error while executing a service operation.
+*/
+public class ServiceException extends Exception
+{
 
     private static final long serialVersionUID = -4942076377009150131L;
 
@@ -50,37 +51,44 @@ public class ServiceException extends Exception {
     private Map<String, String> errorValues;
     private String rawResponseBody;
 
-    public ServiceException() {
+    public ServiceException()
+    {
         super();
 
         init();
     }
 
-    public ServiceException(final String message) {
+    public ServiceException(final String message)
+    {
         super(message);
         init();
     }
 
-    public ServiceException(final String message, final Throwable cause) {
+    public ServiceException(final String message, final Throwable cause)
+    {
         super(message, cause);
         init();
     }
 
-    public ServiceException(final Throwable cause) {
+    public ServiceException(final Throwable cause)
+    {
         super(cause);
         init();
     }
 
-    private void init() {
+    private void init()
+    {
         errorValues = new HashMap<String, String>();
     }
 
     @Override
-    public String getMessage() {
+    public String getMessage()
+    {
         final StringBuffer buffer = new StringBuffer(50);
         buffer.append(super.getMessage());
 
-        if (this.rawResponseBody != null) {
+        if (this.rawResponseBody != null)
+        {
             buffer.append("\nResponse Body: ");
             buffer.append(this.rawResponseBody);
         }
@@ -88,91 +96,112 @@ public class ServiceException extends Exception {
         return buffer.toString();
     }
 
-    public int getHttpStatusCode() {
+    public int getHttpStatusCode()
+    {
         return httpStatusCode;
     }
 
-    public void setHttpStatusCode(final int httpStatusCode) {
+    public void setHttpStatusCode(final int httpStatusCode)
+    {
         this.httpStatusCode = httpStatusCode;
     }
 
-    public String getHttpReasonPhrase() {
+    public String getHttpReasonPhrase()
+    {
         return httpReasonPhrase;
     }
 
-    public void setHttpReasonPhrase(final String httpReasonPhrase) {
+    public void setHttpReasonPhrase(final String httpReasonPhrase)
+    {
         this.httpReasonPhrase = httpReasonPhrase;
     }
 
-    public String getErrorCode() {
+    public String getErrorCode()
+    {
         return errorCode;
     }
 
-    public void setErrorCode(final String errorCode) {
+    public void setErrorCode(final String errorCode)
+    {
         this.errorCode = errorCode;
     }
 
-    public String getErrorMessage() {
+    public String getErrorMessage()
+    {
         return errorMessage;
     }
 
-    public void setErrorMessage(final String errorMessage) {
+    public void setErrorMessage(final String errorMessage)
+    {
         this.errorMessage = errorMessage;
     }
 
-    public Map<String, String> getErrorValues() {
+    public Map<String, String> getErrorValues()
+    {
         return errorValues;
     }
 
-    public void setErrorValues(final Map<String, String> errorValues) {
+    public void setErrorValues(final Map<String, String> errorValues)
+    {
         this.errorValues = errorValues;
     }
 
-    public String getErrorValue(final String name) {
+    public String getErrorValue(final String name)
+    {
         return errorValues.get(name);
     }
 
-    public void setErrorValue(final String name, final String value) {
+    public void setErrorValue(final String name, final String value)
+    {
         this.errorValues.put(name, value);
     }
 
-    public String getServiceName() {
+    public String getServiceName()
+    {
         return serviceName;
     }
 
-    public void setServiceName(final String serviceName) {
+    public void setServiceName(final String serviceName)
+    {
         this.serviceName = serviceName;
     }
 
-    public void setRawResponseBody(final String body) {
+    public void setRawResponseBody(final String body)
+    {
         this.rawResponseBody = body;
     }
 
-    public String getRawResponseBody() {
+    public String getRawResponseBody()
+    {
         return rawResponseBody;
     }
 
     public static ServiceException create(final HttpRequest httpRequest,
             final String requestContent, final HttpResponse httpResponse,
-            final HttpEntity entity, final String defaultTo) {
+            final HttpEntity entity, final String defaultTo)
+    {
         ServiceException serviceException;
 
         if (httpResponse.getEntity().getContentType().getValue()
                 .equals("application/json")
                 || httpResponse.getEntity().getContentType().getValue()
-                        .equals("text/json")) {
+                        .equals("text/json"))
+        {
             serviceException = createFromJson(httpRequest, requestContent,
                     httpResponse, entity);
         } else if (httpResponse.getEntity().getContentType().getValue()
                 .equals("application/xml")
                 || httpResponse.getEntity().getContentType().getValue()
-                        .equals("text/xml")) {
+                        .equals("text/xml"))
+        {
             serviceException = createFromXml(httpRequest, requestContent,
                     httpResponse, entity);
-        } else if ("Json".equals(defaultTo)) {
+        } else if ("Json".equals(defaultTo))
+        {
             serviceException = createFromJson(httpRequest, requestContent,
                     httpResponse, entity);
-        } else {
+        } else
+        {
             serviceException = createFromXml(httpRequest, requestContent,
                     httpResponse, entity);
         }
@@ -182,17 +211,21 @@ public class ServiceException extends Exception {
 
     public static ServiceException createFromXml(final HttpRequest httpRequest,
             final String requestContent, final HttpResponse httpResponse,
-            final HttpEntity entity) {
+            final HttpEntity entity)
+    {
         String content;
-        try {
+        try
+        {
             content = EntityUtils.toString(entity);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return new ServiceException(e);
         }
 
         ServiceException serviceException;
 
-        try {
+        try
+        {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
                     .newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory
@@ -211,13 +244,17 @@ public class ServiceException extends Exception {
                     message, content, httpResponse));
             serviceException.setErrorCode(code);
             serviceException.setErrorMessage(message);
-        } catch (XPathExpressionException e) {
+        } catch (XPathExpressionException e)
+        {
             return new ServiceException(content);
-        } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e)
+        {
             return new ServiceException(content);
-        } catch (SAXException e) {
+        } catch (SAXException e)
+        {
             return new ServiceException(content);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return new ServiceException(content);
         }
 
@@ -230,7 +267,8 @@ public class ServiceException extends Exception {
     }
 
     private static String buildExceptionMessage(String code, String message,
-            String responseContent, HttpResponse httpResponse) {
+            String responseContent, HttpResponse httpResponse)
+    {
         return (code != null && message != null) ? code + ": " + message
                 : (message != null) ? message
                         : (code != null) ? code
@@ -250,17 +288,21 @@ public class ServiceException extends Exception {
     }
 
     public static ServiceException createFromJson(HttpRequest httpRequest,
-            String requestContent, HttpResponse httpResponse, HttpEntity entity) {
+            String requestContent, HttpResponse httpResponse, HttpEntity entity)
+    {
         String content;
-        try {
+        try
+        {
             content = EntityUtils.toString(entity);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return new ServiceException(e);
         }
 
         ServiceException serviceException;
 
-        try {
+        try
+        {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(content);
 
@@ -271,7 +313,8 @@ public class ServiceException extends Exception {
                     message, content, httpResponse));
             serviceException.setErrorCode(code);
             serviceException.setErrorMessage(message);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             return new ServiceException();
         }
 

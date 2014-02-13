@@ -59,7 +59,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "AcquireLeaseInfo", propOrder = {
 
 })
-class AcquireLeaseInfo {
+class AcquireLeaseInfo
+{
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
@@ -79,7 +80,8 @@ class AcquireLeaseInfo {
      * @return possible object is {@link BigInteger }
      * 
      */
-    public BigInteger getIncarnation() {
+    public BigInteger getIncarnation()
+    {
         return incarnation;
     }
 
@@ -90,7 +92,8 @@ class AcquireLeaseInfo {
      *            allowed object is {@link BigInteger }
      * 
      */
-    public void setIncarnation(BigInteger value) {
+    public void setIncarnation(BigInteger value)
+    {
         this.incarnation = value;
     }
 
@@ -100,7 +103,8 @@ class AcquireLeaseInfo {
      * @return possible object is {@link CurrentStatusEnum }
      * 
      */
-    public CurrentStatusEnum getStatus() {
+    public CurrentStatusEnum getStatus()
+    {
         return status;
     }
 
@@ -111,7 +115,8 @@ class AcquireLeaseInfo {
      *            allowed object is {@link CurrentStatusEnum }
      * 
      */
-    public void setStatus(CurrentStatusEnum value) {
+    public void setStatus(CurrentStatusEnum value)
+    {
         this.status = value;
     }
 
@@ -121,7 +126,8 @@ class AcquireLeaseInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getStatusDetail() {
+    public String getStatusDetail()
+    {
         return statusDetail;
     }
 
@@ -132,7 +138,8 @@ class AcquireLeaseInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setStatusDetail(String value) {
+    public void setStatusDetail(String value)
+    {
         this.statusDetail = value;
     }
 
@@ -142,7 +149,8 @@ class AcquireLeaseInfo {
      * @return possible object is {@link String }
      * 
      */
-    public Calendar getExpiration() {
+    public Calendar getExpiration()
+    {
         return expiration;
     }
 
@@ -153,7 +161,8 @@ class AcquireLeaseInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setExpiration(Calendar value) {
+    public void setExpiration(Calendar value)
+    {
         this.expiration = value;
     }
 

@@ -29,7 +29,8 @@ import java.util.Calendar;
 /**
 * Response containing the database operation for a given operation Guid.
 */
-public class DatabaseOperationGetResponse extends OperationResponse {
+public class DatabaseOperationGetResponse extends OperationResponse
+{
     private String databaseName;
     
     /**
@@ -37,7 +38,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * performed.
     * @return The DatabaseName value.
     */
-    public String getDatabaseName() {
+    public String getDatabaseName()
+    {
         return this.databaseName;
     }
     
@@ -46,7 +48,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * performed.
     * @param databaseNameValue The DatabaseName value.
     */
-    public void setDatabaseName(final String databaseNameValue) {
+    public void setDatabaseName(final String databaseNameValue)
+    {
         this.databaseName = databaseNameValue;
     }
     
@@ -57,7 +60,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * operation.
     * @return The Error value.
     */
-    public String getError() {
+    public String getError()
+    {
         return this.error;
     }
     
@@ -66,7 +70,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * operation.
     * @param errorValue The Error value.
     */
-    public void setError(final String errorValue) {
+    public void setError(final String errorValue)
+    {
         this.error = errorValue;
     }
     
@@ -77,7 +82,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * operation.
     * @return The ErrorCode value.
     */
-    public int getErrorCode() {
+    public int getErrorCode()
+    {
         return this.errorCode;
     }
     
@@ -86,7 +92,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * operation.
     * @param errorCodeValue The ErrorCode value.
     */
-    public void setErrorCode(final int errorCodeValue) {
+    public void setErrorCode(final int errorCodeValue)
+    {
         this.errorCode = errorCodeValue;
     }
     
@@ -97,7 +104,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * failed operation.
     * @return The ErrorSeverity value.
     */
-    public int getErrorSeverity() {
+    public int getErrorSeverity()
+    {
         return this.errorSeverity;
     }
     
@@ -106,7 +114,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * failed operation.
     * @param errorSeverityValue The ErrorSeverity value.
     */
-    public void setErrorSeverity(final int errorSeverityValue) {
+    public void setErrorSeverity(final int errorSeverityValue)
+    {
         this.errorSeverity = errorSeverityValue;
     }
     
@@ -116,7 +125,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the error state.
     * @return The ErrorState value.
     */
-    public int getErrorState() {
+    public int getErrorState()
+    {
         return this.errorState;
     }
     
@@ -124,7 +134,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the error state.
     * @param errorStateValue The ErrorState value.
     */
-    public void setErrorState(final int errorStateValue) {
+    public void setErrorState(final int errorStateValue)
+    {
         this.errorState = errorStateValue;
     }
     
@@ -134,7 +145,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets unique identifier of the operation.
     * @return The Id value.
     */
-    public String getId() {
+    public String getId()
+    {
         return this.id;
     }
     
@@ -142,7 +154,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets unique identifier of the operation.
     * @param idValue The Id value.
     */
-    public void setId(final String idValue) {
+    public void setId(final String idValue)
+    {
         this.id = idValue;
     }
     
@@ -153,7 +166,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * running operation.
     * @return The LastModifyTime value.
     */
-    public Calendar getLastModifyTime() {
+    public Calendar getLastModifyTime()
+    {
         return this.lastModifyTime;
     }
     
@@ -162,7 +176,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * running operation.
     * @param lastModifyTimeValue The LastModifyTime value.
     */
-    public void setLastModifyTime(final Calendar lastModifyTimeValue) {
+    public void setLastModifyTime(final Calendar lastModifyTimeValue)
+    {
         this.lastModifyTime = lastModifyTimeValue;
     }
     
@@ -172,7 +187,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the name of the operation.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -180,7 +196,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the name of the operation.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -190,7 +207,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the ParentLink of the operation.
     * @return The ParentLink value.
     */
-    public String getParentLink() {
+    public String getParentLink()
+    {
         return this.parentLink;
     }
     
@@ -198,7 +216,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the ParentLink of the operation.
     * @param parentLinkValue The ParentLink value.
     */
-    public void setParentLink(final String parentLinkValue) {
+    public void setParentLink(final String parentLinkValue)
+    {
         this.parentLink = parentLinkValue;
     }
     
@@ -208,7 +227,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the percentage of operation that has completed.
     * @return The PercentComplete value.
     */
-    public int getPercentComplete() {
+    public int getPercentComplete()
+    {
         return this.percentComplete;
     }
     
@@ -216,7 +236,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the percentage of operation that has completed.
     * @param percentCompleteValue The PercentComplete value.
     */
-    public void setPercentComplete(final int percentCompleteValue) {
+    public void setPercentComplete(final int percentCompleteValue)
+    {
         this.percentComplete = percentCompleteValue;
     }
     
@@ -226,7 +247,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the SelfLink of the operation.
     * @return The SelfLink value.
     */
-    public String getSelfLink() {
+    public String getSelfLink()
+    {
         return this.selfLink;
     }
     
@@ -234,7 +256,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the SelfLink of the operation.
     * @param selfLinkValue The SelfLink value.
     */
-    public void setSelfLink(final String selfLinkValue) {
+    public void setSelfLink(final String selfLinkValue)
+    {
         this.selfLink = selfLinkValue;
     }
     
@@ -244,7 +267,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets session scoped ID of the operation.
     * @return The SessionActivityId value.
     */
-    public String getSessionActivityId() {
+    public String getSessionActivityId()
+    {
         return this.sessionActivityId;
     }
     
@@ -252,7 +276,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets session scoped ID of the operation.
     * @param sessionActivityIdValue The SessionActivityId value.
     */
-    public void setSessionActivityId(final String sessionActivityIdValue) {
+    public void setSessionActivityId(final String sessionActivityIdValue)
+    {
         this.sessionActivityId = sessionActivityIdValue;
     }
     
@@ -262,7 +287,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the timestamp when the operation started.
     * @return The StartTime value.
     */
-    public Calendar getStartTime() {
+    public Calendar getStartTime()
+    {
         return this.startTime;
     }
     
@@ -270,7 +296,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the timestamp when the operation started.
     * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(final Calendar startTimeValue) {
+    public void setStartTime(final Calendar startTimeValue)
+    {
         this.startTime = startTimeValue;
     }
     
@@ -280,7 +307,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the state of the operation.
     * @return The State value.
     */
-    public String getState() {
+    public String getState()
+    {
         return this.state;
     }
     
@@ -288,7 +316,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the state of the operation.
     * @param stateValue The State value.
     */
-    public void setState(final String stateValue) {
+    public void setState(final String stateValue)
+    {
         this.state = stateValue;
     }
     
@@ -299,7 +328,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * format.
     * @return The StateId value.
     */
-    public int getStateId() {
+    public int getStateId()
+    {
         return this.stateId;
     }
     
@@ -308,7 +338,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * format.
     * @param stateIdValue The StateId value.
     */
-    public void setStateId(final int stateIdValue) {
+    public void setStateId(final int stateIdValue)
+    {
         this.stateId = stateIdValue;
     }
     
@@ -318,7 +349,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the type of resource.
     * @return The Type value.
     */
-    public String getType() {
+    public String getType()
+    {
         return this.type;
     }
     
@@ -326,7 +358,8 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     * Gets or sets the type of resource.
     * @param typeValue The Type value.
     */
-    public void setType(final String typeValue) {
+    public void setType(final String typeValue)
+    {
         this.type = typeValue;
     }
 }

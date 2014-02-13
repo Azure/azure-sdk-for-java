@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.models;
 /**
 * Parameters supplied to the Update Affinity Group operation.
 */
-public class AffinityGroupUpdateParameters {
+public class AffinityGroupUpdateParameters
+{
     private String description;
     
     /**
@@ -34,7 +35,8 @@ public class AffinityGroupUpdateParameters {
     * to 1024 characters in length.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -43,7 +45,8 @@ public class AffinityGroupUpdateParameters {
     * to 1024 characters in length.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -54,7 +57,8 @@ public class AffinityGroupUpdateParameters {
     * The label can be up to 100 characters in length.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -63,7 +67,8 @@ public class AffinityGroupUpdateParameters {
     * The label can be up to 100 characters in length.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
 }

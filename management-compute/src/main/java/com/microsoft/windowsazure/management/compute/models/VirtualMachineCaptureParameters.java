@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Capture Virtual Machine operation.
 */
-public class VirtualMachineCaptureParameters {
+public class VirtualMachineCaptureParameters
+{
     private PostCaptureAction postCaptureAction;
     
     /**
@@ -38,7 +39,8 @@ public class VirtualMachineCaptureParameters {
     * ProvisioningConfiguration.
     * @return The PostCaptureAction value.
     */
-    public PostCaptureAction getPostCaptureAction() {
+    public PostCaptureAction getPostCaptureAction()
+    {
         return this.postCaptureAction;
     }
     
@@ -51,7 +53,8 @@ public class VirtualMachineCaptureParameters {
     * ProvisioningConfiguration.
     * @param postCaptureActionValue The PostCaptureAction value.
     */
-    public void setPostCaptureAction(final PostCaptureAction postCaptureActionValue) {
+    public void setPostCaptureAction(final PostCaptureAction postCaptureActionValue)
+    {
         this.postCaptureAction = postCaptureActionValue;
     }
     
@@ -63,7 +66,8 @@ public class VirtualMachineCaptureParameters {
     * PostCaptureAction is set to Reprovision.
     * @return The ProvisioningConfiguration value.
     */
-    public ConfigurationSet getProvisioningConfiguration() {
+    public ConfigurationSet getProvisioningConfiguration()
+    {
         return this.provisioningConfiguration;
     }
     
@@ -73,7 +77,8 @@ public class VirtualMachineCaptureParameters {
     * PostCaptureAction is set to Reprovision.
     * @param provisioningConfigurationValue The ProvisioningConfiguration value.
     */
-    public void setProvisioningConfiguration(final ConfigurationSet provisioningConfigurationValue) {
+    public void setProvisioningConfiguration(final ConfigurationSet provisioningConfigurationValue)
+    {
         this.provisioningConfiguration = provisioningConfigurationValue;
     }
     
@@ -85,7 +90,8 @@ public class VirtualMachineCaptureParameters {
     * Management Portal.
     * @return The TargetImageLabel value.
     */
-    public String getTargetImageLabel() {
+    public String getTargetImageLabel()
+    {
         return this.targetImageLabel;
     }
     
@@ -95,7 +101,8 @@ public class VirtualMachineCaptureParameters {
     * Management Portal.
     * @param targetImageLabelValue The TargetImageLabel value.
     */
-    public void setTargetImageLabel(final String targetImageLabelValue) {
+    public void setTargetImageLabel(final String targetImageLabelValue)
+    {
         this.targetImageLabel = targetImageLabelValue;
     }
     
@@ -105,7 +112,8 @@ public class VirtualMachineCaptureParameters {
     * Required. Specifies the image name of the captured image.
     * @return The TargetImageName value.
     */
-    public String getTargetImageName() {
+    public String getTargetImageName()
+    {
         return this.targetImageName;
     }
     
@@ -113,7 +121,8 @@ public class VirtualMachineCaptureParameters {
     * Required. Specifies the image name of the captured image.
     * @param targetImageNameValue The TargetImageName value.
     */
-    public void setTargetImageName(final String targetImageNameValue) {
+    public void setTargetImageName(final String targetImageNameValue)
+    {
         this.targetImageName = targetImageNameValue;
     }
 }

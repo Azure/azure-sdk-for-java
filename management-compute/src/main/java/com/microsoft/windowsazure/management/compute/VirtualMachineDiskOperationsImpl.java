@@ -76,13 +76,15 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
 * information)
 */
-public class VirtualMachineDiskOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineDiskOperations {
+public class VirtualMachineDiskOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineDiskOperations
+{
     /**
     * Initializes a new instance of the VirtualMachineDiskOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    VirtualMachineDiskOperationsImpl(ComputeManagementClientImpl client) {
+    VirtualMachineDiskOperationsImpl(ComputeManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -93,7 +95,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient() {
+    public ComputeManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -113,10 +116,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
+    public Future<OperationResponse> beginDeletingDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return beginDeletingDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
             }
          });
@@ -142,22 +147,27 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse beginDeletingDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws IOException, ServiceException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null) {
+        if (deploymentName == null)
+        {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null) {
+        if (roleName == null)
+        {
             throw new NullPointerException("roleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -170,7 +180,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + roleName + "/DataDisks/" + logicalUnitNumber + "?";
-        if (deleteFromStorage == true) {
+        if (deleteFromStorage == true)
+        {
             url = url + "comp=" + "media";
         }
         
@@ -182,18 +193,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -203,16 +219,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -248,10 +269,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDiskCreateDataDiskParameters parameters) {
+    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDiskCreateDataDiskParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return createDataDisk(serviceName, deploymentName, roleName, parameters);
             }
          });
@@ -297,28 +320,35 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null) {
+        if (deploymentName == null)
+        {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null) {
+        if (roleName == null)
+        {
             throw new NullPointerException("roleName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getMediaLinkUri() == null) {
+        if (parameters.getMediaLinkUri() == null)
+        {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -351,19 +381,22 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
         
-        if (parameters.getDiskLabel() != null) {
+        if (parameters.getDiskLabel() != null)
+        {
             Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
             diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
         
-        if (parameters.getDiskName() != null) {
+        if (parameters.getDiskName() != null)
+        {
             Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
             diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
         
-        if (parameters.getLogicalUnitNumber() != null) {
+        if (parameters.getLogicalUnitNumber() != null)
+        {
             Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
             lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
             dataVirtualHardDiskElement.appendChild(lunElement);
@@ -377,7 +410,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
         dataVirtualHardDiskElement.appendChild(mediaLinkElement);
         
-        if (parameters.getSourceMediaLinkUri() != null) {
+        if (parameters.getSourceMediaLinkUri() != null)
+        {
             Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
             sourceMediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getSourceMediaLinkUri().toString()));
             dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
@@ -396,18 +430,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -417,16 +456,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -443,10 +487,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(final VirtualMachineDiskCreateDiskParameters parameters) {
+    public Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(final VirtualMachineDiskCreateDiskParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskCreateDiskResponse>() { 
             @Override
-            public VirtualMachineDiskCreateDiskResponse call() throws Exception {
+            public VirtualMachineDiskCreateDiskResponse call() throws Exception
+            {
                 return createDisk(parameters);
             }
          });
@@ -475,25 +521,31 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLabel() == null) {
+        if (parameters.getLabel() == null)
+        {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getMediaLinkUri() == null) {
+        if (parameters.getMediaLinkUri() == null)
+        {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
-        if (parameters.getName() == null) {
+        if (parameters.getName() == null)
+        {
             throw new NullPointerException("parameters.Name");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -519,7 +571,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Element diskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Disk");
         requestDoc.appendChild(diskElement);
         
-        if (parameters.getOperatingSystemType() != null) {
+        if (parameters.getOperatingSystemType() != null)
+        {
             Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
             osElement.appendChild(requestDoc.createTextNode(parameters.getOperatingSystemType()));
             diskElement.appendChild(osElement);
@@ -550,18 +603,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -579,10 +637,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Disk");
             Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement2 != null) {
+            if (diskElement2 != null)
+            {
                 NodeList elements2 = diskElement2.getElementsByTagName("OS");
                 Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (osElement2 != null) {
+                if (osElement2 != null)
+                {
                     String osInstance;
                     osInstance = osElement2.getTextContent();
                     result.setOperatingSystem(osInstance);
@@ -590,7 +650,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements3 = diskElement2.getElementsByTagName("Label");
                 Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement2 != null) {
+                if (labelElement2 != null)
+                {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
@@ -598,7 +659,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
                 Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (affinityGroupElement != null) {
+                if (affinityGroupElement != null)
+                {
                     String affinityGroupInstance;
                     affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
@@ -606,7 +668,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements5 = diskElement2.getElementsByTagName("Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (locationElement != null) {
+                if (locationElement != null)
+                {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
@@ -614,7 +677,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null) {
+                if (logicalDiskSizeInGBElement != null)
+                {
                     int logicalDiskSizeInGBInstance;
                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
@@ -622,7 +686,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
                 Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement2 != null) {
+                if (mediaLinkElement2 != null)
+                {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
@@ -630,7 +695,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements8 = diskElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -638,7 +704,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements9 = diskElement2.getElementsByTagName("SourceImageName");
                 Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sourceImageNameElement != null) {
+                if (sourceImageNameElement != null)
+                {
                     String sourceImageNameInstance;
                     sourceImageNameInstance = sourceImageNameElement.getTextContent();
                     result.setSourceImageName(sourceImageNameInstance);
@@ -646,13 +713,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements10 = diskElement2.getElementsByTagName("AttachedTo");
                 Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (attachedToElement != null) {
+                if (attachedToElement != null)
+                {
                     VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
                     NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
                     Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (hostedServiceNameElement != null) {
+                    if (hostedServiceNameElement != null)
+                    {
                         String hostedServiceNameInstance;
                         hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
                         attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
@@ -660,7 +729,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
                     Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (deploymentNameElement != null) {
+                    if (deploymentNameElement != null)
+                    {
                         String deploymentNameInstance;
                         deploymentNameInstance = deploymentNameElement.getTextContent();
                         attachedToInstance.setDeploymentName(deploymentNameInstance);
@@ -668,7 +738,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
                     Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (roleNameElement != null) {
+                    if (roleNameElement != null)
+                    {
                         String roleNameInstance;
                         roleNameInstance = roleNameElement.getTextContent();
                         attachedToInstance.setRoleName(roleNameInstance);
@@ -677,7 +748,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements14 = diskElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
+                {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
@@ -685,16 +757,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -723,10 +800,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
+    public Future<ComputeOperationStatusResponse> deleteDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public ComputeOperationStatusResponse call() throws Exception
+            {
                 return deleteDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
             }
          });
@@ -767,11 +846,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException
+    {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -781,36 +862,46 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
             CloudTracing.enter(invocationId, this, "deleteDataDiskAsync", tracingParameters);
         }
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
-                if (result.getError() != null) {
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else
+                {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -818,8 +909,11 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             return result;
-        } finally {
-            if (this.getClient() != null && shouldTrace) {
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
                 this.getClient().close();
             }
         }
@@ -838,10 +932,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteDiskAsync(final String diskName, final boolean deleteFromStorage) {
+    public Future<OperationResponse> deleteDiskAsync(final String diskName, final boolean deleteFromStorage)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return deleteDisk(diskName, deleteFromStorage);
             }
          });
@@ -864,16 +960,19 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException
+    {
         // Validate
-        if (diskName == null) {
+        if (diskName == null)
+        {
             throw new NullPointerException("diskName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
@@ -883,7 +982,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?";
-        if (deleteFromStorage == true) {
+        if (deleteFromStorage == true)
+        {
             url = url + "comp=" + "media";
         }
         
@@ -895,18 +995,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -916,16 +1021,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -944,10 +1054,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The Get Data Disk operation response.
     */
     @Override
-    public Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber) {
+    public Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDataDiskResponse>() { 
             @Override
-            public VirtualMachineDiskGetDataDiskResponse call() throws Exception {
+            public VirtualMachineDiskGetDataDiskResponse call() throws Exception
+            {
                 return getDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber);
             }
          });
@@ -976,22 +1088,27 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The Get Data Disk operation response.
     */
     @Override
-    public VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null) {
+        if (deploymentName == null)
+        {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null) {
+        if (roleName == null)
+        {
             throw new NullPointerException("roleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1012,18 +1129,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1041,10 +1163,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("DataVirtualHardDisk");
             Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (dataVirtualHardDiskElement != null) {
+            if (dataVirtualHardDiskElement != null)
+            {
                 NodeList elements2 = dataVirtualHardDiskElement.getElementsByTagName("HostCaching");
                 Element hostCachingElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (hostCachingElement != null) {
+                if (hostCachingElement != null)
+                {
                     VirtualHardDiskHostCaching hostCachingInstance;
                     hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
                     result.setHostCaching(hostCachingInstance);
@@ -1052,7 +1176,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements3 = dataVirtualHardDiskElement.getElementsByTagName("DiskLabel");
                 Element diskLabelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (diskLabelElement != null) {
+                if (diskLabelElement != null)
+                {
                     String diskLabelInstance;
                     diskLabelInstance = diskLabelElement.getTextContent();
                     result.setDiskLabel(diskLabelInstance);
@@ -1060,7 +1185,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements4 = dataVirtualHardDiskElement.getElementsByTagName("DiskName");
                 Element diskNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (diskNameElement != null) {
+                if (diskNameElement != null)
+                {
                     String diskNameInstance;
                     diskNameInstance = diskNameElement.getTextContent();
                     result.setDiskName(diskNameInstance);
@@ -1068,7 +1194,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagName("Lun");
                 Element lunElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
+                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
+                {
                     int lunInstance;
                     lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                     result.setLogicalUnitNumber(lunInstance);
@@ -1076,7 +1203,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements6 = dataVirtualHardDiskElement.getElementsByTagName("LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null) {
+                if (logicalDiskSizeInGBElement != null)
+                {
                     int logicalDiskSizeInGBInstance;
                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -1084,7 +1212,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements7 = dataVirtualHardDiskElement.getElementsByTagName("MediaLink");
                 Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement != null) {
+                if (mediaLinkElement != null)
+                {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
@@ -1092,16 +1221,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1117,10 +1251,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(final String diskName) {
+    public Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(final String diskName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDiskResponse>() { 
             @Override
-            public VirtualMachineDiskGetDiskResponse call() throws Exception {
+            public VirtualMachineDiskGetDiskResponse call() throws Exception
+            {
                 return getDisk(diskName);
             }
          });
@@ -1146,16 +1282,19 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (diskName == null) {
+        if (diskName == null)
+        {
             throw new NullPointerException("diskName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
@@ -1173,18 +1312,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1202,10 +1346,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Disk");
             Element diskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement != null) {
+            if (diskElement != null)
+            {
                 NodeList elements2 = diskElement.getElementsByTagName("AffinityGroup");
                 Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (affinityGroupElement != null) {
+                if (affinityGroupElement != null)
+                {
                     String affinityGroupInstance;
                     affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
@@ -1213,7 +1359,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements3 = diskElement.getElementsByTagName("Location");
                 Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (locationElement != null) {
+                if (locationElement != null)
+                {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
@@ -1221,7 +1368,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements4 = diskElement.getElementsByTagName("Label");
                 Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (labelElement != null) {
+                if (labelElement != null)
+                {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent();
                     result.setLabel(labelInstance);
@@ -1229,7 +1377,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements5 = diskElement.getElementsByTagName("LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null) {
+                if (logicalDiskSizeInGBElement != null)
+                {
                     int logicalDiskSizeInGBInstance;
                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
@@ -1237,7 +1386,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements6 = diskElement.getElementsByTagName("MediaLink");
                 Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (mediaLinkElement != null) {
+                if (mediaLinkElement != null)
+                {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
@@ -1245,7 +1395,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements7 = diskElement.getElementsByTagName("Name");
                 Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (nameElement != null) {
+                if (nameElement != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -1253,7 +1404,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements8 = diskElement.getElementsByTagName("OS");
                 Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (osElement != null) {
+                if (osElement != null)
+                {
                     String osInstance;
                     osInstance = osElement.getTextContent();
                     result.setOperatingSystemType(osInstance);
@@ -1261,7 +1413,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements9 = diskElement.getElementsByTagName("SourceImageName");
                 Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sourceImageNameElement != null) {
+                if (sourceImageNameElement != null)
+                {
                     String sourceImageNameInstance;
                     sourceImageNameInstance = sourceImageNameElement.getTextContent();
                     result.setSourceImageName(sourceImageNameInstance);
@@ -1269,13 +1422,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements10 = diskElement.getElementsByTagName("AttachedTo");
                 Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (attachedToElement != null) {
+                if (attachedToElement != null)
+                {
                     VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
                     NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
                     Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (hostedServiceNameElement != null) {
+                    if (hostedServiceNameElement != null)
+                    {
                         String hostedServiceNameInstance;
                         hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
                         attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
@@ -1283,7 +1438,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
                     Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (deploymentNameElement != null) {
+                    if (deploymentNameElement != null)
+                    {
                         String deploymentNameInstance;
                         deploymentNameInstance = deploymentNameElement.getTextContent();
                         attachedToInstance.setDeploymentName(deploymentNameInstance);
@@ -1291,7 +1447,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
                     Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (roleNameElement != null) {
+                    if (roleNameElement != null)
+                    {
                         String roleNameInstance;
                         roleNameInstance = roleNameElement.getTextContent();
                         attachedToInstance.setRoleName(roleNameInstance);
@@ -1300,7 +1457,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements14 = diskElement.getElementsByTagName("IsCorrupted");
                 Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
+                if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
+                {
                     boolean isCorruptedInstance;
                     isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
                     result.setIsCorrupted(isCorruptedInstance);
@@ -1308,7 +1466,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements15 = diskElement.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
+                {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
@@ -1316,16 +1475,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1340,10 +1504,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The List Disks operation response.
     */
     @Override
-    public Future<VirtualMachineDiskListResponse> listDisksAsync() {
+    public Future<VirtualMachineDiskListResponse> listDisksAsync()
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskListResponse>() { 
             @Override
-            public VirtualMachineDiskListResponse call() throws Exception {
+            public VirtualMachineDiskListResponse call() throws Exception
+            {
                 return listDisks();
             }
          });
@@ -1368,13 +1534,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The List Disks operation response.
     */
     @Override
-    public VirtualMachineDiskListResponse listDisks() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineDiskListResponse listDisks() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listDisksAsync", tracingParameters);
@@ -1391,18 +1559,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1420,15 +1593,18 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Disks");
             Element disksSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (disksSequenceElement != null) {
-                for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagName("Disk").getLength(); i1 = i1 + 1) {
+            if (disksSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagName("Disk").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement.getElementsByTagName("Disk").item(i1));
                     VirtualMachineDiskListResponse.VirtualMachineDisk diskInstance = new VirtualMachineDiskListResponse.VirtualMachineDisk();
                     result.getDisks().add(diskInstance);
                     
                     NodeList elements2 = disksElement.getElementsByTagName("AffinityGroup");
                     Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (affinityGroupElement != null) {
+                    if (affinityGroupElement != null)
+                    {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         diskInstance.setAffinityGroup(affinityGroupInstance);
@@ -1436,7 +1612,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements3 = disksElement.getElementsByTagName("Location");
                     Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (locationElement != null) {
+                    if (locationElement != null)
+                    {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         diskInstance.setLocation(locationInstance);
@@ -1444,7 +1621,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements4 = disksElement.getElementsByTagName("Label");
                     Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (labelElement != null) {
+                    if (labelElement != null)
+                    {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         diskInstance.setLabel(labelInstance);
@@ -1452,7 +1630,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements5 = disksElement.getElementsByTagName("LogicalDiskSizeInGB");
                     Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (logicalDiskSizeInGBElement != null) {
+                    if (logicalDiskSizeInGBElement != null)
+                    {
                         int logicalDiskSizeInGBInstance;
                         logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                         diskInstance.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
@@ -1460,7 +1639,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements6 = disksElement.getElementsByTagName("MediaLink");
                     Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (mediaLinkElement != null) {
+                    if (mediaLinkElement != null)
+                    {
                         URI mediaLinkInstance;
                         mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                         diskInstance.setMediaLinkUri(mediaLinkInstance);
@@ -1468,7 +1648,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements7 = disksElement.getElementsByTagName("Name");
                     Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         diskInstance.setName(nameInstance);
@@ -1476,7 +1657,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements8 = disksElement.getElementsByTagName("OS");
                     Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (osElement != null) {
+                    if (osElement != null)
+                    {
                         String osInstance;
                         osInstance = osElement.getTextContent();
                         diskInstance.setOperatingSystemType(osInstance);
@@ -1484,7 +1666,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements9 = disksElement.getElementsByTagName("SourceImageName");
                     Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sourceImageNameElement != null) {
+                    if (sourceImageNameElement != null)
+                    {
                         String sourceImageNameInstance;
                         sourceImageNameInstance = sourceImageNameElement.getTextContent();
                         diskInstance.setSourceImageName(sourceImageNameInstance);
@@ -1492,13 +1675,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements10 = disksElement.getElementsByTagName("AttachedTo");
                     Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (attachedToElement != null) {
+                    if (attachedToElement != null)
+                    {
                         VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails();
                         diskInstance.setUsageDetails(attachedToInstance);
                         
                         NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
                         Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (hostedServiceNameElement != null) {
+                        if (hostedServiceNameElement != null)
+                        {
                             String hostedServiceNameInstance;
                             hostedServiceNameInstance = hostedServiceNameElement.getTextContent();
                             attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
@@ -1506,7 +1691,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         
                         NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
                         Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (deploymentNameElement != null) {
+                        if (deploymentNameElement != null)
+                        {
                             String deploymentNameInstance;
                             deploymentNameInstance = deploymentNameElement.getTextContent();
                             attachedToInstance.setDeploymentName(deploymentNameInstance);
@@ -1514,7 +1700,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         
                         NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
                         Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (roleNameElement != null) {
+                        if (roleNameElement != null)
+                        {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             attachedToInstance.setRoleName(roleNameInstance);
@@ -1523,7 +1710,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements14 = disksElement.getElementsByTagName("IsCorrupted");
                     Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
+                    if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false)
+                    {
                         boolean isCorruptedInstance;
                         isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
                         diskInstance.setIsCorrupted(isCorruptedInstance);
@@ -1531,7 +1719,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements15 = disksElement.getElementsByTagName("IsPremium");
                     Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
+                    if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
+                    {
                         boolean isPremiumInstance;
                         isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                         diskInstance.setIsPremium(isPremiumInstance);
@@ -1540,16 +1729,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1571,10 +1765,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDiskUpdateDataDiskParameters parameters) {
+    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDiskUpdateDataDiskParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return updateDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, parameters);
             }
          });
@@ -1606,28 +1802,35 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null) {
+        if (deploymentName == null)
+        {
             throw new NullPointerException("deploymentName");
         }
-        if (roleName == null) {
+        if (roleName == null)
+        {
             throw new NullPointerException("roleName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getMediaLinkUri() == null) {
+        if (parameters.getMediaLinkUri() == null)
+        {
             throw new NullPointerException("parameters.MediaLinkUri");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1661,19 +1864,22 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
         
-        if (parameters.getDiskLabel() != null) {
+        if (parameters.getDiskLabel() != null)
+        {
             Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
             diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
         
-        if (parameters.getDiskName() != null) {
+        if (parameters.getDiskName() != null)
+        {
             Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
             diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
         
-        if (parameters.getLogicalUnitNumber() != null) {
+        if (parameters.getLogicalUnitNumber() != null)
+        {
             Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
             lunElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getLogicalUnitNumber())));
             dataVirtualHardDiskElement.appendChild(lunElement);
@@ -1700,18 +1906,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1721,16 +1932,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1748,10 +1964,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(final String diskName, final VirtualMachineDiskUpdateDiskParameters parameters) {
+    public Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(final String diskName, final VirtualMachineDiskUpdateDiskParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskUpdateDiskResponse>() { 
             @Override
-            public VirtualMachineDiskUpdateDiskResponse call() throws Exception {
+            public VirtualMachineDiskUpdateDiskResponse call() throws Exception
+            {
                 return updateDisk(diskName, parameters);
             }
          });
@@ -1781,25 +1999,31 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
+    {
         // Validate
-        if (diskName == null) {
+        if (diskName == null)
+        {
             throw new NullPointerException("diskName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLabel() == null) {
+        if (parameters.getLabel() == null)
+        {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getName() == null) {
+        if (parameters.getName() == null)
+        {
             throw new NullPointerException("parameters.Name");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("diskName", diskName);
@@ -1826,13 +2050,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         Element diskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Disk");
         requestDoc.appendChild(diskElement);
         
-        if (parameters.isHasOperatingSystem() != null) {
+        if (parameters.isHasOperatingSystem() != null)
+        {
             Element hasOperatingSystemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HasOperatingSystem");
             hasOperatingSystemElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isHasOperatingSystem()).toLowerCase()));
             diskElement.appendChild(hasOperatingSystemElement);
         }
         
-        if (parameters.getOperatingSystemType() != null) {
+        if (parameters.getOperatingSystemType() != null)
+        {
             Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
             osElement.appendChild(requestDoc.createTextNode(parameters.getOperatingSystemType()));
             diskElement.appendChild(osElement);
@@ -1842,7 +2068,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
         diskElement.appendChild(labelElement);
         
-        if (parameters.getMediaLinkUri() != null) {
+        if (parameters.getMediaLinkUri() != null)
+        {
             Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
             mediaLinkElement.appendChild(requestDoc.createTextNode(parameters.getMediaLinkUri().toString()));
             diskElement.appendChild(mediaLinkElement);
@@ -1865,18 +2092,23 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1894,10 +2126,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Disk");
             Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (diskElement2 != null) {
+            if (diskElement2 != null)
+            {
                 NodeList elements2 = diskElement2.getElementsByTagName("OS");
                 Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (osElement2 != null) {
+                if (osElement2 != null)
+                {
                     String osInstance;
                     osInstance = osElement2.getTextContent();
                     result.setOperatingSystem(osInstance);
@@ -1905,7 +2139,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements3 = diskElement2.getElementsByTagName("Label");
                 Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (labelElement2 != null) {
+                if (labelElement2 != null)
+                {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
@@ -1913,7 +2148,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
                 Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (affinityGroupElement != null) {
+                if (affinityGroupElement != null)
+                {
                     String affinityGroupInstance;
                     affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
@@ -1921,7 +2157,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements5 = diskElement2.getElementsByTagName("Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (locationElement != null) {
+                if (locationElement != null)
+                {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
@@ -1929,7 +2166,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (logicalDiskSizeInGBElement != null) {
+                if (logicalDiskSizeInGBElement != null)
+                {
                     int logicalDiskSizeInGBInstance;
                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
@@ -1937,7 +2175,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
                 Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (mediaLinkElement2 != null) {
+                if (mediaLinkElement2 != null)
+                {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
@@ -1945,7 +2184,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements8 = diskElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -1953,7 +2193,8 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 NodeList elements9 = diskElement2.getElementsByTagName("IsPremium");
                 Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
+                if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false)
+                {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
@@ -1961,16 +2202,21 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

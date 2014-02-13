@@ -36,11 +36,13 @@ import com.sun.jersey.core.provider.AbstractMessageReaderWriterProvider;
  * 
  */
 public class ODataEntityProvider extends
-        AbstractMessageReaderWriterProvider<ODataEntity<?>> {
+        AbstractMessageReaderWriterProvider<ODataEntity<?>>
+{
     private final ODataAtomUnmarshaller unmarshaller;
 
     public ODataEntityProvider() throws JAXBException,
-            ParserConfigurationException {
+            ParserConfigurationException
+    {
         unmarshaller = new ODataAtomUnmarshaller();
     }
 
@@ -53,7 +55,8 @@ public class ODataEntityProvider extends
      */
     @Override
     public boolean isReadable(Class<?> type, Type genericType,
-            Annotation[] annotations, MediaType mediaType) {
+            Annotation[] annotations, MediaType mediaType)
+    {
         return ODataEntity.isODataEntityType(type);
     }
 
@@ -69,28 +72,37 @@ public class ODataEntityProvider extends
     public ODataEntity<?> readFrom(Class<ODataEntity<?>> type,
             Type genericType, Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, String> httpHeaders, InputStream entityStream)
-            throws IOException {
+            throws IOException
+    {
 
         ODataEntity<?> result = null;
         String responseType = mediaType.getParameters().get("type");
-        try {
-            if (responseType == null || responseType.equals("feed")) {
+        try
+        {
+            if (responseType == null || responseType.equals("feed"))
+            {
                 List<ODataEntity<?>> feedContents = null;
-                synchronized (unmarshaller) {
+                synchronized (unmarshaller)
+                {
                     feedContents = unmarshaller.unmarshalFeed(entityStream,
                             type);
                 }
                 return feedContents.get(0);
-            } else if (responseType.equals("entry")) {
-                synchronized (unmarshaller) {
+            } else if (responseType.equals("entry"))
+            {
+                synchronized (unmarshaller)
+                {
                     result = unmarshaller.unmarshalEntry(entityStream, type);
                 }
-            } else {
+            } else
+            {
                 throw new RuntimeException();
             }
-        } catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
-        } catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             throw new RuntimeException(e);
         }
 
@@ -106,7 +118,8 @@ public class ODataEntityProvider extends
      */
     @Override
     public boolean isWriteable(Class<?> type, Type genericType,
-            Annotation[] annotations, MediaType mediaType) {
+            Annotation[] annotations, MediaType mediaType)
+    {
         return false;
     }
 
@@ -122,7 +135,8 @@ public class ODataEntityProvider extends
     public void writeTo(ODataEntity<?> t, Class<?> type, Type genericType,
             Annotation[] annotations, MediaType mediaType,
             MultivaluedMap<String, Object> httpHeaders,
-            OutputStream entityStream) throws IOException {
+            OutputStream entityStream) throws IOException
+    {
         throw new UnsupportedOperationException();
     }
 }

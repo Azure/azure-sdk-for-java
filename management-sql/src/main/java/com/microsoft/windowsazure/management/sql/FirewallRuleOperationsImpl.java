@@ -68,13 +68,15 @@ import org.xml.sax.SAXException;
 * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
 * more information)
 */
-public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, FirewallRuleOperations {
+public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, FirewallRuleOperations
+{
     /**
     * Initializes a new instance of the FirewallRuleOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    FirewallRuleOperationsImpl(SqlManagementClientImpl client) {
+    FirewallRuleOperationsImpl(SqlManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -85,7 +87,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() {
+    public SqlManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -102,10 +105,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public Future<FirewallRuleCreateResponse> createAsync(final String serverName, final FirewallRuleCreateParameters parameters) {
+    public Future<FirewallRuleCreateResponse> createAsync(final String serverName, final FirewallRuleCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<FirewallRuleCreateResponse>() { 
             @Override
-            public FirewallRuleCreateResponse call() throws Exception {
+            public FirewallRuleCreateResponse call() throws Exception
+            {
                 return create(serverName, parameters);
             }
          });
@@ -134,28 +139,35 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getEndIPAddress() == null) {
+        if (parameters.getEndIPAddress() == null)
+        {
             throw new NullPointerException("parameters.EndIPAddress");
         }
-        if (parameters.getName() == null) {
+        if (parameters.getName() == null)
+        {
             throw new NullPointerException("parameters.Name");
         }
-        if (parameters.getStartIPAddress() == null) {
+        if (parameters.getStartIPAddress() == null)
+        {
             throw new NullPointerException("parameters.StartIPAddress");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -207,18 +219,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -236,10 +253,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement2 != null) {
+            if (serviceResourceElement2 != null)
+            {
                 NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -247,7 +266,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -255,7 +275,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -263,7 +284,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
                 Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (startIPAddressElement2 != null) {
+                if (startIPAddressElement2 != null)
+                {
                     InetAddress startIPAddressInstance;
                     startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
@@ -271,7 +293,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
                 Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (endIPAddressElement2 != null) {
+                if (endIPAddressElement2 != null)
+                {
                     InetAddress endIPAddressInstance;
                     endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
                     result.setEndIPAddress(endIPAddressInstance);
@@ -279,16 +302,21 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -307,10 +335,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serverName, final String ruleName) {
+    public Future<OperationResponse> deleteAsync(final String serverName, final String ruleName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return delete(serverName, ruleName);
             }
          });
@@ -333,19 +363,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serverName, String ruleName) throws IOException, ServiceException {
+    public OperationResponse delete(String serverName, String ruleName) throws IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (ruleName == null) {
+        if (ruleName == null)
+        {
             throw new NullPointerException("ruleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -364,18 +398,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -385,16 +424,21 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -411,10 +455,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public Future<FirewallRuleListResponse> listAsync(final String serverName) {
+    public Future<FirewallRuleListResponse> listAsync(final String serverName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<FirewallRuleListResponse>() { 
             @Override
-            public FirewallRuleListResponse call() throws Exception {
+            public FirewallRuleListResponse call() throws Exception
+            {
                 return list(serverName);
             }
          });
@@ -439,16 +485,19 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public FirewallRuleListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -466,18 +515,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -495,15 +549,18 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
                     result.getFirewallRules().add(serviceResourceInstance);
                     
                     NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
@@ -511,7 +568,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     
                     NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null) {
+                    if (typeElement != null)
+                    {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
@@ -519,7 +577,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     
                     NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
                     Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (startIPAddressElement != null) {
+                    if (startIPAddressElement != null)
+                    {
                         InetAddress startIPAddressInstance;
                         startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
                         serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
@@ -527,7 +586,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     
                     NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
                     Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (endIPAddressElement != null) {
+                    if (endIPAddressElement != null)
+                    {
                         InetAddress endIPAddressInstance;
                         endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
                         serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
@@ -536,16 +596,21 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -565,10 +630,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public Future<FirewallRuleUpdateResponse> updateAsync(final String serverName, final String ruleName, final FirewallRuleUpdateParameters parameters) {
+    public Future<FirewallRuleUpdateResponse> updateAsync(final String serverName, final String ruleName, final FirewallRuleUpdateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<FirewallRuleUpdateResponse>() { 
             @Override
-            public FirewallRuleUpdateResponse call() throws Exception {
+            public FirewallRuleUpdateResponse call() throws Exception
+            {
                 return update(serverName, ruleName, parameters);
             }
          });
@@ -598,31 +665,39 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * request ID.
     */
     @Override
-    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (ruleName == null) {
+        if (ruleName == null)
+        {
             throw new NullPointerException("ruleName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getEndIPAddress() == null) {
+        if (parameters.getEndIPAddress() == null)
+        {
             throw new NullPointerException("parameters.EndIPAddress");
         }
-        if (parameters.getName() == null) {
+        if (parameters.getName() == null)
+        {
             throw new NullPointerException("parameters.Name");
         }
-        if (parameters.getStartIPAddress() == null) {
+        if (parameters.getStartIPAddress() == null)
+        {
             throw new NullPointerException("parameters.StartIPAddress");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -675,18 +750,23 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -704,10 +784,12 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement2 != null) {
+            if (serviceResourceElement2 != null)
+            {
                 NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -715,7 +797,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -723,7 +806,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -731,7 +815,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
                 Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (startIPAddressElement2 != null) {
+                if (startIPAddressElement2 != null)
+                {
                     InetAddress startIPAddressInstance;
                     startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
@@ -739,7 +824,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                 
                 NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
                 Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (endIPAddressElement2 != null) {
+                if (endIPAddressElement2 != null)
+                {
                     InetAddress endIPAddressInstance;
                     endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
                     result.setEndIPAddress(endIPAddressInstance);
@@ -747,16 +833,21 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

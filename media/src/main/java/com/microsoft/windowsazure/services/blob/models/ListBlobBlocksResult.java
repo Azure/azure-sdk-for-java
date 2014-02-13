@@ -38,7 +38,8 @@ import com.microsoft.windowsazure.core.pipeline.Base64StringAdapter;
  * Service REST API operation.
  */
 @XmlRootElement(name = "BlockList")
-public class ListBlobBlocksResult {
+public class ListBlobBlocksResult
+{
     private Date lastModified;
     private String etag;
     private String contentType;
@@ -59,7 +60,8 @@ public class ListBlobBlocksResult {
      * @return A {@link java.util.Date} containing the last modified time of the
      *         blob.
      */
-    public Date getLastModified() {
+    public Date getLastModified()
+    {
         return lastModified;
     }
 
@@ -74,7 +76,8 @@ public class ListBlobBlocksResult {
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(Date lastModified)
+    {
         this.lastModified = lastModified;
     }
 
@@ -89,7 +92,8 @@ public class ListBlobBlocksResult {
      * @return A {@link String} containing the server-assigned ETag value for
      *         the blob.
      */
-    public String getEtag() {
+    public String getEtag()
+    {
         return etag;
     }
 
@@ -104,7 +108,8 @@ public class ListBlobBlocksResult {
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag) {
+    public void setEtag(String etag)
+    {
         this.etag = etag;
     }
 
@@ -115,7 +120,8 @@ public class ListBlobBlocksResult {
      * @return A {@link String} containing the MIME content type value for the
      *         blob.
      */
-    public String getContentType() {
+    public String getContentType()
+    {
         return contentType;
     }
 
@@ -130,7 +136,8 @@ public class ListBlobBlocksResult {
      *            A {@link String} containing the MIME content type value for
      *            the blob.
      */
-    public void setContentType(String contentType) {
+    public void setContentType(String contentType)
+    {
         this.contentType = contentType;
     }
 
@@ -140,7 +147,8 @@ public class ListBlobBlocksResult {
      * 
      * @return The size of the blob in bytes.
      */
-    public long getContentLength() {
+    public long getContentLength()
+    {
         return contentLength;
     }
 
@@ -154,7 +162,8 @@ public class ListBlobBlocksResult {
      * @param contentLength
      *            The size of the blob in bytes.
      */
-    public void setContentLength(long contentLength) {
+    public void setContentLength(long contentLength)
+    {
         this.contentLength = contentLength;
     }
 
@@ -168,7 +177,8 @@ public class ListBlobBlocksResult {
      */
     @XmlElementWrapper(name = "CommittedBlocks")
     @XmlElement(name = "Block")
-    public List<Entry> getCommittedBlocks() {
+    public List<Entry> getCommittedBlocks()
+    {
         return committedBlocks;
     }
 
@@ -183,7 +193,8 @@ public class ListBlobBlocksResult {
      *            A {@link List} of {@link Entry} instances representing the
      *            committed blocks of the blob.
      */
-    public void setCommittedBlocks(List<Entry> committedBlocks) {
+    public void setCommittedBlocks(List<Entry> committedBlocks)
+    {
         this.committedBlocks = committedBlocks;
     }
 
@@ -198,7 +209,8 @@ public class ListBlobBlocksResult {
      */
     @XmlElementWrapper(name = "UncommittedBlocks")
     @XmlElement(name = "Block")
-    public List<Entry> getUncommittedBlocks() {
+    public List<Entry> getUncommittedBlocks()
+    {
         return uncommittedBlocks;
     }
 
@@ -213,7 +225,8 @@ public class ListBlobBlocksResult {
      *            A {@link List} of {@link Entry} instances representing the
      *            uncommitted blocks of the blob.
      */
-    public void setUncommittedBlocks(List<Entry> uncommittedBlocks) {
+    public void setUncommittedBlocks(List<Entry> uncommittedBlocks)
+    {
         this.uncommittedBlocks = uncommittedBlocks;
     }
 
@@ -221,7 +234,8 @@ public class ListBlobBlocksResult {
      * The class for an entry in a list of blocks, representing a committed or
      * uncommitted block.
      */
-    public static class Entry {
+    public static class Entry
+    {
         private String blockId;
         private long blockLength;
 
@@ -233,7 +247,8 @@ public class ListBlobBlocksResult {
          */
         @XmlElement(name = "Name")
         @XmlJavaTypeAdapter(Base64StringAdapter.class)
-        public String getBlockId() {
+        public String getBlockId()
+        {
             return blockId;
         }
 
@@ -249,7 +264,8 @@ public class ListBlobBlocksResult {
          *            A {@link String} containing the client-specified block ID
          *            for the block.
          */
-        public void setBlockId(String blockId) {
+        public void setBlockId(String blockId)
+        {
             this.blockId = blockId;
         }
 
@@ -259,7 +275,8 @@ public class ListBlobBlocksResult {
          * @return The length of the block in bytes.
          */
         @XmlElement(name = "Size")
-        public long getBlockLength() {
+        public long getBlockLength()
+        {
             return blockLength;
         }
 
@@ -274,7 +291,8 @@ public class ListBlobBlocksResult {
          * @param blockLength
          *            The length of the block in bytes.
          */
-        public void setBlockLength(long blockLength) {
+        public void setBlockLength(long blockLength)
+        {
             this.blockLength = blockLength;
         }
     }

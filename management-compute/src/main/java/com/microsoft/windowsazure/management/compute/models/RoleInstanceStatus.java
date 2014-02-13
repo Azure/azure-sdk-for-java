@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * The current status of a role instance.
 */
-public class RoleInstanceStatus {
+public class RoleInstanceStatus
+{
     /**
     * The role state is currently unknown. The state should automatically be
     * resolved once the role state is detected, so no action is required.

@@ -27,7 +27,8 @@ package com.microsoft.windowsazure.management.compute.models;
 * The service certificate format. Windows Azure supports the pfx and cer file
 * formats.
 */
-public enum CertificateFormat {
+public enum CertificateFormat
+{
     Pfx,
     
     Cer,

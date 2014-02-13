@@ -31,14 +31,16 @@ import java.util.Iterator;
 /**
 * The response to a ListConnections request to a Virtual Network Gateway.
 */
-public class GatewayListConnectionsResponse extends OperationResponse implements Iterable<GatewayListConnectionsResponse.GatewayConnection> {
+public class GatewayListConnectionsResponse extends OperationResponse implements Iterable<GatewayListConnectionsResponse.GatewayConnection>
+{
     private ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections;
     
     /**
     * The list of connections.
     * @return The Connections value.
     */
-    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections() {
+    public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections()
+    {
         return this.connections;
     }
     
@@ -46,7 +48,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     * The list of connections.
     * @param connectionsValue The Connections value.
     */
-    public void setConnections(final ArrayList<GatewayListConnectionsResponse.GatewayConnection> connectionsValue) {
+    public void setConnections(final ArrayList<GatewayListConnectionsResponse.GatewayConnection> connectionsValue)
+    {
         this.connections = connectionsValue;
     }
     
@@ -54,7 +57,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     * Initializes a new instance of the GatewayListConnectionsResponse class.
     *
     */
-    public GatewayListConnectionsResponse() {
+    public GatewayListConnectionsResponse()
+    {
         super();
         this.connections = new ArrayList<GatewayListConnectionsResponse.GatewayConnection>();
     }
@@ -63,11 +67,13 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     * Gets the sequence of Connections.
     *
     */
-    public Iterator<GatewayListConnectionsResponse.GatewayConnection> iterator() {
+    public Iterator<GatewayListConnectionsResponse.GatewayConnection> iterator()
+    {
         return this.getConnections().iterator();
     }
     
-    public static class GatewayConnection {
+    public static class GatewayConnection
+    {
         private ArrayList<String> allocatedIPAddresses;
         
         /**
@@ -76,7 +82,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * that are assigned to currently connected VPN clients.
         * @return The AllocatedIPAddresses value.
         */
-        public ArrayList<String> getAllocatedIPAddresses() {
+        public ArrayList<String> getAllocatedIPAddresses()
+        {
             return this.allocatedIPAddresses;
         }
         
@@ -86,7 +93,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * that are assigned to currently connected VPN clients.
         * @param allocatedIPAddressesValue The AllocatedIPAddresses value.
         */
-        public void setAllocatedIPAddresses(final ArrayList<String> allocatedIPAddressesValue) {
+        public void setAllocatedIPAddresses(final ArrayList<String> allocatedIPAddressesValue)
+        {
             this.allocatedIPAddresses = allocatedIPAddressesValue;
         }
         
@@ -97,7 +105,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * Connected, Connecting or NotConnected.
         * @return The ConnectivityState value.
         */
-        public GatewayConnectivityState getConnectivityState() {
+        public GatewayConnectivityState getConnectivityState()
+        {
             return this.connectivityState;
         }
         
@@ -106,7 +115,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * Connected, Connecting or NotConnected.
         * @param connectivityStateValue The ConnectivityState value.
         */
-        public void setConnectivityState(final GatewayConnectivityState connectivityStateValue) {
+        public void setConnectivityState(final GatewayConnectivityState connectivityStateValue)
+        {
             this.connectivityState = connectivityStateValue;
         }
         
@@ -117,7 +127,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * since it was started.
         * @return The EgressBytesTransferred value.
         */
-        public long getEgressBytesTransferred() {
+        public long getEgressBytesTransferred()
+        {
             return this.egressBytesTransferred;
         }
         
@@ -126,7 +137,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * since it was started.
         * @param egressBytesTransferredValue The EgressBytesTransferred value.
         */
-        public void setEgressBytesTransferred(final long egressBytesTransferredValue) {
+        public void setEgressBytesTransferred(final long egressBytesTransferredValue)
+        {
             this.egressBytesTransferred = egressBytesTransferredValue;
         }
         
@@ -137,7 +149,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * since it was started.
         * @return The IngressBytesTransferred value.
         */
-        public long getIngressBytesTransferred() {
+        public long getIngressBytesTransferred()
+        {
             return this.ingressBytesTransferred;
         }
         
@@ -146,7 +159,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * since it was started.
         * @param ingressBytesTransferredValue The IngressBytesTransferred value.
         */
-        public void setIngressBytesTransferred(final long ingressBytesTransferredValue) {
+        public void setIngressBytesTransferred(final long ingressBytesTransferredValue)
+        {
             this.ingressBytesTransferred = ingressBytesTransferredValue;
         }
         
@@ -155,7 +169,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         /**
         * @return The LastConnectionEstablished value.
         */
-        public Calendar getLastConnectionEstablished() {
+        public Calendar getLastConnectionEstablished()
+        {
             return this.lastConnectionEstablished;
         }
         
@@ -163,7 +178,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * @param lastConnectionEstablishedValue The LastConnectionEstablished
         * value.
         */
-        public void setLastConnectionEstablished(final Calendar lastConnectionEstablishedValue) {
+        public void setLastConnectionEstablished(final Calendar lastConnectionEstablishedValue)
+        {
             this.lastConnectionEstablished = lastConnectionEstablishedValue;
         }
         
@@ -173,7 +189,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * A record of the last provisioning event for this connection.
         * @return The LastEvent value.
         */
-        public GatewayEvent getLastEvent() {
+        public GatewayEvent getLastEvent()
+        {
             return this.lastEvent;
         }
         
@@ -181,7 +198,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * A record of the last provisioning event for this connection.
         * @param lastEventValue The LastEvent value.
         */
-        public void setLastEvent(final GatewayEvent lastEventValue) {
+        public void setLastEvent(final GatewayEvent lastEventValue)
+        {
             this.lastEvent = lastEventValue;
         }
         
@@ -191,7 +209,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * The name of the local network site represented by the connection.
         * @return The LocalNetworkSiteName value.
         */
-        public String getLocalNetworkSiteName() {
+        public String getLocalNetworkSiteName()
+        {
             return this.localNetworkSiteName;
         }
         
@@ -199,7 +218,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * The name of the local network site represented by the connection.
         * @param localNetworkSiteNameValue The LocalNetworkSiteName value.
         */
-        public void setLocalNetworkSiteName(final String localNetworkSiteNameValue) {
+        public void setLocalNetworkSiteName(final String localNetworkSiteNameValue)
+        {
             this.localNetworkSiteName = localNetworkSiteNameValue;
         }
         
@@ -207,7 +227,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         * Initializes a new instance of the GatewayConnection class.
         *
         */
-        public GatewayConnection() {
+        public GatewayConnection()
+        {
             this.allocatedIPAddresses = new ArrayList<String>();
         }
     }

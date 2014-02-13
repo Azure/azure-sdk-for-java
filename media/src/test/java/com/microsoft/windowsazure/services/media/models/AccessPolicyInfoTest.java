@@ -23,10 +23,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AccessPolicyType;
 
-public class AccessPolicyInfoTest {
+public class AccessPolicyInfoTest
+{
 
     @Test
-    public void getSetId() {
+    public void getSetId()
+    {
         String expected = "expectedId";
 
         AccessPolicyInfo policy = new AccessPolicyInfo(null,
@@ -38,7 +40,8 @@ public class AccessPolicyInfoTest {
     }
 
     @Test
-    public void getSetCreated() {
+    public void getSetCreated()
+    {
         Date expected = new Date();
         AccessPolicyInfo policy = new AccessPolicyInfo(null,
                 new AccessPolicyType().setCreated(expected));
@@ -49,7 +52,8 @@ public class AccessPolicyInfoTest {
     }
 
     @Test
-    public void getSetLastModified() {
+    public void getSetLastModified()
+    {
         Date expected = new Date();
         AccessPolicyInfo policy = new AccessPolicyInfo(null,
                 new AccessPolicyType().setLastModified(expected));
@@ -60,7 +64,8 @@ public class AccessPolicyInfoTest {
     }
 
     @Test
-    public void getSetName() {
+    public void getSetName()
+    {
         String expected = "policy name goes here";
         AccessPolicyInfo policy = new AccessPolicyInfo(null,
                 new AccessPolicyType().setName(expected));
@@ -71,7 +76,8 @@ public class AccessPolicyInfoTest {
     }
 
     @Test
-    public void getSetDurationInMinutes() {
+    public void getSetDurationInMinutes()
+    {
         double expected = 60; // arbitrary value
         AccessPolicyInfo policy = new AccessPolicyInfo(null,
                 new AccessPolicyType().setDurationInMinutes(expected));
@@ -82,7 +88,8 @@ public class AccessPolicyInfoTest {
     }
 
     @Test
-    public void getSetPermissions() {
+    public void getSetPermissions()
+    {
         EnumSet<AccessPolicyPermission> expected = EnumSet.of(
                 AccessPolicyPermission.LIST, AccessPolicyPermission.WRITE);
         AccessPolicyInfo policy = new AccessPolicyInfo(null,

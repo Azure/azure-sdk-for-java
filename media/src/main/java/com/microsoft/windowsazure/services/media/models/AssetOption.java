@@ -20,7 +20,8 @@ import java.security.InvalidParameterException;
 /**
  * Specifies the options for encryption.
  */
-public enum AssetOption {
+public enum AssetOption
+{
 
     /** The None. */
     None(0),
@@ -38,7 +39,8 @@ public enum AssetOption {
      * @param encryptionOptionCode
      *            the encryption option code
      */
-    private AssetOption(int encryptionOptionCode) {
+    private AssetOption(int encryptionOptionCode)
+    {
         this.encryptionOptionCode = encryptionOptionCode;
     }
 
@@ -47,7 +49,8 @@ public enum AssetOption {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return encryptionOptionCode;
     }
 
@@ -58,8 +61,10 @@ public enum AssetOption {
      *            the integer value of option
      * @return The AssetOption
      */
-    public static AssetOption fromCode(int option) {
-        switch (option) {
+    public static AssetOption fromCode(int option)
+    {
+        switch (option)
+        {
         case 0:
             return AssetOption.None;
         case 1:

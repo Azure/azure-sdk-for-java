@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * createQueue} request. These options include a server response timeout for the
  * request and the metadata to associate with the created queue.
  */
-public class CreateQueueOptions extends QueueServiceOptions {
+public class CreateQueueOptions extends QueueServiceOptions
+{
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
     /**
@@ -39,7 +40,8 @@ public class CreateQueueOptions extends QueueServiceOptions {
      * @return A reference to this {@link CreateQueueOptions} instance.
      */
     @Override
-    public CreateQueueOptions setTimeout(Integer timeout) {
+    public CreateQueueOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -51,7 +53,8 @@ public class CreateQueueOptions extends QueueServiceOptions {
      * @return A {@link java.util.HashMap} of key-value {@link String} pairs
      *         containing the metadata to set on the queue.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -68,7 +71,8 @@ public class CreateQueueOptions extends QueueServiceOptions {
      *            pairs containing the metadata to set on the queue.
      * @return A reference to this {@link CreateQueueOptions} instance.
      */
-    public CreateQueueOptions setMetadata(HashMap<String, String> metadata) {
+    public CreateQueueOptions setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
         return this;
     }
@@ -91,7 +95,8 @@ public class CreateQueueOptions extends QueueServiceOptions {
      *            pair to add to the metadata.
      * @return A reference to this {@link CreateQueueOptions} instance.
      */
-    public CreateQueueOptions addMetadata(String key, String value) {
+    public CreateQueueOptions addMetadata(String key, String value)
+    {
         this.metadata.put(key, value);
         return this;
     }

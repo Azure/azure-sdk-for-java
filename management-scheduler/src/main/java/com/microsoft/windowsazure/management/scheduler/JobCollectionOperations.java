@@ -39,7 +39,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-public interface JobCollectionOperations {
+public interface JobCollectionOperations
+{
     /**
     * Create a job collection.
     *

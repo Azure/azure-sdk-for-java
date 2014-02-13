@@ -23,35 +23,42 @@ import com.microsoft.windowsazure.services.media.implementation.atom.EntryType;
 import com.microsoft.windowsazure.services.media.implementation.atom.LinkType;
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 
-public class EntityBatchOperation {
+public class EntityBatchOperation
+{
 
     protected String verb;
     protected EntryType entryType;
 
-    public EntityBatchOperation() {
+    public EntityBatchOperation()
+    {
         this.entryType = new EntryType();
     }
 
-    public EntryType getEntryType() {
+    public EntryType getEntryType()
+    {
         return entryType;
     }
 
-    public EntityBatchOperation setEntityType(EntryType entryType) {
+    public EntityBatchOperation setEntityType(EntryType entryType)
+    {
         this.entryType = entryType;
         return this;
     }
 
-    protected EntityBatchOperation setVerb(String verb) {
+    protected EntityBatchOperation setVerb(String verb)
+    {
         this.verb = verb;
         return this;
     }
 
-    public String getVerb() {
+    public String getVerb()
+    {
         return this.verb;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public EntityBatchOperation addContentObject(Object contentObject) {
+    public EntityBatchOperation addContentObject(Object contentObject)
+    {
         ContentType atomContent = new ContentType();
         atomContent.setType("application/xml");
         atomContent
@@ -67,7 +74,8 @@ public class EntityBatchOperation {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected EntityBatchOperation addLink(String title, String href,
-            String type, String rel) {
+            String type, String rel)
+    {
         LinkType linkType = new LinkType();
         linkType.setTitle(title);
         linkType.setHref(href);
