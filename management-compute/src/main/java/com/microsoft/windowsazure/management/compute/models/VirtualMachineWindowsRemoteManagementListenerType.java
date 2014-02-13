@@ -24,10 +24,10 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Specifies the type of listener for enabling remote Windows PowerShell.
- */
+* Specifies the type of listener for enabling remote Windows PowerShell.
+*/
 public enum VirtualMachineWindowsRemoteManagementListenerType {
     Http,
-
+    
     Https,
 }

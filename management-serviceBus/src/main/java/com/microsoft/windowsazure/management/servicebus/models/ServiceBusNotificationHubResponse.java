@@ -26,24 +26,22 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * A standard storage response including an HTTP status code and request ID.
- */
+* A standard storage response including an HTTP status code and request ID.
+*/
 public class ServiceBusNotificationHubResponse extends OperationResponse {
     private ServiceBusNotificationHub notificationHub;
-
+    
     /**
-     * @return The NotificationHub value.
-     */
+    * @return The NotificationHub value.
+    */
     public ServiceBusNotificationHub getNotificationHub() {
         return this.notificationHub;
     }
-
+    
     /**
-     * @param notificationHubValue
-     *            The NotificationHub value.
-     */
-    public void setNotificationHub(
-            final ServiceBusNotificationHub notificationHubValue) {
+    * @param notificationHubValue The NotificationHub value.
+    */
+    public void setNotificationHub(final ServiceBusNotificationHub notificationHubValue) {
         this.notificationHub = notificationHubValue;
     }
 }

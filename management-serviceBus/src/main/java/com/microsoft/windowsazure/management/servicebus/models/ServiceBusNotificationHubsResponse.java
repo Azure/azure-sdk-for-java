@@ -28,42 +28,39 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * A standard storage response including an HTTP status code and request ID.
- */
-public class ServiceBusNotificationHubsResponse extends OperationResponse
-        implements Iterable<ServiceBusNotificationHub> {
+* A standard storage response including an HTTP status code and request ID.
+*/
+public class ServiceBusNotificationHubsResponse extends OperationResponse implements Iterable<ServiceBusNotificationHub> {
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
-
+    
     /**
-     * @return The NotificationHubs value.
-     */
+    * @return The NotificationHubs value.
+    */
     public ArrayList<ServiceBusNotificationHub> getNotificationHubs() {
         return this.notificationHubs;
     }
-
+    
     /**
-     * @param notificationHubsValue
-     *            The NotificationHubs value.
-     */
-    public void setNotificationHubs(
-            final ArrayList<ServiceBusNotificationHub> notificationHubsValue) {
+    * @param notificationHubsValue The NotificationHubs value.
+    */
+    public void setNotificationHubs(final ArrayList<ServiceBusNotificationHub> notificationHubsValue) {
         this.notificationHubs = notificationHubsValue;
     }
-
+    
     /**
-     * Initializes a new instance of the ServiceBusNotificationHubsResponse
-     * class.
-     * 
-     */
+    * Initializes a new instance of the ServiceBusNotificationHubsResponse
+    * class.
+    *
+    */
     public ServiceBusNotificationHubsResponse() {
         super();
         this.notificationHubs = new ArrayList<ServiceBusNotificationHub>();
     }
-
+    
     /**
-     * Gets the sequence of NotificationHubs.
-     * 
-     */
+    * Gets the sequence of NotificationHubs.
+    *
+    */
     public Iterator<ServiceBusNotificationHub> iterator() {
         return this.getNotificationHubs().iterator();
     }

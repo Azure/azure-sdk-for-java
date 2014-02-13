@@ -24,201 +24,177 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Parameters supplied to the Add Extension operation.
- */
+* Parameters supplied to the Add Extension operation.
+*/
 public class HostedServiceAddExtensionParameters {
     private String id;
-
+    
     /**
-     * The identifier of the extension.
-     * 
-     * @return The Id value.
-     */
+    * The identifier of the extension.
+    * @return The Id value.
+    */
     public String getId() {
         return this.id;
     }
-
+    
     /**
-     * The identifier of the extension.
-     * 
-     * @param idValue
-     *            The Id value.
-     */
+    * The identifier of the extension.
+    * @param idValue The Id value.
+    */
     public void setId(final String idValue) {
         this.id = idValue;
     }
-
+    
     private String privateConfiguration;
-
+    
     /**
-     * The private configuration that is defined using the schema returned by
-     * the List Available Extensions operation.
-     * 
-     * @return The PrivateConfiguration value.
-     */
+    * The private configuration that is defined using the schema returned by
+    * the List Available Extensions operation.
+    * @return The PrivateConfiguration value.
+    */
     public String getPrivateConfiguration() {
         return this.privateConfiguration;
     }
-
+    
     /**
-     * The private configuration that is defined using the schema returned by
-     * the List Available Extensions operation.
-     * 
-     * @param privateConfigurationValue
-     *            The PrivateConfiguration value.
-     */
+    * The private configuration that is defined using the schema returned by
+    * the List Available Extensions operation.
+    * @param privateConfigurationValue The PrivateConfiguration value.
+    */
     public void setPrivateConfiguration(final String privateConfigurationValue) {
         this.privateConfiguration = privateConfigurationValue;
     }
-
+    
     private String providerNamespace;
-
+    
     /**
-     * The provider namespace of the extension. The provider namespace for
-     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
-     * 
-     * @return The ProviderNamespace value.
-     */
+    * The provider namespace of the extension. The provider namespace for
+    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * @return The ProviderNamespace value.
+    */
     public String getProviderNamespace() {
         return this.providerNamespace;
     }
-
+    
     /**
-     * The provider namespace of the extension. The provider namespace for
-     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
-     * 
-     * @param providerNamespaceValue
-     *            The ProviderNamespace value.
-     */
+    * The provider namespace of the extension. The provider namespace for
+    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * @param providerNamespaceValue The ProviderNamespace value.
+    */
     public void setProviderNamespace(final String providerNamespaceValue) {
         this.providerNamespace = providerNamespaceValue;
     }
-
+    
     private String publicConfiguration;
-
+    
     /**
-     * The public configuration that is defined using the schema returned by the
-     * List Available Extensions operation.
-     * 
-     * @return The PublicConfiguration value.
-     */
+    * The public configuration that is defined using the schema returned by the
+    * List Available Extensions operation.
+    * @return The PublicConfiguration value.
+    */
     public String getPublicConfiguration() {
         return this.publicConfiguration;
     }
-
+    
     /**
-     * The public configuration that is defined using the schema returned by the
-     * List Available Extensions operation.
-     * 
-     * @param publicConfigurationValue
-     *            The PublicConfiguration value.
-     */
+    * The public configuration that is defined using the schema returned by the
+    * List Available Extensions operation.
+    * @param publicConfigurationValue The PublicConfiguration value.
+    */
     public void setPublicConfiguration(final String publicConfigurationValue) {
         this.publicConfiguration = publicConfigurationValue;
     }
-
+    
     private String thumbprint;
-
+    
     /**
-     * The thumbprint of the certificate that is used to encrypt the
-     * configuration specified in PrivateConfiguration. If this element is not
-     * specified, a certificate may be automatically generated and added to the
-     * cloud service.
-     * 
-     * @return The Thumbprint value.
-     */
+    * The thumbprint of the certificate that is used to encrypt the
+    * configuration specified in PrivateConfiguration. If this element is not
+    * specified, a certificate may be automatically generated and added to the
+    * cloud service.
+    * @return The Thumbprint value.
+    */
     public String getThumbprint() {
         return this.thumbprint;
     }
-
+    
     /**
-     * The thumbprint of the certificate that is used to encrypt the
-     * configuration specified in PrivateConfiguration. If this element is not
-     * specified, a certificate may be automatically generated and added to the
-     * cloud service.
-     * 
-     * @param thumbprintValue
-     *            The Thumbprint value.
-     */
+    * The thumbprint of the certificate that is used to encrypt the
+    * configuration specified in PrivateConfiguration. If this element is not
+    * specified, a certificate may be automatically generated and added to the
+    * cloud service.
+    * @param thumbprintValue The Thumbprint value.
+    */
     public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
-
+    
     private String thumbprintAlgorithm;
-
+    
     /**
-     * The thumbprint algorithm of the certificate that is used toencrypt the
-     * configuration specified in PrivateConfiguration.
-     * 
-     * @return The ThumbprintAlgorithm value.
-     */
+    * The thumbprint algorithm of the certificate that is used toencrypt the
+    * configuration specified in PrivateConfiguration.
+    * @return The ThumbprintAlgorithm value.
+    */
     public String getThumbprintAlgorithm() {
         return this.thumbprintAlgorithm;
     }
-
+    
     /**
-     * The thumbprint algorithm of the certificate that is used toencrypt the
-     * configuration specified in PrivateConfiguration.
-     * 
-     * @param thumbprintAlgorithmValue
-     *            The ThumbprintAlgorithm value.
-     */
+    * The thumbprint algorithm of the certificate that is used toencrypt the
+    * configuration specified in PrivateConfiguration.
+    * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
+    */
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
         this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
-
+    
     private String type;
-
+    
     /**
-     * Required. The type of the extension.
-     * 
-     * @return The Type value.
-     */
+    * Required. The type of the extension.
+    * @return The Type value.
+    */
     public String getType() {
         return this.type;
     }
-
+    
     /**
-     * Required. The type of the extension.
-     * 
-     * @param typeValue
-     *            The Type value.
-     */
+    * Required. The type of the extension.
+    * @param typeValue The Type value.
+    */
     public void setType(final String typeValue) {
         this.type = typeValue;
     }
-
+    
     private String version;
-
+    
     /**
-     * Optional. Specifies the version of the extension. If this element is not
-     * specified or an asterisk (*) is used as the value, the latest version of
-     * the extension is used. If the value is specified with a major version
-     * number and an asterisk as the minor version number (X.*), the latest
-     * minor version of the specified major version is selected. If a major
-     * version number and a minor version number are specified (X.Y), the
-     * specific extension version is selected. If a version is specified, an
-     * auto-upgrade is performed on the role instance.
-     * 
-     * @return The Version value.
-     */
+    * Optional. Specifies the version of the extension. If this element is not
+    * specified or an asterisk (*) is used as the value, the latest version of
+    * the extension is used. If the value is specified with a major version
+    * number and an asterisk as the minor version number (X.*), the latest
+    * minor version of the specified major version is selected. If a major
+    * version number and a minor version number are specified (X.Y), the
+    * specific extension version is selected. If a version is specified, an
+    * auto-upgrade is performed on the role instance.
+    * @return The Version value.
+    */
     public String getVersion() {
         return this.version;
     }
-
+    
     /**
-     * Optional. Specifies the version of the extension. If this element is not
-     * specified or an asterisk (*) is used as the value, the latest version of
-     * the extension is used. If the value is specified with a major version
-     * number and an asterisk as the minor version number (X.*), the latest
-     * minor version of the specified major version is selected. If a major
-     * version number and a minor version number are specified (X.Y), the
-     * specific extension version is selected. If a version is specified, an
-     * auto-upgrade is performed on the role instance.
-     * 
-     * @param versionValue
-     *            The Version value.
-     */
+    * Optional. Specifies the version of the extension. If this element is not
+    * specified or an asterisk (*) is used as the value, the latest version of
+    * the extension is used. If the value is specified with a major version
+    * number and an asterisk as the minor version number (X.*), the latest
+    * minor version of the specified major version is selected. If a major
+    * version number and a minor version number are specified (X.Y), the
+    * specific extension version is selected. If a version is specified, an
+    * auto-upgrade is performed on the role instance.
+    * @param versionValue The Version value.
+    */
     public void setVersion(final String versionValue) {
         this.version = versionValue;
     }

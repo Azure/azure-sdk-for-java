@@ -24,12 +24,12 @@
 package com.microsoft.windowsazure.management.servicebus.models;
 
 /**
- * An access right.
- */
+* An access right.
+*/
 public enum AccessRight {
     Listen,
-
+    
     Manage,
-
+    
     Send,
 }

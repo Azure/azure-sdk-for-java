@@ -24,11 +24,11 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Required. Specifies the type for the resource extension. Possible values are:
- * Public | Private.
- */
+* Required. Specifies the type for the resource extension. Possible values are:
+* Public | Private.
+*/
 public enum ResourceExtensionParameterValueType {
     Public,
-
+    
     Private,
 }

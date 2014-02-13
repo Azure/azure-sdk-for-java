@@ -26,127 +26,111 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import java.util.ArrayList;
 
 /**
- * A response to a request for a particular namespace.
- */
+* A response to a request for a particular namespace.
+*/
 public class NamespaceDescription {
     private String authorizationType;
-
+    
     /**
-     * The authorization type.
-     * 
-     * @return The AuthorizationType value.
-     */
+    * The authorization type.
+    * @return The AuthorizationType value.
+    */
     public String getAuthorizationType() {
         return this.authorizationType;
     }
-
+    
     /**
-     * The authorization type.
-     * 
-     * @param authorizationTypeValue
-     *            The AuthorizationType value.
-     */
+    * The authorization type.
+    * @param authorizationTypeValue The AuthorizationType value.
+    */
     public void setAuthorizationType(final String authorizationTypeValue) {
         this.authorizationType = authorizationTypeValue;
     }
-
+    
     private String connectionString;
-
+    
     /**
-     * Namespace connection string. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The ConnectionString value.
-     */
+    * Namespace connection string.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The ConnectionString value.
+    */
     public String getConnectionString() {
         return this.connectionString;
     }
-
+    
     /**
-     * Namespace connection string. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param connectionStringValue
-     *            The ConnectionString value.
-     */
+    * Namespace connection string.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param connectionStringValue The ConnectionString value.
+    */
     public void setConnectionString(final String connectionStringValue) {
         this.connectionString = connectionStringValue;
     }
-
+    
     private String keyName;
-
+    
     /**
-     * Default ACS access key to generate the access token. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @return The KeyName value.
-     */
+    * Default ACS access key to generate the access token.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @return The KeyName value.
+    */
     public String getKeyName() {
         return this.keyName;
     }
-
+    
     /**
-     * Default ACS access key to generate the access token. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-     * more information)
-     * 
-     * @param keyNameValue
-     *            The KeyName value.
-     */
+    * Default ACS access key to generate the access token.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
+    * more information)
+    * @param keyNameValue The KeyName value.
+    */
     public void setKeyName(final String keyNameValue) {
         this.keyName = keyNameValue;
     }
-
+    
     private ArrayList<AccessRight> rights;
-
+    
     /**
-     * The rights associated with a namespace.
-     * 
-     * @return The Rights value.
-     */
+    * The rights associated with a namespace.
+    * @return The Rights value.
+    */
     public ArrayList<AccessRight> getRights() {
         return this.rights;
     }
-
+    
     /**
-     * The rights associated with a namespace.
-     * 
-     * @param rightsValue
-     *            The Rights value.
-     */
+    * The rights associated with a namespace.
+    * @param rightsValue The Rights value.
+    */
     public void setRights(final ArrayList<AccessRight> rightsValue) {
         this.rights = rightsValue;
     }
-
+    
     private String secondaryConnectionString;
-
+    
     /**
-     * Secondary namespace connection string.
-     * 
-     * @return The SecondaryConnectionString value.
-     */
+    * Secondary namespace connection string.
+    * @return The SecondaryConnectionString value.
+    */
     public String getSecondaryConnectionString() {
         return this.secondaryConnectionString;
     }
-
+    
     /**
-     * Secondary namespace connection string.
-     * 
-     * @param secondaryConnectionStringValue
-     *            The SecondaryConnectionString value.
-     */
-    public void setSecondaryConnectionString(
-            final String secondaryConnectionStringValue) {
+    * Secondary namespace connection string.
+    * @param secondaryConnectionStringValue The SecondaryConnectionString value.
+    */
+    public void setSecondaryConnectionString(final String secondaryConnectionStringValue) {
         this.secondaryConnectionString = secondaryConnectionStringValue;
     }
-
+    
     /**
-     * Initializes a new instance of the NamespaceDescription class.
-     * 
-     */
+    * Initializes a new instance of the NamespaceDescription class.
+    *
+    */
     public NamespaceDescription() {
         this.rights = new ArrayList<AccessRight>();
     }

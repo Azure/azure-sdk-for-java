@@ -24,11 +24,11 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Specifies the protocol to use to inspect the virtual machine availability
- * status.
- */
+* Specifies the protocol to use to inspect the virtual machine availability
+* status.
+*/
 public enum LoadBalancerProbeTransportProtocol {
     Tcp,
-
+    
     Http,
 }

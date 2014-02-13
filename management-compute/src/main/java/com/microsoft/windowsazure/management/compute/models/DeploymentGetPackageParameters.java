@@ -26,53 +26,47 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.URI;
 
 /**
- * Parameters supplied to the Get Package operation.
- */
+* Parameters supplied to the Get Package operation.
+*/
 public class DeploymentGetPackageParameters {
     private URI containerUri;
-
+    
     /**
-     * Required. Specifies the URI of the container to which the packages will
-     * be saved.
-     * 
-     * @return The ContainerUri value.
-     */
+    * Required. Specifies the URI of the container to which the packages will
+    * be saved.
+    * @return The ContainerUri value.
+    */
     public URI getContainerUri() {
         return this.containerUri;
     }
-
+    
     /**
-     * Required. Specifies the URI of the container to which the packages will
-     * be saved.
-     * 
-     * @param containerUriValue
-     *            The ContainerUri value.
-     */
+    * Required. Specifies the URI of the container to which the packages will
+    * be saved.
+    * @param containerUriValue The ContainerUri value.
+    */
     public void setContainerUri(final URI containerUriValue) {
         this.containerUri = containerUriValue;
     }
-
+    
     private Boolean overwriteExisting;
-
+    
     /**
-     * Optional. Specifies whether an existing package in the storage container
-     * should be overwritten. If true the packages with the same names under the
-     * specified storage container will be overwritten; otherwise false.
-     * 
-     * @return The OverwriteExisting value.
-     */
+    * Optional. Specifies whether an existing package in the storage container
+    * should be overwritten. If true the packages with the same names under
+    * the specified storage container will be overwritten; otherwise false.
+    * @return The OverwriteExisting value.
+    */
     public Boolean isOverwriteExisting() {
         return this.overwriteExisting;
     }
-
+    
     /**
-     * Optional. Specifies whether an existing package in the storage container
-     * should be overwritten. If true the packages with the same names under the
-     * specified storage container will be overwritten; otherwise false.
-     * 
-     * @param overwriteExistingValue
-     *            The OverwriteExisting value.
-     */
+    * Optional. Specifies whether an existing package in the storage container
+    * should be overwritten. If true the packages with the same names under
+    * the specified storage container will be overwritten; otherwise false.
+    * @param overwriteExistingValue The OverwriteExisting value.
+    */
     public void setOverwriteExisting(final Boolean overwriteExistingValue) {
         this.overwriteExisting = overwriteExistingValue;
     }

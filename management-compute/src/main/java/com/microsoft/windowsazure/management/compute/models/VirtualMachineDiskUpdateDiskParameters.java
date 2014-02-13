@@ -26,124 +26,109 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.net.URI;
 
 /**
- * Parameters supplied to the Update Virtual Disk Image operation.
- */
+* Parameters supplied to the Update Virtual Disk Image operation.
+*/
 public class VirtualMachineDiskUpdateDiskParameters {
     private Boolean hasOperatingSystem;
-
+    
     /**
-     * Optional. Specifies whether the disk contains an operation system. Note:
-     * Only a disk with an operating system installed can be mounted as OS
-     * Drive.
-     * 
-     * @return The HasOperatingSystem value.
-     */
+    * Optional.  Specifies whether the disk contains an operation system.
+    * Note: Only a disk with an operating system installed can be mounted as
+    * OS Drive.
+    * @return The HasOperatingSystem value.
+    */
     public Boolean isHasOperatingSystem() {
         return this.hasOperatingSystem;
     }
-
+    
     /**
-     * Optional. Specifies whether the disk contains an operation system. Note:
-     * Only a disk with an operating system installed can be mounted as OS
-     * Drive.
-     * 
-     * @param hasOperatingSystemValue
-     *            The HasOperatingSystem value.
-     */
+    * Optional.  Specifies whether the disk contains an operation system.
+    * Note: Only a disk with an operating system installed can be mounted as
+    * OS Drive.
+    * @param hasOperatingSystemValue The HasOperatingSystem value.
+    */
     public void setHasOperatingSystem(final Boolean hasOperatingSystemValue) {
         this.hasOperatingSystem = hasOperatingSystemValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * Required. Specifies the friendly name of the disk.
-     * 
-     * @return The Label value.
-     */
+    * Required. Specifies the friendly name of the disk.
+    * @return The Label value.
+    */
     public String getLabel() {
         return this.label;
     }
-
+    
     /**
-     * Required. Specifies the friendly name of the disk.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
+    * Required. Specifies the friendly name of the disk.
+    * @param labelValue The Label value.
+    */
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-
+    
     private URI mediaLinkUri;
-
+    
     /**
-     * Optional. Specifies the location of the blob in Windows Azure storage.
-     * The blob location must belong to a storage account in the subscription
-     * specified by the SubscriptionId value in the operation call. Example:
-     * http://example.blob.core.windows.net/disks/mydisk.vhd
-     * 
-     * @return The MediaLinkUri value.
-     */
+    * Optional. Specifies the location of the blob in Windows Azure storage.
+    * The blob location must belong to a storage account in the subscription
+    * specified by the SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @return The MediaLinkUri value.
+    */
     public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
-
+    
     /**
-     * Optional. Specifies the location of the blob in Windows Azure storage.
-     * The blob location must belong to a storage account in the subscription
-     * specified by the SubscriptionId value in the operation call. Example:
-     * http://example.blob.core.windows.net/disks/mydisk.vhd
-     * 
-     * @param mediaLinkUriValue
-     *            The MediaLinkUri value.
-     */
+    * Optional. Specifies the location of the blob in Windows Azure storage.
+    * The blob location must belong to a storage account in the subscription
+    * specified by the SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
+    */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * Required. Specifies a name for the disk. Windows Azure uses the name to
-     * identify the disk when creating virtual machines from the disk.
-     * 
-     * @return The Name value.
-     */
+    * Required. Specifies a name for the disk. Windows Azure uses the name to
+    * identify the disk when creating virtual machines from the disk.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * Required. Specifies a name for the disk. Windows Azure uses the name to
-     * identify the disk when creating virtual machines from the disk.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * Required. Specifies a name for the disk. Windows Azure uses the name to
+    * identify the disk when creating virtual machines from the disk.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String operatingSystemType;
-
+    
     /**
-     * Optional. The operating system type of the disk. Possible values are:
-     * Linux, Windows.
-     * 
-     * @return The OperatingSystemType value.
-     */
+    * Optional. The operating system type of the disk. Possible values are:
+    * Linux, Windows.
+    * @return The OperatingSystemType value.
+    */
     public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
-
+    
     /**
-     * Optional. The operating system type of the disk. Possible values are:
-     * Linux, Windows.
-     * 
-     * @param operatingSystemTypeValue
-     *            The OperatingSystemType value.
-     */
+    * Optional. The operating system type of the disk. Possible values are:
+    * Linux, Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
+    */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }

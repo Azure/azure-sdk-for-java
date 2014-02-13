@@ -26,38 +26,34 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
- * Optional. Configures the Windows Remote Management service on the virtual
- * machine, which enables remote Windows PowerShell.
- */
+* Optional. Configures the Windows Remote Management service on the virtual
+* machine, which enables remote Windows PowerShell.
+*/
 public class WindowsRemoteManagementSettings {
     private ArrayList<WindowsRemoteManagementListener> listeners;
-
+    
     /**
-     * Required. Contains a collection of information for enabling remote
-     * Windows PowerShell.
-     * 
-     * @return The Listeners value.
-     */
+    * Required. Contains a collection of information for enabling remote
+    * Windows PowerShell.
+    * @return The Listeners value.
+    */
     public ArrayList<WindowsRemoteManagementListener> getListeners() {
         return this.listeners;
     }
-
+    
     /**
-     * Required. Contains a collection of information for enabling remote
-     * Windows PowerShell.
-     * 
-     * @param listenersValue
-     *            The Listeners value.
-     */
-    public void setListeners(
-            final ArrayList<WindowsRemoteManagementListener> listenersValue) {
+    * Required. Contains a collection of information for enabling remote
+    * Windows PowerShell.
+    * @param listenersValue The Listeners value.
+    */
+    public void setListeners(final ArrayList<WindowsRemoteManagementListener> listenersValue) {
         this.listeners = listenersValue;
     }
-
+    
     /**
-     * Initializes a new instance of the WindowsRemoteManagementSettings class.
-     * 
-     */
+    * Initializes a new instance of the WindowsRemoteManagementSettings class.
+    *
+    */
     public WindowsRemoteManagementSettings() {
         this.listeners = new ArrayList<WindowsRemoteManagementListener>();
     }

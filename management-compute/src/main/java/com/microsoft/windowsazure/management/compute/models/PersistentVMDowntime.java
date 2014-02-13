@@ -26,69 +26,60 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.Calendar;
 
 /**
- * Contains information about when the virtual machine has been started and
- * stopped.
- */
+* Contains information about when the virtual machine has been started and
+* stopped.
+*/
 public class PersistentVMDowntime {
     private Calendar endTime;
-
+    
     /**
-     * The time that the virtual machine was stopped.
-     * 
-     * @return The EndTime value.
-     */
+    * The time that the virtual machine was stopped.
+    * @return The EndTime value.
+    */
     public Calendar getEndTime() {
         return this.endTime;
     }
-
+    
     /**
-     * The time that the virtual machine was stopped.
-     * 
-     * @param endTimeValue
-     *            The EndTime value.
-     */
+    * The time that the virtual machine was stopped.
+    * @param endTimeValue The EndTime value.
+    */
     public void setEndTime(final Calendar endTimeValue) {
         this.endTime = endTimeValue;
     }
-
+    
     private Calendar startTime;
-
+    
     /**
-     * The time that the virtual machine was started.
-     * 
-     * @return The StartTime value.
-     */
+    * The time that the virtual machine was started.
+    * @return The StartTime value.
+    */
     public Calendar getStartTime() {
         return this.startTime;
     }
-
+    
     /**
-     * The time that the virtual machine was started.
-     * 
-     * @param startTimeValue
-     *            The StartTime value.
-     */
+    * The time that the virtual machine was started.
+    * @param startTimeValue The StartTime value.
+    */
     public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
-
+    
     private String status;
-
+    
     /**
-     * The status of the virtual machine.
-     * 
-     * @return The Status value.
-     */
+    * The status of the virtual machine.
+    * @return The Status value.
+    */
     public String getStatus() {
         return this.status;
     }
-
+    
     /**
-     * The status of the virtual machine.
-     * 
-     * @param statusValue
-     *            The Status value.
-     */
+    * The status of the virtual machine.
+    * @param statusValue The Status value.
+    */
     public void setStatus(final String statusValue) {
         this.status = statusValue;
     }

@@ -111,108 +111,90 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * The Service Management API includes operations for managing the deployments
- * beneath your subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for more
- * information)
- */
-public class DeploymentOperationsImpl implements
-        ServiceOperations<ComputeManagementClientImpl>, DeploymentOperations {
+* The Service Management API includes operations for managing the deployments
+* beneath your subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for more
+* information)
+*/
+public class DeploymentOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, DeploymentOperations {
     /**
-     * Initializes a new instance of the DeploymentOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
+    * Initializes a new instance of the DeploymentOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
     DeploymentOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
-
+    
     private ComputeManagementClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
-     * 
-     * @return The Client value.
-     */
+    * Gets a reference to the
+    * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
+    * @return The Client value.
+    */
     public ComputeManagementClientImpl getClient() {
         return this.client;
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentName
-     *            The deployment to change configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentName The deployment to change configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginChangingConfigurationByNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginChangingConfigurationByName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginChangingConfigurationByNameAsync(final String serviceName, final String deploymentName, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginChangingConfigurationByName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentName
-     *            The deployment to change configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentName The deployment to change configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginChangingConfigurationByName(
-            String serviceName, String deploymentName,
-            DeploymentChangeConfigurationParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginChangingConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -229,38 +211,31 @@ public class DeploymentOperationsImpl implements
         }
         if (parameters.getExtensionConfiguration() != null) {
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles()) {
                     if (allRolesParameterItem.getId() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.AllRoles.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
             }
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles()) {
                     if (namedRolesParameterItem.getExtensions() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
                     }
                     if (namedRolesParameterItem.getExtensions() != null) {
-                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem
-                                .getExtensions()) {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions()) {
                             if (extensionsParameterItem.getId() == null) {
-                                throw new NullPointerException(
-                                        "parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
                             }
                         }
                     }
                     if (namedRolesParameterItem.getRoleName() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
                     }
                 }
             }
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -270,215 +245,143 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginChangingConfigurationByNameAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginChangingConfigurationByNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/" + "?" + "comp=config";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=config";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element changeConfigurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "ChangeConfiguration");
+        
+        Element changeConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ChangeConfiguration");
         requestDoc.appendChild(changeConfigurationElement);
-
-        Element configurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement
-                .appendChild(requestDoc.createTextNode(new String(Base64
-                        .encodeBase64(parameters.getConfiguration().getBytes()))));
+        
+        Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
+        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         changeConfigurationElement.appendChild(configurationElement);
-
+        
         if (parameters.isTreatWarningsAsError() != null) {
-            Element treatWarningsAsErrorElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "TreatWarningsAsError");
-            treatWarningsAsErrorElement
-                    .appendChild(requestDoc.createTextNode(Boolean.toString(
-                            parameters.isTreatWarningsAsError()).toLowerCase()));
+            Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             changeConfigurationElement.appendChild(treatWarningsAsErrorElement);
         }
-
+        
         if (parameters.getMode() != null) {
-            Element modeElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Mode");
-            modeElement.appendChild(requestDoc.createTextNode(parameters
-                    .getMode().toString()));
+            Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+            modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
             changeConfigurationElement.appendChild(modeElement);
         }
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            changeConfigurationElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         if (parameters.getExtensionConfiguration() != null) {
-            Element extensionConfigurationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "ExtensionConfiguration");
-            changeConfigurationElement
-                    .appendChild(extensionConfigurationElement);
-
+            Element extensionConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
+            changeConfigurationElement.appendChild(extensionConfigurationElement);
+            
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "Extension");
+                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
                     allRolesSequenceElement.appendChild(extensionElement);
-
-                    Element idElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc
-                            .createTextNode(allRolesItem.getId()));
+                    
+                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
                     extensionElement.appendChild(idElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(allRolesSequenceElement);
+                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
-
+            
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Role");
+                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
                     namedRolesSequenceElement.appendChild(roleElement);
-
-                    Element roleNameElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "RoleName");
-                    roleNameElement.appendChild(requestDoc
-                            .createTextNode(namedRolesItem.getRoleName()));
+                    
+                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
                     roleElement.appendChild(roleNameElement);
-
-                    Element extensionsSequenceElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem
-                            .getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Extension");
-                        extensionsSequenceElement
-                                .appendChild(extensionElement2);
-
-                        Element idElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Id");
-                        idElement2.appendChild(requestDoc
-                                .createTextNode(extensionsItem.getId()));
+                    
+                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        extensionsSequenceElement.appendChild(extensionElement2);
+                        
+                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
                         extensionElement2.appendChild(idElement2);
                     }
                     roleElement.appendChild(extensionsSequenceElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(namedRolesSequenceElement);
+                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -489,80 +392,65 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentSlot
-     *            The slot to change deployment configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentSlot The slot to change deployment configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginChangingConfigurationBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginChangingConfigurationBySlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginChangingConfigurationBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginChangingConfigurationBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentSlot
-     *            The slot to change deployment configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentSlot The slot to change deployment configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginChangingConfigurationBySlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentChangeConfigurationParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginChangingConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -576,38 +464,31 @@ public class DeploymentOperationsImpl implements
         }
         if (parameters.getExtensionConfiguration() != null) {
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles()) {
                     if (allRolesParameterItem.getId() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.AllRoles.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
             }
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles()) {
                     if (namedRolesParameterItem.getExtensions() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
                     }
                     if (namedRolesParameterItem.getExtensions() != null) {
-                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem
-                                .getExtensions()) {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions()) {
                             if (extensionsParameterItem.getId() == null) {
-                                throw new NullPointerException(
-                                        "parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
                             }
                         }
                     }
                     if (namedRolesParameterItem.getRoleName() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
                     }
                 }
             }
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -617,216 +498,143 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginChangingConfigurationBySlotAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginChangingConfigurationBySlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/" + "?"
-                + "comp=config";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=config";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element changeConfigurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "ChangeConfiguration");
+        
+        Element changeConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ChangeConfiguration");
         requestDoc.appendChild(changeConfigurationElement);
-
-        Element configurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement
-                .appendChild(requestDoc.createTextNode(new String(Base64
-                        .encodeBase64(parameters.getConfiguration().getBytes()))));
+        
+        Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
+        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         changeConfigurationElement.appendChild(configurationElement);
-
+        
         if (parameters.isTreatWarningsAsError() != null) {
-            Element treatWarningsAsErrorElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "TreatWarningsAsError");
-            treatWarningsAsErrorElement
-                    .appendChild(requestDoc.createTextNode(Boolean.toString(
-                            parameters.isTreatWarningsAsError()).toLowerCase()));
+            Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             changeConfigurationElement.appendChild(treatWarningsAsErrorElement);
         }
-
+        
         if (parameters.getMode() != null) {
-            Element modeElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Mode");
-            modeElement.appendChild(requestDoc.createTextNode(parameters
-                    .getMode().toString()));
+            Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+            modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
             changeConfigurationElement.appendChild(modeElement);
         }
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            changeConfigurationElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            changeConfigurationElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         if (parameters.getExtensionConfiguration() != null) {
-            Element extensionConfigurationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "ExtensionConfiguration");
-            changeConfigurationElement
-                    .appendChild(extensionConfigurationElement);
-
+            Element extensionConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
+            changeConfigurationElement.appendChild(extensionConfigurationElement);
+            
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "Extension");
+                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
                     allRolesSequenceElement.appendChild(extensionElement);
-
-                    Element idElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc
-                            .createTextNode(allRolesItem.getId()));
+                    
+                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
                     extensionElement.appendChild(idElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(allRolesSequenceElement);
+                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
-
+            
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Role");
+                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
                     namedRolesSequenceElement.appendChild(roleElement);
-
-                    Element roleNameElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "RoleName");
-                    roleNameElement.appendChild(requestDoc
-                            .createTextNode(namedRolesItem.getRoleName()));
+                    
+                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
                     roleElement.appendChild(roleNameElement);
-
-                    Element extensionsSequenceElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem
-                            .getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Extension");
-                        extensionsSequenceElement
-                                .appendChild(extensionElement2);
-
-                        Element idElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Id");
-                        idElement2.appendChild(requestDoc
-                                .createTextNode(extensionsItem.getId()));
+                    
+                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        extensionsSequenceElement.appendChild(extensionElement2);
+                        
+                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
                         extensionElement2.appendChild(idElement2);
                     }
                     roleElement.appendChild(extensionsSequenceElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(namedRolesSequenceElement);
+                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -837,77 +645,61 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Create Deployment operation uploads a new service package and creates
-     * a new deployment in the staging or production environments. The Create
-     * Deployment operation is an asynchronous operation. To determine whether
-     * the management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to create a deployment for.
-     * @param deploymentSlot
-     *            The slot to create a deployment for.
-     * @param parameters
-     *            Parameters supplied to the Create Deployment operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Deployment operation uploads a new service package and creates
+    * a new deployment in the staging or production environments.  The Create
+    * Deployment operation is an asynchronous operation. To determine whether
+    * the management service has finished processing the request, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to create a deployment for.
+    * @param deploymentSlot The slot to create a deployment for.
+    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginCreatingAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginCreating(serviceName, deploymentSlot,
-                                parameters);
-                    }
-                });
+    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginCreating(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Deployment operation uploads a new service package and creates
-     * a new deployment in the staging or production environments. The Create
-     * Deployment operation is an asynchronous operation. To determine whether
-     * the management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to create a deployment for.
-     * @param deploymentSlot
-     *            The slot to create a deployment for.
-     * @param parameters
-     *            Parameters supplied to the Create Deployment operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Create Deployment operation uploads a new service package and creates
+    * a new deployment in the staging or production environments.  The Create
+    * Deployment operation is an asynchronous operation. To determine whether
+    * the management service has finished processing the request, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to create a deployment for.
+    * @param deploymentSlot The slot to create a deployment for.
+    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginCreating(String serviceName,
-            DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -921,33 +713,26 @@ public class DeploymentOperationsImpl implements
         }
         if (parameters.getExtensionConfiguration() != null) {
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles()) {
                     if (allRolesParameterItem.getId() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.AllRoles.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
             }
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles()) {
                     if (namedRolesParameterItem.getExtensions() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
                     }
                     if (namedRolesParameterItem.getExtensions() != null) {
-                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem
-                                .getExtensions()) {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions()) {
                             if (extensionsParameterItem.getId() == null) {
-                                throw new NullPointerException(
-                                        "parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
                             }
                         }
                     }
                     if (namedRolesParameterItem.getRoleName() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
                     }
                 }
             }
@@ -964,7 +749,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getPackageUri() == null) {
             throw new NullPointerException("parameters.PackageUri");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -974,234 +759,155 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCreatingAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCreatingAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element createDeploymentElement = requestDoc
-                .createElementNS("http://schemas.microsoft.com/windowsazure",
-                        "CreateDeployment");
+        
+        Element createDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CreateDeployment");
         requestDoc.appendChild(createDeploymentElement);
-
-        Element nameElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Name");
-        nameElement
-                .appendChild(requestDoc.createTextNode(parameters.getName()));
+        
+        Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+        nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         createDeploymentElement.appendChild(nameElement);
-
-        Element packageUrlElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "PackageUrl");
-        packageUrlElement.appendChild(requestDoc.createTextNode(parameters
-                .getPackageUri().toString()));
+        
+        Element packageUrlElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PackageUrl");
+        packageUrlElement.appendChild(requestDoc.createTextNode(parameters.getPackageUri().toString()));
         createDeploymentElement.appendChild(packageUrlElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         createDeploymentElement.appendChild(labelElement);
-
-        Element configurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement
-                .appendChild(requestDoc.createTextNode(new String(Base64
-                        .encodeBase64(parameters.getConfiguration().getBytes()))));
+        
+        Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
+        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         createDeploymentElement.appendChild(configurationElement);
-
+        
         if (parameters.isStartDeployment() != null) {
-            Element startDeploymentElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "StartDeployment");
-            startDeploymentElement.appendChild(requestDoc
-                    .createTextNode(Boolean.toString(
-                            parameters.isStartDeployment()).toLowerCase()));
+            Element startDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StartDeployment");
+            startDeploymentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isStartDeployment()).toLowerCase()));
             createDeploymentElement.appendChild(startDeploymentElement);
         }
-
+        
         if (parameters.isTreatWarningsAsError() != null) {
-            Element treatWarningsAsErrorElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "TreatWarningsAsError");
-            treatWarningsAsErrorElement
-                    .appendChild(requestDoc.createTextNode(Boolean.toString(
-                            parameters.isTreatWarningsAsError()).toLowerCase()));
+            Element treatWarningsAsErrorElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TreatWarningsAsError");
+            treatWarningsAsErrorElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isTreatWarningsAsError()).toLowerCase()));
             createDeploymentElement.appendChild(treatWarningsAsErrorElement);
         }
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            createDeploymentElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            createDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         if (parameters.getExtensionConfiguration() != null) {
-            Element extensionConfigurationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "ExtensionConfiguration");
+            Element extensionConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
             createDeploymentElement.appendChild(extensionConfigurationElement);
-
+            
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "Extension");
+                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
                     allRolesSequenceElement.appendChild(extensionElement);
-
-                    Element idElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc
-                            .createTextNode(allRolesItem.getId()));
+                    
+                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
                     extensionElement.appendChild(idElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(allRolesSequenceElement);
+                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
-
+            
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Role");
+                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
                     namedRolesSequenceElement.appendChild(roleElement);
-
-                    Element roleNameElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "RoleName");
-                    roleNameElement.appendChild(requestDoc
-                            .createTextNode(namedRolesItem.getRoleName()));
+                    
+                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
                     roleElement.appendChild(roleNameElement);
-
-                    Element extensionsSequenceElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem
-                            .getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Extension");
-                        extensionsSequenceElement
-                                .appendChild(extensionElement2);
-
-                        Element idElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Id");
-                        idElement2.appendChild(requestDoc
-                                .createTextNode(extensionsItem.getId()));
+                    
+                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        extensionsSequenceElement.appendChild(extensionElement2);
+                        
+                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
                         extensionElement2.appendChild(idElement2);
                     }
                     roleElement.appendChild(extensionsSequenceElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(namedRolesSequenceElement);
+                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1212,69 +918,55 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob for the disk should
-     *            also be deleted from storage.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * disk should also be deleted from storage.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginDeletingByNameAsync(
-            final String serviceName, final String deploymentName,
-            final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginDeletingByName(serviceName, deploymentName,
-                                deleteFromStorage);
-                    }
-                });
+    public Future<OperationResponse> beginDeletingByNameAsync(final String serviceName, final String deploymentName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginDeletingByName(serviceName, deploymentName, deleteFromStorage);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob for the disk should
-     *            also be deleted from storage.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * disk should also be deleted from storage.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginDeletingByName(String serviceName,
-            String deploymentName, boolean deleteFromStorage)
-            throws IOException, ServiceException {
+    public OperationResponse beginDeletingByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1282,7 +974,7 @@ public class DeploymentOperationsImpl implements
         if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1292,56 +984,48 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
-            CloudTracing.enter(invocationId, this, "beginDeletingByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginDeletingByNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "?";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
-
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1352,65 +1036,56 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginDeletingBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginDeletingBySlot(serviceName, deploymentSlot);
-                    }
-                });
+    public Future<OperationResponse> beginDeletingBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginDeletingBySlot(serviceName, deploymentSlot);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginDeletingBySlot(String serviceName,
-            DeploymentSlot deploymentSlot) throws IOException, ServiceException {
+    public OperationResponse beginDeletingBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1419,53 +1094,45 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
-            CloudTracing.enter(invocationId, this, "beginDeletingBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginDeletingBySlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1476,69 +1143,55 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginRebootingRoleInstanceByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginRebootingRoleInstanceByDeploymentName(
-                                serviceName, deploymentName, roleInstanceName);
-                    }
-                });
+    public Future<OperationResponse> beginRebootingRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginRebootingRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginRebootingRoleInstanceByDeploymentName(
-            String serviceName, String deploymentName, String roleInstanceName)
-            throws IOException, ServiceException {
+    public OperationResponse beginRebootingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1549,7 +1202,7 @@ public class DeploymentOperationsImpl implements
         if (roleInstanceName == null) {
             throw new NullPointerException("roleInstanceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1559,57 +1212,47 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "beginRebootingRoleInstanceByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginRebootingRoleInstanceByDeploymentNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/roleinstances/" + roleInstanceName + "?"
-                + "comp=reboot";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + roleInstanceName + "?" + "comp=reboot";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Length", "0");
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1620,69 +1263,55 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginRebootingRoleInstanceByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginRebootingRoleInstanceByDeploymentSlot(
-                                serviceName, deploymentSlot, roleInstanceName);
-                    }
-                });
+    public Future<OperationResponse> beginRebootingRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginRebootingRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginRebootingRoleInstanceByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            String roleInstanceName) throws IOException, ServiceException {
+    public OperationResponse beginRebootingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1690,7 +1319,7 @@ public class DeploymentOperationsImpl implements
         if (roleInstanceName == null) {
             throw new NullPointerException("roleInstanceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1700,57 +1329,47 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "beginRebootingRoleInstanceByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginRebootingRoleInstanceByDeploymentSlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/roleinstances/"
-                + roleInstanceName + "?" + "comp=reboot";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName + "?" + "comp=reboot";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Length", "0");
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1761,69 +1380,55 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginReimagingRoleInstanceByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginReimagingRoleInstanceByDeploymentName(
-                                serviceName, deploymentName, roleInstanceName);
-                    }
-                });
+    public Future<OperationResponse> beginReimagingRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginReimagingRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginReimagingRoleInstanceByDeploymentName(
-            String serviceName, String deploymentName, String roleInstanceName)
-            throws IOException, ServiceException {
+    public OperationResponse beginReimagingRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1834,7 +1439,7 @@ public class DeploymentOperationsImpl implements
         if (roleInstanceName == null) {
             throw new NullPointerException("roleInstanceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1844,57 +1449,47 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "beginReimagingRoleInstanceByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginReimagingRoleInstanceByDeploymentNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/roleinstances/" + roleInstanceName + "?"
-                + "comp=reimage";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + roleInstanceName + "?" + "comp=reimage";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Length", "0");
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -1905,69 +1500,55 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginReimagingRoleInstanceByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginReimagingRoleInstanceByDeploymentSlot(
-                                serviceName, deploymentSlot, roleInstanceName);
-                    }
-                });
+    public Future<OperationResponse> beginReimagingRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginReimagingRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginReimagingRoleInstanceByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            String roleInstanceName) throws IOException, ServiceException {
+    public OperationResponse beginReimagingRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1975,7 +1556,7 @@ public class DeploymentOperationsImpl implements
         if (roleInstanceName == null) {
             throw new NullPointerException("roleInstanceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1985,57 +1566,47 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "beginReimagingRoleInstanceByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginReimagingRoleInstanceByDeploymentSlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/roleinstances/"
-                + roleInstanceName + "?" + "comp=reimage";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName + "?" + "comp=reimage";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Length", "0");
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -2046,71 +1617,61 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Swap Deployment operation initiates a virtual IP address swap between
-     * the staging and production deployment environments for a service. If the
-     * service is currently running in the staging environment, it will be
-     * swapped to the production environment. If it is running in the production
-     * environment, it will be swapped to staging. For more information on this
-     * type of upgrade, see Performing Virtual IP Swap Upgrades. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param parameters
-     *            Parameters supplied to the Swap Deployment operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Swap Deployment operation initiates a virtual IP address swap between
+    * the staging and production deployment environments for a service. If the
+    * service is currently running in the staging environment, it will be
+    * swapped to the production environment. If it is running in the
+    * production environment, it will be swapped to staging. For more
+    * information on this type of upgrade, see Performing Virtual IP Swap
+    * Upgrades.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginSwappingAsync(
-            final String serviceName, final DeploymentSwapParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginSwapping(serviceName, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginSwappingAsync(final String serviceName, final DeploymentSwapParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginSwapping(serviceName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Swap Deployment operation initiates a virtual IP address swap between
-     * the staging and production deployment environments for a service. If the
-     * service is currently running in the staging environment, it will be
-     * swapped to the production environment. If it is running in the production
-     * environment, it will be swapped to staging. For more information on this
-     * type of upgrade, see Performing Virtual IP Swap Upgrades. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param parameters
-     *            Parameters supplied to the Swap Deployment operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Swap Deployment operation initiates a virtual IP address swap between
+    * the staging and production deployment environments for a service. If the
+    * service is currently running in the staging environment, it will be
+    * swapped to the production environment. If it is running in the
+    * production environment, it will be swapped to staging. For more
+    * information on this type of upgrade, see Performing Virtual IP Swap
+    * Upgrades.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginSwapping(String serviceName,
-            DeploymentSwapParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginSwapping(String serviceName, DeploymentSwapParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2122,7 +1683,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getSourceDeployment() == null) {
             throw new NullPointerException("parameters.SourceDeployment");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2131,92 +1692,76 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginSwappingAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginSwappingAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element swapElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Swap");
+        
+        Element swapElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Swap");
         requestDoc.appendChild(swapElement);
-
+        
         if (parameters.getProductionDeployment() != null) {
-            Element productionElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure", "Production");
-            productionElement.appendChild(requestDoc.createTextNode(parameters
-                    .getProductionDeployment()));
+            Element productionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Production");
+            productionElement.appendChild(requestDoc.createTextNode(parameters.getProductionDeployment()));
             swapElement.appendChild(productionElement);
         }
-
-        Element sourceDeploymentElement = requestDoc
-                .createElementNS("http://schemas.microsoft.com/windowsazure",
-                        "SourceDeployment");
-        sourceDeploymentElement.appendChild(requestDoc
-                .createTextNode(parameters.getSourceDeployment()));
+        
+        Element sourceDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceDeployment");
+        sourceDeploymentElement.appendChild(requestDoc.createTextNode(parameters.getSourceDeployment()));
         swapElement.appendChild(sourceDeploymentElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -2227,80 +1772,65 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginUpdatingStatusByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginUpdatingStatusByDeploymentName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginUpdatingStatusByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginUpdatingStatusByDeploymentName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginUpdatingStatusByDeploymentName(
-            String serviceName, String deploymentName,
-            DeploymentUpdateStatusParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdatingStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2312,7 +1842,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2322,86 +1852,70 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginUpdatingStatusByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginUpdatingStatusByDeploymentNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/" + "?" + "comp=status";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=status";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element updateDeploymentStatusElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpdateDeploymentStatus");
+        
+        Element updateDeploymentStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateDeploymentStatus");
         requestDoc.appendChild(updateDeploymentStatusElement);
-
-        Element statusElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Status");
-        statusElement.appendChild(requestDoc.createTextNode(parameters
-                .getStatus().toString()));
+        
+        Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
+        statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
         updateDeploymentStatusElement.appendChild(statusElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -2412,80 +1926,65 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginUpdatingStatusByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginUpdatingStatusByDeploymentSlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginUpdatingStatusByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginUpdatingStatusByDeploymentSlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginUpdatingStatusByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentUpdateStatusParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpdatingStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2494,7 +1993,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2504,87 +2003,70 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginUpdatingStatusByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginUpdatingStatusByDeploymentSlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/" + "?"
-                + "comp=status";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=status";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element updateDeploymentStatusElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpdateDeploymentStatus");
+        
+        Element updateDeploymentStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateDeploymentStatus");
         requestDoc.appendChild(updateDeploymentStatusElement);
-
-        Element statusElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Status");
-        statusElement.appendChild(requestDoc.createTextNode(parameters
-                .getStatus().toString()));
+        
+        Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
+        statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
         updateDeploymentStatusElement.appendChild(statusElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -2595,117 +2077,103 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentName
-     *            The deployment to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentName The deployment to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginUpgradingByNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginUpgradingByName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginUpgradingByNameAsync(final String serviceName, final String deploymentName, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginUpgradingByName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentName
-     *            The deployment to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentName The deployment to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginUpgradingByName(String serviceName,
-            String deploymentName, DeploymentUpgradeParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpgradingByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -2722,33 +2190,26 @@ public class DeploymentOperationsImpl implements
         }
         if (parameters.getExtensionConfiguration() != null) {
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles()) {
                     if (allRolesParameterItem.getId() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.AllRoles.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
             }
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles()) {
                     if (namedRolesParameterItem.getExtensions() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
                     }
                     if (namedRolesParameterItem.getExtensions() != null) {
-                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem
-                                .getExtensions()) {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions()) {
                             if (extensionsParameterItem.getId() == null) {
-                                throw new NullPointerException(
-                                        "parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
                             }
                         }
                     }
                     if (namedRolesParameterItem.getRoleName() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
                     }
                 }
             }
@@ -2762,7 +2223,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getPackageUri() == null) {
             throw new NullPointerException("parameters.PackageUri");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -2772,229 +2233,153 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginUpgradingByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginUpgradingByNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/" + "?" + "comp=upgrade";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=upgrade";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element upgradeDeploymentElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpgradeDeployment");
+        
+        Element upgradeDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpgradeDeployment");
         requestDoc.appendChild(upgradeDeploymentElement);
-
-        Element modeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Mode");
-        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode()
-                .toString()));
+        
+        Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
         upgradeDeploymentElement.appendChild(modeElement);
-
-        Element packageUrlElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "PackageUrl");
-        packageUrlElement.appendChild(requestDoc.createTextNode(parameters
-                .getPackageUri().toString()));
+        
+        Element packageUrlElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PackageUrl");
+        packageUrlElement.appendChild(requestDoc.createTextNode(parameters.getPackageUri().toString()));
         upgradeDeploymentElement.appendChild(packageUrlElement);
-
-        Element configurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement
-                .appendChild(requestDoc.createTextNode(new String(Base64
-                        .encodeBase64(parameters.getConfiguration().getBytes()))));
+        
+        Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
+        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         upgradeDeploymentElement.appendChild(configurationElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         upgradeDeploymentElement.appendChild(labelElement);
-
+        
         if (parameters.getRoleToUpgrade() != null) {
-            Element roleToUpgradeElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "RoleToUpgrade");
-            roleToUpgradeElement.appendChild(requestDoc
-                    .createTextNode(parameters.getRoleToUpgrade()));
+            Element roleToUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleToUpgrade");
+            roleToUpgradeElement.appendChild(requestDoc.createTextNode(parameters.getRoleToUpgrade()));
             upgradeDeploymentElement.appendChild(roleToUpgradeElement);
         }
-
-        Element forceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(
-                parameters.isForce()).toLowerCase()));
+        
+        Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         upgradeDeploymentElement.appendChild(forceElement);
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            upgradeDeploymentElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         if (parameters.getExtensionConfiguration() != null) {
-            Element extensionConfigurationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "ExtensionConfiguration");
+            Element extensionConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
             upgradeDeploymentElement.appendChild(extensionConfigurationElement);
-
+            
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "Extension");
+                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
                     allRolesSequenceElement.appendChild(extensionElement);
-
-                    Element idElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc
-                            .createTextNode(allRolesItem.getId()));
+                    
+                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
                     extensionElement.appendChild(idElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(allRolesSequenceElement);
+                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
-
+            
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Role");
+                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
                     namedRolesSequenceElement.appendChild(roleElement);
-
-                    Element roleNameElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "RoleName");
-                    roleNameElement.appendChild(requestDoc
-                            .createTextNode(namedRolesItem.getRoleName()));
+                    
+                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
                     roleElement.appendChild(roleNameElement);
-
-                    Element extensionsSequenceElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem
-                            .getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Extension");
-                        extensionsSequenceElement
-                                .appendChild(extensionElement2);
-
-                        Element idElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Id");
-                        idElement2.appendChild(requestDoc
-                                .createTextNode(extensionsItem.getId()));
+                    
+                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        extensionsSequenceElement.appendChild(extensionElement2);
+                        
+                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
                         extensionElement2.appendChild(idElement2);
                     }
                     roleElement.appendChild(extensionsSequenceElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(namedRolesSequenceElement);
+                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -3005,118 +2390,103 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. To perform an
-     * automatic update of a deployment, call Upgrade Deployment or Change
-     * Deployment Configuration with the Mode element set to automatic. The
-     * update proceeds from that point without a need for further input. You can
-     * call Get Operation Status to determine when the update is complete. To
-     * perform a manual update, first call Upgrade Deployment with the Mode
-     * element set to manual. Next, call Walk Upgrade Domain to update each
-     * domain within the deployment. You should make sure that the operation is
-     * complete by calling Get Operation Status before updating the next domain.
-     * Important: An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentSlot
-     *            The slot to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentSlot The slot to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginUpgradingBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginUpgradingBySlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginUpgradingBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginUpgradingBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. To perform an
-     * automatic update of a deployment, call Upgrade Deployment or Change
-     * Deployment Configuration with the Mode element set to automatic. The
-     * update proceeds from that point without a need for further input. You can
-     * call Get Operation Status to determine when the update is complete. To
-     * perform a manual update, first call Upgrade Deployment with the Mode
-     * element set to manual. Next, call Walk Upgrade Domain to update each
-     * domain within the deployment. You should make sure that the operation is
-     * complete by calling Get Operation Status before updating the next domain.
-     * Important: An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentSlot
-     *            The slot to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentSlot The slot to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginUpgradingBySlot(String serviceName,
-            DeploymentSlot deploymentSlot,
-            DeploymentUpgradeParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginUpgradingBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3130,33 +2500,26 @@ public class DeploymentOperationsImpl implements
         }
         if (parameters.getExtensionConfiguration() != null) {
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
+                for (ExtensionConfiguration.Extension allRolesParameterItem : parameters.getExtensionConfiguration().getAllRoles()) {
                     if (allRolesParameterItem.getId() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.AllRoles.Id");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.AllRoles.Id");
                     }
                 }
             }
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
+                for (ExtensionConfiguration.NamedRole namedRolesParameterItem : parameters.getExtensionConfiguration().getNamedRoles()) {
                     if (namedRolesParameterItem.getExtensions() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.Extensions");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions");
                     }
                     if (namedRolesParameterItem.getExtensions() != null) {
-                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem
-                                .getExtensions()) {
+                        for (ExtensionConfiguration.Extension extensionsParameterItem : namedRolesParameterItem.getExtensions()) {
                             if (extensionsParameterItem.getId() == null) {
-                                throw new NullPointerException(
-                                        "parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
+                                throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.Extensions.Id");
                             }
                         }
                     }
                     if (namedRolesParameterItem.getRoleName() == null) {
-                        throw new NullPointerException(
-                                "parameters.ExtensionConfiguration.NamedRoles.RoleName");
+                        throw new NullPointerException("parameters.ExtensionConfiguration.NamedRoles.RoleName");
                     }
                 }
             }
@@ -3170,7 +2533,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getPackageUri() == null) {
             throw new NullPointerException("parameters.PackageUri");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3180,230 +2543,153 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginUpgradingBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginUpgradingBySlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/" + "?"
-                + "comp=upgrade";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=upgrade";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element upgradeDeploymentElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "UpgradeDeployment");
+        
+        Element upgradeDeploymentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpgradeDeployment");
         requestDoc.appendChild(upgradeDeploymentElement);
-
-        Element modeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Mode");
-        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode()
-                .toString()));
+        
+        Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
         upgradeDeploymentElement.appendChild(modeElement);
-
-        Element packageUrlElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "PackageUrl");
-        packageUrlElement.appendChild(requestDoc.createTextNode(parameters
-                .getPackageUri().toString()));
+        
+        Element packageUrlElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PackageUrl");
+        packageUrlElement.appendChild(requestDoc.createTextNode(parameters.getPackageUri().toString()));
         upgradeDeploymentElement.appendChild(packageUrlElement);
-
-        Element configurationElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement
-                .appendChild(requestDoc.createTextNode(new String(Base64
-                        .encodeBase64(parameters.getConfiguration().getBytes()))));
+        
+        Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
+        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
         upgradeDeploymentElement.appendChild(configurationElement);
-
-        Element labelElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64
-                .encodeBase64(parameters.getLabel().getBytes()))));
+        
+        Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
+        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         upgradeDeploymentElement.appendChild(labelElement);
-
+        
         if (parameters.getRoleToUpgrade() != null) {
-            Element roleToUpgradeElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "RoleToUpgrade");
-            roleToUpgradeElement.appendChild(requestDoc
-                    .createTextNode(parameters.getRoleToUpgrade()));
+            Element roleToUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleToUpgrade");
+            roleToUpgradeElement.appendChild(requestDoc.createTextNode(parameters.getRoleToUpgrade()));
             upgradeDeploymentElement.appendChild(roleToUpgradeElement);
         }
-
-        Element forceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(
-                parameters.isForce()).toLowerCase()));
+        
+        Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         upgradeDeploymentElement.appendChild(forceElement);
-
+        
         if (parameters.getExtendedProperties() != null) {
-            Element extendedPropertiesDictionaryElement = requestDoc
-                    .createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters
-                    .getExtendedProperties().entrySet()) {
+            Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
-                Element extendedPropertiesElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "ExtendedProperty");
-                extendedPropertiesDictionaryElement
-                        .appendChild(extendedPropertiesElement);
-
-                Element extendedPropertiesKeyElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Name");
-                extendedPropertiesKeyElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesKey));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesKeyElement);
-
-                Element extendedPropertiesValueElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Value");
-                extendedPropertiesValueElement.appendChild(requestDoc
-                        .createTextNode(extendedPropertiesValue));
-                extendedPropertiesElement
-                        .appendChild(extendedPropertiesValueElement);
+                Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
+                extendedPropertiesDictionaryElement.appendChild(extendedPropertiesElement);
+                
+                Element extendedPropertiesKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
+                extendedPropertiesKeyElement.appendChild(requestDoc.createTextNode(extendedPropertiesKey));
+                extendedPropertiesElement.appendChild(extendedPropertiesKeyElement);
+                
+                Element extendedPropertiesValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
+                extendedPropertiesValueElement.appendChild(requestDoc.createTextNode(extendedPropertiesValue));
+                extendedPropertiesElement.appendChild(extendedPropertiesValueElement);
             }
-            upgradeDeploymentElement
-                    .appendChild(extendedPropertiesDictionaryElement);
+            upgradeDeploymentElement.appendChild(extendedPropertiesDictionaryElement);
         }
-
+        
         if (parameters.getExtensionConfiguration() != null) {
-            Element extensionConfigurationElement = requestDoc.createElementNS(
-                    "http://schemas.microsoft.com/windowsazure",
-                    "ExtensionConfiguration");
+            Element extensionConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
             upgradeDeploymentElement.appendChild(extensionConfigurationElement);
-
+            
             if (parameters.getExtensionConfiguration().getAllRoles() != null) {
-                Element allRolesSequenceElement = requestDoc
-                        .createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "AllRoles");
-                for (ExtensionConfiguration.Extension allRolesItem : parameters
-                        .getExtensionConfiguration().getAllRoles()) {
-                    Element extensionElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "Extension");
+                Element allRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
+                for (ExtensionConfiguration.Extension allRolesItem : parameters.getExtensionConfiguration().getAllRoles()) {
+                    Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
                     allRolesSequenceElement.appendChild(extensionElement);
-
-                    Element idElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure", "Id");
-                    idElement.appendChild(requestDoc
-                            .createTextNode(allRolesItem.getId()));
+                    
+                    Element idElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    idElement.appendChild(requestDoc.createTextNode(allRolesItem.getId()));
                     extensionElement.appendChild(idElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(allRolesSequenceElement);
+                extensionConfigurationElement.appendChild(allRolesSequenceElement);
             }
-
+            
             if (parameters.getExtensionConfiguration().getNamedRoles() != null) {
-                Element namedRolesSequenceElement = requestDoc.createElementNS(
-                        "http://schemas.microsoft.com/windowsazure",
-                        "NamedRoles");
-                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters
-                        .getExtensionConfiguration().getNamedRoles()) {
-                    Element roleElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Role");
+                Element namedRolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
+                for (ExtensionConfiguration.NamedRole namedRolesItem : parameters.getExtensionConfiguration().getNamedRoles()) {
+                    Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
                     namedRolesSequenceElement.appendChild(roleElement);
-
-                    Element roleNameElement = requestDoc.createElementNS(
-                            "http://schemas.microsoft.com/windowsazure",
-                            "RoleName");
-                    roleNameElement.appendChild(requestDoc
-                            .createTextNode(namedRolesItem.getRoleName()));
+                    
+                    Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
+                    roleNameElement.appendChild(requestDoc.createTextNode(namedRolesItem.getRoleName()));
                     roleElement.appendChild(roleNameElement);
-
-                    Element extensionsSequenceElement = requestDoc
-                            .createElementNS(
-                                    "http://schemas.microsoft.com/windowsazure",
-                                    "Extensions");
-                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem
-                            .getExtensions()) {
-                        Element extensionElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Extension");
-                        extensionsSequenceElement
-                                .appendChild(extensionElement2);
-
-                        Element idElement2 = requestDoc.createElementNS(
-                                "http://schemas.microsoft.com/windowsazure",
-                                "Id");
-                        idElement2.appendChild(requestDoc
-                                .createTextNode(extensionsItem.getId()));
+                    
+                    Element extensionsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extensions");
+                    for (ExtensionConfiguration.Extension extensionsItem : namedRolesItem.getExtensions()) {
+                        Element extensionElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        extensionsSequenceElement.appendChild(extensionElement2);
+                        
+                        Element idElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Id");
+                        idElement2.appendChild(requestDoc.createTextNode(extensionsItem.getId()));
                         extensionElement2.appendChild(idElement2);
                     }
                     roleElement.appendChild(extensionsSequenceElement);
                 }
-                extensionConfigurationElement
-                        .appendChild(namedRolesSequenceElement);
+                extensionConfigurationElement.appendChild(namedRolesSequenceElement);
             }
         }
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -3414,118 +2700,103 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginWalkingUpgradeDomainByDeploymentName(
-                                serviceName, deploymentName, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginWalkingUpgradeDomainByDeploymentName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginWalkingUpgradeDomainByDeploymentName(
-            String serviceName, String deploymentName,
-            DeploymentWalkUpgradeDomainParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginWalkingUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3536,7 +2807,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3546,86 +2817,70 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginWalkingUpgradeDomainByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginWalkingUpgradeDomainByDeploymentNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "?" + "comp=walkupgradedomain";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?" + "comp=walkupgradedomain";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element walkUpgradeDomainElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "WalkUpgradeDomain");
+        
+        Element walkUpgradeDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WalkUpgradeDomain");
         requestDoc.appendChild(walkUpgradeDomainElement);
-
-        Element upgradeDomainElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "UpgradeDomain");
-        upgradeDomainElement.appendChild(requestDoc.createTextNode(Integer
-                .toString(parameters.getUpgradeDomain())));
+        
+        Element upgradeDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpgradeDomain");
+        upgradeDomainElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getUpgradeDomain())));
         walkUpgradeDomainElement.appendChild(upgradeDomainElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -3636,118 +2891,103 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return beginWalkingUpgradeDomainByDeploymentSlot(
-                                serviceName, deploymentSlot, parameters);
-                    }
-                });
+    public Future<OperationResponse> beginWalkingUpgradeDomainByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginWalkingUpgradeDomainByDeploymentSlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse beginWalkingUpgradeDomainByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentWalkUpgradeDomainParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse beginWalkingUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -3755,7 +2995,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3765,87 +3005,70 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "beginWalkingUpgradeDomainByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginWalkingUpgradeDomainByDeploymentSlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/" + "?"
-                + "comp=walkupgradedomain";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=walkupgradedomain";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element walkUpgradeDomainElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "WalkUpgradeDomain");
+        
+        Element walkUpgradeDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WalkUpgradeDomain");
         requestDoc.appendChild(walkUpgradeDomainElement);
-
-        Element upgradeDomainElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "UpgradeDomain");
-        upgradeDomainElement.appendChild(requestDoc.createTextNode(Integer
-                .toString(parameters.getUpgradeDomain())));
+        
+        Element upgradeDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpgradeDomain");
+        upgradeDomainElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getUpgradeDomain())));
         walkUpgradeDomainElement.appendChild(upgradeDomainElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -3856,98 +3079,81 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentName
-     *            The deployment to change configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentName The deployment to change configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> changeConfigurationByNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return changeConfigurationByName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> changeConfigurationByNameAsync(final String serviceName, final String deploymentName, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return changeConfigurationByName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentName
-     *            The deployment to change configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentName The deployment to change configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse changeConfigurationByName(
-            String serviceName, String deploymentName,
-            DeploymentChangeConfigurationParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3957,43 +3163,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "changeConfigurationByNameAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "changeConfigurationByNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginChangingConfigurationByNameAsync(serviceName,
-                            deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginChangingConfigurationByNameAsync(serviceName, deploymentName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -4008,7 +3200,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -4016,98 +3208,81 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentSlot
-     *            The slot to change deployment configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentSlot The slot to change deployment configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> changeConfigurationBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return changeConfigurationBySlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> changeConfigurationBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return changeConfigurationBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Change Deployment Configuration operation initiates a change to the
-     * deployment configuration. The Change Deployment Configuration operation
-     * is an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to change deployment configuration for.
-     * @param deploymentSlot
-     *            The slot to change deployment configuration for.
-     * @param parameters
-     *            Parameters supplied to the Change Configuration Deployment
-     *            operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Change Deployment Configuration operation initiates a change to the
+    * deployment configuration.  The Change Deployment Configuration operation
+    * is an asynchronous operation. To determine whether the Management
+    * service has finished processing the request, call Get Operation Status.
+    * For more information on asynchronous operations, see Tracking
+    * Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to change deployment configuration
+    * for.
+    * @param deploymentSlot The slot to change deployment configuration for.
+    * @param parameters Parameters supplied to the Change Configuration
+    * Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse changeConfigurationBySlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentChangeConfigurationParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4117,43 +3292,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "changeConfigurationBySlotAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "changeConfigurationBySlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginChangingConfigurationBySlotAsync(serviceName,
-                            deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginChangingConfigurationBySlotAsync(serviceName, deploymentSlot, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -4168,7 +3329,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -4176,106 +3337,86 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Create Deployment operation uploads a new service package and creates
-     * a new deployment in the staging or production environments. The Create
-     * Deployment operation is an asynchronous operation. To determine whether
-     * the management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to create a deployment for.
-     * @param deploymentSlot
-     *            The slot to create a deployment for.
-     * @param parameters
-     *            Parameters supplied to the Create Deployment operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Deployment operation uploads a new service package and creates
+    * a new deployment in the staging or production environments.  The Create
+    * Deployment operation is an asynchronous operation. To determine whether
+    * the management service has finished processing the request, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to create a deployment for.
+    * @param deploymentSlot The slot to create a deployment for.
+    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentCreateParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return create(serviceName, deploymentSlot, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return create(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Create Deployment operation uploads a new service package and creates
-     * a new deployment in the staging or production environments. The Create
-     * Deployment operation is an asynchronous operation. To determine whether
-     * the management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to create a deployment for.
-     * @param deploymentSlot
-     *            The slot to create a deployment for.
-     * @param parameters
-     *            Parameters supplied to the Create Deployment operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Create Deployment operation uploads a new service package and creates
+    * a new deployment in the staging or production environments.  The Create
+    * Deployment operation is an asynchronous operation. To determine whether
+    * the management service has finished processing the request, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to create a deployment for.
+    * @param deploymentSlot The slot to create a deployment for.
+    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName,
-            DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException, ParserConfigurationException, SAXException,
-            TransformerException, ServiceException, URISyntaxException {
+    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4285,43 +3426,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginCreatingAsync(serviceName, deploymentSlot, parameters)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginCreatingAsync(serviceName, deploymentSlot, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -4336,7 +3463,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -4344,95 +3471,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob for the disk should
-     *            also be deleted from storage.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * disk should also be deleted from storage.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteByNameAsync(
-            final String serviceName, final String deploymentName,
-            final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return deleteByName(serviceName, deploymentName,
-                                deleteFromStorage);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> deleteByNameAsync(final String serviceName, final String deploymentName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return deleteByName(serviceName, deploymentName, deleteFromStorage);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param deleteFromStorage
-     *            Optional. Specifies that the source blob for the disk should
-     *            also be deleted from storage.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * disk should also be deleted from storage.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse deleteByName(String serviceName,
-            String deploymentName, boolean deleteFromStorage)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse deleteByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4442,43 +3551,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
-            CloudTracing.enter(invocationId, this, "deleteByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteByNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginDeletingByNameAsync(serviceName, deploymentName,
-                            deleteFromStorage).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginDeletingByNameAsync(serviceName, deploymentName, deleteFromStorage).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -4493,7 +3588,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -4501,86 +3596,73 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return deleteBySlot(serviceName, deploymentSlot);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> deleteBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return deleteBySlot(serviceName, deploymentSlot);
+            }
+         });
     }
-
+    
     /**
-     * The Delete Deployment operation deletes the specified deployment. The
-     * Delete Deployment operation is an asynchronous operation. To determine
-     * whether the Management service has finished processing the request, call
-     * Get Operation Status. For more information on asynchronous operations,
-     * see Tracking Asynchronous Service Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Delete Deployment operation deletes the specified deployment.  The
+    * Delete Deployment operation is an asynchronous operation. To determine
+    * whether the Management service has finished processing the request, call
+    * Get Operation Status. For more information on asynchronous operations,
+    * see Tracking Asynchronous Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse deleteBySlot(String serviceName,
-            DeploymentSlot deploymentSlot) throws InterruptedException,
-            ExecutionException, ServiceException, IOException {
+    public ComputeOperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4589,42 +3671,29 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
-            CloudTracing.enter(invocationId, this, "deleteBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteBySlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2.getDeploymentsOperations()
-                    .beginDeletingBySlotAsync(serviceName, deploymentSlot)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginDeletingBySlotAsync(serviceName, deploymentSlot).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -4639,7 +3708,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -4647,60 +3716,49 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Deployment operation returns configuration information, status,
-     * and system properties for a deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of the deployment.
-     * @return A deployment that exists in the cloud service.
-     */
+    * The Get Deployment operation returns configuration information, status,
+    * and system properties for a deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of the deployment.
+    * @return A deployment that exists in the cloud service.
+    */
     @Override
-    public Future<DeploymentGetResponse> getByNameAsync(
-            final String serviceName, final String deploymentName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<DeploymentGetResponse>() {
-                    @Override
-                    public DeploymentGetResponse call() throws Exception {
-                        return getByName(serviceName, deploymentName);
-                    }
-                });
+    public Future<DeploymentGetResponse> getByNameAsync(final String serviceName, final String deploymentName) {
+        return this.getClient().getExecutorService().submit(new Callable<DeploymentGetResponse>() { 
+            @Override
+            public DeploymentGetResponse call() throws Exception {
+                return getByName(serviceName, deploymentName);
+            }
+         });
     }
-
+    
     /**
-     * The Get Deployment operation returns configuration information, status,
-     * and system properties for a deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of the deployment.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return A deployment that exists in the cloud service.
-     */
+    * The Get Deployment operation returns configuration information, status,
+    * and system properties for a deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of the deployment.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return A deployment that exists in the cloud service.
+    */
     @Override
-    public DeploymentGetResponse getByName(String serviceName,
-            String deploymentName) throws IOException, ServiceException,
-            ParserConfigurationException, SAXException, URISyntaxException {
+    public DeploymentGetResponse getByName(String serviceName, String deploymentName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -4708,7 +3766,7 @@ public class DeploymentOperationsImpl implements
         if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4717,2008 +3775,1224 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
-            CloudTracing.enter(invocationId, this, "getByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getByNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             DeploymentGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DeploymentGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("Deployment");
-            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (deploymentElement != null) {
-                NodeList elements2 = deploymentElement
-                        .getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = deploymentElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = deploymentElement
-                        .getElementsByTagName("DeploymentSlot");
-                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
+                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (deploymentSlotElement != null) {
                     DeploymentSlot deploymentSlotInstance;
-                    deploymentSlotInstance = DeploymentSlot
-                            .valueOf(deploymentSlotElement.getTextContent());
+                    deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                     result.setDeploymentSlot(deploymentSlotInstance);
                 }
-
-                NodeList elements4 = deploymentElement
-                        .getElementsByTagName("PrivateID");
-                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
+                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (privateIDElement != null) {
                     String privateIDInstance;
                     privateIDInstance = privateIDElement.getTextContent();
                     result.setPrivateId(privateIDInstance);
                 }
-
-                NodeList elements5 = deploymentElement
-                        .getElementsByTagName("Status");
-                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = deploymentElement.getElementsByTagName("Status");
+                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (statusElement != null) {
                     DeploymentStatus statusInstance;
-                    statusInstance = DeploymentStatus.valueOf(statusElement
-                            .getTextContent());
+                    statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
-
-                NodeList elements6 = deploymentElement
-                        .getElementsByTagName("Label");
-                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = deploymentElement.getElementsByTagName("Label");
+                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(
-                            Base64.decodeBase64(labelElement.getTextContent()
-                                    .getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
-
-                NodeList elements7 = deploymentElement
-                        .getElementsByTagName("Url");
-                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7
-                        .item(0)) : null;
+                
+                NodeList elements7 = deploymentElement.getElementsByTagName("Url");
+                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
-
-                NodeList elements8 = deploymentElement
-                        .getElementsByTagName("Configuration");
-                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8
-                        .item(0)) : null;
+                
+                NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
+                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (configurationElement != null) {
                     String configurationInstance;
-                    configurationInstance = configurationElement
-                            .getTextContent() != null ? new String(
-                            Base64.decodeBase64(configurationElement
-                                    .getTextContent().getBytes())) : null;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
                     result.setConfiguration(configurationInstance);
                 }
-
-                NodeList elements9 = deploymentElement
-                        .getElementsByTagName("RoleInstanceList");
-                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9
-                        .item(0)) : null;
+                
+                NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
+                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (roleInstanceListSequenceElement != null) {
-                    for (int i1 = 0; i1 < roleInstanceListSequenceElement
-                            .getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement
-                                .getElementsByTagName("RoleInstance").item(i1));
+                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
                         RoleInstance roleInstanceInstance = new RoleInstance();
                         result.getRoleInstances().add(roleInstanceInstance);
-
-                        NodeList elements10 = roleInstanceListElement
-                                .getElementsByTagName("RoleName");
-                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                                .item(0)) : null;
+                        
+                        NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (roleNameElement != null) {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             roleInstanceInstance.setRoleName(roleNameInstance);
                         }
-
-                        NodeList elements11 = roleInstanceListElement
-                                .getElementsByTagName("InstanceName");
-                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11
-                                .item(0)) : null;
+                        
+                        NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
+                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (instanceNameElement != null) {
                             String instanceNameInstance;
-                            instanceNameInstance = instanceNameElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceName(instanceNameInstance);
+                            instanceNameInstance = instanceNameElement.getTextContent();
+                            roleInstanceInstance.setInstanceName(instanceNameInstance);
                         }
-
-                        NodeList elements12 = roleInstanceListElement
-                                .getElementsByTagName("InstanceStatus");
-                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12
-                                .item(0)) : null;
+                        
+                        NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
+                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                         if (instanceStatusElement != null) {
                             String instanceStatusInstance;
-                            instanceStatusInstance = instanceStatusElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceStatus(instanceStatusInstance);
+                            instanceStatusInstance = instanceStatusElement.getTextContent();
+                            roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
                         }
-
-                        NodeList elements13 = roleInstanceListElement
-                                .getElementsByTagName("InstanceUpgradeDomain");
-                        Element instanceUpgradeDomainElement = elements13
-                                .getLength() > 0 ? ((Element) elements13
-                                .item(0)) : null;
-                        if (instanceUpgradeDomainElement != null
-                                && (instanceUpgradeDomainElement
-                                        .getTextContent() == null || instanceUpgradeDomainElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
+                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceUpgradeDomainInstance;
-                            instanceUpgradeDomainInstance = DatatypeConverter
-                                    .parseInt(instanceUpgradeDomainElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
+                            instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
-
-                        NodeList elements14 = roleInstanceListElement
-                                .getElementsByTagName("InstanceFaultDomain");
-                        Element instanceFaultDomainElement = elements14
-                                .getLength() > 0 ? ((Element) elements14
-                                .item(0)) : null;
-                        if (instanceFaultDomainElement != null
-                                && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
+                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceFaultDomainInstance;
-                            instanceFaultDomainInstance = DatatypeConverter
-                                    .parseInt(instanceFaultDomainElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setInstanceFaultDomain(instanceFaultDomainInstance);
+                            instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
-
-                        NodeList elements15 = roleInstanceListElement
-                                .getElementsByTagName("InstanceSize");
-                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15
-                                .item(0)) : null;
+                        
+                        NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
+                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                         if (instanceSizeElement != null) {
                             String instanceSizeInstance;
-                            instanceSizeInstance = instanceSizeElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceSize(instanceSizeInstance);
+                            instanceSizeInstance = instanceSizeElement.getTextContent();
+                            roleInstanceInstance.setInstanceSize(instanceSizeInstance);
                         }
-
-                        NodeList elements16 = roleInstanceListElement
-                                .getElementsByTagName("InstanceStateDetails");
-                        Element instanceStateDetailsElement = elements16
-                                .getLength() > 0 ? ((Element) elements16
-                                .item(0)) : null;
+                        
+                        NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
+                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                         if (instanceStateDetailsElement != null) {
                             String instanceStateDetailsInstance;
-                            instanceStateDetailsInstance = instanceStateDetailsElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceStateDetails(instanceStateDetailsInstance);
+                            instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
+                            roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
                         }
-
-                        NodeList elements17 = roleInstanceListElement
-                                .getElementsByTagName("InstanceErrorCode");
-                        Element instanceErrorCodeElement = elements17
-                                .getLength() > 0 ? ((Element) elements17
-                                .item(0)) : null;
+                        
+                        NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
+                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                         if (instanceErrorCodeElement != null) {
                             String instanceErrorCodeInstance;
-                            instanceErrorCodeInstance = instanceErrorCodeElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceErrorCode(instanceErrorCodeInstance);
+                            instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
+                            roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
                         }
-
-                        NodeList elements18 = roleInstanceListElement
-                                .getElementsByTagName("IpAddress");
-                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18
-                                .item(0)) : null;
+                        
+                        NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
+                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                         if (ipAddressElement != null) {
                             InetAddress ipAddressInstance;
-                            ipAddressInstance = InetAddress
-                                    .getByName(ipAddressElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setIPAddress(ipAddressInstance);
+                            ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
+                            roleInstanceInstance.setIPAddress(ipAddressInstance);
                         }
-
-                        NodeList elements19 = roleInstanceListElement
-                                .getElementsByTagName("InstanceEndpoints");
-                        Element instanceEndpointsSequenceElement = elements19
-                                .getLength() > 0 ? ((Element) elements19
-                                .item(0)) : null;
+                        
+                        NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
+                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                         if (instanceEndpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement
-                                    .getElementsByTagName("InstanceEndpoint")
-                                    .getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement
-                                        .getElementsByTagName(
-                                                "InstanceEndpoint").item(i2));
+                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1) {
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
                                 InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
-                                roleInstanceInstance.getInstanceEndpoints()
-                                        .add(instanceEndpointInstance);
-
-                                NodeList elements20 = instanceEndpointsElement
-                                        .getElementsByTagName("LocalPort");
-                                Element localPortElement = elements20
-                                        .getLength() > 0 ? ((Element) elements20
-                                        .item(0)) : null;
-                                if (localPortElement != null
-                                        && (localPortElement.getTextContent() == null || localPortElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
+                                
+                                NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
+                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
-                                    localPortInstance = DatatypeConverter
-                                            .parseInt(localPortElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setLocalPort(localPortInstance);
+                                    localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
+                                    instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
-
-                                NodeList elements21 = instanceEndpointsElement
-                                        .getElementsByTagName("Name");
-                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21
-                                        .item(0)) : null;
+                                
+                                NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
+                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                                 if (nameElement2 != null) {
                                     String nameInstance2;
-                                    nameInstance2 = nameElement2
-                                            .getTextContent();
-                                    instanceEndpointInstance
-                                            .setName(nameInstance2);
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    instanceEndpointInstance.setName(nameInstance2);
                                 }
-
-                                NodeList elements22 = instanceEndpointsElement
-                                        .getElementsByTagName("PublicPort");
-                                Element publicPortElement = elements22
-                                        .getLength() > 0 ? ((Element) elements22
-                                        .item(0)) : null;
+                                
+                                NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
+                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                                 if (publicPortElement != null) {
                                     int publicPortInstance;
-                                    publicPortInstance = DatatypeConverter
-                                            .parseInt(publicPortElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setPort(publicPortInstance);
+                                    publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
+                                    instanceEndpointInstance.setPort(publicPortInstance);
                                 }
-
-                                NodeList elements23 = instanceEndpointsElement
-                                        .getElementsByTagName("Protocol");
-                                Element protocolElement = elements23
-                                        .getLength() > 0 ? ((Element) elements23
-                                        .item(0)) : null;
+                                
+                                NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
+                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                                 if (protocolElement != null) {
                                     String protocolInstance;
-                                    protocolInstance = protocolElement
-                                            .getTextContent();
-                                    instanceEndpointInstance
-                                            .setProtocol(protocolInstance);
+                                    protocolInstance = protocolElement.getTextContent();
+                                    instanceEndpointInstance.setProtocol(protocolInstance);
                                 }
-
-                                NodeList elements24 = instanceEndpointsElement
-                                        .getElementsByTagName("Vip");
-                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24
-                                        .item(0)) : null;
+                                
+                                NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
+                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                                 if (vipElement != null) {
                                     InetAddress vipInstance;
-                                    vipInstance = InetAddress
-                                            .getByName(vipElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setVirtualIPAddress(vipInstance);
+                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                    instanceEndpointInstance.setVirtualIPAddress(vipInstance);
                                 }
                             }
                         }
-
-                        NodeList elements25 = roleInstanceListElement
-                                .getElementsByTagName("PowerState");
-                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25
-                                .item(0)) : null;
+                        
+                        NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
+                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
-                            powerStateInstance = RoleInstancePowerState
-                                    .valueOf(powerStateElement.getTextContent());
-                            roleInstanceInstance
-                                    .setPowerState(powerStateInstance);
+                            powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                            roleInstanceInstance.setPowerState(powerStateInstance);
                         }
-
-                        NodeList elements26 = roleInstanceListElement
-                                .getElementsByTagName("HostName");
-                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26
-                                .item(0)) : null;
+                        
+                        NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
+                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                         if (hostNameElement != null) {
                             String hostNameInstance;
                             hostNameInstance = hostNameElement.getTextContent();
                             roleInstanceInstance.setHostName(hostNameInstance);
                         }
-
-                        NodeList elements27 = roleInstanceListElement
-                                .getElementsByTagName("RemoteAccessCertificateThumbprint");
-                        Element remoteAccessCertificateThumbprintElement = elements27
-                                .getLength() > 0 ? ((Element) elements27
-                                .item(0)) : null;
+                        
+                        NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
+                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                         if (remoteAccessCertificateThumbprintElement != null) {
                             String remoteAccessCertificateThumbprintInstance;
-                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
+                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
+                            roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
                         }
                     }
                 }
-
-                NodeList elements28 = deploymentElement
-                        .getElementsByTagName("UpgradeStatus");
-                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28
-                        .item(0)) : null;
+                
+                NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
+                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                 if (upgradeStatusElement != null) {
                     UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                     result.setUpgradeStatus(upgradeStatusInstance);
-
-                    NodeList elements29 = upgradeStatusElement
-                            .getElementsByTagName("UpgradeType");
-                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29
-                            .item(0)) : null;
+                    
+                    NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
+                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                     if (upgradeTypeElement != null) {
                         DeploymentUpgradeType upgradeTypeInstance;
-                        upgradeTypeInstance = DeploymentUpgradeType
-                                .valueOf(upgradeTypeElement.getTextContent());
-                        upgradeStatusInstance
-                                .setUpgradeType(upgradeTypeInstance);
+                        upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                        upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                     }
-
-                    NodeList elements30 = upgradeStatusElement
-                            .getElementsByTagName("CurrentUpgradeDomainState");
-                    Element currentUpgradeDomainStateElement = elements30
-                            .getLength() > 0 ? ((Element) elements30.item(0))
-                            : null;
+                    
+                    NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
+                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (currentUpgradeDomainStateElement != null) {
                         UpgradeDomainState currentUpgradeDomainStateInstance;
-                        currentUpgradeDomainStateInstance = UpgradeDomainState
-                                .valueOf(currentUpgradeDomainStateElement
-                                        .getTextContent());
-                        upgradeStatusInstance
-                                .setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
+                        currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                     }
-
-                    NodeList elements31 = upgradeStatusElement
-                            .getElementsByTagName("CurrentUpgradeDomain");
-                    Element currentUpgradeDomainElement = elements31
-                            .getLength() > 0 ? ((Element) elements31.item(0))
-                            : null;
+                    
+                    NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
+                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (currentUpgradeDomainElement != null) {
                         int currentUpgradeDomainInstance;
-                        currentUpgradeDomainInstance = DatatypeConverter
-                                .parseInt(currentUpgradeDomainElement
-                                        .getTextContent());
-                        upgradeStatusInstance
-                                .setCurrentUpgradeDomain(currentUpgradeDomainInstance);
+                        currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
                     }
                 }
-
-                NodeList elements32 = deploymentElement
-                        .getElementsByTagName("UpgradeDomainCount");
-                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32
-                        .item(0)) : null;
+                
+                NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
+                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (upgradeDomainCountElement != null) {
                     int upgradeDomainCountInstance;
-                    upgradeDomainCountInstance = DatatypeConverter
-                            .parseInt(upgradeDomainCountElement
-                                    .getTextContent());
+                    upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
-
-                NodeList elements33 = deploymentElement
-                        .getElementsByTagName("RoleList");
-                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33
-                        .item(0)) : null;
+                
+                NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
+                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < roleListSequenceElement
-                            .getElementsByTagName("Role").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement
-                                .getElementsByTagName("Role").item(i3));
+                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
-
-                        NodeList elements34 = roleListElement
-                                .getElementsByTagName("RoleName");
-                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34
-                                .item(0)) : null;
+                        
+                        NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                         if (roleNameElement2 != null) {
                             String roleNameInstance2;
-                            roleNameInstance2 = roleNameElement2
-                                    .getTextContent();
+                            roleNameInstance2 = roleNameElement2.getTextContent();
                             roleInstance.setRoleName(roleNameInstance2);
                         }
-
-                        NodeList elements35 = roleListElement
-                                .getElementsByTagName("OsVersion");
-                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35
-                                .item(0)) : null;
+                        
+                        NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
+                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                         if (osVersionElement != null) {
                             String osVersionInstance;
-                            osVersionInstance = osVersionElement
-                                    .getTextContent();
+                            osVersionInstance = osVersionElement.getTextContent();
                             roleInstance.setOSVersion(osVersionInstance);
                         }
-
-                        NodeList elements36 = roleListElement
-                                .getElementsByTagName("RoleType");
-                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36
-                                .item(0)) : null;
+                        
+                        NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
+                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                         if (roleTypeElement != null) {
                             String roleTypeInstance;
                             roleTypeInstance = roleTypeElement.getTextContent();
                             roleInstance.setRoleType(roleTypeInstance);
                         }
-
-                        NodeList elements37 = roleListElement
-                                .getElementsByTagName("ConfigurationSets");
-                        Element configurationSetsSequenceElement = elements37
-                                .getLength() > 0 ? ((Element) elements37
-                                .item(0)) : null;
+                        
+                        NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
+                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < configurationSetsSequenceElement
-                                    .getElementsByTagName("ConfigurationSet")
-                                    .getLength(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement
-                                        .getElementsByTagName(
-                                                "ConfigurationSet").item(i4));
+                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                                roleInstance.getConfigurationSets().add(
-                                        configurationSetInstance);
-
-                                NodeList elements38 = configurationSetsElement
-                                        .getElementsByTagName("ConfigurationSetType");
-                                Element configurationSetTypeElement = elements38
-                                        .getLength() > 0 ? ((Element) elements38
-                                        .item(0)) : null;
+                                roleInstance.getConfigurationSets().add(configurationSetInstance);
+                                
+                                NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                                 if (configurationSetTypeElement != null) {
                                     String configurationSetTypeInstance;
-                                    configurationSetTypeInstance = configurationSetTypeElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setConfigurationSetType(configurationSetTypeInstance);
+                                    configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                                    configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
                                 }
-
-                                NodeList elements39 = configurationSetsElement
-                                        .getElementsByTagName("InputEndpoints");
-                                Element inputEndpointsSequenceElement = elements39
-                                        .getLength() > 0 ? ((Element) elements39
-                                        .item(0)) : null;
+                                
+                                NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement
-                                            .getElementsByTagName(
-                                                    "InputEndpoint")
-                                            .getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement
-                                                .getElementsByTagName(
-                                                        "InputEndpoint").item(
-                                                        i5));
+                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
-                                        configurationSetInstance
-                                                .getInputEndpoints().add(
-                                                        inputEndpointInstance);
-
-                                        NodeList elements40 = inputEndpointsElement
-                                                .getElementsByTagName("LoadBalancedEndpointSetName");
-                                        Element loadBalancedEndpointSetNameElement = elements40
-                                                .getLength() > 0 ? ((Element) elements40
-                                                .item(0)) : null;
+                                        configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
+                                        
+                                        NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                                         if (loadBalancedEndpointSetNameElement != null) {
                                             String loadBalancedEndpointSetNameInstance;
-                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
+                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
-
-                                        NodeList elements41 = inputEndpointsElement
-                                                .getElementsByTagName("LocalPort");
-                                        Element localPortElement2 = elements41
-                                                .getLength() > 0 ? ((Element) elements41
-                                                .item(0)) : null;
-                                        if (localPortElement2 != null
-                                                && (localPortElement2
-                                                        .getTextContent() == null || localPortElement2
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false) {
                                             int localPortInstance2;
-                                            localPortInstance2 = DatatypeConverter
-                                                    .parseInt(localPortElement2
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setLocalPort(localPortInstance2);
+                                            localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
+                                            inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
-
-                                        NodeList elements42 = inputEndpointsElement
-                                                .getElementsByTagName("Name");
-                                        Element nameElement3 = elements42
-                                                .getLength() > 0 ? ((Element) elements42
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
+                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                                         if (nameElement3 != null) {
                                             String nameInstance3;
-                                            nameInstance3 = nameElement3
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setName(nameInstance3);
+                                            nameInstance3 = nameElement3.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance3);
                                         }
-
-                                        NodeList elements43 = inputEndpointsElement
-                                                .getElementsByTagName("Port");
-                                        Element portElement = elements43
-                                                .getLength() > 0 ? ((Element) elements43
-                                                .item(0)) : null;
-                                        if (portElement != null
-                                                && (portElement
-                                                        .getTextContent() == null || portElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
+                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                             int portInstance;
-                                            portInstance = DatatypeConverter
-                                                    .parseInt(portElement
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setPort(portInstance);
+                                            portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
+                                            inputEndpointInstance.setPort(portInstance);
                                         }
-
-                                        NodeList elements44 = inputEndpointsElement
-                                                .getElementsByTagName("LoadBalancerProbe");
-                                        Element loadBalancerProbeElement = elements44
-                                                .getLength() > 0 ? ((Element) elements44
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                                         if (loadBalancerProbeElement != null) {
                                             LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                            inputEndpointInstance
-                                                    .setLoadBalancerProbe(loadBalancerProbeInstance);
-
-                                            NodeList elements45 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement = elements45
-                                                    .getLength() > 0 ? ((Element) elements45
-                                                    .item(0)) : null;
+                                            inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                            
+                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                                             if (pathElement != null) {
                                                 String pathInstance;
-                                                pathInstance = pathElement
-                                                        .getTextContent();
-                                                loadBalancerProbeInstance
-                                                        .setPath(pathInstance);
+                                                pathInstance = pathElement.getTextContent();
+                                                loadBalancerProbeInstance.setPath(pathInstance);
                                             }
-
-                                            NodeList elements46 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Port");
-                                            Element portElement2 = elements46
-                                                    .getLength() > 0 ? ((Element) elements46
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                                             if (portElement2 != null) {
                                                 int portInstance2;
-                                                portInstance2 = DatatypeConverter
-                                                        .parseInt(portElement2
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setPort(portInstance2);
+                                                portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
+                                                loadBalancerProbeInstance.setPort(portInstance2);
                                             }
-
-                                            NodeList elements47 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Protocol");
-                                            Element protocolElement2 = elements47
-                                                    .getLength() > 0 ? ((Element) elements47
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                                             if (protocolElement2 != null) {
                                                 LoadBalancerProbeTransportProtocol protocolInstance2;
-                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl
-                                                        .parseLoadBalancerProbeTransportProtocol(protocolElement2
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setProtocol(protocolInstance2);
+                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
+                                                loadBalancerProbeInstance.setProtocol(protocolInstance2);
                                             }
-
-                                            NodeList elements48 = loadBalancerProbeElement
-                                                    .getElementsByTagName("IntervalInSeconds");
-                                            Element intervalInSecondsElement = elements48
-                                                    .getLength() > 0 ? ((Element) elements48
-                                                    .item(0)) : null;
-                                            if (intervalInSecondsElement != null
-                                                    && (intervalInSecondsElement
-                                                            .getTextContent() == null || intervalInSecondsElement
-                                                            .getTextContent()
-                                                            .isEmpty() == true) == false) {
+                                            
+                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int intervalInSecondsInstance;
-                                                intervalInSecondsInstance = DatatypeConverter
-                                                        .parseInt(intervalInSecondsElement
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setIntervalInSeconds(intervalInSecondsInstance);
+                                                intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
-
-                                            NodeList elements49 = loadBalancerProbeElement
-                                                    .getElementsByTagName("TimeoutInSeconds");
-                                            Element timeoutInSecondsElement = elements49
-                                                    .getLength() > 0 ? ((Element) elements49
-                                                    .item(0)) : null;
-                                            if (timeoutInSecondsElement != null
-                                                    && (timeoutInSecondsElement
-                                                            .getTextContent() == null || timeoutInSecondsElement
-                                                            .getTextContent()
-                                                            .isEmpty() == true) == false) {
+                                            
+                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int timeoutInSecondsInstance;
-                                                timeoutInSecondsInstance = DatatypeConverter
-                                                        .parseInt(timeoutInSecondsElement
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setTimeoutInSeconds(timeoutInSecondsInstance);
+                                                timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                             }
                                         }
-
-                                        NodeList elements50 = inputEndpointsElement
-                                                .getElementsByTagName("Protocol");
-                                        Element protocolElement3 = elements50
-                                                .getLength() > 0 ? ((Element) elements50
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                                         if (protocolElement3 != null) {
                                             String protocolInstance3;
-                                            protocolInstance3 = protocolElement3
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setProtocol(protocolInstance3);
+                                            protocolInstance3 = protocolElement3.getTextContent();
+                                            inputEndpointInstance.setProtocol(protocolInstance3);
                                         }
-
-                                        NodeList elements51 = inputEndpointsElement
-                                                .getElementsByTagName("Vip");
-                                        Element vipElement2 = elements51
-                                                .getLength() > 0 ? ((Element) elements51
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
+                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                                         if (vipElement2 != null) {
                                             InetAddress vipInstance2;
-                                            vipInstance2 = InetAddress
-                                                    .getByName(vipElement2
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setVirtualIPAddress(vipInstance2);
+                                            vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
+                                            inputEndpointInstance.setVirtualIPAddress(vipInstance2);
                                         }
-
-                                        NodeList elements52 = inputEndpointsElement
-                                                .getElementsByTagName("EnableDirectServerReturn");
-                                        Element enableDirectServerReturnElement = elements52
-                                                .getLength() > 0 ? ((Element) elements52
-                                                .item(0)) : null;
-                                        if (enableDirectServerReturnElement != null
-                                                && (enableDirectServerReturnElement
-                                                        .getTextContent() == null || enableDirectServerReturnElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = DatatypeConverter
-                                                    .parseBoolean(enableDirectServerReturnElement
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
-
-                                        NodeList elements53 = inputEndpointsElement
-                                                .getElementsByTagName("EndpointAcl");
-                                        Element endpointAclElement = elements53
-                                                .getLength() > 0 ? ((Element) elements53
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                                         if (endpointAclElement != null) {
                                             EndpointAcl endpointAclInstance = new EndpointAcl();
-                                            inputEndpointInstance
-                                                    .setEndpointAcl(endpointAclInstance);
-
-                                            NodeList elements54 = endpointAclElement
-                                                    .getElementsByTagName("Rules");
-                                            Element rulesSequenceElement = elements54
-                                                    .getLength() > 0 ? ((Element) elements54
-                                                    .item(0)) : null;
+                                            inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                            
+                                            NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
+                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < rulesSequenceElement
-                                                        .getElementsByTagName(
-                                                                "Rule")
-                                                        .getLength(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement
-                                                            .getElementsByTagName(
-                                                                    "Rule")
-                                                            .item(i6));
+                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
-                                                    endpointAclInstance
-                                                            .getRules()
-                                                            .add(ruleInstance);
-
-                                                    NodeList elements55 = rulesElement
-                                                            .getElementsByTagName("Order");
-                                                    Element orderElement = elements55
-                                                            .getLength() > 0 ? ((Element) elements55
-                                                            .item(0)) : null;
-                                                    if (orderElement != null
-                                                            && (orderElement
-                                                                    .getTextContent() == null || orderElement
-                                                                    .getTextContent()
-                                                                    .isEmpty() == true) == false) {
+                                                    endpointAclInstance.getRules().add(ruleInstance);
+                                                    
+                                                    NodeList elements55 = rulesElement.getElementsByTagName("Order");
+                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                         int orderInstance;
-                                                        orderInstance = DatatypeConverter
-                                                                .parseInt(orderElement
-                                                                        .getTextContent());
-                                                        ruleInstance
-                                                                .setOrder(orderInstance);
+                                                        orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
+                                                        ruleInstance.setOrder(orderInstance);
                                                     }
-
-                                                    NodeList elements56 = rulesElement
-                                                            .getElementsByTagName("Action");
-                                                    Element actionElement = elements56
-                                                            .getLength() > 0 ? ((Element) elements56
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements56 = rulesElement.getElementsByTagName("Action");
+                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                                                     if (actionElement != null) {
                                                         String actionInstance;
-                                                        actionInstance = actionElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setAction(actionInstance);
+                                                        actionInstance = actionElement.getTextContent();
+                                                        ruleInstance.setAction(actionInstance);
                                                     }
-
-                                                    NodeList elements57 = rulesElement
-                                                            .getElementsByTagName("RemoteSubnet");
-                                                    Element remoteSubnetElement = elements57
-                                                            .getLength() > 0 ? ((Element) elements57
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                                                     if (remoteSubnetElement != null) {
                                                         String remoteSubnetInstance;
-                                                        remoteSubnetInstance = remoteSubnetElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setRemoteSubnet(remoteSubnetInstance);
+                                                        remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                                        ruleInstance.setRemoteSubnet(remoteSubnetInstance);
                                                     }
-
-                                                    NodeList elements58 = rulesElement
-                                                            .getElementsByTagName("Description");
-                                                    Element descriptionElement = elements58
-                                                            .getLength() > 0 ? ((Element) elements58
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements58 = rulesElement.getElementsByTagName("Description");
+                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                                                     if (descriptionElement != null) {
                                                         String descriptionInstance;
-                                                        descriptionInstance = descriptionElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setDescription(descriptionInstance);
+                                                        descriptionInstance = descriptionElement.getTextContent();
+                                                        ruleInstance.setDescription(descriptionInstance);
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-                                NodeList elements59 = configurationSetsElement
-                                        .getElementsByTagName("SubnetNames");
-                                Element subnetNamesSequenceElement = elements59
-                                        .getLength() > 0 ? ((Element) elements59
-                                        .item(0)) : null;
+                                
+                                NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < subnetNamesSequenceElement
-                                            .getElementsByTagName("SubnetName")
-                                            .getLength(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement
-                                                .getElementsByTagName(
-                                                        "SubnetName").item(i7));
-                                        configurationSetInstance
-                                                .getSubnetNames()
-                                                .add(subnetNamesElement
-                                                        .getTextContent());
+                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                        configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
-
-                                NodeList elements60 = configurationSetsElement
-                                        .getElementsByTagName("StaticVirtualNetworkIPAddress");
-                                Element staticVirtualNetworkIPAddressElement = elements60
-                                        .getLength() > 0 ? ((Element) elements60
-                                        .item(0)) : null;
+                                
+                                NodeList elements60 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                                 if (staticVirtualNetworkIPAddressElement != null) {
                                     String staticVirtualNetworkIPAddressInstance;
-                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
+                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
+                                    configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
-
-                                NodeList elements61 = configurationSetsElement
-                                        .getElementsByTagName("ComputerName");
-                                Element computerNameElement = elements61
-                                        .getLength() > 0 ? ((Element) elements61
-                                        .item(0)) : null;
+                                
+                                NodeList elements61 = configurationSetsElement.getElementsByTagName("ComputerName");
+                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                                 if (computerNameElement != null) {
                                     String computerNameInstance;
-                                    computerNameInstance = computerNameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setComputerName(computerNameInstance);
+                                    computerNameInstance = computerNameElement.getTextContent();
+                                    configurationSetInstance.setComputerName(computerNameInstance);
                                 }
-
-                                NodeList elements62 = configurationSetsElement
-                                        .getElementsByTagName("AdminPassword");
-                                Element adminPasswordElement = elements62
-                                        .getLength() > 0 ? ((Element) elements62
-                                        .item(0)) : null;
+                                
+                                NodeList elements62 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                                 if (adminPasswordElement != null) {
                                     String adminPasswordInstance;
-                                    adminPasswordInstance = adminPasswordElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setAdminPassword(adminPasswordInstance);
+                                    adminPasswordInstance = adminPasswordElement.getTextContent();
+                                    configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
-
-                                NodeList elements63 = configurationSetsElement
-                                        .getElementsByTagName("ResetPasswordOnFirstLogon");
-                                Element resetPasswordOnFirstLogonElement = elements63
-                                        .getLength() > 0 ? ((Element) elements63
-                                        .item(0)) : null;
-                                if (resetPasswordOnFirstLogonElement != null
-                                        && (resetPasswordOnFirstLogonElement
-                                                .getTextContent() == null || resetPasswordOnFirstLogonElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements63 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = DatatypeConverter
-                                            .parseBoolean(resetPasswordOnFirstLogonElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
-
-                                NodeList elements64 = configurationSetsElement
-                                        .getElementsByTagName("EnableAutomaticUpdates");
-                                Element enableAutomaticUpdatesElement = elements64
-                                        .getLength() > 0 ? ((Element) elements64
-                                        .item(0)) : null;
-                                if (enableAutomaticUpdatesElement != null
-                                        && (enableAutomaticUpdatesElement
-                                                .getTextContent() == null || enableAutomaticUpdatesElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements64 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = DatatypeConverter
-                                            .parseBoolean(enableAutomaticUpdatesElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
-
-                                NodeList elements65 = configurationSetsElement
-                                        .getElementsByTagName("TimeZone");
-                                Element timeZoneElement = elements65
-                                        .getLength() > 0 ? ((Element) elements65
-                                        .item(0)) : null;
+                                
+                                NodeList elements65 = configurationSetsElement.getElementsByTagName("TimeZone");
+                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
                                 if (timeZoneElement != null) {
                                     String timeZoneInstance;
-                                    timeZoneInstance = timeZoneElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setTimeZone(timeZoneInstance);
+                                    timeZoneInstance = timeZoneElement.getTextContent();
+                                    configurationSetInstance.setTimeZone(timeZoneInstance);
                                 }
-
-                                NodeList elements66 = configurationSetsElement
-                                        .getElementsByTagName("DomainJoin");
-                                Element domainJoinElement = elements66
-                                        .getLength() > 0 ? ((Element) elements66
-                                        .item(0)) : null;
+                                
+                                NodeList elements66 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                                 if (domainJoinElement != null) {
                                     DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                                    configurationSetInstance
-                                            .setDomainJoin(domainJoinInstance);
-
-                                    NodeList elements67 = domainJoinElement
-                                            .getElementsByTagName("Credentials");
-                                    Element credentialsElement = elements67
-                                            .getLength() > 0 ? ((Element) elements67
-                                            .item(0)) : null;
+                                    configurationSetInstance.setDomainJoin(domainJoinInstance);
+                                    
+                                    NodeList elements67 = domainJoinElement.getElementsByTagName("Credentials");
+                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                                     if (credentialsElement != null) {
                                         DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                                        domainJoinInstance
-                                                .setCredentials(credentialsInstance);
-
-                                        NodeList elements68 = credentialsElement
-                                                .getElementsByTagName("Domain");
-                                        Element domainElement = elements68
-                                                .getLength() > 0 ? ((Element) elements68
-                                                .item(0)) : null;
+                                        domainJoinInstance.setCredentials(credentialsInstance);
+                                        
+                                        NodeList elements68 = credentialsElement.getElementsByTagName("Domain");
+                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                                         if (domainElement != null) {
                                             String domainInstance;
-                                            domainInstance = domainElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setDomain(domainInstance);
+                                            domainInstance = domainElement.getTextContent();
+                                            credentialsInstance.setDomain(domainInstance);
                                         }
-
-                                        NodeList elements69 = credentialsElement
-                                                .getElementsByTagName("Username");
-                                        Element usernameElement = elements69
-                                                .getLength() > 0 ? ((Element) elements69
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements69 = credentialsElement.getElementsByTagName("Username");
+                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                                         if (usernameElement != null) {
                                             String usernameInstance;
-                                            usernameInstance = usernameElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setUserName(usernameInstance);
+                                            usernameInstance = usernameElement.getTextContent();
+                                            credentialsInstance.setUserName(usernameInstance);
                                         }
-
-                                        NodeList elements70 = credentialsElement
-                                                .getElementsByTagName("Password");
-                                        Element passwordElement = elements70
-                                                .getLength() > 0 ? ((Element) elements70
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements70 = credentialsElement.getElementsByTagName("Password");
+                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                                         if (passwordElement != null) {
                                             String passwordInstance;
-                                            passwordInstance = passwordElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setPassword(passwordInstance);
+                                            passwordInstance = passwordElement.getTextContent();
+                                            credentialsInstance.setPassword(passwordInstance);
                                         }
                                     }
-
-                                    NodeList elements71 = domainJoinElement
-                                            .getElementsByTagName("JoinDomain");
-                                    Element joinDomainElement = elements71
-                                            .getLength() > 0 ? ((Element) elements71
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements71 = domainJoinElement.getElementsByTagName("JoinDomain");
+                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                                     if (joinDomainElement != null) {
                                         String joinDomainInstance;
-                                        joinDomainInstance = joinDomainElement
-                                                .getTextContent();
-                                        domainJoinInstance
-                                                .setDomainToJoin(joinDomainInstance);
+                                        joinDomainInstance = joinDomainElement.getTextContent();
+                                        domainJoinInstance.setDomainToJoin(joinDomainInstance);
                                     }
-
-                                    NodeList elements72 = domainJoinElement
-                                            .getElementsByTagName("MachineObjectOU");
-                                    Element machineObjectOUElement = elements72
-                                            .getLength() > 0 ? ((Element) elements72
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements72 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
                                     if (machineObjectOUElement != null) {
                                         String machineObjectOUInstance;
-                                        machineObjectOUInstance = machineObjectOUElement
-                                                .getTextContent();
-                                        domainJoinInstance
-                                                .setLdapMachineObjectOU(machineObjectOUInstance);
+                                        machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                                        domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
                                     }
-
-                                    NodeList elements73 = domainJoinElement
-                                            .getElementsByTagName("Provisioning");
-                                    Element provisioningElement = elements73
-                                            .getLength() > 0 ? ((Element) elements73
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements73 = domainJoinElement.getElementsByTagName("Provisioning");
+                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                                     if (provisioningElement != null) {
                                         DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                                        domainJoinInstance
-                                                .setProvisioning(provisioningInstance);
-
-                                        NodeList elements74 = provisioningElement
-                                                .getElementsByTagName("AccountData");
-                                        Element accountDataElement = elements74
-                                                .getLength() > 0 ? ((Element) elements74
-                                                .item(0)) : null;
+                                        domainJoinInstance.setProvisioning(provisioningInstance);
+                                        
+                                        NodeList elements74 = provisioningElement.getElementsByTagName("AccountData");
+                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                                         if (accountDataElement != null) {
                                             String accountDataInstance;
-                                            accountDataInstance = accountDataElement
-                                                    .getTextContent();
-                                            provisioningInstance
-                                                    .setAccountData(accountDataInstance);
+                                            accountDataInstance = accountDataElement.getTextContent();
+                                            provisioningInstance.setAccountData(accountDataInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements75 = configurationSetsElement
-                                        .getElementsByTagName("StoredCertificateSettings");
-                                Element storedCertificateSettingsSequenceElement = elements75
-                                        .getLength() > 0 ? ((Element) elements75
-                                        .item(0)) : null;
+                                
+                                NodeList elements75 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement
-                                            .getElementsByTagName(
-                                                    "CertificateSetting")
-                                            .getLength(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement
-                                                .getElementsByTagName(
-                                                        "CertificateSetting")
-                                                .item(i8));
+                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                                        configurationSetInstance
-                                                .getStoredCertificateSettings()
-                                                .add(certificateSettingInstance);
-
-                                        NodeList elements76 = storedCertificateSettingsElement
-                                                .getElementsByTagName("StoreLocation");
-                                        Element storeLocationElement = elements76
-                                                .getLength() > 0 ? ((Element) elements76
-                                                .item(0)) : null;
+                                        configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
+                                        
+                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                                         if (storeLocationElement != null) {
                                         }
-
-                                        NodeList elements77 = storedCertificateSettingsElement
-                                                .getElementsByTagName("StoreName");
-                                        Element storeNameElement = elements77
-                                                .getLength() > 0 ? ((Element) elements77
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                                         if (storeNameElement != null) {
                                             String storeNameInstance;
-                                            storeNameInstance = storeNameElement
-                                                    .getTextContent();
-                                            certificateSettingInstance
-                                                    .setStoreName(storeNameInstance);
+                                            storeNameInstance = storeNameElement.getTextContent();
+                                            certificateSettingInstance.setStoreName(storeNameInstance);
                                         }
-
-                                        NodeList elements78 = storedCertificateSettingsElement
-                                                .getElementsByTagName("Thumbprint");
-                                        Element thumbprintElement = elements78
-                                                .getLength() > 0 ? ((Element) elements78
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                                         if (thumbprintElement != null) {
                                             String thumbprintInstance;
-                                            thumbprintInstance = thumbprintElement
-                                                    .getTextContent();
-                                            certificateSettingInstance
-                                                    .setThumbprint(thumbprintInstance);
+                                            thumbprintInstance = thumbprintElement.getTextContent();
+                                            certificateSettingInstance.setThumbprint(thumbprintInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements79 = configurationSetsElement
-                                        .getElementsByTagName("WinRM");
-                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79
-                                        .item(0)) : null;
+                                
+                                NodeList elements79 = configurationSetsElement.getElementsByTagName("WinRM");
+                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
                                 if (winRMElement != null) {
                                     WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                                    configurationSetInstance
-                                            .setWindowsRemoteManagement(winRMInstance);
-
-                                    NodeList elements80 = winRMElement
-                                            .getElementsByTagName("Listeners");
-                                    Element listenersSequenceElement = elements80
-                                            .getLength() > 0 ? ((Element) elements80
-                                            .item(0)) : null;
+                                    configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                                    
+                                    NodeList elements80 = winRMElement.getElementsByTagName("Listeners");
+                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < listenersSequenceElement
-                                                .getElementsByTagName(
-                                                        "Listener").getLength(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement
-                                                    .getElementsByTagName(
-                                                            "Listener")
-                                                    .item(i9));
+                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                            winRMInstance.getListeners().add(
-                                                    listenerInstance);
-
-                                            NodeList elements81 = listenersElement
-                                                    .getElementsByTagName("Protocol");
-                                            Element protocolElement4 = elements81
-                                                    .getLength() > 0 ? ((Element) elements81
-                                                    .item(0)) : null;
+                                            winRMInstance.getListeners().add(listenerInstance);
+                                            
+                                            NodeList elements81 = listenersElement.getElementsByTagName("Protocol");
+                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
                                             if (protocolElement4 != null) {
                                                 VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType
-                                                        .valueOf(protocolElement4
-                                                                .getTextContent());
-                                                listenerInstance
-                                                        .setListenerType(protocolInstance4);
+                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                listenerInstance.setListenerType(protocolInstance4);
                                             }
-
-                                            NodeList elements82 = listenersElement
-                                                    .getElementsByTagName("CertificateThumbprint");
-                                            Element certificateThumbprintElement = elements82
-                                                    .getLength() > 0 ? ((Element) elements82
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements82 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
                                             if (certificateThumbprintElement != null) {
                                                 String certificateThumbprintInstance;
-                                                certificateThumbprintInstance = certificateThumbprintElement
-                                                        .getTextContent();
-                                                listenerInstance
-                                                        .setCertificateThumbprint(certificateThumbprintInstance);
+                                                certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                                listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
                                             }
                                         }
                                     }
                                 }
-
-                                NodeList elements83 = configurationSetsElement
-                                        .getElementsByTagName("AdminUsername");
-                                Element adminUsernameElement = elements83
-                                        .getLength() > 0 ? ((Element) elements83
-                                        .item(0)) : null;
+                                
+                                NodeList elements83 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
                                 if (adminUsernameElement != null) {
                                     String adminUsernameInstance;
-                                    adminUsernameInstance = adminUsernameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setAdminUserName(adminUsernameInstance);
+                                    adminUsernameInstance = adminUsernameElement.getTextContent();
+                                    configurationSetInstance.setAdminUserName(adminUsernameInstance);
                                 }
-
-                                NodeList elements84 = configurationSetsElement
-                                        .getElementsByTagName("HostName");
-                                Element hostNameElement2 = elements84
-                                        .getLength() > 0 ? ((Element) elements84
-                                        .item(0)) : null;
+                                
+                                NodeList elements84 = configurationSetsElement.getElementsByTagName("HostName");
+                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
                                 if (hostNameElement2 != null) {
                                     String hostNameInstance2;
-                                    hostNameInstance2 = hostNameElement2
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setHostName(hostNameInstance2);
+                                    hostNameInstance2 = hostNameElement2.getTextContent();
+                                    configurationSetInstance.setHostName(hostNameInstance2);
                                 }
-
-                                NodeList elements85 = configurationSetsElement
-                                        .getElementsByTagName("UserName");
-                                Element userNameElement = elements85
-                                        .getLength() > 0 ? ((Element) elements85
-                                        .item(0)) : null;
+                                
+                                NodeList elements85 = configurationSetsElement.getElementsByTagName("UserName");
+                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
                                 if (userNameElement != null) {
                                     String userNameInstance;
-                                    userNameInstance = userNameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setUserName(userNameInstance);
+                                    userNameInstance = userNameElement.getTextContent();
+                                    configurationSetInstance.setUserName(userNameInstance);
                                 }
-
-                                NodeList elements86 = configurationSetsElement
-                                        .getElementsByTagName("UserPassword");
-                                Element userPasswordElement = elements86
-                                        .getLength() > 0 ? ((Element) elements86
-                                        .item(0)) : null;
+                                
+                                NodeList elements86 = configurationSetsElement.getElementsByTagName("UserPassword");
+                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
                                 if (userPasswordElement != null) {
                                     String userPasswordInstance;
-                                    userPasswordInstance = userPasswordElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setUserPassword(userPasswordInstance);
+                                    userPasswordInstance = userPasswordElement.getTextContent();
+                                    configurationSetInstance.setUserPassword(userPasswordInstance);
                                 }
-
-                                NodeList elements87 = configurationSetsElement
-                                        .getElementsByTagName("DisableSshPasswordAuthentication");
-                                Element disableSshPasswordAuthenticationElement = elements87
-                                        .getLength() > 0 ? ((Element) elements87
-                                        .item(0)) : null;
-                                if (disableSshPasswordAuthenticationElement != null
-                                        && (disableSshPasswordAuthenticationElement
-                                                .getTextContent() == null || disableSshPasswordAuthenticationElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements87 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = DatatypeConverter
-                                            .parseBoolean(disableSshPasswordAuthenticationElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
-
-                                NodeList elements88 = configurationSetsElement
-                                        .getElementsByTagName("SSH");
-                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88
-                                        .item(0)) : null;
+                                
+                                NodeList elements88 = configurationSetsElement.getElementsByTagName("SSH");
+                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
                                 if (sSHElement != null) {
                                     SshSettings sSHInstance = new SshSettings();
-                                    configurationSetInstance
-                                            .setSshSettings(sSHInstance);
-
-                                    NodeList elements89 = sSHElement
-                                            .getElementsByTagName("PublicKeys");
-                                    Element publicKeysSequenceElement = elements89
-                                            .getLength() > 0 ? ((Element) elements89
-                                            .item(0)) : null;
+                                    configurationSetInstance.setSshSettings(sSHInstance);
+                                    
+                                    NodeList elements89 = sSHElement.getElementsByTagName("PublicKeys");
+                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < publicKeysSequenceElement
-                                                .getElementsByTagName(
-                                                        "PublicKey")
-                                                .getLength(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement
-                                                    .getElementsByTagName(
-                                                            "PublicKey").item(
-                                                            i10));
+                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                            sSHInstance.getPublicKeys().add(
-                                                    publicKeyInstance);
-
-                                            NodeList elements90 = publicKeysElement
-                                                    .getElementsByTagName("Fingerprint");
-                                            Element fingerprintElement = elements90
-                                                    .getLength() > 0 ? ((Element) elements90
-                                                    .item(0)) : null;
+                                            sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                            
+                                            NodeList elements90 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
                                             if (fingerprintElement != null) {
                                                 String fingerprintInstance;
-                                                fingerprintInstance = fingerprintElement
-                                                        .getTextContent();
-                                                publicKeyInstance
-                                                        .setFingerprint(fingerprintInstance);
+                                                fingerprintInstance = fingerprintElement.getTextContent();
+                                                publicKeyInstance.setFingerprint(fingerprintInstance);
                                             }
-
-                                            NodeList elements91 = publicKeysElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement2 = elements91
-                                                    .getLength() > 0 ? ((Element) elements91
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements91 = publicKeysElement.getElementsByTagName("Path");
+                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
                                             if (pathElement2 != null) {
                                                 String pathInstance2;
-                                                pathInstance2 = pathElement2
-                                                        .getTextContent();
-                                                publicKeyInstance
-                                                        .setPath(pathInstance2);
+                                                pathInstance2 = pathElement2.getTextContent();
+                                                publicKeyInstance.setPath(pathInstance2);
                                             }
                                         }
                                     }
-
-                                    NodeList elements92 = sSHElement
-                                            .getElementsByTagName("KeyPairs");
-                                    Element keyPairsSequenceElement = elements92
-                                            .getLength() > 0 ? ((Element) elements92
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements92 = sSHElement.getElementsByTagName("KeyPairs");
+                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < keyPairsSequenceElement
-                                                .getElementsByTagName("KeyPair")
-                                                .getLength(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement
-                                                    .getElementsByTagName(
-                                                            "KeyPair")
-                                                    .item(i11));
+                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                            sSHInstance.getKeyPairs().add(
-                                                    keyPairInstance);
-
-                                            NodeList elements93 = keyPairsElement
-                                                    .getElementsByTagName("Fingerprint");
-                                            Element fingerprintElement2 = elements93
-                                                    .getLength() > 0 ? ((Element) elements93
-                                                    .item(0)) : null;
+                                            sSHInstance.getKeyPairs().add(keyPairInstance);
+                                            
+                                            NodeList elements93 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
                                             if (fingerprintElement2 != null) {
                                                 String fingerprintInstance2;
-                                                fingerprintInstance2 = fingerprintElement2
-                                                        .getTextContent();
-                                                keyPairInstance
-                                                        .setFingerprint(fingerprintInstance2);
+                                                fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                                keyPairInstance.setFingerprint(fingerprintInstance2);
                                             }
-
-                                            NodeList elements94 = keyPairsElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement3 = elements94
-                                                    .getLength() > 0 ? ((Element) elements94
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements94 = keyPairsElement.getElementsByTagName("Path");
+                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
                                             if (pathElement3 != null) {
                                                 String pathInstance3;
-                                                pathInstance3 = pathElement3
-                                                        .getTextContent();
-                                                keyPairInstance
-                                                        .setPath(pathInstance3);
+                                                pathInstance3 = pathElement3.getTextContent();
+                                                keyPairInstance.setPath(pathInstance3);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-
-                        NodeList elements95 = roleListElement
-                                .getElementsByTagName("ResourceExtensionReferences");
-                        Element resourceExtensionReferencesSequenceElement = elements95
-                                .getLength() > 0 ? ((Element) elements95
-                                .item(0)) : null;
+                        
+                        NodeList elements95 = roleListElement.getElementsByTagName("ResourceExtensionReferences");
+                        Element resourceExtensionReferencesSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement
-                                    .getElementsByTagName(
-                                            "ResourceExtensionReference")
-                                    .getLength(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement
-                                        .getElementsByTagName(
-                                                "ResourceExtensionReference")
-                                        .item(i12));
+                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").getLength(); i12 = i12 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").item(i12));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
-                                roleInstance
-                                        .getResourceExtensionReferences()
-                                        .add(resourceExtensionReferenceInstance);
-
-                                NodeList elements96 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("ReferenceName");
-                                Element referenceNameElement = elements96
-                                        .getLength() > 0 ? ((Element) elements96
-                                        .item(0)) : null;
+                                roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
+                                
+                                NodeList elements96 = resourceExtensionReferencesElement.getElementsByTagName("ReferenceName");
+                                Element referenceNameElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
                                 if (referenceNameElement != null) {
                                     String referenceNameInstance;
-                                    referenceNameInstance = referenceNameElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setReferenceName(referenceNameInstance);
+                                    referenceNameInstance = referenceNameElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setReferenceName(referenceNameInstance);
                                 }
-
-                                NodeList elements97 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Publisher");
-                                Element publisherElement = elements97
-                                        .getLength() > 0 ? ((Element) elements97
-                                        .item(0)) : null;
+                                
+                                NodeList elements97 = resourceExtensionReferencesElement.getElementsByTagName("Publisher");
+                                Element publisherElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
                                 if (publisherElement != null) {
                                     String publisherInstance;
-                                    publisherInstance = publisherElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setPublisher(publisherInstance);
+                                    publisherInstance = publisherElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
-
-                                NodeList elements98 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Name");
-                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98
-                                        .item(0)) : null;
+                                
+                                NodeList elements98 = resourceExtensionReferencesElement.getElementsByTagName("Name");
+                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
                                 if (nameElement4 != null) {
                                     String nameInstance4;
-                                    nameInstance4 = nameElement4
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setName(nameInstance4);
+                                    nameInstance4 = nameElement4.getTextContent();
+                                    resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
-
-                                NodeList elements99 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Version");
-                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99
-                                        .item(0)) : null;
+                                
+                                NodeList elements99 = resourceExtensionReferencesElement.getElementsByTagName("Version");
+                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
                                 if (versionElement != null) {
                                     String versionInstance;
-                                    versionInstance = versionElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setVersion(versionInstance);
+                                    versionInstance = versionElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setVersion(versionInstance);
                                 }
-
-                                NodeList elements100 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("ResourceExtensionParameterValues");
-                                Element resourceExtensionParameterValuesSequenceElement = elements100
-                                        .getLength() > 0 ? ((Element) elements100
-                                        .item(0)) : null;
+                                
+                                NodeList elements100 = resourceExtensionReferencesElement.getElementsByTagName("ResourceExtensionParameterValues");
+                                Element resourceExtensionParameterValuesSequenceElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement
-                                            .getElementsByTagName(
-                                                    "ResourceExtensionParameterValue")
-                                            .getLength(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement
-                                                .getElementsByTagName(
-                                                        "ResourceExtensionParameterValue")
-                                                .item(i13));
+                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").getLength(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").item(i13));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
-                                        resourceExtensionReferenceInstance
-                                                .getResourceExtensionParameterValues()
-                                                .add(resourceExtensionParameterValueInstance);
-
-                                        NodeList elements101 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Key");
-                                        Element keyElement = elements101
-                                                .getLength() > 0 ? ((Element) elements101
-                                                .item(0)) : null;
+                                        resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
+                                        
+                                        NodeList elements101 = resourceExtensionParameterValuesElement.getElementsByTagName("Key");
+                                        Element keyElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
                                         if (keyElement != null) {
                                             String keyInstance;
-                                            keyInstance = keyElement
-                                                    .getTextContent();
-                                            resourceExtensionParameterValueInstance
-                                                    .setKey(keyInstance);
+                                            keyInstance = keyElement.getTextContent();
+                                            resourceExtensionParameterValueInstance.setKey(keyInstance);
                                         }
-
-                                        NodeList elements102 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Value");
-                                        Element valueElement = elements102
-                                                .getLength() > 0 ? ((Element) elements102
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagName("Value");
+                                        Element valueElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
                                         if (valueElement != null) {
                                             String valueInstance;
-                                            valueInstance = valueElement
-                                                    .getTextContent() != null ? new String(
-                                                    Base64.decodeBase64(valueElement
-                                                            .getTextContent()
-                                                            .getBytes()))
-                                                    : null;
-                                            resourceExtensionParameterValueInstance
-                                                    .setValue(valueInstance);
+                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
+                                            resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
-
-                                        NodeList elements103 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Type");
-                                        Element typeElement = elements103
-                                                .getLength() > 0 ? ((Element) elements103
-                                                .item(0)) : null;
-                                        if (typeElement != null
-                                                && (typeElement
-                                                        .getTextContent() == null || typeElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagName("Type");
+                                        Element typeElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                                        if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
                                             ResourceExtensionParameterValueType typeInstance;
-                                            typeInstance = ResourceExtensionParameterValueType
-                                                    .valueOf(typeElement
-                                                            .getTextContent());
-                                            resourceExtensionParameterValueInstance
-                                                    .setType(typeInstance);
+                                            typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
+                                            resourceExtensionParameterValueInstance.setType(typeInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements104 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("State");
-                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104
-                                        .item(0)) : null;
-                                if (stateElement != null
-                                        && (stateElement.getTextContent() == null || stateElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements104 = resourceExtensionReferencesElement.getElementsByTagName("State");
+                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                                if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
                                     ResourceExtensionReferenceState stateInstance;
-                                    stateInstance = ResourceExtensionReferenceState
-                                            .valueOf(stateElement
-                                                    .getTextContent());
-                                    resourceExtensionReferenceInstance
-                                            .setState(stateInstance);
+                                    stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                    resourceExtensionReferenceInstance.setState(stateInstance);
                                 }
                             }
                         }
-
-                        NodeList elements105 = roleListElement
-                                .getElementsByTagName("AvailabilitySetName");
-                        Element availabilitySetNameElement = elements105
-                                .getLength() > 0 ? ((Element) elements105
-                                .item(0)) : null;
+                        
+                        NodeList elements105 = roleListElement.getElementsByTagName("AvailabilitySetName");
+                        Element availabilitySetNameElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
-                            availabilitySetNameInstance = availabilitySetNameElement
-                                    .getTextContent();
-                            roleInstance
-                                    .setAvailabilitySetName(availabilitySetNameInstance);
+                            availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                            roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
                         }
-
-                        NodeList elements106 = roleListElement
-                                .getElementsByTagName("DataVirtualHardDisks");
-                        Element dataVirtualHardDisksSequenceElement = elements106
-                                .getLength() > 0 ? ((Element) elements106
-                                .item(0)) : null;
+                        
+                        NodeList elements106 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
+                        Element dataVirtualHardDisksSequenceElement = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement
-                                    .getElementsByTagName("DataVirtualHardDisk")
-                                    .getLength(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement
-                                        .getElementsByTagName(
-                                                "DataVirtualHardDisk")
-                                        .item(i14));
+                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i14 = i14 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i14));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                                roleInstance.getDataVirtualHardDisks().add(
-                                        dataVirtualHardDiskInstance);
-
-                                NodeList elements107 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("HostCaching");
-                                Element hostCachingElement = elements107
-                                        .getLength() > 0 ? ((Element) elements107
-                                        .item(0)) : null;
-                                if (hostCachingElement != null
-                                        && (hostCachingElement.getTextContent() == null || hostCachingElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
+                                
+                                NodeList elements107 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                                Element hostCachingElement = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                                if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                                     VirtualHardDiskHostCaching hostCachingInstance;
-                                    hostCachingInstance = VirtualHardDiskHostCaching
-                                            .valueOf(hostCachingElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setHostCaching(hostCachingInstance);
+                                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
                                 }
-
-                                NodeList elements108 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("DiskLabel");
-                                Element diskLabelElement = elements108
-                                        .getLength() > 0 ? ((Element) elements108
-                                        .item(0)) : null;
+                                
+                                NodeList elements108 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                                Element diskLabelElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
                                 if (diskLabelElement != null) {
                                     String diskLabelInstance;
-                                    diskLabelInstance = diskLabelElement
-                                            .getTextContent();
-                                    dataVirtualHardDiskInstance
-                                            .setDiskLabel(diskLabelInstance);
+                                    diskLabelInstance = diskLabelElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
                                 }
-
-                                NodeList elements109 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("DiskName");
-                                Element diskNameElement = elements109
-                                        .getLength() > 0 ? ((Element) elements109
-                                        .item(0)) : null;
+                                
+                                NodeList elements109 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                                Element diskNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
-                                    diskNameInstance = diskNameElement
-                                            .getTextContent();
-                                    dataVirtualHardDiskInstance
-                                            .setDiskName(diskNameInstance);
+                                    diskNameInstance = diskNameElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
                                 }
-
-                                NodeList elements110 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("Lun");
-                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110
-                                        .item(0)) : null;
-                                if (lunElement != null
-                                        && (lunElement.getTextContent() == null || lunElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements110 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                                     int lunInstance;
-                                    lunInstance = DatatypeConverter
-                                            .parseInt(lunElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setLogicalUnitNumber(lunInstance);
+                                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
-
-                                NodeList elements111 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("LogicalDiskSizeInGB");
-                                Element logicalDiskSizeInGBElement = elements111
-                                        .getLength() > 0 ? ((Element) elements111
-                                        .item(0)) : null;
+                                
+                                NodeList elements111 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                                Element logicalDiskSizeInGBElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
                                 if (logicalDiskSizeInGBElement != null) {
                                     int logicalDiskSizeInGBInstance;
-                                    logicalDiskSizeInGBInstance = DatatypeConverter
-                                            .parseInt(logicalDiskSizeInGBElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
-
-                                NodeList elements112 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("MediaLink");
-                                Element mediaLinkElement = elements112
-                                        .getLength() > 0 ? ((Element) elements112
-                                        .item(0)) : null;
+                                
+                                NodeList elements112 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                                Element mediaLinkElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
                                 if (mediaLinkElement != null) {
                                     URI mediaLinkInstance;
-                                    mediaLinkInstance = new URI(
-                                            mediaLinkElement.getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setMediaLink(mediaLinkInstance);
+                                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
                                 }
                             }
                         }
-
-                        NodeList elements113 = roleListElement
-                                .getElementsByTagName("Label");
-                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113
-                                .item(0)) : null;
+                        
+                        NodeList elements113 = roleListElement.getElementsByTagName("Label");
+                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
                         if (labelElement2 != null) {
                             String labelInstance2;
                             labelInstance2 = labelElement2.getTextContent();
                             roleInstance.setLabel(labelInstance2);
                         }
-
-                        NodeList elements114 = roleListElement
-                                .getElementsByTagName("OSVirtualHardDisk");
-                        Element oSVirtualHardDiskElement = elements114
-                                .getLength() > 0 ? ((Element) elements114
-                                .item(0)) : null;
+                        
+                        NodeList elements114 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
+                        Element oSVirtualHardDiskElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
                         if (oSVirtualHardDiskElement != null) {
                             OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                            roleInstance
-                                    .setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-
-                            NodeList elements115 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("HostCaching");
-                            Element hostCachingElement2 = elements115
-                                    .getLength() > 0 ? ((Element) elements115
-                                    .item(0)) : null;
-                            if (hostCachingElement2 != null
-                                    && (hostCachingElement2.getTextContent() == null || hostCachingElement2
-                                            .getTextContent().isEmpty() == true) == false) {
+                            roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                            
+                            NodeList elements115 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                            Element hostCachingElement2 = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                            if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                                 VirtualHardDiskHostCaching hostCachingInstance2;
-                                hostCachingInstance2 = VirtualHardDiskHostCaching
-                                        .valueOf(hostCachingElement2
-                                                .getTextContent());
-                                oSVirtualHardDiskInstance
-                                        .setHostCaching(hostCachingInstance2);
+                                hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                             }
-
-                            NodeList elements116 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("DiskLabel");
-                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116
-                                    .item(0)) : null;
+                            
+                            NodeList elements116 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
-                                diskLabelInstance2 = diskLabelElement2
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setDiskLabel(diskLabelInstance2);
+                                diskLabelInstance2 = diskLabelElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
                             }
-
-                            NodeList elements117 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("DiskName");
-                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117
-                                    .item(0)) : null;
+                            
+                            NodeList elements117 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
-                                diskNameInstance2 = diskNameElement2
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setDiskName(diskNameInstance2);
+                                diskNameInstance2 = diskNameElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
                             }
-
-                            NodeList elements118 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("MediaLink");
-                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118
-                                    .item(0)) : null;
+                            
+                            NodeList elements118 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
                             if (mediaLinkElement2 != null) {
                                 URI mediaLinkInstance2;
-                                mediaLinkInstance2 = new URI(
-                                        mediaLinkElement2.getTextContent());
-                                oSVirtualHardDiskInstance
-                                        .setMediaLink(mediaLinkInstance2);
+                                mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
                             }
-
-                            NodeList elements119 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("SourceImageName");
-                            Element sourceImageNameElement = elements119
-                                    .getLength() > 0 ? ((Element) elements119
-                                    .item(0)) : null;
+                            
+                            NodeList elements119 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                            Element sourceImageNameElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
                             if (sourceImageNameElement != null) {
                                 String sourceImageNameInstance;
-                                sourceImageNameInstance = sourceImageNameElement
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setSourceImageName(sourceImageNameInstance);
+                                sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                                oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
                             }
-
-                            NodeList elements120 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("OS");
-                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120
-                                    .item(0)) : null;
+                            
+                            NodeList elements120 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120.item(0)) : null;
                             if (osElement != null) {
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setOperatingSystem(osInstance);
+                                oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
                             }
                         }
-
-                        NodeList elements121 = roleListElement
-                                .getElementsByTagName("RoleSize");
-                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121
-                                .item(0)) : null;
+                        
+                        NodeList elements121 = roleListElement.getElementsByTagName("RoleSize");
+                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
                         if (roleSizeElement != null) {
                             String roleSizeInstance;
                             roleSizeInstance = roleSizeElement.getTextContent();
                             roleInstance.setRoleSize(roleSizeInstance);
                         }
-
-                        NodeList elements122 = roleListElement
-                                .getElementsByTagName("ProvisionGuestAgent");
-                        Element provisionGuestAgentElement = elements122
-                                .getLength() > 0 ? ((Element) elements122
-                                .item(0)) : null;
-                        if (provisionGuestAgentElement != null
-                                && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements122 = roleListElement.getElementsByTagName("ProvisionGuestAgent");
+                        Element provisionGuestAgentElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                        if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = DatatypeConverter
-                                    .parseBoolean(provisionGuestAgentElement
-                                            .getTextContent());
-                            roleInstance
-                                    .setProvisionGuestAgent(provisionGuestAgentInstance);
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
-
-                        NodeList elements123 = roleListElement
-                                .getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                        Element defaultWinRmCertificateThumbprintElement = elements123
-                                .getLength() > 0 ? ((Element) elements123
-                                .item(0)) : null;
+                        
+                        NodeList elements123 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                        Element defaultWinRmCertificateThumbprintElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
                         if (defaultWinRmCertificateThumbprintElement != null) {
                             String defaultWinRmCertificateThumbprintInstance;
-                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement
-                                    .getTextContent();
-                            roleInstance
-                                    .setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                            roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
                         }
                     }
                 }
-
-                NodeList elements124 = deploymentElement
-                        .getElementsByTagName("SdkVersion");
-                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124
-                        .item(0)) : null;
+                
+                NodeList elements124 = deploymentElement.getElementsByTagName("SdkVersion");
+                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
                 if (sdkVersionElement != null) {
                     String sdkVersionInstance;
                     sdkVersionInstance = sdkVersionElement.getTextContent();
                     result.setSdkVersion(sdkVersionInstance);
                 }
-
-                NodeList elements125 = deploymentElement
-                        .getElementsByTagName("Locked");
-                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125
-                        .item(0)) : null;
+                
+                NodeList elements125 = deploymentElement.getElementsByTagName("Locked");
+                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
                 if (lockedElement != null) {
                     boolean lockedInstance;
-                    lockedInstance = DatatypeConverter
-                            .parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
-
-                NodeList elements126 = deploymentElement
-                        .getElementsByTagName("RollbackAllowed");
-                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126
-                        .item(0)) : null;
+                
+                NodeList elements126 = deploymentElement.getElementsByTagName("RollbackAllowed");
+                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
-                    rollbackAllowedInstance = DatatypeConverter
-                            .parseBoolean(rollbackAllowedElement
-                                    .getTextContent());
+                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
-
-                NodeList elements127 = deploymentElement
-                        .getElementsByTagName("CreatedTime");
-                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127
-                        .item(0)) : null;
+                
+                NodeList elements127 = deploymentElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
-                    createdTimeInstance = DatatypeConverter
-                            .parseDateTime(createdTimeElement.getTextContent());
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
-
-                NodeList elements128 = deploymentElement
-                        .getElementsByTagName("LastModifiedTime");
-                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128
-                        .item(0)) : null;
+                
+                NodeList elements128 = deploymentElement.getElementsByTagName("LastModifiedTime");
+                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
                 if (lastModifiedTimeElement != null) {
                     Calendar lastModifiedTimeInstance;
-                    lastModifiedTimeInstance = DatatypeConverter
-                            .parseDateTime(lastModifiedTimeElement
-                                    .getTextContent());
+                    lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
-
-                NodeList elements129 = deploymentElement
-                        .getElementsByTagName("VirtualNetworkName");
-                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129
-                        .item(0)) : null;
+                
+                NodeList elements129 = deploymentElement.getElementsByTagName("VirtualNetworkName");
+                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
                 if (virtualNetworkNameElement != null) {
                     String virtualNetworkNameInstance;
-                    virtualNetworkNameInstance = virtualNetworkNameElement
-                            .getTextContent();
+                    virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
                     result.setVirtualNetworkName(virtualNetworkNameInstance);
                 }
-
-                NodeList elements130 = deploymentElement
-                        .getElementsByTagName("ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements130
-                        .getLength() > 0 ? ((Element) elements130.item(0))
-                        : null;
+                
+                NodeList elements130 = deploymentElement.getElementsByTagName("ExtendedProperties");
+                Element extendedPropertiesSequenceElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement
-                            .getElementsByTagName("ExtendedProperty")
-                            .getLength(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement
-                                .getElementsByTagName("ExtendedProperty").item(
-                                        i15));
-                        NodeList elements131 = extendedPropertiesElement
-                                .getElementsByTagName("Name");
-                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131
-                                .item(0)).getTextContent() : null;
-                        NodeList elements132 = extendedPropertiesElement
-                                .getElementsByTagName("Value");
-                        String extendedPropertiesValue = elements132
-                                .getLength() > 0 ? ((org.w3c.dom.Element) elements132
-                                .item(0)).getTextContent() : null;
-                        result.getExtendedProperties().put(
-                                extendedPropertiesKey, extendedPropertiesValue);
+                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i15 = i15 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i15));
+                        NodeList elements131 = extendedPropertiesElement.getElementsByTagName("Name");
+                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131.item(0)).getTextContent() : null;
+                        NodeList elements132 = extendedPropertiesElement.getElementsByTagName("Value");
+                        String extendedPropertiesValue = elements132.getLength() > 0 ? ((org.w3c.dom.Element) elements132.item(0)).getTextContent() : null;
+                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
-
-                NodeList elements133 = deploymentElement
-                        .getElementsByTagName("PersistentVMDowntime");
-                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133
-                        .item(0)) : null;
+                
+                NodeList elements133 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
+                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
                 if (persistentVMDowntimeElement != null) {
                     PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                     result.setPersistentVMDowntime(persistentVMDowntimeInstance);
-
-                    NodeList elements134 = persistentVMDowntimeElement
-                            .getElementsByTagName("StartTime");
-                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134
-                            .item(0)) : null;
+                    
+                    NodeList elements134 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
-                        startTimeInstance = DatatypeConverter
-                                .parseDateTime(startTimeElement
-                                        .getTextContent());
-                        persistentVMDowntimeInstance
-                                .setStartTime(startTimeInstance);
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
+                        persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
-
-                    NodeList elements135 = persistentVMDowntimeElement
-                            .getElementsByTagName("EndTime");
-                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135
-                            .item(0)) : null;
+                    
+                    NodeList elements135 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
+                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
                     if (endTimeElement != null) {
                         Calendar endTimeInstance;
-                        endTimeInstance = DatatypeConverter
-                                .parseDateTime(endTimeElement.getTextContent());
-                        persistentVMDowntimeInstance
-                                .setEndTime(endTimeInstance);
+                        endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
+                        persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
-
-                    NodeList elements136 = persistentVMDowntimeElement
-                            .getElementsByTagName("Status");
-                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136
-                            .item(0)) : null;
+                    
+                    NodeList elements136 = persistentVMDowntimeElement.getElementsByTagName("Status");
+                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
                     if (statusElement2 != null) {
                         String statusInstance2;
                         statusInstance2 = statusElement2.getTextContent();
                         persistentVMDowntimeInstance.setStatus(statusInstance2);
                     }
                 }
-
-                NodeList elements137 = deploymentElement
-                        .getElementsByTagName("VirtualIPs");
-                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137
-                        .item(0)) : null;
+                
+                NodeList elements137 = deploymentElement.getElementsByTagName("VirtualIPs");
+                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < virtualIPsSequenceElement
-                            .getElementsByTagName("VirtualIP").getLength(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement
-                                .getElementsByTagName("VirtualIP").item(i16));
+                    for (int i16 = 0; i16 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i16 = i16 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i16));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
-
-                        NodeList elements138 = virtualIPsElement
-                                .getElementsByTagName("Address");
-                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138
-                                .item(0)) : null;
+                        
+                        NodeList elements138 = virtualIPsElement.getElementsByTagName("Address");
+                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
                         if (addressElement != null) {
                             InetAddress addressInstance;
-                            addressInstance = InetAddress
-                                    .getByName(addressElement.getTextContent());
+                            addressInstance = InetAddress.getByName(addressElement.getTextContent());
                             virtualIPInstance.setAddress(addressInstance);
                         }
-
-                        NodeList elements139 = virtualIPsElement
-                                .getElementsByTagName("Name");
-                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139
-                                .item(0)) : null;
+                        
+                        NodeList elements139 = virtualIPsElement.getElementsByTagName("Name");
+                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
                         if (nameElement5 != null) {
                             String nameInstance5;
                             nameInstance5 = nameElement5.getTextContent();
                             virtualIPInstance.setName(nameInstance5);
                         }
-
-                        NodeList elements140 = virtualIPsElement
-                                .getElementsByTagName("IsDnsProgrammed");
-                        Element isDnsProgrammedElement = elements140
-                                .getLength() > 0 ? ((Element) elements140
-                                .item(0)) : null;
-                        if (isDnsProgrammedElement != null
-                                && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements140 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
+                        Element isDnsProgrammedElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                        if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = DatatypeConverter
-                                    .parseBoolean(isDnsProgrammedElement
-                                            .getTextContent());
-                            virtualIPInstance
-                                    .setIsDnsProgrammed(isDnsProgrammedInstance);
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }
                 }
-
-                NodeList elements141 = deploymentElement
-                        .getElementsByTagName("ReservedIPName");
-                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141
-                        .item(0)) : null;
+                
+                NodeList elements141 = deploymentElement.getElementsByTagName("ReservedIPName");
+                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
                 if (reservedIPNameElement != null) {
                     String reservedIPNameInstance;
-                    reservedIPNameInstance = reservedIPNameElement
-                            .getTextContent();
+                    reservedIPNameInstance = reservedIPNameElement.getTextContent();
                     result.setReservedIPName(reservedIPNameInstance);
                 }
-
-                NodeList elements142 = deploymentElement
-                        .getElementsByTagName("Dns");
-                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142
-                        .item(0)) : null;
+                
+                NodeList elements142 = deploymentElement.getElementsByTagName("Dns");
+                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142.item(0)) : null;
                 if (dnsElement != null) {
                     DnsSettings dnsInstance = new DnsSettings();
                     result.setDnsSettings(dnsInstance);
-
-                    NodeList elements143 = dnsElement
-                            .getElementsByTagName("DnsServers");
-                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143
-                            .item(0)) : null;
+                    
+                    NodeList elements143 = dnsElement.getElementsByTagName("DnsServers");
+                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143.item(0)) : null;
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < dnsServersSequenceElement
-                                .getElementsByTagName("DnsServer").getLength(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement
-                                    .getElementsByTagName("DnsServer")
-                                    .item(i17));
+                        for (int i17 = 0; i17 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i17 = i17 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i17));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
-
-                            NodeList elements144 = dnsServersElement
-                                    .getElementsByTagName("Name");
-                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144
-                                    .item(0)) : null;
+                            
+                            NodeList elements144 = dnsServersElement.getElementsByTagName("Name");
+                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144.item(0)) : null;
                             if (nameElement6 != null) {
                                 String nameInstance6;
                                 nameInstance6 = nameElement6.getTextContent();
                                 dnsServerInstance.setName(nameInstance6);
                             }
-
-                            NodeList elements145 = dnsServersElement
-                                    .getElementsByTagName("Address");
-                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145
-                                    .item(0)) : null;
+                            
+                            NodeList elements145 = dnsServersElement.getElementsByTagName("Address");
+                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145.item(0)) : null;
                             if (addressElement2 != null) {
                                 InetAddress addressInstance2;
-                                addressInstance2 = InetAddress
-                                        .getByName(addressElement2
-                                                .getTextContent());
+                                addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
                                 dnsServerInstance.setAddress(addressInstance2);
                             }
                         }
                     }
                 }
-
-                NodeList elements146 = deploymentElement
-                        .getElementsByTagName("ExtensionConfiguration");
-                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146
-                        .item(0)) : null;
+                
+                NodeList elements146 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
+                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146.item(0)) : null;
                 if (extensionConfigurationElement != null) {
                     ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                     result.setExtensionConfiguration(extensionConfigurationInstance);
-
-                    NodeList elements147 = extensionConfigurationElement
-                            .getElementsByTagName("AllRoles");
-                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147
-                            .item(0)) : null;
+                    
+                    NodeList elements147 = extensionConfigurationElement.getElementsByTagName("AllRoles");
+                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147.item(0)) : null;
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < allRolesSequenceElement
-                                .getElementsByTagName("Extension").getLength(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement
-                                    .getElementsByTagName("Extension")
-                                    .item(i18));
+                        for (int i18 = 0; i18 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i18));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
-                            extensionConfigurationInstance.getAllRoles().add(
-                                    extensionInstance);
-
-                            NodeList elements148 = allRolesElement
-                                    .getElementsByTagName("Id");
-                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148
-                                    .item(0)) : null;
+                            extensionConfigurationInstance.getAllRoles().add(extensionInstance);
+                            
+                            NodeList elements148 = allRolesElement.getElementsByTagName("Id");
+                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148.item(0)) : null;
                             if (idElement != null) {
                                 String idInstance;
                                 idInstance = idElement.getTextContent();
@@ -6726,56 +5000,36 @@ public class DeploymentOperationsImpl implements
                             }
                         }
                     }
-
-                    NodeList elements149 = extensionConfigurationElement
-                            .getElementsByTagName("NamedRoles");
-                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149
-                            .item(0)) : null;
+                    
+                    NodeList elements149 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
+                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149.item(0)) : null;
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < namedRolesSequenceElement
-                                .getElementsByTagName("Role").getLength(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement
-                                    .getElementsByTagName("Role").item(i19));
+                        for (int i19 = 0; i19 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i19 = i19 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i19));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
-                            extensionConfigurationInstance.getNamedRoles().add(
-                                    roleInstance2);
-
-                            NodeList elements150 = namedRolesElement
-                                    .getElementsByTagName("RoleName");
-                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150
-                                    .item(0)) : null;
+                            extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
+                            
+                            NodeList elements150 = namedRolesElement.getElementsByTagName("RoleName");
+                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150.item(0)) : null;
                             if (roleNameElement3 != null) {
                                 String roleNameInstance3;
-                                roleNameInstance3 = roleNameElement3
-                                        .getTextContent();
+                                roleNameInstance3 = roleNameElement3.getTextContent();
                                 roleInstance2.setRoleName(roleNameInstance3);
                             }
-
-                            NodeList elements151 = namedRolesElement
-                                    .getElementsByTagName("Extensions");
-                            Element extensionsSequenceElement = elements151
-                                    .getLength() > 0 ? ((Element) elements151
-                                    .item(0)) : null;
+                            
+                            NodeList elements151 = namedRolesElement.getElementsByTagName("Extensions");
+                            Element extensionsSequenceElement = elements151.getLength() > 0 ? ((Element) elements151.item(0)) : null;
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < extensionsSequenceElement
-                                        .getElementsByTagName("Extension")
-                                        .getLength(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement
-                                            .getElementsByTagName("Extension")
-                                            .item(i20));
+                                for (int i20 = 0; i20 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i20 = i20 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i20));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
-                                    roleInstance2.getExtensions().add(
-                                            extensionInstance2);
-
-                                    NodeList elements152 = extensionsElement
-                                            .getElementsByTagName("Id");
-                                    Element idElement2 = elements152
-                                            .getLength() > 0 ? ((Element) elements152
-                                            .item(0)) : null;
+                                    roleInstance2.getExtensions().add(extensionInstance2);
+                                    
+                                    NodeList elements152 = extensionsElement.getElementsByTagName("Id");
+                                    Element idElement2 = elements152.getLength() > 0 ? ((Element) elements152.item(0)) : null;
                                     if (idElement2 != null) {
                                         String idInstance2;
-                                        idInstance2 = idElement2
-                                                .getTextContent();
+                                        idInstance2 = idElement2.getTextContent();
                                         extensionInstance2.setId(idInstance2);
                                     }
                                 }
@@ -6784,13 +5038,12 @@ public class DeploymentOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -6801,66 +5054,54 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Deployment operation returns configuration information, status,
-     * and system properties for a deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @return A deployment that exists in the cloud service.
-     */
+    * The Get Deployment operation returns configuration information, status,
+    * and system properties for a deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @return A deployment that exists in the cloud service.
+    */
     @Override
-    public Future<DeploymentGetResponse> getBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<DeploymentGetResponse>() {
-                    @Override
-                    public DeploymentGetResponse call() throws Exception {
-                        return getBySlot(serviceName, deploymentSlot);
-                    }
-                });
+    public Future<DeploymentGetResponse> getBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot) {
+        return this.getClient().getExecutorService().submit(new Callable<DeploymentGetResponse>() { 
+            @Override
+            public DeploymentGetResponse call() throws Exception {
+                return getBySlot(serviceName, deploymentSlot);
+            }
+         });
     }
-
+    
     /**
-     * The Get Deployment operation returns configuration information, status,
-     * and system properties for a deployment. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return A deployment that exists in the cloud service.
-     */
+    * The Get Deployment operation returns configuration information, status,
+    * and system properties for a deployment.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return A deployment that exists in the cloud service.
+    */
     @Override
-    public DeploymentGetResponse getBySlot(String serviceName,
-            DeploymentSlot deploymentSlot) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException,
-            URISyntaxException {
+    public DeploymentGetResponse getBySlot(String serviceName, DeploymentSlot deploymentSlot) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6869,2008 +5110,1224 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
-            CloudTracing.enter(invocationId, this, "getBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getBySlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             DeploymentGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
             result = new DeploymentGetResponse();
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder documentBuilder = documentBuilderFactory
-                    .newDocumentBuilder();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
-
+            
             NodeList elements = responseDoc.getElementsByTagName("Deployment");
-            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements
-                    .item(0)) : null;
+            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (deploymentElement != null) {
-                NodeList elements2 = deploymentElement
-                        .getElementsByTagName("Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2
-                        .item(0)) : null;
+                NodeList elements2 = deploymentElement.getElementsByTagName("Name");
+                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
-
-                NodeList elements3 = deploymentElement
-                        .getElementsByTagName("DeploymentSlot");
-                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3
-                        .item(0)) : null;
+                
+                NodeList elements3 = deploymentElement.getElementsByTagName("DeploymentSlot");
+                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (deploymentSlotElement != null) {
                     DeploymentSlot deploymentSlotInstance;
-                    deploymentSlotInstance = DeploymentSlot
-                            .valueOf(deploymentSlotElement.getTextContent());
+                    deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                     result.setDeploymentSlot(deploymentSlotInstance);
                 }
-
-                NodeList elements4 = deploymentElement
-                        .getElementsByTagName("PrivateID");
-                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4
-                        .item(0)) : null;
+                
+                NodeList elements4 = deploymentElement.getElementsByTagName("PrivateID");
+                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (privateIDElement != null) {
                     String privateIDInstance;
                     privateIDInstance = privateIDElement.getTextContent();
                     result.setPrivateId(privateIDInstance);
                 }
-
-                NodeList elements5 = deploymentElement
-                        .getElementsByTagName("Status");
-                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5
-                        .item(0)) : null;
+                
+                NodeList elements5 = deploymentElement.getElementsByTagName("Status");
+                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (statusElement != null) {
                     DeploymentStatus statusInstance;
-                    statusInstance = DeploymentStatus.valueOf(statusElement
-                            .getTextContent());
+                    statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
-
-                NodeList elements6 = deploymentElement
-                        .getElementsByTagName("Label");
-                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6
-                        .item(0)) : null;
+                
+                NodeList elements6 = deploymentElement.getElementsByTagName("Label");
+                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(
-                            Base64.decodeBase64(labelElement.getTextContent()
-                                    .getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
-
-                NodeList elements7 = deploymentElement
-                        .getElementsByTagName("Url");
-                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7
-                        .item(0)) : null;
+                
+                NodeList elements7 = deploymentElement.getElementsByTagName("Url");
+                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
-
-                NodeList elements8 = deploymentElement
-                        .getElementsByTagName("Configuration");
-                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8
-                        .item(0)) : null;
+                
+                NodeList elements8 = deploymentElement.getElementsByTagName("Configuration");
+                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (configurationElement != null) {
                     String configurationInstance;
-                    configurationInstance = configurationElement
-                            .getTextContent() != null ? new String(
-                            Base64.decodeBase64(configurationElement
-                                    .getTextContent().getBytes())) : null;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
                     result.setConfiguration(configurationInstance);
                 }
-
-                NodeList elements9 = deploymentElement
-                        .getElementsByTagName("RoleInstanceList");
-                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9
-                        .item(0)) : null;
+                
+                NodeList elements9 = deploymentElement.getElementsByTagName("RoleInstanceList");
+                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (roleInstanceListSequenceElement != null) {
-                    for (int i1 = 0; i1 < roleInstanceListSequenceElement
-                            .getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement
-                                .getElementsByTagName("RoleInstance").item(i1));
+                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i1));
                         RoleInstance roleInstanceInstance = new RoleInstance();
                         result.getRoleInstances().add(roleInstanceInstance);
-
-                        NodeList elements10 = roleInstanceListElement
-                                .getElementsByTagName("RoleName");
-                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10
-                                .item(0)) : null;
+                        
+                        NodeList elements10 = roleInstanceListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (roleNameElement != null) {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             roleInstanceInstance.setRoleName(roleNameInstance);
                         }
-
-                        NodeList elements11 = roleInstanceListElement
-                                .getElementsByTagName("InstanceName");
-                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11
-                                .item(0)) : null;
+                        
+                        NodeList elements11 = roleInstanceListElement.getElementsByTagName("InstanceName");
+                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (instanceNameElement != null) {
                             String instanceNameInstance;
-                            instanceNameInstance = instanceNameElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceName(instanceNameInstance);
+                            instanceNameInstance = instanceNameElement.getTextContent();
+                            roleInstanceInstance.setInstanceName(instanceNameInstance);
                         }
-
-                        NodeList elements12 = roleInstanceListElement
-                                .getElementsByTagName("InstanceStatus");
-                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12
-                                .item(0)) : null;
+                        
+                        NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
+                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                         if (instanceStatusElement != null) {
                             String instanceStatusInstance;
-                            instanceStatusInstance = instanceStatusElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceStatus(instanceStatusInstance);
+                            instanceStatusInstance = instanceStatusElement.getTextContent();
+                            roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
                         }
-
-                        NodeList elements13 = roleInstanceListElement
-                                .getElementsByTagName("InstanceUpgradeDomain");
-                        Element instanceUpgradeDomainElement = elements13
-                                .getLength() > 0 ? ((Element) elements13
-                                .item(0)) : null;
-                        if (instanceUpgradeDomainElement != null
-                                && (instanceUpgradeDomainElement
-                                        .getTextContent() == null || instanceUpgradeDomainElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
+                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceUpgradeDomainInstance;
-                            instanceUpgradeDomainInstance = DatatypeConverter
-                                    .parseInt(instanceUpgradeDomainElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
+                            instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
-
-                        NodeList elements14 = roleInstanceListElement
-                                .getElementsByTagName("InstanceFaultDomain");
-                        Element instanceFaultDomainElement = elements14
-                                .getLength() > 0 ? ((Element) elements14
-                                .item(0)) : null;
-                        if (instanceFaultDomainElement != null
-                                && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
+                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceFaultDomainInstance;
-                            instanceFaultDomainInstance = DatatypeConverter
-                                    .parseInt(instanceFaultDomainElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setInstanceFaultDomain(instanceFaultDomainInstance);
+                            instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
+                            roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
-
-                        NodeList elements15 = roleInstanceListElement
-                                .getElementsByTagName("InstanceSize");
-                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15
-                                .item(0)) : null;
+                        
+                        NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceSize");
+                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                         if (instanceSizeElement != null) {
                             String instanceSizeInstance;
-                            instanceSizeInstance = instanceSizeElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceSize(instanceSizeInstance);
+                            instanceSizeInstance = instanceSizeElement.getTextContent();
+                            roleInstanceInstance.setInstanceSize(instanceSizeInstance);
                         }
-
-                        NodeList elements16 = roleInstanceListElement
-                                .getElementsByTagName("InstanceStateDetails");
-                        Element instanceStateDetailsElement = elements16
-                                .getLength() > 0 ? ((Element) elements16
-                                .item(0)) : null;
+                        
+                        NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
+                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                         if (instanceStateDetailsElement != null) {
                             String instanceStateDetailsInstance;
-                            instanceStateDetailsInstance = instanceStateDetailsElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceStateDetails(instanceStateDetailsInstance);
+                            instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
+                            roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
                         }
-
-                        NodeList elements17 = roleInstanceListElement
-                                .getElementsByTagName("InstanceErrorCode");
-                        Element instanceErrorCodeElement = elements17
-                                .getLength() > 0 ? ((Element) elements17
-                                .item(0)) : null;
+                        
+                        NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
+                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                         if (instanceErrorCodeElement != null) {
                             String instanceErrorCodeInstance;
-                            instanceErrorCodeInstance = instanceErrorCodeElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setInstanceErrorCode(instanceErrorCodeInstance);
+                            instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
+                            roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
                         }
-
-                        NodeList elements18 = roleInstanceListElement
-                                .getElementsByTagName("IpAddress");
-                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18
-                                .item(0)) : null;
+                        
+                        NodeList elements18 = roleInstanceListElement.getElementsByTagName("IpAddress");
+                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                         if (ipAddressElement != null) {
                             InetAddress ipAddressInstance;
-                            ipAddressInstance = InetAddress
-                                    .getByName(ipAddressElement
-                                            .getTextContent());
-                            roleInstanceInstance
-                                    .setIPAddress(ipAddressInstance);
+                            ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
+                            roleInstanceInstance.setIPAddress(ipAddressInstance);
                         }
-
-                        NodeList elements19 = roleInstanceListElement
-                                .getElementsByTagName("InstanceEndpoints");
-                        Element instanceEndpointsSequenceElement = elements19
-                                .getLength() > 0 ? ((Element) elements19
-                                .item(0)) : null;
+                        
+                        NodeList elements19 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
+                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                         if (instanceEndpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement
-                                    .getElementsByTagName("InstanceEndpoint")
-                                    .getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement
-                                        .getElementsByTagName(
-                                                "InstanceEndpoint").item(i2));
+                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i2 = i2 + 1) {
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i2));
                                 InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
-                                roleInstanceInstance.getInstanceEndpoints()
-                                        .add(instanceEndpointInstance);
-
-                                NodeList elements20 = instanceEndpointsElement
-                                        .getElementsByTagName("LocalPort");
-                                Element localPortElement = elements20
-                                        .getLength() > 0 ? ((Element) elements20
-                                        .item(0)) : null;
-                                if (localPortElement != null
-                                        && (localPortElement.getTextContent() == null || localPortElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
+                                
+                                NodeList elements20 = instanceEndpointsElement.getElementsByTagName("LocalPort");
+                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
-                                    localPortInstance = DatatypeConverter
-                                            .parseInt(localPortElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setLocalPort(localPortInstance);
+                                    localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
+                                    instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
-
-                                NodeList elements21 = instanceEndpointsElement
-                                        .getElementsByTagName("Name");
-                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21
-                                        .item(0)) : null;
+                                
+                                NodeList elements21 = instanceEndpointsElement.getElementsByTagName("Name");
+                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                                 if (nameElement2 != null) {
                                     String nameInstance2;
-                                    nameInstance2 = nameElement2
-                                            .getTextContent();
-                                    instanceEndpointInstance
-                                            .setName(nameInstance2);
+                                    nameInstance2 = nameElement2.getTextContent();
+                                    instanceEndpointInstance.setName(nameInstance2);
                                 }
-
-                                NodeList elements22 = instanceEndpointsElement
-                                        .getElementsByTagName("PublicPort");
-                                Element publicPortElement = elements22
-                                        .getLength() > 0 ? ((Element) elements22
-                                        .item(0)) : null;
+                                
+                                NodeList elements22 = instanceEndpointsElement.getElementsByTagName("PublicPort");
+                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                                 if (publicPortElement != null) {
                                     int publicPortInstance;
-                                    publicPortInstance = DatatypeConverter
-                                            .parseInt(publicPortElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setPort(publicPortInstance);
+                                    publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
+                                    instanceEndpointInstance.setPort(publicPortInstance);
                                 }
-
-                                NodeList elements23 = instanceEndpointsElement
-                                        .getElementsByTagName("Protocol");
-                                Element protocolElement = elements23
-                                        .getLength() > 0 ? ((Element) elements23
-                                        .item(0)) : null;
+                                
+                                NodeList elements23 = instanceEndpointsElement.getElementsByTagName("Protocol");
+                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                                 if (protocolElement != null) {
                                     String protocolInstance;
-                                    protocolInstance = protocolElement
-                                            .getTextContent();
-                                    instanceEndpointInstance
-                                            .setProtocol(protocolInstance);
+                                    protocolInstance = protocolElement.getTextContent();
+                                    instanceEndpointInstance.setProtocol(protocolInstance);
                                 }
-
-                                NodeList elements24 = instanceEndpointsElement
-                                        .getElementsByTagName("Vip");
-                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24
-                                        .item(0)) : null;
+                                
+                                NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Vip");
+                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                                 if (vipElement != null) {
                                     InetAddress vipInstance;
-                                    vipInstance = InetAddress
-                                            .getByName(vipElement
-                                                    .getTextContent());
-                                    instanceEndpointInstance
-                                            .setVirtualIPAddress(vipInstance);
+                                    vipInstance = InetAddress.getByName(vipElement.getTextContent());
+                                    instanceEndpointInstance.setVirtualIPAddress(vipInstance);
                                 }
                             }
                         }
-
-                        NodeList elements25 = roleInstanceListElement
-                                .getElementsByTagName("PowerState");
-                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25
-                                .item(0)) : null;
+                        
+                        NodeList elements25 = roleInstanceListElement.getElementsByTagName("PowerState");
+                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
-                            powerStateInstance = RoleInstancePowerState
-                                    .valueOf(powerStateElement.getTextContent());
-                            roleInstanceInstance
-                                    .setPowerState(powerStateInstance);
+                            powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
+                            roleInstanceInstance.setPowerState(powerStateInstance);
                         }
-
-                        NodeList elements26 = roleInstanceListElement
-                                .getElementsByTagName("HostName");
-                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26
-                                .item(0)) : null;
+                        
+                        NodeList elements26 = roleInstanceListElement.getElementsByTagName("HostName");
+                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                         if (hostNameElement != null) {
                             String hostNameInstance;
                             hostNameInstance = hostNameElement.getTextContent();
                             roleInstanceInstance.setHostName(hostNameInstance);
                         }
-
-                        NodeList elements27 = roleInstanceListElement
-                                .getElementsByTagName("RemoteAccessCertificateThumbprint");
-                        Element remoteAccessCertificateThumbprintElement = elements27
-                                .getLength() > 0 ? ((Element) elements27
-                                .item(0)) : null;
+                        
+                        NodeList elements27 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
+                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                         if (remoteAccessCertificateThumbprintElement != null) {
                             String remoteAccessCertificateThumbprintInstance;
-                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement
-                                    .getTextContent();
-                            roleInstanceInstance
-                                    .setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
+                            remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
+                            roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
                         }
                     }
                 }
-
-                NodeList elements28 = deploymentElement
-                        .getElementsByTagName("UpgradeStatus");
-                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28
-                        .item(0)) : null;
+                
+                NodeList elements28 = deploymentElement.getElementsByTagName("UpgradeStatus");
+                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                 if (upgradeStatusElement != null) {
                     UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                     result.setUpgradeStatus(upgradeStatusInstance);
-
-                    NodeList elements29 = upgradeStatusElement
-                            .getElementsByTagName("UpgradeType");
-                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29
-                            .item(0)) : null;
+                    
+                    NodeList elements29 = upgradeStatusElement.getElementsByTagName("UpgradeType");
+                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                     if (upgradeTypeElement != null) {
                         DeploymentUpgradeType upgradeTypeInstance;
-                        upgradeTypeInstance = DeploymentUpgradeType
-                                .valueOf(upgradeTypeElement.getTextContent());
-                        upgradeStatusInstance
-                                .setUpgradeType(upgradeTypeInstance);
+                        upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
+                        upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                     }
-
-                    NodeList elements30 = upgradeStatusElement
-                            .getElementsByTagName("CurrentUpgradeDomainState");
-                    Element currentUpgradeDomainStateElement = elements30
-                            .getLength() > 0 ? ((Element) elements30.item(0))
-                            : null;
+                    
+                    NodeList elements30 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
+                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                     if (currentUpgradeDomainStateElement != null) {
                         UpgradeDomainState currentUpgradeDomainStateInstance;
-                        currentUpgradeDomainStateInstance = UpgradeDomainState
-                                .valueOf(currentUpgradeDomainStateElement
-                                        .getTextContent());
-                        upgradeStatusInstance
-                                .setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
+                        currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                     }
-
-                    NodeList elements31 = upgradeStatusElement
-                            .getElementsByTagName("CurrentUpgradeDomain");
-                    Element currentUpgradeDomainElement = elements31
-                            .getLength() > 0 ? ((Element) elements31.item(0))
-                            : null;
+                    
+                    NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
+                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                     if (currentUpgradeDomainElement != null) {
                         int currentUpgradeDomainInstance;
-                        currentUpgradeDomainInstance = DatatypeConverter
-                                .parseInt(currentUpgradeDomainElement
-                                        .getTextContent());
-                        upgradeStatusInstance
-                                .setCurrentUpgradeDomain(currentUpgradeDomainInstance);
+                        currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
+                        upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
                     }
                 }
-
-                NodeList elements32 = deploymentElement
-                        .getElementsByTagName("UpgradeDomainCount");
-                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32
-                        .item(0)) : null;
+                
+                NodeList elements32 = deploymentElement.getElementsByTagName("UpgradeDomainCount");
+                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (upgradeDomainCountElement != null) {
                     int upgradeDomainCountInstance;
-                    upgradeDomainCountInstance = DatatypeConverter
-                            .parseInt(upgradeDomainCountElement
-                                    .getTextContent());
+                    upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
-
-                NodeList elements33 = deploymentElement
-                        .getElementsByTagName("RoleList");
-                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33
-                        .item(0)) : null;
+                
+                NodeList elements33 = deploymentElement.getElementsByTagName("RoleList");
+                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < roleListSequenceElement
-                            .getElementsByTagName("Role").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement
-                                .getElementsByTagName("Role").item(i3));
+                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i3));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
-
-                        NodeList elements34 = roleListElement
-                                .getElementsByTagName("RoleName");
-                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34
-                                .item(0)) : null;
+                        
+                        NodeList elements34 = roleListElement.getElementsByTagName("RoleName");
+                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                         if (roleNameElement2 != null) {
                             String roleNameInstance2;
-                            roleNameInstance2 = roleNameElement2
-                                    .getTextContent();
+                            roleNameInstance2 = roleNameElement2.getTextContent();
                             roleInstance.setRoleName(roleNameInstance2);
                         }
-
-                        NodeList elements35 = roleListElement
-                                .getElementsByTagName("OsVersion");
-                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35
-                                .item(0)) : null;
+                        
+                        NodeList elements35 = roleListElement.getElementsByTagName("OsVersion");
+                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                         if (osVersionElement != null) {
                             String osVersionInstance;
-                            osVersionInstance = osVersionElement
-                                    .getTextContent();
+                            osVersionInstance = osVersionElement.getTextContent();
                             roleInstance.setOSVersion(osVersionInstance);
                         }
-
-                        NodeList elements36 = roleListElement
-                                .getElementsByTagName("RoleType");
-                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36
-                                .item(0)) : null;
+                        
+                        NodeList elements36 = roleListElement.getElementsByTagName("RoleType");
+                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                         if (roleTypeElement != null) {
                             String roleTypeInstance;
                             roleTypeInstance = roleTypeElement.getTextContent();
                             roleInstance.setRoleType(roleTypeInstance);
                         }
-
-                        NodeList elements37 = roleListElement
-                                .getElementsByTagName("ConfigurationSets");
-                        Element configurationSetsSequenceElement = elements37
-                                .getLength() > 0 ? ((Element) elements37
-                                .item(0)) : null;
+                        
+                        NodeList elements37 = roleListElement.getElementsByTagName("ConfigurationSets");
+                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < configurationSetsSequenceElement
-                                    .getElementsByTagName("ConfigurationSet")
-                                    .getLength(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement
-                                        .getElementsByTagName(
-                                                "ConfigurationSet").item(i4));
+                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i4 = i4 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i4));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
-                                roleInstance.getConfigurationSets().add(
-                                        configurationSetInstance);
-
-                                NodeList elements38 = configurationSetsElement
-                                        .getElementsByTagName("ConfigurationSetType");
-                                Element configurationSetTypeElement = elements38
-                                        .getLength() > 0 ? ((Element) elements38
-                                        .item(0)) : null;
+                                roleInstance.getConfigurationSets().add(configurationSetInstance);
+                                
+                                NodeList elements38 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                                 if (configurationSetTypeElement != null) {
                                     String configurationSetTypeInstance;
-                                    configurationSetTypeInstance = configurationSetTypeElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setConfigurationSetType(configurationSetTypeInstance);
+                                    configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
+                                    configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
                                 }
-
-                                NodeList elements39 = configurationSetsElement
-                                        .getElementsByTagName("InputEndpoints");
-                                Element inputEndpointsSequenceElement = elements39
-                                        .getLength() > 0 ? ((Element) elements39
-                                        .item(0)) : null;
+                                
+                                NodeList elements39 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement
-                                            .getElementsByTagName(
-                                                    "InputEndpoint")
-                                            .getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement
-                                                .getElementsByTagName(
-                                                        "InputEndpoint").item(
-                                                        i5));
+                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i5));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
-                                        configurationSetInstance
-                                                .getInputEndpoints().add(
-                                                        inputEndpointInstance);
-
-                                        NodeList elements40 = inputEndpointsElement
-                                                .getElementsByTagName("LoadBalancedEndpointSetName");
-                                        Element loadBalancedEndpointSetNameElement = elements40
-                                                .getLength() > 0 ? ((Element) elements40
-                                                .item(0)) : null;
+                                        configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
+                                        
+                                        NodeList elements40 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                                         if (loadBalancedEndpointSetNameElement != null) {
                                             String loadBalancedEndpointSetNameInstance;
-                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
+                                            loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
+                                            inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
-
-                                        NodeList elements41 = inputEndpointsElement
-                                                .getElementsByTagName("LocalPort");
-                                        Element localPortElement2 = elements41
-                                                .getLength() > 0 ? ((Element) elements41
-                                                .item(0)) : null;
-                                        if (localPortElement2 != null
-                                                && (localPortElement2
-                                                        .getTextContent() == null || localPortElement2
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements41 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false) {
                                             int localPortInstance2;
-                                            localPortInstance2 = DatatypeConverter
-                                                    .parseInt(localPortElement2
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setLocalPort(localPortInstance2);
+                                            localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
+                                            inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
-
-                                        NodeList elements42 = inputEndpointsElement
-                                                .getElementsByTagName("Name");
-                                        Element nameElement3 = elements42
-                                                .getLength() > 0 ? ((Element) elements42
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements42 = inputEndpointsElement.getElementsByTagName("Name");
+                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                                         if (nameElement3 != null) {
                                             String nameInstance3;
-                                            nameInstance3 = nameElement3
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setName(nameInstance3);
+                                            nameInstance3 = nameElement3.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance3);
                                         }
-
-                                        NodeList elements43 = inputEndpointsElement
-                                                .getElementsByTagName("Port");
-                                        Element portElement = elements43
-                                                .getLength() > 0 ? ((Element) elements43
-                                                .item(0)) : null;
-                                        if (portElement != null
-                                                && (portElement
-                                                        .getTextContent() == null || portElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements43 = inputEndpointsElement.getElementsByTagName("Port");
+                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                             int portInstance;
-                                            portInstance = DatatypeConverter
-                                                    .parseInt(portElement
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setPort(portInstance);
+                                            portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
+                                            inputEndpointInstance.setPort(portInstance);
                                         }
-
-                                        NodeList elements44 = inputEndpointsElement
-                                                .getElementsByTagName("LoadBalancerProbe");
-                                        Element loadBalancerProbeElement = elements44
-                                                .getLength() > 0 ? ((Element) elements44
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements44 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                                         if (loadBalancerProbeElement != null) {
                                             LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
-                                            inputEndpointInstance
-                                                    .setLoadBalancerProbe(loadBalancerProbeInstance);
-
-                                            NodeList elements45 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement = elements45
-                                                    .getLength() > 0 ? ((Element) elements45
-                                                    .item(0)) : null;
+                                            inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
+                                            
+                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                                             if (pathElement != null) {
                                                 String pathInstance;
-                                                pathInstance = pathElement
-                                                        .getTextContent();
-                                                loadBalancerProbeInstance
-                                                        .setPath(pathInstance);
+                                                pathInstance = pathElement.getTextContent();
+                                                loadBalancerProbeInstance.setPath(pathInstance);
                                             }
-
-                                            NodeList elements46 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Port");
-                                            Element portElement2 = elements46
-                                                    .getLength() > 0 ? ((Element) elements46
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                                             if (portElement2 != null) {
                                                 int portInstance2;
-                                                portInstance2 = DatatypeConverter
-                                                        .parseInt(portElement2
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setPort(portInstance2);
+                                                portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
+                                                loadBalancerProbeInstance.setPort(portInstance2);
                                             }
-
-                                            NodeList elements47 = loadBalancerProbeElement
-                                                    .getElementsByTagName("Protocol");
-                                            Element protocolElement2 = elements47
-                                                    .getLength() > 0 ? ((Element) elements47
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                                             if (protocolElement2 != null) {
                                                 LoadBalancerProbeTransportProtocol protocolInstance2;
-                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl
-                                                        .parseLoadBalancerProbeTransportProtocol(protocolElement2
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setProtocol(protocolInstance2);
+                                                protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
+                                                loadBalancerProbeInstance.setProtocol(protocolInstance2);
                                             }
-
-                                            NodeList elements48 = loadBalancerProbeElement
-                                                    .getElementsByTagName("IntervalInSeconds");
-                                            Element intervalInSecondsElement = elements48
-                                                    .getLength() > 0 ? ((Element) elements48
-                                                    .item(0)) : null;
-                                            if (intervalInSecondsElement != null
-                                                    && (intervalInSecondsElement
-                                                            .getTextContent() == null || intervalInSecondsElement
-                                                            .getTextContent()
-                                                            .isEmpty() == true) == false) {
+                                            
+                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int intervalInSecondsInstance;
-                                                intervalInSecondsInstance = DatatypeConverter
-                                                        .parseInt(intervalInSecondsElement
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setIntervalInSeconds(intervalInSecondsInstance);
+                                                intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
-
-                                            NodeList elements49 = loadBalancerProbeElement
-                                                    .getElementsByTagName("TimeoutInSeconds");
-                                            Element timeoutInSecondsElement = elements49
-                                                    .getLength() > 0 ? ((Element) elements49
-                                                    .item(0)) : null;
-                                            if (timeoutInSecondsElement != null
-                                                    && (timeoutInSecondsElement
-                                                            .getTextContent() == null || timeoutInSecondsElement
-                                                            .getTextContent()
-                                                            .isEmpty() == true) == false) {
+                                            
+                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int timeoutInSecondsInstance;
-                                                timeoutInSecondsInstance = DatatypeConverter
-                                                        .parseInt(timeoutInSecondsElement
-                                                                .getTextContent());
-                                                loadBalancerProbeInstance
-                                                        .setTimeoutInSeconds(timeoutInSecondsInstance);
+                                                timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
+                                                loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
                                             }
                                         }
-
-                                        NodeList elements50 = inputEndpointsElement
-                                                .getElementsByTagName("Protocol");
-                                        Element protocolElement3 = elements50
-                                                .getLength() > 0 ? ((Element) elements50
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements50 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                                         if (protocolElement3 != null) {
                                             String protocolInstance3;
-                                            protocolInstance3 = protocolElement3
-                                                    .getTextContent();
-                                            inputEndpointInstance
-                                                    .setProtocol(protocolInstance3);
+                                            protocolInstance3 = protocolElement3.getTextContent();
+                                            inputEndpointInstance.setProtocol(protocolInstance3);
                                         }
-
-                                        NodeList elements51 = inputEndpointsElement
-                                                .getElementsByTagName("Vip");
-                                        Element vipElement2 = elements51
-                                                .getLength() > 0 ? ((Element) elements51
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements51 = inputEndpointsElement.getElementsByTagName("Vip");
+                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                                         if (vipElement2 != null) {
                                             InetAddress vipInstance2;
-                                            vipInstance2 = InetAddress
-                                                    .getByName(vipElement2
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setVirtualIPAddress(vipInstance2);
+                                            vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
+                                            inputEndpointInstance.setVirtualIPAddress(vipInstance2);
                                         }
-
-                                        NodeList elements52 = inputEndpointsElement
-                                                .getElementsByTagName("EnableDirectServerReturn");
-                                        Element enableDirectServerReturnElement = elements52
-                                                .getLength() > 0 ? ((Element) elements52
-                                                .item(0)) : null;
-                                        if (enableDirectServerReturnElement != null
-                                                && (enableDirectServerReturnElement
-                                                        .getTextContent() == null || enableDirectServerReturnElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements52 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = DatatypeConverter
-                                                    .parseBoolean(enableDirectServerReturnElement
-                                                            .getTextContent());
-                                            inputEndpointInstance
-                                                    .setEnableDirectServerReturn(enableDirectServerReturnInstance);
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
-
-                                        NodeList elements53 = inputEndpointsElement
-                                                .getElementsByTagName("EndpointAcl");
-                                        Element endpointAclElement = elements53
-                                                .getLength() > 0 ? ((Element) elements53
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements53 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                                         if (endpointAclElement != null) {
                                             EndpointAcl endpointAclInstance = new EndpointAcl();
-                                            inputEndpointInstance
-                                                    .setEndpointAcl(endpointAclInstance);
-
-                                            NodeList elements54 = endpointAclElement
-                                                    .getElementsByTagName("Rules");
-                                            Element rulesSequenceElement = elements54
-                                                    .getLength() > 0 ? ((Element) elements54
-                                                    .item(0)) : null;
+                                            inputEndpointInstance.setEndpointAcl(endpointAclInstance);
+                                            
+                                            NodeList elements54 = endpointAclElement.getElementsByTagName("Rules");
+                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < rulesSequenceElement
-                                                        .getElementsByTagName(
-                                                                "Rule")
-                                                        .getLength(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement
-                                                            .getElementsByTagName(
-                                                                    "Rule")
-                                                            .item(i6));
+                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i6 = i6 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i6));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
-                                                    endpointAclInstance
-                                                            .getRules()
-                                                            .add(ruleInstance);
-
-                                                    NodeList elements55 = rulesElement
-                                                            .getElementsByTagName("Order");
-                                                    Element orderElement = elements55
-                                                            .getLength() > 0 ? ((Element) elements55
-                                                            .item(0)) : null;
-                                                    if (orderElement != null
-                                                            && (orderElement
-                                                                    .getTextContent() == null || orderElement
-                                                                    .getTextContent()
-                                                                    .isEmpty() == true) == false) {
+                                                    endpointAclInstance.getRules().add(ruleInstance);
+                                                    
+                                                    NodeList elements55 = rulesElement.getElementsByTagName("Order");
+                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                         int orderInstance;
-                                                        orderInstance = DatatypeConverter
-                                                                .parseInt(orderElement
-                                                                        .getTextContent());
-                                                        ruleInstance
-                                                                .setOrder(orderInstance);
+                                                        orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
+                                                        ruleInstance.setOrder(orderInstance);
                                                     }
-
-                                                    NodeList elements56 = rulesElement
-                                                            .getElementsByTagName("Action");
-                                                    Element actionElement = elements56
-                                                            .getLength() > 0 ? ((Element) elements56
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements56 = rulesElement.getElementsByTagName("Action");
+                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                                                     if (actionElement != null) {
                                                         String actionInstance;
-                                                        actionInstance = actionElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setAction(actionInstance);
+                                                        actionInstance = actionElement.getTextContent();
+                                                        ruleInstance.setAction(actionInstance);
                                                     }
-
-                                                    NodeList elements57 = rulesElement
-                                                            .getElementsByTagName("RemoteSubnet");
-                                                    Element remoteSubnetElement = elements57
-                                                            .getLength() > 0 ? ((Element) elements57
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements57 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                                                     if (remoteSubnetElement != null) {
                                                         String remoteSubnetInstance;
-                                                        remoteSubnetInstance = remoteSubnetElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setRemoteSubnet(remoteSubnetInstance);
+                                                        remoteSubnetInstance = remoteSubnetElement.getTextContent();
+                                                        ruleInstance.setRemoteSubnet(remoteSubnetInstance);
                                                     }
-
-                                                    NodeList elements58 = rulesElement
-                                                            .getElementsByTagName("Description");
-                                                    Element descriptionElement = elements58
-                                                            .getLength() > 0 ? ((Element) elements58
-                                                            .item(0)) : null;
+                                                    
+                                                    NodeList elements58 = rulesElement.getElementsByTagName("Description");
+                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                                                     if (descriptionElement != null) {
                                                         String descriptionInstance;
-                                                        descriptionInstance = descriptionElement
-                                                                .getTextContent();
-                                                        ruleInstance
-                                                                .setDescription(descriptionInstance);
+                                                        descriptionInstance = descriptionElement.getTextContent();
+                                                        ruleInstance.setDescription(descriptionInstance);
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
-
-                                NodeList elements59 = configurationSetsElement
-                                        .getElementsByTagName("SubnetNames");
-                                Element subnetNamesSequenceElement = elements59
-                                        .getLength() > 0 ? ((Element) elements59
-                                        .item(0)) : null;
+                                
+                                NodeList elements59 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < subnetNamesSequenceElement
-                                            .getElementsByTagName("SubnetName")
-                                            .getLength(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement
-                                                .getElementsByTagName(
-                                                        "SubnetName").item(i7));
-                                        configurationSetInstance
-                                                .getSubnetNames()
-                                                .add(subnetNamesElement
-                                                        .getTextContent());
+                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i7 = i7 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i7));
+                                        configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
-
-                                NodeList elements60 = configurationSetsElement
-                                        .getElementsByTagName("StaticVirtualNetworkIPAddress");
-                                Element staticVirtualNetworkIPAddressElement = elements60
-                                        .getLength() > 0 ? ((Element) elements60
-                                        .item(0)) : null;
+                                
+                                NodeList elements60 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                                 if (staticVirtualNetworkIPAddressElement != null) {
                                     String staticVirtualNetworkIPAddressInstance;
-                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
+                                    staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
+                                    configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
-
-                                NodeList elements61 = configurationSetsElement
-                                        .getElementsByTagName("ComputerName");
-                                Element computerNameElement = elements61
-                                        .getLength() > 0 ? ((Element) elements61
-                                        .item(0)) : null;
+                                
+                                NodeList elements61 = configurationSetsElement.getElementsByTagName("ComputerName");
+                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                                 if (computerNameElement != null) {
                                     String computerNameInstance;
-                                    computerNameInstance = computerNameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setComputerName(computerNameInstance);
+                                    computerNameInstance = computerNameElement.getTextContent();
+                                    configurationSetInstance.setComputerName(computerNameInstance);
                                 }
-
-                                NodeList elements62 = configurationSetsElement
-                                        .getElementsByTagName("AdminPassword");
-                                Element adminPasswordElement = elements62
-                                        .getLength() > 0 ? ((Element) elements62
-                                        .item(0)) : null;
+                                
+                                NodeList elements62 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                                 if (adminPasswordElement != null) {
                                     String adminPasswordInstance;
-                                    adminPasswordInstance = adminPasswordElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setAdminPassword(adminPasswordInstance);
+                                    adminPasswordInstance = adminPasswordElement.getTextContent();
+                                    configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
-
-                                NodeList elements63 = configurationSetsElement
-                                        .getElementsByTagName("ResetPasswordOnFirstLogon");
-                                Element resetPasswordOnFirstLogonElement = elements63
-                                        .getLength() > 0 ? ((Element) elements63
-                                        .item(0)) : null;
-                                if (resetPasswordOnFirstLogonElement != null
-                                        && (resetPasswordOnFirstLogonElement
-                                                .getTextContent() == null || resetPasswordOnFirstLogonElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements63 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = DatatypeConverter
-                                            .parseBoolean(resetPasswordOnFirstLogonElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
-
-                                NodeList elements64 = configurationSetsElement
-                                        .getElementsByTagName("EnableAutomaticUpdates");
-                                Element enableAutomaticUpdatesElement = elements64
-                                        .getLength() > 0 ? ((Element) elements64
-                                        .item(0)) : null;
-                                if (enableAutomaticUpdatesElement != null
-                                        && (enableAutomaticUpdatesElement
-                                                .getTextContent() == null || enableAutomaticUpdatesElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements64 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = DatatypeConverter
-                                            .parseBoolean(enableAutomaticUpdatesElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
-
-                                NodeList elements65 = configurationSetsElement
-                                        .getElementsByTagName("TimeZone");
-                                Element timeZoneElement = elements65
-                                        .getLength() > 0 ? ((Element) elements65
-                                        .item(0)) : null;
+                                
+                                NodeList elements65 = configurationSetsElement.getElementsByTagName("TimeZone");
+                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
                                 if (timeZoneElement != null) {
                                     String timeZoneInstance;
-                                    timeZoneInstance = timeZoneElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setTimeZone(timeZoneInstance);
+                                    timeZoneInstance = timeZoneElement.getTextContent();
+                                    configurationSetInstance.setTimeZone(timeZoneInstance);
                                 }
-
-                                NodeList elements66 = configurationSetsElement
-                                        .getElementsByTagName("DomainJoin");
-                                Element domainJoinElement = elements66
-                                        .getLength() > 0 ? ((Element) elements66
-                                        .item(0)) : null;
+                                
+                                NodeList elements66 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                                 if (domainJoinElement != null) {
                                     DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
-                                    configurationSetInstance
-                                            .setDomainJoin(domainJoinInstance);
-
-                                    NodeList elements67 = domainJoinElement
-                                            .getElementsByTagName("Credentials");
-                                    Element credentialsElement = elements67
-                                            .getLength() > 0 ? ((Element) elements67
-                                            .item(0)) : null;
+                                    configurationSetInstance.setDomainJoin(domainJoinInstance);
+                                    
+                                    NodeList elements67 = domainJoinElement.getElementsByTagName("Credentials");
+                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                                     if (credentialsElement != null) {
                                         DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
-                                        domainJoinInstance
-                                                .setCredentials(credentialsInstance);
-
-                                        NodeList elements68 = credentialsElement
-                                                .getElementsByTagName("Domain");
-                                        Element domainElement = elements68
-                                                .getLength() > 0 ? ((Element) elements68
-                                                .item(0)) : null;
+                                        domainJoinInstance.setCredentials(credentialsInstance);
+                                        
+                                        NodeList elements68 = credentialsElement.getElementsByTagName("Domain");
+                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                                         if (domainElement != null) {
                                             String domainInstance;
-                                            domainInstance = domainElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setDomain(domainInstance);
+                                            domainInstance = domainElement.getTextContent();
+                                            credentialsInstance.setDomain(domainInstance);
                                         }
-
-                                        NodeList elements69 = credentialsElement
-                                                .getElementsByTagName("Username");
-                                        Element usernameElement = elements69
-                                                .getLength() > 0 ? ((Element) elements69
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements69 = credentialsElement.getElementsByTagName("Username");
+                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                                         if (usernameElement != null) {
                                             String usernameInstance;
-                                            usernameInstance = usernameElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setUserName(usernameInstance);
+                                            usernameInstance = usernameElement.getTextContent();
+                                            credentialsInstance.setUserName(usernameInstance);
                                         }
-
-                                        NodeList elements70 = credentialsElement
-                                                .getElementsByTagName("Password");
-                                        Element passwordElement = elements70
-                                                .getLength() > 0 ? ((Element) elements70
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements70 = credentialsElement.getElementsByTagName("Password");
+                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                                         if (passwordElement != null) {
                                             String passwordInstance;
-                                            passwordInstance = passwordElement
-                                                    .getTextContent();
-                                            credentialsInstance
-                                                    .setPassword(passwordInstance);
+                                            passwordInstance = passwordElement.getTextContent();
+                                            credentialsInstance.setPassword(passwordInstance);
                                         }
                                     }
-
-                                    NodeList elements71 = domainJoinElement
-                                            .getElementsByTagName("JoinDomain");
-                                    Element joinDomainElement = elements71
-                                            .getLength() > 0 ? ((Element) elements71
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements71 = domainJoinElement.getElementsByTagName("JoinDomain");
+                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                                     if (joinDomainElement != null) {
                                         String joinDomainInstance;
-                                        joinDomainInstance = joinDomainElement
-                                                .getTextContent();
-                                        domainJoinInstance
-                                                .setDomainToJoin(joinDomainInstance);
+                                        joinDomainInstance = joinDomainElement.getTextContent();
+                                        domainJoinInstance.setDomainToJoin(joinDomainInstance);
                                     }
-
-                                    NodeList elements72 = domainJoinElement
-                                            .getElementsByTagName("MachineObjectOU");
-                                    Element machineObjectOUElement = elements72
-                                            .getLength() > 0 ? ((Element) elements72
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements72 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
                                     if (machineObjectOUElement != null) {
                                         String machineObjectOUInstance;
-                                        machineObjectOUInstance = machineObjectOUElement
-                                                .getTextContent();
-                                        domainJoinInstance
-                                                .setLdapMachineObjectOU(machineObjectOUInstance);
+                                        machineObjectOUInstance = machineObjectOUElement.getTextContent();
+                                        domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
                                     }
-
-                                    NodeList elements73 = domainJoinElement
-                                            .getElementsByTagName("Provisioning");
-                                    Element provisioningElement = elements73
-                                            .getLength() > 0 ? ((Element) elements73
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements73 = domainJoinElement.getElementsByTagName("Provisioning");
+                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                                     if (provisioningElement != null) {
                                         DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
-                                        domainJoinInstance
-                                                .setProvisioning(provisioningInstance);
-
-                                        NodeList elements74 = provisioningElement
-                                                .getElementsByTagName("AccountData");
-                                        Element accountDataElement = elements74
-                                                .getLength() > 0 ? ((Element) elements74
-                                                .item(0)) : null;
+                                        domainJoinInstance.setProvisioning(provisioningInstance);
+                                        
+                                        NodeList elements74 = provisioningElement.getElementsByTagName("AccountData");
+                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                                         if (accountDataElement != null) {
                                             String accountDataInstance;
-                                            accountDataInstance = accountDataElement
-                                                    .getTextContent();
-                                            provisioningInstance
-                                                    .setAccountData(accountDataInstance);
+                                            accountDataInstance = accountDataElement.getTextContent();
+                                            provisioningInstance.setAccountData(accountDataInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements75 = configurationSetsElement
-                                        .getElementsByTagName("StoredCertificateSettings");
-                                Element storedCertificateSettingsSequenceElement = elements75
-                                        .getLength() > 0 ? ((Element) elements75
-                                        .item(0)) : null;
+                                
+                                NodeList elements75 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement
-                                            .getElementsByTagName(
-                                                    "CertificateSetting")
-                                            .getLength(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement
-                                                .getElementsByTagName(
-                                                        "CertificateSetting")
-                                                .item(i8));
+                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i8));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
-                                        configurationSetInstance
-                                                .getStoredCertificateSettings()
-                                                .add(certificateSettingInstance);
-
-                                        NodeList elements76 = storedCertificateSettingsElement
-                                                .getElementsByTagName("StoreLocation");
-                                        Element storeLocationElement = elements76
-                                                .getLength() > 0 ? ((Element) elements76
-                                                .item(0)) : null;
+                                        configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
+                                        
+                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                                         if (storeLocationElement != null) {
                                         }
-
-                                        NodeList elements77 = storedCertificateSettingsElement
-                                                .getElementsByTagName("StoreName");
-                                        Element storeNameElement = elements77
-                                                .getLength() > 0 ? ((Element) elements77
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                                         if (storeNameElement != null) {
                                             String storeNameInstance;
-                                            storeNameInstance = storeNameElement
-                                                    .getTextContent();
-                                            certificateSettingInstance
-                                                    .setStoreName(storeNameInstance);
+                                            storeNameInstance = storeNameElement.getTextContent();
+                                            certificateSettingInstance.setStoreName(storeNameInstance);
                                         }
-
-                                        NodeList elements78 = storedCertificateSettingsElement
-                                                .getElementsByTagName("Thumbprint");
-                                        Element thumbprintElement = elements78
-                                                .getLength() > 0 ? ((Element) elements78
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                                         if (thumbprintElement != null) {
                                             String thumbprintInstance;
-                                            thumbprintInstance = thumbprintElement
-                                                    .getTextContent();
-                                            certificateSettingInstance
-                                                    .setThumbprint(thumbprintInstance);
+                                            thumbprintInstance = thumbprintElement.getTextContent();
+                                            certificateSettingInstance.setThumbprint(thumbprintInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements79 = configurationSetsElement
-                                        .getElementsByTagName("WinRM");
-                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79
-                                        .item(0)) : null;
+                                
+                                NodeList elements79 = configurationSetsElement.getElementsByTagName("WinRM");
+                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
                                 if (winRMElement != null) {
                                     WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
-                                    configurationSetInstance
-                                            .setWindowsRemoteManagement(winRMInstance);
-
-                                    NodeList elements80 = winRMElement
-                                            .getElementsByTagName("Listeners");
-                                    Element listenersSequenceElement = elements80
-                                            .getLength() > 0 ? ((Element) elements80
-                                            .item(0)) : null;
+                                    configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
+                                    
+                                    NodeList elements80 = winRMElement.getElementsByTagName("Listeners");
+                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < listenersSequenceElement
-                                                .getElementsByTagName(
-                                                        "Listener").getLength(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement
-                                                    .getElementsByTagName(
-                                                            "Listener")
-                                                    .item(i9));
+                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i9 = i9 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i9));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
-                                            winRMInstance.getListeners().add(
-                                                    listenerInstance);
-
-                                            NodeList elements81 = listenersElement
-                                                    .getElementsByTagName("Protocol");
-                                            Element protocolElement4 = elements81
-                                                    .getLength() > 0 ? ((Element) elements81
-                                                    .item(0)) : null;
+                                            winRMInstance.getListeners().add(listenerInstance);
+                                            
+                                            NodeList elements81 = listenersElement.getElementsByTagName("Protocol");
+                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
                                             if (protocolElement4 != null) {
                                                 VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
-                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType
-                                                        .valueOf(protocolElement4
-                                                                .getTextContent());
-                                                listenerInstance
-                                                        .setListenerType(protocolInstance4);
+                                                protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
+                                                listenerInstance.setListenerType(protocolInstance4);
                                             }
-
-                                            NodeList elements82 = listenersElement
-                                                    .getElementsByTagName("CertificateThumbprint");
-                                            Element certificateThumbprintElement = elements82
-                                                    .getLength() > 0 ? ((Element) elements82
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements82 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
                                             if (certificateThumbprintElement != null) {
                                                 String certificateThumbprintInstance;
-                                                certificateThumbprintInstance = certificateThumbprintElement
-                                                        .getTextContent();
-                                                listenerInstance
-                                                        .setCertificateThumbprint(certificateThumbprintInstance);
+                                                certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
+                                                listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
                                             }
                                         }
                                     }
                                 }
-
-                                NodeList elements83 = configurationSetsElement
-                                        .getElementsByTagName("AdminUsername");
-                                Element adminUsernameElement = elements83
-                                        .getLength() > 0 ? ((Element) elements83
-                                        .item(0)) : null;
+                                
+                                NodeList elements83 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
                                 if (adminUsernameElement != null) {
                                     String adminUsernameInstance;
-                                    adminUsernameInstance = adminUsernameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setAdminUserName(adminUsernameInstance);
+                                    adminUsernameInstance = adminUsernameElement.getTextContent();
+                                    configurationSetInstance.setAdminUserName(adminUsernameInstance);
                                 }
-
-                                NodeList elements84 = configurationSetsElement
-                                        .getElementsByTagName("HostName");
-                                Element hostNameElement2 = elements84
-                                        .getLength() > 0 ? ((Element) elements84
-                                        .item(0)) : null;
+                                
+                                NodeList elements84 = configurationSetsElement.getElementsByTagName("HostName");
+                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
                                 if (hostNameElement2 != null) {
                                     String hostNameInstance2;
-                                    hostNameInstance2 = hostNameElement2
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setHostName(hostNameInstance2);
+                                    hostNameInstance2 = hostNameElement2.getTextContent();
+                                    configurationSetInstance.setHostName(hostNameInstance2);
                                 }
-
-                                NodeList elements85 = configurationSetsElement
-                                        .getElementsByTagName("UserName");
-                                Element userNameElement = elements85
-                                        .getLength() > 0 ? ((Element) elements85
-                                        .item(0)) : null;
+                                
+                                NodeList elements85 = configurationSetsElement.getElementsByTagName("UserName");
+                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
                                 if (userNameElement != null) {
                                     String userNameInstance;
-                                    userNameInstance = userNameElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setUserName(userNameInstance);
+                                    userNameInstance = userNameElement.getTextContent();
+                                    configurationSetInstance.setUserName(userNameInstance);
                                 }
-
-                                NodeList elements86 = configurationSetsElement
-                                        .getElementsByTagName("UserPassword");
-                                Element userPasswordElement = elements86
-                                        .getLength() > 0 ? ((Element) elements86
-                                        .item(0)) : null;
+                                
+                                NodeList elements86 = configurationSetsElement.getElementsByTagName("UserPassword");
+                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
                                 if (userPasswordElement != null) {
                                     String userPasswordInstance;
-                                    userPasswordInstance = userPasswordElement
-                                            .getTextContent();
-                                    configurationSetInstance
-                                            .setUserPassword(userPasswordInstance);
+                                    userPasswordInstance = userPasswordElement.getTextContent();
+                                    configurationSetInstance.setUserPassword(userPasswordInstance);
                                 }
-
-                                NodeList elements87 = configurationSetsElement
-                                        .getElementsByTagName("DisableSshPasswordAuthentication");
-                                Element disableSshPasswordAuthenticationElement = elements87
-                                        .getLength() > 0 ? ((Element) elements87
-                                        .item(0)) : null;
-                                if (disableSshPasswordAuthenticationElement != null
-                                        && (disableSshPasswordAuthenticationElement
-                                                .getTextContent() == null || disableSshPasswordAuthenticationElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements87 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = DatatypeConverter
-                                            .parseBoolean(disableSshPasswordAuthenticationElement
-                                                    .getTextContent());
-                                    configurationSetInstance
-                                            .setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
-
-                                NodeList elements88 = configurationSetsElement
-                                        .getElementsByTagName("SSH");
-                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88
-                                        .item(0)) : null;
+                                
+                                NodeList elements88 = configurationSetsElement.getElementsByTagName("SSH");
+                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
                                 if (sSHElement != null) {
                                     SshSettings sSHInstance = new SshSettings();
-                                    configurationSetInstance
-                                            .setSshSettings(sSHInstance);
-
-                                    NodeList elements89 = sSHElement
-                                            .getElementsByTagName("PublicKeys");
-                                    Element publicKeysSequenceElement = elements89
-                                            .getLength() > 0 ? ((Element) elements89
-                                            .item(0)) : null;
+                                    configurationSetInstance.setSshSettings(sSHInstance);
+                                    
+                                    NodeList elements89 = sSHElement.getElementsByTagName("PublicKeys");
+                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < publicKeysSequenceElement
-                                                .getElementsByTagName(
-                                                        "PublicKey")
-                                                .getLength(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement
-                                                    .getElementsByTagName(
-                                                            "PublicKey").item(
-                                                            i10));
+                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i10));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
-                                            sSHInstance.getPublicKeys().add(
-                                                    publicKeyInstance);
-
-                                            NodeList elements90 = publicKeysElement
-                                                    .getElementsByTagName("Fingerprint");
-                                            Element fingerprintElement = elements90
-                                                    .getLength() > 0 ? ((Element) elements90
-                                                    .item(0)) : null;
+                                            sSHInstance.getPublicKeys().add(publicKeyInstance);
+                                            
+                                            NodeList elements90 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
                                             if (fingerprintElement != null) {
                                                 String fingerprintInstance;
-                                                fingerprintInstance = fingerprintElement
-                                                        .getTextContent();
-                                                publicKeyInstance
-                                                        .setFingerprint(fingerprintInstance);
+                                                fingerprintInstance = fingerprintElement.getTextContent();
+                                                publicKeyInstance.setFingerprint(fingerprintInstance);
                                             }
-
-                                            NodeList elements91 = publicKeysElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement2 = elements91
-                                                    .getLength() > 0 ? ((Element) elements91
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements91 = publicKeysElement.getElementsByTagName("Path");
+                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
                                             if (pathElement2 != null) {
                                                 String pathInstance2;
-                                                pathInstance2 = pathElement2
-                                                        .getTextContent();
-                                                publicKeyInstance
-                                                        .setPath(pathInstance2);
+                                                pathInstance2 = pathElement2.getTextContent();
+                                                publicKeyInstance.setPath(pathInstance2);
                                             }
                                         }
                                     }
-
-                                    NodeList elements92 = sSHElement
-                                            .getElementsByTagName("KeyPairs");
-                                    Element keyPairsSequenceElement = elements92
-                                            .getLength() > 0 ? ((Element) elements92
-                                            .item(0)) : null;
+                                    
+                                    NodeList elements92 = sSHElement.getElementsByTagName("KeyPairs");
+                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < keyPairsSequenceElement
-                                                .getElementsByTagName("KeyPair")
-                                                .getLength(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement
-                                                    .getElementsByTagName(
-                                                            "KeyPair")
-                                                    .item(i11));
+                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i11));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
-                                            sSHInstance.getKeyPairs().add(
-                                                    keyPairInstance);
-
-                                            NodeList elements93 = keyPairsElement
-                                                    .getElementsByTagName("Fingerprint");
-                                            Element fingerprintElement2 = elements93
-                                                    .getLength() > 0 ? ((Element) elements93
-                                                    .item(0)) : null;
+                                            sSHInstance.getKeyPairs().add(keyPairInstance);
+                                            
+                                            NodeList elements93 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
                                             if (fingerprintElement2 != null) {
                                                 String fingerprintInstance2;
-                                                fingerprintInstance2 = fingerprintElement2
-                                                        .getTextContent();
-                                                keyPairInstance
-                                                        .setFingerprint(fingerprintInstance2);
+                                                fingerprintInstance2 = fingerprintElement2.getTextContent();
+                                                keyPairInstance.setFingerprint(fingerprintInstance2);
                                             }
-
-                                            NodeList elements94 = keyPairsElement
-                                                    .getElementsByTagName("Path");
-                                            Element pathElement3 = elements94
-                                                    .getLength() > 0 ? ((Element) elements94
-                                                    .item(0)) : null;
+                                            
+                                            NodeList elements94 = keyPairsElement.getElementsByTagName("Path");
+                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
                                             if (pathElement3 != null) {
                                                 String pathInstance3;
-                                                pathInstance3 = pathElement3
-                                                        .getTextContent();
-                                                keyPairInstance
-                                                        .setPath(pathInstance3);
+                                                pathInstance3 = pathElement3.getTextContent();
+                                                keyPairInstance.setPath(pathInstance3);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
-
-                        NodeList elements95 = roleListElement
-                                .getElementsByTagName("ResourceExtensionReferences");
-                        Element resourceExtensionReferencesSequenceElement = elements95
-                                .getLength() > 0 ? ((Element) elements95
-                                .item(0)) : null;
+                        
+                        NodeList elements95 = roleListElement.getElementsByTagName("ResourceExtensionReferences");
+                        Element resourceExtensionReferencesSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement
-                                    .getElementsByTagName(
-                                            "ResourceExtensionReference")
-                                    .getLength(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement
-                                        .getElementsByTagName(
-                                                "ResourceExtensionReference")
-                                        .item(i12));
+                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").getLength(); i12 = i12 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").item(i12));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
-                                roleInstance
-                                        .getResourceExtensionReferences()
-                                        .add(resourceExtensionReferenceInstance);
-
-                                NodeList elements96 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("ReferenceName");
-                                Element referenceNameElement = elements96
-                                        .getLength() > 0 ? ((Element) elements96
-                                        .item(0)) : null;
+                                roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
+                                
+                                NodeList elements96 = resourceExtensionReferencesElement.getElementsByTagName("ReferenceName");
+                                Element referenceNameElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
                                 if (referenceNameElement != null) {
                                     String referenceNameInstance;
-                                    referenceNameInstance = referenceNameElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setReferenceName(referenceNameInstance);
+                                    referenceNameInstance = referenceNameElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setReferenceName(referenceNameInstance);
                                 }
-
-                                NodeList elements97 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Publisher");
-                                Element publisherElement = elements97
-                                        .getLength() > 0 ? ((Element) elements97
-                                        .item(0)) : null;
+                                
+                                NodeList elements97 = resourceExtensionReferencesElement.getElementsByTagName("Publisher");
+                                Element publisherElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
                                 if (publisherElement != null) {
                                     String publisherInstance;
-                                    publisherInstance = publisherElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setPublisher(publisherInstance);
+                                    publisherInstance = publisherElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
-
-                                NodeList elements98 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Name");
-                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98
-                                        .item(0)) : null;
+                                
+                                NodeList elements98 = resourceExtensionReferencesElement.getElementsByTagName("Name");
+                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
                                 if (nameElement4 != null) {
                                     String nameInstance4;
-                                    nameInstance4 = nameElement4
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setName(nameInstance4);
+                                    nameInstance4 = nameElement4.getTextContent();
+                                    resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
-
-                                NodeList elements99 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("Version");
-                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99
-                                        .item(0)) : null;
+                                
+                                NodeList elements99 = resourceExtensionReferencesElement.getElementsByTagName("Version");
+                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
                                 if (versionElement != null) {
                                     String versionInstance;
-                                    versionInstance = versionElement
-                                            .getTextContent();
-                                    resourceExtensionReferenceInstance
-                                            .setVersion(versionInstance);
+                                    versionInstance = versionElement.getTextContent();
+                                    resourceExtensionReferenceInstance.setVersion(versionInstance);
                                 }
-
-                                NodeList elements100 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("ResourceExtensionParameterValues");
-                                Element resourceExtensionParameterValuesSequenceElement = elements100
-                                        .getLength() > 0 ? ((Element) elements100
-                                        .item(0)) : null;
+                                
+                                NodeList elements100 = resourceExtensionReferencesElement.getElementsByTagName("ResourceExtensionParameterValues");
+                                Element resourceExtensionParameterValuesSequenceElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement
-                                            .getElementsByTagName(
-                                                    "ResourceExtensionParameterValue")
-                                            .getLength(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement
-                                                .getElementsByTagName(
-                                                        "ResourceExtensionParameterValue")
-                                                .item(i13));
+                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").getLength(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").item(i13));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
-                                        resourceExtensionReferenceInstance
-                                                .getResourceExtensionParameterValues()
-                                                .add(resourceExtensionParameterValueInstance);
-
-                                        NodeList elements101 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Key");
-                                        Element keyElement = elements101
-                                                .getLength() > 0 ? ((Element) elements101
-                                                .item(0)) : null;
+                                        resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
+                                        
+                                        NodeList elements101 = resourceExtensionParameterValuesElement.getElementsByTagName("Key");
+                                        Element keyElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
                                         if (keyElement != null) {
                                             String keyInstance;
-                                            keyInstance = keyElement
-                                                    .getTextContent();
-                                            resourceExtensionParameterValueInstance
-                                                    .setKey(keyInstance);
+                                            keyInstance = keyElement.getTextContent();
+                                            resourceExtensionParameterValueInstance.setKey(keyInstance);
                                         }
-
-                                        NodeList elements102 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Value");
-                                        Element valueElement = elements102
-                                                .getLength() > 0 ? ((Element) elements102
-                                                .item(0)) : null;
+                                        
+                                        NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagName("Value");
+                                        Element valueElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
                                         if (valueElement != null) {
                                             String valueInstance;
-                                            valueInstance = valueElement
-                                                    .getTextContent() != null ? new String(
-                                                    Base64.decodeBase64(valueElement
-                                                            .getTextContent()
-                                                            .getBytes()))
-                                                    : null;
-                                            resourceExtensionParameterValueInstance
-                                                    .setValue(valueInstance);
+                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
+                                            resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
-
-                                        NodeList elements103 = resourceExtensionParameterValuesElement
-                                                .getElementsByTagName("Type");
-                                        Element typeElement = elements103
-                                                .getLength() > 0 ? ((Element) elements103
-                                                .item(0)) : null;
-                                        if (typeElement != null
-                                                && (typeElement
-                                                        .getTextContent() == null || typeElement
-                                                        .getTextContent()
-                                                        .isEmpty() == true) == false) {
+                                        
+                                        NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagName("Type");
+                                        Element typeElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                                        if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
                                             ResourceExtensionParameterValueType typeInstance;
-                                            typeInstance = ResourceExtensionParameterValueType
-                                                    .valueOf(typeElement
-                                                            .getTextContent());
-                                            resourceExtensionParameterValueInstance
-                                                    .setType(typeInstance);
+                                            typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
+                                            resourceExtensionParameterValueInstance.setType(typeInstance);
                                         }
                                     }
                                 }
-
-                                NodeList elements104 = resourceExtensionReferencesElement
-                                        .getElementsByTagName("State");
-                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104
-                                        .item(0)) : null;
-                                if (stateElement != null
-                                        && (stateElement.getTextContent() == null || stateElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements104 = resourceExtensionReferencesElement.getElementsByTagName("State");
+                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                                if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
                                     ResourceExtensionReferenceState stateInstance;
-                                    stateInstance = ResourceExtensionReferenceState
-                                            .valueOf(stateElement
-                                                    .getTextContent());
-                                    resourceExtensionReferenceInstance
-                                            .setState(stateInstance);
+                                    stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                    resourceExtensionReferenceInstance.setState(stateInstance);
                                 }
                             }
                         }
-
-                        NodeList elements105 = roleListElement
-                                .getElementsByTagName("AvailabilitySetName");
-                        Element availabilitySetNameElement = elements105
-                                .getLength() > 0 ? ((Element) elements105
-                                .item(0)) : null;
+                        
+                        NodeList elements105 = roleListElement.getElementsByTagName("AvailabilitySetName");
+                        Element availabilitySetNameElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
-                            availabilitySetNameInstance = availabilitySetNameElement
-                                    .getTextContent();
-                            roleInstance
-                                    .setAvailabilitySetName(availabilitySetNameInstance);
+                            availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
+                            roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
                         }
-
-                        NodeList elements106 = roleListElement
-                                .getElementsByTagName("DataVirtualHardDisks");
-                        Element dataVirtualHardDisksSequenceElement = elements106
-                                .getLength() > 0 ? ((Element) elements106
-                                .item(0)) : null;
+                        
+                        NodeList elements106 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
+                        Element dataVirtualHardDisksSequenceElement = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement
-                                    .getElementsByTagName("DataVirtualHardDisk")
-                                    .getLength(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement
-                                        .getElementsByTagName(
-                                                "DataVirtualHardDisk")
-                                        .item(i14));
+                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i14 = i14 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i14));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
-                                roleInstance.getDataVirtualHardDisks().add(
-                                        dataVirtualHardDiskInstance);
-
-                                NodeList elements107 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("HostCaching");
-                                Element hostCachingElement = elements107
-                                        .getLength() > 0 ? ((Element) elements107
-                                        .item(0)) : null;
-                                if (hostCachingElement != null
-                                        && (hostCachingElement.getTextContent() == null || hostCachingElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
+                                
+                                NodeList elements107 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                                Element hostCachingElement = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                                if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                                     VirtualHardDiskHostCaching hostCachingInstance;
-                                    hostCachingInstance = VirtualHardDiskHostCaching
-                                            .valueOf(hostCachingElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setHostCaching(hostCachingInstance);
+                                    hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
                                 }
-
-                                NodeList elements108 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("DiskLabel");
-                                Element diskLabelElement = elements108
-                                        .getLength() > 0 ? ((Element) elements108
-                                        .item(0)) : null;
+                                
+                                NodeList elements108 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                                Element diskLabelElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
                                 if (diskLabelElement != null) {
                                     String diskLabelInstance;
-                                    diskLabelInstance = diskLabelElement
-                                            .getTextContent();
-                                    dataVirtualHardDiskInstance
-                                            .setDiskLabel(diskLabelInstance);
+                                    diskLabelInstance = diskLabelElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
                                 }
-
-                                NodeList elements109 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("DiskName");
-                                Element diskNameElement = elements109
-                                        .getLength() > 0 ? ((Element) elements109
-                                        .item(0)) : null;
+                                
+                                NodeList elements109 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                                Element diskNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
-                                    diskNameInstance = diskNameElement
-                                            .getTextContent();
-                                    dataVirtualHardDiskInstance
-                                            .setDiskName(diskNameInstance);
+                                    diskNameInstance = diskNameElement.getTextContent();
+                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
                                 }
-
-                                NodeList elements110 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("Lun");
-                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110
-                                        .item(0)) : null;
-                                if (lunElement != null
-                                        && (lunElement.getTextContent() == null || lunElement
-                                                .getTextContent().isEmpty() == true) == false) {
+                                
+                                NodeList elements110 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                                if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                                     int lunInstance;
-                                    lunInstance = DatatypeConverter
-                                            .parseInt(lunElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setLogicalUnitNumber(lunInstance);
+                                    lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
-
-                                NodeList elements111 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("LogicalDiskSizeInGB");
-                                Element logicalDiskSizeInGBElement = elements111
-                                        .getLength() > 0 ? ((Element) elements111
-                                        .item(0)) : null;
+                                
+                                NodeList elements111 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                                Element logicalDiskSizeInGBElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
                                 if (logicalDiskSizeInGBElement != null) {
                                     int logicalDiskSizeInGBInstance;
-                                    logicalDiskSizeInGBInstance = DatatypeConverter
-                                            .parseInt(logicalDiskSizeInGBElement
-                                                    .getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
+                                    logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
-
-                                NodeList elements112 = dataVirtualHardDisksElement
-                                        .getElementsByTagName("MediaLink");
-                                Element mediaLinkElement = elements112
-                                        .getLength() > 0 ? ((Element) elements112
-                                        .item(0)) : null;
+                                
+                                NodeList elements112 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                                Element mediaLinkElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
                                 if (mediaLinkElement != null) {
                                     URI mediaLinkInstance;
-                                    mediaLinkInstance = new URI(
-                                            mediaLinkElement.getTextContent());
-                                    dataVirtualHardDiskInstance
-                                            .setMediaLink(mediaLinkInstance);
+                                    mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
                                 }
                             }
                         }
-
-                        NodeList elements113 = roleListElement
-                                .getElementsByTagName("Label");
-                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113
-                                .item(0)) : null;
+                        
+                        NodeList elements113 = roleListElement.getElementsByTagName("Label");
+                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
                         if (labelElement2 != null) {
                             String labelInstance2;
                             labelInstance2 = labelElement2.getTextContent();
                             roleInstance.setLabel(labelInstance2);
                         }
-
-                        NodeList elements114 = roleListElement
-                                .getElementsByTagName("OSVirtualHardDisk");
-                        Element oSVirtualHardDiskElement = elements114
-                                .getLength() > 0 ? ((Element) elements114
-                                .item(0)) : null;
+                        
+                        NodeList elements114 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
+                        Element oSVirtualHardDiskElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
                         if (oSVirtualHardDiskElement != null) {
                             OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
-                            roleInstance
-                                    .setOSVirtualHardDisk(oSVirtualHardDiskInstance);
-
-                            NodeList elements115 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("HostCaching");
-                            Element hostCachingElement2 = elements115
-                                    .getLength() > 0 ? ((Element) elements115
-                                    .item(0)) : null;
-                            if (hostCachingElement2 != null
-                                    && (hostCachingElement2.getTextContent() == null || hostCachingElement2
-                                            .getTextContent().isEmpty() == true) == false) {
+                            roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
+                            
+                            NodeList elements115 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                            Element hostCachingElement2 = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                            if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                                 VirtualHardDiskHostCaching hostCachingInstance2;
-                                hostCachingInstance2 = VirtualHardDiskHostCaching
-                                        .valueOf(hostCachingElement2
-                                                .getTextContent());
-                                oSVirtualHardDiskInstance
-                                        .setHostCaching(hostCachingInstance2);
+                                hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                             }
-
-                            NodeList elements116 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("DiskLabel");
-                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116
-                                    .item(0)) : null;
+                            
+                            NodeList elements116 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
-                                diskLabelInstance2 = diskLabelElement2
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setDiskLabel(diskLabelInstance2);
+                                diskLabelInstance2 = diskLabelElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
                             }
-
-                            NodeList elements117 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("DiskName");
-                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117
-                                    .item(0)) : null;
+                            
+                            NodeList elements117 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
-                                diskNameInstance2 = diskNameElement2
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setDiskName(diskNameInstance2);
+                                diskNameInstance2 = diskNameElement2.getTextContent();
+                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
                             }
-
-                            NodeList elements118 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("MediaLink");
-                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118
-                                    .item(0)) : null;
+                            
+                            NodeList elements118 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
                             if (mediaLinkElement2 != null) {
                                 URI mediaLinkInstance2;
-                                mediaLinkInstance2 = new URI(
-                                        mediaLinkElement2.getTextContent());
-                                oSVirtualHardDiskInstance
-                                        .setMediaLink(mediaLinkInstance2);
+                                mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
+                                oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
                             }
-
-                            NodeList elements119 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("SourceImageName");
-                            Element sourceImageNameElement = elements119
-                                    .getLength() > 0 ? ((Element) elements119
-                                    .item(0)) : null;
+                            
+                            NodeList elements119 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                            Element sourceImageNameElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
                             if (sourceImageNameElement != null) {
                                 String sourceImageNameInstance;
-                                sourceImageNameInstance = sourceImageNameElement
-                                        .getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setSourceImageName(sourceImageNameInstance);
+                                sourceImageNameInstance = sourceImageNameElement.getTextContent();
+                                oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
                             }
-
-                            NodeList elements120 = oSVirtualHardDiskElement
-                                    .getElementsByTagName("OS");
-                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120
-                                    .item(0)) : null;
+                            
+                            NodeList elements120 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120.item(0)) : null;
                             if (osElement != null) {
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
-                                oSVirtualHardDiskInstance
-                                        .setOperatingSystem(osInstance);
+                                oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
                             }
                         }
-
-                        NodeList elements121 = roleListElement
-                                .getElementsByTagName("RoleSize");
-                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121
-                                .item(0)) : null;
+                        
+                        NodeList elements121 = roleListElement.getElementsByTagName("RoleSize");
+                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
                         if (roleSizeElement != null) {
                             String roleSizeInstance;
                             roleSizeInstance = roleSizeElement.getTextContent();
                             roleInstance.setRoleSize(roleSizeInstance);
                         }
-
-                        NodeList elements122 = roleListElement
-                                .getElementsByTagName("ProvisionGuestAgent");
-                        Element provisionGuestAgentElement = elements122
-                                .getLength() > 0 ? ((Element) elements122
-                                .item(0)) : null;
-                        if (provisionGuestAgentElement != null
-                                && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements122 = roleListElement.getElementsByTagName("ProvisionGuestAgent");
+                        Element provisionGuestAgentElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                        if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = DatatypeConverter
-                                    .parseBoolean(provisionGuestAgentElement
-                                            .getTextContent());
-                            roleInstance
-                                    .setProvisionGuestAgent(provisionGuestAgentInstance);
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
-
-                        NodeList elements123 = roleListElement
-                                .getElementsByTagName("DefaultWinRmCertificateThumbprint");
-                        Element defaultWinRmCertificateThumbprintElement = elements123
-                                .getLength() > 0 ? ((Element) elements123
-                                .item(0)) : null;
+                        
+                        NodeList elements123 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                        Element defaultWinRmCertificateThumbprintElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
                         if (defaultWinRmCertificateThumbprintElement != null) {
                             String defaultWinRmCertificateThumbprintInstance;
-                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement
-                                    .getTextContent();
-                            roleInstance
-                                    .setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
+                            defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
+                            roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
                         }
                     }
                 }
-
-                NodeList elements124 = deploymentElement
-                        .getElementsByTagName("SdkVersion");
-                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124
-                        .item(0)) : null;
+                
+                NodeList elements124 = deploymentElement.getElementsByTagName("SdkVersion");
+                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
                 if (sdkVersionElement != null) {
                     String sdkVersionInstance;
                     sdkVersionInstance = sdkVersionElement.getTextContent();
                     result.setSdkVersion(sdkVersionInstance);
                 }
-
-                NodeList elements125 = deploymentElement
-                        .getElementsByTagName("Locked");
-                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125
-                        .item(0)) : null;
+                
+                NodeList elements125 = deploymentElement.getElementsByTagName("Locked");
+                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
                 if (lockedElement != null) {
                     boolean lockedInstance;
-                    lockedInstance = DatatypeConverter
-                            .parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
-
-                NodeList elements126 = deploymentElement
-                        .getElementsByTagName("RollbackAllowed");
-                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126
-                        .item(0)) : null;
+                
+                NodeList elements126 = deploymentElement.getElementsByTagName("RollbackAllowed");
+                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
-                    rollbackAllowedInstance = DatatypeConverter
-                            .parseBoolean(rollbackAllowedElement
-                                    .getTextContent());
+                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
-
-                NodeList elements127 = deploymentElement
-                        .getElementsByTagName("CreatedTime");
-                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127
-                        .item(0)) : null;
+                
+                NodeList elements127 = deploymentElement.getElementsByTagName("CreatedTime");
+                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
-                    createdTimeInstance = DatatypeConverter
-                            .parseDateTime(createdTimeElement.getTextContent());
+                    createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
-
-                NodeList elements128 = deploymentElement
-                        .getElementsByTagName("LastModifiedTime");
-                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128
-                        .item(0)) : null;
+                
+                NodeList elements128 = deploymentElement.getElementsByTagName("LastModifiedTime");
+                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
                 if (lastModifiedTimeElement != null) {
                     Calendar lastModifiedTimeInstance;
-                    lastModifiedTimeInstance = DatatypeConverter
-                            .parseDateTime(lastModifiedTimeElement
-                                    .getTextContent());
+                    lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
-
-                NodeList elements129 = deploymentElement
-                        .getElementsByTagName("VirtualNetworkName");
-                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129
-                        .item(0)) : null;
+                
+                NodeList elements129 = deploymentElement.getElementsByTagName("VirtualNetworkName");
+                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
                 if (virtualNetworkNameElement != null) {
                     String virtualNetworkNameInstance;
-                    virtualNetworkNameInstance = virtualNetworkNameElement
-                            .getTextContent();
+                    virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
                     result.setVirtualNetworkName(virtualNetworkNameInstance);
                 }
-
-                NodeList elements130 = deploymentElement
-                        .getElementsByTagName("ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements130
-                        .getLength() > 0 ? ((Element) elements130.item(0))
-                        : null;
+                
+                NodeList elements130 = deploymentElement.getElementsByTagName("ExtendedProperties");
+                Element extendedPropertiesSequenceElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement
-                            .getElementsByTagName("ExtendedProperty")
-                            .getLength(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement
-                                .getElementsByTagName("ExtendedProperty").item(
-                                        i15));
-                        NodeList elements131 = extendedPropertiesElement
-                                .getElementsByTagName("Name");
-                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131
-                                .item(0)).getTextContent() : null;
-                        NodeList elements132 = extendedPropertiesElement
-                                .getElementsByTagName("Value");
-                        String extendedPropertiesValue = elements132
-                                .getLength() > 0 ? ((org.w3c.dom.Element) elements132
-                                .item(0)).getTextContent() : null;
-                        result.getExtendedProperties().put(
-                                extendedPropertiesKey, extendedPropertiesValue);
+                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i15 = i15 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i15));
+                        NodeList elements131 = extendedPropertiesElement.getElementsByTagName("Name");
+                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131.item(0)).getTextContent() : null;
+                        NodeList elements132 = extendedPropertiesElement.getElementsByTagName("Value");
+                        String extendedPropertiesValue = elements132.getLength() > 0 ? ((org.w3c.dom.Element) elements132.item(0)).getTextContent() : null;
+                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
-
-                NodeList elements133 = deploymentElement
-                        .getElementsByTagName("PersistentVMDowntime");
-                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133
-                        .item(0)) : null;
+                
+                NodeList elements133 = deploymentElement.getElementsByTagName("PersistentVMDowntime");
+                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
                 if (persistentVMDowntimeElement != null) {
                     PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                     result.setPersistentVMDowntime(persistentVMDowntimeInstance);
-
-                    NodeList elements134 = persistentVMDowntimeElement
-                            .getElementsByTagName("StartTime");
-                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134
-                            .item(0)) : null;
+                    
+                    NodeList elements134 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
+                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
-                        startTimeInstance = DatatypeConverter
-                                .parseDateTime(startTimeElement
-                                        .getTextContent());
-                        persistentVMDowntimeInstance
-                                .setStartTime(startTimeInstance);
+                        startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
+                        persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
-
-                    NodeList elements135 = persistentVMDowntimeElement
-                            .getElementsByTagName("EndTime");
-                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135
-                            .item(0)) : null;
+                    
+                    NodeList elements135 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
+                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
                     if (endTimeElement != null) {
                         Calendar endTimeInstance;
-                        endTimeInstance = DatatypeConverter
-                                .parseDateTime(endTimeElement.getTextContent());
-                        persistentVMDowntimeInstance
-                                .setEndTime(endTimeInstance);
+                        endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
+                        persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
-
-                    NodeList elements136 = persistentVMDowntimeElement
-                            .getElementsByTagName("Status");
-                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136
-                            .item(0)) : null;
+                    
+                    NodeList elements136 = persistentVMDowntimeElement.getElementsByTagName("Status");
+                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
                     if (statusElement2 != null) {
                         String statusInstance2;
                         statusInstance2 = statusElement2.getTextContent();
                         persistentVMDowntimeInstance.setStatus(statusInstance2);
                     }
                 }
-
-                NodeList elements137 = deploymentElement
-                        .getElementsByTagName("VirtualIPs");
-                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137
-                        .item(0)) : null;
+                
+                NodeList elements137 = deploymentElement.getElementsByTagName("VirtualIPs");
+                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < virtualIPsSequenceElement
-                            .getElementsByTagName("VirtualIP").getLength(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement
-                                .getElementsByTagName("VirtualIP").item(i16));
+                    for (int i16 = 0; i16 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i16 = i16 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i16));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
-
-                        NodeList elements138 = virtualIPsElement
-                                .getElementsByTagName("Address");
-                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138
-                                .item(0)) : null;
+                        
+                        NodeList elements138 = virtualIPsElement.getElementsByTagName("Address");
+                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
                         if (addressElement != null) {
                             InetAddress addressInstance;
-                            addressInstance = InetAddress
-                                    .getByName(addressElement.getTextContent());
+                            addressInstance = InetAddress.getByName(addressElement.getTextContent());
                             virtualIPInstance.setAddress(addressInstance);
                         }
-
-                        NodeList elements139 = virtualIPsElement
-                                .getElementsByTagName("Name");
-                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139
-                                .item(0)) : null;
+                        
+                        NodeList elements139 = virtualIPsElement.getElementsByTagName("Name");
+                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
                         if (nameElement5 != null) {
                             String nameInstance5;
                             nameInstance5 = nameElement5.getTextContent();
                             virtualIPInstance.setName(nameInstance5);
                         }
-
-                        NodeList elements140 = virtualIPsElement
-                                .getElementsByTagName("IsDnsProgrammed");
-                        Element isDnsProgrammedElement = elements140
-                                .getLength() > 0 ? ((Element) elements140
-                                .item(0)) : null;
-                        if (isDnsProgrammedElement != null
-                                && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement
-                                        .getTextContent().isEmpty() == true) == false) {
+                        
+                        NodeList elements140 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
+                        Element isDnsProgrammedElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                        if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = DatatypeConverter
-                                    .parseBoolean(isDnsProgrammedElement
-                                            .getTextContent());
-                            virtualIPInstance
-                                    .setIsDnsProgrammed(isDnsProgrammedInstance);
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }
                 }
-
-                NodeList elements141 = deploymentElement
-                        .getElementsByTagName("ReservedIPName");
-                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141
-                        .item(0)) : null;
+                
+                NodeList elements141 = deploymentElement.getElementsByTagName("ReservedIPName");
+                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
                 if (reservedIPNameElement != null) {
                     String reservedIPNameInstance;
-                    reservedIPNameInstance = reservedIPNameElement
-                            .getTextContent();
+                    reservedIPNameInstance = reservedIPNameElement.getTextContent();
                     result.setReservedIPName(reservedIPNameInstance);
                 }
-
-                NodeList elements142 = deploymentElement
-                        .getElementsByTagName("Dns");
-                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142
-                        .item(0)) : null;
+                
+                NodeList elements142 = deploymentElement.getElementsByTagName("Dns");
+                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142.item(0)) : null;
                 if (dnsElement != null) {
                     DnsSettings dnsInstance = new DnsSettings();
                     result.setDnsSettings(dnsInstance);
-
-                    NodeList elements143 = dnsElement
-                            .getElementsByTagName("DnsServers");
-                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143
-                            .item(0)) : null;
+                    
+                    NodeList elements143 = dnsElement.getElementsByTagName("DnsServers");
+                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143.item(0)) : null;
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < dnsServersSequenceElement
-                                .getElementsByTagName("DnsServer").getLength(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement
-                                    .getElementsByTagName("DnsServer")
-                                    .item(i17));
+                        for (int i17 = 0; i17 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i17 = i17 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i17));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
-
-                            NodeList elements144 = dnsServersElement
-                                    .getElementsByTagName("Name");
-                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144
-                                    .item(0)) : null;
+                            
+                            NodeList elements144 = dnsServersElement.getElementsByTagName("Name");
+                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144.item(0)) : null;
                             if (nameElement6 != null) {
                                 String nameInstance6;
                                 nameInstance6 = nameElement6.getTextContent();
                                 dnsServerInstance.setName(nameInstance6);
                             }
-
-                            NodeList elements145 = dnsServersElement
-                                    .getElementsByTagName("Address");
-                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145
-                                    .item(0)) : null;
+                            
+                            NodeList elements145 = dnsServersElement.getElementsByTagName("Address");
+                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145.item(0)) : null;
                             if (addressElement2 != null) {
                                 InetAddress addressInstance2;
-                                addressInstance2 = InetAddress
-                                        .getByName(addressElement2
-                                                .getTextContent());
+                                addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
                                 dnsServerInstance.setAddress(addressInstance2);
                             }
                         }
                     }
                 }
-
-                NodeList elements146 = deploymentElement
-                        .getElementsByTagName("ExtensionConfiguration");
-                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146
-                        .item(0)) : null;
+                
+                NodeList elements146 = deploymentElement.getElementsByTagName("ExtensionConfiguration");
+                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146.item(0)) : null;
                 if (extensionConfigurationElement != null) {
                     ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                     result.setExtensionConfiguration(extensionConfigurationInstance);
-
-                    NodeList elements147 = extensionConfigurationElement
-                            .getElementsByTagName("AllRoles");
-                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147
-                            .item(0)) : null;
+                    
+                    NodeList elements147 = extensionConfigurationElement.getElementsByTagName("AllRoles");
+                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147.item(0)) : null;
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < allRolesSequenceElement
-                                .getElementsByTagName("Extension").getLength(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement
-                                    .getElementsByTagName("Extension")
-                                    .item(i18));
+                        for (int i18 = 0; i18 < allRolesSequenceElement.getElementsByTagName("Extension").getLength(); i18 = i18 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagName("Extension").item(i18));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
-                            extensionConfigurationInstance.getAllRoles().add(
-                                    extensionInstance);
-
-                            NodeList elements148 = allRolesElement
-                                    .getElementsByTagName("Id");
-                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148
-                                    .item(0)) : null;
+                            extensionConfigurationInstance.getAllRoles().add(extensionInstance);
+                            
+                            NodeList elements148 = allRolesElement.getElementsByTagName("Id");
+                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148.item(0)) : null;
                             if (idElement != null) {
                                 String idInstance;
                                 idInstance = idElement.getTextContent();
@@ -8878,56 +6335,36 @@ public class DeploymentOperationsImpl implements
                             }
                         }
                     }
-
-                    NodeList elements149 = extensionConfigurationElement
-                            .getElementsByTagName("NamedRoles");
-                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149
-                            .item(0)) : null;
+                    
+                    NodeList elements149 = extensionConfigurationElement.getElementsByTagName("NamedRoles");
+                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149.item(0)) : null;
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < namedRolesSequenceElement
-                                .getElementsByTagName("Role").getLength(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement
-                                    .getElementsByTagName("Role").item(i19));
+                        for (int i19 = 0; i19 < namedRolesSequenceElement.getElementsByTagName("Role").getLength(); i19 = i19 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagName("Role").item(i19));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
-                            extensionConfigurationInstance.getNamedRoles().add(
-                                    roleInstance2);
-
-                            NodeList elements150 = namedRolesElement
-                                    .getElementsByTagName("RoleName");
-                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150
-                                    .item(0)) : null;
+                            extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
+                            
+                            NodeList elements150 = namedRolesElement.getElementsByTagName("RoleName");
+                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150.item(0)) : null;
                             if (roleNameElement3 != null) {
                                 String roleNameInstance3;
-                                roleNameInstance3 = roleNameElement3
-                                        .getTextContent();
+                                roleNameInstance3 = roleNameElement3.getTextContent();
                                 roleInstance2.setRoleName(roleNameInstance3);
                             }
-
-                            NodeList elements151 = namedRolesElement
-                                    .getElementsByTagName("Extensions");
-                            Element extensionsSequenceElement = elements151
-                                    .getLength() > 0 ? ((Element) elements151
-                                    .item(0)) : null;
+                            
+                            NodeList elements151 = namedRolesElement.getElementsByTagName("Extensions");
+                            Element extensionsSequenceElement = elements151.getLength() > 0 ? ((Element) elements151.item(0)) : null;
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < extensionsSequenceElement
-                                        .getElementsByTagName("Extension")
-                                        .getLength(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement
-                                            .getElementsByTagName("Extension")
-                                            .item(i20));
+                                for (int i20 = 0; i20 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i20 = i20 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i20));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
-                                    roleInstance2.getExtensions().add(
-                                            extensionInstance2);
-
-                                    NodeList elements152 = extensionsElement
-                                            .getElementsByTagName("Id");
-                                    Element idElement2 = elements152
-                                            .getLength() > 0 ? ((Element) elements152
-                                            .item(0)) : null;
+                                    roleInstance2.getExtensions().add(extensionInstance2);
+                                    
+                                    NodeList elements152 = extensionsElement.getElementsByTagName("Id");
+                                    Element idElement2 = elements152.getLength() > 0 ? ((Element) elements152.item(0)) : null;
                                     if (idElement2 != null) {
                                         String idInstance2;
-                                        idInstance2 = idElement2
-                                                .getTextContent();
+                                        idInstance2 = idElement2.getTextContent();
                                         extensionInstance2.setId(idInstance2);
                                     }
                                 }
@@ -8936,13 +6373,12 @@ public class DeploymentOperationsImpl implements
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -8953,73 +6389,59 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Package operation retrieves a cloud service package for a
-     * deployment and stores the package files in Windows Azure Blob storage.
-     * The following package files are placed in storage: Service configuration
-     * file - The cloud service configuration file (.cscfg) provides
-     * configuration settings for the cloud service and individual roles,
-     * including the number of role instances. Service package - The service
-     * package (.cspkg) contains the application code and the service definition
-     * file. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Get Package operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Get Package operation retrieves a cloud service package for a
+    * deployment and stores the package files in Windows Azure Blob storage.
+    * The following package files are placed in storage:  Service
+    * configuration file - The cloud service configuration file (.cscfg)
+    * provides configuration settings for the cloud service and individual
+    * roles, including the number of role instances.   Service package - The
+    * service package (.cspkg) contains the application code and the service
+    * definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Get Package operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> getPackageByNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentGetPackageParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return getPackageByName(serviceName, deploymentName,
-                                parameters);
-                    }
-                });
+    public Future<OperationResponse> getPackageByNameAsync(final String serviceName, final String deploymentName, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return getPackageByName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Get Package operation retrieves a cloud service package for a
-     * deployment and stores the package files in Windows Azure Blob storage.
-     * The following package files are placed in storage: Service configuration
-     * file - The cloud service configuration file (.cscfg) provides
-     * configuration settings for the cloud service and individual roles,
-     * including the number of role instances. Service package - The service
-     * package (.cspkg) contains the application code and the service definition
-     * file. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Get Package operation.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Get Package operation retrieves a cloud service package for a
+    * deployment and stores the package files in Windows Azure Blob storage.
+    * The following package files are placed in storage:  Service
+    * configuration file - The cloud service configuration file (.cscfg)
+    * provides configuration settings for the cloud service and individual
+    * roles, including the number of role instances.   Service package - The
+    * service package (.cspkg) contains the application code and the service
+    * definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Get Package operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse getPackageByName(String serviceName,
-            String deploymentName, DeploymentGetPackageParameters parameters)
-            throws IOException, ServiceException {
+    public OperationResponse getPackageByName(String serviceName, String deploymentName, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -9033,7 +6455,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getContainerUri() == null) {
             throw new NullPointerException("parameters.ContainerUri");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9043,65 +6465,49 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "getPackageByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getPackageByNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/package" + "?";
-        url = url
-                + "containerUri="
-                + URLEncoder.encode(parameters.getContainerUri().toString(),
-                        "UTF-8") + " +";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/package" + "?";
+        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
         if (parameters.isOverwriteExisting() != null) {
-            url = url
-                    + "&"
-                    + "overwriteExisting="
-                    + URLEncoder.encode(
-                            Boolean.toString(parameters.isOverwriteExisting())
-                                    .toLowerCase(), "UTF-8");
+            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
         }
-
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -9112,74 +6518,59 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Get Package operation retrieves a cloud service package for a
-     * deployment and stores the package files in Windows Azure Blob storage.
-     * The following package files are placed in storage: Service configuration
-     * file - The cloud service configuration file (.cscfg) provides
-     * configuration settings for the cloud service and individual roles,
-     * including the number of role instances. Service package - The service
-     * package (.cspkg) contains the application code and the service definition
-     * file. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Get Package operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Get Package operation retrieves a cloud service package for a
+    * deployment and stores the package files in Windows Azure Blob storage.
+    * The following package files are placed in storage:  Service
+    * configuration file - The cloud service configuration file (.cscfg)
+    * provides configuration settings for the cloud service and individual
+    * roles, including the number of role instances.   Service package - The
+    * service package (.cspkg) contains the application code and the service
+    * definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Get Package operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> getPackageBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentGetPackageParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return getPackageBySlot(serviceName, deploymentSlot,
-                                parameters);
-                    }
-                });
+    public Future<OperationResponse> getPackageBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentGetPackageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return getPackageBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Get Package operation retrieves a cloud service package for a
-     * deployment and stores the package files in Windows Azure Blob storage.
-     * The following package files are placed in storage: Service configuration
-     * file - The cloud service configuration file (.cscfg) provides
-     * configuration settings for the cloud service and individual roles,
-     * including the number of role instances. Service package - The service
-     * package (.cspkg) contains the application code and the service definition
-     * file. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Get Package operation.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Get Package operation retrieves a cloud service package for a
+    * deployment and stores the package files in Windows Azure Blob storage.
+    * The following package files are placed in storage:  Service
+    * configuration file - The cloud service configuration file (.cscfg)
+    * provides configuration settings for the cloud service and individual
+    * roles, including the number of role instances.   Service package - The
+    * service package (.cspkg) contains the application code and the service
+    * definition file.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Get Package operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse getPackageBySlot(String serviceName,
-            DeploymentSlot deploymentSlot,
-            DeploymentGetPackageParameters parameters) throws IOException,
-            ServiceException {
+    public OperationResponse getPackageBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentGetPackageParameters parameters) throws IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -9190,7 +6581,7 @@ public class DeploymentOperationsImpl implements
         if (parameters.getContainerUri() == null) {
             throw new NullPointerException("parameters.ContainerUri");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9200,65 +6591,49 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "getPackageBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "getPackageBySlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/package" + "?";
-        url = url
-                + "containerUri="
-                + URLEncoder.encode(parameters.getContainerUri().toString(),
-                        "UTF-8") + " +";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/package" + "?";
+        url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
         if (parameters.isOverwriteExisting() != null) {
-            url = url
-                    + "&"
-                    + "overwriteExisting="
-                    + URLEncoder.encode(
-                            Boolean.toString(parameters.isOverwriteExisting())
-                                    .toLowerCase(), "UTF-8");
+            url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
         }
-
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -9269,95 +6644,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return rebootRoleInstanceByDeploymentName(serviceName,
-                                deploymentName, roleInstanceName);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return rebootRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(
-            String serviceName, String deploymentName, String roleInstanceName)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9367,45 +6724,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "rebootRoleInstanceByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "rebootRoleInstanceByDeploymentNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginRebootingRoleInstanceByDeploymentNameAsync(
-                            serviceName, deploymentName, roleInstanceName)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginRebootingRoleInstanceByDeploymentNameAsync(serviceName, deploymentName, roleInstanceName).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -9420,7 +6761,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -9428,95 +6769,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return rebootRoleInstanceByDeploymentSlot(serviceName,
-                                deploymentSlot, roleInstanceName);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return rebootRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reboot Role Instance operation requests a reboot of a role instance
-     * that is running in a deployment. The Reboot Role Instance operation is an
-     * asynchronous operation. To determine whether the Management service has
-     * finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reboot Role Instance operation requests a reboot of a role instance
+    * that is running in a deployment.  The Reboot Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            String roleInstanceName) throws InterruptedException,
-            ExecutionException, ServiceException, IOException {
+    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9526,45 +6849,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "rebootRoleInstanceByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "rebootRoleInstanceByDeploymentSlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginRebootingRoleInstanceByDeploymentSlotAsync(
-                            serviceName, deploymentSlot, roleInstanceName)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginRebootingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -9579,7 +6886,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -9587,95 +6894,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return reimageRoleInstanceByDeploymentName(serviceName,
-                                deploymentName, roleInstanceName);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return reimageRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(
-            String serviceName, String deploymentName, String roleInstanceName)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9685,45 +6974,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "reimageRoleInstanceByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "reimageRoleInstanceByDeploymentNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginReimagingRoleInstanceByDeploymentNameAsync(
-                            serviceName, deploymentName, roleInstanceName)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginReimagingRoleInstanceByDeploymentNameAsync(serviceName, deploymentName, roleInstanceName).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -9738,7 +7011,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -9746,95 +7019,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final String roleInstanceName) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return reimageRoleInstanceByDeploymentSlot(serviceName,
-                                deploymentSlot, roleInstanceName);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return reimageRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
+            }
+         });
     }
-
+    
     /**
-     * The Reimage Role Instance operation requests a reimage of a role instance
-     * that is running in a deployment. The Reimage Role Instance operation is
-     * an asynchronous operation. To determine whether the Management service
-     * has finished processing the request, call Get Operation Status. For more
-     * information on asynchronous operations, see Tracking Asynchronous Service
-     * Management Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param roleInstanceName
-     *            The name of your role instance.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Reimage Role Instance operation requests a reimage of a role instance
+    * that is running in a deployment.  The Reimage Role Instance operation is
+    * an asynchronous operation. To determine whether the Management service
+    * has finished processing the request, call Get Operation Status. For more
+    * information on asynchronous operations, see Tracking Asynchronous
+    * Service Management Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param roleInstanceName The name of your role instance.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            String roleInstanceName) throws InterruptedException,
-            ExecutionException, ServiceException, IOException {
+    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -9844,45 +7099,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("roleInstanceName", roleInstanceName);
-            CloudTracing.enter(invocationId, this,
-                    "reimageRoleInstanceByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "reimageRoleInstanceByDeploymentSlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginReimagingRoleInstanceByDeploymentSlotAsync(
-                            serviceName, deploymentSlot, roleInstanceName)
-                    .get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginReimagingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -9897,7 +7136,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -9905,82 +7144,67 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Rollback Update Or Upgrade operation cancels an in-progress
-     * configuration update and returns the deployment to its state before the
-     * update was started. The Rollback Update Or Upgrade operation can only be
-     * called when an update is in progress on the deployment. The deployment
-     * status can be detected by calling the Get Deployment operation or Get
-     * Hosted Service Properties operation and inspecting the RollbackAllowed
-     * element. If the value returned is true a rollback can be performed. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Rollback Update Or Upgrade
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Rollback Update Or Upgrade operation cancels an in-progress
+    * configuration update and returns the deployment to its state before the
+    * update was started.  The Rollback Update Or Upgrade operation can only
+    * be called when an update is in progress on the deployment. The
+    * deployment status can be detected by calling the Get Deployment
+    * operation or Get Hosted Service Properties operation and inspecting the
+    * RollbackAllowed element. If the value returned is true a rollback can be
+    * performed.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentRollbackUpdateOrUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return rollbackUpdateOrUpgradeByDeploymentName(
-                                serviceName, deploymentName, parameters);
-                    }
-                });
+    public Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentRollbackUpdateOrUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return rollbackUpdateOrUpgradeByDeploymentName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Rollback Update Or Upgrade operation cancels an in-progress
-     * configuration update and returns the deployment to its state before the
-     * update was started. The Rollback Update Or Upgrade operation can only be
-     * called when an update is in progress on the deployment. The deployment
-     * status can be detected by calling the Get Deployment operation or Get
-     * Hosted Service Properties operation and inspecting the RollbackAllowed
-     * element. If the value returned is true a rollback can be performed. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Rollback Update Or Upgrade
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Rollback Update Or Upgrade operation cancels an in-progress
+    * configuration update and returns the deployment to its state before the
+    * update was started.  The Rollback Update Or Upgrade operation can only
+    * be called when an update is in progress on the deployment. The
+    * deployment status can be detected by calling the Get Deployment
+    * operation or Get Hosted Service Properties operation and inspecting the
+    * RollbackAllowed element. If the value returned is true a rollback can be
+    * performed.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse rollbackUpdateOrUpgradeByDeploymentName(
-            String serviceName, String deploymentName,
-            DeploymentRollbackUpdateOrUpgradeParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse rollbackUpdateOrUpgradeByDeploymentName(String serviceName, String deploymentName, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -9992,7 +7216,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10002,92 +7226,74 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "rollbackUpdateOrUpgradeByDeploymentNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "rollbackUpdateOrUpgradeByDeploymentNameAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName + "/deployments/"
-                + deploymentName + "/" + "?" + "comp=rollback";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=rollback";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element rollbackUpdateOrUpgradeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "RollbackUpdateOrUpgrade");
+        
+        Element rollbackUpdateOrUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RollbackUpdateOrUpgrade");
         requestDoc.appendChild(rollbackUpdateOrUpgradeElement);
-
-        Element modeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Mode");
-        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode()
-                .toString()));
+        
+        Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
         rollbackUpdateOrUpgradeElement.appendChild(modeElement);
-
-        Element forceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(
-                parameters.isForce()).toLowerCase()));
+        
+        Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         rollbackUpdateOrUpgradeElement.appendChild(forceElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -10098,82 +7304,67 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Rollback Update Or Upgrade operation cancels an in-progress
-     * configuration update and returns the deployment to its state before the
-     * update was started. The Rollback Update Or Upgrade operation can only be
-     * called when an update is in progress on the deployment. The deployment
-     * status can be detected by calling the Get Deployment operation or Get
-     * Hosted Service Properties operation and inspecting the RollbackAllowed
-     * element. If the value returned is true a rollback can be performed. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Rollback Update Or Upgrade
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Rollback Update Or Upgrade operation cancels an in-progress
+    * configuration update and returns the deployment to its state before the
+    * update was started.  The Rollback Update Or Upgrade operation can only
+    * be called when an update is in progress on the deployment. The
+    * deployment status can be detected by calling the Get Deployment
+    * operation or Get Hosted Service Properties operation and inspecting the
+    * RollbackAllowed element. If the value returned is true a rollback can be
+    * performed.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentRollbackUpdateOrUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return rollbackUpdateOrUpgradeByDeploymentSlot(
-                                serviceName, deploymentSlot, parameters);
-                    }
-                });
+    public Future<OperationResponse> rollbackUpdateOrUpgradeByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentRollbackUpdateOrUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return rollbackUpdateOrUpgradeByDeploymentSlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Rollback Update Or Upgrade operation cancels an in-progress
-     * configuration update and returns the deployment to its state before the
-     * update was started. The Rollback Update Or Upgrade operation can only be
-     * called when an update is in progress on the deployment. The deployment
-     * status can be detected by calling the Get Deployment operation or Get
-     * Hosted Service Properties operation and inspecting the RollbackAllowed
-     * element. If the value returned is true a rollback can be performed. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Rollback Update Or Upgrade
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Rollback Update Or Upgrade operation cancels an in-progress
+    * configuration update and returns the deployment to its state before the
+    * update was started.  The Rollback Update Or Upgrade operation can only
+    * be called when an update is in progress on the deployment. The
+    * deployment status can be detected by calling the Get Deployment
+    * operation or Get Hosted Service Properties operation and inspecting the
+    * RollbackAllowed element. If the value returned is true a rollback can be
+    * performed.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
+    * operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentRollbackUpdateOrUpgradeParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException {
+    public OperationResponse rollbackUpdateOrUpgradeByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentRollbackUpdateOrUpgradeParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -10182,7 +7373,7 @@ public class DeploymentOperationsImpl implements
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10192,93 +7383,74 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "rollbackUpdateOrUpgradeByDeploymentSlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "rollbackUpdateOrUpgradeByDeploymentSlotAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/hostedservices/" + serviceName
-                + "/deploymentslots/" + deploymentSlot + "/" + "?"
-                + "comp=rollback";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=rollback";
+        
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
         httpRequest.setHeader("x-ms-version", "2013-11-01");
-
+        
         // Serialize Request
         String requestContent = null;
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory
-                .newDocumentBuilder();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
-
-        Element rollbackUpdateOrUpgradeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure",
-                "RollbackUpdateOrUpgrade");
+        
+        Element rollbackUpdateOrUpgradeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RollbackUpdateOrUpgrade");
         requestDoc.appendChild(rollbackUpdateOrUpgradeElement);
-
-        Element modeElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Mode");
-        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode()
-                .toString()));
+        
+        Element modeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Mode");
+        modeElement.appendChild(requestDoc.createTextNode(parameters.getMode().toString()));
         rollbackUpdateOrUpgradeElement.appendChild(modeElement);
-
-        Element forceElement = requestDoc.createElementNS(
-                "http://schemas.microsoft.com/windowsazure", "Force");
-        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(
-                parameters.isForce()).toLowerCase()));
+        
+        Element forceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Force");
+        forceElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isForce()).toLowerCase()));
         rollbackUpdateOrUpgradeElement.appendChild(forceElement);
-
+        
         DOMSource domSource = new DOMSource(requestDoc);
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
-        TransformerFactory transformerFactory = TransformerFactory
-                .newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.transform(domSource, streamResult);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/xml");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
         try {
             if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
             if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode != HttpStatus.SC_ACCEPTED) {
-                ServiceException ex = ServiceException.createFromXml(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
                 if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
@@ -10289,88 +7461,77 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Swap Deployment operation initiates a virtual IP address swap between
-     * the staging and production deployment environments for a service. If the
-     * service is currently running in the staging environment, it will be
-     * swapped to the production environment. If it is running in the production
-     * environment, it will be swapped to staging. For more information on this
-     * type of upgrade, see Performing Virtual IP Swap Upgrades. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param parameters
-     *            Parameters supplied to the Swap Deployment operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Swap Deployment operation initiates a virtual IP address swap between
+    * the staging and production deployment environments for a service. If the
+    * service is currently running in the staging environment, it will be
+    * swapped to the production environment. If it is running in the
+    * production environment, it will be swapped to staging. For more
+    * information on this type of upgrade, see Performing Virtual IP Swap
+    * Upgrades.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> swapAsync(
-            final String serviceName, final DeploymentSwapParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return swap(serviceName, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> swapAsync(final String serviceName, final DeploymentSwapParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return swap(serviceName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Swap Deployment operation initiates a virtual IP address swap between
-     * the staging and production deployment environments for a service. If the
-     * service is currently running in the staging environment, it will be
-     * swapped to the production environment. If it is running in the production
-     * environment, it will be swapped to staging. For more information on this
-     * type of upgrade, see Performing Virtual IP Swap Upgrades. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param parameters
-     *            Parameters supplied to the Swap Deployment operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Swap Deployment operation initiates a virtual IP address swap between
+    * the staging and production deployment environments for a service. If the
+    * service is currently running in the staging environment, it will be
+    * swapped to the production environment. If it is running in the
+    * production environment, it will be swapped to staging. For more
+    * information on this type of upgrade, see Performing Virtual IP Swap
+    * Upgrades.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse swap(String serviceName,
-            DeploymentSwapParameters parameters) throws InterruptedException,
-            ExecutionException, ServiceException, IOException {
+    public ComputeOperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10379,41 +7540,29 @@ public class DeploymentOperationsImpl implements
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "swapAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "swapAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2.getDeploymentsOperations()
-                    .beginSwappingAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginSwappingAsync(serviceName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -10428,7 +7577,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -10436,98 +7585,81 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return updateStatusByDeploymentName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return updateStatusByDeploymentName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse updateStatusByDeploymentName(
-            String serviceName, String deploymentName,
-            DeploymentUpdateStatusParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10537,43 +7669,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "updateStatusByDeploymentNameAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateStatusByDeploymentNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginUpdatingStatusByDeploymentNameAsync(serviceName,
-                            deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginUpdatingStatusByDeploymentNameAsync(serviceName, deploymentName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -10588,7 +7706,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -10596,98 +7714,81 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return updateStatusByDeploymentSlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return updateStatusByDeploymentSlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Update Deployment Status operation initiates a change in the running
-     * status of a deployment. The status of a deployment can be running or
-     * suspended. The Update Deployment Status operation is an asynchronous
-     * operation. To determine whether the Management service has finished
-     * processing the request, call Get Operation Status. For more information
-     * on asynchronous operations, see Tracking Asynchronous Service Management
-     * Requests. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to swap deployments for.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Update Deployment Status operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Update Deployment Status operation initiates a change in the running
+    * status of a deployment. The status of a deployment can be running or
+    * suspended.  The Update Deployment Status operation is an asynchronous
+    * operation. To determine whether the Management service has finished
+    * processing the request, call Get Operation Status. For more information
+    * on asynchronous operations, see Tracking Asynchronous Service Management
+    * Requests.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to swap deployments for.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Update Deployment Status
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse updateStatusByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentUpdateStatusParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10697,43 +7798,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this,
-                    "updateStatusByDeploymentSlotAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateStatusByDeploymentSlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginUpdatingStatusByDeploymentSlotAsync(serviceName,
-                            deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginUpdatingStatusByDeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -10748,7 +7835,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -10756,135 +7843,119 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentName
-     *            The deployment to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentName The deployment to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> upgradeByNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return upgradeByName(serviceName, deploymentName,
-                                parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> upgradeByNameAsync(final String serviceName, final String deploymentName, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return upgradeByName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentName
-     *            The deployment to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentName The deployment to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse upgradeByName(String serviceName,
-            String deploymentName, DeploymentUpgradeParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -10894,43 +7965,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "upgradeByNameAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "upgradeByNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginUpgradingByNameAsync(serviceName, deploymentName,
-                            parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginUpgradingByNameAsync(serviceName, deploymentName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -10945,7 +8002,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -10953,136 +8010,119 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentSlot
-     *            The slot to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentSlot The slot to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> upgradeBySlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return upgradeBySlot(serviceName, deploymentSlot,
-                                parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> upgradeBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return upgradeBySlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Upgrade Deployment operation initiates an update of role instances in
-     * a deployment using the package and configuration that you specify. For
-     * more information about updating role instances, see Update a Windows
-     * Azure Service. The Upgrade Deployment operation is an asynchronous
-     * operation. To determine whether the request has been processed, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests.To perform an automatic
-     * update of a deployment, call Upgrade Deployment or Change Deployment
-     * Configuration with the Mode element set to automatic. The update proceeds
-     * from that point without a need for further input. You can call Get
-     * Operation Status to determine when the update is complete. To perform a
-     * manual update, first call Upgrade Deployment with the Mode element set to
-     * manual. Next, call Walk Upgrade Domain to update each domain within the
-     * deployment. You should make sure that the operation is complete by
-     * calling Get Operation Status before updating the next domain. Important:
-     * An update that adds or removes role instances will result in a
-     * configuration update to all roles that are deployed in the cloud service.
-     * Existing role instances need to be notified of new role instances so that
-     * all role instances can communicate together in the cloud service. By
-     * default, a cloud service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To determine
-     * the update domain in which a particular instance is running in Windows
-     * Azure, use the UpdateDomain property of the RoleInstance class. See the
-     * Windows Azure Managed Library Reference for more information. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The cloud service to upgrade.
-     * @param deploymentSlot
-     *            The slot to upgrade.
-     * @param parameters
-     *            Parameters supplied to the Upgrade Deployment operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Upgrade Deployment operation initiates an update of role instances in
+    * a deployment using the package and configuration that you specify. For
+    * more information about updating role instances, see Update a Windows
+    * Azure Service.  The Upgrade Deployment operation is an asynchronous
+    * operation. To determine whether the request has been processed, call Get
+    * Operation Status. For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.To perform an
+    * automatic update of a deployment, call Upgrade Deployment or Change
+    * Deployment Configuration with the Mode element set to automatic. The
+    * update proceeds from that point without a need for further input. You
+    * can call Get Operation Status to determine when the update is complete.
+    * To perform a manual update, first call Upgrade Deployment with the Mode
+    * element set to manual. Next, call Walk Upgrade Domain to update each
+    * domain within the deployment. You should make sure that the operation is
+    * complete by calling Get Operation Status before updating the next
+    * domain.  Important: An update that adds or removes role instances will
+    * result in a configuration update to all roles that are deployed in the
+    * cloud service. Existing role instances need to be notified of new role
+    * instances so that all role instances can communicate together in the
+    * cloud service.  By default, a cloud service is deployed with five update
+    * domains, which are updated one at a time during an in-place update. For
+    * information on modifying the number of update domains in the service
+    * definition file, see Windows Azure Service Definition Schema (.csdef
+    * File).  To determine the update domain in which a particular instance is
+    * running in Windows Azure, use the UpdateDomain property of the
+    * RoleInstance class. See the Windows Azure Managed Library Reference for
+    * more information.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
+    * more information)
+    *
+    * @param serviceName The cloud service to upgrade.
+    * @param deploymentSlot The slot to upgrade.
+    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse upgradeBySlot(String serviceName,
-            DeploymentSlot deploymentSlot,
-            DeploymentUpgradeParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -11092,43 +8132,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "upgradeBySlotAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "upgradeBySlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginUpgradingBySlotAsync(serviceName, deploymentSlot,
-                            parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginUpgradingBySlotAsync(serviceName, deploymentSlot, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -11143,7 +8169,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -11151,136 +8177,119 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(
-            final String serviceName, final String deploymentName,
-            final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return walkUpgradeDomainByDeploymentName(serviceName,
-                                deploymentName, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return walkUpgradeDomainByDeploymentName(serviceName, deploymentName, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentName
-     *            The name of your deployment.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentName The name of your deployment.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(
-            String serviceName, String deploymentName,
-            DeploymentWalkUpgradeDomainParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -11290,45 +8299,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing
-                    .enter(invocationId, this,
-                            "walkUpgradeDomainByDeploymentNameAsync",
-                            tracingParameters);
+            CloudTracing.enter(invocationId, this, "walkUpgradeDomainByDeploymentNameAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginWalkingUpgradeDomainByDeploymentNameAsync(
-                            serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginWalkingUpgradeDomainByDeploymentNameAsync(serviceName, deploymentName, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -11343,7 +8336,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {
@@ -11351,136 +8344,119 @@ public class DeploymentOperationsImpl implements
             }
         }
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(
-            final String serviceName, final DeploymentSlot deploymentSlot,
-            final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<ComputeOperationStatusResponse>() {
-                    @Override
-                    public ComputeOperationStatusResponse call()
-                            throws Exception {
-                        return walkUpgradeDomainByDeploymentSlot(serviceName,
-                                deploymentSlot, parameters);
-                    }
-                });
+    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+            @Override
+            public ComputeOperationStatusResponse call() throws Exception {
+                return walkUpgradeDomainByDeploymentSlot(serviceName, deploymentSlot, parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Walk Upgrade Domain operation specifies an update domain in which a
-     * role instance must be updated. For more information about updating role
-     * instances, see Update a Windows Azure Service. The Walk Upgrade Domain
-     * operation is an asynchronous operation. To determine whether the
-     * Management service has finished processing the request, call Get
-     * Operation Status. For more information on asynchronous operations, see
-     * Tracking Asynchronous Service Management Requests. Prior to calling the
-     * Walk Upgrade Domain operation you must have called Upgrade Deployment,
-     * Change Deployment Configuration, or Rollback Update Or Upgrade. By
-     * default, a service is deployed with five update domains, which are
-     * updated one at a time during an in-place update. For information on
-     * modifying the number of update domains in the service definition file,
-     * see Windows Azure Service Definition Schema (.csdef File). To perform a
-     * manual update of your deployment, proceed in this order: Call Upgrade
-     * Deployment with the Mode element set to manual. Call Walk Upgrade Domain
-     * to update each domain within the deployment. Update domains must be
-     * updated in order. For example, begin with domain 0, proceed to domain 1,
-     * and so on. Important: An update that adds or removes role instances will
-     * result in a configuration update to all roles that are deployed in the
-     * cloud service. Existing role instances need to be notified of new role
-     * instances so that all role instances can communicate together in the
-     * cloud service. While an update is in progress, call Get Deployment to
-     * determine its status. If the update is in progress, Get Deployment
-     * returns an UpgradeStatus element that contains information about the
-     * update. If the update is complete, or if no update is in progress, then
-     * the UpgradeStatus element is null. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
-     * more information)
-     * 
-     * @param serviceName
-     *            The name of the cloud service.
-     * @param deploymentSlot
-     *            The deployment slot.
-     * @param parameters
-     *            Parameters supplied to the Walk Upgrade Domain operation.
-     * @throws InterruptedException
-     *             Thrown when a thread is waiting, sleeping, or otherwise
-     *             occupied, and the thread is interrupted, either before or
-     *             during the activity. Occasionally a method may wish to test
-     *             whether the current thread has been interrupted, and if so,
-     *             to immediately throw this exception. The following code can
-     *             be used to achieve this effect:
-     * @throws ExecutionException
-     *             Thrown when attempting to retrieve the result of a task that
-     *             aborted by throwing an exception. This exception can be
-     *             inspected using the Throwable.getCause() method.
-     * @throws ServiceException
-     *             Thrown if the server returned an error for the request.
-     * @throws IOException
-     *             Thrown if there was an error setting up tracing for the
-     *             request.
-     * @return The response body contains the status of the specified
-     *         asynchronous operation, indicating whether it has succeeded, is
-     *         inprogress, or has failed. Note that this status is distinct from
-     *         the HTTP status code returned for the Get Operation Status
-     *         operation itself. If the asynchronous operation succeeded, the
-     *         response body includes the HTTP status code for the successful
-     *         request. If the asynchronous operation failed, the response body
-     *         includes the HTTP status code for the failed request, and also
-     *         includes error information regarding the failure.
-     */
+    * The Walk Upgrade Domain operation specifies an update domain in which a
+    * role instance must be updated. For more information about updating role
+    * instances, see Update a Windows Azure Service.  The Walk Upgrade Domain
+    * operation is an asynchronous operation. To determine whether the
+    * Management service has finished processing the request, call Get
+    * Operation Status.  For more information on asynchronous operations, see
+    * Tracking Asynchronous Service Management Requests.  Prior to calling the
+    * Walk Upgrade Domain operation you must have called Upgrade Deployment,
+    * Change Deployment Configuration, or Rollback Update Or Upgrade.  By
+    * default, a service is deployed with five update domains, which are
+    * updated one at a time during an in-place update. For information on
+    * modifying the number of update domains in the service definition file,
+    * see Windows Azure Service Definition Schema (.csdef File).  To perform a
+    * manual update of your deployment, proceed in this order:  Call Upgrade
+    * Deployment with the Mode element set to manual.   Call Walk Upgrade
+    * Domain to update each domain within the deployment. Update domains must
+    * be updated in order. For example, begin with domain 0, proceed to domain
+    * 1, and so on.  Important: An update that adds or removes role instances
+    * will result in a configuration update to all roles that are deployed in
+    * the cloud service. Existing role instances need to be notified of new
+    * role instances so that all role instances can communicate together in
+    * the cloud service.  While an update is in progress, call Get Deployment
+    * to determine its status. If the update is in progress, Get Deployment
+    * returns an UpgradeStatus element that contains information about the
+    * update. If the update is complete, or if no update is in progress, then
+    * the UpgradeStatus element is null.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
+    * more information)
+    *
+    * @param serviceName The name of the cloud service.
+    * @param deploymentSlot The deployment slot.
+    * @param parameters Parameters supplied to the Walk Upgrade Domain
+    * operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
     @Override
-    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(
-            String serviceName, DeploymentSlot deploymentSlot,
-            DeploymentWalkUpgradeDomainParameters parameters)
-            throws InterruptedException, ExecutionException, ServiceException,
-            IOException {
+    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -11490,45 +8466,29 @@ public class DeploymentOperationsImpl implements
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("deploymentSlot", deploymentSlot);
             tracingParameters.put("parameters", parameters);
-            CloudTracing
-                    .enter(invocationId, this,
-                            "walkUpgradeDomainByDeploymentSlotAsync",
-                            tracingParameters);
+            CloudTracing.enter(invocationId, this, "walkUpgradeDomainByDeploymentSlotAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
-                client2 = this
-                        .getClient()
-                        .withRequestFilterLast(
-                                new ClientRequestTrackingHandler(invocationId))
-                        .withResponseFilterLast(
-                                new ClientRequestTrackingHandler(invocationId));
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
-
-            OperationResponse response = client2
-                    .getDeploymentsOperations()
-                    .beginWalkingUpgradeDomainByDeploymentSlotAsync(
-                            serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2
-                    .getOperationStatusAsync(response.getRequestId()).get();
+            
+            OperationResponse response = client2.getDeploymentsOperations().beginWalkingUpgradeDomainByDeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
+            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
-                result = client2.getOperationStatusAsync(
-                        response.getRequestId()).get();
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
-
+            
             if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
-
+            
             if (result.getStatus() != OperationStatus.Succeeded) {
                 if (result.getError() != null) {
-                    ServiceException ex = new ServiceException(result
-                            .getError().getCode()
-                            + " : "
-                            + result.getError().getMessage());
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
                     if (shouldTrace) {
@@ -11543,7 +8503,7 @@ public class DeploymentOperationsImpl implements
                     throw ex;
                 }
             }
-
+            
             return result;
         } finally {
             if (this.getClient() != null && shouldTrace) {

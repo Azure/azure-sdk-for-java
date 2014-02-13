@@ -25,13 +25,13 @@ package com.microsoft.windowsazure.management.compute.models;
 
 public enum RollbackUpdateOrUpgradeMode {
     /**
-     * The rollback proceeds without further user input.
-     */
+    * The rollback proceeds without further user input.
+    */
     Auto,
-
+    
     /**
-     * You must call the Walk Upgrade Domain operation to apply the rollback to
-     * each upgrade domain.
-     */
+    * You must call the Walk Upgrade Domain operation to apply the rollback to
+    * each upgrade domain.
+    */
     Manual,
 }

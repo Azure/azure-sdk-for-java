@@ -28,473 +28,413 @@ import java.net.URI;
 import java.util.Calendar;
 
 /**
- * A virtual machine image associated with your subscription.
- */
+* A virtual machine image associated with your subscription.
+*/
 public class VirtualMachineImageGetResponse extends OperationResponse {
     private String affinityGroup;
-
+    
     /**
-     * The affinity in which the media is located. The AffinityGroup value is
-     * derived from storage account that contains the blob in which the media is
-     * located. If the storage account does not belong to an affinity group the
-     * value is NULL and the element is not displayed in the response. This
-     * value is NULL for platform images.
-     * 
-     * @return The AffinityGroup value.
-     */
+    * The affinity in which the media is located. The AffinityGroup value is
+    * derived from storage account that contains the blob in which the media
+    * is located. If the storage account does not belong to an affinity group
+    * the value is NULL and the element is not displayed in the response.
+    * This value is NULL for platform images.
+    * @return The AffinityGroup value.
+    */
     public String getAffinityGroup() {
         return this.affinityGroup;
     }
-
+    
     /**
-     * The affinity in which the media is located. The AffinityGroup value is
-     * derived from storage account that contains the blob in which the media is
-     * located. If the storage account does not belong to an affinity group the
-     * value is NULL and the element is not displayed in the response. This
-     * value is NULL for platform images.
-     * 
-     * @param affinityGroupValue
-     *            The AffinityGroup value.
-     */
+    * The affinity in which the media is located. The AffinityGroup value is
+    * derived from storage account that contains the blob in which the media
+    * is located. If the storage account does not belong to an affinity group
+    * the value is NULL and the element is not displayed in the response.
+    * This value is NULL for platform images.
+    * @param affinityGroupValue The AffinityGroup value.
+    */
     public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
-
+    
     private String category;
-
+    
     /**
-     * The repository classification of the image. All user images have the
-     * category User.
-     * 
-     * @return The Category value.
-     */
+    * The repository classification of the image. All user images have the
+    * category User.
+    * @return The Category value.
+    */
     public String getCategory() {
         return this.category;
     }
-
+    
     /**
-     * The repository classification of the image. All user images have the
-     * category User.
-     * 
-     * @param categoryValue
-     *            The Category value.
-     */
+    * The repository classification of the image. All user images have the
+    * category User.
+    * @param categoryValue The Category value.
+    */
     public void setCategory(final String categoryValue) {
         this.category = categoryValue;
     }
-
+    
     private String description;
-
+    
     /**
-     * Specifies the description of the image.
-     * 
-     * @return The Description value.
-     */
+    * Specifies the description of the image.
+    * @return The Description value.
+    */
     public String getDescription() {
         return this.description;
     }
-
+    
     /**
-     * Specifies the description of the image.
-     * 
-     * @param descriptionValue
-     *            The Description value.
-     */
+    * Specifies the description of the image.
+    * @param descriptionValue The Description value.
+    */
     public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
-
+    
     private String eula;
-
+    
     /**
-     * Specifies the End User License Agreement that is associated with the
-     * image. The value for this element is a string, but it is recommended that
-     * the value be a URL that points to a EULA.
-     * 
-     * @return The Eula value.
-     */
+    * Specifies the End User License Agreement that is associated with the
+    * image. The value for this element is a string, but it is recommended
+    * that the value be a URL that points to a EULA.
+    * @return The Eula value.
+    */
     public String getEula() {
         return this.eula;
     }
-
+    
     /**
-     * Specifies the End User License Agreement that is associated with the
-     * image. The value for this element is a string, but it is recommended that
-     * the value be a URL that points to a EULA.
-     * 
-     * @param eulaValue
-     *            The Eula value.
-     */
+    * Specifies the End User License Agreement that is associated with the
+    * image. The value for this element is a string, but it is recommended
+    * that the value be a URL that points to a EULA.
+    * @param eulaValue The Eula value.
+    */
     public void setEula(final String eulaValue) {
         this.eula = eulaValue;
     }
-
+    
     private URI iconUri;
-
+    
     /**
-     * Provides the URI to the icon for this Operating System Image.
-     * 
-     * @return The IconUri value.
-     */
+    * Provides the URI to the icon for this Operating System Image.
+    * @return The IconUri value.
+    */
     public URI getIconUri() {
         return this.iconUri;
     }
-
+    
     /**
-     * Provides the URI to the icon for this Operating System Image.
-     * 
-     * @param iconUriValue
-     *            The IconUri value.
-     */
+    * Provides the URI to the icon for this Operating System Image.
+    * @param iconUriValue The IconUri value.
+    */
     public void setIconUri(final URI iconUriValue) {
         this.iconUri = iconUriValue;
     }
-
+    
     private String imageFamily;
-
+    
     /**
-     * Specifies a value that can be used to group images.
-     * 
-     * @return The ImageFamily value.
-     */
+    * Specifies a value that can be used to group images.
+    * @return The ImageFamily value.
+    */
     public String getImageFamily() {
         return this.imageFamily;
     }
-
+    
     /**
-     * Specifies a value that can be used to group images.
-     * 
-     * @param imageFamilyValue
-     *            The ImageFamily value.
-     */
+    * Specifies a value that can be used to group images.
+    * @param imageFamilyValue The ImageFamily value.
+    */
     public void setImageFamily(final String imageFamilyValue) {
         this.imageFamily = imageFamilyValue;
     }
-
+    
     private Boolean isPremium;
-
+    
     /**
-     * Indicates whether the image contains software or associated services that
-     * will incur charges above the core price for the virtual machine. For
-     * additional details, see the PricingDetailLink element.
-     * 
-     * @return The IsPremium value.
-     */
+    * Indicates whether the image contains software or associated services that
+    * will incur charges above the core price for the virtual machine. For
+    * additional details, see the PricingDetailLink element.
+    * @return The IsPremium value.
+    */
     public Boolean isPremium() {
         return this.isPremium;
     }
-
+    
     /**
-     * Indicates whether the image contains software or associated services that
-     * will incur charges above the core price for the virtual machine. For
-     * additional details, see the PricingDetailLink element.
-     * 
-     * @param isPremiumValue
-     *            The IsPremium value.
-     */
+    * Indicates whether the image contains software or associated services that
+    * will incur charges above the core price for the virtual machine. For
+    * additional details, see the PricingDetailLink element.
+    * @param isPremiumValue The IsPremium value.
+    */
     public void setIsPremium(final Boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * An identifier for the image.
-     * 
-     * @return The Label value.
-     */
+    * An identifier for the image.
+    * @return The Label value.
+    */
     public String getLabel() {
         return this.label;
     }
-
+    
     /**
-     * An identifier for the image.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
+    * An identifier for the image.
+    * @param labelValue The Label value.
+    */
     public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
-
+    
     private String language;
-
+    
     /**
-     * Specifies the language of the image. The Language element is only
-     * available using version 2013-03-01 or higher.
-     * 
-     * @return The Language value.
-     */
+    * Specifies the language of the image.  The Language element is only
+    * available using version 2013-03-01 or higher.
+    * @return The Language value.
+    */
     public String getLanguage() {
         return this.language;
     }
-
+    
     /**
-     * Specifies the language of the image. The Language element is only
-     * available using version 2013-03-01 or higher.
-     * 
-     * @param languageValue
-     *            The Language value.
-     */
+    * Specifies the language of the image.  The Language element is only
+    * available using version 2013-03-01 or higher.
+    * @param languageValue The Language value.
+    */
     public void setLanguage(final String languageValue) {
         this.language = languageValue;
     }
-
+    
     private String location;
-
+    
     /**
-     * The geo-location in which this media is located. The Location value is
-     * derived from storage account that contains the blob in which the media is
-     * located. If the storage account belongs to an affinity group the value is
-     * NULL. If the version is set to 2012-08-01 or later, the locations are
-     * returned for platform images; otherwise, this value is NULL for platform
-     * images.
-     * 
-     * @return The Location value.
-     */
+    * The geo-location in which this media is located. The Location value is
+    * derived from storage account that contains the blob in which the media
+    * is located. If the storage account belongs to an affinity group the
+    * value is NULL.  If the version is set to 2012-08-01 or later, the
+    * locations are returned for platform images; otherwise, this value is
+    * NULL for platform images.
+    * @return The Location value.
+    */
     public String getLocation() {
         return this.location;
     }
-
+    
     /**
-     * The geo-location in which this media is located. The Location value is
-     * derived from storage account that contains the blob in which the media is
-     * located. If the storage account belongs to an affinity group the value is
-     * NULL. If the version is set to 2012-08-01 or later, the locations are
-     * returned for platform images; otherwise, this value is NULL for platform
-     * images.
-     * 
-     * @param locationValue
-     *            The Location value.
-     */
+    * The geo-location in which this media is located. The Location value is
+    * derived from storage account that contains the blob in which the media
+    * is located. If the storage account belongs to an affinity group the
+    * value is NULL.  If the version is set to 2012-08-01 or later, the
+    * locations are returned for platform images; otherwise, this value is
+    * NULL for platform images.
+    * @param locationValue The Location value.
+    */
     public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
-
+    
     private double logicalSizeInGB;
-
+    
     /**
-     * The size, in GB, of the image.
-     * 
-     * @return The LogicalSizeInGB value.
-     */
+    * The size, in GB, of the image.
+    * @return The LogicalSizeInGB value.
+    */
     public double getLogicalSizeInGB() {
         return this.logicalSizeInGB;
     }
-
+    
     /**
-     * The size, in GB, of the image.
-     * 
-     * @param logicalSizeInGBValue
-     *            The LogicalSizeInGB value.
-     */
+    * The size, in GB, of the image.
+    * @param logicalSizeInGBValue The LogicalSizeInGB value.
+    */
     public void setLogicalSizeInGB(final double logicalSizeInGBValue) {
         this.logicalSizeInGB = logicalSizeInGBValue;
     }
-
+    
     private URI mediaLinkUri;
-
+    
     /**
-     * The location of the blob in Windows Azure storage. The blob location
-     * belongs to a storage account in the subscription specified by the
-     * SubscriptionId value in the operation call. Example:
-     * http://example.blob.core.windows.net/disks/myimage.vhd
-     * 
-     * @return The MediaLinkUri value.
-     */
+    * The location of the blob in Windows Azure storage. The blob location
+    * belongs to a storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd
+    * @return The MediaLinkUri value.
+    */
     public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
-
+    
     /**
-     * The location of the blob in Windows Azure storage. The blob location
-     * belongs to a storage account in the subscription specified by the
-     * SubscriptionId value in the operation call. Example:
-     * http://example.blob.core.windows.net/disks/myimage.vhd
-     * 
-     * @param mediaLinkUriValue
-     *            The MediaLinkUri value.
-     */
+    * The location of the blob in Windows Azure storage. The blob location
+    * belongs to a storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd
+    * @param mediaLinkUriValue The MediaLinkUri value.
+    */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * The name of the operating system image. This is the name that is used
-     * when creating one or more virtual machines using the image.
-     * 
-     * @return The Name value.
-     */
+    * The name of the operating system image. This is the name that is used
+    * when creating one or more virtual machines using the image.
+    * @return The Name value.
+    */
     public String getName() {
         return this.name;
     }
-
+    
     /**
-     * The name of the operating system image. This is the name that is used
-     * when creating one or more virtual machines using the image.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
+    * The name of the operating system image. This is the name that is used
+    * when creating one or more virtual machines using the image.
+    * @param nameValue The Name value.
+    */
     public void setName(final String nameValue) {
         this.name = nameValue;
     }
-
+    
     private String operatingSystemType;
-
+    
     /**
-     * The operating system type of the OS image. Possible values are: Linux,
-     * Windows.
-     * 
-     * @return The OperatingSystemType value.
-     */
+    * The operating system type of the OS image. Possible values are: Linux,
+    * Windows.
+    * @return The OperatingSystemType value.
+    */
     public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
-
+    
     /**
-     * The operating system type of the OS image. Possible values are: Linux,
-     * Windows.
-     * 
-     * @param operatingSystemTypeValue
-     *            The OperatingSystemType value.
-     */
+    * The operating system type of the OS image. Possible values are: Linux,
+    * Windows.
+    * @param operatingSystemTypeValue The OperatingSystemType value.
+    */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
-
+    
     private URI privacyUri;
-
+    
     /**
-     * Specifies the URI that points to a document that contains the privacy
-     * policy related to the image.
-     * 
-     * @return The PrivacyUri value.
-     */
+    * Specifies the URI that points to a document that contains the privacy
+    * policy related to the image.
+    * @return The PrivacyUri value.
+    */
     public URI getPrivacyUri() {
         return this.privacyUri;
     }
-
+    
     /**
-     * Specifies the URI that points to a document that contains the privacy
-     * policy related to the image.
-     * 
-     * @param privacyUriValue
-     *            The PrivacyUri value.
-     */
+    * Specifies the URI that points to a document that contains the privacy
+    * policy related to the image.
+    * @param privacyUriValue The PrivacyUri value.
+    */
     public void setPrivacyUri(final URI privacyUriValue) {
         this.privacyUri = privacyUriValue;
     }
-
+    
     private Calendar publishedDate;
-
+    
     /**
-     * Specifies the date when the image was added to the image repository.
-     * 
-     * @return The PublishedDate value.
-     */
+    * Specifies the date when the image was added to the image repository.
+    * @return The PublishedDate value.
+    */
     public Calendar getPublishedDate() {
         return this.publishedDate;
     }
-
+    
     /**
-     * Specifies the date when the image was added to the image repository.
-     * 
-     * @param publishedDateValue
-     *            The PublishedDate value.
-     */
+    * Specifies the date when the image was added to the image repository.
+    * @param publishedDateValue The PublishedDate value.
+    */
     public void setPublishedDate(final Calendar publishedDateValue) {
         this.publishedDate = publishedDateValue;
     }
-
+    
     private String publisherName;
-
+    
     /**
-     * The name of the publisher of this OS Image in Windows Azure.
-     * 
-     * @return The PublisherName value.
-     */
+    * The name of the publisher of this OS Image in Windows Azure.
+    * @return The PublisherName value.
+    */
     public String getPublisherName() {
         return this.publisherName;
     }
-
+    
     /**
-     * The name of the publisher of this OS Image in Windows Azure.
-     * 
-     * @param publisherNameValue
-     *            The PublisherName value.
-     */
+    * The name of the publisher of this OS Image in Windows Azure.
+    * @param publisherNameValue The PublisherName value.
+    */
     public void setPublisherName(final String publisherNameValue) {
         this.publisherName = publisherNameValue;
     }
-
+    
     private String recommendedVMSize;
-
+    
     /**
-     * Optional. Specifies the size to use for the virtual machine that is
-     * created from the OS image.
-     * 
-     * @return The RecommendedVMSize value.
-     */
+    * Optional. Specifies the size to use for the virtual machine that is
+    * created from the OS image.
+    * @return The RecommendedVMSize value.
+    */
     public String getRecommendedVMSize() {
         return this.recommendedVMSize;
     }
-
+    
     /**
-     * Optional. Specifies the size to use for the virtual machine that is
-     * created from the OS image.
-     * 
-     * @param recommendedVMSizeValue
-     *            The RecommendedVMSize value.
-     */
+    * Optional. Specifies the size to use for the virtual machine that is
+    * created from the OS image.
+    * @param recommendedVMSizeValue The RecommendedVMSize value.
+    */
     public void setRecommendedVMSize(final String recommendedVMSizeValue) {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
-
+    
     private Boolean showInGui;
-
+    
     /**
-     * Indicates whther the image should be shown in the windows azure portal.
-     * 
-     * @return The ShowInGui value.
-     */
+    * Indicates whther the image should be shown in the windows azure portal.
+    * @return The ShowInGui value.
+    */
     public Boolean isShowInGui() {
         return this.showInGui;
     }
-
+    
     /**
-     * Indicates whther the image should be shown in the windows azure portal.
-     * 
-     * @param showInGuiValue
-     *            The ShowInGui value.
-     */
+    * Indicates whther the image should be shown in the windows azure portal.
+    * @param showInGuiValue The ShowInGui value.
+    */
     public void setShowInGui(final Boolean showInGuiValue) {
         this.showInGui = showInGuiValue;
     }
-
+    
     private URI smallIconUri;
-
+    
     /**
-     * Specifies the URI to the small icon that is displayed when the image is
-     * presented in the Windows Azure Management Portal. The SmallIconUri
-     * element is only available using version 2013-03-01 or higher.
-     * 
-     * @return The SmallIconUri value.
-     */
+    * Specifies the URI to the small icon that is displayed when the image is
+    * presented in the Windows Azure Management Portal.  The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
+    * @return The SmallIconUri value.
+    */
     public URI getSmallIconUri() {
         return this.smallIconUri;
     }
-
+    
     /**
-     * Specifies the URI to the small icon that is displayed when the image is
-     * presented in the Windows Azure Management Portal. The SmallIconUri
-     * element is only available using version 2013-03-01 or higher.
-     * 
-     * @param smallIconUriValue
-     *            The SmallIconUri value.
-     */
+    * Specifies the URI to the small icon that is displayed when the image is
+    * presented in the Windows Azure Management Portal.  The SmallIconUri
+    * element is only available using version 2013-03-01 or higher.
+    * @param smallIconUriValue The SmallIconUri value.
+    */
     public void setSmallIconUri(final URI smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }

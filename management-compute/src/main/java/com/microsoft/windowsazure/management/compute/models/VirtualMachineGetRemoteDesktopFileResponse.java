@@ -26,29 +26,25 @@ package com.microsoft.windowsazure.management.compute.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Download RDP file operation response.
- */
-public class VirtualMachineGetRemoteDesktopFileResponse extends
-        OperationResponse {
+* The Download RDP file operation response.
+*/
+public class VirtualMachineGetRemoteDesktopFileResponse extends OperationResponse {
     private byte[] remoteDesktopFile;
-
+    
     /**
-     * A Remote Desktop Protocol (.rdp) file that can be used to establish a
-     * remote desktop session to the virtual machine
-     * 
-     * @return The RemoteDesktopFile value.
-     */
+    * A Remote Desktop Protocol (.rdp) file that can be used to establish a
+    * remote desktop session to the virtual machine
+    * @return The RemoteDesktopFile value.
+    */
     public byte[] getRemoteDesktopFile() {
         return this.remoteDesktopFile;
     }
-
+    
     /**
-     * A Remote Desktop Protocol (.rdp) file that can be used to establish a
-     * remote desktop session to the virtual machine
-     * 
-     * @param remoteDesktopFileValue
-     *            The RemoteDesktopFile value.
-     */
+    * A Remote Desktop Protocol (.rdp) file that can be used to establish a
+    * remote desktop session to the virtual machine
+    * @param remoteDesktopFileValue The RemoteDesktopFile value.
+    */
     public void setRemoteDesktopFile(final byte[] remoteDesktopFileValue) {
         this.remoteDesktopFile = remoteDesktopFileValue;
     }

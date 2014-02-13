@@ -26,26 +26,23 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * A response to a request for a particular topic.
- */
+* A response to a request for a particular topic.
+*/
 public class ServiceBusTopicResponse extends OperationResponse {
     private ServiceBusTopic topic;
-
+    
     /**
-     * The requested topic.
-     * 
-     * @return The Topic value.
-     */
+    * The requested topic.
+    * @return The Topic value.
+    */
     public ServiceBusTopic getTopic() {
         return this.topic;
     }
-
+    
     /**
-     * The requested topic.
-     * 
-     * @param topicValue
-     *            The Topic value.
-     */
+    * The requested topic.
+    * @param topicValue The Topic value.
+    */
     public void setTopic(final ServiceBusTopic topicValue) {
         this.topic = topicValue;
     }

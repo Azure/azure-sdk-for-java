@@ -24,73 +24,63 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
- * Contains upgrade details of the deployment.
- */
+* Contains upgrade details of the deployment.
+*/
 public class UpgradeStatus {
     private int currentUpgradeDomain;
-
+    
     /**
-     * An integer value that identifies the current upgrade domain. Upgrade
-     * domains are identified with a zero-based index: the first upgrade domain
-     * has an ID of 0, the second has an ID of 1, and so on.
-     * 
-     * @return The CurrentUpgradeDomain value.
-     */
+    * An integer value that identifies the current upgrade domain. Upgrade
+    * domains are identified with a zero-based index: the first upgrade domain
+    * has an ID of 0, the second has an ID of 1, and so on.
+    * @return The CurrentUpgradeDomain value.
+    */
     public int getCurrentUpgradeDomain() {
         return this.currentUpgradeDomain;
     }
-
+    
     /**
-     * An integer value that identifies the current upgrade domain. Upgrade
-     * domains are identified with a zero-based index: the first upgrade domain
-     * has an ID of 0, the second has an ID of 1, and so on.
-     * 
-     * @param currentUpgradeDomainValue
-     *            The CurrentUpgradeDomain value.
-     */
+    * An integer value that identifies the current upgrade domain. Upgrade
+    * domains are identified with a zero-based index: the first upgrade domain
+    * has an ID of 0, the second has an ID of 1, and so on.
+    * @param currentUpgradeDomainValue The CurrentUpgradeDomain value.
+    */
     public void setCurrentUpgradeDomain(final int currentUpgradeDomainValue) {
         this.currentUpgradeDomain = currentUpgradeDomainValue;
     }
-
+    
     private UpgradeDomainState currentUpgradeDomainState;
-
+    
     /**
-     * The current state of the upgrade. Possible values are Before and During
-     * 
-     * @return The CurrentUpgradeDomainState value.
-     */
+    * The current state of the upgrade. Possible values are Before and During
+    * @return The CurrentUpgradeDomainState value.
+    */
     public UpgradeDomainState getCurrentUpgradeDomainState() {
         return this.currentUpgradeDomainState;
     }
-
+    
     /**
-     * The current state of the upgrade. Possible values are Before and During
-     * 
-     * @param currentUpgradeDomainStateValue
-     *            The CurrentUpgradeDomainState value.
-     */
-    public void setCurrentUpgradeDomainState(
-            final UpgradeDomainState currentUpgradeDomainStateValue) {
+    * The current state of the upgrade. Possible values are Before and During
+    * @param currentUpgradeDomainStateValue The CurrentUpgradeDomainState value.
+    */
+    public void setCurrentUpgradeDomainState(final UpgradeDomainState currentUpgradeDomainStateValue) {
         this.currentUpgradeDomainState = currentUpgradeDomainStateValue;
     }
-
+    
     private DeploymentUpgradeType upgradeType;
-
+    
     /**
-     * The type of the upgrade. Possible values are Auto and Manual.
-     * 
-     * @return The UpgradeType value.
-     */
+    * The type of the upgrade. Possible values are Auto and Manual.
+    * @return The UpgradeType value.
+    */
     public DeploymentUpgradeType getUpgradeType() {
         return this.upgradeType;
     }
-
+    
     /**
-     * The type of the upgrade. Possible values are Auto and Manual.
-     * 
-     * @param upgradeTypeValue
-     *            The UpgradeType value.
-     */
+    * The type of the upgrade. Possible values are Auto and Manual.
+    * @param upgradeTypeValue The UpgradeType value.
+    */
     public void setUpgradeType(final DeploymentUpgradeType upgradeTypeValue) {
         this.upgradeType = upgradeTypeValue;
     }
