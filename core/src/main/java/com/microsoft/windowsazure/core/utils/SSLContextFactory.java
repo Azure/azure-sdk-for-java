@@ -19,16 +19,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
+import java.security.Provider;
 import java.security.SecureRandom;
-
+import java.security.Security;
 import java.security.cert.X509Certificate;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 
 /**
  * A factory for creating SSLContext instance.
@@ -77,6 +81,7 @@ public final class SSLContextFactory
      *             the general security exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws ClassNotFoundException 
      */
     public static SSLContext create(String keyStorePath,
             String keyStorePassword, KeyStoreType keyStoreType)
@@ -97,35 +102,64 @@ public final class SSLContextFactory
 
         InputStream keyStoreInputStream = new FileInputStream(new File(
                 keyStorePath));
-        KeyManager[] keyManagers = getKeyManagers(keyStoreInputStream,
-                keyStorePassword, keyStoreType);
+        
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(keyManagers,
-                new TrustManager[]
-                {
-                    new X509TrustManager()
-                    {
-                        public X509Certificate[] getAcceptedIssuers()
-                        {
-                            // System.out.println("getAcceptedIssuers =============");
-                            return null;
-                        }
+        
+        // Using bouncy castle only in case of java6 and if keystore is having empty password
+        if (Float.valueOf( System.getProperty("java.specification.version")) < 1.7 
+        		&& (keyStorePassword != null && keyStorePassword.trim().length()==0)) {
+        	try {
+        		String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
+                KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);
+            
+	        	// use bouncy castle provider
+                Class<?> providerClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+				Security.addProvider((Provider) providerClass.newInstance());
+	            
+				Field field = providerClass.getField("PROVIDER_NAME");
+				KeyStore store = KeyStore.getInstance("PKCS12",field.get(null).toString());
+				store.load(keyStoreInputStream, keyStorePassword.toCharArray());
+	
+				keyManagerFactory.init(store, keyStorePassword.toCharArray());
+	            sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+	            
+        	} catch (Exception e) {
+        		// Using catch all exception class to avoid repeated code in different catch blocks
+    			throw new RuntimeException("Exception occured while initiatlizing SSL context"
+    					+ "Make sure java versions less than 1.7 has bouncycastle jar in classpath", e);
+        	}
+        } else {
+        	 KeyManager[] keyManagers = getKeyManagers(keyStoreInputStream, keyStorePassword, keyStoreType);
+        	 
+        	 sslContext.init(keyManagers,
+                     new TrustManager[]
+                     {
+                         new X509TrustManager()
+                         {
+                             public X509Certificate[] getAcceptedIssuers()
+                             {
+                                 // System.out.println("getAcceptedIssuers =============");
+                                 return null;
+                             }
 
-                        public void checkClientTrusted(X509Certificate[] certs,
-                                String authType)
-                        {
-                            // System.out.println("checkClientTrusted =============");
-                        }
+                             public void checkClientTrusted(X509Certificate[] certs,
+                                     String authType)
+                             {
+                                 // System.out.println("checkClientTrusted =============");
+                             }
 
-                        public void checkServerTrusted(X509Certificate[] certs,
-                                String authType)
-                        {
-                            // System.out.println("checkServerTrusted =============");
-                        }
-                    }
-                }, new SecureRandom());
+                             public void checkServerTrusted(X509Certificate[] certs,
+                                     String authType)
+                             {
+                                 // System.out.println("checkServerTrusted =============");
+                             }
+                         }
+                     }, new SecureRandom());
 
-        keyStoreInputStream.close();
+
+        }
+
+               keyStoreInputStream.close();
         return sslContext;
     }
 
