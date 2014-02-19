@@ -577,10 +577,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Disk");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disk");
             Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (diskElement2 != null) {
-                NodeList elements2 = diskElement2.getElementsByTagName("OS");
+                NodeList elements2 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (osElement2 != null) {
                     String osInstance;
@@ -588,7 +588,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setOperatingSystem(osInstance);
                 }
                 
-                NodeList elements3 = diskElement2.getElementsByTagName("Label");
+                NodeList elements3 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement2 != null) {
                     String labelInstance;
@@ -596,7 +596,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
+                NodeList elements4 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                 Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
@@ -604,7 +604,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setAffinityGroup(affinityGroupInstance);
                 }
                 
-                NodeList elements5 = diskElement2.getElementsByTagName("Location");
+                NodeList elements5 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -612,7 +612,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
+                NodeList elements6 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
@@ -620,7 +620,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
-                NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
+                NodeList elements7 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
@@ -628,7 +628,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements8 = diskElement2.getElementsByTagName("Name");
+                NodeList elements8 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -636,7 +636,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements9 = diskElement2.getElementsByTagName("SourceImageName");
+                NodeList elements9 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                 Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (sourceImageNameElement != null) {
                     String sourceImageNameInstance;
@@ -644,13 +644,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setSourceImageName(sourceImageNameInstance);
                 }
                 
-                NodeList elements10 = diskElement2.getElementsByTagName("AttachedTo");
+                NodeList elements10 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AttachedTo");
                 Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (attachedToElement != null) {
                     VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
-                    NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
+                    NodeList elements11 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedServiceName");
                     Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (hostedServiceNameElement != null) {
                         String hostedServiceNameInstance;
@@ -658,7 +658,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
                     }
                     
-                    NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
+                    NodeList elements12 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
                     Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (deploymentNameElement != null) {
                         String deploymentNameInstance;
@@ -666,7 +666,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         attachedToInstance.setDeploymentName(deploymentNameInstance);
                     }
                     
-                    NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
+                    NodeList elements13 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
                     Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (roleNameElement != null) {
                         String roleNameInstance;
@@ -675,7 +675,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     }
                 }
                 
-                NodeList elements14 = diskElement2.getElementsByTagName("IsPremium");
+                NodeList elements14 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
@@ -1039,10 +1039,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("DataVirtualHardDisk");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
             Element dataVirtualHardDiskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (dataVirtualHardDiskElement != null) {
-                NodeList elements2 = dataVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                NodeList elements2 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                 Element hostCachingElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (hostCachingElement != null) {
                     VirtualHardDiskHostCaching hostCachingInstance;
@@ -1050,7 +1050,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setHostCaching(hostCachingInstance);
                 }
                 
-                NodeList elements3 = dataVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                NodeList elements3 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                 Element diskLabelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (diskLabelElement != null) {
                     String diskLabelInstance;
@@ -1058,7 +1058,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setDiskLabel(diskLabelInstance);
                 }
                 
-                NodeList elements4 = dataVirtualHardDiskElement.getElementsByTagName("DiskName");
+                NodeList elements4 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                 Element diskNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (diskNameElement != null) {
                     String diskNameInstance;
@@ -1066,7 +1066,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setDiskName(diskNameInstance);
                 }
                 
-                NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagName("Lun");
+                NodeList elements5 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Lun");
                 Element lunElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                     int lunInstance;
@@ -1074,7 +1074,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLogicalUnitNumber(lunInstance);
                 }
                 
-                NodeList elements6 = dataVirtualHardDiskElement.getElementsByTagName("LogicalDiskSizeInGB");
+                NodeList elements6 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
@@ -1082,7 +1082,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
-                NodeList elements7 = dataVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                NodeList elements7 = dataVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
@@ -1200,10 +1200,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Disk");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disk");
             Element diskElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (diskElement != null) {
-                NodeList elements2 = diskElement.getElementsByTagName("AffinityGroup");
+                NodeList elements2 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                 Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
@@ -1211,7 +1211,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setAffinityGroup(affinityGroupInstance);
                 }
                 
-                NodeList elements3 = diskElement.getElementsByTagName("Location");
+                NodeList elements3 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -1219,7 +1219,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements4 = diskElement.getElementsByTagName("Label");
+                NodeList elements4 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
@@ -1227,7 +1227,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = diskElement.getElementsByTagName("LogicalDiskSizeInGB");
+                NodeList elements5 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
@@ -1235,7 +1235,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
-                NodeList elements6 = diskElement.getElementsByTagName("MediaLink");
+                NodeList elements6 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
@@ -1243,7 +1243,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements7 = diskElement.getElementsByTagName("Name");
+                NodeList elements7 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -1251,7 +1251,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements8 = diskElement.getElementsByTagName("OS");
+                NodeList elements8 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (osElement != null) {
                     String osInstance;
@@ -1259,7 +1259,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements9 = diskElement.getElementsByTagName("SourceImageName");
+                NodeList elements9 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                 Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (sourceImageNameElement != null) {
                     String sourceImageNameInstance;
@@ -1267,13 +1267,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setSourceImageName(sourceImageNameInstance);
                 }
                 
-                NodeList elements10 = diskElement.getElementsByTagName("AttachedTo");
+                NodeList elements10 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AttachedTo");
                 Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (attachedToElement != null) {
                     VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
-                    NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
+                    NodeList elements11 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedServiceName");
                     Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (hostedServiceNameElement != null) {
                         String hostedServiceNameInstance;
@@ -1281,7 +1281,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
                     }
                     
-                    NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
+                    NodeList elements12 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
                     Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (deploymentNameElement != null) {
                         String deploymentNameInstance;
@@ -1289,7 +1289,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         attachedToInstance.setDeploymentName(deploymentNameInstance);
                     }
                     
-                    NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
+                    NodeList elements13 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
                     Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (roleNameElement != null) {
                         String roleNameInstance;
@@ -1298,7 +1298,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     }
                 }
                 
-                NodeList elements14 = diskElement.getElementsByTagName("IsCorrupted");
+                NodeList elements14 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsCorrupted");
                 Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
                     boolean isCorruptedInstance;
@@ -1306,7 +1306,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setIsCorrupted(isCorruptedInstance);
                 }
                 
-                NodeList elements15 = diskElement.getElementsByTagName("IsPremium");
+                NodeList elements15 = diskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
@@ -1418,15 +1418,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Disks");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disks");
             Element disksSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (disksSequenceElement != null) {
-                for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagName("Disk").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement.getElementsByTagName("Disk").item(i1));
+                for (int i1 = 0; i1 < disksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disk").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element disksElement = ((org.w3c.dom.Element) disksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disk").item(i1));
                     VirtualMachineDiskListResponse.VirtualMachineDisk diskInstance = new VirtualMachineDiskListResponse.VirtualMachineDisk();
                     result.getDisks().add(diskInstance);
                     
-                    NodeList elements2 = disksElement.getElementsByTagName("AffinityGroup");
+                    NodeList elements2 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                     Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
@@ -1434,7 +1434,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
-                    NodeList elements3 = disksElement.getElementsByTagName("Location");
+                    NodeList elements3 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
                     Element locationElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (locationElement != null) {
                         String locationInstance;
@@ -1442,7 +1442,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements4 = disksElement.getElementsByTagName("Label");
+                    NodeList elements4 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -1450,7 +1450,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements5 = disksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                    NodeList elements5 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                     Element logicalDiskSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (logicalDiskSizeInGBElement != null) {
                         int logicalDiskSizeInGBInstance;
@@ -1458,7 +1458,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                     }
                     
-                    NodeList elements6 = disksElement.getElementsByTagName("MediaLink");
+                    NodeList elements6 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (mediaLinkElement != null) {
                         URI mediaLinkInstance;
@@ -1466,7 +1466,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setMediaLinkUri(mediaLinkInstance);
                     }
                     
-                    NodeList elements7 = disksElement.getElementsByTagName("Name");
+                    NodeList elements7 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -1474,7 +1474,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements8 = disksElement.getElementsByTagName("OS");
+                    NodeList elements8 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
                     Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (osElement != null) {
                         String osInstance;
@@ -1482,7 +1482,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setOperatingSystemType(osInstance);
                     }
                     
-                    NodeList elements9 = disksElement.getElementsByTagName("SourceImageName");
+                    NodeList elements9 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                     Element sourceImageNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sourceImageNameElement != null) {
                         String sourceImageNameInstance;
@@ -1490,13 +1490,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setSourceImageName(sourceImageNameInstance);
                     }
                     
-                    NodeList elements10 = disksElement.getElementsByTagName("AttachedTo");
+                    NodeList elements10 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AttachedTo");
                     Element attachedToElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (attachedToElement != null) {
                         VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails();
                         diskInstance.setUsageDetails(attachedToInstance);
                         
-                        NodeList elements11 = attachedToElement.getElementsByTagName("HostedServiceName");
+                        NodeList elements11 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedServiceName");
                         Element hostedServiceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (hostedServiceNameElement != null) {
                             String hostedServiceNameInstance;
@@ -1504,7 +1504,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                             attachedToInstance.setHostedServiceName(hostedServiceNameInstance);
                         }
                         
-                        NodeList elements12 = attachedToElement.getElementsByTagName("DeploymentName");
+                        NodeList elements12 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
                         Element deploymentNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                         if (deploymentNameElement != null) {
                             String deploymentNameInstance;
@@ -1512,7 +1512,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                             attachedToInstance.setDeploymentName(deploymentNameInstance);
                         }
                         
-                        NodeList elements13 = attachedToElement.getElementsByTagName("RoleName");
+                        NodeList elements13 = attachedToElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
                         Element roleNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                         if (roleNameElement != null) {
                             String roleNameInstance;
@@ -1521,7 +1521,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         }
                     }
                     
-                    NodeList elements14 = disksElement.getElementsByTagName("IsCorrupted");
+                    NodeList elements14 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsCorrupted");
                     Element isCorruptedElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
                         boolean isCorruptedInstance;
@@ -1529,7 +1529,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                         diskInstance.setIsCorrupted(isCorruptedInstance);
                     }
                     
-                    NodeList elements15 = disksElement.getElementsByTagName("IsPremium");
+                    NodeList elements15 = disksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
                     Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
@@ -1892,10 +1892,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Disk");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Disk");
             Element diskElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (diskElement2 != null) {
-                NodeList elements2 = diskElement2.getElementsByTagName("OS");
+                NodeList elements2 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (osElement2 != null) {
                     String osInstance;
@@ -1903,7 +1903,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setOperatingSystem(osInstance);
                 }
                 
-                NodeList elements3 = diskElement2.getElementsByTagName("Label");
+                NodeList elements3 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement2 != null) {
                     String labelInstance;
@@ -1911,7 +1911,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements4 = diskElement2.getElementsByTagName("AffinityGroup");
+                NodeList elements4 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                 Element affinityGroupElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
@@ -1919,7 +1919,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setAffinityGroup(affinityGroupInstance);
                 }
                 
-                NodeList elements5 = diskElement2.getElementsByTagName("Location");
+                NodeList elements5 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -1927,7 +1927,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements6 = diskElement2.getElementsByTagName("LogicalDiskSizeInGB");
+                NodeList elements6 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                 Element logicalDiskSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalDiskSizeInGBElement != null) {
                     int logicalDiskSizeInGBInstance;
@@ -1935,7 +1935,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setLogicalSizeInGB(logicalDiskSizeInGBInstance);
                 }
                 
-                NodeList elements7 = diskElement2.getElementsByTagName("MediaLink");
+                NodeList elements7 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
@@ -1943,7 +1943,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements8 = diskElement2.getElementsByTagName("Name");
+                NodeList elements8 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -1951,7 +1951,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements9 = diskElement2.getElementsByTagName("IsPremium");
+                NodeList elements9 = diskElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;

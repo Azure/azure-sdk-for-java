@@ -155,15 +155,15 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Locations");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Locations");
             Element locationsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (locationsSequenceElement != null) {
-                for (int i1 = 0; i1 < locationsSequenceElement.getElementsByTagName("Location").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element locationsElement = ((org.w3c.dom.Element) locationsSequenceElement.getElementsByTagName("Location").item(i1));
+                for (int i1 = 0; i1 < locationsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element locationsElement = ((org.w3c.dom.Element) locationsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location").item(i1));
                     LocationsListResponse.Location locationInstance = new LocationsListResponse.Location();
                     result.getLocations().add(locationInstance);
                     
-                    NodeList elements2 = locationsElement.getElementsByTagName("Name");
+                    NodeList elements2 = locationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -171,7 +171,7 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
                         locationInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = locationsElement.getElementsByTagName("DisplayName");
+                    NodeList elements3 = locationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisplayName");
                     Element displayNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (displayNameElement != null) {
                         String displayNameInstance;
@@ -179,11 +179,11 @@ public class LocationOperationsImpl implements ServiceOperations<ManagementClien
                         locationInstance.setDisplayName(displayNameInstance);
                     }
                     
-                    NodeList elements4 = locationsElement.getElementsByTagName("AvailableServices");
+                    NodeList elements4 = locationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailableServices");
                     Element availableServicesSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (availableServicesSequenceElement != null) {
-                        for (int i2 = 0; i2 < availableServicesSequenceElement.getElementsByTagName("AvailableService").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element) availableServicesSequenceElement.getElementsByTagName("AvailableService").item(i2));
+                        for (int i2 = 0; i2 < availableServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailableService").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element availableServicesElement = ((org.w3c.dom.Element) availableServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailableService").item(i2));
                             locationInstance.getAvailableServices().add(availableServicesElement.getTextContent());
                         }
                     }

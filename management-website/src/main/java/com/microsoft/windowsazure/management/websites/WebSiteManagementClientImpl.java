@@ -318,10 +318,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Operation");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operationElement != null) {
-                NodeList elements2 = operationElement.getElementsByTagName("CreatedTime");
+                NodeList elements2 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreatedTime");
                 Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
@@ -329,7 +329,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
-                NodeList elements3 = operationElement.getElementsByTagName("Errors");
+                NodeList elements3 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Errors");
                 Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (errorsSequenceElement != null) {
                     boolean isNil = false;
@@ -338,12 +338,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                         isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false) {
-                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagName("Error").getLength(); i1 = i1 + 1) {
-                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagName("Error").item(i1));
+                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").getLength(); i1 = i1 + 1) {
+                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").item(i1));
                             WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
                             result.getErrors().add(errorInstance);
                             
-                            NodeList elements4 = errorsElement.getElementsByTagName("Code");
+                            NodeList elements4 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
                             Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                             if (codeElement != null) {
                                 boolean isNil2 = false;
@@ -358,7 +358,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements5 = errorsElement.getElementsByTagName("Message");
+                            NodeList elements5 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
                             Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                             if (messageElement != null) {
                                 boolean isNil3 = false;
@@ -373,7 +373,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements6 = errorsElement.getElementsByTagName("ExtendedCode");
+                            NodeList elements6 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedCode");
                             Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                             if (extendedCodeElement != null) {
                                 boolean isNil4 = false;
@@ -388,7 +388,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements7 = errorsElement.getElementsByTagName("MessageTemplate");
+                            NodeList elements7 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MessageTemplate");
                             Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                             if (messageTemplateElement != null) {
                                 boolean isNil5 = false;
@@ -403,7 +403,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements8 = errorsElement.getElementsByTagName("Parameters");
+                            NodeList elements8 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Parameters");
                             Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                             if (parametersSequenceElement != null) {
                                 boolean isNil6 = false;
@@ -419,7 +419,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements9 = errorsElement.getElementsByTagName("InnerErrors");
+                            NodeList elements9 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InnerErrors");
                             Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                             if (innerErrorsElement != null) {
                                 boolean isNil7 = false;
@@ -437,7 +437,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements10 = operationElement.getElementsByTagName("ExpirationTime");
+                NodeList elements10 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationTime");
                 Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (expirationTimeElement != null) {
                     Calendar expirationTimeInstance;
@@ -445,7 +445,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     result.setExpirationTime(expirationTimeInstance);
                 }
                 
-                NodeList elements11 = operationElement.getElementsByTagName("GeoMasterOperationId");
+                NodeList elements11 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
                 Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (geoMasterOperationIdElement != null) {
                     boolean isNil8 = false;
@@ -460,7 +460,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements12 = operationElement.getElementsByTagName("Id");
+                NodeList elements12 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (idElement != null) {
                     boolean isNil9 = false;
@@ -475,7 +475,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements13 = operationElement.getElementsByTagName("ModifiedTime");
+                NodeList elements13 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ModifiedTime");
                 Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (modifiedTimeElement != null) {
                     Calendar modifiedTimeInstance;
@@ -483,7 +483,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     result.setModifiedTime(modifiedTimeInstance);
                 }
                 
-                NodeList elements14 = operationElement.getElementsByTagName("Name");
+                NodeList elements14 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (nameElement != null) {
                     boolean isNil10 = false;
@@ -498,7 +498,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements15 = operationElement.getElementsByTagName("Status");
+                NodeList elements15 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
                 Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (statusElement != null) {
                     WebSiteOperationStatus statusInstance;

@@ -163,10 +163,10 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement != null) {
-                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -174,7 +174,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
+                NodeList elements3 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -182,7 +182,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
+                NodeList elements4 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -190,7 +190,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
+                NodeList elements5 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
                 Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (selfLinkElement != null) {
                     String selfLinkInstance;
@@ -198,7 +198,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setSelfLink(selfLinkInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
+                NodeList elements6 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
                 Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (parentLinkElement != null) {
                     String parentLinkInstance;
@@ -206,7 +206,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setParentLink(parentLinkInstance);
                 }
                 
-                NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
+                NodeList elements7 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
@@ -214,7 +214,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setId(idInstance);
                 }
                 
-                NodeList elements8 = serviceResourceElement.getElementsByTagName("IsDefault");
+                NodeList elements8 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
                 Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (isDefaultElement != null) {
                     boolean isDefaultInstance;
@@ -222,7 +222,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setIsDefault(isDefaultInstance);
                 }
                 
-                NodeList elements9 = serviceResourceElement.getElementsByTagName("IsSystem");
+                NodeList elements9 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystem");
                 Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (isSystemElement != null) {
                     boolean isSystemInstance;
@@ -230,7 +230,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setIsSystem(isSystemInstance);
                 }
                 
-                NodeList elements10 = serviceResourceElement.getElementsByTagName("Description");
+                NodeList elements10 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                 Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (descriptionElement != null) {
                     String descriptionInstance;
@@ -238,7 +238,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements11 = serviceResourceElement.getElementsByTagName("Enabled");
+                NodeList elements11 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Enabled");
                 Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (enabledElement != null) {
                     boolean enabledInstance;
@@ -246,15 +246,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     result.setEnabled(enabledInstance);
                 }
                 
-                NodeList elements12 = serviceResourceElement.getElementsByTagName("DimensionSettings");
+                NodeList elements12 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DimensionSettings");
                 Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (dimensionSettingsSequenceElement != null) {
-                    for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                    for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                         ServiceObjectiveGetResponse.DimensionSettingResponse serviceResourceInstance = new ServiceObjectiveGetResponse.DimensionSettingResponse();
                         result.getDimensionSettings().add(serviceResourceInstance);
                         
-                        NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
+                        NodeList elements13 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                         if (nameElement2 != null) {
                             String nameInstance2;
@@ -262,7 +262,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setName(nameInstance2);
                         }
                         
-                        NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
+                        NodeList elements14 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                         Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                         if (typeElement2 != null) {
                             String typeInstance2;
@@ -270,7 +270,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setType(typeInstance2);
                         }
                         
-                        NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
+                        NodeList elements15 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                         Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                         if (stateElement2 != null) {
                             String stateInstance2;
@@ -278,7 +278,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setState(stateInstance2);
                         }
                         
-                        NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
+                        NodeList elements16 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
                         Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                         if (selfLinkElement2 != null) {
                             String selfLinkInstance2;
@@ -286,7 +286,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setSelfLink(selfLinkInstance2);
                         }
                         
-                        NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
+                        NodeList elements17 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
                         Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                         if (parentLinkElement2 != null) {
                             String parentLinkInstance2;
@@ -294,7 +294,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setParentLink(parentLinkInstance2);
                         }
                         
-                        NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
+                        NodeList elements18 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                         Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                         if (idElement2 != null) {
                             String idInstance2;
@@ -302,7 +302,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setId(idInstance2);
                         }
                         
-                        NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
+                        NodeList elements19 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                         Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                         if (descriptionElement2 != null) {
                             String descriptionInstance2;
@@ -310,7 +310,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setDescription(descriptionInstance2);
                         }
                         
-                        NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
+                        NodeList elements20 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Ordinal");
                         Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                         if (ordinalElement != null) {
                             byte ordinalInstance;
@@ -318,7 +318,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             serviceResourceInstance.setOrdinal(ordinalInstance);
                         }
                         
-                        NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
+                        NodeList elements21 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
                         Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                         if (isDefaultElement2 != null) {
                             boolean isDefaultInstance2;
@@ -432,15 +432,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                     ServiceObjectiveListResponse.ServiceObjective serviceResourceInstance = new ServiceObjectiveListResponse.ServiceObjective();
                     result.getServiceObjectives().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -448,7 +448,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
@@ -456,7 +456,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
@@ -464,7 +464,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setState(stateInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (selfLinkElement != null) {
                         String selfLinkInstance;
@@ -472,7 +472,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
                     }
                     
-                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (parentLinkElement != null) {
                         String parentLinkInstance;
@@ -480,7 +480,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setParentLink(parentLinkInstance);
                     }
                     
-                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
@@ -488,7 +488,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setId(idInstance);
                     }
                     
-                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("IsDefault");
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
                     Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (isDefaultElement != null) {
                         boolean isDefaultInstance;
@@ -496,7 +496,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setIsDefault(isDefaultInstance);
                     }
                     
-                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsSystem");
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystem");
                     Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (isSystemElement != null) {
                         boolean isSystemInstance;
@@ -504,7 +504,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setIsSystem(isSystemInstance);
                     }
                     
-                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("Description");
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -512,7 +512,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("Enabled");
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Enabled");
                     Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (enabledElement != null) {
                         boolean enabledInstance;
@@ -520,15 +520,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         serviceResourceInstance.setEnabled(enabledInstance);
                     }
                     
-                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("DimensionSettings");
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DimensionSettings");
                     Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (dimensionSettingsSequenceElement != null) {
-                        for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i2));
+                        for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i2));
                             ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse serviceResourceInstance2 = new ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse();
                             serviceResourceInstance.getDimensionSettings().add(serviceResourceInstance2);
                             
-                            NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
+                            NodeList elements13 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                             Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                             if (nameElement2 != null) {
                                 String nameInstance2;
@@ -536,7 +536,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setName(nameInstance2);
                             }
                             
-                            NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
+                            NodeList elements14 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                             Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                             if (typeElement2 != null) {
                                 String typeInstance2;
@@ -544,7 +544,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setType(typeInstance2);
                             }
                             
-                            NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
+                            NodeList elements15 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                             Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                             if (stateElement2 != null) {
                                 String stateInstance2;
@@ -552,7 +552,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setState(stateInstance2);
                             }
                             
-                            NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
+                            NodeList elements16 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
                             Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                             if (selfLinkElement2 != null) {
                                 String selfLinkInstance2;
@@ -560,7 +560,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setSelfLink(selfLinkInstance2);
                             }
                             
-                            NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
+                            NodeList elements17 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
                             Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                             if (parentLinkElement2 != null) {
                                 String parentLinkInstance2;
@@ -568,7 +568,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setParentLink(parentLinkInstance2);
                             }
                             
-                            NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
+                            NodeList elements18 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                             Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                             if (idElement2 != null) {
                                 String idInstance2;
@@ -576,7 +576,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setId(idInstance2);
                             }
                             
-                            NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
+                            NodeList elements19 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                             Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (descriptionElement2 != null) {
                                 String descriptionInstance2;
@@ -584,7 +584,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setDescription(descriptionInstance2);
                             }
                             
-                            NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
+                            NodeList elements20 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Ordinal");
                             Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (ordinalElement != null) {
                                 byte ordinalInstance;
@@ -592,7 +592,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                                 serviceResourceInstance2.setOrdinal(ordinalInstance);
                             }
                             
-                            NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
+                            NodeList elements21 = dimensionSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
                             Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (isDefaultElement2 != null) {
                                 boolean isDefaultInstance2;

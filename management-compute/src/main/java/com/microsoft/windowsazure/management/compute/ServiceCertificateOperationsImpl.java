@@ -718,10 +718,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Certificate");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate");
             Element certificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (certificateElement != null) {
-                NodeList elements2 = certificateElement.getElementsByTagName("Data");
+                NodeList elements2 = certificateElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Data");
                 Element dataElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (dataElement != null) {
                     byte[] dataInstance;
@@ -840,15 +840,15 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("Certificates");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificates");
             Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (certificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
+                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").item(i1));
                     ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
                     result.getCertificates().add(certificateInstance);
                     
-                    NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
+                    NodeList elements2 = certificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateUrl");
                     Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (certificateUrlElement != null) {
                         URI certificateUrlInstance;
@@ -856,7 +856,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         certificateInstance.setCertificateUri(certificateUrlInstance);
                     }
                     
-                    NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
+                    NodeList elements3 = certificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
                     Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (thumbprintElement != null) {
                         String thumbprintInstance;
@@ -864,7 +864,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         certificateInstance.setThumbprint(thumbprintInstance);
                     }
                     
-                    NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
+                    NodeList elements4 = certificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
                     Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
@@ -872,7 +872,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                         certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
                     }
                     
-                    NodeList elements5 = certificatesElement.getElementsByTagName("Data");
+                    NodeList elements5 = certificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Data");
                     Element dataElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (dataElement != null) {
                         byte[] dataInstance;

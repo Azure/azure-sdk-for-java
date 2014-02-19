@@ -150,15 +150,15 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("RoleSizes");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSizes");
             Element roleSizesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (roleSizesSequenceElement != null) {
-                for (int i1 = 0; i1 < roleSizesSequenceElement.getElementsByTagName("RoleSize").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) roleSizesSequenceElement.getElementsByTagName("RoleSize").item(i1));
+                for (int i1 = 0; i1 < roleSizesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSize").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) roleSizesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSize").item(i1));
                     RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
                     result.getRoleSizes().add(roleSizeInstance);
                     
-                    NodeList elements2 = roleSizesElement.getElementsByTagName("Name");
+                    NodeList elements2 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -166,7 +166,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         roleSizeInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = roleSizesElement.getElementsByTagName("Label");
+                    NodeList elements3 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -174,7 +174,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         roleSizeInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = roleSizesElement.getElementsByTagName("Cores");
+                    NodeList elements4 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Cores");
                     Element coresElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (coresElement != null) {
                         int coresInstance;
@@ -182,7 +182,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         roleSizeInstance.setCores(coresInstance);
                     }
                     
-                    NodeList elements5 = roleSizesElement.getElementsByTagName("MemoryInMb");
+                    NodeList elements5 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MemoryInMb");
                     Element memoryInMbElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (memoryInMbElement != null) {
                         int memoryInMbInstance;
@@ -190,7 +190,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         roleSizeInstance.setMemoryInMb(memoryInMbInstance);
                     }
                     
-                    NodeList elements6 = roleSizesElement.getElementsByTagName("SupportedByWebWorkerRoles");
+                    NodeList elements6 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
                     Element supportedByWebWorkerRolesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (supportedByWebWorkerRolesElement != null) {
                         boolean supportedByWebWorkerRolesInstance;
@@ -198,7 +198,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                         roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
                     }
                     
-                    NodeList elements7 = roleSizesElement.getElementsByTagName("SupportedByVirtualMachines");
+                    NodeList elements7 = roleSizesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
                     Element supportedByVirtualMachinesElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (supportedByVirtualMachinesElement != null) {
                         boolean supportedByVirtualMachinesInstance;
