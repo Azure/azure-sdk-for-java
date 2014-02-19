@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineExtensionListResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -166,15 +167,15 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
             Element resourceExtensionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtension").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) resourceExtensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtension").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").item(i1));
                     VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
                     result.getResourceExtensions().add(resourceExtensionInstance);
                     
-                    NodeList elements2 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
                     Element publisherElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (publisherElement != null) {
                         String publisherInstance;
@@ -182,7 +183,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPublisher(publisherInstance);
                     }
                     
-                    NodeList elements3 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -190,7 +191,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements4 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
                     Element versionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (versionElement != null) {
                         String versionInstance;
@@ -198,7 +199,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setVersion(versionInstance);
                     }
                     
-                    NodeList elements5 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -206,7 +207,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements6 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -214,7 +215,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements7 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
@@ -222,7 +223,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
-                    NodeList elements8 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
+                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
@@ -230,7 +231,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
-                    NodeList elements9 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SampleConfig");
+                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     Element sampleConfigElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;
@@ -359,15 +360,15 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceExtensions");
             Element resourceExtensionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (resourceExtensionsSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceExtensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtension").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) resourceExtensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtension").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element resourceExtensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtension").item(i1));
                     VirtualMachineExtensionListResponse.ResourceExtension resourceExtensionInstance = new VirtualMachineExtensionListResponse.ResourceExtension();
                     result.getResourceExtensions().add(resourceExtensionInstance);
                     
-                    NodeList elements2 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Publisher");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
                     Element publisherElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (publisherElement != null) {
                         String publisherInstance;
@@ -375,7 +376,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPublisher(publisherInstance);
                     }
                     
-                    NodeList elements3 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -383,7 +384,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements4 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Version");
                     Element versionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (versionElement != null) {
                         String versionInstance;
@@ -391,7 +392,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setVersion(versionInstance);
                     }
                     
-                    NodeList elements5 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -399,7 +400,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements6 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -407,7 +408,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements7 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
@@ -415,7 +416,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
-                    NodeList elements8 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
+                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
@@ -423,7 +424,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         resourceExtensionInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
-                    NodeList elements9 = resourceExtensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SampleConfig");
+                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     Element sampleConfigElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;

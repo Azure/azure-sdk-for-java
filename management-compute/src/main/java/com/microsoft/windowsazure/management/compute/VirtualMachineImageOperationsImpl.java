@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateResponse;
@@ -314,10 +315,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (oSImageElement2 != null) {
-                NodeList elements2 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -325,7 +326,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements3 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
                 Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (categoryElement != null) {
                     String categoryInstance;
@@ -333,7 +334,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement2 != null) {
                     String labelInstance;
@@ -341,7 +342,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
@@ -349,7 +350,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements6 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
@@ -357,7 +358,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements7 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -365,7 +366,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements8 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
+                NodeList elements8 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (osElement2 != null) {
                     String osInstance;
@@ -373,7 +374,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements9 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
                 Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (eulaElement2 != null) {
                     String eulaInstance;
@@ -381,7 +382,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements10 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
                 Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (descriptionElement2 != null) {
                     String descriptionInstance;
@@ -389,7 +390,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements11 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (imageFamilyElement2 != null) {
                     String imageFamilyInstance;
@@ -397,7 +398,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements12 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
                     Calendar publishedDateInstance;
@@ -405,7 +406,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements13 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
@@ -413,7 +414,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements14 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
@@ -421,7 +422,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements15 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
@@ -429,7 +430,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements16 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (privacyUriElement2 != null) {
                     URI privacyUriInstance;
@@ -437,7 +438,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (iconUriElement2 != null) {
                     URI iconUriInstance;
@@ -445,7 +446,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (recommendedVMSizeElement2 != null) {
                     String recommendedVMSizeInstance;
@@ -453,7 +454,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                NodeList elements19 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                 if (smallIconUriElement2 != null) {
                     URI smallIconUriInstance;
@@ -461,7 +462,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements20 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
+                NodeList elements20 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
                 Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                 if (languageElement2 != null) {
                     String languageInstance;
@@ -695,10 +696,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             Element oSImageElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (oSImageElement != null) {
-                NodeList elements2 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                 Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
@@ -706,7 +707,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setAffinityGroup(affinityGroupInstance);
                 }
                 
-                NodeList elements3 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Category");
                 Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (categoryElement != null) {
                     String categoryInstance;
@@ -714,7 +715,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
@@ -722,7 +723,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -730,7 +731,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements6 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
@@ -738,7 +739,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements7 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
@@ -746,7 +747,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements8 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements8 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -754,7 +755,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements9 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (osElement != null) {
                     String osInstance;
@@ -762,7 +763,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements10 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Eula");
                 Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (eulaElement != null) {
                     String eulaInstance;
@@ -770,7 +771,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements11 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Description");
                 Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (descriptionElement != null) {
                     String descriptionInstance;
@@ -778,7 +779,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements12 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (imageFamilyElement != null) {
                     String imageFamilyInstance;
@@ -786,7 +787,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements13 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 Element showInGuiElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
@@ -794,7 +795,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements14 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 Element publishedDateElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (publishedDateElement != null) {
                     Calendar publishedDateInstance;
@@ -802,7 +803,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements15 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
@@ -810,7 +811,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements16 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 Element iconUriElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (iconUriElement != null) {
                     URI iconUriInstance;
@@ -818,7 +819,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 Element privacyUriElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (privacyUriElement != null) {
                     URI privacyUriInstance;
@@ -826,7 +827,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (recommendedVMSizeElement != null) {
                     String recommendedVMSizeInstance;
@@ -834,7 +835,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
+                NodeList elements19 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 Element publisherNameElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
@@ -842,7 +843,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements20 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                NodeList elements20 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 Element smallIconUriElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                 if (smallIconUriElement != null) {
                     URI smallIconUriInstance;
@@ -850,7 +851,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements21 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
+                NodeList elements21 = XmlUtility.getElementsByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Language");
                 Element languageElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                 if (languageElement != null) {
                     String languageInstance;
@@ -962,15 +963,15 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Images");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Images");
             Element imagesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (imagesSequenceElement != null) {
-                for (int i1 = 0; i1 < imagesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) imagesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").item(i1));
                     VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
                     result.getImages().add(oSImageInstance);
                     
-                    NodeList elements2 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                     Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
@@ -978,7 +979,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
-                    NodeList elements3 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Category");
                     Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (categoryElement != null) {
                         String categoryInstance;
@@ -986,7 +987,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setCategory(categoryInstance);
                     }
                     
-                    NodeList elements4 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -994,7 +995,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements5 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Location");
                     Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (locationElement != null) {
                         String locationInstance;
@@ -1002,7 +1003,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements6 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                     Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (logicalSizeInGBElement != null) {
                         double logicalSizeInGBInstance;
@@ -1010,7 +1011,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
                     }
                     
-                    NodeList elements7 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                     Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (mediaLinkElement != null) {
                         URI mediaLinkInstance;
@@ -1018,7 +1019,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setMediaLinkUri(mediaLinkInstance);
                     }
                     
-                    NodeList elements8 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -1026,7 +1027,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements9 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
+                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "OS");
                     Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (osElement != null) {
                         String osInstance;
@@ -1034,7 +1035,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setOperatingSystemType(osInstance);
                     }
                     
-                    NodeList elements10 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
+                    NodeList elements10 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Eula");
                     Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (eulaElement != null) {
                         String eulaInstance;
@@ -1042,7 +1043,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setEula(eulaInstance);
                     }
                     
-                    NodeList elements11 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                    NodeList elements11 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -1050,7 +1051,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements12 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                    NodeList elements12 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                     Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (imageFamilyElement != null) {
                         String imageFamilyInstance;
@@ -1058,7 +1059,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setImageFamily(imageFamilyInstance);
                     }
                     
-                    NodeList elements13 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                    NodeList elements13 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                     Element publishedDateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (publishedDateElement != null) {
                         Calendar publishedDateInstance;
@@ -1066,7 +1067,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setPublishedDate(publishedDateInstance);
                     }
                     
-                    NodeList elements14 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
+                    NodeList elements14 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                     Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
@@ -1074,7 +1075,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setIsPremium(isPremiumInstance);
                     }
                     
-                    NodeList elements15 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    NodeList elements15 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                     Element privacyUriElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (privacyUriElement != null) {
                         URI privacyUriInstance;
@@ -1082,7 +1083,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setPrivacyUri(privacyUriInstance);
                     }
                     
-                    NodeList elements16 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                    NodeList elements16 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                     Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (recommendedVMSizeElement != null) {
                         String recommendedVMSizeInstance;
@@ -1090,7 +1091,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
                     }
                     
-                    NodeList elements17 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
+                    NodeList elements17 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                     Element publisherNameElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (publisherNameElement != null) {
                         String publisherNameInstance;
@@ -1098,7 +1099,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setPublisherName(publisherNameInstance);
                     }
                     
-                    NodeList elements18 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
+                    NodeList elements18 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
                     Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                     if (pricingDetailLinkElement != null) {
                         URI pricingDetailLinkInstance;
@@ -1106,7 +1107,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
                     }
                     
-                    NodeList elements19 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                    NodeList elements19 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                     Element smallIconUriElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                     if (smallIconUriElement != null) {
                         URI smallIconUriInstance;
@@ -1114,7 +1115,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                         oSImageInstance.setSmallIconUri(smallIconUriInstance);
                     }
                     
-                    NodeList elements20 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
+                    NodeList elements20 = XmlUtility.getElementsByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Language");
                     Element languageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                     if (languageElement != null) {
                         String languageInstance;
@@ -1343,10 +1344,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (oSImageElement2 != null) {
-                NodeList elements2 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -1354,7 +1355,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements3 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
                 Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (categoryElement != null) {
                     String categoryInstance;
@@ -1362,7 +1363,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (labelElement2 != null) {
                     String labelInstance;
@@ -1370,7 +1371,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
@@ -1378,7 +1379,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements6 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
@@ -1386,7 +1387,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements7 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -1394,7 +1395,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements8 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
+                NodeList elements8 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
                 Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (osElement != null) {
                     String osInstance;
@@ -1402,7 +1403,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements9 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
                 Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (eulaElement2 != null) {
                     String eulaInstance;
@@ -1410,7 +1411,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements10 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
                 Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (descriptionElement2 != null) {
                     String descriptionInstance;
@@ -1418,7 +1419,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements11 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (imageFamilyElement2 != null) {
                     String imageFamilyInstance;
@@ -1426,7 +1427,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements12 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
                     Calendar publishedDateInstance;
@@ -1434,7 +1435,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements13 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
@@ -1442,7 +1443,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements14 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
@@ -1450,7 +1451,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements15 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 Element showInGuiElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
@@ -1458,7 +1459,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements16 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (privacyUriElement2 != null) {
                     URI privacyUriInstance;
@@ -1466,7 +1467,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (iconUriElement2 != null) {
                     URI iconUriInstance;
@@ -1474,7 +1475,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (recommendedVMSizeElement2 != null) {
                     String recommendedVMSizeInstance;
@@ -1482,7 +1483,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
+                NodeList elements19 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                 if (smallIconUriElement2 != null) {
                     URI smallIconUriInstance;
@@ -1490,7 +1491,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements20 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
+                NodeList elements20 = XmlUtility.getElementsByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
                 Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                 if (languageElement2 != null) {
                     String languageInstance;

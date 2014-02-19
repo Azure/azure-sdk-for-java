@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -284,10 +285,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operationElement != null) {
-                NodeList elements2 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ID");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
@@ -295,7 +296,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                     result.setId(idInstance);
                 }
                 
-                NodeList elements3 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (statusElement != null) {
                     OperationStatus statusInstance;
@@ -303,7 +304,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                     result.setStatus(statusInstance);
                 }
                 
-                NodeList elements4 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
@@ -311,13 +312,13 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                     result.setHttpStatusCode(httpStatusCodeInstance);
                 }
                 
-                NodeList elements5 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (errorElement != null) {
                     StorageOperationStatusResponse.ErrorDetails errorInstance = new StorageOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
-                    NodeList elements6 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (codeElement != null) {
                         String codeInstance;
@@ -325,7 +326,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                         errorInstance.setCode(codeInstance);
                     }
                     
-                    NodeList elements7 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (messageElement != null) {
                         String messageInstance;

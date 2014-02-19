@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse;
@@ -169,10 +170,10 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement != null) {
-                NodeList elements2 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -180,7 +181,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -188,7 +189,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -196,7 +197,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                 Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (selfLinkElement != null) {
                     String selfLinkInstance;
@@ -204,7 +205,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setSelfLink(selfLinkInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
                 Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (parentLinkElement != null) {
                     String parentLinkInstance;
@@ -212,7 +213,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setParentLink(parentLinkInstance);
                 }
                 
-                NodeList elements7 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (idElement != null) {
                     String idInstance;
@@ -220,7 +221,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setId(idInstance);
                 }
                 
-                NodeList elements8 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StateId");
+                NodeList elements8 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StateId");
                 Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (stateIdElement != null) {
                     int stateIdInstance;
@@ -228,7 +229,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setStateId(stateIdInstance);
                 }
                 
-                NodeList elements9 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SessionActivityId");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "SessionActivityId");
                 Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (sessionActivityIdElement != null) {
                     String sessionActivityIdInstance;
@@ -236,7 +237,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setSessionActivityId(sessionActivityIdInstance);
                 }
                 
-                NodeList elements10 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DatabaseName");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "DatabaseName");
                 Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (databaseNameElement != null) {
                     String databaseNameInstance;
@@ -244,7 +245,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setDatabaseName(databaseNameInstance);
                 }
                 
-                NodeList elements11 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PercentComplete");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "PercentComplete");
                 Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (percentCompleteElement != null) {
                     int percentCompleteInstance;
@@ -252,7 +253,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setPercentComplete(percentCompleteInstance);
                 }
                 
-                NodeList elements12 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorCode");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ErrorCode");
                 Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (errorCodeElement != null) {
                     int errorCodeInstance;
@@ -260,7 +261,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setErrorCode(errorCodeInstance);
                 }
                 
-                NodeList elements13 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (errorElement != null) {
                     String errorInstance;
@@ -268,7 +269,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setError(errorInstance);
                 }
                 
-                NodeList elements14 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
                 Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (errorSeverityElement != null) {
                     int errorSeverityInstance;
@@ -276,7 +277,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setErrorSeverity(errorSeverityInstance);
                 }
                 
-                NodeList elements15 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorState");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "ErrorState");
                 Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (errorStateElement != null) {
                     int errorStateInstance;
@@ -284,7 +285,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setErrorState(errorStateInstance);
                 }
                 
-                NodeList elements16 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                 Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (startTimeElement != null) {
                     Calendar startTimeInstance;
@@ -292,7 +293,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     result.setStartTime(startTimeInstance);
                 }
                 
-                NodeList elements17 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifyTime");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "LastModifyTime");
                 Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (lastModifyTimeElement != null) {
                     Calendar lastModifyTimeInstance;
@@ -411,15 +412,15 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -427,7 +428,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
@@ -435,7 +436,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
@@ -443,7 +444,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setState(stateInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (selfLinkElement != null) {
                         String selfLinkInstance;
@@ -451,7 +452,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
                     }
                     
-                    NodeList elements6 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (parentLinkElement != null) {
                         String parentLinkInstance;
@@ -459,7 +460,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setParentLink(parentLinkInstance);
                     }
                     
-                    NodeList elements7 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
@@ -467,7 +468,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setId(idInstance);
                     }
                     
-                    NodeList elements8 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StateId");
+                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StateId");
                     Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (stateIdElement != null) {
                         int stateIdInstance;
@@ -475,7 +476,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
                     
-                    NodeList elements9 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SessionActivityId");
+                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SessionActivityId");
                     Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sessionActivityIdElement != null) {
                         String sessionActivityIdInstance;
@@ -483,7 +484,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
                     }
                     
-                    NodeList elements10 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DatabaseName");
+                    NodeList elements10 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "DatabaseName");
                     Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (databaseNameElement != null) {
                         String databaseNameInstance;
@@ -491,7 +492,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setDatabaseName(databaseNameInstance);
                     }
                     
-                    NodeList elements11 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PercentComplete");
+                    NodeList elements11 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "PercentComplete");
                     Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (percentCompleteElement != null) {
                         int percentCompleteInstance;
@@ -499,7 +500,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
                     
-                    NodeList elements12 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorCode");
+                    NodeList elements12 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorCode");
                     Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (errorCodeElement != null) {
                         int errorCodeInstance;
@@ -507,7 +508,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
                     
-                    NodeList elements13 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
+                    NodeList elements13 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Error");
                     Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (errorElement != null) {
                         String errorInstance;
@@ -515,7 +516,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setError(errorInstance);
                     }
                     
-                    NodeList elements14 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
+                    NodeList elements14 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
                     Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (errorSeverityElement != null) {
                         int errorSeverityInstance;
@@ -523,7 +524,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
                     
-                    NodeList elements15 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorState");
+                    NodeList elements15 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorState");
                     Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (errorStateElement != null) {
                         int errorStateInstance;
@@ -531,7 +532,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorState(errorStateInstance);
                     }
                     
-                    NodeList elements16 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
+                    NodeList elements16 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                     Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
@@ -539,7 +540,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
                     
-                    NodeList elements17 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifyTime");
+                    NodeList elements17 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "LastModifyTime");
                     Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (lastModifyTimeElement != null) {
                         Calendar lastModifyTimeInstance;
@@ -652,15 +653,15 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -668,7 +669,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
@@ -676,7 +677,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
@@ -684,7 +685,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setState(stateInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (selfLinkElement != null) {
                         String selfLinkInstance;
@@ -692,7 +693,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
                     }
                     
-                    NodeList elements6 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ParentLink");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (parentLinkElement != null) {
                         String parentLinkInstance;
@@ -700,7 +701,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setParentLink(parentLinkInstance);
                     }
                     
-                    NodeList elements7 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (idElement != null) {
                         String idInstance;
@@ -708,7 +709,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setId(idInstance);
                     }
                     
-                    NodeList elements8 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StateId");
+                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StateId");
                     Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (stateIdElement != null) {
                         int stateIdInstance;
@@ -716,7 +717,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setStateId(stateIdInstance);
                     }
                     
-                    NodeList elements9 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SessionActivityId");
+                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "SessionActivityId");
                     Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (sessionActivityIdElement != null) {
                         String sessionActivityIdInstance;
@@ -724,7 +725,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
                     }
                     
-                    NodeList elements10 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DatabaseName");
+                    NodeList elements10 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "DatabaseName");
                     Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (databaseNameElement != null) {
                         String databaseNameInstance;
@@ -732,7 +733,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setDatabaseName(databaseNameInstance);
                     }
                     
-                    NodeList elements11 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PercentComplete");
+                    NodeList elements11 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "PercentComplete");
                     Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (percentCompleteElement != null) {
                         int percentCompleteInstance;
@@ -740,7 +741,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
                     }
                     
-                    NodeList elements12 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorCode");
+                    NodeList elements12 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorCode");
                     Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (errorCodeElement != null) {
                         int errorCodeInstance;
@@ -748,7 +749,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
                     }
                     
-                    NodeList elements13 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
+                    NodeList elements13 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Error");
                     Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (errorElement != null) {
                         String errorInstance;
@@ -756,7 +757,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setError(errorInstance);
                     }
                     
-                    NodeList elements14 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
+                    NodeList elements14 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorSeverity");
                     Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (errorSeverityElement != null) {
                         int errorSeverityInstance;
@@ -764,7 +765,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
                     }
                     
-                    NodeList elements15 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ErrorState");
+                    NodeList elements15 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "ErrorState");
                     Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (errorStateElement != null) {
                         int errorStateInstance;
@@ -772,7 +773,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setErrorState(errorStateInstance);
                     }
                     
-                    NodeList elements16 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
+                    NodeList elements16 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                     Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
@@ -780,7 +781,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                         serviceResourceInstance.setStartTime(startTimeInstance);
                     }
                     
-                    NodeList elements17 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifyTime");
+                    NodeList elements17 = XmlUtility.getElementsByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "LastModifyTime");
                     Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (lastModifyTimeElement != null) {
                         Calendar lastModifyTimeInstance;

@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListFamiliesResponse;
 import com.microsoft.windowsazure.management.compute.models.OperatingSystemListResponse;
@@ -173,15 +174,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystems");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
             Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operatingSystemsSequenceElement != null) {
-                for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystem").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystem").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").item(i1));
                     OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
                     result.getOperatingSystems().add(operatingSystemInstance);
                     
-                    NodeList elements2 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
                     Element versionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (versionElement != null) {
                         String versionInstance;
@@ -189,7 +190,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemInstance.setVersion(versionInstance);
                     }
                     
-                    NodeList elements3 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -197,7 +198,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                     Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (isDefaultElement != null) {
                         boolean isDefaultInstance;
@@ -205,7 +206,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemInstance.setIsDefault(isDefaultInstance);
                     }
                     
-                    NodeList elements5 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsActive");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
                     Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (isActiveElement != null) {
                         boolean isActiveInstance;
@@ -213,7 +214,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemInstance.setIsActive(isActiveInstance);
                     }
                     
-                    NodeList elements6 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Family");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Family");
                     Element familyElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (familyElement != null) {
                         int familyInstance;
@@ -221,7 +222,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemInstance.setFamily(familyInstance);
                     }
                     
-                    NodeList elements7 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "FamilyLabel");
+                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "FamilyLabel");
                     Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (familyLabelElement != null) {
                         String familyLabelInstance;
@@ -342,15 +343,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystemFamilies");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamilies");
             Element operatingSystemFamiliesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operatingSystemFamiliesSequenceElement != null) {
-                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystemFamily").item(i1));
                     OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
                     result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
                     
-                    NodeList elements2 = operatingSystemFamiliesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         int nameInstance;
@@ -358,7 +359,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemFamilyInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = operatingSystemFamiliesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -366,15 +367,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                         operatingSystemFamilyInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = operatingSystemFamiliesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystems");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(operatingSystemFamiliesElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystems");
                     Element operatingSystemsSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (operatingSystemsSequenceElement != null) {
-                        for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystem").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperatingSystem").item(i2));
+                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operatingSystemsSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperatingSystem").item(i2));
                             OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
                             operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
                             
-                            NodeList elements5 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
+                            NodeList elements5 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Version");
                             Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                             if (versionElement != null) {
                                 String versionInstance;
@@ -382,7 +383,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                                 operatingSystemInstance.setVersion(versionInstance);
                             }
                             
-                            NodeList elements6 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                            NodeList elements6 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                             Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                             if (labelElement2 != null) {
                                 String labelInstance2;
@@ -390,7 +391,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                                 operatingSystemInstance.setLabel(labelInstance2);
                             }
                             
-                            NodeList elements7 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDefault");
+                            NodeList elements7 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                             Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                             if (isDefaultElement != null) {
                                 boolean isDefaultInstance;
@@ -398,7 +399,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                                 operatingSystemInstance.setIsDefault(isDefaultInstance);
                             }
                             
-                            NodeList elements8 = operatingSystemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsActive");
+                            NodeList elements8 = XmlUtility.getElementsByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
                             Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                             if (isActiveElement != null) {
                                 boolean isActiveInstance;

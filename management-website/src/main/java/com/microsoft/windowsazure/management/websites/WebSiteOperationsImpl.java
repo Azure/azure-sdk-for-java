@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.ManagedPipelineMode;
 import com.microsoft.windowsazure.management.websites.models.RemoteDebuggingVersion;
@@ -228,10 +229,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Operation");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (operationElement != null) {
-                NodeList elements2 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreatedTime");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
                 Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
@@ -239,7 +240,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
-                NodeList elements3 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Errors");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Errors");
                 Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (errorsSequenceElement != null) {
                     boolean isNil = false;
@@ -248,12 +249,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false) {
-                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").getLength(); i1 = i1 + 1) {
-                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").item(i1));
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").getLength(); i1 = i1 + 1) {
+                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").item(i1));
                             WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
                             result.getErrors().add(errorInstance);
                             
-                            NodeList elements4 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
+                            NodeList elements4 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Code");
                             Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                             if (codeElement != null) {
                                 boolean isNil2 = false;
@@ -268,7 +269,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements5 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
+                            NodeList elements5 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Message");
                             Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                             if (messageElement != null) {
                                 boolean isNil3 = false;
@@ -283,7 +284,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements6 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedCode");
+                            NodeList elements6 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
                             Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                             if (extendedCodeElement != null) {
                                 boolean isNil4 = false;
@@ -298,7 +299,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements7 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MessageTemplate");
+                            NodeList elements7 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "MessageTemplate");
                             Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                             if (messageTemplateElement != null) {
                                 boolean isNil5 = false;
@@ -313,7 +314,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements8 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Parameters");
+                            NodeList elements8 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Parameters");
                             Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                             if (parametersSequenceElement != null) {
                                 boolean isNil6 = false;
@@ -322,14 +323,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false) {
-                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
+                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1) {
+                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
                                         errorInstance.getParameters().add(parametersElement.getTextContent());
                                     }
                                 }
                             }
                             
-                            NodeList elements9 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InnerErrors");
+                            NodeList elements9 = XmlUtility.getElementsByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "InnerErrors");
                             Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                             if (innerErrorsElement != null) {
                                 boolean isNil7 = false;
@@ -347,7 +348,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements10 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationTime");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
                 Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (expirationTimeElement != null) {
                     Calendar expirationTimeInstance;
@@ -355,7 +356,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setExpirationTime(expirationTimeInstance);
                 }
                 
-                NodeList elements11 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
                 Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (geoMasterOperationIdElement != null) {
                     boolean isNil8 = false;
@@ -370,7 +371,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements12 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (idElement != null) {
                     boolean isNil9 = false;
@@ -385,7 +386,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements13 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ModifiedTime");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ModifiedTime");
                 Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (modifiedTimeElement != null) {
                     Calendar modifiedTimeInstance;
@@ -393,7 +394,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setModifiedTime(modifiedTimeInstance);
                 }
                 
-                NodeList elements14 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (nameElement != null) {
                     boolean isNil10 = false;
@@ -408,7 +409,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements15 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (statusElement != null) {
                     WebSiteOperationStatus statusInstance;
@@ -625,13 +626,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Site");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Site");
             Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (siteElement2 != null) {
                 WebSite webSiteInstance = new WebSite();
                 result.setWebSite(webSiteInstance);
                 
-                NodeList elements2 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminEnabled");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
@@ -639,7 +640,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
-                NodeList elements3 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilityState");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                 Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (availabilityStateElement != null) {
                     WebSpaceAvailabilityState availabilityStateInstance;
@@ -647,7 +648,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                NodeList elements4 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputeMode");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "ComputeMode");
                 Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (computeModeElement2 != null) {
                     WebSiteComputeMode computeModeInstance;
@@ -655,7 +656,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setComputeMode(computeModeInstance);
                 }
                 
-                NodeList elements5 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Enabled");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (enabledElement != null) {
                     boolean enabledInstance;
@@ -663,24 +664,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
-                NodeList elements6 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
                 Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (enabledHostNamesSequenceElement != null) {
-                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                         webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements7 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (hostNameSslStatesSequenceElement != null) {
-                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
                         WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                         webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                         
-                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement3 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (nameElement3 != null) {
                             String nameInstance;
@@ -688,7 +689,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setName(nameInstance);
                         }
                         
-                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SslState");
+                        NodeList elements9 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (sslStateElement != null) {
                             WebSiteSslState sslStateInstance;
@@ -696,7 +697,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
-                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                         Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (thumbprintElement != null) {
                             boolean isNil = false;
@@ -711,7 +712,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             }
                         }
                         
-                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP");
+                        NodeList elements11 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP");
                         Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (virtualIPElement != null) {
                             boolean isNil2 = false;
@@ -728,16 +729,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements12 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNames");
                 Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (hostNamesSequenceElement2 != null) {
-                    for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                         webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements13 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
                 Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (lastModifiedTimeUtcElement != null) {
                     Calendar lastModifiedTimeUtcInstance;
@@ -745,7 +746,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
-                NodeList elements14 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement4 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (nameElement4 != null) {
                     String nameInstance2;
@@ -753,7 +754,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setName(nameInstance2);
                 }
                 
-                NodeList elements15 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Owner");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Owner");
                 Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (ownerElement != null) {
                     boolean isNil3 = false;
@@ -768,7 +769,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements16 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
                 Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (repositorySiteNameElement != null) {
                     String repositorySiteNameInstance;
@@ -776,7 +777,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
                 }
                 
-                NodeList elements17 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                 Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (runtimeAvailabilityStateElement != null) {
                     WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -784,7 +785,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                 }
                 
-                NodeList elements18 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSLCertificates");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SSLCertificates");
                 Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (sSLCertificatesSequenceElement != null) {
                     boolean isNil4 = false;
@@ -793,12 +794,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         isNil4 = "true".equals(nilAttribute4.getValue());
                     }
                     if (isNil4 == false) {
-                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
-                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
+                        for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
                             WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                             webSiteInstance.getSslCertificates().add(certificateInstance);
                             
-                            NodeList elements19 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationDate");
+                            NodeList elements19 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil5 = false;
@@ -813,7 +814,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements20 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "FriendlyName");
+                            NodeList elements20 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "FriendlyName");
                             Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (friendlyNameElement != null) {
                                 boolean isNil6 = false;
@@ -828,7 +829,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements21 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                            NodeList elements21 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "HostNames");
                             Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (hostNamesSequenceElement3 != null) {
                                 boolean isNil7 = false;
@@ -837,14 +838,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false) {
-                                    for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
                                 }
                             }
                             
-                            NodeList elements22 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IssueDate");
+                            NodeList elements22 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil8 = false;
@@ -859,7 +860,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements23 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Issuer");
+                            NodeList elements23 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Issuer");
                             Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (issuerElement != null) {
                                 boolean isNil9 = false;
@@ -874,7 +875,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements24 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
+                            NodeList elements24 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Password");
                             Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (passwordElement != null) {
                                 boolean isNil10 = false;
@@ -889,7 +890,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements25 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PfxBlob");
+                            NodeList elements25 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "PfxBlob");
                             Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                             if (pfxBlobElement != null) {
                                 boolean isNil11 = false;
@@ -904,7 +905,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements26 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                            NodeList elements26 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                             Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                             if (selfLinkElement != null) {
                                 boolean isNil12 = false;
@@ -919,7 +920,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements27 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteName");
+                            NodeList elements27 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SiteName");
                             Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                             if (siteNameElement != null) {
                                 boolean isNil13 = false;
@@ -934,7 +935,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements28 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubjectName");
+                            NodeList elements28 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubjectName");
                             Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                             if (subjectNameElement != null) {
                                 boolean isNil14 = false;
@@ -949,7 +950,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements29 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                            NodeList elements29 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                             Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                             if (thumbprintElement2 != null) {
                                 boolean isNil15 = false;
@@ -964,7 +965,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements30 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ToDelete");
+                            NodeList elements30 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ToDelete");
                             Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                             if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil16 = false;
@@ -979,7 +980,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements31 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Valid");
+                            NodeList elements31 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                             if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil17 = false;
@@ -997,7 +998,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements32 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                NodeList elements32 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                 Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (selfLinkElement2 != null) {
                     URI selfLinkInstance2;
@@ -1005,7 +1006,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUri(selfLinkInstance2);
                 }
                 
-                NodeList elements33 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
+                NodeList elements33 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
                 Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (serverFarmElement2 != null) {
                     String serverFarmInstance;
@@ -1013,7 +1014,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setServerFarm(serverFarmInstance);
                 }
                 
-                NodeList elements34 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteMode");
+                NodeList elements34 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SiteMode");
                 Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                 if (siteModeElement2 != null) {
                     WebSiteMode siteModeInstance;
@@ -1021,53 +1022,53 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setSiteMode(siteModeInstance);
                 }
                 
-                NodeList elements35 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteProperties");
+                NodeList elements35 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SiteProperties");
                 Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                 if (sitePropertiesElement != null) {
                     WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                     webSiteInstance.setSiteProperties(sitePropertiesInstance);
                     
-                    NodeList elements36 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AppSettings");
+                    NodeList elements36 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AppSettings");
                     Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (appSettingsSequenceElement != null) {
-                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
-                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
-                            NodeList elements37 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
+                            NodeList elements37 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                            NodeList elements38 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements38 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                         }
                     }
                     
-                    NodeList elements39 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Metadata");
+                    NodeList elements39 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Metadata");
                     Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                     if (metadataSequenceElement != null) {
-                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
-                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
-                            NodeList elements40 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
+                            NodeList elements40 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                            NodeList elements41 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements41 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                         }
                     }
                     
-                    NodeList elements42 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Properties");
+                    NodeList elements42 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Properties");
                     Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                     if (propertiesSequenceElement != null) {
-                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
-                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
-                            NodeList elements43 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
+                            NodeList elements43 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                            NodeList elements44 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements44 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                         }
                     }
                 }
                 
-                NodeList elements45 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                NodeList elements45 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -1075,7 +1076,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setState(stateInstance);
                 }
                 
-                NodeList elements46 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageState");
+                NodeList elements46 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "UsageState");
                 Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                 if (usageStateElement != null) {
                     WebSiteUsageState usageStateInstance;
@@ -1083,7 +1084,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUsageState(usageStateInstance);
                 }
                 
-                NodeList elements47 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSpace");
+                NodeList elements47 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "WebSpace");
                 Element webSpaceElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                 if (webSpaceElement2 != null) {
                     String webSpaceInstance;
@@ -1440,7 +1441,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
             Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (anyURIElement != null) {
                 result.setUri(new URI(anyURIElement.getTextContent()));
@@ -1679,13 +1680,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Site");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Site");
             Element siteElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (siteElement != null) {
                 WebSite webSiteInstance = new WebSite();
                 result.setWebSite(webSiteInstance);
                 
-                NodeList elements2 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminEnabled");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
@@ -1693,7 +1694,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
-                NodeList elements3 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilityState");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                 Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (availabilityStateElement != null) {
                     WebSpaceAvailabilityState availabilityStateInstance;
@@ -1701,7 +1702,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                NodeList elements4 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputeMode");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "ComputeMode");
                 Element computeModeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (computeModeElement != null) {
                     WebSiteComputeMode computeModeInstance;
@@ -1709,7 +1710,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setComputeMode(computeModeInstance);
                 }
                 
-                NodeList elements5 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Enabled");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (enabledElement != null) {
                     boolean enabledInstance;
@@ -1717,24 +1718,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
-                NodeList elements6 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
                 Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (enabledHostNamesSequenceElement != null) {
-                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                         webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements7 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (hostNameSslStatesSequenceElement != null) {
-                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
                         WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                         webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                         
-                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (nameElement != null) {
                             String nameInstance;
@@ -1742,7 +1743,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setName(nameInstance);
                         }
                         
-                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SslState");
+                        NodeList elements9 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (sslStateElement != null) {
                             WebSiteSslState sslStateInstance;
@@ -1750,7 +1751,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
-                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                         Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (thumbprintElement != null) {
                             boolean isNil = false;
@@ -1765,7 +1766,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             }
                         }
                         
-                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP");
+                        NodeList elements11 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP");
                         Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (virtualIPElement != null) {
                             boolean isNil2 = false;
@@ -1782,16 +1783,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements12 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "HostNames");
                 Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (hostNamesSequenceElement != null) {
-                    for (int i3 = 0; i3 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                         webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements13 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
                 Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (lastModifiedTimeUtcElement != null) {
                     Calendar lastModifiedTimeUtcInstance;
@@ -1799,7 +1800,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
-                NodeList elements14 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance2;
@@ -1807,7 +1808,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setName(nameInstance2);
                 }
                 
-                NodeList elements15 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Owner");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Owner");
                 Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (ownerElement != null) {
                     boolean isNil3 = false;
@@ -1822,7 +1823,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements16 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
                 Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (repositorySiteNameElement != null) {
                     String repositorySiteNameInstance;
@@ -1830,7 +1831,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
                 }
                 
-                NodeList elements17 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                 Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (runtimeAvailabilityStateElement != null) {
                     WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -1838,7 +1839,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                 }
                 
-                NodeList elements18 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSLCertificates");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SSLCertificates");
                 Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (sSLCertificatesSequenceElement != null) {
                     boolean isNil4 = false;
@@ -1847,12 +1848,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         isNil4 = "true".equals(nilAttribute4.getValue());
                     }
                     if (isNil4 == false) {
-                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
-                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
+                        for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
                             WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                             webSiteInstance.getSslCertificates().add(certificateInstance);
                             
-                            NodeList elements19 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationDate");
+                            NodeList elements19 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil5 = false;
@@ -1867,7 +1868,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements20 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "FriendlyName");
+                            NodeList elements20 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "FriendlyName");
                             Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (friendlyNameElement != null) {
                                 boolean isNil6 = false;
@@ -1882,7 +1883,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements21 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                            NodeList elements21 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "HostNames");
                             Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (hostNamesSequenceElement2 != null) {
                                 boolean isNil7 = false;
@@ -1891,14 +1892,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
                                 if (isNil7 == false) {
-                                    for (int i5 = 0; i5 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
                                 }
                             }
                             
-                            NodeList elements22 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IssueDate");
+                            NodeList elements22 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil8 = false;
@@ -1913,7 +1914,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements23 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Issuer");
+                            NodeList elements23 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Issuer");
                             Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (issuerElement != null) {
                                 boolean isNil9 = false;
@@ -1928,7 +1929,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements24 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
+                            NodeList elements24 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Password");
                             Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (passwordElement != null) {
                                 boolean isNil10 = false;
@@ -1943,7 +1944,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements25 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PfxBlob");
+                            NodeList elements25 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "PfxBlob");
                             Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                             if (pfxBlobElement != null) {
                                 boolean isNil11 = false;
@@ -1958,7 +1959,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements26 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                            NodeList elements26 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                             Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                             if (selfLinkElement != null) {
                                 boolean isNil12 = false;
@@ -1973,7 +1974,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements27 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteName");
+                            NodeList elements27 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SiteName");
                             Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                             if (siteNameElement != null) {
                                 boolean isNil13 = false;
@@ -1988,7 +1989,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements28 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubjectName");
+                            NodeList elements28 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubjectName");
                             Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                             if (subjectNameElement != null) {
                                 boolean isNil14 = false;
@@ -2003,7 +2004,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements29 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                            NodeList elements29 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                             Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                             if (thumbprintElement2 != null) {
                                 boolean isNil15 = false;
@@ -2018,7 +2019,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements30 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ToDelete");
+                            NodeList elements30 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ToDelete");
                             Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                             if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil16 = false;
@@ -2033,7 +2034,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements31 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Valid");
+                            NodeList elements31 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                             if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil17 = false;
@@ -2051,7 +2052,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements32 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                NodeList elements32 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                 Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (selfLinkElement2 != null) {
                     URI selfLinkInstance2;
@@ -2059,7 +2060,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUri(selfLinkInstance2);
                 }
                 
-                NodeList elements33 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
+                NodeList elements33 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
                 Element serverFarmElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (serverFarmElement != null) {
                     String serverFarmInstance;
@@ -2067,7 +2068,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setServerFarm(serverFarmInstance);
                 }
                 
-                NodeList elements34 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteMode");
+                NodeList elements34 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SiteMode");
                 Element siteModeElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                 if (siteModeElement != null) {
                     WebSiteMode siteModeInstance;
@@ -2075,53 +2076,53 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setSiteMode(siteModeInstance);
                 }
                 
-                NodeList elements35 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteProperties");
+                NodeList elements35 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "SiteProperties");
                 Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                 if (sitePropertiesElement != null) {
                     WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                     webSiteInstance.setSiteProperties(sitePropertiesInstance);
                     
-                    NodeList elements36 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AppSettings");
+                    NodeList elements36 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AppSettings");
                     Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (appSettingsSequenceElement != null) {
-                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
-                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
-                            NodeList elements37 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
+                            NodeList elements37 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                            NodeList elements38 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements38 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                         }
                     }
                     
-                    NodeList elements39 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Metadata");
+                    NodeList elements39 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Metadata");
                     Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                     if (metadataSequenceElement != null) {
-                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
-                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
-                            NodeList elements40 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
+                            NodeList elements40 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                            NodeList elements41 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements41 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                         }
                     }
                     
-                    NodeList elements42 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Properties");
+                    NodeList elements42 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Properties");
                     Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                     if (propertiesSequenceElement != null) {
-                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
-                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
-                            NodeList elements43 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
+                            NodeList elements43 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                            NodeList elements44 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements44 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                         }
                     }
                 }
                 
-                NodeList elements45 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                NodeList elements45 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -2129,7 +2130,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setState(stateInstance);
                 }
                 
-                NodeList elements46 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageState");
+                NodeList elements46 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "UsageState");
                 Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                 if (usageStateElement != null) {
                     WebSiteUsageState usageStateInstance;
@@ -2137,7 +2138,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUsageState(usageStateInstance);
                 }
                 
-                NodeList elements47 = siteElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSpace");
+                NodeList elements47 = XmlUtility.getElementsByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "WebSpace");
                 Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                 if (webSpaceElement != null) {
                     String webSpaceInstance;
@@ -2261,31 +2262,31 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteConfig");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SiteConfig");
             Element siteConfigElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (siteConfigElement != null) {
-                NodeList elements2 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AppSettings");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "AppSettings");
                 Element appSettingsSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (appSettingsSequenceElement != null) {
-                    for (int i1 = 0; i1 < appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i1));
-                        NodeList elements3 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i1));
+                        NodeList elements3 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         String appSettingsKey = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
-                        NodeList elements4 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                        NodeList elements4 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Value");
                         String appSettingsValue = elements4.getLength() > 0 ? ((org.w3c.dom.Element) elements4.item(0)).getTextContent() : null;
                         result.getAppSettings().put(appSettingsKey, appSettingsValue);
                     }
                 }
                 
-                NodeList elements5 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConnectionStrings");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "ConnectionStrings");
                 Element connectionStringsSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (connectionStringsSequenceElement != null) {
-                    for (int i2 = 0; i2 < connectionStringsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConnStringInfo").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element) connectionStringsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConnStringInfo").item(i2));
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionStringsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConnStringInfo").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element connectionStringsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(connectionStringsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConnStringInfo").item(i2));
                         WebSiteGetConfigurationResponse.ConnectionStringInfo connStringInfoInstance = new WebSiteGetConfigurationResponse.ConnectionStringInfo();
                         result.getConnectionStrings().add(connStringInfoInstance);
                         
-                        NodeList elements6 = connectionStringsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConnectionString");
+                        NodeList elements6 = XmlUtility.getElementsByTagNameNS(connectionStringsElement, "http://schemas.microsoft.com/windowsazure", "ConnectionString");
                         Element connectionStringElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                         if (connectionStringElement != null) {
                             String connectionStringInstance;
@@ -2293,7 +2294,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             connStringInfoInstance.setConnectionString(connectionStringInstance);
                         }
                         
-                        NodeList elements7 = connectionStringsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        NodeList elements7 = XmlUtility.getElementsByTagNameNS(connectionStringsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (nameElement != null) {
                             String nameInstance;
@@ -2301,7 +2302,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             connStringInfoInstance.setName(nameInstance);
                         }
                         
-                        NodeList elements8 = connectionStringsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(connectionStringsElement, "http://schemas.microsoft.com/windowsazure", "Type");
                         Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (typeElement != null) {
                             String typeInstance;
@@ -2311,16 +2312,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements9 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DefaultDocuments");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "DefaultDocuments");
                 Element defaultDocumentsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (defaultDocumentsSequenceElement != null) {
-                    for (int i3 = 0; i3 < defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element) defaultDocumentsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(defaultDocumentsSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element defaultDocumentsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(defaultDocumentsSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                         result.getDefaultDocuments().add(defaultDocumentsElement.getTextContent());
                     }
                 }
                 
-                NodeList elements10 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DetailedErrorLoggingEnabled");
+                NodeList elements10 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "DetailedErrorLoggingEnabled");
                 Element detailedErrorLoggingEnabledElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() == null || detailedErrorLoggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean detailedErrorLoggingEnabledInstance;
@@ -2328,7 +2329,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
                 }
                 
-                NodeList elements11 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DocumentRoot");
+                NodeList elements11 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "DocumentRoot");
                 Element documentRootElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (documentRootElement != null) {
                     String documentRootInstance;
@@ -2336,15 +2337,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setDocumentRoot(documentRootInstance);
                 }
                 
-                NodeList elements12 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HandlerMappings");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "HandlerMappings");
                 Element handlerMappingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (handlerMappingsSequenceElement != null) {
-                    for (int i4 = 0; i4 < handlerMappingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HandlerMapping").getLength(); i4 = i4 + 1) {
-                        org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element) handlerMappingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HandlerMapping").item(i4));
+                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(handlerMappingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "HandlerMapping").getLength(); i4 = i4 + 1) {
+                        org.w3c.dom.Element handlerMappingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(handlerMappingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "HandlerMapping").item(i4));
                         WebSiteGetConfigurationResponse.HandlerMapping handlerMappingInstance = new WebSiteGetConfigurationResponse.HandlerMapping();
                         result.getHandlerMappings().add(handlerMappingInstance);
                         
-                        NodeList elements13 = handlerMappingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Arguments");
+                        NodeList elements13 = XmlUtility.getElementsByTagNameNS(handlerMappingsElement, "http://schemas.microsoft.com/windowsazure", "Arguments");
                         Element argumentsElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                         if (argumentsElement != null) {
                             String argumentsInstance;
@@ -2352,7 +2353,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             handlerMappingInstance.setArguments(argumentsInstance);
                         }
                         
-                        NodeList elements14 = handlerMappingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension");
+                        NodeList elements14 = XmlUtility.getElementsByTagNameNS(handlerMappingsElement, "http://schemas.microsoft.com/windowsazure", "Extension");
                         Element extensionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                         if (extensionElement != null) {
                             String extensionInstance;
@@ -2360,7 +2361,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             handlerMappingInstance.setExtension(extensionInstance);
                         }
                         
-                        NodeList elements15 = handlerMappingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ScriptProcessor");
+                        NodeList elements15 = XmlUtility.getElementsByTagNameNS(handlerMappingsElement, "http://schemas.microsoft.com/windowsazure", "ScriptProcessor");
                         Element scriptProcessorElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                         if (scriptProcessorElement != null) {
                             String scriptProcessorInstance;
@@ -2370,7 +2371,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements16 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HttpLoggingEnabled");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "HttpLoggingEnabled");
                 Element httpLoggingEnabledElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() == null || httpLoggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean httpLoggingEnabledInstance;
@@ -2378,7 +2379,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
                 }
                 
-                NodeList elements17 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogsDirectorySizeLimit");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "LogsDirectorySizeLimit");
                 Element logsDirectorySizeLimitElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (logsDirectorySizeLimitElement != null && (logsDirectorySizeLimitElement.getTextContent() == null || logsDirectorySizeLimitElement.getTextContent().isEmpty() == true) == false) {
                     int logsDirectorySizeLimitInstance;
@@ -2386,7 +2387,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setLogsDirectorySizeLimit(logsDirectorySizeLimitInstance);
                 }
                 
-                NodeList elements18 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ManagedPipelineMode");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "ManagedPipelineMode");
                 Element managedPipelineModeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (managedPipelineModeElement != null && (managedPipelineModeElement.getTextContent() == null || managedPipelineModeElement.getTextContent().isEmpty() == true) == false) {
                     ManagedPipelineMode managedPipelineModeInstance;
@@ -2394,20 +2395,20 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setManagedPipelineMode(managedPipelineModeInstance);
                 }
                 
-                NodeList elements19 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Metadata");
+                NodeList elements19 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "Metadata");
                 Element metadataSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                 if (metadataSequenceElement != null) {
-                    for (int i5 = 0; i5 < metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i5 = i5 + 1) {
-                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i5));
-                        NodeList elements20 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i5 = i5 + 1) {
+                        org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i5));
+                        NodeList elements20 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         String metadataKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
-                        NodeList elements21 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                        NodeList elements21 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Value");
                         String metadataValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
                         result.getMetadata().put(metadataKey, metadataValue);
                     }
                 }
                 
-                NodeList elements22 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NetFrameworkVersion");
+                NodeList elements22 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "NetFrameworkVersion");
                 Element netFrameworkVersionElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                 if (netFrameworkVersionElement != null) {
                     String netFrameworkVersionInstance;
@@ -2415,7 +2416,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setNetFrameworkVersion(netFrameworkVersionInstance);
                 }
                 
-                NodeList elements23 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
+                NodeList elements23 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
                 Element numberOfWorkersElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                 if (numberOfWorkersElement != null && (numberOfWorkersElement.getTextContent() == null || numberOfWorkersElement.getTextContent().isEmpty() == true) == false) {
                     int numberOfWorkersInstance;
@@ -2423,7 +2424,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
-                NodeList elements24 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PhpVersion");
+                NodeList elements24 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "PhpVersion");
                 Element phpVersionElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                 if (phpVersionElement != null) {
                     String phpVersionInstance;
@@ -2431,7 +2432,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setPhpVersion(phpVersionInstance);
                 }
                 
-                NodeList elements25 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishingPassword");
+                NodeList elements25 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "PublishingPassword");
                 Element publishingPasswordElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                 if (publishingPasswordElement != null) {
                     String publishingPasswordInstance;
@@ -2439,7 +2440,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setPublishingPassword(publishingPasswordInstance);
                 }
                 
-                NodeList elements26 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishingUsername");
+                NodeList elements26 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "PublishingUsername");
                 Element publishingUsernameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                 if (publishingUsernameElement != null) {
                     String publishingUsernameInstance;
@@ -2447,7 +2448,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setPublishingUserName(publishingUsernameInstance);
                 }
                 
-                NodeList elements27 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteDebuggingEnabled");
+                NodeList elements27 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RemoteDebuggingEnabled");
                 Element remoteDebuggingEnabledElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                 if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() == null || remoteDebuggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean remoteDebuggingEnabledInstance;
@@ -2455,7 +2456,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
                 }
                 
-                NodeList elements28 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteDebuggingVersion");
+                NodeList elements28 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RemoteDebuggingVersion");
                 Element remoteDebuggingVersionElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                 if (remoteDebuggingVersionElement != null) {
                     boolean isNil = false;
@@ -2470,7 +2471,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements29 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RequestTracingEnabled");
+                NodeList elements29 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RequestTracingEnabled");
                 Element requestTracingEnabledElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                 if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() == null || requestTracingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean requestTracingEnabledInstance;
@@ -2478,7 +2479,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setRequestTracingEnabled(requestTracingEnabledInstance);
                 }
                 
-                NodeList elements30 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RequestTracingExpirationTime");
+                NodeList elements30 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RequestTracingExpirationTime");
                 Element requestTracingExpirationTimeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                 if (requestTracingExpirationTimeElement != null && (requestTracingExpirationTimeElement.getTextContent() == null || requestTracingExpirationTimeElement.getTextContent().isEmpty() == true) == false) {
                     boolean isNil2 = false;
@@ -2493,7 +2494,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements31 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ScmType");
+                NodeList elements31 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "ScmType");
                 Element scmTypeElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                 if (scmTypeElement != null) {
                     String scmTypeInstance;
@@ -2501,7 +2502,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setScmType(scmTypeInstance);
                 }
                 
-                NodeList elements32 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Use32BitWorkerProcess");
+                NodeList elements32 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "Use32BitWorkerProcess");
                 Element use32BitWorkerProcessElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() == null || use32BitWorkerProcessElement.getTextContent().isEmpty() == true) == false) {
                     boolean use32BitWorkerProcessInstance;
@@ -2509,7 +2510,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
                 }
                 
-                NodeList elements33 = siteConfigElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSocketsEnabled");
+                NodeList elements33 = XmlUtility.getElementsByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "WebSocketsEnabled");
                 Element webSocketsEnabledElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() == null || webSocketsEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean webSocketsEnabledInstance;
@@ -2650,16 +2651,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MetricResponses");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "MetricResponses");
             Element metricResponsesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (metricResponsesElement != null) {
                 if (metricResponsesElement != null) {
-                    for (int i1 = 0; i1 < metricResponsesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MetricResponse").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) metricResponsesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MetricResponse").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metricResponsesElement, "http://schemas.microsoft.com/windowsazure", "MetricResponse").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metricResponsesElement, "http://schemas.microsoft.com/windowsazure", "MetricResponse").item(i1));
                         WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric metricResponseInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetric();
                         result.getUsageMetrics().add(metricResponseInstance);
                         
-                        NodeList elements2 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
+                        NodeList elements2 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Code");
                         Element codeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                         if (codeElement != null) {
                             String codeInstance;
@@ -2667,13 +2668,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             metricResponseInstance.setCode(codeInstance);
                         }
                         
-                        NodeList elements3 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Data");
+                        NodeList elements3 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Data");
                         Element dataElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                         if (dataElement != null) {
                             WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData dataInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricData();
                             metricResponseInstance.setData(dataInstance);
                             
-                            NodeList elements4 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisplayName");
+                            NodeList elements4 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "DisplayName");
                             Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                             if (displayNameElement != null) {
                                 String displayNameInstance;
@@ -2681,7 +2682,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setDisplayName(displayNameInstance);
                             }
                             
-                            NodeList elements5 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndTime");
+                            NodeList elements5 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "EndTime");
                             Element endTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                             if (endTimeElement != null) {
                                 Calendar endTimeInstance;
@@ -2689,7 +2690,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setEndTime(endTimeInstance);
                             }
                             
-                            NodeList elements6 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                            NodeList elements6 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                             if (nameElement != null) {
                                 String nameInstance;
@@ -2697,7 +2698,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setName(nameInstance);
                             }
                             
-                            NodeList elements7 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrimaryAggregationType");
+                            NodeList elements7 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "PrimaryAggregationType");
                             Element primaryAggregationTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                             if (primaryAggregationTypeElement != null) {
                                 String primaryAggregationTypeInstance;
@@ -2705,7 +2706,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setPrimaryAggregationType(primaryAggregationTypeInstance);
                             }
                             
-                            NodeList elements8 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
+                            NodeList elements8 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                             Element startTimeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                             if (startTimeElement != null) {
                                 Calendar startTimeInstance;
@@ -2713,7 +2714,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setStartTime(startTimeInstance);
                             }
                             
-                            NodeList elements9 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeGrain");
+                            NodeList elements9 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "TimeGrain");
                             Element timeGrainElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                             if (timeGrainElement != null) {
                                 String timeGrainInstance;
@@ -2721,7 +2722,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setTimeGrain(timeGrainInstance);
                             }
                             
-                            NodeList elements10 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Unit");
+                            NodeList elements10 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "Unit");
                             Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                             if (unitElement != null) {
                                 String unitInstance;
@@ -2729,15 +2730,15 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 dataInstance.setUnit(unitInstance);
                             }
                             
-                            NodeList elements11 = dataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Values");
+                            NodeList elements11 = XmlUtility.getElementsByTagNameNS(dataElement, "http://schemas.microsoft.com/windowsazure", "Values");
                             Element valuesSequenceElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                             if (valuesSequenceElement != null) {
-                                for (int i2 = 0; i2 < valuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MetricSample").getLength(); i2 = i2 + 1) {
-                                    org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element) valuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MetricSample").item(i2));
+                                for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(valuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "MetricSample").getLength(); i2 = i2 + 1) {
+                                    org.w3c.dom.Element valuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(valuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "MetricSample").item(i2));
                                     WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample metricSampleInstance = new WebSiteGetHistoricalUsageMetricsResponse.HistoricalUsageMetricSample();
                                     dataInstance.getValues().add(metricSampleInstance);
                                     
-                                    NodeList elements12 = valuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Count");
+                                    NodeList elements12 = XmlUtility.getElementsByTagNameNS(valuesElement, "http://schemas.microsoft.com/windowsazure", "Count");
                                     Element countElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                                     if (countElement != null) {
                                         int countInstance;
@@ -2745,7 +2746,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         metricSampleInstance.setCount(countInstance);
                                     }
                                     
-                                    NodeList elements13 = valuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Maximum");
+                                    NodeList elements13 = XmlUtility.getElementsByTagNameNS(valuesElement, "http://schemas.microsoft.com/windowsazure", "Maximum");
                                     Element maximumElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                                     if (maximumElement != null) {
                                         boolean isNil = false;
@@ -2760,7 +2761,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         }
                                     }
                                     
-                                    NodeList elements14 = valuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Minimum");
+                                    NodeList elements14 = XmlUtility.getElementsByTagNameNS(valuesElement, "http://schemas.microsoft.com/windowsazure", "Minimum");
                                     Element minimumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                                     if (minimumElement != null) {
                                         boolean isNil2 = false;
@@ -2775,7 +2776,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         }
                                     }
                                     
-                                    NodeList elements15 = valuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeCreated");
+                                    NodeList elements15 = XmlUtility.getElementsByTagNameNS(valuesElement, "http://schemas.microsoft.com/windowsazure", "TimeCreated");
                                     Element timeCreatedElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                                     if (timeCreatedElement != null) {
                                         Calendar timeCreatedInstance;
@@ -2783,7 +2784,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                         metricSampleInstance.setTimeCreated(timeCreatedInstance);
                                     }
                                     
-                                    NodeList elements16 = valuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Total");
+                                    NodeList elements16 = XmlUtility.getElementsByTagNameNS(valuesElement, "http://schemas.microsoft.com/windowsazure", "Total");
                                     Element totalElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                                     if (totalElement != null) {
                                         String totalInstance;
@@ -2794,7 +2795,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             }
                         }
                         
-                        NodeList elements17 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
+                        NodeList elements17 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Message");
                         Element messageElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                         if (messageElement != null) {
                             String messageInstance;
@@ -2920,12 +2921,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("", "publishData");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "", "publishData");
             Element publishDataElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (publishDataElement != null) {
                 if (publishDataElement != null) {
-                    for (int i1 = 0; i1 < publishDataElement.getElementsByTagNameNS("", "publishProfile").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element) publishDataElement.getElementsByTagNameNS("", "publishProfile").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publishDataElement, "", "publishProfile").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element publishProfilesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publishDataElement, "", "publishProfile").item(i1));
                         WebSiteGetPublishProfileResponse.PublishProfile publishProfileInstance = new WebSiteGetPublishProfileResponse.PublishProfile();
                         result.getPublishProfiles().add(publishProfileInstance);
                         
@@ -2989,11 +2990,11 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             publishProfileInstance.setControlPanelUri(new URI(controlPanelLinkAttribute.getValue()));
                         }
                         
-                        NodeList elements2 = publishProfilesElement.getElementsByTagNameNS("", "databases");
+                        NodeList elements2 = XmlUtility.getElementsByTagNameNS(publishProfilesElement, "", "databases");
                         Element databasesSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                         if (databasesSequenceElement != null) {
-                            for (int i2 = 0; i2 < databasesSequenceElement.getElementsByTagNameNS("", "add").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element) databasesSequenceElement.getElementsByTagNameNS("", "add").item(i2));
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(databasesSequenceElement, "", "add").getLength(); i2 = i2 + 1) {
+                                org.w3c.dom.Element databasesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(databasesSequenceElement, "", "add").item(i2));
                                 WebSiteGetPublishProfileResponse.Database addInstance = new WebSiteGetPublishProfileResponse.Database();
                                 publishProfileInstance.getDatabases().add(addInstance);
                                 
@@ -3143,7 +3144,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "anyURI");
             Element anyURIElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (anyURIElement != null) {
                 result.setUri(new URI(anyURIElement.getTextContent()));
@@ -3268,16 +3269,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Usages");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Usages");
             Element usagesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (usagesElement != null) {
                 if (usagesElement != null) {
-                    for (int i1 = 0; i1 < usagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Usage").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) usagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Usage").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "Usage").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element usageMetricsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(usagesElement, "http://schemas.microsoft.com/windowsazure", "Usage").item(i1));
                         WebSiteGetUsageMetricsResponse.UsageMetric usageInstance = new WebSiteGetUsageMetricsResponse.UsageMetric();
                         result.getUsageMetrics().add(usageInstance);
                         
-                        NodeList elements2 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputeMode");
+                        NodeList elements2 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "ComputeMode");
                         Element computeModeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                         if (computeModeElement != null) {
                             WebSiteComputeMode computeModeInstance;
@@ -3285,7 +3286,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setComputeMode(computeModeInstance);
                         }
                         
-                        NodeList elements3 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentValue");
+                        NodeList elements3 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "CurrentValue");
                         Element currentValueElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                         if (currentValueElement != null) {
                             String currentValueInstance;
@@ -3293,7 +3294,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setCurrentValue(currentValueInstance);
                         }
                         
-                        NodeList elements4 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisplayName");
+                        NodeList elements4 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "DisplayName");
                         Element displayNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                         if (displayNameElement != null) {
                             String displayNameInstance;
@@ -3301,7 +3302,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setDisplayName(displayNameInstance);
                         }
                         
-                        NodeList elements5 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Limit");
+                        NodeList elements5 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Limit");
                         Element limitElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                         if (limitElement != null) {
                             String limitInstance;
@@ -3309,7 +3310,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setLimit(limitInstance);
                         }
                         
-                        NodeList elements6 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        NodeList elements6 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                         if (nameElement != null) {
                             String nameInstance;
@@ -3317,7 +3318,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setName(nameInstance);
                         }
                         
-                        NodeList elements7 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NextResetTime");
+                        NodeList elements7 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "NextResetTime");
                         Element nextResetTimeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (nextResetTimeElement != null) {
                             Calendar nextResetTimeInstance;
@@ -3325,7 +3326,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setNextResetTime(nextResetTimeInstance);
                         }
                         
-                        NodeList elements8 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceName");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "ResourceName");
                         Element resourceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (resourceNameElement != null) {
                             String resourceNameInstance;
@@ -3333,7 +3334,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setResourceName(resourceNameInstance);
                         }
                         
-                        NodeList elements9 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteMode");
+                        NodeList elements9 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "SiteMode");
                         Element siteModeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (siteModeElement != null) {
                             WebSiteMode siteModeInstance;
@@ -3341,7 +3342,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             usageInstance.setSiteMode(siteModeInstance);
                         }
                         
-                        NodeList elements10 = usageMetricsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Unit");
+                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(usageMetricsElement, "http://schemas.microsoft.com/windowsazure", "Unit");
                         Element unitElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (unitElement != null) {
                             String unitInstance;
@@ -3454,7 +3455,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
             Element booleanElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (booleanElement != null) {
                 boolean booleanInstance;
@@ -4044,13 +4045,13 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Site");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Site");
             Element siteElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (siteElement2 != null) {
                 WebSite webSiteInstance = new WebSite();
                 result.setWebSite(webSiteInstance);
                 
-                NodeList elements2 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminEnabled");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
@@ -4058,7 +4059,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
-                NodeList elements3 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilityState");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AvailabilityState");
                 Element availabilityStateElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (availabilityStateElement2 != null) {
                     WebSpaceAvailabilityState availabilityStateInstance;
@@ -4066,7 +4067,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setAvailabilityState(availabilityStateInstance);
                 }
                 
-                NodeList elements4 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputeMode");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "ComputeMode");
                 Element computeModeElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (computeModeElement2 != null) {
                     WebSiteComputeMode computeModeInstance;
@@ -4074,7 +4075,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setComputeMode(computeModeInstance);
                 }
                 
-                NodeList elements5 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Enabled");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 Element enabledElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (enabledElement2 != null) {
                     boolean enabledInstance;
@@ -4082,24 +4083,24 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
-                NodeList elements6 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "EnabledHostNames");
                 Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (enabledHostNamesSequenceElement != null) {
-                    for (int i1 = 0; i1 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(enabledHostNamesSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                         webSiteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements7 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
+                NodeList elements7 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNameSslStates");
                 Element hostNameSslStatesSequenceElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (hostNameSslStatesSequenceElement2 != null) {
-                    for (int i2 = 0; i2 < hostNameSslStatesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNameSslStatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "WebSiteHostNameSslState").item(i2));
                         WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                         webSiteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                         
-                        NodeList elements8 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (nameElement != null) {
                             String nameInstance;
@@ -4107,7 +4108,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setName(nameInstance);
                         }
                         
-                        NodeList elements9 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SslState");
+                        NodeList elements9 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "SslState");
                         Element sslStateElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (sslStateElement2 != null) {
                             WebSiteSslState sslStateInstance;
@@ -4115,7 +4116,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
                         }
                         
-                        NodeList elements10 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                         Element thumbprintElement3 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (thumbprintElement3 != null) {
                             boolean isNil = false;
@@ -4130,7 +4131,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                             }
                         }
                         
-                        NodeList elements11 = hostNameSslStatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP");
+                        NodeList elements11 = XmlUtility.getElementsByTagNameNS(hostNameSslStatesElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP");
                         Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (virtualIPElement != null) {
                             boolean isNil2 = false;
@@ -4147,16 +4148,16 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements12 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "HostNames");
                 Element hostNamesSequenceElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (hostNamesSequenceElement2 != null) {
-                    for (int i3 = 0; i3 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement2, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i3));
                         webSiteInstance.getHostNames().add(hostNamesElement.getTextContent());
                     }
                 }
                 
-                NodeList elements13 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
+                NodeList elements13 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "LastModifiedTimeUtc");
                 Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (lastModifiedTimeUtcElement != null) {
                     Calendar lastModifiedTimeUtcInstance;
@@ -4164,7 +4165,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
                 }
                 
-                NodeList elements14 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements14 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance2;
@@ -4172,7 +4173,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setName(nameInstance2);
                 }
                 
-                NodeList elements15 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Owner");
+                NodeList elements15 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Owner");
                 Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (ownerElement != null) {
                     boolean isNil3 = false;
@@ -4187,7 +4188,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements16 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
+                NodeList elements16 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RepositorySiteName");
                 Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (repositorySiteNameElement != null) {
                     String repositorySiteNameInstance;
@@ -4195,7 +4196,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRepositorySiteName(repositorySiteNameInstance);
                 }
                 
-                NodeList elements17 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
+                NodeList elements17 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "RuntimeAvailabilityState");
                 Element runtimeAvailabilityStateElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (runtimeAvailabilityStateElement2 != null) {
                     WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
@@ -4203,7 +4204,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
                 }
                 
-                NodeList elements18 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSLCertificates");
+                NodeList elements18 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SSLCertificates");
                 Element sSLCertificatesSequenceElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (sSLCertificatesSequenceElement2 != null) {
                     boolean isNil4 = false;
@@ -4212,12 +4213,12 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         isNil4 = "true".equals(nilAttribute5.getValue());
                     }
                     if (isNil4 == false) {
-                        for (int i4 = 0; i4 < sSLCertificatesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
-                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
+                        for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i4 = i4 + 1) {
+                            org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(sSLCertificatesSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Certificate").item(i4));
                             WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                             webSiteInstance.getSslCertificates().add(certificateInstance);
                             
-                            NodeList elements19 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationDate");
+                            NodeList elements19 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ExpirationDate");
                             Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil5 = false;
@@ -4232,7 +4233,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements20 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "FriendlyName");
+                            NodeList elements20 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "FriendlyName");
                             Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                             if (friendlyNameElement != null) {
                                 boolean isNil6 = false;
@@ -4247,7 +4248,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements21 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostNames");
+                            NodeList elements21 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "HostNames");
                             Element hostNamesSequenceElement3 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                             if (hostNamesSequenceElement3 != null) {
                                 boolean isNil7 = false;
@@ -4256,14 +4257,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                     isNil7 = "true".equals(nilAttribute8.getValue());
                                 }
                                 if (isNil7 == false) {
-                                    for (int i5 = 0; i5 < hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement3.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
+                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostNamesSequenceElement3, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i5));
                                         certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                     }
                                 }
                             }
                             
-                            NodeList elements22 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IssueDate");
+                            NodeList elements22 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "IssueDate");
                             Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil8 = false;
@@ -4278,7 +4279,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements23 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Issuer");
+                            NodeList elements23 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Issuer");
                             Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                             if (issuerElement != null) {
                                 boolean isNil9 = false;
@@ -4293,7 +4294,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements24 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
+                            NodeList elements24 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Password");
                             Element passwordElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                             if (passwordElement2 != null) {
                                 boolean isNil10 = false;
@@ -4308,7 +4309,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements25 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PfxBlob");
+                            NodeList elements25 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "PfxBlob");
                             Element pfxBlobElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                             if (pfxBlobElement2 != null) {
                                 boolean isNil11 = false;
@@ -4323,7 +4324,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements26 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                            NodeList elements26 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                             Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                             if (selfLinkElement != null) {
                                 boolean isNil12 = false;
@@ -4338,7 +4339,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements27 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteName");
+                            NodeList elements27 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SiteName");
                             Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                             if (siteNameElement != null) {
                                 boolean isNil13 = false;
@@ -4353,7 +4354,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements28 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubjectName");
+                            NodeList elements28 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "SubjectName");
                             Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                             if (subjectNameElement != null) {
                                 boolean isNil14 = false;
@@ -4368,7 +4369,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements29 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
+                            NodeList elements29 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                             Element thumbprintElement4 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                             if (thumbprintElement4 != null) {
                                 boolean isNil15 = false;
@@ -4383,7 +4384,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements30 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ToDelete");
+                            NodeList elements30 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "ToDelete");
                             Element toDeleteElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                             if (toDeleteElement2 != null && (toDeleteElement2.getTextContent() == null || toDeleteElement2.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil16 = false;
@@ -4398,7 +4399,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                             }
                             
-                            NodeList elements31 = sSLCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Valid");
+                            NodeList elements31 = XmlUtility.getElementsByTagNameNS(sSLCertificatesElement, "http://schemas.microsoft.com/windowsazure", "Valid");
                             Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                             if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false) {
                                 boolean isNil17 = false;
@@ -4416,7 +4417,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     }
                 }
                 
-                NodeList elements32 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SelfLink");
+                NodeList elements32 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SelfLink");
                 Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                 if (selfLinkElement2 != null) {
                     URI selfLinkInstance2;
@@ -4424,7 +4425,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUri(selfLinkInstance2);
                 }
                 
-                NodeList elements33 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
+                NodeList elements33 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
                 Element serverFarmElement2 = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                 if (serverFarmElement2 != null) {
                     String serverFarmInstance;
@@ -4432,7 +4433,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setServerFarm(serverFarmInstance);
                 }
                 
-                NodeList elements34 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteMode");
+                NodeList elements34 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SiteMode");
                 Element siteModeElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                 if (siteModeElement2 != null) {
                     WebSiteMode siteModeInstance;
@@ -4440,53 +4441,53 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setSiteMode(siteModeInstance);
                 }
                 
-                NodeList elements35 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SiteProperties");
+                NodeList elements35 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "SiteProperties");
                 Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                 if (sitePropertiesElement != null) {
                     WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                     webSiteInstance.setSiteProperties(sitePropertiesInstance);
                     
-                    NodeList elements36 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AppSettings");
+                    NodeList elements36 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AppSettings");
                     Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                     if (appSettingsSequenceElement != null) {
-                        for (int i6 = 0; i6 < appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
-                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
-                            NodeList elements37 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i6 = i6 + 1) {
+                            org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(appSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i6));
+                            NodeList elements37 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
-                            NodeList elements38 = appSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements38 = XmlUtility.getElementsByTagNameNS(appSettingsElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String appSettingsValue = elements38.getLength() > 0 ? ((org.w3c.dom.Element) elements38.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getAppSettings().put(appSettingsKey, appSettingsValue);
                         }
                     }
                     
-                    NodeList elements39 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Metadata");
+                    NodeList elements39 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Metadata");
                     Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                     if (metadataSequenceElement != null) {
-                        for (int i7 = 0; i7 < metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
-                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
-                            NodeList elements40 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i7 = i7 + 1) {
+                            org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(metadataSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i7));
+                            NodeList elements40 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
-                            NodeList elements41 = metadataElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements41 = XmlUtility.getElementsByTagNameNS(metadataElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String metadataValue = elements41.getLength() > 0 ? ((org.w3c.dom.Element) elements41.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getMetadata().put(metadataKey, metadataValue);
                         }
                     }
                     
-                    NodeList elements42 = sitePropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Properties");
+                    NodeList elements42 = XmlUtility.getElementsByTagNameNS(sitePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Properties");
                     Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                     if (propertiesSequenceElement != null) {
-                        for (int i8 = 0; i8 < propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
-                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
-                            NodeList elements43 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                        for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").getLength(); i8 = i8 + 1) {
+                            org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(propertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "NameValuePair").item(i8));
+                            NodeList elements43 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
-                            NodeList elements44 = propertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
+                            NodeList elements44 = XmlUtility.getElementsByTagNameNS(propertiesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                             String propertiesValue = elements44.getLength() > 0 ? ((org.w3c.dom.Element) elements44.item(0)).getTextContent() : null;
                             sitePropertiesInstance.getProperties().put(propertiesKey, propertiesValue);
                         }
                     }
                 }
                 
-                NodeList elements45 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
+                NodeList elements45 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement2 = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                 if (stateElement2 != null) {
                     String stateInstance;
@@ -4494,7 +4495,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setState(stateInstance);
                 }
                 
-                NodeList elements46 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageState");
+                NodeList elements46 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "UsageState");
                 Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                 if (usageStateElement != null) {
                     WebSiteUsageState usageStateInstance;
@@ -4502,7 +4503,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                     webSiteInstance.setUsageState(usageStateInstance);
                 }
                 
-                NodeList elements47 = siteElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WebSpace");
+                NodeList elements47 = XmlUtility.getElementsByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "WebSpace");
                 Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                 if (webSpaceElement != null) {
                     String webSpaceInstance;

@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
 import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
@@ -439,10 +440,10 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
             Element affinityGroupElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (affinityGroupElement != null) {
-                NodeList elements2 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                NodeList elements2 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -450,7 +451,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                NodeList elements3 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (labelElement != null) {
                     String labelInstance;
@@ -458,7 +459,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements4 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                NodeList elements4 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Description");
                 Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (descriptionElement != null) {
                     String descriptionInstance;
@@ -466,7 +467,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements5 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                NodeList elements5 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Location");
                 Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (locationElement != null) {
                     String locationInstance;
@@ -474,15 +475,15 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements6 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedServices");
+                NodeList elements6 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "HostedServices");
                 Element hostedServicesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (hostedServicesSequenceElement != null) {
-                    for (int i1 = 0; i1 < hostedServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedService").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) hostedServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostedService").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(hostedServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "HostedService").item(i1));
                         AffinityGroupGetResponse.HostedServiceReference hostedServiceInstance = new AffinityGroupGetResponse.HostedServiceReference();
                         result.getHostedServices().add(hostedServiceInstance);
                         
-                        NodeList elements7 = hostedServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Url");
+                        NodeList elements7 = XmlUtility.getElementsByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
                         Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                         if (urlElement != null) {
                             URI urlInstance;
@@ -490,7 +491,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                             hostedServiceInstance.setUri(urlInstance);
                         }
                         
-                        NodeList elements8 = hostedServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
+                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(hostedServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                         Element serviceNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                         if (serviceNameElement != null) {
                             String serviceNameInstance;
@@ -500,15 +501,15 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     }
                 }
                 
-                NodeList elements9 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StorageServices");
+                NodeList elements9 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "StorageServices");
                 Element storageServicesSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (storageServicesSequenceElement != null) {
-                    for (int i2 = 0; i2 < storageServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StorageService").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StorageService").item(i2));
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").getLength(); i2 = i2 + 1) {
+                        org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").item(i2));
                         AffinityGroupGetResponse.StorageServiceReference storageServiceInstance = new AffinityGroupGetResponse.StorageServiceReference();
                         result.getStorageServices().add(storageServiceInstance);
                         
-                        NodeList elements10 = storageServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Url");
+                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
                         Element urlElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (urlElement2 != null) {
                             URI urlInstance2;
@@ -516,7 +517,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                             storageServiceInstance.setUri(urlInstance2);
                         }
                         
-                        NodeList elements11 = storageServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
+                        NodeList elements11 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                         Element serviceNameElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                         if (serviceNameElement2 != null) {
                             String serviceNameInstance2;
@@ -526,11 +527,11 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                     }
                 }
                 
-                NodeList elements12 = affinityGroupElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capabilities");
+                NodeList elements12 = XmlUtility.getElementsByTagNameNS(affinityGroupElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
                 Element capabilitiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < capabilitiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capability").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capability").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").getLength(); i3 = i3 + 1) {
+                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").item(i3));
                         result.getCapabilities().add(capabilitiesElement.getTextContent());
                     }
                 }
@@ -637,15 +638,15 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroups");
+            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AffinityGroups");
             Element affinityGroupsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (affinityGroupsSequenceElement != null) {
-                for (int i1 = 0; i1 < affinityGroupsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) affinityGroupsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element affinityGroupsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(affinityGroupsSequenceElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup").item(i1));
                     AffinityGroupListResponse.AffinityGroup affinityGroupInstance = new AffinityGroupListResponse.AffinityGroup();
                     result.getAffinityGroups().add(affinityGroupInstance);
                     
-                    NodeList elements2 = affinityGroupsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
+                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -653,7 +654,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                         affinityGroupInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = affinityGroupsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
+                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -661,7 +662,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                         affinityGroupInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = affinityGroupsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
+                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -669,7 +670,7 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                         affinityGroupInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements5 = affinityGroupsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
+                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Location");
                     Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (locationElement != null) {
                         String locationInstance;
@@ -677,11 +678,11 @@ public class AffinityGroupOperationsImpl implements ServiceOperations<Management
                         affinityGroupInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements6 = affinityGroupsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capabilities");
+                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(affinityGroupsElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
                     Element capabilitiesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (capabilitiesSequenceElement != null) {
-                        for (int i2 = 0; i2 < capabilitiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capability").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) capabilitiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Capability").item(i2));
+                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").item(i2));
                             affinityGroupInstance.getCapabilities().add(capabilitiesElement.getTextContent());
                         }
                     }
