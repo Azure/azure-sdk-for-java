@@ -1180,7 +1180,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
         HttpPost httpRequest = new HttpPost(url);
         
         // Set Headers
-        httpRequest.setHeader("Content-Length", "0");
+        // httpRequest.setHeader("Content-Length", "0");
         httpRequest.setHeader("x-ms-version", "2013-08-01");
         
         // Send Request

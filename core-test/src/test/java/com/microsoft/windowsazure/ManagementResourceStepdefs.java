@@ -185,8 +185,7 @@ public class ManagementResourceStepdefs
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]));
         return method.invoke(object);
     }
-    
-    @When("^I invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
+
     public Object when_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         String[] parts = methodName.split("\\.");
@@ -194,6 +193,12 @@ public class ManagementResourceStepdefs
 
         Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameter1Type), TextUtility.getJavaType(parameter2Type));
         return method.invoke(object, parameter1, parameter2);
+    }
+
+    @When("^I invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public Object when_invoke_with_parameter_values_string(String methodName, String parameter1, String parameter1Type, String parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
+    {
+        return when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, TextUtility.convertStringTo(parameter2, parameter2Type), parameter2Type);
     }
 
     @When("^I invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
@@ -237,13 +242,18 @@ public class ManagementResourceStepdefs
     {
         return when_invoke_with_parameter_converted_value(methodName, parameter, parameterType);
     }
-    
+
+    @When("^I invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
+    public void I_invoke_with_parameter_values_of_type_and_of_type_I_get_the_result_into(String methodName, String parameter1, String parameter1Type, String parameter2, String parameter2Type, String resultName) throws Throwable {
+        objects.put(resultName, when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, TextUtility.convertStringTo(parameter2, parameter2Type), parameter2Type));
+    }
+
     @When("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1Type, parameter2, parameter2Type);
     }
-    
+
     private Object getObject(String[] parts) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         if (objects.containsKey(parts[0]))
