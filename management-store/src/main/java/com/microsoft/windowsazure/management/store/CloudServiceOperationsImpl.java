@@ -441,15 +441,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("CloudServices");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CloudServices");
             Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (cloudServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagName("CloudService").item(i1));
+                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CloudService").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CloudService").item(i1));
                     CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
                     result.getCloudServices().add(cloudServiceInstance);
                     
-                    NodeList elements2 = cloudServicesElement.getElementsByTagName("Name");
+                    NodeList elements2 = cloudServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -457,7 +457,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                         cloudServiceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = cloudServicesElement.getElementsByTagName("Label");
+                    NodeList elements3 = cloudServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (labelElement != null) {
                         String labelInstance;
@@ -465,7 +465,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                         cloudServiceInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = cloudServicesElement.getElementsByTagName("Description");
+                    NodeList elements4 = cloudServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                     Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (descriptionElement != null) {
                         String descriptionInstance;
@@ -473,7 +473,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                         cloudServiceInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements5 = cloudServicesElement.getElementsByTagName("GeoRegion");
+                    NodeList elements5 = cloudServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "GeoRegion");
                     Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (geoRegionElement != null) {
                         String geoRegionInstance;
@@ -481,15 +481,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                         cloudServiceInstance.setGeoRegion(geoRegionInstance);
                     }
                     
-                    NodeList elements6 = cloudServicesElement.getElementsByTagName("Resources");
+                    NodeList elements6 = cloudServicesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Resources");
                     Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (resourcesSequenceElement != null) {
-                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagName("Resource").item(i2));
+                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Resource").getLength(); i2 = i2 + 1) {
+                            org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Resource").item(i2));
                             CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
                             cloudServiceInstance.getResources().add(resourceInstance);
                             
-                            NodeList elements7 = resourcesElement.getElementsByTagName("ResourceProviderNamespace");
+                            NodeList elements7 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceProviderNamespace");
                             Element resourceProviderNamespaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                             if (resourceProviderNamespaceElement != null) {
                                 String resourceProviderNamespaceInstance;
@@ -497,7 +497,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setNamespace(resourceProviderNamespaceInstance);
                             }
                             
-                            NodeList elements8 = resourcesElement.getElementsByTagName("Type");
+                            NodeList elements8 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                             Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                             if (typeElement != null) {
                                 String typeInstance;
@@ -505,7 +505,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setType(typeInstance);
                             }
                             
-                            NodeList elements9 = resourcesElement.getElementsByTagName("Name");
+                            NodeList elements9 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                             Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                             if (nameElement2 != null) {
                                 String nameInstance2;
@@ -513,7 +513,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setName(nameInstance2);
                             }
                             
-                            NodeList elements10 = resourcesElement.getElementsByTagName("Plan");
+                            NodeList elements10 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Plan");
                             Element planElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                             if (planElement != null) {
                                 String planInstance;
@@ -521,7 +521,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setPlan(planInstance);
                             }
                             
-                            NodeList elements11 = resourcesElement.getElementsByTagName("SchemaVersion");
+                            NodeList elements11 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SchemaVersion");
                             Element schemaVersionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                             if (schemaVersionElement != null) {
                                 String schemaVersionInstance;
@@ -529,7 +529,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setSchemaVersion(schemaVersionInstance);
                             }
                             
-                            NodeList elements12 = resourcesElement.getElementsByTagName("ETag");
+                            NodeList elements12 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ETag");
                             Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                             if (eTagElement != null) {
                                 String eTagInstance;
@@ -537,7 +537,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setETag(eTagInstance);
                             }
                             
-                            NodeList elements13 = resourcesElement.getElementsByTagName("State");
+                            NodeList elements13 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                             Element stateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                             if (stateElement != null) {
                                 String stateInstance;
@@ -545,15 +545,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 resourceInstance.setState(stateInstance);
                             }
                             
-                            NodeList elements14 = resourcesElement.getElementsByTagName("UsageMeters");
+                            NodeList elements14 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageMeters");
                             Element usageMetersSequenceElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                             if (usageMetersSequenceElement != null) {
-                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1) {
-                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagName("UsageMeter").item(i3));
+                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageMeter").getLength(); i3 = i3 + 1) {
+                                    org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsageMeter").item(i3));
                                     CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
                                     resourceInstance.getUsageLimits().add(usageMeterInstance);
                                     
-                                    NodeList elements15 = usageMetersElement.getElementsByTagName("Name");
+                                    NodeList elements15 = usageMetersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                                     Element nameElement3 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                                     if (nameElement3 != null) {
                                         String nameInstance3;
@@ -561,7 +561,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                         usageMeterInstance.setName(nameInstance3);
                                     }
                                     
-                                    NodeList elements16 = usageMetersElement.getElementsByTagName("Unit");
+                                    NodeList elements16 = usageMetersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Unit");
                                     Element unitElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                                     if (unitElement != null) {
                                         String unitInstance;
@@ -569,7 +569,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                         usageMeterInstance.setUnit(unitInstance);
                                     }
                                     
-                                    NodeList elements17 = usageMetersElement.getElementsByTagName("Included");
+                                    NodeList elements17 = usageMetersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Included");
                                     Element includedElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                                     if (includedElement != null) {
                                         long includedInstance;
@@ -577,7 +577,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                         usageMeterInstance.setAmountIncluded(includedInstance);
                                     }
                                     
-                                    NodeList elements18 = usageMetersElement.getElementsByTagName("Used");
+                                    NodeList elements18 = usageMetersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Used");
                                     Element usedElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                                     if (usedElement != null) {
                                         long usedInstance;
@@ -587,26 +587,26 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 }
                             }
                             
-                            NodeList elements19 = resourcesElement.getElementsByTagName("OutputItems");
+                            NodeList elements19 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OutputItems");
                             Element outputItemsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                             if (outputItemsSequenceElement != null) {
-                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1) {
-                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagName("OutputItem").item(i4));
-                                    NodeList elements20 = outputItemsElement.getElementsByTagName("Key");
+                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OutputItem").getLength(); i4 = i4 + 1) {
+                                    org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OutputItem").item(i4));
+                                    NodeList elements20 = outputItemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Key");
                                     String outputItemsKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
-                                    NodeList elements21 = outputItemsElement.getElementsByTagName("Value");
+                                    NodeList elements21 = outputItemsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
                                     String outputItemsValue = elements21.getLength() > 0 ? ((org.w3c.dom.Element) elements21.item(0)).getTextContent() : null;
                                     resourceInstance.getOutputItems().put(outputItemsKey, outputItemsValue);
                                 }
                             }
                             
-                            NodeList elements22 = resourcesElement.getElementsByTagName("OperationStatus");
+                            NodeList elements22 = resourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationStatus");
                             Element operationStatusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                             if (operationStatusElement != null) {
                                 CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
                                 resourceInstance.setStatus(operationStatusInstance);
                                 
-                                NodeList elements23 = operationStatusElement.getElementsByTagName("Type");
+                                NodeList elements23 = operationStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                                 Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                                 if (typeElement2 != null) {
                                     String typeInstance2;
@@ -614,7 +614,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     operationStatusInstance.setType(typeInstance2);
                                 }
                                 
-                                NodeList elements24 = operationStatusElement.getElementsByTagName("Result");
+                                NodeList elements24 = operationStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Result");
                                 Element resultElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                                 if (resultElement != null) {
                                     String resultInstance;

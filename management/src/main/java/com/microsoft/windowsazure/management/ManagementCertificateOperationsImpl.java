@@ -440,10 +440,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate");
             Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (subscriptionCertificateElement != null) {
-                NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
+                NodeList elements2 = subscriptionCertificateElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
                 Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (subscriptionCertificatePublicKeyElement != null) {
                     byte[] subscriptionCertificatePublicKeyInstance;
@@ -451,7 +451,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     result.setPublicKey(subscriptionCertificatePublicKeyInstance);
                 }
                 
-                NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
+                NodeList elements3 = subscriptionCertificateElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
                 Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (subscriptionCertificateThumbprintElement != null) {
                     String subscriptionCertificateThumbprintInstance;
@@ -459,7 +459,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     result.setThumbprint(subscriptionCertificateThumbprintInstance);
                 }
                 
-                NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
+                NodeList elements4 = subscriptionCertificateElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
                 Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (subscriptionCertificateDataElement != null) {
                     byte[] subscriptionCertificateDataInstance;
@@ -467,7 +467,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     result.setData(subscriptionCertificateDataInstance);
                 }
                 
-                NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
+                NodeList elements5 = subscriptionCertificateElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Created");
                 Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (createdElement != null) {
                     Calendar createdInstance;
@@ -583,15 +583,15 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificates");
             Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (subscriptionCertificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
+                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate").item(i1));
                     ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
                     result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
                     
-                    NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
+                    NodeList elements2 = subscriptionCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
                     Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (subscriptionCertificatePublicKeyElement != null) {
                         byte[] subscriptionCertificatePublicKeyInstance;
@@ -599,7 +599,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                         subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
                     }
                     
-                    NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
+                    NodeList elements3 = subscriptionCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
                     Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (subscriptionCertificateThumbprintElement != null) {
                         String subscriptionCertificateThumbprintInstance;
@@ -607,7 +607,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                         subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
                     }
                     
-                    NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
+                    NodeList elements4 = subscriptionCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
                     Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (subscriptionCertificateDataElement != null) {
                         byte[] subscriptionCertificateDataInstance;
@@ -615,7 +615,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                         subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
                     }
                     
-                    NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
+                    NodeList elements5 = subscriptionCertificatesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Created");
                     Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (createdElement != null) {
                         Calendar createdInstance;

@@ -234,10 +234,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -245,7 +245,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -253,7 +253,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -261,7 +261,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                 Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
@@ -269,7 +269,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setStartIPAddress(startIPAddressInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                 Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;
@@ -493,15 +493,15 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                     FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
                     result.getFirewallRules().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -509,7 +509,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
@@ -517,7 +517,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("StartIPAddress");
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                     Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (startIPAddressElement != null) {
                         InetAddress startIPAddressInstance;
@@ -525,7 +525,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                         serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("EndIPAddress");
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                     Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (endIPAddressElement != null) {
                         InetAddress endIPAddressInstance;
@@ -702,10 +702,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -713,7 +713,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Type");
+                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -721,7 +721,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagName("State");
+                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -729,7 +729,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagName("StartIPAddress");
+                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                 Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
@@ -737,7 +737,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
                     result.setStartIPAddress(startIPAddressInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagName("EndIPAddress");
+                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                 Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;

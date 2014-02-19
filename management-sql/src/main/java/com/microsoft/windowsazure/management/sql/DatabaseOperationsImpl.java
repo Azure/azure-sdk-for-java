@@ -235,10 +235,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -246,7 +246,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Id");
+                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (idElement != null) {
                     int idInstance;
@@ -254,7 +254,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setId(idInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagName("Type");
+                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -262,7 +262,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagName("State");
+                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -270,7 +270,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagName("Edition");
+                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Edition");
                 Element editionElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (editionElement2 != null) {
                     String editionInstance;
@@ -278,7 +278,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setEdition(editionInstance);
                 }
                 
-                NodeList elements7 = serviceResourceElement2.getElementsByTagName("MaxSizeGB");
+                NodeList elements7 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxSizeGB");
                 Element maxSizeGBElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (maxSizeGBElement2 != null) {
                     long maxSizeGBInstance;
@@ -286,7 +286,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
-                NodeList elements8 = serviceResourceElement2.getElementsByTagName("CollationName");
+                NodeList elements8 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CollationName");
                 Element collationNameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (collationNameElement2 != null) {
                     String collationNameInstance;
@@ -294,7 +294,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCollationName(collationNameInstance);
                 }
                 
-                NodeList elements9 = serviceResourceElement2.getElementsByTagName("CreationDate");
+                NodeList elements9 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (creationDateElement != null) {
                     Calendar creationDateInstance;
@@ -302,7 +302,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCreationDate(creationDateInstance);
                 }
                 
-                NodeList elements10 = serviceResourceElement2.getElementsByTagName("IsFederationRoot");
+                NodeList elements10 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
@@ -310,7 +310,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
-                NodeList elements11 = serviceResourceElement2.getElementsByTagName("IsSystemObject");
+                NodeList elements11 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
@@ -318,7 +318,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 
-                NodeList elements12 = serviceResourceElement2.getElementsByTagName("SizeMB");
+                NodeList elements12 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (sizeMBElement != null) {
                     String sizeMBInstance;
@@ -326,7 +326,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setSizeMB(sizeMBInstance);
                 }
                 
-                NodeList elements13 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
+                NodeList elements13 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorCodeElement != null) {
                     String serviceObjectiveAssignmentErrorCodeInstance;
@@ -334,7 +334,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
                 }
                 
-                NodeList elements14 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
+                NodeList elements14 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
@@ -342,7 +342,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
                 }
                 
-                NodeList elements15 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentState");
+                NodeList elements15 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (serviceObjectiveAssignmentStateElement != null) {
                     String serviceObjectiveAssignmentStateInstance;
@@ -350,7 +350,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
                 }
                 
-                NodeList elements16 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
+                NodeList elements16 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (serviceObjectiveAssignmentStateDescriptionElement != null) {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
@@ -358,7 +358,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
                 }
                 
-                NodeList elements17 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
+                NodeList elements17 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (serviceObjectiveAssignmentSuccessDateElement != null) {
                     String serviceObjectiveAssignmentSuccessDateInstance;
@@ -366,7 +366,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
                 }
                 
-                NodeList elements18 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveId");
+                NodeList elements18 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
                 Element serviceObjectiveIdElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (serviceObjectiveIdElement2 != null) {
                     String serviceObjectiveIdInstance;
@@ -588,10 +588,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement != null) {
-                NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement != null) {
                     String nameInstance;
@@ -599,7 +599,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement.getElementsByTagName("Id");
+                NodeList elements3 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (idElement != null) {
                     int idInstance;
@@ -607,7 +607,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setId(idInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement.getElementsByTagName("Type");
+                NodeList elements4 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -615,7 +615,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement.getElementsByTagName("State");
+                NodeList elements5 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -623,7 +623,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement.getElementsByTagName("Edition");
+                NodeList elements6 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Edition");
                 Element editionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (editionElement != null) {
                     String editionInstance;
@@ -631,7 +631,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setEdition(editionInstance);
                 }
                 
-                NodeList elements7 = serviceResourceElement.getElementsByTagName("MaxSizeGB");
+                NodeList elements7 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxSizeGB");
                 Element maxSizeGBElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (maxSizeGBElement != null) {
                     long maxSizeGBInstance;
@@ -639,7 +639,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
-                NodeList elements8 = serviceResourceElement.getElementsByTagName("CollationName");
+                NodeList elements8 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CollationName");
                 Element collationNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (collationNameElement != null) {
                     String collationNameInstance;
@@ -647,7 +647,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCollationName(collationNameInstance);
                 }
                 
-                NodeList elements9 = serviceResourceElement.getElementsByTagName("CreationDate");
+                NodeList elements9 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (creationDateElement != null) {
                     Calendar creationDateInstance;
@@ -655,7 +655,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCreationDate(creationDateInstance);
                 }
                 
-                NodeList elements10 = serviceResourceElement.getElementsByTagName("IsFederationRoot");
+                NodeList elements10 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
@@ -663,7 +663,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
-                NodeList elements11 = serviceResourceElement.getElementsByTagName("IsSystemObject");
+                NodeList elements11 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
@@ -671,7 +671,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 
-                NodeList elements12 = serviceResourceElement.getElementsByTagName("SizeMB");
+                NodeList elements12 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (sizeMBElement != null) {
                     String sizeMBInstance;
@@ -679,7 +679,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setSizeMB(sizeMBInstance);
                 }
                 
-                NodeList elements13 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
+                NodeList elements13 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorCodeElement != null) {
                     String serviceObjectiveAssignmentErrorCodeInstance;
@@ -687,7 +687,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
                 }
                 
-                NodeList elements14 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
+                NodeList elements14 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
@@ -695,7 +695,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
                 }
                 
-                NodeList elements15 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentState");
+                NodeList elements15 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (serviceObjectiveAssignmentStateElement != null) {
                     String serviceObjectiveAssignmentStateInstance;
@@ -703,7 +703,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
                 }
                 
-                NodeList elements16 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
+                NodeList elements16 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (serviceObjectiveAssignmentStateDescriptionElement != null) {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
@@ -711,7 +711,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
                 }
                 
-                NodeList elements17 = serviceResourceElement.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
+                NodeList elements17 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (serviceObjectiveAssignmentSuccessDateElement != null) {
                     String serviceObjectiveAssignmentSuccessDateInstance;
@@ -719,7 +719,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
                 }
                 
-                NodeList elements18 = serviceResourceElement.getElementsByTagName("ServiceObjectiveId");
+                NodeList elements18 = serviceResourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
                 Element serviceObjectiveIdElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (serviceObjectiveIdElement != null) {
                     String serviceObjectiveIdInstance;
@@ -829,15 +829,15 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
                     DatabaseListResponse.Database serviceResourceInstance = new DatabaseListResponse.Database();
                     result.getDatabases().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
+                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (nameElement != null) {
                         String nameInstance;
@@ -845,7 +845,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagName("Id");
+                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                     Element idElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                     if (idElement != null) {
                         int idInstance;
@@ -853,7 +853,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setId(idInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagName("Type");
+                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                     Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (typeElement != null) {
                         String typeInstance;
@@ -861,7 +861,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagName("State");
+                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                     Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                     if (stateElement != null) {
                         String stateInstance;
@@ -869,7 +869,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setState(stateInstance);
                     }
                     
-                    NodeList elements6 = serviceResourcesElement.getElementsByTagName("Edition");
+                    NodeList elements6 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Edition");
                     Element editionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                     if (editionElement != null) {
                         String editionInstance;
@@ -877,7 +877,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setEdition(editionInstance);
                     }
                     
-                    NodeList elements7 = serviceResourcesElement.getElementsByTagName("MaxSizeGB");
+                    NodeList elements7 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxSizeGB");
                     Element maxSizeGBElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                     if (maxSizeGBElement != null) {
                         long maxSizeGBInstance;
@@ -885,7 +885,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                     }
                     
-                    NodeList elements8 = serviceResourcesElement.getElementsByTagName("CollationName");
+                    NodeList elements8 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CollationName");
                     Element collationNameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                     if (collationNameElement != null) {
                         String collationNameInstance;
@@ -893,7 +893,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setCollationName(collationNameInstance);
                     }
                     
-                    NodeList elements9 = serviceResourcesElement.getElementsByTagName("CreationDate");
+                    NodeList elements9 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreationDate");
                     Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (creationDateElement != null) {
                         Calendar creationDateInstance;
@@ -901,7 +901,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setCreationDate(creationDateInstance);
                     }
                     
-                    NodeList elements10 = serviceResourcesElement.getElementsByTagName("IsFederationRoot");
+                    NodeList elements10 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                     Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                     if (isFederationRootElement != null) {
                         boolean isFederationRootInstance;
@@ -909,7 +909,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                     }
                     
-                    NodeList elements11 = serviceResourcesElement.getElementsByTagName("IsSystemObject");
+                    NodeList elements11 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                     Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                     if (isSystemObjectElement != null) {
                         boolean isSystemObjectInstance;
@@ -917,7 +917,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                     }
                     
-                    NodeList elements12 = serviceResourcesElement.getElementsByTagName("SizeMB");
+                    NodeList elements12 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SizeMB");
                     Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                     if (sizeMBElement != null) {
                         String sizeMBInstance;
@@ -925,7 +925,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setSizeMB(sizeMBInstance);
                     }
                     
-                    NodeList elements13 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
+                    NodeList elements13 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorCode");
                     Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                     if (serviceObjectiveAssignmentErrorCodeElement != null) {
                         String serviceObjectiveAssignmentErrorCodeInstance;
@@ -933,7 +933,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
                     }
                     
-                    NodeList elements14 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
+                    NodeList elements14 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorDescription");
                     Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                     if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
                         String serviceObjectiveAssignmentErrorDescriptionInstance;
@@ -941,7 +941,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
                     }
                     
-                    NodeList elements15 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentState");
+                    NodeList elements15 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentState");
                     Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                     if (serviceObjectiveAssignmentStateElement != null) {
                         String serviceObjectiveAssignmentStateInstance;
@@ -949,7 +949,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
                     }
                     
-                    NodeList elements16 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
+                    NodeList elements16 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentStateDescription");
                     Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                     if (serviceObjectiveAssignmentStateDescriptionElement != null) {
                         String serviceObjectiveAssignmentStateDescriptionInstance;
@@ -957,7 +957,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
                     }
                     
-                    NodeList elements17 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
+                    NodeList elements17 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentSuccessDate");
                     Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                     if (serviceObjectiveAssignmentSuccessDateElement != null) {
                         String serviceObjectiveAssignmentSuccessDateInstance;
@@ -965,7 +965,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                         serviceResourceInstance.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
                     }
                     
-                    NodeList elements18 = serviceResourcesElement.getElementsByTagName("ServiceObjectiveId");
+                    NodeList elements18 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
                     Element serviceObjectiveIdElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                     if (serviceObjectiveIdElement != null) {
                         String serviceObjectiveIdInstance;
@@ -1147,10 +1147,10 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
             Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagName("Name");
+                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (nameElement2 != null) {
                     String nameInstance;
@@ -1158,7 +1158,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagName("Id");
+                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
                 Element idElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (idElement2 != null) {
                     int idInstance;
@@ -1166,7 +1166,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setId(idInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagName("Type");
+                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
                 Element typeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (typeElement != null) {
                     String typeInstance;
@@ -1174,7 +1174,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagName("State");
+                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
                 Element stateElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (stateElement != null) {
                     String stateInstance;
@@ -1182,7 +1182,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagName("Edition");
+                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Edition");
                 Element editionElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (editionElement2 != null) {
                     String editionInstance;
@@ -1190,7 +1190,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setEdition(editionInstance);
                 }
                 
-                NodeList elements7 = serviceResourceElement2.getElementsByTagName("MaxSizeGB");
+                NodeList elements7 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxSizeGB");
                 Element maxSizeGBElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (maxSizeGBElement2 != null) {
                     long maxSizeGBInstance;
@@ -1198,7 +1198,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setMaximumDatabaseSizeInGB(maxSizeGBInstance);
                 }
                 
-                NodeList elements8 = serviceResourceElement2.getElementsByTagName("CollationName");
+                NodeList elements8 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CollationName");
                 Element collationNameElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (collationNameElement2 != null) {
                     String collationNameInstance;
@@ -1206,7 +1206,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCollationName(collationNameInstance);
                 }
                 
-                NodeList elements9 = serviceResourceElement2.getElementsByTagName("CreationDate");
+                NodeList elements9 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreationDate");
                 Element creationDateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                 if (creationDateElement != null) {
                     Calendar creationDateInstance;
@@ -1214,7 +1214,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setCreationDate(creationDateInstance);
                 }
                 
-                NodeList elements10 = serviceResourceElement2.getElementsByTagName("IsFederationRoot");
+                NodeList elements10 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 Element isFederationRootElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
@@ -1222,7 +1222,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsFederationRoot(isFederationRootInstance);
                 }
                 
-                NodeList elements11 = serviceResourceElement2.getElementsByTagName("IsSystemObject");
+                NodeList elements11 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 Element isSystemObjectElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
@@ -1230,7 +1230,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setIsSystemObject(isSystemObjectInstance);
                 }
                 
-                NodeList elements12 = serviceResourceElement2.getElementsByTagName("SizeMB");
+                NodeList elements12 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SizeMB");
                 Element sizeMBElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                 if (sizeMBElement != null) {
                     String sizeMBInstance;
@@ -1238,7 +1238,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setSizeMB(sizeMBInstance);
                 }
                 
-                NodeList elements13 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorCode");
+                NodeList elements13 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorCode");
                 Element serviceObjectiveAssignmentErrorCodeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorCodeElement != null) {
                     String serviceObjectiveAssignmentErrorCodeInstance;
@@ -1246,7 +1246,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorCode(serviceObjectiveAssignmentErrorCodeInstance);
                 }
                 
-                NodeList elements14 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentErrorDescription");
+                NodeList elements14 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentErrorDescription");
                 Element serviceObjectiveAssignmentErrorDescriptionElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                 if (serviceObjectiveAssignmentErrorDescriptionElement != null) {
                     String serviceObjectiveAssignmentErrorDescriptionInstance;
@@ -1254,7 +1254,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentErrorDescription(serviceObjectiveAssignmentErrorDescriptionInstance);
                 }
                 
-                NodeList elements15 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentState");
+                NodeList elements15 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentState");
                 Element serviceObjectiveAssignmentStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                 if (serviceObjectiveAssignmentStateElement != null) {
                     String serviceObjectiveAssignmentStateInstance;
@@ -1262,7 +1262,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentState(serviceObjectiveAssignmentStateInstance);
                 }
                 
-                NodeList elements16 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentStateDescription");
+                NodeList elements16 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentStateDescription");
                 Element serviceObjectiveAssignmentStateDescriptionElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                 if (serviceObjectiveAssignmentStateDescriptionElement != null) {
                     String serviceObjectiveAssignmentStateDescriptionInstance;
@@ -1270,7 +1270,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentStateDescription(serviceObjectiveAssignmentStateDescriptionInstance);
                 }
                 
-                NodeList elements17 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveAssignmentSuccessDate");
+                NodeList elements17 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveAssignmentSuccessDate");
                 Element serviceObjectiveAssignmentSuccessDateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                 if (serviceObjectiveAssignmentSuccessDateElement != null) {
                     String serviceObjectiveAssignmentSuccessDateInstance;
@@ -1278,7 +1278,7 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     result.setServiceObjectiveAssignmentSuccessDate(serviceObjectiveAssignmentSuccessDateInstance);
                 }
                 
-                NodeList elements18 = serviceResourceElement2.getElementsByTagName("ServiceObjectiveId");
+                NodeList elements18 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceObjectiveId");
                 Element serviceObjectiveIdElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                 if (serviceObjectiveIdElement2 != null) {
                     String serviceObjectiveIdInstance;

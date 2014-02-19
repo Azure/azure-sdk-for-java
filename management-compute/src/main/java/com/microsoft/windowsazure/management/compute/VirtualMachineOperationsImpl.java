@@ -4686,10 +4686,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
+            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PersistentVMRole");
             Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (persistentVMRoleElement != null) {
-                NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
+                NodeList elements2 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
                 Element roleNameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                 if (roleNameElement != null) {
                     String roleNameInstance;
@@ -4697,7 +4697,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setRoleName(roleNameInstance);
                 }
                 
-                NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
+                NodeList elements3 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
                 Element osVersionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
                 if (osVersionElement != null) {
                     String osVersionInstance;
@@ -4705,7 +4705,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setOsVersion(osVersionInstance);
                 }
                 
-                NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
+                NodeList elements4 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleType");
                 Element roleTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (roleTypeElement != null) {
                     VirtualMachineRoleType roleTypeInstance;
@@ -4713,7 +4713,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setRoleType(roleTypeInstance);
                 }
                 
-                NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
+                NodeList elements5 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                 Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
                 if (availabilitySetNameElement != null) {
                     String availabilitySetNameInstance;
@@ -4721,7 +4721,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setAvailabilitySetName(availabilitySetNameInstance);
                 }
                 
-                NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
+                NodeList elements6 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
                 Element roleSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
                 if (roleSizeElement != null) {
                     String roleSizeInstance;
@@ -4729,7 +4729,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setRoleSize(roleSizeInstance);
                 }
                 
-                NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
+                NodeList elements7 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
                 Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
                 if (defaultWinRmCertificateThumbprintElement != null) {
                     String defaultWinRmCertificateThumbprintInstance;
@@ -4737,15 +4737,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
                 }
                 
-                NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
+                NodeList elements8 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                 Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
                 if (configurationSetsSequenceElement != null) {
-                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
+                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").getLength(); i1 = i1 + 1) {
+                        org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").item(i1));
                         ConfigurationSet configurationSetInstance = new ConfigurationSet();
                         result.getConfigurationSets().add(configurationSetInstance);
                         
-                        NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
+                        NodeList elements9 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                         Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (configurationSetTypeElement != null) {
                             String configurationSetTypeInstance;
@@ -4753,15 +4753,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
                         }
                         
-                        NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
+                        NodeList elements10 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                         Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
                         if (inputEndpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
+                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").getLength(); i2 = i2 + 1) {
+                                org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").item(i2));
                                 InputEndpoint inputEndpointInstance = new InputEndpoint();
                                 configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                 
-                                NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
+                                NodeList elements11 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                                 Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
                                 if (loadBalancedEndpointSetNameElement != null) {
                                     String loadBalancedEndpointSetNameInstance;
@@ -4769,7 +4769,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                 }
                                 
-                                NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
+                                NodeList elements12 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                                 Element localPortElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
@@ -4777,7 +4777,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
-                                NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
+                                NodeList elements13 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
                                 Element nameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
                                 if (nameElement != null) {
                                     String nameInstance;
@@ -4785,7 +4785,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setName(nameInstance);
                                 }
                                 
-                                NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
+                                NodeList elements14 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
                                 Element portElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
                                 if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                     int portInstance;
@@ -4793,13 +4793,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setPort(portInstance);
                                 }
                                 
-                                NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
+                                NodeList elements15 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                                 Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
                                 if (loadBalancerProbeElement != null) {
                                     LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                     inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                     
-                                    NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
+                                    NodeList elements16 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
                                     Element pathElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
                                     if (pathElement != null) {
                                         String pathInstance;
@@ -4807,7 +4807,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         loadBalancerProbeInstance.setPath(pathInstance);
                                     }
                                     
-                                    NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
+                                    NodeList elements17 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
                                     Element portElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
                                     if (portElement2 != null) {
                                         int portInstance2;
@@ -4815,7 +4815,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         loadBalancerProbeInstance.setPort(portInstance2);
                                     }
                                     
-                                    NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
+                                    NodeList elements18 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                                     Element protocolElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
                                     if (protocolElement != null) {
                                         LoadBalancerProbeTransportProtocol protocolInstance;
@@ -4823,7 +4823,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         loadBalancerProbeInstance.setProtocol(protocolInstance);
                                     }
                                     
-                                    NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
+                                    NodeList elements19 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                     Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
                                     if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                         int intervalInSecondsInstance;
@@ -4831,7 +4831,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                     }
                                     
-                                    NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
+                                    NodeList elements20 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                     Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
                                     if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                         int timeoutInSecondsInstance;
@@ -4840,7 +4840,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     }
                                 }
                                 
-                                NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
+                                NodeList elements21 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                                 Element protocolElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
                                 if (protocolElement2 != null) {
                                     String protocolInstance2;
@@ -4848,7 +4848,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setProtocol(protocolInstance2);
                                 }
                                 
-                                NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
+                                NodeList elements22 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Vip");
                                 Element vipElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
                                 if (vipElement != null) {
                                     InetAddress vipInstance;
@@ -4856,7 +4856,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setVirtualIPAddress(vipInstance);
                                 }
                                 
-                                NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
+                                NodeList elements23 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                 Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
                                 if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableDirectServerReturnInstance;
@@ -4864,21 +4864,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                 }
                                 
-                                NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
+                                NodeList elements24 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                                 Element endpointAclElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
                                 if (endpointAclElement != null) {
                                     EndpointAcl endpointAclInstance = new EndpointAcl();
                                     inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                     
-                                    NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
+                                    NodeList elements25 = endpointAclElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rules");
                                     Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
                                     if (rulesSequenceElement != null) {
-                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1) {
-                                            org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i3));
+                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").getLength(); i3 = i3 + 1) {
+                                            org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").item(i3));
                                             AccessControlListRule ruleInstance = new AccessControlListRule();
                                             endpointAclInstance.getRules().add(ruleInstance);
                                             
-                                            NodeList elements26 = rulesElement.getElementsByTagName("Order");
+                                            NodeList elements26 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Order");
                                             Element orderElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
                                             if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                 int orderInstance;
@@ -4886,7 +4886,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 ruleInstance.setOrder(orderInstance);
                                             }
                                             
-                                            NodeList elements27 = rulesElement.getElementsByTagName("Action");
+                                            NodeList elements27 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Action");
                                             Element actionElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
                                             if (actionElement != null) {
                                                 String actionInstance;
@@ -4894,7 +4894,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 ruleInstance.setAction(actionInstance);
                                             }
                                             
-                                            NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
+                                            NodeList elements28 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                             Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
                                             if (remoteSubnetElement != null) {
                                                 String remoteSubnetInstance;
@@ -4902,7 +4902,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                                 ruleInstance.setRemoteSubnet(remoteSubnetInstance);
                                             }
                                             
-                                            NodeList elements29 = rulesElement.getElementsByTagName("Description");
+                                            NodeList elements29 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
                                             Element descriptionElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
                                             if (descriptionElement != null) {
                                                 String descriptionInstance;
@@ -4915,16 +4915,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
-                        NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
+                        NodeList elements30 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
                         Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
                         if (subnetNamesSequenceElement != null) {
-                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1) {
-                                org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
+                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").getLength(); i4 = i4 + 1) {
+                                org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").item(i4));
                                 configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                             }
                         }
                         
-                        NodeList elements31 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
+                        NodeList elements31 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                         Element staticVirtualNetworkIPAddressElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
                         if (staticVirtualNetworkIPAddressElement != null) {
                             String staticVirtualNetworkIPAddressInstance;
@@ -4932,7 +4932,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                         }
                         
-                        NodeList elements32 = configurationSetsElement.getElementsByTagName("ComputerName");
+                        NodeList elements32 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                         Element computerNameElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
                         if (computerNameElement != null) {
                             String computerNameInstance;
@@ -4940,7 +4940,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setComputerName(computerNameInstance);
                         }
                         
-                        NodeList elements33 = configurationSetsElement.getElementsByTagName("AdminPassword");
+                        NodeList elements33 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
                         Element adminPasswordElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
                         if (adminPasswordElement != null) {
                             String adminPasswordInstance;
@@ -4948,7 +4948,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setAdminPassword(adminPasswordInstance);
                         }
                         
-                        NodeList elements34 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
+                        NodeList elements34 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                         Element resetPasswordOnFirstLogonElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
                         if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                             boolean resetPasswordOnFirstLogonInstance;
@@ -4956,7 +4956,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                         }
                         
-                        NodeList elements35 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
+                        NodeList elements35 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                         Element enableAutomaticUpdatesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
                         if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                             boolean enableAutomaticUpdatesInstance;
@@ -4964,7 +4964,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                         }
                         
-                        NodeList elements36 = configurationSetsElement.getElementsByTagName("TimeZone");
+                        NodeList elements36 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
                         Element timeZoneElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
                         if (timeZoneElement != null) {
                             String timeZoneInstance;
@@ -4972,19 +4972,19 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setTimeZone(timeZoneInstance);
                         }
                         
-                        NodeList elements37 = configurationSetsElement.getElementsByTagName("DomainJoin");
+                        NodeList elements37 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
                         Element domainJoinElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
                         if (domainJoinElement != null) {
                             DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                             configurationSetInstance.setDomainJoin(domainJoinInstance);
                             
-                            NodeList elements38 = domainJoinElement.getElementsByTagName("Credentials");
+                            NodeList elements38 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Credentials");
                             Element credentialsElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
                             if (credentialsElement != null) {
                                 DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                 domainJoinInstance.setCredentials(credentialsInstance);
                                 
-                                NodeList elements39 = credentialsElement.getElementsByTagName("Domain");
+                                NodeList elements39 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Domain");
                                 Element domainElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
                                 if (domainElement != null) {
                                     String domainInstance;
@@ -4992,7 +4992,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     credentialsInstance.setDomain(domainInstance);
                                 }
                                 
-                                NodeList elements40 = credentialsElement.getElementsByTagName("Username");
+                                NodeList elements40 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Username");
                                 Element usernameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
                                 if (usernameElement != null) {
                                     String usernameInstance;
@@ -5000,7 +5000,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     credentialsInstance.setUserName(usernameInstance);
                                 }
                                 
-                                NodeList elements41 = credentialsElement.getElementsByTagName("Password");
+                                NodeList elements41 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
                                 Element passwordElement = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
                                 if (passwordElement != null) {
                                     String passwordInstance;
@@ -5009,7 +5009,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            NodeList elements42 = domainJoinElement.getElementsByTagName("JoinDomain");
+                            NodeList elements42 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
                             Element joinDomainElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
                             if (joinDomainElement != null) {
                                 String joinDomainInstance;
@@ -5017,7 +5017,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 domainJoinInstance.setDomainToJoin(joinDomainInstance);
                             }
                             
-                            NodeList elements43 = domainJoinElement.getElementsByTagName("MachineObjectOU");
+                            NodeList elements43 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                             Element machineObjectOUElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
                             if (machineObjectOUElement != null) {
                                 String machineObjectOUInstance;
@@ -5025,13 +5025,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
                             }
                             
-                            NodeList elements44 = domainJoinElement.getElementsByTagName("Provisioning");
+                            NodeList elements44 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
                             Element provisioningElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
                             if (provisioningElement != null) {
                                 DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                 domainJoinInstance.setProvisioning(provisioningInstance);
                                 
-                                NodeList elements45 = provisioningElement.getElementsByTagName("AccountData");
+                                NodeList elements45 = provisioningElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AccountData");
                                 Element accountDataElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
                                 if (accountDataElement != null) {
                                     String accountDataInstance;
@@ -5041,20 +5041,20 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
-                        NodeList elements46 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
+                        NodeList elements46 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                         Element storedCertificateSettingsSequenceElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
                         if (storedCertificateSettingsSequenceElement != null) {
-                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1) {
-                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
+                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").getLength(); i5 = i5 + 1) {
+                                org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").item(i5));
                                 StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                 configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                 
-                                NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
+                                NodeList elements47 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
                                 Element storeLocationElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
                                 if (storeLocationElement != null) {
                                 }
                                 
-                                NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
+                                NodeList elements48 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreName");
                                 Element storeNameElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
                                 if (storeNameElement != null) {
                                     String storeNameInstance;
@@ -5062,7 +5062,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     certificateSettingInstance.setStoreName(storeNameInstance);
                                 }
                                 
-                                NodeList elements49 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
+                                NodeList elements49 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
                                 Element thumbprintElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
                                 if (thumbprintElement != null) {
                                     String thumbprintInstance;
@@ -5072,21 +5072,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
-                        NodeList elements50 = configurationSetsElement.getElementsByTagName("WinRM");
+                        NodeList elements50 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WinRM");
                         Element winRMElement = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
                         if (winRMElement != null) {
                             WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                             configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                             
-                            NodeList elements51 = winRMElement.getElementsByTagName("Listeners");
+                            NodeList elements51 = winRMElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listeners");
                             Element listenersSequenceElement = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
                             if (listenersSequenceElement != null) {
-                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1) {
-                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i6));
+                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").getLength(); i6 = i6 + 1) {
+                                    org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").item(i6));
                                     WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                     winRMInstance.getListeners().add(listenerInstance);
                                     
-                                    NodeList elements52 = listenersElement.getElementsByTagName("Protocol");
+                                    NodeList elements52 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                                     Element protocolElement3 = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
                                     if (protocolElement3 != null) {
                                         VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
@@ -5094,7 +5094,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         listenerInstance.setListenerType(protocolInstance3);
                                     }
                                     
-                                    NodeList elements53 = listenersElement.getElementsByTagName("CertificateThumbprint");
+                                    NodeList elements53 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                     Element certificateThumbprintElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
                                     if (certificateThumbprintElement != null) {
                                         String certificateThumbprintInstance;
@@ -5105,7 +5105,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             }
                         }
                         
-                        NodeList elements54 = configurationSetsElement.getElementsByTagName("AdminUsername");
+                        NodeList elements54 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                         Element adminUsernameElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
                         if (adminUsernameElement != null) {
                             String adminUsernameInstance;
@@ -5113,7 +5113,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setAdminUserName(adminUsernameInstance);
                         }
                         
-                        NodeList elements55 = configurationSetsElement.getElementsByTagName("HostName");
+                        NodeList elements55 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostName");
                         Element hostNameElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
                         if (hostNameElement != null) {
                             String hostNameInstance;
@@ -5121,7 +5121,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setHostName(hostNameInstance);
                         }
                         
-                        NodeList elements56 = configurationSetsElement.getElementsByTagName("UserName");
+                        NodeList elements56 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserName");
                         Element userNameElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
                         if (userNameElement != null) {
                             String userNameInstance;
@@ -5129,7 +5129,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setUserName(userNameInstance);
                         }
                         
-                        NodeList elements57 = configurationSetsElement.getElementsByTagName("UserPassword");
+                        NodeList elements57 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
                         Element userPasswordElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
                         if (userPasswordElement != null) {
                             String userPasswordInstance;
@@ -5137,7 +5137,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setUserPassword(userPasswordInstance);
                         }
                         
-                        NodeList elements58 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
+                        NodeList elements58 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                         Element disableSshPasswordAuthenticationElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
                         if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                             boolean disableSshPasswordAuthenticationInstance;
@@ -5145,21 +5145,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                         }
                         
-                        NodeList elements59 = configurationSetsElement.getElementsByTagName("SSH");
+                        NodeList elements59 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSH");
                         Element sSHElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
                         if (sSHElement != null) {
                             SshSettings sSHInstance = new SshSettings();
                             configurationSetInstance.setSshSettings(sSHInstance);
                             
-                            NodeList elements60 = sSHElement.getElementsByTagName("PublicKeys");
+                            NodeList elements60 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
                             Element publicKeysSequenceElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
                             if (publicKeysSequenceElement != null) {
-                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1) {
-                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
+                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").getLength(); i7 = i7 + 1) {
+                                    org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").item(i7));
                                     SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                     sSHInstance.getPublicKeys().add(publicKeyInstance);
                                     
-                                    NodeList elements61 = publicKeysElement.getElementsByTagName("Fingerprint");
+                                    NodeList elements61 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                     Element fingerprintElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
                                     if (fingerprintElement != null) {
                                         String fingerprintInstance;
@@ -5167,7 +5167,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         publicKeyInstance.setFingerprint(fingerprintInstance);
                                     }
                                     
-                                    NodeList elements62 = publicKeysElement.getElementsByTagName("Path");
+                                    NodeList elements62 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
                                     Element pathElement2 = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
                                     if (pathElement2 != null) {
                                         String pathInstance2;
@@ -5177,15 +5177,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 }
                             }
                             
-                            NodeList elements63 = sSHElement.getElementsByTagName("KeyPairs");
+                            NodeList elements63 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
                             Element keyPairsSequenceElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
                             if (keyPairsSequenceElement != null) {
-                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1) {
-                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
+                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").getLength(); i8 = i8 + 1) {
+                                    org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").item(i8));
                                     SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                     sSHInstance.getKeyPairs().add(keyPairInstance);
                                     
-                                    NodeList elements64 = keyPairsElement.getElementsByTagName("Fingerprint");
+                                    NodeList elements64 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                     Element fingerprintElement2 = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
                                     if (fingerprintElement2 != null) {
                                         String fingerprintInstance2;
@@ -5193,7 +5193,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                         keyPairInstance.setFingerprint(fingerprintInstance2);
                                     }
                                     
-                                    NodeList elements65 = keyPairsElement.getElementsByTagName("Path");
+                                    NodeList elements65 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
                                     Element pathElement3 = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
                                     if (pathElement3 != null) {
                                         String pathInstance3;
@@ -5206,15 +5206,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                NodeList elements66 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
+                NodeList elements66 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                 Element dataVirtualHardDisksSequenceElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
                 if (dataVirtualHardDisksSequenceElement != null) {
-                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1) {
-                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
+                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").getLength(); i9 = i9 + 1) {
+                        org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").item(i9));
                         DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                         result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                         
-                        NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
+                        NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                         Element hostCachingElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
                         if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                             VirtualHardDiskHostCaching hostCachingInstance;
@@ -5222,7 +5222,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
                         }
                         
-                        NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
+                        NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                         Element diskLabelElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
                         if (diskLabelElement != null) {
                             String diskLabelInstance;
@@ -5230,7 +5230,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
                         }
                         
-                        NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
+                        NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                         Element diskNameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
                         if (diskNameElement != null) {
                             String diskNameInstance;
@@ -5238,7 +5238,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
                         }
                         
-                        NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
+                        NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Lun");
                         Element lunElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
                         if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                             int lunInstance;
@@ -5246,7 +5246,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                         }
                         
-                        NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
+                        NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                         Element logicalDiskSizeInGBElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
                         if (logicalDiskSizeInGBElement != null) {
                             int logicalDiskSizeInGBInstance;
@@ -5254,7 +5254,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                         }
                         
-                        NodeList elements72 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
+                        NodeList elements72 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                         Element mediaLinkElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
                         if (mediaLinkElement != null) {
                             URI mediaLinkInstance;
@@ -5264,13 +5264,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                NodeList elements73 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
+                NodeList elements73 = persistentVMRoleElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
                 Element oSVirtualHardDiskElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
                 if (oSVirtualHardDiskElement != null) {
                     OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                     result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                     
-                    NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
+                    NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                     Element hostCachingElement2 = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
                     if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                         VirtualHardDiskHostCaching hostCachingInstance2;
@@ -5278,7 +5278,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                     }
                     
-                    NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
+                    NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                     Element diskLabelElement2 = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
                     if (diskLabelElement2 != null) {
                         String diskLabelInstance2;
@@ -5286,7 +5286,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
                     }
                     
-                    NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
+                    NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                     Element diskNameElement2 = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
                     if (diskNameElement2 != null) {
                         String diskNameInstance2;
@@ -5294,7 +5294,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
                     }
                     
-                    NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
+                    NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     Element mediaLinkElement2 = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
                     if (mediaLinkElement2 != null) {
                         URI mediaLinkInstance2;
@@ -5302,7 +5302,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
                     }
                     
-                    NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
+                    NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                     Element sourceImageNameElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
                     if (sourceImageNameElement != null) {
                         String sourceImageNameInstance;
@@ -5310,7 +5310,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
                     }
                     
-                    NodeList elements79 = oSVirtualHardDiskElement.getElementsByTagName("OS");
+                    NodeList elements79 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
                     Element osElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
                     if (osElement != null) {
                         String osInstance;
