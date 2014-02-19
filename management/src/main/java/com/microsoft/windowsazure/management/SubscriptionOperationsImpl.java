@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
@@ -52,7 +53,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -168,139 +168,121 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Subscription");
-            Element subscriptionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element subscriptionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Subscription");
             if (subscriptionElement != null) {
-                NodeList elements2 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionID");
-                Element subscriptionIDElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element subscriptionIDElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionID");
                 if (subscriptionIDElement != null) {
                     String subscriptionIDInstance;
                     subscriptionIDInstance = subscriptionIDElement.getTextContent();
                     result.setSubscriptionID(subscriptionIDInstance);
                 }
                 
-                NodeList elements3 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionName");
-                Element subscriptionNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element subscriptionNameElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionName");
                 if (subscriptionNameElement != null) {
                     String subscriptionNameInstance;
                     subscriptionNameInstance = subscriptionNameElement.getTextContent();
                     result.setSubscriptionName(subscriptionNameInstance);
                 }
                 
-                NodeList elements4 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
-                Element subscriptionStatusElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element subscriptionStatusElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionStatus");
                 if (subscriptionStatusElement != null) {
                     SubscriptionStatus subscriptionStatusInstance;
                     subscriptionStatusInstance = SubscriptionStatus.valueOf(subscriptionStatusElement.getTextContent());
                     result.setSubscriptionStatus(subscriptionStatusInstance);
                 }
                 
-                NodeList elements5 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AccountAdminLiveEmailId");
-                Element accountAdminLiveEmailIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element accountAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "AccountAdminLiveEmailId");
                 if (accountAdminLiveEmailIdElement != null) {
                     String accountAdminLiveEmailIdInstance;
                     accountAdminLiveEmailIdInstance = accountAdminLiveEmailIdElement.getTextContent();
                     result.setAccountAdminLiveEmailId(accountAdminLiveEmailIdInstance);
                 }
                 
-                NodeList elements6 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceAdminLiveEmailId");
-                Element serviceAdminLiveEmailIdElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element serviceAdminLiveEmailIdElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "ServiceAdminLiveEmailId");
                 if (serviceAdminLiveEmailIdElement != null) {
                     String serviceAdminLiveEmailIdInstance;
                     serviceAdminLiveEmailIdInstance = serviceAdminLiveEmailIdElement.getTextContent();
                     result.setServiceAdminLiveEmailId(serviceAdminLiveEmailIdInstance);
                 }
                 
-                NodeList elements7 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxCoreCount");
-                Element maxCoreCountElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element maxCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxCoreCount");
                 if (maxCoreCountElement != null) {
                     int maxCoreCountInstance;
                     maxCoreCountInstance = DatatypeConverter.parseInt(maxCoreCountElement.getTextContent());
                     result.setMaximumCoreCount(maxCoreCountInstance);
                 }
                 
-                NodeList elements8 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxStorageAccounts");
-                Element maxStorageAccountsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element maxStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxStorageAccounts");
                 if (maxStorageAccountsElement != null) {
                     int maxStorageAccountsInstance;
                     maxStorageAccountsInstance = DatatypeConverter.parseInt(maxStorageAccountsElement.getTextContent());
                     result.setMaximumStorageAccounts(maxStorageAccountsInstance);
                 }
                 
-                NodeList elements9 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxHostedServices");
-                Element maxHostedServicesElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element maxHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxHostedServices");
                 if (maxHostedServicesElement != null) {
                     int maxHostedServicesInstance;
                     maxHostedServicesInstance = DatatypeConverter.parseInt(maxHostedServicesElement.getTextContent());
                     result.setMaximumHostedServices(maxHostedServicesInstance);
                 }
                 
-                NodeList elements10 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentCoreCount");
-                Element currentCoreCountElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                Element currentCoreCountElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentCoreCount");
                 if (currentCoreCountElement != null) {
                     int currentCoreCountInstance;
                     currentCoreCountInstance = DatatypeConverter.parseInt(currentCoreCountElement.getTextContent());
                     result.setCurrentCoreCount(currentCoreCountInstance);
                 }
                 
-                NodeList elements11 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentStorageAccounts");
-                Element currentStorageAccountsElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                Element currentStorageAccountsElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentStorageAccounts");
                 if (currentStorageAccountsElement != null) {
                     int currentStorageAccountsInstance;
                     currentStorageAccountsInstance = DatatypeConverter.parseInt(currentStorageAccountsElement.getTextContent());
                     result.setCurrentStorageAccounts(currentStorageAccountsInstance);
                 }
                 
-                NodeList elements12 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentHostedServices");
-                Element currentHostedServicesElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                Element currentHostedServicesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentHostedServices");
                 if (currentHostedServicesElement != null) {
                     int currentHostedServicesInstance;
                     currentHostedServicesInstance = DatatypeConverter.parseInt(currentHostedServicesElement.getTextContent());
                     result.setCurrentHostedServices(currentHostedServicesInstance);
                 }
                 
-                NodeList elements13 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxVirtualNetworkSites");
-                Element maxVirtualNetworkSitesElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                Element maxVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxVirtualNetworkSites");
                 if (maxVirtualNetworkSitesElement != null) {
                     int maxVirtualNetworkSitesInstance;
                     maxVirtualNetworkSitesInstance = DatatypeConverter.parseInt(maxVirtualNetworkSitesElement.getTextContent());
                     result.setMaximumVirtualNetworkSites(maxVirtualNetworkSitesInstance);
                 }
                 
-                NodeList elements14 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentVirtualNetworkSites");
-                Element currentVirtualNetworkSitesElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                Element currentVirtualNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentVirtualNetworkSites");
                 if (currentVirtualNetworkSitesElement != null) {
                     int currentVirtualNetworkSitesInstance;
                     currentVirtualNetworkSitesInstance = DatatypeConverter.parseInt(currentVirtualNetworkSitesElement.getTextContent());
                     result.setCurrentVirtualNetworkSites(currentVirtualNetworkSitesInstance);
                 }
                 
-                NodeList elements15 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxLocalNetworkSites");
-                Element maxLocalNetworkSitesElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                Element maxLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxLocalNetworkSites");
                 if (maxLocalNetworkSitesElement != null) {
                     int maxLocalNetworkSitesInstance;
                     maxLocalNetworkSitesInstance = DatatypeConverter.parseInt(maxLocalNetworkSitesElement.getTextContent());
                     result.setMaximumLocalNetworkSites(maxLocalNetworkSitesInstance);
                 }
                 
-                NodeList elements16 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxDnsServers");
-                Element maxDnsServersElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                Element maxDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "MaxDnsServers");
                 if (maxDnsServersElement != null) {
                     int maxDnsServersInstance;
                     maxDnsServersInstance = DatatypeConverter.parseInt(maxDnsServersElement.getTextContent());
                     result.setMaximumDnsServers(maxDnsServersInstance);
                 }
                 
-                NodeList elements17 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentLocalNetworkSites");
-                Element currentLocalNetworkSitesElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element currentLocalNetworkSitesElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentLocalNetworkSites");
                 if (currentLocalNetworkSitesElement != null) {
                     int currentLocalNetworkSitesInstance;
                     currentLocalNetworkSitesInstance = DatatypeConverter.parseInt(currentLocalNetworkSitesElement.getTextContent());
                     result.setCurrentLocalNetworkSites(currentLocalNetworkSitesInstance);
                 }
                 
-                NodeList elements18 = subscriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentDnsServers");
-                Element currentDnsServersElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                Element currentDnsServersElement = XmlUtility.getElementByTagNameNS(subscriptionElement, "http://schemas.microsoft.com/windowsazure", "CurrentDnsServers");
                 if (currentDnsServersElement != null) {
                     int currentDnsServersInstance;
                     currentDnsServersInstance = DatatypeConverter.parseInt(currentDnsServersElement.getTextContent());
@@ -434,94 +416,80 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionOperationCollection");
-            Element subscriptionOperationCollectionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element subscriptionOperationCollectionElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperationCollection");
             if (subscriptionOperationCollectionElement != null) {
-                NodeList elements2 = subscriptionOperationCollectionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ContinuationToken");
-                Element continuationTokenElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element continuationTokenElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "ContinuationToken");
                 if (continuationTokenElement != null) {
                     String continuationTokenInstance;
                     continuationTokenInstance = continuationTokenElement.getTextContent();
                     result.setContinuationToken(continuationTokenInstance);
                 }
                 
-                NodeList elements3 = subscriptionOperationCollectionElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionOperations");
-                Element subscriptionOperationsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element subscriptionOperationsSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationCollectionElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperations");
                 if (subscriptionOperationsSequenceElement != null) {
-                    for (int i1 = 0; i1 < subscriptionOperationsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) subscriptionOperationsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element subscriptionOperationsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subscriptionOperationsSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionOperation").get(i1));
                         SubscriptionListOperationsResponse.SubscriptionOperation subscriptionOperationInstance = new SubscriptionListOperationsResponse.SubscriptionOperation();
                         result.getSubscriptionOperations().add(subscriptionOperationInstance);
                         
-                        NodeList elements4 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationId");
-                        Element operationIdElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                        Element operationIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationId");
                         if (operationIdElement != null) {
                             String operationIdInstance;
                             operationIdInstance = operationIdElement.getTextContent();
                             subscriptionOperationInstance.setOperationId(operationIdInstance);
                         }
                         
-                        NodeList elements5 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationObjectId");
-                        Element operationObjectIdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        Element operationObjectIdElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationObjectId");
                         if (operationObjectIdElement != null) {
                             String operationObjectIdInstance;
                             operationObjectIdInstance = operationObjectIdElement.getTextContent();
                             subscriptionOperationInstance.setOperationObjectId(operationObjectIdInstance);
                         }
                         
-                        NodeList elements6 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationName");
-                        Element operationNameElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        Element operationNameElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationName");
                         if (operationNameElement != null) {
                             String operationNameInstance;
                             operationNameInstance = operationNameElement.getTextContent();
                             subscriptionOperationInstance.setOperationName(operationNameInstance);
                         }
                         
-                        NodeList elements7 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationParameters");
-                        Element operationParametersSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        Element operationParametersSequenceElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationParameters");
                         if (operationParametersSequenceElement != null) {
-                            for (int i2 = 0; i2 < operationParametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationParameter").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) operationParametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationParameter").item(i2));
-                                NodeList elements8 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name");
-                                String operationParametersKey = elements8.getLength() > 0 ? ((org.w3c.dom.Element) elements8.item(0)).getTextContent() : null;
-                                NodeList elements9 = operationParametersElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value");
-                                String operationParametersValue = elements9.getLength() > 0 ? ((org.w3c.dom.Element) elements9.item(0)).getTextContent() : null;
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element operationParametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(operationParametersSequenceElement, "http://schemas.microsoft.com/windowsazure", "OperationParameter").get(i2));
+                                String operationParametersKey = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Name").getTextContent();
+                                String operationParametersValue = XmlUtility.getElementByTagNameNS(operationParametersElement, "http://schemas.datacontract.org/2004/07/Microsoft.WindowsAzure.ServiceManagement", "Value").getTextContent();
                                 subscriptionOperationInstance.getOperationParameters().put(operationParametersKey, operationParametersValue);
                             }
                         }
                         
-                        NodeList elements10 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationCaller");
-                        Element operationCallerElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        Element operationCallerElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCaller");
                         if (operationCallerElement != null) {
                             SubscriptionListOperationsResponse.OperationCallerDetails operationCallerInstance = new SubscriptionListOperationsResponse.OperationCallerDetails();
                             subscriptionOperationInstance.setOperationCaller(operationCallerInstance);
                             
-                            NodeList elements11 = operationCallerElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UsedServiceManagementApi");
-                            Element usedServiceManagementApiElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                            Element usedServiceManagementApiElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UsedServiceManagementApi");
                             if (usedServiceManagementApiElement != null) {
                                 boolean usedServiceManagementApiInstance;
                                 usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent());
                                 operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
                             }
                             
-                            NodeList elements12 = operationCallerElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserEmailAddress");
-                            Element userEmailAddressElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                            Element userEmailAddressElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UserEmailAddress");
                             if (userEmailAddressElement != null) {
                                 String userEmailAddressInstance;
                                 userEmailAddressInstance = userEmailAddressElement.getTextContent();
                                 operationCallerInstance.setUserEmailAddress(userEmailAddressInstance);
                             }
                             
-                            NodeList elements13 = operationCallerElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
-                            Element subscriptionCertificateThumbprintElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                            Element subscriptionCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
                             if (subscriptionCertificateThumbprintElement != null) {
                                 String subscriptionCertificateThumbprintInstance;
                                 subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
                                 operationCallerInstance.setSubscriptionCertificateThumbprint(subscriptionCertificateThumbprintInstance);
                             }
                             
-                            NodeList elements14 = operationCallerElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ClientIP");
-                            Element clientIPElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            Element clientIPElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "ClientIP");
                             if (clientIPElement != null) {
                                 InetAddress clientIPInstance;
                                 clientIPInstance = InetAddress.getByName(clientIPElement.getTextContent());
@@ -529,24 +497,21 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                             }
                         }
                         
-                        NodeList elements15 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationStatus");
-                        Element operationStatusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        Element operationStatusElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
                         if (operationStatusElement != null) {
                             String operationStatusInstance;
                             operationStatusInstance = operationStatusElement.getTextContent();
                             subscriptionOperationInstance.setOperationStatus(operationStatusInstance);
                         }
                         
-                        NodeList elements16 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationStartedTime");
-                        Element operationStartedTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        Element operationStartedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationStartedTime");
                         if (operationStartedTimeElement != null) {
                             Calendar operationStartedTimeInstance;
                             operationStartedTimeInstance = DatatypeConverter.parseDateTime(operationStartedTimeElement.getTextContent());
                             subscriptionOperationInstance.setOperationStartedTime(operationStartedTimeInstance);
                         }
                         
-                        NodeList elements17 = subscriptionOperationsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationCompletedTime");
-                        Element operationCompletedTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        Element operationCompletedTimeElement = XmlUtility.getElementByTagNameNS(subscriptionOperationsElement, "http://schemas.microsoft.com/windowsazure", "OperationCompletedTime");
                         if (operationCompletedTimeElement != null) {
                             Calendar operationCompletedTimeInstance;
                             operationCompletedTimeInstance = DatatypeConverter.parseDateTime(operationCompletedTimeElement.getTextContent());

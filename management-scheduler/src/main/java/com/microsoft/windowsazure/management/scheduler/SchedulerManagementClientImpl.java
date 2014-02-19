@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management.scheduler;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -51,7 +52,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManagementClient> implements SchedulerManagementClient {
@@ -254,49 +254,42 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             if (operationElement != null) {
-                NodeList elements2 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
                 
-                NodeList elements3 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     SchedulerOperationStatus statusInstance;
                     statusInstance = SchedulerOperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
                 
-                NodeList elements4 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                 if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
                 }
                 
-                NodeList elements5 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
-                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
                     SchedulerOperationStatusResponse.ErrorDetails errorInstance = new SchedulerOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
-                    NodeList elements6 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
-                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
                     if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
                     }
                     
-                    NodeList elements7 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
-                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
                     if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
@@ -403,15 +396,12 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceProviderProperties");
-            Element resourceProviderPropertiesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element resourceProviderPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceProviderProperties");
             if (resourceProviderPropertiesSequenceElement != null) {
-                for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceProviderProperty").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) resourceProviderPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceProviderProperty").item(i1));
-                    NodeList elements2 = resourceProviderPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Key");
-                    String resourceProviderPropertiesKey = elements2.getLength() > 0 ? ((org.w3c.dom.Element) elements2.item(0)).getTextContent() : null;
-                    NodeList elements3 = resourceProviderPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
-                    String resourceProviderPropertiesValue = elements3.getLength() > 0 ? ((org.w3c.dom.Element) elements3.item(0)).getTextContent() : null;
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceProviderPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderProperty").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceProviderPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceProviderProperty").get(i1));
+                    String resourceProviderPropertiesKey = XmlUtility.getElementByTagNameNS(resourceProviderPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Key").getTextContent();
+                    String resourceProviderPropertiesValue = XmlUtility.getElementByTagNameNS(resourceProviderPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                     result.getProperties().put(resourceProviderPropertiesKey, resourceProviderPropertiesValue);
                 }
             }

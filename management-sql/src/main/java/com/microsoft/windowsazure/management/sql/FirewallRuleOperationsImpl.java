@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.sql;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateResponse;
@@ -56,7 +57,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -234,43 +234,37 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
                 if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
                     startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;
                     endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());
@@ -493,40 +487,35 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResources");
-            Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serviceResourcesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResources");
             if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serviceResourcesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServiceResource").get(i1));
                     FirewallRuleListResponse.FirewallRule serviceResourceInstance = new FirewallRuleListResponse.FirewallRule();
                     result.getFirewallRules().add(serviceResourceInstance);
                     
-                    NodeList elements2 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
-                    Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Type");
                     if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
                     }
                     
-                    NodeList elements4 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                    Element startIPAddressElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                     if (startIPAddressElement != null) {
                         InetAddress startIPAddressInstance;
                         startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
                         serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
                     }
                     
-                    NodeList elements5 = serviceResourcesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                    Element endIPAddressElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                     if (endIPAddressElement != null) {
                         InetAddress endIPAddressInstance;
                         endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
@@ -702,43 +691,37 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ServiceResource");
-            Element serviceResourceElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serviceResourceElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
             if (serviceResourceElement2 != null) {
-                NodeList elements2 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element nameElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
-                Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "Type");
                 if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
                 }
                 
-                NodeList elements4 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element stateElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "State");
                 if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartIPAddress");
-                Element startIPAddressElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element startIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
                 if (startIPAddressElement2 != null) {
                     InetAddress startIPAddressInstance;
                     startIPAddressInstance = InetAddress.getByName(startIPAddressElement2.getTextContent());
                     result.setStartIPAddress(startIPAddressInstance);
                 }
                 
-                NodeList elements6 = serviceResourceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndIPAddress");
-                Element endIPAddressElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element endIPAddressElement2 = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
                 if (endIPAddressElement2 != null) {
                     InetAddress endIPAddressInstance;
                     endIPAddressInstance = InetAddress.getByName(endIPAddressElement2.getTextContent());

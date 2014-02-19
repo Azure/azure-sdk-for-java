@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.servicebus;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.AccessRight;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetail;
@@ -49,7 +50,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -172,98 +172,84 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
-            Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element entryElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "entry");
             if (entryElement != null) {
-                NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
-                Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element titleElement = XmlUtility.getElementByTagNameNS(entryElement, "http://www.w3.org/2005/Atom", "title");
                 if (titleElement != null) {
                 }
                 
-                NodeList elements3 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
-                Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element contentElement = XmlUtility.getElementByTagNameNS(entryElement, "http://www.w3.org/2005/Atom", "content");
                 if (contentElement != null) {
-                    NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
-                    Element notificationHubDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element notificationHubDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
                     if (notificationHubDescriptionElement != null) {
                         ServiceBusNotificationHub notificationHubDescriptionInstance = new ServiceBusNotificationHub();
                         result.setNotificationHub(notificationHubDescriptionInstance);
                         
-                        NodeList elements5 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
-                        Element registrationTtlElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        Element registrationTtlElement = XmlUtility.getElementByTagNameNS(notificationHubDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
                         if (registrationTtlElement != null) {
                             String registrationTtlInstance;
                             registrationTtlInstance = registrationTtlElement.getTextContent();
                             notificationHubDescriptionInstance.setRegistrationTtl(registrationTtlInstance);
                         }
                         
-                        NodeList elements6 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-                        Element authorizationRulesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        Element authorizationRulesSequenceElement = XmlUtility.getElementByTagNameNS(notificationHubDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                         if (authorizationRulesSequenceElement != null) {
-                            for (int i1 = 0; i1 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1) {
-                                org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i1));
+                            for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(authorizationRulesSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").size(); i1 = i1 + 1) {
+                                org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(authorizationRulesSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").get(i1));
                                 ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                 notificationHubDescriptionInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                 
-                                NodeList elements7 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                                Element claimTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                                Element claimTypeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 if (claimTypeElement != null) {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement.getTextContent();
                                     authorizationRuleInstance.setClaimType(claimTypeInstance);
                                 }
                                 
-                                NodeList elements8 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                                Element claimValueElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                                Element claimValueElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 if (claimValueElement != null) {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement.getTextContent();
                                     authorizationRuleInstance.setClaimValue(claimValueInstance);
                                 }
                                 
-                                NodeList elements9 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                                Element rightsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                                Element rightsSequenceElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
+                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
+                                        org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
                                         authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
                                 }
                                 
-                                NodeList elements10 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                                Element createdTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                                Element createdTimeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 if (createdTimeElement != null) {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                 }
                                 
-                                NodeList elements11 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                                Element keyNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                                Element keyNameElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 if (keyNameElement != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     authorizationRuleInstance.setKeyName(keyNameInstance);
                                 }
                                 
-                                NodeList elements12 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                                Element modifiedTimeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                                Element modifiedTimeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 if (modifiedTimeElement != null) {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                 }
                                 
-                                NodeList elements13 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                                Element primaryKeyElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                                Element primaryKeyElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 if (primaryKeyElement != null) {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement.getTextContent();
                                     authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
                                 }
                                 
-                                NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                                Element secondaryKeyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                                Element secondaryKeyElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 if (secondaryKeyElement != null) {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement.getTextContent();
@@ -382,50 +368,43 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
-            Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
             if (feedElement != null) {
                 if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
                         ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
                         result.getConnectionDetails().add(entryInstance);
                         
-                        NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
-                        Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
                         if (contentElement != null) {
-                            NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
-                            Element connectionDetailElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                            Element connectionDetailElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
                             if (connectionDetailElement != null) {
-                                NodeList elements4 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                                Element keyNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                                Element keyNameElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 if (keyNameElement != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
                                 }
                                 
-                                NodeList elements5 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
-                                Element connectionStringElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                                Element connectionStringElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
                                 if (connectionStringElement != null) {
                                     String connectionStringInstance;
                                     connectionStringInstance = connectionStringElement.getTextContent();
                                     entryInstance.setConnectionString(connectionStringInstance);
                                 }
                                 
-                                NodeList elements6 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
-                                Element authorizationTypeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                                Element authorizationTypeElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
                                 if (authorizationTypeElement != null) {
                                     String authorizationTypeInstance;
                                     authorizationTypeInstance = authorizationTypeElement.getTextContent();
                                     entryInstance.setAuthorizationType(authorizationTypeInstance);
                                 }
                                 
-                                NodeList elements7 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                                Element rightsSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                                Element rightsSequenceElement = XmlUtility.getElementByTagNameNS(connectionDetailElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
+                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i2 = i2 + 1) {
+                                        org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
                                 }
@@ -540,104 +519,90 @@ public class NotificationHubOperationsImpl implements ServiceOperations<ServiceB
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
-            Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
             if (feedElement != null) {
                 if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
                         ServiceBusNotificationHub entryInstance = new ServiceBusNotificationHub();
                         result.getNotificationHubs().add(entryInstance);
                         
-                        NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
-                        Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        Element titleElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "title");
                         if (titleElement != null) {
                             String titleInstance;
                             titleInstance = titleElement.getTextContent();
                             entryInstance.setName(titleInstance);
                         }
                         
-                        NodeList elements3 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
-                        Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
                         if (contentElement != null) {
-                            NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
-                            Element notificationHubDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                            Element notificationHubDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "NotificationHubDescription");
                             if (notificationHubDescriptionElement != null) {
-                                NodeList elements5 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
-                                Element registrationTtlElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                                Element registrationTtlElement = XmlUtility.getElementByTagNameNS(notificationHubDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegistrationTtl");
                                 if (registrationTtlElement != null) {
                                     String registrationTtlInstance;
                                     registrationTtlInstance = registrationTtlElement.getTextContent();
                                     entryInstance.setRegistrationTtl(registrationTtlInstance);
                                 }
                                 
-                                NodeList elements6 = notificationHubDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-                                Element authorizationRulesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                                Element authorizationRulesSequenceElement = XmlUtility.getElementByTagNameNS(notificationHubDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                                 if (authorizationRulesSequenceElement != null) {
-                                    for (int i2 = 0; i2 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i2));
+                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(authorizationRulesSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").size(); i2 = i2 + 1) {
+                                        org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(authorizationRulesSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").get(i2));
                                         ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                         entryInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                         
-                                        NodeList elements7 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
-                                        Element claimTypeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                                        Element claimTypeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                         if (claimTypeElement != null) {
                                             String claimTypeInstance;
                                             claimTypeInstance = claimTypeElement.getTextContent();
                                             authorizationRuleInstance.setClaimType(claimTypeInstance);
                                         }
                                         
-                                        NodeList elements8 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
-                                        Element claimValueElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                                        Element claimValueElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                         if (claimValueElement != null) {
                                             String claimValueInstance;
                                             claimValueInstance = claimValueElement.getTextContent();
                                             authorizationRuleInstance.setClaimValue(claimValueInstance);
                                         }
                                         
-                                        NodeList elements9 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                                        Element rightsSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                                        Element rightsSequenceElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                         if (rightsSequenceElement != null) {
-                                            for (int i3 = 0; i3 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i3 = i3 + 1) {
-                                                org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i3));
+                                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").size(); i3 = i3 + 1) {
+                                                org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rightsSequenceElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").get(i3));
                                                 authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                             }
                                         }
                                         
-                                        NodeList elements10 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
-                                        Element createdTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                                        Element createdTimeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                         if (createdTimeElement != null) {
                                             Calendar createdTimeInstance;
                                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
                                         }
                                         
-                                        NodeList elements11 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
-                                        Element keyNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                                        Element keyNameElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                         if (keyNameElement != null) {
                                             String keyNameInstance;
                                             keyNameInstance = keyNameElement.getTextContent();
                                             authorizationRuleInstance.setKeyName(keyNameInstance);
                                         }
                                         
-                                        NodeList elements12 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
-                                        Element modifiedTimeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                                        Element modifiedTimeElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                         if (modifiedTimeElement != null) {
                                             Calendar modifiedTimeInstance;
                                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
                                         }
                                         
-                                        NodeList elements13 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
-                                        Element primaryKeyElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                                        Element primaryKeyElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                         if (primaryKeyElement != null) {
                                             String primaryKeyInstance;
                                             primaryKeyInstance = primaryKeyElement.getTextContent();
                                             authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
                                         }
                                         
-                                        NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
-                                        Element secondaryKeyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                                        Element secondaryKeyElement = XmlUtility.getElementByTagNameNS(authorizationRulesElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                         if (secondaryKeyElement != null) {
                                             String secondaryKeyInstance;
                                             secondaryKeyInstance = secondaryKeyElement.getTextContent();

@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
 import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
@@ -107,7 +108,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -3812,187 +3812,163 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Deployment");
-            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element deploymentElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Deployment");
             if (deploymentElement != null) {
-                NodeList elements2 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
-                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                 if (deploymentSlotElement != null) {
                     DeploymentSlot deploymentSlotInstance;
                     deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                     result.setDeploymentSlot(deploymentSlotInstance);
                 }
                 
-                NodeList elements4 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivateID");
-                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element privateIDElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "PrivateID");
                 if (privateIDElement != null) {
                     String privateIDInstance;
                     privateIDInstance = privateIDElement.getTextContent();
                     result.setPrivateId(privateIDInstance);
                 }
                 
-                NodeList elements5 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     DeploymentStatus statusInstance;
                     statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
                 
-                NodeList elements6 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element labelElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements7 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Url");
-                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element urlElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
                 
-                NodeList elements8 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element configurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Configuration");
                 if (configurationElement != null) {
                     String configurationInstance;
                     configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
                     result.setConfiguration(configurationInstance);
                 }
                 
-                NodeList elements9 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstanceList");
-                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element roleInstanceListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleInstanceList");
                 if (roleInstanceListSequenceElement != null) {
-                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstance").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstance").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleInstanceListSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleInstance").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleInstanceListSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleInstance").get(i1));
                         RoleInstance roleInstanceInstance = new RoleInstance();
                         result.getRoleInstances().add(roleInstanceInstance);
                         
-                        NodeList elements10 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        Element roleNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                         if (roleNameElement != null) {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             roleInstanceInstance.setRoleName(roleNameInstance);
                         }
                         
-                        NodeList elements11 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceName");
-                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        Element instanceNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceName");
                         if (instanceNameElement != null) {
                             String instanceNameInstance;
                             instanceNameInstance = instanceNameElement.getTextContent();
                             roleInstanceInstance.setInstanceName(instanceNameInstance);
                         }
                         
-                        NodeList elements12 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceStatus");
-                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        Element instanceStatusElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceStatus");
                         if (instanceStatusElement != null) {
                             String instanceStatusInstance;
                             instanceStatusInstance = instanceStatusElement.getTextContent();
                             roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
                         }
                         
-                        NodeList elements13 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceUpgradeDomain");
-                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        Element instanceUpgradeDomainElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceUpgradeDomain");
                         if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceUpgradeDomainInstance;
                             instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
                         
-                        NodeList elements14 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceFaultDomain");
-                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        Element instanceFaultDomainElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceFaultDomain");
                         if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceFaultDomainInstance;
                             instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
                         
-                        NodeList elements15 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceSize");
-                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        Element instanceSizeElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceSize");
                         if (instanceSizeElement != null) {
                             String instanceSizeInstance;
                             instanceSizeInstance = instanceSizeElement.getTextContent();
                             roleInstanceInstance.setInstanceSize(instanceSizeInstance);
                         }
                         
-                        NodeList elements16 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceStateDetails");
-                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        Element instanceStateDetailsElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceStateDetails");
                         if (instanceStateDetailsElement != null) {
                             String instanceStateDetailsInstance;
                             instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
                             roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
                         }
                         
-                        NodeList elements17 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceErrorCode");
-                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        Element instanceErrorCodeElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceErrorCode");
                         if (instanceErrorCodeElement != null) {
                             String instanceErrorCodeInstance;
                             instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
                             roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
                         }
                         
-                        NodeList elements18 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IpAddress");
-                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        Element ipAddressElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
                         if (ipAddressElement != null) {
                             InetAddress ipAddressInstance;
                             ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
                             roleInstanceInstance.setIPAddress(ipAddressInstance);
                         }
                         
-                        NodeList elements19 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoints");
-                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        Element instanceEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoints");
                         if (instanceEndpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").item(i2));
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(instanceEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(instanceEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").get(i2));
                                 InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
                                 roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
                                 
-                                NodeList elements20 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                Element localPortElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LocalPort");
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
                                     localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
-                                NodeList elements21 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                Element nameElement2 = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                 if (nameElement2 != null) {
                                     String nameInstance2;
                                     nameInstance2 = nameElement2.getTextContent();
                                     instanceEndpointInstance.setName(nameInstance2);
                                 }
                                 
-                                NodeList elements22 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicPort");
-                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                Element publicPortElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "PublicPort");
                                 if (publicPortElement != null) {
                                     int publicPortInstance;
                                     publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                     instanceEndpointInstance.setPort(publicPortInstance);
                                 }
                                 
-                                NodeList elements23 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                Element protocolElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                 if (protocolElement != null) {
                                     String protocolInstance;
                                     protocolInstance = protocolElement.getTextContent();
                                     instanceEndpointInstance.setProtocol(protocolInstance);
                                 }
                                 
-                                NodeList elements24 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                Element vipElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Vip");
                                 if (vipElement != null) {
                                     InetAddress vipInstance;
                                     vipInstance = InetAddress.getByName(vipElement.getTextContent());
@@ -4001,24 +3977,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements25 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PowerState");
-                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                        Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
                             powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
                             roleInstanceInstance.setPowerState(powerStateInstance);
                         }
                         
-                        NodeList elements26 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                        Element hostNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "HostName");
                         if (hostNameElement != null) {
                             String hostNameInstance;
                             hostNameInstance = hostNameElement.getTextContent();
                             roleInstanceInstance.setHostName(hostNameInstance);
                         }
                         
-                        NodeList elements27 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteAccessCertificateThumbprint");
-                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        Element remoteAccessCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "RemoteAccessCertificateThumbprint");
                         if (remoteAccessCertificateThumbprintElement != null) {
                             String remoteAccessCertificateThumbprintInstance;
                             remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
@@ -4027,30 +4000,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements28 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeStatus");
-                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                Element upgradeStatusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "UpgradeStatus");
                 if (upgradeStatusElement != null) {
                     UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                     result.setUpgradeStatus(upgradeStatusInstance);
                     
-                    NodeList elements29 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeType");
-                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                    Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                     if (upgradeTypeElement != null) {
                         DeploymentUpgradeType upgradeTypeInstance;
                         upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
                         upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                     }
                     
-                    NodeList elements30 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
-                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                    Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                     if (currentUpgradeDomainStateElement != null) {
                         UpgradeDomainState currentUpgradeDomainStateInstance;
                         currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
                         upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                     }
                     
-                    NodeList elements31 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomain");
-                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                    Element currentUpgradeDomainElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomain");
                     if (currentUpgradeDomainElement != null) {
                         int currentUpgradeDomainInstance;
                         currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
@@ -4058,142 +4027,124 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements32 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeDomainCount");
-                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                Element upgradeDomainCountElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "UpgradeDomainCount");
                 if (upgradeDomainCountElement != null) {
                     int upgradeDomainCountInstance;
                     upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
                 
-                NodeList elements33 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleList");
-                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i3 = i3 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i3));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
-                        NodeList elements34 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                        Element roleNameElement2 = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                         if (roleNameElement2 != null) {
                             String roleNameInstance2;
                             roleNameInstance2 = roleNameElement2.getTextContent();
                             roleInstance.setRoleName(roleNameInstance2);
                         }
                         
-                        NodeList elements35 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
-                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                        Element osVersionElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "OsVersion");
                         if (osVersionElement != null) {
                             String osVersionInstance;
                             osVersionInstance = osVersionElement.getTextContent();
                             roleInstance.setOSVersion(osVersionInstance);
                         }
                         
-                        NodeList elements36 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleType");
-                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                        Element roleTypeElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleType");
                         if (roleTypeElement != null) {
                             String roleTypeInstance;
                             roleTypeInstance = roleTypeElement.getTextContent();
                             roleInstance.setRoleType(roleTypeInstance);
                         }
                         
-                        NodeList elements37 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
+                        Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").getLength(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").item(i4));
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i4));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
-                                NodeList elements38 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
+                                Element configurationSetTypeElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                                 if (configurationSetTypeElement != null) {
                                     String configurationSetTypeInstance;
                                     configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
                                     configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
                                 }
                                 
-                                NodeList elements39 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                                Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").item(i5));
+                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i5));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
-                                        NodeList elements40 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
+                                        Element loadBalancedEndpointSetNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                                         if (loadBalancedEndpointSetNameElement != null) {
                                             String loadBalancedEndpointSetNameInstance;
                                             loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
                                             inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
                                         
-                                        NodeList elements41 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        Element localPortElement2 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LocalPort");
                                         if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false) {
                                             int localPortInstance2;
                                             localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        NodeList elements42 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                                        Element nameElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                         if (nameElement3 != null) {
                                             String nameInstance3;
                                             nameInstance3 = nameElement3.getTextContent();
                                             inputEndpointInstance.setName(nameInstance3);
                                         }
                                         
-                                        NodeList elements43 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        Element portElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Port");
                                         if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                             int portInstance;
                                             portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                             inputEndpointInstance.setPort(portInstance);
                                         }
                                         
-                                        NodeList elements44 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
+                                        Element loadBalancerProbeElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                                         if (loadBalancerProbeElement != null) {
                                             LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                             inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                             
-                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                                            Element pathElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement != null) {
                                                 String pathInstance;
                                                 pathInstance = pathElement.getTextContent();
                                                 loadBalancerProbeInstance.setPath(pathInstance);
                                             }
                                             
-                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                                            Element portElement2 = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Port");
                                             if (portElement2 != null) {
                                                 int portInstance2;
                                                 portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                 loadBalancerProbeInstance.setPort(portInstance2);
                                             }
                                             
-                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                                            Element protocolElement2 = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                             if (protocolElement2 != null) {
                                                 LoadBalancerProbeTransportProtocol protocolInstance2;
                                                 protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
                                                 loadBalancerProbeInstance.setProtocol(protocolInstance2);
                                             }
                                             
-                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            Element intervalInSecondsElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                             if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int intervalInSecondsInstance;
                                                 intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
                                             
-                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            Element timeoutInSecondsElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                             if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int timeoutInSecondsInstance;
                                                 timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
@@ -4201,70 +4152,61 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             }
                                         }
                                         
-                                        NodeList elements50 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
+                                        Element protocolElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                         if (protocolElement3 != null) {
                                             String protocolInstance3;
                                             protocolInstance3 = protocolElement3.getTextContent();
                                             inputEndpointInstance.setProtocol(protocolInstance3);
                                         }
                                         
-                                        NodeList elements51 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
+                                        Element vipElement2 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Vip");
                                         if (vipElement2 != null) {
                                             InetAddress vipInstance2;
                                             vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
                                             inputEndpointInstance.setVirtualIPAddress(vipInstance2);
                                         }
                                         
-                                        NodeList elements52 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        Element enableDirectServerReturnElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
                                             enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
-                                        NodeList elements53 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
+                                        Element endpointAclElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                                         if (endpointAclElement != null) {
                                             EndpointAcl endpointAclInstance = new EndpointAcl();
                                             inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                             
-                                            NodeList elements54 = endpointAclElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
+                                            Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").getLength(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").item(i6));
+                                                for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i6 = i6 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i6));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
-                                                    NodeList elements55 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    Element orderElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Order");
                                                     if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                         int orderInstance;
                                                         orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                         ruleInstance.setOrder(orderInstance);
                                                     }
                                                     
-                                                    NodeList elements56 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
+                                                    Element actionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Action");
                                                     if (actionElement != null) {
                                                         String actionInstance;
                                                         actionInstance = actionElement.getTextContent();
                                                         ruleInstance.setAction(actionInstance);
                                                     }
                                                     
-                                                    NodeList elements57 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
+                                                    Element remoteSubnetElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                                     if (remoteSubnetElement != null) {
                                                         String remoteSubnetInstance;
                                                         remoteSubnetInstance = remoteSubnetElement.getTextContent();
                                                         ruleInstance.setRemoteSubnet(remoteSubnetInstance);
                                                     }
                                                     
-                                                    NodeList elements58 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
+                                                    Element descriptionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                                                     if (descriptionElement != null) {
                                                         String descriptionInstance;
                                                         descriptionInstance = descriptionElement.getTextContent();
@@ -4276,93 +4218,81 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements59 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
+                                Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").getLength(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").item(i7));
+                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i7 = i7 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i7));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
                                 
-                                NodeList elements60 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
+                                Element staticVirtualNetworkIPAddressElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                                 if (staticVirtualNetworkIPAddressElement != null) {
                                     String staticVirtualNetworkIPAddressInstance;
                                     staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
                                     configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
                                 
-                                NodeList elements61 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
+                                Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
                                 if (computerNameElement != null) {
                                     String computerNameInstance;
                                     computerNameInstance = computerNameElement.getTextContent();
                                     configurationSetInstance.setComputerName(computerNameInstance);
                                 }
                                 
-                                NodeList elements62 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
+                                Element adminPasswordElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdminPassword");
                                 if (adminPasswordElement != null) {
                                     String adminPasswordInstance;
                                     adminPasswordInstance = adminPasswordElement.getTextContent();
                                     configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
                                 
-                                NodeList elements63 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                Element resetPasswordOnFirstLogonElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
                                     resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
-                                NodeList elements64 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                Element enableAutomaticUpdatesElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
                                     enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
-                                NodeList elements65 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
+                                Element timeZoneElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "TimeZone");
                                 if (timeZoneElement != null) {
                                     String timeZoneInstance;
                                     timeZoneInstance = timeZoneElement.getTextContent();
                                     configurationSetInstance.setTimeZone(timeZoneInstance);
                                 }
                                 
-                                NodeList elements66 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
+                                Element domainJoinElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DomainJoin");
                                 if (domainJoinElement != null) {
                                     DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                                     configurationSetInstance.setDomainJoin(domainJoinInstance);
                                     
-                                    NodeList elements67 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
+                                    Element credentialsElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "Credentials");
                                     if (credentialsElement != null) {
                                         DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                         domainJoinInstance.setCredentials(credentialsInstance);
                                         
-                                        NodeList elements68 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
+                                        Element domainElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Domain");
                                         if (domainElement != null) {
                                             String domainInstance;
                                             domainInstance = domainElement.getTextContent();
                                             credentialsInstance.setDomain(domainInstance);
                                         }
                                         
-                                        NodeList elements69 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Username");
-                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
+                                        Element usernameElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Username");
                                         if (usernameElement != null) {
                                             String usernameInstance;
                                             usernameInstance = usernameElement.getTextContent();
                                             credentialsInstance.setUserName(usernameInstance);
                                         }
                                         
-                                        NodeList elements70 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
-                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
+                                        Element passwordElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Password");
                                         if (passwordElement != null) {
                                             String passwordInstance;
                                             passwordInstance = passwordElement.getTextContent();
@@ -4370,30 +4300,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                     }
                                     
-                                    NodeList elements71 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
+                                    Element joinDomainElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "JoinDomain");
                                     if (joinDomainElement != null) {
                                         String joinDomainInstance;
                                         joinDomainInstance = joinDomainElement.getTextContent();
                                         domainJoinInstance.setDomainToJoin(joinDomainInstance);
                                     }
                                     
-                                    NodeList elements72 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
+                                    Element machineObjectOUElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                                     if (machineObjectOUElement != null) {
                                         String machineObjectOUInstance;
                                         machineObjectOUInstance = machineObjectOUElement.getTextContent();
                                         domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
                                     }
                                     
-                                    NodeList elements73 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
+                                    Element provisioningElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "Provisioning");
                                     if (provisioningElement != null) {
                                         DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                         domainJoinInstance.setProvisioning(provisioningInstance);
                                         
-                                        NodeList elements74 = provisioningElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
+                                        Element accountDataElement = XmlUtility.getElementByTagNameNS(provisioningElement, "http://schemas.microsoft.com/windowsazure", "AccountData");
                                         if (accountDataElement != null) {
                                             String accountDataInstance;
                                             accountDataInstance = accountDataElement.getTextContent();
@@ -4402,29 +4328,25 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements75 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
+                                Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").getLength(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").item(i8));
+                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
-                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
+                                        Element storeLocationElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "StoreLocation");
                                         if (storeLocationElement != null) {
                                         }
                                         
-                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
+                                        Element storeNameElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "StoreName");
                                         if (storeNameElement != null) {
                                             String storeNameInstance;
                                             storeNameInstance = storeNameElement.getTextContent();
                                             certificateSettingInstance.setStoreName(storeNameInstance);
                                         }
                                         
-                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
+                                        Element thumbprintElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                                         if (thumbprintElement != null) {
                                             String thumbprintInstance;
                                             thumbprintInstance = thumbprintElement.getTextContent();
@@ -4433,30 +4355,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements79 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
+                                Element winRMElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "WinRM");
                                 if (winRMElement != null) {
                                     WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                                     configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                     
-                                    NodeList elements80 = winRMElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
+                                    Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").getLength(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").item(i9));
+                                        for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
-                                            NodeList elements81 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
+                                            Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                             if (protocolElement4 != null) {
                                                 VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
                                                 protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
                                                 listenerInstance.setListenerType(protocolInstance4);
                                             }
                                             
-                                            NodeList elements82 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
+                                            Element certificateThumbprintElement = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                             if (certificateThumbprintElement != null) {
                                                 String certificateThumbprintInstance;
                                                 certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
@@ -4466,70 +4384,61 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements83 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
+                                Element adminUsernameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdminUsername");
                                 if (adminUsernameElement != null) {
                                     String adminUsernameInstance;
                                     adminUsernameInstance = adminUsernameElement.getTextContent();
                                     configurationSetInstance.setAdminUserName(adminUsernameInstance);
                                 }
                                 
-                                NodeList elements84 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
+                                Element hostNameElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "HostName");
                                 if (hostNameElement2 != null) {
                                     String hostNameInstance2;
                                     hostNameInstance2 = hostNameElement2.getTextContent();
                                     configurationSetInstance.setHostName(hostNameInstance2);
                                 }
                                 
-                                NodeList elements85 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
+                                Element userNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "UserName");
                                 if (userNameElement != null) {
                                     String userNameInstance;
                                     userNameInstance = userNameElement.getTextContent();
                                     configurationSetInstance.setUserName(userNameInstance);
                                 }
                                 
-                                NodeList elements86 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
+                                Element userPasswordElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "UserPassword");
                                 if (userPasswordElement != null) {
                                     String userPasswordInstance;
                                     userPasswordInstance = userPasswordElement.getTextContent();
                                     configurationSetInstance.setUserPassword(userPasswordInstance);
                                 }
                                 
-                                NodeList elements87 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                Element disableSshPasswordAuthenticationElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
                                     disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
-                                NodeList elements88 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
+                                Element sSHElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SSH");
                                 if (sSHElement != null) {
                                     SshSettings sSHInstance = new SshSettings();
                                     configurationSetInstance.setSshSettings(sSHInstance);
                                     
-                                    NodeList elements89 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
+                                    Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").getLength(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").item(i10));
+                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
-                                            NodeList elements90 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
+                                            Element fingerprintElement = XmlUtility.getElementByTagNameNS(publicKeysElement, "http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                             if (fingerprintElement != null) {
                                                 String fingerprintInstance;
                                                 fingerprintInstance = fingerprintElement.getTextContent();
                                                 publicKeyInstance.setFingerprint(fingerprintInstance);
                                             }
                                             
-                                            NodeList elements91 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
+                                            Element pathElement2 = XmlUtility.getElementByTagNameNS(publicKeysElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement2 != null) {
                                                 String pathInstance2;
                                                 pathInstance2 = pathElement2.getTextContent();
@@ -4538,24 +4447,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                     }
                                     
-                                    NodeList elements92 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
+                                    Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").getLength(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").item(i11));
+                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
-                                            NodeList elements93 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
+                                            Element fingerprintElement2 = XmlUtility.getElementByTagNameNS(keyPairsElement, "http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                             if (fingerprintElement2 != null) {
                                                 String fingerprintInstance2;
                                                 fingerprintInstance2 = fingerprintElement2.getTextContent();
                                                 keyPairInstance.setFingerprint(fingerprintInstance2);
                                             }
                                             
-                                            NodeList elements94 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
+                                            Element pathElement3 = XmlUtility.getElementByTagNameNS(keyPairsElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement3 != null) {
                                                 String pathInstance3;
                                                 pathInstance3 = pathElement3.getTextContent();
@@ -4567,72 +4473,63 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements95 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                        Element resourceExtensionReferencesSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
+                        Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").getLength(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").item(i12));
+                            for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i12 = i12 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i12));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
-                                NodeList elements96 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
-                                Element referenceNameElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
+                                Element referenceNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ReferenceName");
                                 if (referenceNameElement != null) {
                                     String referenceNameInstance;
                                     referenceNameInstance = referenceNameElement.getTextContent();
                                     resourceExtensionReferenceInstance.setReferenceName(referenceNameInstance);
                                 }
                                 
-                                NodeList elements97 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Publisher");
-                                Element publisherElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
+                                Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
                                 if (publisherElement != null) {
                                     String publisherInstance;
                                     publisherInstance = publisherElement.getTextContent();
                                     resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
                                 
-                                NodeList elements98 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
+                                Element nameElement4 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                 if (nameElement4 != null) {
                                     String nameInstance4;
                                     nameInstance4 = nameElement4.getTextContent();
                                     resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
                                 
-                                NodeList elements99 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
-                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
+                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
                                 if (versionElement != null) {
                                     String versionInstance;
                                     versionInstance = versionElement.getTextContent();
                                     resourceExtensionReferenceInstance.setVersion(versionInstance);
                                 }
                                 
-                                NodeList elements100 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                                Element resourceExtensionParameterValuesSequenceElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
+                                Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").getLength(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").item(i13));
+                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i13));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
-                                        NodeList elements101 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Key");
-                                        Element keyElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
+                                        Element keyElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Key");
                                         if (keyElement != null) {
                                             String keyInstance;
                                             keyInstance = keyElement.getTextContent();
                                             resourceExtensionParameterValueInstance.setKey(keyInstance);
                                         }
                                         
-                                        NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                        Element valueElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
+                                        Element valueElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                                         if (valueElement != null) {
                                             String valueInstance;
                                             valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
                                             resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
                                         
-                                        NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                        Element typeElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                                        Element typeElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Type");
                                         if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
                                             ResourceExtensionParameterValueType typeInstance;
                                             typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
@@ -4641,8 +4538,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements104 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
-                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                                Element stateElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "State");
                                 if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
                                     ResourceExtensionReferenceState stateInstance;
                                     stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
@@ -4651,64 +4547,56 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements105 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
-                        Element availabilitySetNameElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                        Element availabilitySetNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
                             availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
                             roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
                         }
                         
-                        NodeList elements106 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                        Element dataVirtualHardDisksSequenceElement = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
+                        Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").getLength(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").item(i14));
+                            for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i14 = i14 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i14));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
-                                NodeList elements107 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                                Element hostCachingElement = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                                Element hostCachingElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "HostCaching");
                                 if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                                     VirtualHardDiskHostCaching hostCachingInstance;
                                     hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
                                     dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
                                 }
                                 
-                                NodeList elements108 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                                Element diskLabelElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
+                                Element diskLabelElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "DiskLabel");
                                 if (diskLabelElement != null) {
                                     String diskLabelInstance;
                                     diskLabelInstance = diskLabelElement.getTextContent();
                                     dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
                                 }
                                 
-                                NodeList elements109 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                                Element diskNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
+                                Element diskNameElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
                                     diskNameInstance = diskNameElement.getTextContent();
                                     dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
                                 }
                                 
-                                NodeList elements110 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                                Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
                                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                                     int lunInstance;
                                     lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
                                 
-                                NodeList elements111 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                                Element logicalDiskSizeInGBElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
+                                Element logicalDiskSizeInGBElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                                 if (logicalDiskSizeInGBElement != null) {
                                     int logicalDiskSizeInGBInstance;
                                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
                                 
-                                NodeList elements112 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                                Element mediaLinkElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
+                                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                                 if (mediaLinkElement != null) {
                                     URI mediaLinkInstance;
                                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
@@ -4717,62 +4605,54 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements113 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
+                        Element labelElement2 = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement2 != null) {
                             String labelInstance2;
                             labelInstance2 = labelElement2.getTextContent();
                             roleInstance.setLabel(labelInstance2);
                         }
                         
-                        NodeList elements114 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
-                        Element oSVirtualHardDiskElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
+                        Element oSVirtualHardDiskElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
                         if (oSVirtualHardDiskElement != null) {
                             OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                             roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                             
-                            NodeList elements115 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                            Element hostCachingElement2 = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                            Element hostCachingElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "HostCaching");
                             if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                                 VirtualHardDiskHostCaching hostCachingInstance2;
                                 hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
                                 oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                             }
                             
-                            NodeList elements116 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
+                            Element diskLabelElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskLabel");
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
                                 diskLabelInstance2 = diskLabelElement2.getTextContent();
                                 oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
                             }
                             
-                            NodeList elements117 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
+                            Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
                                 diskNameInstance2 = diskNameElement2.getTextContent();
                                 oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
                             }
                             
-                            NodeList elements118 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
+                            Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                             if (mediaLinkElement2 != null) {
                                 URI mediaLinkInstance2;
                                 mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
                                 oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
                             }
                             
-                            NodeList elements119 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
-                            Element sourceImageNameElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
+                            Element sourceImageNameElement = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "SourceImageName");
                             if (sourceImageNameElement != null) {
                                 String sourceImageNameInstance;
                                 sourceImageNameInstance = sourceImageNameElement.getTextContent();
                                 oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
                             }
                             
-                            NodeList elements120 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120.item(0)) : null;
+                            Element osElement = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "OS");
                             if (osElement != null) {
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
@@ -4780,24 +4660,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements121 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
+                        Element roleSizeElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleSize");
                         if (roleSizeElement != null) {
                             String roleSizeInstance;
                             roleSizeInstance = roleSizeElement.getTextContent();
                             roleInstance.setRoleSize(roleSizeInstance);
                         }
                         
-                        NodeList elements122 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
-                        Element provisionGuestAgentElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                        Element provisionGuestAgentElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
                             provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
-                        NodeList elements123 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
-                        Element defaultWinRmCertificateThumbprintElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
+                        Element defaultWinRmCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
                         if (defaultWinRmCertificateThumbprintElement != null) {
                             String defaultWinRmCertificateThumbprintInstance;
                             defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
@@ -4806,91 +4683,78 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements124 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SdkVersion");
-                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
+                Element sdkVersionElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "SdkVersion");
                 if (sdkVersionElement != null) {
                     String sdkVersionInstance;
                     sdkVersionInstance = sdkVersionElement.getTextContent();
                     result.setSdkVersion(sdkVersionInstance);
                 }
                 
-                NodeList elements125 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Locked");
-                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
+                Element lockedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Locked");
                 if (lockedElement != null) {
                     boolean lockedInstance;
                     lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
                 
-                NodeList elements126 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
-                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
+                Element rollbackAllowedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
                     rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
                 
-                NodeList elements127 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreatedTime");
-                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
+                Element createdTimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
-                NodeList elements128 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifiedTime");
-                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
+                Element lastModifiedTimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LastModifiedTime");
                 if (lastModifiedTimeElement != null) {
                     Calendar lastModifiedTimeInstance;
                     lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
                 
-                NodeList elements129 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
-                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
+                Element virtualNetworkNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
                 if (virtualNetworkNameElement != null) {
                     String virtualNetworkNameInstance;
                     virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
                     result.setVirtualNetworkName(virtualNetworkNameInstance);
                 }
                 
-                NodeList elements130 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
+                Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty").getLength(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty").item(i15));
-                        NodeList elements131 = extendedPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131.item(0)).getTextContent() : null;
-                        NodeList elements132 = extendedPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
-                        String extendedPropertiesValue = elements132.getLength() > 0 ? ((org.w3c.dom.Element) elements132.item(0)).getTextContent() : null;
+                    for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i15 = i15 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i15));
+                        String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
+                        String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
                 
-                NodeList elements133 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PersistentVMDowntime");
-                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
+                Element persistentVMDowntimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "PersistentVMDowntime");
                 if (persistentVMDowntimeElement != null) {
                     PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                     result.setPersistentVMDowntime(persistentVMDowntimeInstance);
                     
-                    NodeList elements134 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
-                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
+                    Element startTimeElement = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
                         startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
                     
-                    NodeList elements135 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndTime");
-                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
+                    Element endTimeElement = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "EndTime");
                     if (endTimeElement != null) {
                         Calendar endTimeInstance;
                         endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    NodeList elements136 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
+                    Element statusElement2 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement2 != null) {
                         String statusInstance2;
                         statusInstance2 = statusElement2.getTextContent();
@@ -4898,32 +4762,28 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements137 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIPs");
-                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
+                Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < virtualIPsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP").getLength(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP").item(i16));
+                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i16 = i16 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i16));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
-                        NodeList elements138 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Address");
-                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
+                        Element addressElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Address");
                         if (addressElement != null) {
                             InetAddress addressInstance;
                             addressInstance = InetAddress.getByName(addressElement.getTextContent());
                             virtualIPInstance.setAddress(addressInstance);
                         }
                         
-                        NodeList elements139 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
+                        Element nameElement5 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         if (nameElement5 != null) {
                             String nameInstance5;
                             nameInstance5 = nameElement5.getTextContent();
                             virtualIPInstance.setName(nameInstance5);
                         }
                         
-                        NodeList elements140 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                        Element isDnsProgrammedElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                        Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
                             isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
@@ -4932,38 +4792,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements141 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
+                Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
                 if (reservedIPNameElement != null) {
                     String reservedIPNameInstance;
                     reservedIPNameInstance = reservedIPNameElement.getTextContent();
                     result.setReservedIPName(reservedIPNameInstance);
                 }
                 
-                NodeList elements142 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Dns");
-                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142.item(0)) : null;
+                Element dnsElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Dns");
                 if (dnsElement != null) {
                     DnsSettings dnsInstance = new DnsSettings();
                     result.setDnsSettings(dnsInstance);
                     
-                    NodeList elements143 = dnsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServers");
-                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143.item(0)) : null;
+                    Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < dnsServersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServer").getLength(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServer").item(i17));
+                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i17 = i17 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i17));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
-                            NodeList elements144 = dnsServersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144.item(0)) : null;
+                            Element nameElement6 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement6 != null) {
                                 String nameInstance6;
                                 nameInstance6 = nameElement6.getTextContent();
                                 dnsServerInstance.setName(nameInstance6);
                             }
                             
-                            NodeList elements145 = dnsServersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Address");
-                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145.item(0)) : null;
+                            Element addressElement2 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
                             if (addressElement2 != null) {
                                 InetAddress addressInstance2;
                                 addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
@@ -4973,22 +4828,19 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements146 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
-                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146.item(0)) : null;
+                Element extensionConfigurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
                 if (extensionConfigurationElement != null) {
                     ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                     result.setExtensionConfiguration(extensionConfigurationInstance);
                     
-                    NodeList elements147 = extensionConfigurationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147.item(0)) : null;
+                    Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < allRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").getLength(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").item(i18));
+                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i18 = i18 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i18));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
-                            NodeList elements148 = allRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
-                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148.item(0)) : null;
+                            Element idElement = XmlUtility.getElementByTagNameNS(allRolesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                             if (idElement != null) {
                                 String idInstance;
                                 idInstance = idElement.getTextContent();
@@ -4997,32 +4849,28 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    NodeList elements149 = extensionConfigurationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149.item(0)) : null;
+                    Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < namedRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").getLength(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").item(i19));
+                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i19 = i19 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i19));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
-                            NodeList elements150 = namedRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150.item(0)) : null;
+                            Element roleNameElement3 = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                             if (roleNameElement3 != null) {
                                 String roleNameInstance3;
                                 roleNameInstance3 = roleNameElement3.getTextContent();
                                 roleInstance2.setRoleName(roleNameInstance3);
                             }
                             
-                            NodeList elements151 = namedRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                            Element extensionsSequenceElement = elements151.getLength() > 0 ? ((Element) elements151.item(0)) : null;
+                            Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < extensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").getLength(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").item(i20));
+                                for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i20 = i20 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i20));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     
-                                    NodeList elements152 = extensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
-                                    Element idElement2 = elements152.getLength() > 0 ? ((Element) elements152.item(0)) : null;
+                                    Element idElement2 = XmlUtility.getElementByTagNameNS(extensionsElement, "http://schemas.microsoft.com/windowsazure", "Id");
                                     if (idElement2 != null) {
                                         String idInstance2;
                                         idInstance2 = idElement2.getTextContent();
@@ -5147,187 +4995,163 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Deployment");
-            Element deploymentElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element deploymentElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Deployment");
             if (deploymentElement != null) {
-                NodeList elements2 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
-                Element deploymentSlotElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element deploymentSlotElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "DeploymentSlot");
                 if (deploymentSlotElement != null) {
                     DeploymentSlot deploymentSlotInstance;
                     deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                     result.setDeploymentSlot(deploymentSlotInstance);
                 }
                 
-                NodeList elements4 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivateID");
-                Element privateIDElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element privateIDElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "PrivateID");
                 if (privateIDElement != null) {
                     String privateIDInstance;
                     privateIDInstance = privateIDElement.getTextContent();
                     result.setPrivateId(privateIDInstance);
                 }
                 
-                NodeList elements5 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     DeploymentStatus statusInstance;
                     statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
                 
-                NodeList elements6 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element labelElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements7 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Url");
-                Element urlElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element urlElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
                 
-                NodeList elements8 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-                Element configurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element configurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Configuration");
                 if (configurationElement != null) {
                     String configurationInstance;
                     configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
                     result.setConfiguration(configurationInstance);
                 }
                 
-                NodeList elements9 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstanceList");
-                Element roleInstanceListSequenceElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element roleInstanceListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleInstanceList");
                 if (roleInstanceListSequenceElement != null) {
-                    for (int i1 = 0; i1 < roleInstanceListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstance").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleInstance").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleInstanceListSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleInstance").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleInstanceListSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleInstance").get(i1));
                         RoleInstance roleInstanceInstance = new RoleInstance();
                         result.getRoleInstances().add(roleInstanceInstance);
                         
-                        NodeList elements10 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                        Element roleNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        Element roleNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                         if (roleNameElement != null) {
                             String roleNameInstance;
                             roleNameInstance = roleNameElement.getTextContent();
                             roleInstanceInstance.setRoleName(roleNameInstance);
                         }
                         
-                        NodeList elements11 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceName");
-                        Element instanceNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        Element instanceNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceName");
                         if (instanceNameElement != null) {
                             String instanceNameInstance;
                             instanceNameInstance = instanceNameElement.getTextContent();
                             roleInstanceInstance.setInstanceName(instanceNameInstance);
                         }
                         
-                        NodeList elements12 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceStatus");
-                        Element instanceStatusElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        Element instanceStatusElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceStatus");
                         if (instanceStatusElement != null) {
                             String instanceStatusInstance;
                             instanceStatusInstance = instanceStatusElement.getTextContent();
                             roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
                         }
                         
-                        NodeList elements13 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceUpgradeDomain");
-                        Element instanceUpgradeDomainElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        Element instanceUpgradeDomainElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceUpgradeDomain");
                         if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceUpgradeDomainInstance;
                             instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
                         }
                         
-                        NodeList elements14 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceFaultDomain");
-                        Element instanceFaultDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        Element instanceFaultDomainElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceFaultDomain");
                         if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false) {
                             int instanceFaultDomainInstance;
                             instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                             roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
                         }
                         
-                        NodeList elements15 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceSize");
-                        Element instanceSizeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        Element instanceSizeElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceSize");
                         if (instanceSizeElement != null) {
                             String instanceSizeInstance;
                             instanceSizeInstance = instanceSizeElement.getTextContent();
                             roleInstanceInstance.setInstanceSize(instanceSizeInstance);
                         }
                         
-                        NodeList elements16 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceStateDetails");
-                        Element instanceStateDetailsElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        Element instanceStateDetailsElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceStateDetails");
                         if (instanceStateDetailsElement != null) {
                             String instanceStateDetailsInstance;
                             instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
                             roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
                         }
                         
-                        NodeList elements17 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceErrorCode");
-                        Element instanceErrorCodeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                        Element instanceErrorCodeElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceErrorCode");
                         if (instanceErrorCodeElement != null) {
                             String instanceErrorCodeInstance;
                             instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
                             roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
                         }
                         
-                        NodeList elements18 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IpAddress");
-                        Element ipAddressElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                        Element ipAddressElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "IpAddress");
                         if (ipAddressElement != null) {
                             InetAddress ipAddressInstance;
                             ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
                             roleInstanceInstance.setIPAddress(ipAddressInstance);
                         }
                         
-                        NodeList elements19 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoints");
-                        Element instanceEndpointsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        Element instanceEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoints");
                         if (instanceEndpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < instanceEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").item(i2));
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(instanceEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(instanceEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InstanceEndpoint").get(i2));
                                 InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
                                 roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
                                 
-                                NodeList elements20 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                Element localPortElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                                Element localPortElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LocalPort");
                                 if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
                                     localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     instanceEndpointInstance.setLocalPort(localPortInstance);
                                 }
                                 
-                                NodeList elements21 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                Element nameElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                                Element nameElement2 = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                 if (nameElement2 != null) {
                                     String nameInstance2;
                                     nameInstance2 = nameElement2.getTextContent();
                                     instanceEndpointInstance.setName(nameInstance2);
                                 }
                                 
-                                NodeList elements22 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicPort");
-                                Element publicPortElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
+                                Element publicPortElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "PublicPort");
                                 if (publicPortElement != null) {
                                     int publicPortInstance;
                                     publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                     instanceEndpointInstance.setPort(publicPortInstance);
                                 }
                                 
-                                NodeList elements23 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                Element protocolElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
+                                Element protocolElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                 if (protocolElement != null) {
                                     String protocolInstance;
                                     protocolInstance = protocolElement.getTextContent();
                                     instanceEndpointInstance.setProtocol(protocolInstance);
                                 }
                                 
-                                NodeList elements24 = instanceEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                Element vipElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
+                                Element vipElement = XmlUtility.getElementByTagNameNS(instanceEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Vip");
                                 if (vipElement != null) {
                                     InetAddress vipInstance;
                                     vipInstance = InetAddress.getByName(vipElement.getTextContent());
@@ -5336,24 +5160,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements25 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PowerState");
-                        Element powerStateElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
+                        Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
                             powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
                             roleInstanceInstance.setPowerState(powerStateInstance);
                         }
                         
-                        NodeList elements26 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                        Element hostNameElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
+                        Element hostNameElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "HostName");
                         if (hostNameElement != null) {
                             String hostNameInstance;
                             hostNameInstance = hostNameElement.getTextContent();
                             roleInstanceInstance.setHostName(hostNameInstance);
                         }
                         
-                        NodeList elements27 = roleInstanceListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteAccessCertificateThumbprint");
-                        Element remoteAccessCertificateThumbprintElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
+                        Element remoteAccessCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "RemoteAccessCertificateThumbprint");
                         if (remoteAccessCertificateThumbprintElement != null) {
                             String remoteAccessCertificateThumbprintInstance;
                             remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
@@ -5362,30 +5183,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements28 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeStatus");
-                Element upgradeStatusElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
+                Element upgradeStatusElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "UpgradeStatus");
                 if (upgradeStatusElement != null) {
                     UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                     result.setUpgradeStatus(upgradeStatusInstance);
                     
-                    NodeList elements29 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeType");
-                    Element upgradeTypeElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
+                    Element upgradeTypeElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "UpgradeType");
                     if (upgradeTypeElement != null) {
                         DeploymentUpgradeType upgradeTypeInstance;
                         upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
                         upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
                     }
                     
-                    NodeList elements30 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
-                    Element currentUpgradeDomainStateElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
+                    Element currentUpgradeDomainStateElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomainState");
                     if (currentUpgradeDomainStateElement != null) {
                         UpgradeDomainState currentUpgradeDomainStateInstance;
                         currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
                         upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
                     }
                     
-                    NodeList elements31 = upgradeStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomain");
-                    Element currentUpgradeDomainElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
+                    Element currentUpgradeDomainElement = XmlUtility.getElementByTagNameNS(upgradeStatusElement, "http://schemas.microsoft.com/windowsazure", "CurrentUpgradeDomain");
                     if (currentUpgradeDomainElement != null) {
                         int currentUpgradeDomainInstance;
                         currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
@@ -5393,142 +5210,124 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements32 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UpgradeDomainCount");
-                Element upgradeDomainCountElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
+                Element upgradeDomainCountElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "UpgradeDomainCount");
                 if (upgradeDomainCountElement != null) {
                     int upgradeDomainCountInstance;
                     upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                     result.setUpgradeDomainCount(upgradeDomainCountInstance);
                 }
                 
-                NodeList elements33 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleList");
-                Element roleListSequenceElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
+                Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < roleListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i3 = i3 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i3));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
-                        NodeList elements34 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                        Element roleNameElement2 = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
+                        Element roleNameElement2 = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                         if (roleNameElement2 != null) {
                             String roleNameInstance2;
                             roleNameInstance2 = roleNameElement2.getTextContent();
                             roleInstance.setRoleName(roleNameInstance2);
                         }
                         
-                        NodeList elements35 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
-                        Element osVersionElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
+                        Element osVersionElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "OsVersion");
                         if (osVersionElement != null) {
                             String osVersionInstance;
                             osVersionInstance = osVersionElement.getTextContent();
                             roleInstance.setOSVersion(osVersionInstance);
                         }
                         
-                        NodeList elements36 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleType");
-                        Element roleTypeElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
+                        Element roleTypeElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleType");
                         if (roleTypeElement != null) {
                             String roleTypeInstance;
                             roleTypeInstance = roleTypeElement.getTextContent();
                             roleInstance.setRoleType(roleTypeInstance);
                         }
                         
-                        NodeList elements37 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                        Element configurationSetsSequenceElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
+                        Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").getLength(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet").item(i4));
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i4));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
-                                NodeList elements38 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
-                                Element configurationSetTypeElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
+                                Element configurationSetTypeElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                                 if (configurationSetTypeElement != null) {
                                     String configurationSetTypeInstance;
                                     configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
                                     configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
                                 }
                                 
-                                NodeList elements39 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                                Element inputEndpointsSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
+                                Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").getLength(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint").item(i5));
+                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i5 = i5 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i5));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
-                                        NodeList elements40 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
-                                        Element loadBalancedEndpointSetNameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
+                                        Element loadBalancedEndpointSetNameElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                                         if (loadBalancedEndpointSetNameElement != null) {
                                             String loadBalancedEndpointSetNameInstance;
                                             loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
                                             inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
                                         }
                                         
-                                        NodeList elements41 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
-                                        Element localPortElement2 = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
+                                        Element localPortElement2 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LocalPort");
                                         if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false) {
                                             int localPortInstance2;
                                             localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        NodeList elements42 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                        Element nameElement3 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
+                                        Element nameElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                         if (nameElement3 != null) {
                                             String nameInstance3;
                                             nameInstance3 = nameElement3.getTextContent();
                                             inputEndpointInstance.setName(nameInstance3);
                                         }
                                         
-                                        NodeList elements43 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                        Element portElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
+                                        Element portElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Port");
                                         if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                             int portInstance;
                                             portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                             inputEndpointInstance.setPort(portInstance);
                                         }
                                         
-                                        NodeList elements44 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
-                                        Element loadBalancerProbeElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
+                                        Element loadBalancerProbeElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                                         if (loadBalancerProbeElement != null) {
                                             LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                             inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                             
-                                            NodeList elements45 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
+                                            Element pathElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement != null) {
                                                 String pathInstance;
                                                 pathInstance = pathElement.getTextContent();
                                                 loadBalancerProbeInstance.setPath(pathInstance);
                                             }
                                             
-                                            NodeList elements46 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Port");
-                                            Element portElement2 = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
+                                            Element portElement2 = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Port");
                                             if (portElement2 != null) {
                                                 int portInstance2;
                                                 portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                 loadBalancerProbeInstance.setPort(portInstance2);
                                             }
                                             
-                                            NodeList elements47 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            Element protocolElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
+                                            Element protocolElement2 = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                             if (protocolElement2 != null) {
                                                 LoadBalancerProbeTransportProtocol protocolInstance2;
                                                 protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
                                                 loadBalancerProbeInstance.setProtocol(protocolInstance2);
                                             }
                                             
-                                            NodeList elements48 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
-                                            Element intervalInSecondsElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
+                                            Element intervalInSecondsElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                             if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int intervalInSecondsInstance;
                                                 intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                 loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
                                             }
                                             
-                                            NodeList elements49 = loadBalancerProbeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
-                                            Element timeoutInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
+                                            Element timeoutInSecondsElement = XmlUtility.getElementByTagNameNS(loadBalancerProbeElement, "http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                             if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                 int timeoutInSecondsInstance;
                                                 timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
@@ -5536,70 +5335,61 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             }
                                         }
                                         
-                                        NodeList elements50 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                        Element protocolElement3 = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
+                                        Element protocolElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                         if (protocolElement3 != null) {
                                             String protocolInstance3;
                                             protocolInstance3 = protocolElement3.getTextContent();
                                             inputEndpointInstance.setProtocol(protocolInstance3);
                                         }
                                         
-                                        NodeList elements51 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                        Element vipElement2 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
+                                        Element vipElement2 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Vip");
                                         if (vipElement2 != null) {
                                             InetAddress vipInstance2;
                                             vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
                                             inputEndpointInstance.setVirtualIPAddress(vipInstance2);
                                         }
                                         
-                                        NodeList elements52 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
-                                        Element enableDirectServerReturnElement = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
+                                        Element enableDirectServerReturnElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
                                             enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
-                                        NodeList elements53 = inputEndpointsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
-                                        Element endpointAclElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
+                                        Element endpointAclElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                                         if (endpointAclElement != null) {
                                             EndpointAcl endpointAclInstance = new EndpointAcl();
                                             inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                             
-                                            NodeList elements54 = endpointAclElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                            Element rulesSequenceElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
+                                            Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").getLength(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Rule").item(i6));
+                                                for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i6 = i6 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i6));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
-                                                    NodeList elements55 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Order");
-                                                    Element orderElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
+                                                    Element orderElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Order");
                                                     if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                         int orderInstance;
                                                         orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                         ruleInstance.setOrder(orderInstance);
                                                     }
                                                     
-                                                    NodeList elements56 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Action");
-                                                    Element actionElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
+                                                    Element actionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Action");
                                                     if (actionElement != null) {
                                                         String actionInstance;
                                                         actionInstance = actionElement.getTextContent();
                                                         ruleInstance.setAction(actionInstance);
                                                     }
                                                     
-                                                    NodeList elements57 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
-                                                    Element remoteSubnetElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
+                                                    Element remoteSubnetElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                                     if (remoteSubnetElement != null) {
                                                         String remoteSubnetInstance;
                                                         remoteSubnetInstance = remoteSubnetElement.getTextContent();
                                                         ruleInstance.setRemoteSubnet(remoteSubnetInstance);
                                                     }
                                                     
-                                                    NodeList elements58 = rulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                                                    Element descriptionElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
+                                                    Element descriptionElement = XmlUtility.getElementByTagNameNS(rulesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                                                     if (descriptionElement != null) {
                                                         String descriptionInstance;
                                                         descriptionInstance = descriptionElement.getTextContent();
@@ -5611,93 +5401,81 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements59 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                                Element subnetNamesSequenceElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
+                                Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").getLength(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SubnetName").item(i7));
+                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i7 = i7 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i7));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
                                 
-                                NodeList elements60 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
-                                Element staticVirtualNetworkIPAddressElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
+                                Element staticVirtualNetworkIPAddressElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                                 if (staticVirtualNetworkIPAddressElement != null) {
                                     String staticVirtualNetworkIPAddressInstance;
                                     staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
                                     configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
                                 }
                                 
-                                NodeList elements61 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
-                                Element computerNameElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
+                                Element computerNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ComputerName");
                                 if (computerNameElement != null) {
                                     String computerNameInstance;
                                     computerNameInstance = computerNameElement.getTextContent();
                                     configurationSetInstance.setComputerName(computerNameInstance);
                                 }
                                 
-                                NodeList elements62 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                                Element adminPasswordElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
+                                Element adminPasswordElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdminPassword");
                                 if (adminPasswordElement != null) {
                                     String adminPasswordInstance;
                                     adminPasswordInstance = adminPasswordElement.getTextContent();
                                     configurationSetInstance.setAdminPassword(adminPasswordInstance);
                                 }
                                 
-                                NodeList elements63 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
-                                Element resetPasswordOnFirstLogonElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
+                                Element resetPasswordOnFirstLogonElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
                                     resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
-                                NodeList elements64 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
-                                Element enableAutomaticUpdatesElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
+                                Element enableAutomaticUpdatesElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
                                     enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
-                                NodeList elements65 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
-                                Element timeZoneElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
+                                Element timeZoneElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "TimeZone");
                                 if (timeZoneElement != null) {
                                     String timeZoneInstance;
                                     timeZoneInstance = timeZoneElement.getTextContent();
                                     configurationSetInstance.setTimeZone(timeZoneInstance);
                                 }
                                 
-                                NodeList elements66 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
-                                Element domainJoinElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
+                                Element domainJoinElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DomainJoin");
                                 if (domainJoinElement != null) {
                                     DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                                     configurationSetInstance.setDomainJoin(domainJoinInstance);
                                     
-                                    NodeList elements67 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Credentials");
-                                    Element credentialsElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
+                                    Element credentialsElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "Credentials");
                                     if (credentialsElement != null) {
                                         DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                         domainJoinInstance.setCredentials(credentialsInstance);
                                         
-                                        NodeList elements68 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Domain");
-                                        Element domainElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
+                                        Element domainElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Domain");
                                         if (domainElement != null) {
                                             String domainInstance;
                                             domainInstance = domainElement.getTextContent();
                                             credentialsInstance.setDomain(domainInstance);
                                         }
                                         
-                                        NodeList elements69 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Username");
-                                        Element usernameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
+                                        Element usernameElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Username");
                                         if (usernameElement != null) {
                                             String usernameInstance;
                                             usernameInstance = usernameElement.getTextContent();
                                             credentialsInstance.setUserName(usernameInstance);
                                         }
                                         
-                                        NodeList elements70 = credentialsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Password");
-                                        Element passwordElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
+                                        Element passwordElement = XmlUtility.getElementByTagNameNS(credentialsElement, "http://schemas.microsoft.com/windowsazure", "Password");
                                         if (passwordElement != null) {
                                             String passwordInstance;
                                             passwordInstance = passwordElement.getTextContent();
@@ -5705,30 +5483,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                     }
                                     
-                                    NodeList elements71 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
-                                    Element joinDomainElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
+                                    Element joinDomainElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "JoinDomain");
                                     if (joinDomainElement != null) {
                                         String joinDomainInstance;
                                         joinDomainInstance = joinDomainElement.getTextContent();
                                         domainJoinInstance.setDomainToJoin(joinDomainInstance);
                                     }
                                     
-                                    NodeList elements72 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
-                                    Element machineObjectOUElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
+                                    Element machineObjectOUElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                                     if (machineObjectOUElement != null) {
                                         String machineObjectOUInstance;
                                         machineObjectOUInstance = machineObjectOUElement.getTextContent();
                                         domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
                                     }
                                     
-                                    NodeList elements73 = domainJoinElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
-                                    Element provisioningElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
+                                    Element provisioningElement = XmlUtility.getElementByTagNameNS(domainJoinElement, "http://schemas.microsoft.com/windowsazure", "Provisioning");
                                     if (provisioningElement != null) {
                                         DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                         domainJoinInstance.setProvisioning(provisioningInstance);
                                         
-                                        NodeList elements74 = provisioningElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AccountData");
-                                        Element accountDataElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
+                                        Element accountDataElement = XmlUtility.getElementByTagNameNS(provisioningElement, "http://schemas.microsoft.com/windowsazure", "AccountData");
                                         if (accountDataElement != null) {
                                             String accountDataInstance;
                                             accountDataInstance = accountDataElement.getTextContent();
@@ -5737,29 +5511,25 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements75 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                                Element storedCertificateSettingsSequenceElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
+                                Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").getLength(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting").item(i8));
+                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
-                                        NodeList elements76 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreLocation");
-                                        Element storeLocationElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
+                                        Element storeLocationElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "StoreLocation");
                                         if (storeLocationElement != null) {
                                         }
                                         
-                                        NodeList elements77 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StoreName");
-                                        Element storeNameElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
+                                        Element storeNameElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "StoreName");
                                         if (storeNameElement != null) {
                                             String storeNameInstance;
                                             storeNameInstance = storeNameElement.getTextContent();
                                             certificateSettingInstance.setStoreName(storeNameInstance);
                                         }
                                         
-                                        NodeList elements78 = storedCertificateSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                                        Element thumbprintElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
+                                        Element thumbprintElement = XmlUtility.getElementByTagNameNS(storedCertificateSettingsElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                                         if (thumbprintElement != null) {
                                             String thumbprintInstance;
                                             thumbprintInstance = thumbprintElement.getTextContent();
@@ -5768,30 +5538,26 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements79 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "WinRM");
-                                Element winRMElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
+                                Element winRMElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "WinRM");
                                 if (winRMElement != null) {
                                     WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                                     configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                     
-                                    NodeList elements80 = winRMElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                                    Element listenersSequenceElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
+                                    Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").getLength(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Listener").item(i9));
+                                        for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
-                                            NodeList elements81 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Protocol");
-                                            Element protocolElement4 = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
+                                            Element protocolElement4 = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "Protocol");
                                             if (protocolElement4 != null) {
                                                 VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
                                                 protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
                                                 listenerInstance.setListenerType(protocolInstance4);
                                             }
                                             
-                                            NodeList elements82 = listenersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
-                                            Element certificateThumbprintElement = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
+                                            Element certificateThumbprintElement = XmlUtility.getElementByTagNameNS(listenersElement, "http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                             if (certificateThumbprintElement != null) {
                                                 String certificateThumbprintInstance;
                                                 certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
@@ -5801,70 +5567,61 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements83 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                                Element adminUsernameElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
+                                Element adminUsernameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "AdminUsername");
                                 if (adminUsernameElement != null) {
                                     String adminUsernameInstance;
                                     adminUsernameInstance = adminUsernameElement.getTextContent();
                                     configurationSetInstance.setAdminUserName(adminUsernameInstance);
                                 }
                                 
-                                NodeList elements84 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostName");
-                                Element hostNameElement2 = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
+                                Element hostNameElement2 = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "HostName");
                                 if (hostNameElement2 != null) {
                                     String hostNameInstance2;
                                     hostNameInstance2 = hostNameElement2.getTextContent();
                                     configurationSetInstance.setHostName(hostNameInstance2);
                                 }
                                 
-                                NodeList elements85 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserName");
-                                Element userNameElement = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
+                                Element userNameElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "UserName");
                                 if (userNameElement != null) {
                                     String userNameInstance;
                                     userNameInstance = userNameElement.getTextContent();
                                     configurationSetInstance.setUserName(userNameInstance);
                                 }
                                 
-                                NodeList elements86 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
-                                Element userPasswordElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
+                                Element userPasswordElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "UserPassword");
                                 if (userPasswordElement != null) {
                                     String userPasswordInstance;
                                     userPasswordInstance = userPasswordElement.getTextContent();
                                     configurationSetInstance.setUserPassword(userPasswordInstance);
                                 }
                                 
-                                NodeList elements87 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
-                                Element disableSshPasswordAuthenticationElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
+                                Element disableSshPasswordAuthenticationElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
                                     disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
-                                NodeList elements88 = configurationSetsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SSH");
-                                Element sSHElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
+                                Element sSHElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SSH");
                                 if (sSHElement != null) {
                                     SshSettings sSHInstance = new SshSettings();
                                     configurationSetInstance.setSshSettings(sSHInstance);
                                     
-                                    NodeList elements89 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                                    Element publicKeysSequenceElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
+                                    Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").getLength(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublicKey").item(i10));
+                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
-                                            NodeList elements90 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            Element fingerprintElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
+                                            Element fingerprintElement = XmlUtility.getElementByTagNameNS(publicKeysElement, "http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                             if (fingerprintElement != null) {
                                                 String fingerprintInstance;
                                                 fingerprintInstance = fingerprintElement.getTextContent();
                                                 publicKeyInstance.setFingerprint(fingerprintInstance);
                                             }
                                             
-                                            NodeList elements91 = publicKeysElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement2 = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
+                                            Element pathElement2 = XmlUtility.getElementByTagNameNS(publicKeysElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement2 != null) {
                                                 String pathInstance2;
                                                 pathInstance2 = pathElement2.getTextContent();
@@ -5873,24 +5630,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                     }
                                     
-                                    NodeList elements92 = sSHElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                                    Element keyPairsSequenceElement = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
+                                    Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").getLength(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "KeyPair").item(i11));
+                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
-                                            NodeList elements93 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Fingerprint");
-                                            Element fingerprintElement2 = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
+                                            Element fingerprintElement2 = XmlUtility.getElementByTagNameNS(keyPairsElement, "http://schemas.microsoft.com/windowsazure", "Fingerprint");
                                             if (fingerprintElement2 != null) {
                                                 String fingerprintInstance2;
                                                 fingerprintInstance2 = fingerprintElement2.getTextContent();
                                                 keyPairInstance.setFingerprint(fingerprintInstance2);
                                             }
                                             
-                                            NodeList elements94 = keyPairsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Path");
-                                            Element pathElement3 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
+                                            Element pathElement3 = XmlUtility.getElementByTagNameNS(keyPairsElement, "http://schemas.microsoft.com/windowsazure", "Path");
                                             if (pathElement3 != null) {
                                                 String pathInstance3;
                                                 pathInstance3 = pathElement3.getTextContent();
@@ -5902,72 +5656,63 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements95 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                        Element resourceExtensionReferencesSequenceElement = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
+                        Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < resourceExtensionReferencesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").getLength(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").item(i12));
+                            for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i12 = i12 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i12));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
-                                NodeList elements96 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
-                                Element referenceNameElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
+                                Element referenceNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ReferenceName");
                                 if (referenceNameElement != null) {
                                     String referenceNameInstance;
                                     referenceNameInstance = referenceNameElement.getTextContent();
                                     resourceExtensionReferenceInstance.setReferenceName(referenceNameInstance);
                                 }
                                 
-                                NodeList elements97 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Publisher");
-                                Element publisherElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
+                                Element publisherElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Publisher");
                                 if (publisherElement != null) {
                                     String publisherInstance;
                                     publisherInstance = publisherElement.getTextContent();
                                     resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
                                 
-                                NodeList elements98 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                                Element nameElement4 = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
+                                Element nameElement4 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                                 if (nameElement4 != null) {
                                     String nameInstance4;
                                     nameInstance4 = nameElement4.getTextContent();
                                     resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
                                 
-                                NodeList elements99 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Version");
-                                Element versionElement = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
+                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
                                 if (versionElement != null) {
                                     String versionInstance;
                                     versionInstance = versionElement.getTextContent();
                                     resourceExtensionReferenceInstance.setVersion(versionInstance);
                                 }
                                 
-                                NodeList elements100 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                                Element resourceExtensionParameterValuesSequenceElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
+                                Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < resourceExtensionParameterValuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").getLength(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").item(i13));
+                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i13));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
-                                        NodeList elements101 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Key");
-                                        Element keyElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
+                                        Element keyElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Key");
                                         if (keyElement != null) {
                                             String keyInstance;
                                             keyInstance = keyElement.getTextContent();
                                             resourceExtensionParameterValueInstance.setKey(keyInstance);
                                         }
                                         
-                                        NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
-                                        Element valueElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
+                                        Element valueElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                                         if (valueElement != null) {
                                             String valueInstance;
                                             valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
                                             resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
                                         
-                                        NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                        Element typeElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
+                                        Element typeElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Type");
                                         if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
                                             ResourceExtensionParameterValueType typeInstance;
                                             typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
@@ -5976,8 +5721,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     }
                                 }
                                 
-                                NodeList elements104 = resourceExtensionReferencesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
-                                Element stateElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
+                                Element stateElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "State");
                                 if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
                                     ResourceExtensionReferenceState stateInstance;
                                     stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
@@ -5986,64 +5730,56 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements105 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
-                        Element availabilitySetNameElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
+                        Element availabilitySetNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
                             availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
                             roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
                         }
                         
-                        NodeList elements106 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                        Element dataVirtualHardDisksSequenceElement = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
+                        Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").getLength(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").item(i14));
+                            for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i14 = i14 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i14));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
-                                NodeList elements107 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                                Element hostCachingElement = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
+                                Element hostCachingElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "HostCaching");
                                 if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                                     VirtualHardDiskHostCaching hostCachingInstance;
                                     hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
                                     dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
                                 }
                                 
-                                NodeList elements108 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                                Element diskLabelElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
+                                Element diskLabelElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "DiskLabel");
                                 if (diskLabelElement != null) {
                                     String diskLabelInstance;
                                     diskLabelInstance = diskLabelElement.getTextContent();
                                     dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
                                 }
                                 
-                                NodeList elements109 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                                Element diskNameElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
+                                Element diskNameElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
                                     diskNameInstance = diskNameElement.getTextContent();
                                     dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
                                 }
                                 
-                                NodeList elements110 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Lun");
-                                Element lunElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
+                                Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
                                 if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                                     int lunInstance;
                                     lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
                                 }
                                 
-                                NodeList elements111 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                                Element logicalDiskSizeInGBElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
+                                Element logicalDiskSizeInGBElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
                                 if (logicalDiskSizeInGBElement != null) {
                                     int logicalDiskSizeInGBInstance;
                                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
                                 }
                                 
-                                NodeList elements112 = dataVirtualHardDisksElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                                Element mediaLinkElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
+                                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                                 if (mediaLinkElement != null) {
                                     URI mediaLinkInstance;
                                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
@@ -6052,62 +5788,54 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements113 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                        Element labelElement2 = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
+                        Element labelElement2 = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement2 != null) {
                             String labelInstance2;
                             labelInstance2 = labelElement2.getTextContent();
                             roleInstance.setLabel(labelInstance2);
                         }
                         
-                        NodeList elements114 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
-                        Element oSVirtualHardDiskElement = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
+                        Element oSVirtualHardDiskElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
                         if (oSVirtualHardDiskElement != null) {
                             OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                             roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                             
-                            NodeList elements115 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
-                            Element hostCachingElement2 = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
+                            Element hostCachingElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "HostCaching");
                             if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                                 VirtualHardDiskHostCaching hostCachingInstance2;
                                 hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
                                 oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
                             }
                             
-                            NodeList elements116 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                            Element diskLabelElement2 = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
+                            Element diskLabelElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskLabel");
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
                                 diskLabelInstance2 = diskLabelElement2.getTextContent();
                                 oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
                             }
                             
-                            NodeList elements117 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                            Element diskNameElement2 = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
+                            Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
                                 diskNameInstance2 = diskNameElement2.getTextContent();
                                 oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
                             }
                             
-                            NodeList elements118 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                            Element mediaLinkElement2 = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
+                            Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                             if (mediaLinkElement2 != null) {
                                 URI mediaLinkInstance2;
                                 mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
                                 oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
                             }
                             
-                            NodeList elements119 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
-                            Element sourceImageNameElement = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
+                            Element sourceImageNameElement = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "SourceImageName");
                             if (sourceImageNameElement != null) {
                                 String sourceImageNameInstance;
                                 sourceImageNameInstance = sourceImageNameElement.getTextContent();
                                 oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
                             }
                             
-                            NodeList elements120 = oSVirtualHardDiskElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                            Element osElement = elements120.getLength() > 0 ? ((Element) elements120.item(0)) : null;
+                            Element osElement = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "OS");
                             if (osElement != null) {
                                 String osInstance;
                                 osInstance = osElement.getTextContent();
@@ -6115,24 +5843,21 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
-                        NodeList elements121 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
-                        Element roleSizeElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
+                        Element roleSizeElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "RoleSize");
                         if (roleSizeElement != null) {
                             String roleSizeInstance;
                             roleSizeInstance = roleSizeElement.getTextContent();
                             roleInstance.setRoleSize(roleSizeInstance);
                         }
                         
-                        NodeList elements122 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
-                        Element provisionGuestAgentElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
+                        Element provisionGuestAgentElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
                             provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
-                        NodeList elements123 = roleListElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
-                        Element defaultWinRmCertificateThumbprintElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
+                        Element defaultWinRmCertificateThumbprintElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
                         if (defaultWinRmCertificateThumbprintElement != null) {
                             String defaultWinRmCertificateThumbprintInstance;
                             defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
@@ -6141,91 +5866,78 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements124 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SdkVersion");
-                Element sdkVersionElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
+                Element sdkVersionElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "SdkVersion");
                 if (sdkVersionElement != null) {
                     String sdkVersionInstance;
                     sdkVersionInstance = sdkVersionElement.getTextContent();
                     result.setSdkVersion(sdkVersionInstance);
                 }
                 
-                NodeList elements125 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Locked");
-                Element lockedElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
+                Element lockedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Locked");
                 if (lockedElement != null) {
                     boolean lockedInstance;
                     lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                     result.setLocked(lockedInstance);
                 }
                 
-                NodeList elements126 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
-                Element rollbackAllowedElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
+                Element rollbackAllowedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
                     rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
                 
-                NodeList elements127 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreatedTime");
-                Element createdTimeElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
+                Element createdTimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
-                NodeList elements128 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LastModifiedTime");
-                Element lastModifiedTimeElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
+                Element lastModifiedTimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "LastModifiedTime");
                 if (lastModifiedTimeElement != null) {
                     Calendar lastModifiedTimeInstance;
                     lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                     result.setLastModifiedTime(lastModifiedTimeInstance);
                 }
                 
-                NodeList elements129 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
-                Element virtualNetworkNameElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
+                Element virtualNetworkNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
                 if (virtualNetworkNameElement != null) {
                     String virtualNetworkNameInstance;
                     virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
                     result.setVirtualNetworkName(virtualNetworkNameInstance);
                 }
                 
-                NodeList elements130 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
+                Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < extendedPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty").getLength(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty").item(i15));
-                        NodeList elements131 = extendedPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        String extendedPropertiesKey = elements131.getLength() > 0 ? ((org.w3c.dom.Element) elements131.item(0)).getTextContent() : null;
-                        NodeList elements132 = extendedPropertiesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Value");
-                        String extendedPropertiesValue = elements132.getLength() > 0 ? ((org.w3c.dom.Element) elements132.item(0)).getTextContent() : null;
+                    for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i15 = i15 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i15));
+                        String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
+                        String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
                 
-                NodeList elements133 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PersistentVMDowntime");
-                Element persistentVMDowntimeElement = elements133.getLength() > 0 ? ((Element) elements133.item(0)) : null;
+                Element persistentVMDowntimeElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "PersistentVMDowntime");
                 if (persistentVMDowntimeElement != null) {
                     PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                     result.setPersistentVMDowntime(persistentVMDowntimeInstance);
                     
-                    NodeList elements134 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "StartTime");
-                    Element startTimeElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
+                    Element startTimeElement = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "StartTime");
                     if (startTimeElement != null) {
                         Calendar startTimeInstance;
                         startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setStartTime(startTimeInstance);
                     }
                     
-                    NodeList elements135 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "EndTime");
-                    Element endTimeElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
+                    Element endTimeElement = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "EndTime");
                     if (endTimeElement != null) {
                         Calendar endTimeInstance;
                         endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    NodeList elements136 = persistentVMDowntimeElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                    Element statusElement2 = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
+                    Element statusElement2 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement2 != null) {
                         String statusInstance2;
                         statusInstance2 = statusElement2.getTextContent();
@@ -6233,32 +5945,28 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements137 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIPs");
-                Element virtualIPsSequenceElement = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
+                Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < virtualIPsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP").getLength(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "VirtualIP").item(i16));
+                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i16 = i16 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i16));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
-                        NodeList elements138 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Address");
-                        Element addressElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
+                        Element addressElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Address");
                         if (addressElement != null) {
                             InetAddress addressInstance;
                             addressInstance = InetAddress.getByName(addressElement.getTextContent());
                             virtualIPInstance.setAddress(addressInstance);
                         }
                         
-                        NodeList elements139 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                        Element nameElement5 = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
+                        Element nameElement5 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                         if (nameElement5 != null) {
                             String nameInstance5;
                             nameInstance5 = nameElement5.getTextContent();
                             virtualIPInstance.setName(nameInstance5);
                         }
                         
-                        NodeList elements140 = virtualIPsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
-                        Element isDnsProgrammedElement = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
+                        Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
                             isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
@@ -6267,38 +5975,33 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements141 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ReservedIPName");
-                Element reservedIPNameElement = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
+                Element reservedIPNameElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ReservedIPName");
                 if (reservedIPNameElement != null) {
                     String reservedIPNameInstance;
                     reservedIPNameInstance = reservedIPNameElement.getTextContent();
                     result.setReservedIPName(reservedIPNameInstance);
                 }
                 
-                NodeList elements142 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Dns");
-                Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142.item(0)) : null;
+                Element dnsElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Dns");
                 if (dnsElement != null) {
                     DnsSettings dnsInstance = new DnsSettings();
                     result.setDnsSettings(dnsInstance);
                     
-                    NodeList elements143 = dnsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServers");
-                    Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143.item(0)) : null;
+                    Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < dnsServersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServer").getLength(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "DnsServer").item(i17));
+                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i17 = i17 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i17));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
-                            NodeList elements144 = dnsServersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                            Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144.item(0)) : null;
+                            Element nameElement6 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
                             if (nameElement6 != null) {
                                 String nameInstance6;
                                 nameInstance6 = nameElement6.getTextContent();
                                 dnsServerInstance.setName(nameInstance6);
                             }
                             
-                            NodeList elements145 = dnsServersElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Address");
-                            Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145.item(0)) : null;
+                            Element addressElement2 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
                             if (addressElement2 != null) {
                                 InetAddress addressInstance2;
                                 addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
@@ -6308,22 +6011,19 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     }
                 }
                 
-                NodeList elements146 = deploymentElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
-                Element extensionConfigurationElement = elements146.getLength() > 0 ? ((Element) elements146.item(0)) : null;
+                Element extensionConfigurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtensionConfiguration");
                 if (extensionConfigurationElement != null) {
                     ExtensionConfiguration extensionConfigurationInstance = new ExtensionConfiguration();
                     result.setExtensionConfiguration(extensionConfigurationInstance);
                     
-                    NodeList elements147 = extensionConfigurationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AllRoles");
-                    Element allRolesSequenceElement = elements147.getLength() > 0 ? ((Element) elements147.item(0)) : null;
+                    Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < allRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").getLength(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) allRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").item(i18));
+                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i18 = i18 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i18));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
-                            NodeList elements148 = allRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
-                            Element idElement = elements148.getLength() > 0 ? ((Element) elements148.item(0)) : null;
+                            Element idElement = XmlUtility.getElementByTagNameNS(allRolesElement, "http://schemas.microsoft.com/windowsazure", "Id");
                             if (idElement != null) {
                                 String idInstance;
                                 idInstance = idElement.getTextContent();
@@ -6332,32 +6032,28 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         }
                     }
                     
-                    NodeList elements149 = extensionConfigurationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "NamedRoles");
-                    Element namedRolesSequenceElement = elements149.getLength() > 0 ? ((Element) elements149.item(0)) : null;
+                    Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < namedRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").getLength(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) namedRolesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Role").item(i19));
+                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i19 = i19 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i19));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
-                            NodeList elements150 = namedRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RoleName");
-                            Element roleNameElement3 = elements150.getLength() > 0 ? ((Element) elements150.item(0)) : null;
+                            Element roleNameElement3 = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "RoleName");
                             if (roleNameElement3 != null) {
                                 String roleNameInstance3;
                                 roleNameInstance3 = roleNameElement3.getTextContent();
                                 roleInstance2.setRoleName(roleNameInstance3);
                             }
                             
-                            NodeList elements151 = namedRolesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extensions");
-                            Element extensionsSequenceElement = elements151.getLength() > 0 ? ((Element) elements151.item(0)) : null;
+                            Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < extensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").getLength(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Extension").item(i20));
+                                for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i20 = i20 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i20));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     
-                                    NodeList elements152 = extensionsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
-                                    Element idElement2 = elements152.getLength() > 0 ? ((Element) elements152.item(0)) : null;
+                                    Element idElement2 = XmlUtility.getElementByTagNameNS(extensionsElement, "http://schemas.microsoft.com/windowsazure", "Id");
                                     if (idElement2 != null) {
                                         String idInstance2;
                                         idInstance2 = idElement2.getTextContent();

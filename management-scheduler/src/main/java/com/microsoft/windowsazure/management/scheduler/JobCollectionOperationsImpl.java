@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.scheduler;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.scheduler.models.JobCollectionCreateParameters;
@@ -68,7 +69,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerManagementClientImpl>, JobCollectionOperations {
@@ -679,11 +679,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ResourceNameAvailabilityResponse");
-            Element resourceNameAvailabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element resourceNameAvailabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ResourceNameAvailabilityResponse");
             if (resourceNameAvailabilityResponseElement != null) {
-                NodeList elements2 = resourceNameAvailabilityResponseElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsAvailable");
-                Element isAvailableElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element isAvailableElement = XmlUtility.getElementByTagNameNS(resourceNameAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
                 if (isAvailableElement != null) {
                     boolean isAvailableInstance;
                     isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
@@ -1022,109 +1020,94 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Resource");
-            Element resourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element resourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Resource");
             if (resourceElement != null) {
-                NodeList elements2 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements3 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ETag");
-                Element eTagElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element eTagElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "ETag");
                 if (eTagElement != null) {
                     String eTagInstance;
                     eTagInstance = eTagElement.getTextContent();
                     result.setETag(eTagInstance);
                 }
                 
-                NodeList elements4 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "State");
-                Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element stateElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "State");
                 if (stateElement != null) {
                     JobCollectionState stateInstance;
                     stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
                     result.setState(stateInstance);
                 }
                 
-                NodeList elements5 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SchemaVersion");
-                Element schemaVersionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element schemaVersionElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "SchemaVersion");
                 if (schemaVersionElement != null) {
                     String schemaVersionInstance;
                     schemaVersionInstance = schemaVersionElement.getTextContent();
                     result.setSchemaVersion(schemaVersionInstance);
                 }
                 
-                NodeList elements6 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Plan");
-                Element planElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element planElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Plan");
                 if (planElement != null) {
                     String planInstance;
                     planInstance = planElement.getTextContent();
                     result.setPlan(planInstance);
                 }
                 
-                NodeList elements7 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PromotionCode");
-                Element promotionCodeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element promotionCodeElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "PromotionCode");
                 if (promotionCodeElement != null) {
                     String promotionCodeInstance;
                     promotionCodeInstance = promotionCodeElement.getTextContent();
                     result.setPromotionCode(promotionCodeInstance);
                 }
                 
-                NodeList elements8 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
-                Element intrinsicSettingsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element intrinsicSettingsElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
                 if (intrinsicSettingsElement != null) {
                     JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
                     result.setIntrinsicSettings(intrinsicSettingsInstance);
                     
-                    NodeList elements9 = intrinsicSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Plan");
-                    Element planElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    Element planElement2 = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
                     if (planElement2 != null) {
                         JobCollectionPlan planInstance2;
                         planInstance2 = JobCollectionPlan.valueOf(planElement2.getTextContent());
                         intrinsicSettingsInstance.setPlan(planInstance2);
                     }
                     
-                    NodeList elements10 = intrinsicSettingsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Quota");
-                    Element quotaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    Element quotaElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Quota");
                     if (quotaElement != null) {
                         JobCollectionQuota quotaInstance = new JobCollectionQuota();
                         intrinsicSettingsInstance.setQuota(quotaInstance);
                         
-                        NodeList elements11 = quotaElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxJobCount");
-                        Element maxJobCountElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        Element maxJobCountElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobCount");
                         if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false) {
                             int maxJobCountInstance;
                             maxJobCountInstance = DatatypeConverter.parseInt(maxJobCountElement.getTextContent());
                             quotaInstance.setMaxJobCount(maxJobCountInstance);
                         }
                         
-                        NodeList elements12 = quotaElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
-                        Element maxJobOccurrenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        Element maxJobOccurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
                         if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false) {
                             int maxJobOccurrenceInstance;
                             maxJobOccurrenceInstance = DatatypeConverter.parseInt(maxJobOccurrenceElement.getTextContent());
                             quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
                         }
                         
-                        NodeList elements13 = quotaElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
-                        Element maxRecurrenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        Element maxRecurrenceElement = XmlUtility.getElementByTagNameNS(quotaElement, "http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
                         if (maxRecurrenceElement != null) {
                             JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
                             quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
                             
-                            NodeList elements14 = maxRecurrenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Frequency");
-                            Element frequencyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                            Element frequencyElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Frequency");
                             if (frequencyElement != null) {
                                 JobCollectionRecurrenceFrequency frequencyInstance;
                                 frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
                                 maxRecurrenceInstance.setFrequency(frequencyInstance);
                             }
                             
-                            NodeList elements15 = maxRecurrenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Interval");
-                            Element intervalElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                            Element intervalElement = XmlUtility.getElementByTagNameNS(maxRecurrenceElement, "http://schemas.microsoft.com/windowsazure", "Interval");
                             if (intervalElement != null) {
                                 int intervalInstance;
                                 intervalInstance = DatatypeConverter.parseInt(intervalElement.getTextContent());
@@ -1134,36 +1117,31 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     }
                 }
                 
-                NodeList elements16 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                Element labelElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements17 = resourceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OperationStatus");
-                Element operationStatusElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element operationStatusElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "OperationStatus");
                 if (operationStatusElement != null) {
                     JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
                     result.setLastOperationStatus(operationStatusInstance);
                     
-                    NodeList elements18 = operationStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error");
-                    Element errorElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                    Element errorElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Error");
                     if (errorElement != null) {
                         JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
                         operationStatusInstance.setResponseDetails(errorInstance);
                         
-                        NodeList elements19 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "HttpCode");
-                        Element httpCodeElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                        Element httpCodeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "HttpCode");
                         if (httpCodeElement != null) {
                             Integer httpCodeInstance;
                             httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
                             errorInstance.setStatusCode(httpCodeInstance);
                         }
                         
-                        NodeList elements20 = errorElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
-                        Element messageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                        Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
                         if (messageElement != null) {
                             String messageInstance;
                             messageInstance = messageElement.getTextContent();
@@ -1171,8 +1149,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         }
                     }
                     
-                    NodeList elements21 = operationStatusElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Result");
-                    Element resultElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                    Element resultElement = XmlUtility.getElementByTagNameNS(operationStatusElement, "http://schemas.microsoft.com/windowsazure", "Result");
                     if (resultElement != null) {
                         SchedulerOperationStatus resultInstance;
                         resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());

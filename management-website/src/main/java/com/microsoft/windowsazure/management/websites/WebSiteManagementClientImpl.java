@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.management.websites;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -53,7 +54,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -318,19 +318,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             if (operationElement != null) {
-                NodeList elements2 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "CreatedTime");
-                Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element createdTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "CreatedTime");
                 if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
                 }
                 
-                NodeList elements3 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Errors");
-                Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element errorsSequenceElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Errors");
                 if (errorsSequenceElement != null) {
                     boolean isNil = false;
                     Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -338,13 +335,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                         isNil = "true".equals(nilAttribute.getValue());
                     }
                     if (isNil == false) {
-                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").getLength(); i1 = i1 + 1) {
-                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Error").item(i1));
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(errorsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Error").get(i1));
                             WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
                             result.getErrors().add(errorInstance);
                             
-                            NodeList elements4 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Code");
-                            Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                            Element codeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Code");
                             if (codeElement != null) {
                                 boolean isNil2 = false;
                                 Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -358,8 +354,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements5 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Message");
-                            Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                            Element messageElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Message");
                             if (messageElement != null) {
                                 boolean isNil3 = false;
                                 Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -373,8 +368,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements6 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExtendedCode");
-                            Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                            Element extendedCodeElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "ExtendedCode");
                             if (extendedCodeElement != null) {
                                 boolean isNil4 = false;
                                 Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -388,8 +382,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements7 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MessageTemplate");
-                            Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                            Element messageTemplateElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "MessageTemplate");
                             if (messageTemplateElement != null) {
                                 boolean isNil5 = false;
                                 Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -403,8 +396,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                 }
                             }
                             
-                            NodeList elements8 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Parameters");
-                            Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                            Element parametersSequenceElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "Parameters");
                             if (parametersSequenceElement != null) {
                                 boolean isNil6 = false;
                                 Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -412,15 +404,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                                     isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
                                 if (isNil6 == false) {
-                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1) {
-                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
+                                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").size(); i2 = i2 + 1) {
+                                        org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(parametersSequenceElement, "http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").get(i2));
                                         errorInstance.getParameters().add(parametersElement.getTextContent());
                                     }
                                 }
                             }
                             
-                            NodeList elements9 = errorsElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "InnerErrors");
-                            Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                            Element innerErrorsElement = XmlUtility.getElementByTagNameNS(errorsElement, "http://schemas.microsoft.com/windowsazure", "InnerErrors");
                             if (innerErrorsElement != null) {
                                 boolean isNil7 = false;
                                 Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -437,16 +428,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements10 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ExpirationTime");
-                Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                Element expirationTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ExpirationTime");
                 if (expirationTimeElement != null) {
                     Calendar expirationTimeInstance;
                     expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                     result.setExpirationTime(expirationTimeInstance);
                 }
                 
-                NodeList elements11 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
-                Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                Element geoMasterOperationIdElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "GeoMasterOperationId");
                 if (geoMasterOperationIdElement != null) {
                     boolean isNil8 = false;
                     Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -460,8 +449,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements12 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Id");
-                Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Id");
                 if (idElement != null) {
                     boolean isNil9 = false;
                     Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -475,16 +463,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements13 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ModifiedTime");
-                Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                Element modifiedTimeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ModifiedTime");
                 if (modifiedTimeElement != null) {
                     Calendar modifiedTimeInstance;
                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                     result.setModifiedTime(modifiedTimeInstance);
                 }
                 
-                NodeList elements14 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     boolean isNil10 = false;
                     Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -498,8 +484,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                     }
                 }
                 
-                NodeList elements15 = operationElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     WebSiteOperationStatus statusInstance;
                     statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());

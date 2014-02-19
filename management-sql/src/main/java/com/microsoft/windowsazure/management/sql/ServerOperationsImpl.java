@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.sql;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.ServerChangeAdministratorPasswordParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
@@ -53,7 +54,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -356,8 +356,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
-            Element serverNameElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serverNameElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
             if (serverNameElement != null) {
                 result.setServerName(serverNameElement.getTextContent());
             }
@@ -557,47 +556,40 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
-            Element serversSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serversSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
             if (serversSequenceElement != null) {
-                for (int i1 = 0; i1 < serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
                     ServerListResponse.Server serverInstance = new ServerListResponse.Server();
                     result.getServers().add(serverInstance);
                     
-                    NodeList elements2 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serverInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
-                    Element administratorLoginElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element administratorLoginElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
                     if (administratorLoginElement != null) {
                         String administratorLoginInstance;
                         administratorLoginInstance = administratorLoginElement.getTextContent();
                         serverInstance.setAdministratorUserName(administratorLoginInstance);
                     }
                     
-                    NodeList elements4 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
-                    Element locationElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element locationElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
                     if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         serverInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements5 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
-                    Element featuresSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element featuresSequenceElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
                     if (featuresSequenceElement != null) {
-                        for (int i2 = 0; i2 < featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").getLength(); i2 = i2 + 1) {
-                            org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element) featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").item(i2));
-                            NodeList elements6 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
-                            String featuresKey = elements6.getLength() > 0 ? ((org.w3c.dom.Element) elements6.item(0)).getTextContent() : null;
-                            NodeList elements7 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Value");
-                            String featuresValue = elements7.getLength() > 0 ? ((org.w3c.dom.Element) elements7.item(0)).getTextContent() : null;
+                        for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(featuresSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").size(); i2 = i2 + 1) {
+                            org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(featuresSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").get(i2));
+                            String featuresKey = XmlUtility.getElementByTagNameNS(featuresElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name").getTextContent();
+                            String featuresValue = XmlUtility.getElementByTagNameNS(featuresElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Value").getTextContent();
                             serverInstance.getFeatures().put(featuresKey, featuresValue);
                         }
                     }

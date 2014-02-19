@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DacExportParameters;
 import com.microsoft.windowsazure.management.sql.models.DacGetStatusResponse;
@@ -57,7 +58,6 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -260,8 +260,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-            Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element guidElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "guid");
             if (guidElement != null) {
                 result.setGuid(guidElement.getTextContent());
             }
@@ -397,33 +396,29 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
-            Element arrayOfStatusInfoElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element arrayOfStatusInfoElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ArrayOfStatusInfo");
             if (arrayOfStatusInfoElement != null) {
                 if (arrayOfStatusInfoElement != null) {
-                    for (int i1 = 0; i1 < arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) arrayOfStatusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").get(i1));
                         DacGetStatusResponse.StatusInfo statusInfoInstance = new DacGetStatusResponse.StatusInfo();
                         result.getStatusInfoList().add(statusInfoInstance);
                         
-                        NodeList elements2 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
-                        Element blobUriElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        Element blobUriElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
                         if (blobUriElement != null) {
                             URI blobUriInstance;
                             blobUriInstance = new URI(blobUriElement.getTextContent());
                             statusInfoInstance.setBlobUri(blobUriInstance);
                         }
                         
-                        NodeList elements3 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
-                        Element databaseNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                        Element databaseNameElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "DatabaseName");
                         if (databaseNameElement != null) {
                             String databaseNameInstance;
                             databaseNameInstance = databaseNameElement.getTextContent();
                             statusInfoInstance.setDatabaseName(databaseNameInstance);
                         }
                         
-                        NodeList elements4 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
-                        Element errorMessageElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                        Element errorMessageElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ErrorMessage");
                         if (errorMessageElement != null) {
                             boolean isNil = false;
                             Attr nilAttribute = errorMessageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -437,48 +432,42 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                             }
                         }
                         
-                        NodeList elements5 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
-                        Element lastModifiedTimeElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        Element lastModifiedTimeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "LastModifiedTime");
                         if (lastModifiedTimeElement != null) {
                             Calendar lastModifiedTimeInstance;
                             lastModifiedTimeInstance = DatatypeConverter.parseDateTime(lastModifiedTimeElement.getTextContent());
                             statusInfoInstance.setLastModifiedTime(lastModifiedTimeInstance);
                         }
                         
-                        NodeList elements6 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
-                        Element queuedTimeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        Element queuedTimeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "QueuedTime");
                         if (queuedTimeElement != null) {
                             Calendar queuedTimeInstance;
                             queuedTimeInstance = DatatypeConverter.parseDateTime(queuedTimeElement.getTextContent());
                             statusInfoInstance.setQueuedTime(queuedTimeInstance);
                         }
                         
-                        NodeList elements7 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
-                        Element requestIdElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        Element requestIdElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestId");
                         if (requestIdElement != null) {
                             String requestIdInstance;
                             requestIdInstance = requestIdElement.getTextContent();
                             statusInfoInstance.setRequestId(requestIdInstance);
                         }
                         
-                        NodeList elements8 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
-                        Element requestTypeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        Element requestTypeElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "RequestType");
                         if (requestTypeElement != null) {
                             String requestTypeInstance;
                             requestTypeInstance = requestTypeElement.getTextContent();
                             statusInfoInstance.setRequestType(requestTypeInstance);
                         }
                         
-                        NodeList elements9 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
-                        Element serverNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        Element serverNameElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "ServerName");
                         if (serverNameElement != null) {
                             String serverNameInstance;
                             serverNameInstance = serverNameElement.getTextContent();
                             statusInfoInstance.setServerName(serverNameInstance);
                         }
                         
-                        NodeList elements10 = statusInfoElement.getElementsByTagNameNS("http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
-                        Element statusElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        Element statusElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "Status");
                         if (statusElement != null) {
                             String statusInstance;
                             statusInstance = statusElement.getTextContent();
@@ -689,8 +678,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "guid");
-            Element guidElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element guidElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "guid");
             if (guidElement != null) {
                 result.setGuid(guidElement.getTextContent());
             }

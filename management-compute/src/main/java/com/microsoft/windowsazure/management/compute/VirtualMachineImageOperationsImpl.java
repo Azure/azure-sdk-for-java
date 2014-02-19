@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateResponse;
@@ -63,7 +64,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -314,155 +314,135 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
-            Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             if (oSImageElement2 != null) {
-                NodeList elements2 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
-                Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
                 if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements3 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
                 if (categoryElement != null) {
                     String categoryInstance;
                     categoryInstance = categoryElement.getTextContent();
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement2 != null) {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
                     logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements6 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                Element mediaLinkElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 if (mediaLinkElement2 != null) {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement2.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements7 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element nameElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements8 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                Element osElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element osElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
                 if (osElement2 != null) {
                     String osInstance;
                     osInstance = osElement2.getTextContent();
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements9 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
-                Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
                 if (eulaElement2 != null) {
                     String eulaInstance;
                     eulaInstance = eulaElement2.getTextContent();
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements10 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
                 if (descriptionElement2 != null) {
                     String descriptionInstance;
                     descriptionInstance = descriptionElement2.getTextContent();
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements11 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 if (imageFamilyElement2 != null) {
                     String imageFamilyInstance;
                     imageFamilyInstance = imageFamilyElement2.getTextContent();
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements12 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
                     Calendar publishedDateInstance;
                     publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements13 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
-                Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
                     publisherNameInstance = publisherNameElement.getTextContent();
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements14 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-                Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements15 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                Element showInGuiElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
                     showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements16 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 if (privacyUriElement2 != null) {
                     URI privacyUriInstance;
                     privacyUriInstance = new URI(privacyUriElement2.getTextContent());
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
-                Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 if (iconUriElement2 != null) {
                     URI iconUriInstance;
                     iconUriInstance = new URI(iconUriElement2.getTextContent());
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 if (recommendedVMSizeElement2 != null) {
                     String recommendedVMSizeInstance;
                     recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 if (smallIconUriElement2 != null) {
                     URI smallIconUriInstance;
                     smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements20 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
-                Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
                 if (languageElement2 != null) {
                     String languageInstance;
                     languageInstance = languageElement2.getTextContent();
@@ -695,163 +675,142 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
-            Element oSImageElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element oSImageElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             if (oSImageElement != null) {
-                NodeList elements2 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element affinityGroupElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                 if (affinityGroupElement != null) {
                     String affinityGroupInstance;
                     affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
                 }
                 
-                NodeList elements3 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Category");
                 if (categoryElement != null) {
                     String categoryInstance;
                     categoryInstance = categoryElement.getTextContent();
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element labelElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent();
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
-                Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Location");
                 if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements6 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
                     logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements7 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements8 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements9 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "OS");
                 if (osElement != null) {
                     String osInstance;
                     osInstance = osElement.getTextContent();
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements10 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
-                Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                Element eulaElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Eula");
                 if (eulaElement != null) {
                     String eulaInstance;
                     eulaInstance = eulaElement.getTextContent();
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements11 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                Element descriptionElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Description");
                 if (descriptionElement != null) {
                     String descriptionInstance;
                     descriptionInstance = descriptionElement.getTextContent();
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements12 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                Element imageFamilyElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 if (imageFamilyElement != null) {
                     String imageFamilyInstance;
                     imageFamilyInstance = imageFamilyElement.getTextContent();
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements13 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                Element showInGuiElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
                     showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements14 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                Element publishedDateElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                Element publishedDateElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 if (publishedDateElement != null) {
                     Calendar publishedDateInstance;
                     publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements15 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-                Element isPremiumElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements16 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
-                Element iconUriElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                Element iconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 if (iconUriElement != null) {
                     URI iconUriInstance;
                     iconUriInstance = new URI(iconUriElement.getTextContent());
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                Element privacyUriElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element privacyUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 if (privacyUriElement != null) {
                     URI privacyUriInstance;
                     privacyUriInstance = new URI(privacyUriElement.getTextContent());
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                Element recommendedVMSizeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 if (recommendedVMSizeElement != null) {
                     String recommendedVMSizeInstance;
                     recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
-                Element publisherNameElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
                     publisherNameInstance = publisherNameElement.getTextContent();
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements20 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                Element smallIconUriElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                Element smallIconUriElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 if (smallIconUriElement != null) {
                     URI smallIconUriInstance;
                     smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements21 = oSImageElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
-                Element languageElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
+                Element languageElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "Language");
                 if (languageElement != null) {
                     String languageInstance;
                     languageInstance = languageElement.getTextContent();
@@ -962,160 +921,140 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Images");
-            Element imagesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element imagesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Images");
             if (imagesSequenceElement != null) {
-                for (int i1 = 0; i1 < imagesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) imagesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").get(i1));
                     VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
                     result.getImages().add(oSImageInstance);
                     
-                    NodeList elements2 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                    Element affinityGroupElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         oSImageInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
-                    NodeList elements3 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
-                    Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element categoryElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Category");
                     if (categoryElement != null) {
                         String categoryInstance;
                         categoryInstance = categoryElement.getTextContent();
                         oSImageInstance.setCategory(categoryInstance);
                     }
                     
-                    NodeList elements4 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                    Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element labelElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         oSImageInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements5 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
-                    Element locationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element locationElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Location");
                     if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         oSImageInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements6 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                    Element logicalSizeInGBElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                     if (logicalSizeInGBElement != null) {
                         double logicalSizeInGBInstance;
                         logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                         oSImageInstance.setLogicalSizeInGB(logicalSizeInGBInstance);
                     }
                     
-                    NodeList elements7 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                    Element mediaLinkElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element mediaLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                     if (mediaLinkElement != null) {
                         URI mediaLinkInstance;
                         mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                         oSImageInstance.setMediaLinkUri(mediaLinkInstance);
                     }
                     
-                    NodeList elements8 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                    Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    Element nameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         oSImageInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements9 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                    Element osElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    Element osElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "OS");
                     if (osElement != null) {
                         String osInstance;
                         osInstance = osElement.getTextContent();
                         oSImageInstance.setOperatingSystemType(osInstance);
                     }
                     
-                    NodeList elements10 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
-                    Element eulaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    Element eulaElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Eula");
                     if (eulaElement != null) {
                         String eulaInstance;
                         eulaInstance = eulaElement.getTextContent();
                         oSImageInstance.setEula(eulaInstance);
                     }
                     
-                    NodeList elements11 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                    Element descriptionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    Element descriptionElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         oSImageInstance.setDescription(descriptionInstance);
                     }
                     
-                    NodeList elements12 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                    Element imageFamilyElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    Element imageFamilyElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                     if (imageFamilyElement != null) {
                         String imageFamilyInstance;
                         imageFamilyInstance = imageFamilyElement.getTextContent();
                         oSImageInstance.setImageFamily(imageFamilyInstance);
                     }
                     
-                    NodeList elements13 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                    Element publishedDateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    Element publishedDateElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                     if (publishedDateElement != null) {
                         Calendar publishedDateInstance;
                         publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement.getTextContent());
                         oSImageInstance.setPublishedDate(publishedDateInstance);
                     }
                     
-                    NodeList elements14 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-                    Element isPremiumElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    Element isPremiumElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
                         isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
                         oSImageInstance.setIsPremium(isPremiumInstance);
                     }
                     
-                    NodeList elements15 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                    Element privacyUriElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                     if (privacyUriElement != null) {
                         URI privacyUriInstance;
                         privacyUriInstance = new URI(privacyUriElement.getTextContent());
                         oSImageInstance.setPrivacyUri(privacyUriInstance);
                     }
                     
-                    NodeList elements16 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                    Element recommendedVMSizeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    Element recommendedVMSizeElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                     if (recommendedVMSizeElement != null) {
                         String recommendedVMSizeInstance;
                         recommendedVMSizeInstance = recommendedVMSizeElement.getTextContent();
                         oSImageInstance.setRecommendedVMSize(recommendedVMSizeInstance);
                     }
                     
-                    NodeList elements17 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
-                    Element publisherNameElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                    Element publisherNameElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                     if (publisherNameElement != null) {
                         String publisherNameInstance;
                         publisherNameInstance = publisherNameElement.getTextContent();
                         oSImageInstance.setPublisherName(publisherNameInstance);
                     }
                     
-                    NodeList elements18 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
-                    Element pricingDetailLinkElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                    Element pricingDetailLinkElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "PricingDetailLink");
                     if (pricingDetailLinkElement != null) {
                         URI pricingDetailLinkInstance;
                         pricingDetailLinkInstance = new URI(pricingDetailLinkElement.getTextContent());
                         oSImageInstance.setPricingDetailUri(pricingDetailLinkInstance);
                     }
                     
-                    NodeList elements19 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                    Element smallIconUriElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                    Element smallIconUriElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                     if (smallIconUriElement != null) {
                         URI smallIconUriInstance;
                         smallIconUriInstance = new URI(smallIconUriElement.getTextContent());
                         oSImageInstance.setSmallIconUri(smallIconUriInstance);
                     }
                     
-                    NodeList elements20 = imagesElement.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
-                    Element languageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                    Element languageElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "Language");
                     if (languageElement != null) {
                         String languageInstance;
                         languageInstance = languageElement.getTextContent();
@@ -1343,155 +1282,135 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OSImage");
-            Element oSImageElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element oSImageElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "OSImage");
             if (oSImageElement2 != null) {
-                NodeList elements2 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Location");
-                Element locationElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element locationElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Location");
                 if (locationElement != null) {
                     String locationInstance;
                     locationInstance = locationElement.getTextContent();
                     result.setLocation(locationInstance);
                 }
                 
-                NodeList elements3 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Category");
-                Element categoryElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element categoryElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Category");
                 if (categoryElement != null) {
                     String categoryInstance;
                     categoryInstance = categoryElement.getTextContent();
                     result.setCategory(categoryInstance);
                 }
                 
-                NodeList elements4 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Label");
-                Element labelElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element labelElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement2 != null) {
                     String labelInstance;
                     labelInstance = labelElement2.getTextContent();
                     result.setLabel(labelInstance);
                 }
                 
-                NodeList elements5 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
-                Element logicalSizeInGBElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element logicalSizeInGBElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "LogicalSizeInGB");
                 if (logicalSizeInGBElement != null) {
                     double logicalSizeInGBInstance;
                     logicalSizeInGBInstance = DatatypeConverter.parseDouble(logicalSizeInGBElement.getTextContent());
                     result.setLogicalSizeInGB(logicalSizeInGBInstance);
                 }
                 
-                NodeList elements6 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
-                Element mediaLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element mediaLinkElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "MediaLink");
                 if (mediaLinkElement != null) {
                     URI mediaLinkInstance;
                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                     result.setMediaLinkUri(mediaLinkInstance);
                 }
                 
-                NodeList elements7 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements8 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "OS");
-                Element osElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                Element osElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "OS");
                 if (osElement != null) {
                     String osInstance;
                     osInstance = osElement.getTextContent();
                     result.setOperatingSystemType(osInstance);
                 }
                 
-                NodeList elements9 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Eula");
-                Element eulaElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                Element eulaElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Eula");
                 if (eulaElement2 != null) {
                     String eulaInstance;
                     eulaInstance = eulaElement2.getTextContent();
                     result.setEula(eulaInstance);
                 }
                 
-                NodeList elements10 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Description");
-                Element descriptionElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                Element descriptionElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Description");
                 if (descriptionElement2 != null) {
                     String descriptionInstance;
                     descriptionInstance = descriptionElement2.getTextContent();
                     result.setDescription(descriptionInstance);
                 }
                 
-                NodeList elements11 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ImageFamily");
-                Element imageFamilyElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                Element imageFamilyElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ImageFamily");
                 if (imageFamilyElement2 != null) {
                     String imageFamilyInstance;
                     imageFamilyInstance = imageFamilyElement2.getTextContent();
                     result.setImageFamily(imageFamilyInstance);
                 }
                 
-                NodeList elements12 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublishedDate");
-                Element publishedDateElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                Element publishedDateElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublishedDate");
                 if (publishedDateElement2 != null && (publishedDateElement2.getTextContent() == null || publishedDateElement2.getTextContent().isEmpty() == true) == false) {
                     Calendar publishedDateInstance;
                     publishedDateInstance = DatatypeConverter.parseDateTime(publishedDateElement2.getTextContent());
                     result.setPublishedDate(publishedDateInstance);
                 }
                 
-                NodeList elements13 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PublisherName");
-                Element publisherNameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                Element publisherNameElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PublisherName");
                 if (publisherNameElement != null) {
                     String publisherNameInstance;
                     publisherNameInstance = publisherNameElement.getTextContent();
                     result.setPublisherName(publisherNameInstance);
                 }
                 
-                NodeList elements14 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IsPremium");
-                Element isPremiumElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
                     isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
-                NodeList elements15 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "ShowInGui");
-                Element showInGuiElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
                     showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
-                NodeList elements16 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "PrivacyUri");
-                Element privacyUriElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                Element privacyUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
                 if (privacyUriElement2 != null) {
                     URI privacyUriInstance;
                     privacyUriInstance = new URI(privacyUriElement2.getTextContent());
                     result.setPrivacyUri(privacyUriInstance);
                 }
                 
-                NodeList elements17 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "IconUri");
-                Element iconUriElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element iconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IconUri");
                 if (iconUriElement2 != null) {
                     URI iconUriInstance;
                     iconUriInstance = new URI(iconUriElement2.getTextContent());
                     result.setIconUri(iconUriInstance);
                 }
                 
-                NodeList elements18 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
-                Element recommendedVMSizeElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
+                Element recommendedVMSizeElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "RecommendedVMSize");
                 if (recommendedVMSizeElement2 != null) {
                     String recommendedVMSizeInstance;
                     recommendedVMSizeInstance = recommendedVMSizeElement2.getTextContent();
                     result.setRecommendedVMSize(recommendedVMSizeInstance);
                 }
                 
-                NodeList elements19 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "SmallIconUri");
-                Element smallIconUriElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
+                Element smallIconUriElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "SmallIconUri");
                 if (smallIconUriElement2 != null) {
                     URI smallIconUriInstance;
                     smallIconUriInstance = new URI(smallIconUriElement2.getTextContent());
                     result.setSmallIconUri(smallIconUriInstance);
                 }
                 
-                NodeList elements20 = oSImageElement2.getElementsByTagNameNS("http://schemas.microsoft.com/windowsazure", "Language");
-                Element languageElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                Element languageElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
                 if (languageElement2 != null) {
                     String languageInstance;
                     languageInstance = languageElement2.getTextContent();
