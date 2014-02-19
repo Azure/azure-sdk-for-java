@@ -62,13 +62,15 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for more
 * information)
 */
-public class ServerOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, ServerOperations {
+public class ServerOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, ServerOperations
+{
     /**
     * Initializes a new instance of the ServerOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    ServerOperationsImpl(SqlManagementClientImpl client) {
+    ServerOperationsImpl(SqlManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -79,7 +81,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() {
+    public SqlManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -97,10 +100,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public Future<OperationResponse> changeAdministratorPasswordAsync(final String serverName, final ServerChangeAdministratorPasswordParameters parameters) {
+    public Future<OperationResponse> changeAdministratorPasswordAsync(final String serverName, final ServerChangeAdministratorPasswordParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return changeAdministratorPassword(serverName, parameters);
             }
          });
@@ -130,22 +135,27 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse changeAdministratorPassword(String serverName, ServerChangeAdministratorPasswordParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getNewPassword() == null) {
+        if (parameters.getNewPassword() == null)
+        {
             throw new NullPointerException("parameters.NewPassword");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -187,18 +197,23 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -208,16 +223,21 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -232,10 +252,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * @return The response returned from the Create Server operation.
     */
     @Override
-    public Future<ServerCreateResponse> createAsync(final ServerCreateParameters parameters) {
+    public Future<ServerCreateResponse> createAsync(final ServerCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerCreateResponse>() { 
             @Override
-            public ServerCreateResponse call() throws Exception {
+            public ServerCreateResponse call() throws Exception
+            {
                 return create(parameters);
             }
          });
@@ -260,25 +282,31 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * @return The response returned from the Create Server operation.
     */
     @Override
-    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public ServerCreateResponse create(ServerCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getAdministratorPassword() == null) {
+        if (parameters.getAdministratorPassword() == null)
+        {
             throw new NullPointerException("parameters.AdministratorPassword");
         }
-        if (parameters.getAdministratorUserName() == null) {
+        if (parameters.getAdministratorUserName() == null)
+        {
             throw new NullPointerException("parameters.AdministratorUserName");
         }
-        if (parameters.getLocation() == null) {
+        if (parameters.getLocation() == null)
+        {
             throw new NullPointerException("parameters.Location");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -329,18 +357,23 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED) {
+            if (statusCode != HttpStatus.SC_CREATED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -358,21 +391,27 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "ServerName");
             Element serverNameElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverNameElement != null) {
+            if (serverNameElement != null)
+            {
                 result.setServerName(serverNameElement.getTextContent());
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -388,10 +427,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serverName) {
+    public Future<OperationResponse> deleteAsync(final String serverName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return delete(serverName);
             }
          });
@@ -411,16 +452,19 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serverName) throws IOException, ServiceException {
+    public OperationResponse delete(String serverName) throws IOException, ServiceException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -438,18 +482,23 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -459,16 +508,21 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -482,10 +536,12 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * @return The response structure for the Server List operation.
     */
     @Override
-    public Future<ServerListResponse> listAsync() {
+    public Future<ServerListResponse> listAsync()
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerListResponse>() { 
             @Override
-            public ServerListResponse call() throws Exception {
+            public ServerListResponse call() throws Exception
+            {
                 return list();
             }
          });
@@ -507,13 +563,15 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * @return The response structure for the Server List operation.
     */
     @Override
-    public ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServerListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -530,18 +588,23 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -559,15 +622,18 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Servers");
             Element serversSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serversSequenceElement != null) {
-                for (int i1 = 0; i1 < serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").getLength(); i1 = i1 + 1) {
+            if (serversSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) serversSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Server").item(i1));
                     ServerListResponse.Server serverInstance = new ServerListResponse.Server();
                     result.getServers().add(serverInstance);
                     
                     NodeList elements2 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serverInstance.setName(nameInstance);
@@ -575,7 +641,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                     
                     NodeList elements3 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "AdministratorLogin");
                     Element administratorLoginElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (administratorLoginElement != null) {
+                    if (administratorLoginElement != null)
+                    {
                         String administratorLoginInstance;
                         administratorLoginInstance = administratorLoginElement.getTextContent();
                         serverInstance.setAdministratorUserName(administratorLoginInstance);
@@ -583,7 +650,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                     
                     NodeList elements4 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Location");
                     Element locationElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (locationElement != null) {
+                    if (locationElement != null)
+                    {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         serverInstance.setLocation(locationInstance);
@@ -591,8 +659,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
                     
                     NodeList elements5 = serversElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Features");
                     Element featuresSequenceElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (featuresSequenceElement != null) {
-                        for (int i2 = 0; i2 < featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").getLength(); i2 = i2 + 1) {
+                    if (featuresSequenceElement != null)
+                    {
+                        for (int i2 = 0; i2 < featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").getLength(); i2 = i2 + 1)
+                        {
                             org.w3c.dom.Element featuresElement = ((org.w3c.dom.Element) featuresSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Feature").item(i2));
                             NodeList elements6 = featuresElement.getElementsByTagNameNS("http://schemas.microsoft.com/sqlazure/2010/12/", "Name");
                             String featuresKey = elements6.getLength() > 0 ? ((org.w3c.dom.Element) elements6.item(0)).getTextContent() : null;
@@ -605,16 +675,21 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

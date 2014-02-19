@@ -28,7 +28,8 @@ import java.net.URI;
 /**
 * Parameters supplied to the Update Virtual Machine Data Disk operation.
 */
-public class VirtualMachineDiskUpdateDataDiskParameters {
+public class VirtualMachineDiskUpdateDataDiskParameters
+{
     private String diskLabel;
     
     /**
@@ -38,7 +39,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * customize the name property of the target data disk.
     * @return The DiskLabel value.
     */
-    public String getDiskLabel() {
+    public String getDiskLabel()
+    {
         return this.diskLabel;
     }
     
@@ -49,7 +51,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * customize the name property of the target data disk.
     * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(final String diskLabelValue) {
+    public void setDiskLabel(final String diskLabelValue)
+    {
         this.diskLabel = diskLabelValue;
     }
     
@@ -61,7 +64,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * this field with the disk name.
     * @return The DiskName value.
     */
-    public String getDiskName() {
+    public String getDiskName()
+    {
         return this.diskName;
     }
     
@@ -71,7 +75,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * this field with the disk name.
     * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(final String diskNameValue) {
+    public void setDiskName(final String diskNameValue)
+    {
         this.diskName = diskNameValue;
     }
     
@@ -84,7 +89,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * the consistency of the disk.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
         return this.hostCaching;
     }
     
@@ -95,7 +101,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * the consistency of the disk.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
+    {
         this.hostCaching = hostCachingValue;
     }
     
@@ -109,7 +116,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * created disk to the Role.
     * @return The LogicalDiskSizeInGB value.
     */
-    public int getLogicalDiskSizeInGB() {
+    public int getLogicalDiskSizeInGB()
+    {
         return this.logicalDiskSizeInGB;
     }
     
@@ -121,7 +129,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * created disk to the Role.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
+    {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
     
@@ -133,7 +142,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
     * @return The LogicalUnitNumber value.
     */
-    public Integer getLogicalUnitNumber() {
+    public Integer getLogicalUnitNumber()
+    {
         return this.logicalUnitNumber;
     }
     
@@ -143,7 +153,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * usage by the virtual machine.  Valid LUN values are 0 through 15.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
-    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
+    {
         this.logicalUnitNumber = logicalUnitNumberValue;
     }
     
@@ -157,7 +168,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() {
+    public URI getMediaLinkUri()
+    {
         return this.mediaLinkUri;
     }
     
@@ -169,7 +181,8 @@ public class VirtualMachineDiskUpdateDataDiskParameters {
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue) {
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
         this.mediaLinkUri = mediaLinkUriValue;
     }
 }

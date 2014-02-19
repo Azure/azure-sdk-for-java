@@ -26,58 +26,58 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import java.util.ArrayList;
 
 /**
- * Specifies the action to send email when the rule condition is evaluated.
- */
-public class RuleEmailAction extends RuleAction {
+* Specifies the action to send email when the rule condition is evaluated.
+*/
+public class RuleEmailAction extends RuleAction
+{
     private ArrayList<String> customEmails;
-
+    
     /**
-     * The email address of an adminstrative user.
-     * 
-     * @return The CustomEmails value.
-     */
-    public ArrayList<String> getCustomEmails() {
+    * The email address of an adminstrative user.
+    * @return The CustomEmails value.
+    */
+    public ArrayList<String> getCustomEmails()
+    {
         return this.customEmails;
     }
-
+    
     /**
-     * The email address of an adminstrative user.
-     * 
-     * @param customEmailsValue
-     *            The CustomEmails value.
-     */
-    public void setCustomEmails(final ArrayList<String> customEmailsValue) {
+    * The email address of an adminstrative user.
+    * @param customEmailsValue The CustomEmails value.
+    */
+    public void setCustomEmails(final ArrayList<String> customEmailsValue)
+    {
         this.customEmails = customEmailsValue;
     }
-
+    
     private boolean sendToServiceOwners;
-
+    
     /**
-     * This indicates if email is sent to sevice adminstrator and
-     * co-administrators.
-     * 
-     * @return The SendToServiceOwners value.
-     */
-    public boolean isSendToServiceOwners() {
+    * This indicates if email is sent to sevice adminstrator and
+    * co-administrators.
+    * @return The SendToServiceOwners value.
+    */
+    public boolean isSendToServiceOwners()
+    {
         return this.sendToServiceOwners;
     }
-
+    
     /**
-     * This indicates if email is sent to sevice adminstrator and
-     * co-administrators.
-     * 
-     * @param sendToServiceOwnersValue
-     *            The SendToServiceOwners value.
-     */
-    public void setSendToServiceOwners(final boolean sendToServiceOwnersValue) {
+    * This indicates if email is sent to sevice adminstrator and
+    * co-administrators.
+    * @param sendToServiceOwnersValue The SendToServiceOwners value.
+    */
+    public void setSendToServiceOwners(final boolean sendToServiceOwnersValue)
+    {
         this.sendToServiceOwners = sendToServiceOwnersValue;
     }
-
+    
     /**
-     * Initializes a new instance of the RuleEmailAction class.
-     * 
-     */
-    public RuleEmailAction() {
+    * Initializes a new instance of the RuleEmailAction class.
+    *
+    */
+    public RuleEmailAction()
+    {
         super();
         this.customEmails = new ArrayList<String>();
     }

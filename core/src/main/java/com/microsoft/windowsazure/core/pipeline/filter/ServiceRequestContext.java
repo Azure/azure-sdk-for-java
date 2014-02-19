@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.net.URI;
 
-public interface ServiceRequestContext {
+public interface ServiceRequestContext
+{
     String getMethod();
 
     void setMethod(String method);

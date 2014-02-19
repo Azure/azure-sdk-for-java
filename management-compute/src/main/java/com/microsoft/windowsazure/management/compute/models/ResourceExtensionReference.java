@@ -29,7 +29,8 @@ import java.util.ArrayList;
 * Required. Specifies the properties of a resource extension that should be
 * installed on the Virtual Machine.
 */
-public class ResourceExtensionReference {
+public class ResourceExtensionReference
+{
     private String name;
     
     /**
@@ -37,7 +38,8 @@ public class ResourceExtensionReference {
     * Resource Extensions to find the names of available resource extensions.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -46,7 +48,8 @@ public class ResourceExtensionReference {
     * Resource Extensions to find the names of available resource extensions.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -58,7 +61,8 @@ public class ResourceExtensionReference {
     * name of a resource extension.
     * @return The Publisher value.
     */
-    public String getPublisher() {
+    public String getPublisher()
+    {
         return this.publisher;
     }
     
@@ -68,7 +72,8 @@ public class ResourceExtensionReference {
     * name of a resource extension.
     * @param publisherValue The Publisher value.
     */
-    public void setPublisher(final String publisherValue) {
+    public void setPublisher(final String publisherValue)
+    {
         this.publisher = publisherValue;
     }
     
@@ -78,7 +83,8 @@ public class ResourceExtensionReference {
     * Required. Specifies the reference name of the resource extension.
     * @return The ReferenceName value.
     */
-    public String getReferenceName() {
+    public String getReferenceName()
+    {
         return this.referenceName;
     }
     
@@ -86,7 +92,8 @@ public class ResourceExtensionReference {
     * Required. Specifies the reference name of the resource extension.
     * @param referenceNameValue The ReferenceName value.
     */
-    public void setReferenceName(final String referenceNameValue) {
+    public void setReferenceName(final String referenceNameValue)
+    {
         this.referenceName = referenceNameValue;
     }
     
@@ -97,7 +104,8 @@ public class ResourceExtensionReference {
     * resource extension when it is installed.
     * @return The ResourceExtensionParameterValues value.
     */
-    public ArrayList<ResourceExtensionParameterValue> getResourceExtensionParameterValues() {
+    public ArrayList<ResourceExtensionParameterValue> getResourceExtensionParameterValues()
+    {
         return this.resourceExtensionParameterValues;
     }
     
@@ -107,7 +115,8 @@ public class ResourceExtensionReference {
     * @param resourceExtensionParameterValuesValue The
     * ResourceExtensionParameterValues value.
     */
-    public void setResourceExtensionParameterValues(final ArrayList<ResourceExtensionParameterValue> resourceExtensionParameterValuesValue) {
+    public void setResourceExtensionParameterValues(final ArrayList<ResourceExtensionParameterValue> resourceExtensionParameterValuesValue)
+    {
         this.resourceExtensionParameterValues = resourceExtensionParameterValuesValue;
     }
     
@@ -118,7 +127,8 @@ public class ResourceExtensionReference {
     * are: Enable | Disable. The default value is Enable.
     * @return The State value.
     */
-    public ResourceExtensionReferenceState getState() {
+    public ResourceExtensionReferenceState getState()
+    {
         return this.state;
     }
     
@@ -127,7 +137,8 @@ public class ResourceExtensionReference {
     * are: Enable | Disable. The default value is Enable.
     * @param stateValue The State value.
     */
-    public void setState(final ResourceExtensionReferenceState stateValue) {
+    public void setState(final ResourceExtensionReferenceState stateValue)
+    {
         this.state = stateValue;
     }
     
@@ -139,7 +150,8 @@ public class ResourceExtensionReference {
     * extension.
     * @return The Version value.
     */
-    public String getVersion() {
+    public String getVersion()
+    {
         return this.version;
     }
     
@@ -149,7 +161,8 @@ public class ResourceExtensionReference {
     * extension.
     * @param versionValue The Version value.
     */
-    public void setVersion(final String versionValue) {
+    public void setVersion(final String versionValue)
+    {
         this.version = versionValue;
     }
     
@@ -157,7 +170,8 @@ public class ResourceExtensionReference {
     * Initializes a new instance of the ResourceExtensionReference class.
     *
     */
-    public ResourceExtensionReference() {
+    public ResourceExtensionReference()
+    {
         this.resourceExtensionParameterValues = new ArrayList<ResourceExtensionParameterValue>();
     }
 }

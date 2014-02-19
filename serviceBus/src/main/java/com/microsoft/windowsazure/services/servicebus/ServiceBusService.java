@@ -21,9 +21,11 @@ import com.microsoft.windowsazure.Configuration;
  * Access service bus functionality.
  * 
  */
-public class ServiceBusService {
+public class ServiceBusService
+{
 
-    private ServiceBusService() {
+    private ServiceBusService()
+    {
         // class is not instantiated
     }
 
@@ -31,7 +33,8 @@ public class ServiceBusService {
      * Creates an instance of the <code>ServiceBusContract</code> API.
      * 
      */
-    public static ServiceBusContract create() {
+    public static ServiceBusContract create()
+    {
         return Configuration.getInstance().create(ServiceBusContract.class);
     }
 
@@ -44,7 +47,8 @@ public class ServiceBusService {
      *            configuration for the service bus service.
      * 
      */
-    public static ServiceBusContract create(Configuration config) {
+    public static ServiceBusContract create(Configuration config)
+    {
         return config.create(ServiceBusContract.class);
     }
 
@@ -52,7 +56,8 @@ public class ServiceBusService {
      * Creates an instance of the <code>ServiceBusContract</code> API.
      * 
      */
-    public static ServiceBusContract create(String profile) {
+    public static ServiceBusContract create(String profile)
+    {
         return Configuration.getInstance().create(profile,
                 ServiceBusContract.class);
     }
@@ -66,7 +71,8 @@ public class ServiceBusService {
      *            configuration for the service bus service.
      * 
      */
-    public static ServiceBusContract create(String profile, Configuration config) {
+    public static ServiceBusContract create(String profile, Configuration config)
+    {
         return config.create(profile, ServiceBusContract.class);
     }
 }

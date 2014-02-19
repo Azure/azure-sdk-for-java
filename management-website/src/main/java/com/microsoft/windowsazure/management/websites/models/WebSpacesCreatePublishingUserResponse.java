@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Create Publishing User operation response.
 */
-public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
+public class WebSpacesCreatePublishingUserResponse extends OperationResponse
+{
     private String name;
     
     /**
     * The publishing user name.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -43,7 +45,8 @@ public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     * The publishing user name.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -53,7 +56,8 @@ public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     * The publishing user password.
     * @return The PublishingPassword value.
     */
-    public String getPublishingPassword() {
+    public String getPublishingPassword()
+    {
         return this.publishingPassword;
     }
     
@@ -61,7 +65,8 @@ public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     * The publishing user password.
     * @param publishingPasswordValue The PublishingPassword value.
     */
-    public void setPublishingPassword(final String publishingPasswordValue) {
+    public void setPublishingPassword(final String publishingPasswordValue)
+    {
         this.publishingPassword = publishingPasswordValue;
     }
     
@@ -71,7 +76,8 @@ public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     * The publishing user username.
     * @return The PublishingUserName value.
     */
-    public String getPublishingUserName() {
+    public String getPublishingUserName()
+    {
         return this.publishingUserName;
     }
     
@@ -79,7 +85,8 @@ public class WebSpacesCreatePublishingUserResponse extends OperationResponse {
     * The publishing user username.
     * @param publishingUserNameValue The PublishingUserName value.
     */
-    public void setPublishingUserName(final String publishingUserNameValue) {
+    public void setPublishingUserName(final String publishingUserNameValue)
+    {
         this.publishingUserName = publishingUserNameValue;
     }
 }

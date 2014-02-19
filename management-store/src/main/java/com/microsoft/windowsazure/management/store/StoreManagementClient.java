@@ -37,12 +37,13 @@ import org.xml.sax.SAXException;
 * The Windows Azure Store API is a REST API for managing Windows Azure Store
 * add-ins.
 */
-public interface StoreManagementClient extends FilterableService<StoreManagementClient> {
+public interface StoreManagementClient extends FilterableService<StoreManagementClient>
+{
     /**
     * The URI used as the base for all Store requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri();
+    URI getBaseUri(); 
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -53,21 +54,21 @@ public interface StoreManagementClient extends FilterableService<StoreManagement
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials();
+    SubscriptionCloudCredentials getCredentials(); 
     
     /**
     * Provides REST operations for working with Store add-ins from the Windows
     * Azure store service.
     * @return The AddOnsOperations value.
     */
-    AddOnOperations getAddOnsOperations();
+    AddOnOperations getAddOnsOperations(); 
     
     /**
     * Provides REST operations for working with cloud services from the Windows
     * Azure store service.
     * @return The CloudServicesOperations value.
     */
-    CloudServiceOperations getCloudServicesOperations();
+    CloudServiceOperations getCloudServicesOperations(); 
     
     /**
     * The Get Operation Status operation returns the status of thespecified

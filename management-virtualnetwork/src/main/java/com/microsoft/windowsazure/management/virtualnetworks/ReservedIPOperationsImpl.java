@@ -61,13 +61,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ReservedIPOperations {
+public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ReservedIPOperations
+{
     /**
     * Initializes a new instance of the ReservedIPOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    ReservedIPOperationsImpl(VirtualNetworkManagementClientImpl client) {
+    ReservedIPOperationsImpl(VirtualNetworkManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -78,7 +80,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     * @return The Client value.
     */
-    public VirtualNetworkManagementClientImpl getClient() {
+    public VirtualNetworkManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -99,10 +102,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> beginCreatingAsync(final NetworkReservedIPCreateParameters parameters) {
+    public Future<VirtualNetworkOperationStatusResponse> beginCreatingAsync(final NetworkReservedIPCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
             @Override
-            public VirtualNetworkOperationStatusResponse call() throws Exception {
+            public VirtualNetworkOperationStatusResponse call() throws Exception
+            {
                 return beginCreating(parameters);
             }
          });
@@ -135,16 +140,19 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public VirtualNetworkOperationStatusResponse beginCreating(NetworkReservedIPCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public VirtualNetworkOperationStatusResponse beginCreating(NetworkReservedIPCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -170,31 +178,36 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         Element reservedIPElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReservedIP");
         requestDoc.appendChild(reservedIPElement);
         
-        if (parameters.getName() != null) {
+        if (parameters.getName() != null)
+        {
             Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
             nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
             reservedIPElement.appendChild(nameElement);
         }
         
-        if (parameters.getLabel() != null) {
+        if (parameters.getLabel() != null)
+        {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
             labelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
             reservedIPElement.appendChild(labelElement);
         }
         
-        if (parameters.getAffinityGroup() != null) {
+        if (parameters.getAffinityGroup() != null)
+        {
             Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
             affinityGroupElement.appendChild(requestDoc.createTextNode(parameters.getAffinityGroup()));
             reservedIPElement.appendChild(affinityGroupElement);
         }
         
-        if (parameters.getServiceName() != null) {
+        if (parameters.getServiceName() != null)
+        {
             Element serviceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
             serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getServiceName()));
             reservedIPElement.appendChild(serviceNameElement);
         }
         
-        if (parameters.getDeploymentName() != null) {
+        if (parameters.getDeploymentName() != null)
+        {
             Element deploymentNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DeploymentName");
             deploymentNameElement.appendChild(requestDoc.createTextNode(parameters.getDeploymentName()));
             reservedIPElement.appendChild(deploymentNameElement);
@@ -213,18 +226,23 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -234,16 +252,21 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             VirtualNetworkOperationStatusResponse result = null;
             result = new VirtualNetworkOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -258,10 +281,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final String ipName) {
+    public Future<OperationResponse> beginDeletingAsync(final String ipName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return beginDeleting(ipName);
             }
          });
@@ -284,16 +309,19 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationResponse beginDeleting(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (ipName == null) {
+        if (ipName == null)
+        {
             throw new NullPointerException("ipName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
@@ -312,18 +340,23 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -333,16 +366,21 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -365,10 +403,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> createAsync(final NetworkReservedIPCreateParameters parameters) {
+    public Future<VirtualNetworkOperationStatusResponse> createAsync(final NetworkReservedIPCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
             @Override
-            public VirtualNetworkOperationStatusResponse call() throws Exception {
+            public VirtualNetworkOperationStatusResponse call() throws Exception
+            {
                 return create(parameters);
             }
          });
@@ -409,46 +449,58 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public VirtualNetworkOperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public VirtualNetworkOperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
+    {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             VirtualNetworkOperationStatusResponse response = client2.getReservedIPsOperations().beginCreatingAsync(parameters).get();
             VirtualNetworkOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
-                if (result.getError() != null) {
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else
+                {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -456,8 +508,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             return result;
-        } finally {
-            if (this.getClient() != null && shouldTrace) {
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
                 this.getClient().close();
             }
         }
@@ -479,10 +534,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> deleteAsync(final String ipName) {
+    public Future<VirtualNetworkOperationStatusResponse> deleteAsync(final String ipName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
             @Override
-            public VirtualNetworkOperationStatusResponse call() throws Exception {
+            public VirtualNetworkOperationStatusResponse call() throws Exception
+            {
                 return delete(ipName);
             }
          });
@@ -522,46 +579,58 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * failure.
     */
     @Override
-    public VirtualNetworkOperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public VirtualNetworkOperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
+    {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getReservedIPsOperations().beginDeletingAsync(ipName).get();
             VirtualNetworkOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
-                if (result.getError() != null) {
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else
+                {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -569,8 +638,11 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             return result;
-        } finally {
-            if (this.getClient() != null && shouldTrace) {
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
                 this.getClient().close();
             }
         }
@@ -584,10 +656,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * @return Preview Only. A reserved IP associated with your subscription.
     */
     @Override
-    public Future<NetworkReservedIPGetResponse> getAsync(final String ipName) {
+    public Future<NetworkReservedIPGetResponse> getAsync(final String ipName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<NetworkReservedIPGetResponse>() { 
             @Override
-            public NetworkReservedIPGetResponse call() throws Exception {
+            public NetworkReservedIPGetResponse call() throws Exception
+            {
                 return get(ipName);
             }
          });
@@ -609,16 +683,19 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * @return Preview Only. A reserved IP associated with your subscription.
     */
     @Override
-    public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public NetworkReservedIPGetResponse get(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (ipName == null) {
+        if (ipName == null)
+        {
             throw new NullPointerException("ipName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("ipName", ipName);
@@ -636,18 +713,23 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -665,10 +747,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             
             NodeList elements = responseDoc.getElementsByTagName("ReservedIP");
             Element reservedIPElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (reservedIPElement != null) {
+            if (reservedIPElement != null)
+            {
                 NodeList elements2 = reservedIPElement.getElementsByTagName("Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null) {
+                if (nameElement != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -676,7 +760,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements3 = reservedIPElement.getElementsByTagName("Address");
                 Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (addressElement != null) {
+                if (addressElement != null)
+                {
                     InetAddress addressInstance;
                     addressInstance = InetAddress.getByName(addressElement.getTextContent());
                     result.setAddress(addressInstance);
@@ -684,7 +769,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements4 = reservedIPElement.getElementsByTagName("Id");
                 Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -692,7 +778,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements5 = reservedIPElement.getElementsByTagName("Label");
                 Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (labelElement != null) {
+                if (labelElement != null)
+                {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent();
                     result.setLabel(labelInstance);
@@ -700,7 +787,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements6 = reservedIPElement.getElementsByTagName("AffinityGroup");
                 Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (affinityGroupElement != null) {
+                if (affinityGroupElement != null)
+                {
                     String affinityGroupInstance;
                     affinityGroupInstance = affinityGroupElement.getTextContent();
                     result.setAffinityGroup(affinityGroupInstance);
@@ -708,7 +796,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements7 = reservedIPElement.getElementsByTagName("State");
                 Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -716,7 +805,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements8 = reservedIPElement.getElementsByTagName("InUse");
                 Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (inUseElement != null) {
+                if (inUseElement != null)
+                {
                     boolean inUseInstance;
                     inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                     result.setInUse(inUseInstance);
@@ -724,7 +814,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements9 = reservedIPElement.getElementsByTagName("ServiceName");
                 Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (serviceNameElement != null) {
+                if (serviceNameElement != null)
+                {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setServiceName(serviceNameInstance);
@@ -732,7 +823,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                 
                 NodeList elements10 = reservedIPElement.getElementsByTagName("DeploymentName");
                 Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (deploymentNameElement != null) {
+                if (deploymentNameElement != null)
+                {
                     String deploymentNameInstance;
                     deploymentNameInstance = deploymentNameElement.getTextContent();
                     result.setDeploymentName(deploymentNameInstance);
@@ -740,16 +832,21 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -762,10 +859,12 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * @return Preview Only. The response structure for the Server List operation
     */
     @Override
-    public Future<NetworkReservedIPListResponse> listAsync() {
+    public Future<NetworkReservedIPListResponse> listAsync()
+    {
         return this.getClient().getExecutorService().submit(new Callable<NetworkReservedIPListResponse>() { 
             @Override
-            public NetworkReservedIPListResponse call() throws Exception {
+            public NetworkReservedIPListResponse call() throws Exception
+            {
                 return list();
             }
          });
@@ -786,13 +885,15 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
     * @return Preview Only. The response structure for the Server List operation
     */
     @Override
-    public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public NetworkReservedIPListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -809,18 +910,23 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -838,15 +944,18 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             
             NodeList elements = responseDoc.getElementsByTagName("ReservedIPs");
             Element reservedIPsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (reservedIPsSequenceElement != null) {
-                for (int i1 = 0; i1 < reservedIPsSequenceElement.getElementsByTagName("ReservedIP").getLength(); i1 = i1 + 1) {
+            if (reservedIPsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < reservedIPsSequenceElement.getElementsByTagName("ReservedIP").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element reservedIPsElement = ((org.w3c.dom.Element) reservedIPsSequenceElement.getElementsByTagName("ReservedIP").item(i1));
                     NetworkReservedIPListResponse.ReservedIP reservedIPInstance = new NetworkReservedIPListResponse.ReservedIP();
                     result.getReservedIPs().add(reservedIPInstance);
                     
                     NodeList elements2 = reservedIPsElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         reservedIPInstance.setName(nameInstance);
@@ -854,7 +963,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements3 = reservedIPsElement.getElementsByTagName("Address");
                     Element addressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (addressElement != null) {
+                    if (addressElement != null)
+                    {
                         InetAddress addressInstance;
                         addressInstance = InetAddress.getByName(addressElement.getTextContent());
                         reservedIPInstance.setAddress(addressInstance);
@@ -862,7 +972,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements4 = reservedIPsElement.getElementsByTagName("Id");
                     Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (idElement != null) {
+                    if (idElement != null)
+                    {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         reservedIPInstance.setId(idInstance);
@@ -870,7 +981,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements5 = reservedIPsElement.getElementsByTagName("Label");
                     Element labelElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (labelElement != null) {
+                    if (labelElement != null)
+                    {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         reservedIPInstance.setLabel(labelInstance);
@@ -878,7 +990,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements6 = reservedIPsElement.getElementsByTagName("AffinityGroup");
                     Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (affinityGroupElement != null) {
+                    if (affinityGroupElement != null)
+                    {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         reservedIPInstance.setAffinityGroup(affinityGroupInstance);
@@ -886,7 +999,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements7 = reservedIPsElement.getElementsByTagName("State");
                     Element stateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (stateElement != null) {
+                    if (stateElement != null)
+                    {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         reservedIPInstance.setState(stateInstance);
@@ -894,7 +1008,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements8 = reservedIPsElement.getElementsByTagName("InUse");
                     Element inUseElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (inUseElement != null) {
+                    if (inUseElement != null)
+                    {
                         boolean inUseInstance;
                         inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
                         reservedIPInstance.setInUse(inUseInstance);
@@ -902,7 +1017,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements9 = reservedIPsElement.getElementsByTagName("ServiceName");
                     Element serviceNameElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (serviceNameElement != null) {
+                    if (serviceNameElement != null)
+                    {
                         String serviceNameInstance;
                         serviceNameInstance = serviceNameElement.getTextContent();
                         reservedIPInstance.setServiceName(serviceNameInstance);
@@ -910,7 +1026,8 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
                     
                     NodeList elements10 = reservedIPsElement.getElementsByTagName("DeploymentName");
                     Element deploymentNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (deploymentNameElement != null) {
+                    if (deploymentNameElement != null)
+                    {
                         String deploymentNameInstance;
                         deploymentNameInstance = deploymentNameElement.getTextContent();
                         reservedIPInstance.setDeploymentName(deploymentNameInstance);
@@ -919,16 +1036,21 @@ public class ReservedIPOperationsImpl implements ServiceOperations<VirtualNetwor
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

@@ -29,7 +29,8 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
 /**
  * Generic implementation of Delete operation usable by most entities.
  */
-public class DefaultEntityActionOperation implements EntityActionOperation {
+public class DefaultEntityActionOperation implements EntityActionOperation
+{
 
     /** The proxy data. */
     private EntityProxyData proxyData;
@@ -69,7 +70,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      *            the action name
      */
     public DefaultEntityActionOperation(String entityName, String entityId,
-            String actionName) {
+            String actionName)
+    {
         this.queryParameters = new MultivaluedMapImpl();
         this.bodyParameters = new HashMap<String, Object>();
         this.entityName = entityName;
@@ -88,7 +90,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData) {
+    public void setProxyData(EntityProxyData proxyData)
+    {
         this.proxyData = proxyData;
     }
 
@@ -97,7 +100,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the proxy data
      */
-    protected EntityProxyData getProxyData() {
+    protected EntityProxyData getProxyData()
+    {
         return proxyData;
     }
 
@@ -106,7 +110,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the entity name
      */
-    public String getEntityName() {
+    public String getEntityName()
+    {
         return this.entityName;
     }
 
@@ -115,7 +120,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the entity id
      */
-    public String getEntityId() {
+    public String getEntityId()
+    {
         return this.entityId;
     }
 
@@ -124,7 +130,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * 
      * @return the action name
      */
-    public String getActionName() {
+    public String getActionName()
+    {
         return this.actionName;
     }
 
@@ -136,7 +143,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * #getUri()
      */
     @Override
-    public String getUri() {
+    public String getUri()
+    {
         return uriBuilder.getUri();
     }
 
@@ -147,7 +155,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityActionOperation#getQueryParameters()
      */
     @Override
-    public MultivaluedMap<String, String> getQueryParameters() {
+    public MultivaluedMap<String, String> getQueryParameters()
+    {
         return this.queryParameters;
     }
 
@@ -160,7 +169,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public DefaultEntityActionOperation addQueryParameter(String key,
-            String value) {
+            String value)
+    {
         this.queryParameters.add(key, value);
         return this;
     }
@@ -172,7 +182,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityActionOperation#getBodyParameters()
      */
     @Override
-    public Map<String, Object> getBodyParameters() {
+    public Map<String, Object> getBodyParameters()
+    {
         return this.bodyParameters;
     }
 
@@ -184,7 +195,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * #getContentType()
      */
     @Override
-    public MediaType getContentType() {
+    public MediaType getContentType()
+    {
         return this.contentType;
     }
 
@@ -195,7 +207,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityActionOperation#setContentType(javax.ws.rs.core.MediaType)
      */
     @Override
-    public DefaultEntityActionOperation setContentType(MediaType contentType) {
+    public DefaultEntityActionOperation setContentType(MediaType contentType)
+    {
         this.contentType = contentType;
         return this;
     }
@@ -208,7 +221,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * #getAcceptType()
      */
     @Override
-    public MediaType getAcceptType() {
+    public MediaType getAcceptType()
+    {
         return this.acceptType;
     }
 
@@ -219,7 +233,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      *            the accept type
      * @return the default action operation
      */
-    public DefaultEntityActionOperation setAcceptType(MediaType acceptType) {
+    public DefaultEntityActionOperation setAcceptType(MediaType acceptType)
+    {
         this.acceptType = acceptType;
         return this;
     }
@@ -231,7 +246,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityActionOperation#getVerb()
      */
     @Override
-    public String getVerb() {
+    public String getVerb()
+    {
         return "POST";
     }
 
@@ -242,10 +258,13 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * EntityActionOperation#getRequestContents()
      */
     @Override
-    public Object getRequestContents() {
-        if (this.bodyParameters.size() == 0) {
+    public Object getRequestContents()
+    {
+        if (this.bodyParameters.size() == 0)
+        {
             return "";
-        } else {
+        } else
+        {
             String jsonString = "";
             EntityActionBodyParameterMapper mapper = new EntityActionBodyParameterMapper();
             jsonString = mapper.toString(this.bodyParameters);
@@ -261,7 +280,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * #processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException {
+    public Object processResponse(Object rawResponse) throws ServiceException
+    {
         PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
@@ -274,7 +294,8 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      * java.lang.Object)
      */
     @Override
-    public EntityActionOperation addBodyParameter(String key, Object value) {
+    public EntityActionOperation addBodyParameter(String key, Object value)
+    {
         this.bodyParameters.put(key, value);
         return this;
     }

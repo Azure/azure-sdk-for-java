@@ -28,7 +28,8 @@ import java.net.URI;
 /**
 * Parameters supplied to the Get Package operation.
 */
-public class DeploymentGetPackageParameters {
+public class DeploymentGetPackageParameters
+{
     private URI containerUri;
     
     /**
@@ -36,7 +37,8 @@ public class DeploymentGetPackageParameters {
     * be saved.
     * @return The ContainerUri value.
     */
-    public URI getContainerUri() {
+    public URI getContainerUri()
+    {
         return this.containerUri;
     }
     
@@ -45,7 +47,8 @@ public class DeploymentGetPackageParameters {
     * be saved.
     * @param containerUriValue The ContainerUri value.
     */
-    public void setContainerUri(final URI containerUriValue) {
+    public void setContainerUri(final URI containerUriValue)
+    {
         this.containerUri = containerUriValue;
     }
     
@@ -57,7 +60,8 @@ public class DeploymentGetPackageParameters {
     * the specified storage container will be overwritten; otherwise false.
     * @return The OverwriteExisting value.
     */
-    public Boolean isOverwriteExisting() {
+    public Boolean isOverwriteExisting()
+    {
         return this.overwriteExisting;
     }
     
@@ -67,7 +71,8 @@ public class DeploymentGetPackageParameters {
     * the specified storage container will be overwritten; otherwise false.
     * @param overwriteExistingValue The OverwriteExisting value.
     */
-    public void setOverwriteExisting(final Boolean overwriteExistingValue) {
+    public void setOverwriteExisting(final Boolean overwriteExistingValue)
+    {
         this.overwriteExisting = overwriteExistingValue;
     }
 }

@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The List Extensions operation response.
 */
-public class HostedServiceListExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListExtensionsResponse.Extension> {
+public class HostedServiceListExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListExtensionsResponse.Extension>
+{
     private ArrayList<HostedServiceListExtensionsResponse.Extension> extensions;
     
     /**
     * The extensions that were added to a cloud service.
     * @return The Extensions value.
     */
-    public ArrayList<HostedServiceListExtensionsResponse.Extension> getExtensions() {
+    public ArrayList<HostedServiceListExtensionsResponse.Extension> getExtensions()
+    {
         return this.extensions;
     }
     
@@ -45,7 +47,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     * The extensions that were added to a cloud service.
     * @param extensionsValue The Extensions value.
     */
-    public void setExtensions(final ArrayList<HostedServiceListExtensionsResponse.Extension> extensionsValue) {
+    public void setExtensions(final ArrayList<HostedServiceListExtensionsResponse.Extension> extensionsValue)
+    {
         this.extensions = extensionsValue;
     }
     
@@ -54,7 +57,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     * class.
     *
     */
-    public HostedServiceListExtensionsResponse() {
+    public HostedServiceListExtensionsResponse()
+    {
         super();
         this.extensions = new ArrayList<HostedServiceListExtensionsResponse.Extension>();
     }
@@ -63,21 +67,24 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
     * Gets the sequence of Extensions.
     *
     */
-    public Iterator<HostedServiceListExtensionsResponse.Extension> iterator() {
+    public Iterator<HostedServiceListExtensionsResponse.Extension> iterator()
+    {
         return this.getExtensions().iterator();
     }
     
     /**
     * An extension that were added to a cloud service.
     */
-    public static class Extension {
+    public static class Extension
+    {
         private String id;
         
         /**
         * The identifier of the extension.
         * @return The Id value.
         */
-        public String getId() {
+        public String getId()
+        {
             return this.id;
         }
         
@@ -85,7 +92,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The identifier of the extension.
         * @param idValue The Id value.
         */
-        public void setId(final String idValue) {
+        public void setId(final String idValue)
+        {
             this.id = idValue;
         }
         
@@ -96,7 +104,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @return The ProviderNamespace value.
         */
-        public String getProviderNamespace() {
+        public String getProviderNamespace()
+        {
             return this.providerNamespace;
         }
         
@@ -105,7 +114,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @param providerNamespaceValue The ProviderNamespace value.
         */
-        public void setProviderNamespace(final String providerNamespaceValue) {
+        public void setProviderNamespace(final String providerNamespaceValue)
+        {
             this.providerNamespace = providerNamespaceValue;
         }
         
@@ -116,7 +126,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * the List Available Extensions operation.
         * @return The PublicConfiguration value.
         */
-        public String getPublicConfiguration() {
+        public String getPublicConfiguration()
+        {
             return this.publicConfiguration;
         }
         
@@ -125,7 +136,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * the List Available Extensions operation.
         * @param publicConfigurationValue The PublicConfiguration value.
         */
-        public void setPublicConfiguration(final String publicConfigurationValue) {
+        public void setPublicConfiguration(final String publicConfigurationValue)
+        {
             this.publicConfiguration = publicConfigurationValue;
         }
         
@@ -138,7 +150,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * added to the cloud service.
         * @return The Thumbprint value.
         */
-        public String getThumbprint() {
+        public String getThumbprint()
+        {
             return this.thumbprint;
         }
         
@@ -149,7 +162,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * added to the cloud service.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue) {
+        public void setThumbprint(final String thumbprintValue)
+        {
             this.thumbprint = thumbprintValue;
         }
         
@@ -160,7 +174,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * the configuration specified in PrivateConfiguration.
         * @return The ThumbprintAlgorithm value.
         */
-        public String getThumbprintAlgorithm() {
+        public String getThumbprintAlgorithm()
+        {
             return this.thumbprintAlgorithm;
         }
         
@@ -169,7 +184,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * the configuration specified in PrivateConfiguration.
         * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
+        {
             this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
         
@@ -179,7 +195,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Required. The type of the extension.
         * @return The Type value.
         */
-        public String getType() {
+        public String getType()
+        {
             return this.type;
         }
         
@@ -187,7 +204,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * Required. The type of the extension.
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue) {
+        public void setType(final String typeValue)
+        {
             this.type = typeValue;
         }
         
@@ -197,7 +215,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The version of the extension.
         * @return The Version value.
         */
-        public String getVersion() {
+        public String getVersion()
+        {
             return this.version;
         }
         
@@ -205,7 +224,8 @@ public class HostedServiceListExtensionsResponse extends OperationResponse imple
         * The version of the extension.
         * @param versionValue The Version value.
         */
-        public void setVersion(final String versionValue) {
+        public void setVersion(final String versionValue)
+        {
             this.version = versionValue;
         }
     }

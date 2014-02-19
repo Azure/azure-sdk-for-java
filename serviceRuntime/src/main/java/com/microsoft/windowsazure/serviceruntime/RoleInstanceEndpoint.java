@@ -19,7 +19,8 @@ import java.net.InetSocketAddress;
 /**
  * Represents an endpoint associated with a role instance.
  */
-public final class RoleInstanceEndpoint {
+public final class RoleInstanceEndpoint
+{
 
     /**
      * Gets the RoleInstance object associated with this endpoint.
@@ -42,12 +43,14 @@ public final class RoleInstanceEndpoint {
      * @param protocol
      * @param ipEndPoint
      */
-    RoleInstanceEndpoint(String protocol, InetSocketAddress ipEndPoint) {
+    RoleInstanceEndpoint(String protocol, InetSocketAddress ipEndPoint)
+    {
         this.protocol = protocol;
         this.ipEndPoint = ipEndPoint;
     }
 
-    void setRoleInstance(RoleInstance roleInstance) {
+    void setRoleInstance(RoleInstance roleInstance)
+    {
         this.roleInstance = roleInstance;
     }
 
@@ -57,7 +60,8 @@ public final class RoleInstanceEndpoint {
      * @return A <code>RoleInstance</code> object that represents the role
      *         instance associated with this endpoint.
      */
-    public RoleInstance getRoleInstance() {
+    public RoleInstance getRoleInstance()
+    {
         return roleInstance;
     }
 
@@ -67,7 +71,8 @@ public final class RoleInstanceEndpoint {
      * @return A <code>String</code> object that represents the protocol
      *         associated with the endpoint.
      */
-    public String getProtocol() {
+    public String getProtocol()
+    {
         return protocol;
     }
 
@@ -79,7 +84,8 @@ public final class RoleInstanceEndpoint {
      * @return A <code>java.net.InetSocketAddress</code> object that contains
      *         the IP address and port number for the endpoint.
      */
-    public InetSocketAddress getIpEndPoint() {
+    public InetSocketAddress getIpEndPoint()
+    {
         return ipEndPoint;
     }
 }

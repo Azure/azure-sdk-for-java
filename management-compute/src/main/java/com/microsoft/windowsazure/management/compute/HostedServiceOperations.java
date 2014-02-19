@@ -50,7 +50,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for more
 * information)
 */
-public interface HostedServiceOperations {
+public interface HostedServiceOperations
+{
     /**
     * The Add Extension operation adds an available extension to your cloud
     * service. In Windows Azure, a process can run as an extension of a cloud

@@ -25,7 +25,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * timestamp to get the properties of a snapshot, and any access conditions for
  * the request.
  */
-public class GetBlobPropertiesOptions extends BlobServiceOptions {
+public class GetBlobPropertiesOptions extends BlobServiceOptions
+{
     private String snapshot;
     private String leaseId;
     private AccessConditionHeader accessCondition;
@@ -42,7 +43,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A reference to this {@link GetBlobPropertiesOptions} instance.
      */
     @Override
-    public GetBlobPropertiesOptions setTimeout(Integer timeout) {
+    public GetBlobPropertiesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -54,7 +56,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to get properties for.
      */
-    public String getSnapshot() {
+    public String getSnapshot()
+    {
         return snapshot;
     }
 
@@ -72,7 +75,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      *            the blob snapshot to get properties for.
      * @return A reference to this {@link GetBlobPropertiesOptions} instance.
      */
-    public GetBlobPropertiesOptions setSnapshot(String snapshot) {
+    public GetBlobPropertiesOptions setSnapshot(String snapshot)
+    {
         this.snapshot = snapshot;
         return this;
     }
@@ -83,7 +87,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -99,7 +104,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link GetBlobPropertiesOptions} instance.
      */
-    public GetBlobPropertiesOptions setLeaseId(String leaseId) {
+    public GetBlobPropertiesOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -111,7 +117,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -125,7 +132,8 @@ public class GetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A reference to this {@link GetBlobPropertiesOptions} instance.
      */
     public GetBlobPropertiesOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

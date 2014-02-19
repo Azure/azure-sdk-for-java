@@ -28,20 +28,23 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * A standard storage response including an HTTP status code and request ID.
 */
-public class ServiceBusNotificationHubResponse extends OperationResponse {
+public class ServiceBusNotificationHubResponse extends OperationResponse
+{
     private ServiceBusNotificationHub notificationHub;
     
     /**
     * @return The NotificationHub value.
     */
-    public ServiceBusNotificationHub getNotificationHub() {
+    public ServiceBusNotificationHub getNotificationHub()
+    {
         return this.notificationHub;
     }
     
     /**
     * @param notificationHubValue The NotificationHub value.
     */
-    public void setNotificationHub(final ServiceBusNotificationHub notificationHubValue) {
+    public void setNotificationHub(final ServiceBusNotificationHub notificationHubValue)
+    {
         this.notificationHub = notificationHubValue;
     }
 }

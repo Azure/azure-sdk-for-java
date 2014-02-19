@@ -68,13 +68,15 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for more
 * information)
 */
-public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, ServerFarmOperations {
+public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, ServerFarmOperations
+{
     /**
     * Initializes a new instance of the ServerFarmOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    ServerFarmOperationsImpl(WebSiteManagementClientImpl client) {
+    ServerFarmOperationsImpl(WebSiteManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -85,7 +87,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
     * @return The Client value.
     */
-    public WebSiteManagementClientImpl getClient() {
+    public WebSiteManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -107,10 +110,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Create Server Farm operation response.
     */
     @Override
-    public Future<ServerFarmCreateResponse> createAsync(final String webSpaceName, final ServerFarmCreateParameters parameters) {
+    public Future<ServerFarmCreateResponse> createAsync(final String webSpaceName, final ServerFarmCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerFarmCreateResponse>() { 
             @Override
-            public ServerFarmCreateResponse call() throws Exception {
+            public ServerFarmCreateResponse call() throws Exception
+            {
                 return create(webSpaceName, parameters);
             }
          });
@@ -146,19 +151,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Create Server Farm operation response.
     */
     @Override
-    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public ServerFarmCreateResponse create(String webSpaceName, ServerFarmCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
+    {
         // Validate
-        if (webSpaceName == null) {
+        if (webSpaceName == null)
+        {
             throw new NullPointerException("webSpaceName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -185,13 +194,15 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Element serverFarmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
         requestDoc.appendChild(serverFarmElement);
         
-        if (parameters.getCurrentNumberOfWorkers() != null) {
+        if (parameters.getCurrentNumberOfWorkers() != null)
+        {
             Element currentNumberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
             currentNumberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getCurrentNumberOfWorkers())));
             serverFarmElement.appendChild(currentNumberOfWorkersElement);
         }
         
-        if (parameters.getCurrentWorkerSize() != null) {
+        if (parameters.getCurrentWorkerSize() != null)
+        {
             Element currentWorkerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
             currentWorkerSizeElement.appendChild(requestDoc.createTextNode(parameters.getCurrentWorkerSize().toString()));
             serverFarmElement.appendChild(currentWorkerSizeElement);
@@ -209,7 +220,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         workerSizeElement.appendChild(requestDoc.createTextNode(parameters.getWorkerSize().toString()));
         serverFarmElement.appendChild(workerSizeElement);
         
-        if (parameters.getStatus() != null) {
+        if (parameters.getStatus() != null)
+        {
             Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
             statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
             serverFarmElement.appendChild(statusElement);
@@ -228,18 +240,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -257,10 +274,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
             Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement2 != null) {
+            if (serverFarmElement2 != null)
+            {
                 NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
                 Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement2 != null) {
+                if (currentNumberOfWorkersElement2 != null)
+                {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -268,7 +287,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
                 Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement2 != null) {
+                if (currentWorkerSizeElement2 != null)
+                {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -276,7 +296,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -284,7 +305,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
                 Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement2 != null) {
+                if (numberOfWorkersElement2 != null)
+                {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
@@ -292,7 +314,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
                 Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement2 != null) {
+                if (workerSizeElement2 != null)
+                {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
@@ -300,7 +323,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
                 Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement2 != null) {
+                if (statusElement2 != null)
+                {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
                     result.setStatus(statusInstance);
@@ -308,16 +332,21 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -341,10 +370,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String webSpaceName) {
+    public Future<OperationResponse> deleteAsync(final String webSpaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return delete(webSpaceName);
             }
          });
@@ -372,16 +403,19 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * request ID.
     */
     @Override
-    public OperationResponse delete(String webSpaceName) throws IOException, ServiceException {
+    public OperationResponse delete(String webSpaceName) throws IOException, ServiceException
+    {
         // Validate
-        if (webSpaceName == null) {
+        if (webSpaceName == null)
+        {
             throw new NullPointerException("webSpaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -399,18 +433,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -420,16 +459,21 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -453,10 +497,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Get Server Farm operation response.
     */
     @Override
-    public Future<ServerFarmGetResponse> getAsync(final String webSpaceName, final String serverFarmName) {
+    public Future<ServerFarmGetResponse> getAsync(final String webSpaceName, final String serverFarmName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerFarmGetResponse>() { 
             @Override
-            public ServerFarmGetResponse call() throws Exception {
+            public ServerFarmGetResponse call() throws Exception
+            {
                 return get(webSpaceName, serverFarmName);
             }
          });
@@ -490,19 +536,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Get Server Farm operation response.
     */
     @Override
-    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServerFarmGetResponse get(String webSpaceName, String serverFarmName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (webSpaceName == null) {
+        if (webSpaceName == null)
+        {
             throw new NullPointerException("webSpaceName");
         }
-        if (serverFarmName == null) {
+        if (serverFarmName == null)
+        {
             throw new NullPointerException("serverFarmName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -521,18 +571,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -550,10 +605,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
             Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement != null) {
+            if (serverFarmElement != null)
+            {
                 NodeList elements2 = serverFarmElement.getElementsByTagName("CurrentNumberOfWorkers");
                 Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement != null) {
+                if (currentNumberOfWorkersElement != null)
+                {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -561,7 +618,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements3 = serverFarmElement.getElementsByTagName("CurrentWorkerSize");
                 Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement != null) {
+                if (currentWorkerSizeElement != null)
+                {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -569,7 +627,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements4 = serverFarmElement.getElementsByTagName("Name");
                 Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement != null) {
+                if (nameElement != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -577,7 +636,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements5 = serverFarmElement.getElementsByTagName("NumberOfWorkers");
                 Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement != null) {
+                if (numberOfWorkersElement != null)
+                {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
@@ -585,7 +645,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements6 = serverFarmElement.getElementsByTagName("WorkerSize");
                 Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement != null) {
+                if (workerSizeElement != null)
+                {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
@@ -593,7 +654,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements7 = serverFarmElement.getElementsByTagName("Status");
                 Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement != null) {
+                if (statusElement != null)
+                {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -601,16 +663,21 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -633,10 +700,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The List Server Farm operation response.
     */
     @Override
-    public Future<ServerFarmListResponse> listAsync(final String webSpaceName) {
+    public Future<ServerFarmListResponse> listAsync(final String webSpaceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerFarmListResponse>() { 
             @Override
-            public ServerFarmListResponse call() throws Exception {
+            public ServerFarmListResponse call() throws Exception
+            {
                 return list(webSpaceName);
             }
          });
@@ -667,16 +736,19 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The List Server Farm operation response.
     */
     @Override
-    public ServerFarmListResponse list(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServerFarmListResponse list(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (webSpaceName == null) {
+        if (webSpaceName == null)
+        {
             throw new NullPointerException("webSpaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -694,18 +766,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -723,15 +800,18 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             
             NodeList elements = responseDoc.getElementsByTagName("ServerFarms");
             Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmsSequenceElement != null) {
-                for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1) {
+            if (serverFarmsSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serverFarmsSequenceElement.getElementsByTagName("ServerFarm").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) serverFarmsSequenceElement.getElementsByTagName("ServerFarm").item(i1));
                     ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
                     result.getServerFarms().add(serverFarmInstance);
                     
                     NodeList elements2 = serverFarmsElement.getElementsByTagName("CurrentNumberOfWorkers");
                     Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (currentNumberOfWorkersElement != null) {
+                    if (currentNumberOfWorkersElement != null)
+                    {
                         int currentNumberOfWorkersInstance;
                         currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                         serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -739,7 +819,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     
                     NodeList elements3 = serverFarmsElement.getElementsByTagName("CurrentWorkerSize");
                     Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (currentWorkerSizeElement != null) {
+                    if (currentWorkerSizeElement != null)
+                    {
                         ServerFarmWorkerSize currentWorkerSizeInstance;
                         currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                         serverFarmInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -747,7 +828,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     
                     NodeList elements4 = serverFarmsElement.getElementsByTagName("Name");
                     Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serverFarmInstance.setName(nameInstance);
@@ -755,7 +837,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     
                     NodeList elements5 = serverFarmsElement.getElementsByTagName("NumberOfWorkers");
                     Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (numberOfWorkersElement != null) {
+                    if (numberOfWorkersElement != null)
+                    {
                         int numberOfWorkersInstance;
                         numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                         serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
@@ -763,7 +846,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     
                     NodeList elements6 = serverFarmsElement.getElementsByTagName("WorkerSize");
                     Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (workerSizeElement != null) {
+                    if (workerSizeElement != null)
+                    {
                         ServerFarmWorkerSize workerSizeInstance;
                         workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
                         serverFarmInstance.setWorkerSize(workerSizeInstance);
@@ -771,7 +855,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                     
                     NodeList elements7 = serverFarmsElement.getElementsByTagName("Status");
                     Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (statusElement != null) {
+                    if (statusElement != null)
+                    {
                         ServerFarmStatus statusInstance;
                         statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
                         serverFarmInstance.setStatus(statusInstance);
@@ -780,16 +865,21 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -813,10 +903,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Update Server Farm operation response.
     */
     @Override
-    public Future<ServerFarmUpdateResponse> updateAsync(final String webSpaceName, final ServerFarmUpdateParameters parameters) {
+    public Future<ServerFarmUpdateResponse> updateAsync(final String webSpaceName, final ServerFarmUpdateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServerFarmUpdateResponse>() { 
             @Override
-            public ServerFarmUpdateResponse call() throws Exception {
+            public ServerFarmUpdateResponse call() throws Exception
+            {
                 return update(webSpaceName, parameters);
             }
          });
@@ -852,19 +944,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
     * @return The Update Server Farm operation response.
     */
     @Override
-    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public ServerFarmUpdateResponse update(String webSpaceName, ServerFarmUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
+    {
         // Validate
-        if (webSpaceName == null) {
+        if (webSpaceName == null)
+        {
             throw new NullPointerException("webSpaceName");
         }
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -891,13 +987,15 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         Element serverFarmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServerFarm");
         requestDoc.appendChild(serverFarmElement);
         
-        if (parameters.getCurrentNumberOfWorkers() != null) {
+        if (parameters.getCurrentNumberOfWorkers() != null)
+        {
             Element currentNumberOfWorkersElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
             currentNumberOfWorkersElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getCurrentNumberOfWorkers())));
             serverFarmElement.appendChild(currentNumberOfWorkersElement);
         }
         
-        if (parameters.getCurrentWorkerSize() != null) {
+        if (parameters.getCurrentWorkerSize() != null)
+        {
             Element currentWorkerSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
             currentWorkerSizeElement.appendChild(requestDoc.createTextNode(parameters.getCurrentWorkerSize().toString()));
             serverFarmElement.appendChild(currentWorkerSizeElement);
@@ -915,7 +1013,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         workerSizeElement.appendChild(requestDoc.createTextNode(parameters.getWorkerSize().toString()));
         serverFarmElement.appendChild(workerSizeElement);
         
-        if (parameters.getStatus() != null) {
+        if (parameters.getStatus() != null)
+        {
             Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Status");
             statusElement.appendChild(requestDoc.createTextNode(parameters.getStatus().toString()));
             serverFarmElement.appendChild(statusElement);
@@ -934,18 +1033,23 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -963,10 +1067,12 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             
             NodeList elements = responseDoc.getElementsByTagName("ServerFarm");
             Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serverFarmElement2 != null) {
+            if (serverFarmElement2 != null)
+            {
                 NodeList elements2 = serverFarmElement2.getElementsByTagName("CurrentNumberOfWorkers");
                 Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (currentNumberOfWorkersElement2 != null) {
+                if (currentNumberOfWorkersElement2 != null)
+                {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -974,7 +1080,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements3 = serverFarmElement2.getElementsByTagName("CurrentWorkerSize");
                 Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentWorkerSizeElement2 != null) {
+                if (currentWorkerSizeElement2 != null)
+                {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -982,7 +1089,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements4 = serverFarmElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (nameElement2 != null) {
+                if (nameElement2 != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -990,7 +1098,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements5 = serverFarmElement2.getElementsByTagName("NumberOfWorkers");
                 Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (numberOfWorkersElement2 != null) {
+                if (numberOfWorkersElement2 != null)
+                {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
@@ -998,7 +1107,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements6 = serverFarmElement2.getElementsByTagName("WorkerSize");
                 Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (workerSizeElement2 != null) {
+                if (workerSizeElement2 != null)
+                {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
@@ -1006,7 +1116,8 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
                 
                 NodeList elements7 = serverFarmElement2.getElementsByTagName("Status");
                 Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (statusElement2 != null) {
+                if (statusElement2 != null)
+                {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
                     result.setStatus(statusInstance);
@@ -1014,16 +1125,21 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

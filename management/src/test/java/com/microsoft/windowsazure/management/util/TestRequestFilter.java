@@ -18,30 +18,31 @@ package com.microsoft.windowsazure.management.util;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 
-public class TestRequestFilter implements ServiceRequestFilter {
+public class TestRequestFilter implements ServiceRequestFilter
+{
     private int called;
     private String identifier;
-
-    public int getCalled() {
-        return this.called;
-    }
-
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    public TestRequestFilter(String identifier) {
+    
+    public int getCalled() { return this.called; }
+    
+    public String getIdentifier() { return this.identifier; }
+    
+    public TestRequestFilter(String identifier)
+    {
         this.called = 0;
         this.identifier = identifier;
     }
-
-    public TestRequestFilter() {
+    
+    public TestRequestFilter()
+    {
         this.called = 0;
     }
-
+    
     @Override
-    public void filter(ServiceRequestContext request) {
-        if (request.getProperty("executed") == null) {
+    public void filter (ServiceRequestContext request)
+    {
+        if (request.getProperty("executed") == null)
+        {
             request.setProperty("executed", true);
 
             called++;

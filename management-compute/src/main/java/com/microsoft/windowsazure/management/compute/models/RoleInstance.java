@@ -29,7 +29,8 @@ import java.util.ArrayList;
 /**
 * Details of a specific role instance.
 */
-public class RoleInstance {
+public class RoleInstance
+{
     private String hostName;
     
     /**
@@ -37,7 +38,8 @@ public class RoleInstance {
     * This element is only listed for Virtual Machine deployments.
     * @return The HostName value.
     */
-    public String getHostName() {
+    public String getHostName()
+    {
         return this.hostName;
     }
     
@@ -46,7 +48,8 @@ public class RoleInstance {
     * This element is only listed for Virtual Machine deployments.
     * @param hostNameValue The HostName value.
     */
-    public void setHostName(final String hostNameValue) {
+    public void setHostName(final String hostNameValue)
+    {
         this.hostName = hostNameValue;
     }
     
@@ -56,7 +59,8 @@ public class RoleInstance {
     * The list of instance endpoints for the role.
     * @return The InstanceEndpoints value.
     */
-    public ArrayList<InstanceEndpoint> getInstanceEndpoints() {
+    public ArrayList<InstanceEndpoint> getInstanceEndpoints()
+    {
         return this.instanceEndpoints;
     }
     
@@ -64,7 +68,8 @@ public class RoleInstance {
     * The list of instance endpoints for the role.
     * @param instanceEndpointsValue The InstanceEndpoints value.
     */
-    public void setInstanceEndpoints(final ArrayList<InstanceEndpoint> instanceEndpointsValue) {
+    public void setInstanceEndpoints(final ArrayList<InstanceEndpoint> instanceEndpointsValue)
+    {
         this.instanceEndpoints = instanceEndpointsValue;
     }
     
@@ -75,7 +80,8 @@ public class RoleInstance {
     * resolution of errors. Typicallythis field will be empty.
     * @return The InstanceErrorCode value.
     */
-    public String getInstanceErrorCode() {
+    public String getInstanceErrorCode()
+    {
         return this.instanceErrorCode;
     }
     
@@ -84,7 +90,8 @@ public class RoleInstance {
     * resolution of errors. Typicallythis field will be empty.
     * @param instanceErrorCodeValue The InstanceErrorCode value.
     */
-    public void setInstanceErrorCode(final String instanceErrorCodeValue) {
+    public void setInstanceErrorCode(final String instanceErrorCodeValue)
+    {
         this.instanceErrorCode = instanceErrorCodeValue;
     }
     
@@ -96,7 +103,8 @@ public class RoleInstance {
     * of the same piece of shared hardware.
     * @return The InstanceFaultDomain value.
     */
-    public Integer getInstanceFaultDomain() {
+    public Integer getInstanceFaultDomain()
+    {
         return this.instanceFaultDomain;
     }
     
@@ -106,7 +114,8 @@ public class RoleInstance {
     * of the same piece of shared hardware.
     * @param instanceFaultDomainValue The InstanceFaultDomain value.
     */
-    public void setInstanceFaultDomain(final Integer instanceFaultDomainValue) {
+    public void setInstanceFaultDomain(final Integer instanceFaultDomainValue)
+    {
         this.instanceFaultDomain = instanceFaultDomainValue;
     }
     
@@ -117,7 +126,8 @@ public class RoleInstance {
     * running.
     * @return The InstanceName value.
     */
-    public String getInstanceName() {
+    public String getInstanceName()
+    {
         return this.instanceName;
     }
     
@@ -126,7 +136,8 @@ public class RoleInstance {
     * running.
     * @param instanceNameValue The InstanceName value.
     */
-    public void setInstanceName(final String instanceNameValue) {
+    public void setInstanceName(final String instanceNameValue)
+    {
         this.instanceName = instanceNameValue;
     }
     
@@ -136,7 +147,8 @@ public class RoleInstance {
     * The size of the role instance.
     * @return The InstanceSize value.
     */
-    public String getInstanceSize() {
+    public String getInstanceSize()
+    {
         return this.instanceSize;
     }
     
@@ -144,7 +156,8 @@ public class RoleInstance {
     * The size of the role instance.
     * @param instanceSizeValue The InstanceSize value.
     */
-    public void setInstanceSize(final String instanceSizeValue) {
+    public void setInstanceSize(final String instanceSizeValue)
+    {
         this.instanceSize = instanceSizeValue;
     }
     
@@ -156,7 +169,8 @@ public class RoleInstance {
     * was called.
     * @return The InstanceStateDetails value.
     */
-    public String getInstanceStateDetails() {
+    public String getInstanceStateDetails()
+    {
         return this.instanceStateDetails;
     }
     
@@ -166,7 +180,8 @@ public class RoleInstance {
     * was called.
     * @param instanceStateDetailsValue The InstanceStateDetails value.
     */
-    public void setInstanceStateDetails(final String instanceStateDetailsValue) {
+    public void setInstanceStateDetails(final String instanceStateDetailsValue)
+    {
         this.instanceStateDetails = instanceStateDetailsValue;
     }
     
@@ -176,7 +191,8 @@ public class RoleInstance {
     * The current status of this instance.
     * @return The InstanceStatus value.
     */
-    public String getInstanceStatus() {
+    public String getInstanceStatus()
+    {
         return this.instanceStatus;
     }
     
@@ -184,7 +200,8 @@ public class RoleInstance {
     * The current status of this instance.
     * @param instanceStatusValue The InstanceStatus value.
     */
-    public void setInstanceStatus(final String instanceStatusValue) {
+    public void setInstanceStatus(final String instanceStatusValue)
+    {
         this.instanceStatus = instanceStatusValue;
     }
     
@@ -196,7 +213,8 @@ public class RoleInstance {
     * time.
     * @return The InstanceUpgradeDomain value.
     */
-    public Integer getInstanceUpgradeDomain() {
+    public Integer getInstanceUpgradeDomain()
+    {
         return this.instanceUpgradeDomain;
     }
     
@@ -206,7 +224,8 @@ public class RoleInstance {
     * time.
     * @param instanceUpgradeDomainValue The InstanceUpgradeDomain value.
     */
-    public void setInstanceUpgradeDomain(final Integer instanceUpgradeDomainValue) {
+    public void setInstanceUpgradeDomain(final Integer instanceUpgradeDomainValue)
+    {
         this.instanceUpgradeDomain = instanceUpgradeDomainValue;
     }
     
@@ -216,7 +235,8 @@ public class RoleInstance {
     * The IP address of the role instance (DIP).
     * @return The IPAddress value.
     */
-    public InetAddress getIPAddress() {
+    public InetAddress getIPAddress()
+    {
         return this.iPAddress;
     }
     
@@ -224,7 +244,8 @@ public class RoleInstance {
     * The IP address of the role instance (DIP).
     * @param iPAddressValue The IPAddress value.
     */
-    public void setIPAddress(final InetAddress iPAddressValue) {
+    public void setIPAddress(final InetAddress iPAddressValue)
+    {
         this.iPAddress = iPAddressValue;
     }
     
@@ -234,7 +255,8 @@ public class RoleInstance {
     * The running state of the role instance.
     * @return The PowerState value.
     */
-    public RoleInstancePowerState getPowerState() {
+    public RoleInstancePowerState getPowerState()
+    {
         return this.powerState;
     }
     
@@ -242,7 +264,8 @@ public class RoleInstance {
     * The running state of the role instance.
     * @param powerStateValue The PowerState value.
     */
-    public void setPowerState(final RoleInstancePowerState powerStateValue) {
+    public void setPowerState(final RoleInstancePowerState powerStateValue)
+    {
         this.powerState = powerStateValue;
     }
     
@@ -254,7 +277,8 @@ public class RoleInstance {
     * that have been created from an image.
     * @return The RemoteAccessCertificateThumbprint value.
     */
-    public String getRemoteAccessCertificateThumbprint() {
+    public String getRemoteAccessCertificateThumbprint()
+    {
         return this.remoteAccessCertificateThumbprint;
     }
     
@@ -265,7 +289,8 @@ public class RoleInstance {
     * @param remoteAccessCertificateThumbprintValue The
     * RemoteAccessCertificateThumbprint value.
     */
-    public void setRemoteAccessCertificateThumbprint(final String remoteAccessCertificateThumbprintValue) {
+    public void setRemoteAccessCertificateThumbprint(final String remoteAccessCertificateThumbprintValue)
+    {
         this.remoteAccessCertificateThumbprint = remoteAccessCertificateThumbprintValue;
     }
     
@@ -275,7 +300,8 @@ public class RoleInstance {
     * The name of the role.
     * @return The RoleName value.
     */
-    public String getRoleName() {
+    public String getRoleName()
+    {
         return this.roleName;
     }
     
@@ -283,7 +309,8 @@ public class RoleInstance {
     * The name of the role.
     * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(final String roleNameValue) {
+    public void setRoleName(final String roleNameValue)
+    {
         this.roleName = roleNameValue;
     }
     
@@ -291,7 +318,8 @@ public class RoleInstance {
     * Initializes a new instance of the RoleInstance class.
     *
     */
-    public RoleInstance() {
+    public RoleInstance()
+    {
         this.instanceEndpoints = new ArrayList<InstanceEndpoint>();
     }
 }

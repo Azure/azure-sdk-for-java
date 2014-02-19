@@ -26,23 +26,25 @@ package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * A standard service response including an HTTP status code and request ID.
- */
-public class AutoscaleSettingGetResponse extends OperationResponse {
+* A standard service response including an HTTP status code and request ID.
+*/
+public class AutoscaleSettingGetResponse extends OperationResponse
+{
     private AutoscaleSetting setting;
-
+    
     /**
-     * @return The Setting value.
-     */
-    public AutoscaleSetting getSetting() {
+    * @return The Setting value.
+    */
+    public AutoscaleSetting getSetting()
+    {
         return this.setting;
     }
-
+    
     /**
-     * @param settingValue
-     *            The Setting value.
-     */
-    public void setSetting(final AutoscaleSetting settingValue) {
+    * @param settingValue The Setting value.
+    */
+    public void setSetting(final AutoscaleSetting settingValue)
+    {
         this.setting = settingValue;
     }
 }

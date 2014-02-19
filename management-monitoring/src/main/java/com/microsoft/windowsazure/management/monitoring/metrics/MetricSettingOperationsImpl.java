@@ -53,338 +53,330 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
-public class MetricSettingOperationsImpl implements
-        ServiceOperations<MetricsClientImpl>, MetricSettingOperations {
+public class MetricSettingOperationsImpl implements ServiceOperations<MetricsClientImpl>, MetricSettingOperations
+{
     /**
-     * Initializes a new instance of the MetricSettingOperationsImpl class.
-     * 
-     * @param client
-     *            Reference to the service client.
-     */
-    MetricSettingOperationsImpl(MetricsClientImpl client) {
+    * Initializes a new instance of the MetricSettingOperationsImpl class.
+    *
+    * @param client Reference to the service client.
+    */
+    MetricSettingOperationsImpl(MetricsClientImpl client)
+    {
         this.client = client;
     }
-
+    
     private MetricsClientImpl client;
-
+    
     /**
-     * Gets a reference to the
-     * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
-     * 
-     * @return The Client value.
-     */
-    public MetricsClientImpl getClient() {
+    * Gets a reference to the
+    * microsoft.windowsazure.management.monitoring.metrics.MetricsClientImpl.
+    * @return The Client value.
+    */
+    public MetricsClientImpl getClient()
+    {
         return this.client;
     }
-
+    
     /**
-     * The Put Metric Settings operation creates or updates the metric settings
-     * for the resource.
-     * 
-     * @param parameters
-     *            Metric settings to be created or updated.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Put Metric Settings operation creates or updates the metric settings
+    * for the resource.
+    *
+    * @param parameters Metric settings to be created or updated.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public Future<OperationResponse> createOrUpdateAsync(
-            final MetricSettingsPutParameters parameters) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<OperationResponse>() {
-                    @Override
-                    public OperationResponse call() throws Exception {
-                        return createOrUpdate(parameters);
-                    }
-                });
+    public Future<OperationResponse> createOrUpdateAsync(final MetricSettingsPutParameters parameters)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception
+            {
+                return createOrUpdate(parameters);
+            }
+         });
     }
-
+    
     /**
-     * The Put Metric Settings operation creates or updates the metric settings
-     * for the resource.
-     * 
-     * @param parameters
-     *            Metric settings to be created or updated.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Put Metric Settings operation creates or updates the metric settings
+    * for the resource.
+    *
+    * @param parameters Metric settings to be created or updated.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     @Override
-    public OperationResponse createOrUpdate(
-            MetricSettingsPutParameters parameters) throws IOException,
-            ServiceException {
+    public OperationResponse createOrUpdate(MetricSettingsPutParameters parameters) throws IOException, ServiceException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getMetricSetting() == null) {
+        if (parameters.getMetricSetting() == null)
+        {
             throw new NullPointerException("parameters.MetricSetting");
         }
-        if (parameters.getMetricSetting().getResourceId() == null) {
-            throw new NullPointerException(
-                    "parameters.MetricSetting.ResourceId");
+        if (parameters.getMetricSetting().getResourceId() == null)
+        {
+            throw new NullPointerException("parameters.MetricSetting.ResourceId");
         }
-        if (parameters.getMetricSetting().getValue() == null) {
+        if (parameters.getMetricSetting().getValue() == null)
+        {
             throw new NullPointerException("parameters.MetricSetting.Value");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/metricsettings";
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricsettings";
+        
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-
+        
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode metricSettingValue = objectMapper.createObjectNode();
         requestDoc = metricSettingValue;
-
-        metricSettingValue.put("ResourceId", parameters.getMetricSetting()
-                .getResourceId());
-
-        if (parameters.getMetricSetting().getNamespace() != null) {
-            metricSettingValue.put("Namespace", parameters.getMetricSetting()
-                    .getNamespace());
+        
+        metricSettingValue.put("ResourceId", parameters.getMetricSetting().getResourceId());
+        
+        if (parameters.getMetricSetting().getNamespace() != null)
+        {
+            metricSettingValue.put("Namespace", parameters.getMetricSetting().getNamespace());
         }
-
+        
         ObjectNode valueValue = objectMapper.createObjectNode();
         metricSettingValue.put("Value", valueValue);
-        valueValue.put("odata.type", parameters.getMetricSetting().getValue()
-                .getClass().getName());
-        if (parameters.getMetricSetting().getValue().getClass()
-                .isInstance(AvailabilityMetricSettingValue.class)) {
-            AvailabilityMetricSettingValue derived = ((AvailabilityMetricSettingValue) parameters
-                    .getMetricSetting().getValue());
-
-            if (derived.getAvailableLocations() != null) {
-                ArrayNode availableLocationsArray = objectMapper
-                        .createArrayNode();
-                for (NameConfig availableLocationsItem : derived
-                        .getAvailableLocations()) {
-                    ObjectNode nameConfigValue = objectMapper
-                            .createObjectNode();
+        valueValue.put("odata.type", parameters.getMetricSetting().getValue().getClass().getName());
+        if (parameters.getMetricSetting().getValue().getClass().isInstance(AvailabilityMetricSettingValue.class))
+        {
+            AvailabilityMetricSettingValue derived = ((AvailabilityMetricSettingValue) parameters.getMetricSetting().getValue());
+            
+            if (derived.getAvailableLocations() != null)
+            {
+                ArrayNode availableLocationsArray = objectMapper.createArrayNode();
+                for (NameConfig availableLocationsItem : derived.getAvailableLocations())
+                {
+                    ObjectNode nameConfigValue = objectMapper.createObjectNode();
                     availableLocationsArray.add(nameConfigValue);
-
-                    if (availableLocationsItem.getName() != null) {
-                        nameConfigValue.put("Name",
-                                availableLocationsItem.getName());
+                    
+                    if (availableLocationsItem.getName() != null)
+                    {
+                        nameConfigValue.put("Name", availableLocationsItem.getName());
                     }
-
-                    if (availableLocationsItem.getDisplayName() != null) {
-                        nameConfigValue.put("DisplayName",
-                                availableLocationsItem.getDisplayName());
+                    
+                    if (availableLocationsItem.getDisplayName() != null)
+                    {
+                        nameConfigValue.put("DisplayName", availableLocationsItem.getDisplayName());
                     }
                 }
                 valueValue.put("AvailableLocations", availableLocationsArray);
             }
-
-            if (derived.getEndpoints() != null) {
+            
+            if (derived.getEndpoints() != null)
+            {
                 ArrayNode endpointsArray = objectMapper.createArrayNode();
-                for (EndpointConfig endpointsItem : derived.getEndpoints()) {
-                    ObjectNode endpointConfigValue = objectMapper
-                            .createObjectNode();
+                for (EndpointConfig endpointsItem : derived.getEndpoints())
+                {
+                    ObjectNode endpointConfigValue = objectMapper.createObjectNode();
                     endpointsArray.add(endpointConfigValue);
-
-                    if (endpointsItem.getConfigId() != null) {
-                        endpointConfigValue.put("ConfigId",
-                                endpointsItem.getConfigId());
+                    
+                    if (endpointsItem.getConfigId() != null)
+                    {
+                        endpointConfigValue.put("ConfigId", endpointsItem.getConfigId());
                     }
-
-                    if (endpointsItem.getName() != null) {
-                        endpointConfigValue
-                                .put("Name", endpointsItem.getName());
+                    
+                    if (endpointsItem.getName() != null)
+                    {
+                        endpointConfigValue.put("Name", endpointsItem.getName());
                     }
-
-                    if (endpointsItem.getLocation() != null) {
-                        endpointConfigValue.put("Location",
-                                endpointsItem.getLocation());
+                    
+                    if (endpointsItem.getLocation() != null)
+                    {
+                        endpointConfigValue.put("Location", endpointsItem.getLocation());
                     }
-
-                    if (endpointsItem.getUrl() != null) {
-                        endpointConfigValue.put("Url", endpointsItem.getUrl()
-                                .toString());
+                    
+                    if (endpointsItem.getUrl() != null)
+                    {
+                        endpointConfigValue.put("Url", endpointsItem.getUrl().toString());
                     }
                 }
                 valueValue.put("Endpoints", endpointsArray);
             }
         }
-
+        
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, requestContent, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-
+    
     /**
-     * The List Metric Settings operation lists the metric settings for the
-     * resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.
-     * @param metricNamespace
-     *            The namespace of the metrics.
-     * @return The list metric settings operation response.
-     */
+    * The List Metric Settings operation lists the metric settings for the
+    * resource.
+    *
+    * @param resourceId The id of the resource.
+    * @param metricNamespace The namespace of the metrics.
+    * @return The list metric settings operation response.
+    */
     @Override
-    public Future<MetricSettingListResponse> listAsync(final String resourceId,
-            final String metricNamespace) {
-        return this.getClient().getExecutorService()
-                .submit(new Callable<MetricSettingListResponse>() {
-                    @Override
-                    public MetricSettingListResponse call() throws Exception {
-                        return list(resourceId, metricNamespace);
-                    }
-                });
+    public Future<MetricSettingListResponse> listAsync(final String resourceId, final String metricNamespace)
+    {
+        return this.getClient().getExecutorService().submit(new Callable<MetricSettingListResponse>() { 
+            @Override
+            public MetricSettingListResponse call() throws Exception
+            {
+                return list(resourceId, metricNamespace);
+            }
+         });
     }
-
+    
     /**
-     * The List Metric Settings operation lists the metric settings for the
-     * resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.
-     * @param metricNamespace
-     *            The namespace of the metrics.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The list metric settings operation response.
-     */
+    * The List Metric Settings operation lists the metric settings for the
+    * resource.
+    *
+    * @param resourceId The id of the resource.
+    * @param metricNamespace The namespace of the metrics.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The list metric settings operation response.
+    */
     @Override
-    public MetricSettingListResponse list(String resourceId,
-            String metricNamespace) throws IOException, ServiceException,
-            URISyntaxException, ParseException {
+    public MetricSettingListResponse list(String resourceId, String metricNamespace) throws IOException, ServiceException, URISyntaxException, ParseException
+    {
         // Validate
-        if (resourceId == null) {
+        if (resourceId == null)
+        {
             throw new NullPointerException("resourceId");
         }
-        if (metricNamespace == null) {
+        if (metricNamespace == null)
+        {
             throw new NullPointerException("metricNamespace");
         }
-
+        
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
             tracingParameters.put("metricNamespace", metricNamespace);
-            CloudTracing.enter(invocationId, this, "listAsync",
-                    tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
         }
-
+        
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/"
-                + this.getClient().getCredentials().getSubscriptionId()
-                + "/services/monitoring/metricsettings?&resourceId="
-                + resourceId + "&namespace=" + metricNamespace;
-
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/metricsettings?&resourceId=" + resourceId + "&namespace=" + metricNamespace;
+        
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-
+        
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-
+        
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient()
-                    .execute(httpRequest);
-            if (shouldTrace) {
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
-                ServiceException ex = ServiceException.createFromJson(
-                        httpRequest, null, httpResponse,
-                        httpResponse.getEntity());
-                if (shouldTrace) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
+                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-
+            
             // Create Result
             MetricSettingListResponse result = null;
             // Deserialize Response
@@ -392,142 +384,134 @@ public class MetricSettingOperationsImpl implements
             result = new MetricSettingListResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-
-            if (responseDoc != null) {
+            
+            if (responseDoc != null)
+            {
                 MetricSettingCollection metricSettingCollectionInstance = new MetricSettingCollection();
                 result.setMetricSettingCollection(metricSettingCollectionInstance);
-
+                
                 ArrayNode valueArray = ((ArrayNode) responseDoc.get("Value"));
-                if (valueArray != null) {
-                    for (JsonNode valueValue : valueArray) {
+                if (valueArray != null)
+                {
+                    for (JsonNode valueValue : valueArray)
+                    {
                         MetricSetting metricSettingInstance = new MetricSetting();
-                        metricSettingCollectionInstance.getValue().add(
-                                metricSettingInstance);
-
+                        metricSettingCollectionInstance.getValue().add(metricSettingInstance);
+                        
                         JsonNode resourceIdValue = valueValue.get("ResourceId");
-                        if (resourceIdValue != null) {
+                        if (resourceIdValue != null)
+                        {
                             String resourceIdInstance;
                             resourceIdInstance = resourceIdValue.getTextValue();
-                            metricSettingInstance
-                                    .setResourceId(resourceIdInstance);
+                            metricSettingInstance.setResourceId(resourceIdInstance);
                         }
-
+                        
                         JsonNode namespaceValue = valueValue.get("Namespace");
-                        if (namespaceValue != null) {
+                        if (namespaceValue != null)
+                        {
                             String namespaceInstance;
                             namespaceInstance = namespaceValue.getTextValue();
-                            metricSettingInstance
-                                    .setNamespace(namespaceInstance);
+                            metricSettingInstance.setNamespace(namespaceInstance);
                         }
-
+                        
                         JsonNode valueValue2 = valueValue.get("Value");
-                        if (valueValue2 != null) {
-                            String typeName = valueValue2.get("odata.type")
-                                    .getTextValue();
-                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Metrics.Models.AvailabilityMetricSettingValue") {
+                        if (valueValue2 != null)
+                        {
+                            String typeName = valueValue2.get("odata.type").getTextValue();
+                            if (typeName == "Microsoft.WindowsAzure.Management.Monitoring.Metrics.Models.AvailabilityMetricSettingValue")
+                            {
                                 AvailabilityMetricSettingValue availabilityMetricSettingValueInstance = new AvailabilityMetricSettingValue();
-
-                                ArrayNode availableLocationsArray = ((ArrayNode) valueValue2
-                                        .get("AvailableLocations"));
-                                if (availableLocationsArray != null) {
-                                    for (JsonNode availableLocationsValue : availableLocationsArray) {
+                                
+                                ArrayNode availableLocationsArray = ((ArrayNode) valueValue2.get("AvailableLocations"));
+                                if (availableLocationsArray != null)
+                                {
+                                    for (JsonNode availableLocationsValue : availableLocationsArray)
+                                    {
                                         NameConfig nameConfigInstance = new NameConfig();
-                                        availabilityMetricSettingValueInstance
-                                                .getAvailableLocations().add(
-                                                        nameConfigInstance);
-
-                                        JsonNode nameValue = availableLocationsValue
-                                                .get("Name");
-                                        if (nameValue != null) {
+                                        availabilityMetricSettingValueInstance.getAvailableLocations().add(nameConfigInstance);
+                                        
+                                        JsonNode nameValue = availableLocationsValue.get("Name");
+                                        if (nameValue != null)
+                                        {
                                             String nameInstance;
-                                            nameInstance = nameValue
-                                                    .getTextValue();
-                                            nameConfigInstance
-                                                    .setName(nameInstance);
+                                            nameInstance = nameValue.getTextValue();
+                                            nameConfigInstance.setName(nameInstance);
                                         }
-
-                                        JsonNode displayNameValue = availableLocationsValue
-                                                .get("DisplayName");
-                                        if (displayNameValue != null) {
+                                        
+                                        JsonNode displayNameValue = availableLocationsValue.get("DisplayName");
+                                        if (displayNameValue != null)
+                                        {
                                             String displayNameInstance;
-                                            displayNameInstance = displayNameValue
-                                                    .getTextValue();
-                                            nameConfigInstance
-                                                    .setDisplayName(displayNameInstance);
+                                            displayNameInstance = displayNameValue.getTextValue();
+                                            nameConfigInstance.setDisplayName(displayNameInstance);
                                         }
                                     }
                                 }
-
-                                ArrayNode endpointsArray = ((ArrayNode) valueValue2
-                                        .get("Endpoints"));
-                                if (endpointsArray != null) {
-                                    for (JsonNode endpointsValue : endpointsArray) {
+                                
+                                ArrayNode endpointsArray = ((ArrayNode) valueValue2.get("Endpoints"));
+                                if (endpointsArray != null)
+                                {
+                                    for (JsonNode endpointsValue : endpointsArray)
+                                    {
                                         EndpointConfig endpointConfigInstance = new EndpointConfig();
-                                        availabilityMetricSettingValueInstance
-                                                .getEndpoints().add(
-                                                        endpointConfigInstance);
-
-                                        JsonNode configIdValue = endpointsValue
-                                                .get("ConfigId");
-                                        if (configIdValue != null) {
+                                        availabilityMetricSettingValueInstance.getEndpoints().add(endpointConfigInstance);
+                                        
+                                        JsonNode configIdValue = endpointsValue.get("ConfigId");
+                                        if (configIdValue != null)
+                                        {
                                             String configIdInstance;
-                                            configIdInstance = configIdValue
-                                                    .getTextValue();
-                                            endpointConfigInstance
-                                                    .setConfigId(configIdInstance);
+                                            configIdInstance = configIdValue.getTextValue();
+                                            endpointConfigInstance.setConfigId(configIdInstance);
                                         }
-
-                                        JsonNode nameValue2 = endpointsValue
-                                                .get("Name");
-                                        if (nameValue2 != null) {
+                                        
+                                        JsonNode nameValue2 = endpointsValue.get("Name");
+                                        if (nameValue2 != null)
+                                        {
                                             String nameInstance2;
-                                            nameInstance2 = nameValue2
-                                                    .getTextValue();
-                                            endpointConfigInstance
-                                                    .setName(nameInstance2);
+                                            nameInstance2 = nameValue2.getTextValue();
+                                            endpointConfigInstance.setName(nameInstance2);
                                         }
-
-                                        JsonNode locationValue = endpointsValue
-                                                .get("Location");
-                                        if (locationValue != null) {
+                                        
+                                        JsonNode locationValue = endpointsValue.get("Location");
+                                        if (locationValue != null)
+                                        {
                                             String locationInstance;
-                                            locationInstance = locationValue
-                                                    .getTextValue();
-                                            endpointConfigInstance
-                                                    .setLocation(locationInstance);
+                                            locationInstance = locationValue.getTextValue();
+                                            endpointConfigInstance.setLocation(locationInstance);
                                         }
-
-                                        JsonNode urlValue = endpointsValue
-                                                .get("Url");
-                                        if (urlValue != null) {
+                                        
+                                        JsonNode urlValue = endpointsValue.get("Url");
+                                        if (urlValue != null)
+                                        {
                                             URI urlInstance;
-                                            urlInstance = new URI(
-                                                    urlValue.getTextValue());
-                                            endpointConfigInstance
-                                                    .setUrl(urlInstance);
+                                            urlInstance = new URI(urlValue.getTextValue());
+                                            endpointConfigInstance.setUrl(urlInstance);
                                         }
                                     }
                                 }
-                                metricSettingInstance
-                                        .setValue(availabilityMetricSettingValueInstance);
+                                metricSettingInstance.setValue(availabilityMetricSettingValueInstance);
                             }
                         }
                     }
                 }
             }
-
+            
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
-                result.setRequestId(httpResponse.getFirstHeader(
-                        "x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
-
-            if (shouldTrace) {
+            
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

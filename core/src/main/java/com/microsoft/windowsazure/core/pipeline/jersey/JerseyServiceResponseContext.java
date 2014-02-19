@@ -20,69 +20,83 @@ import com.sun.jersey.api.client.ClientResponse;
 import java.io.InputStream;
 import java.util.List;
 
-public class JerseyServiceResponseContext implements ServiceResponseContext {
+public class JerseyServiceResponseContext implements ServiceResponseContext
+{
     private final ClientResponse clientResponse;
 
-    protected ClientResponse getClientResponse() {
+    protected ClientResponse getClientResponse()
+    {
         return this.clientResponse;
     }
 
-    public JerseyServiceResponseContext(final ClientResponse clientResponse) {
+    public JerseyServiceResponseContext(final ClientResponse clientResponse)
+    {
         this.clientResponse = clientResponse;
     }
 
     @Override
-    public Object getProperty(String name) {
+    public Object getProperty(String name)
+    {
         return clientResponse.getProperties().get(name);
     }
 
     @Override
-    public void setProperty(String name, Object value) {
+    public void setProperty(String name, Object value)
+    {
         clientResponse.getProperties().put(name, value);
     }
 
     @Override
-    public int getStatus() {
+    public int getStatus()
+    {
         return clientResponse.getStatus();
     }
 
     @Override
-    public void setStatus(int status) {
+    public void setStatus(int status)
+    {
         clientResponse.setStatus(status);
     }
 
     @Override
-    public String getHeader(String name) {
+    public String getHeader(String name)
+    {
         List<String> headers = clientResponse.getHeaders().get(name);
-        if (headers != null && headers.size() > 0) {
-            return headers.get(0);
+        if (headers != null && headers.size() > 0)
+        {
+            return (String) headers.get(0);
         }
 
         return null;
     }
 
     @Override
-    public void setHeader(String name, String value) {
+    public void setHeader(String name, String value)
+    {
         clientResponse.getHeaders().add(name, value);
     }
 
     @Override
-    public void removeHeader(String name) {
+    public void removeHeader(String name)
+    {
         clientResponse.getHeaders().remove(name);
     }
 
     @Override
-    public boolean hasEntity() {
+    public boolean hasEntity()
+    {
         return clientResponse.hasEntity();
     }
 
     @Override
-    public InputStream getEntityInputStream() {
+    public InputStream getEntityInputStream()
+    {
         return clientResponse.getEntityInputStream();
     }
 
     @Override
-    public void setEntityInputStream(InputStream entity) {
+    public void setEntityInputStream(InputStream entity)
+    {
         clientResponse.setEntityInputStream(entity);
     }
 }

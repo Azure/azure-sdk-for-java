@@ -26,35 +26,36 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import java.util.ArrayList;
 
 /**
- * A metric setting list response collection.
- */
-public class MetricSettingCollection {
+* A metric setting list response collection.
+*/
+public class MetricSettingCollection
+{
     private ArrayList<MetricSetting> value;
-
+    
     /**
-     * The collection.
-     * 
-     * @return The Value value.
-     */
-    public ArrayList<MetricSetting> getValue() {
+    * The collection.
+    * @return The Value value.
+    */
+    public ArrayList<MetricSetting> getValue()
+    {
         return this.value;
     }
-
+    
     /**
-     * The collection.
-     * 
-     * @param valueValue
-     *            The Value value.
-     */
-    public void setValue(final ArrayList<MetricSetting> valueValue) {
+    * The collection.
+    * @param valueValue The Value value.
+    */
+    public void setValue(final ArrayList<MetricSetting> valueValue)
+    {
         this.value = valueValue;
     }
-
+    
     /**
-     * Initializes a new instance of the MetricSettingCollection class.
-     * 
-     */
-    public MetricSettingCollection() {
+    * Initializes a new instance of the MetricSettingCollection class.
+    *
+    */
+    public MetricSettingCollection()
+    {
         this.value = new ArrayList<MetricSetting>();
     }
 }

@@ -30,9 +30,11 @@ import static org.hamcrest.Matchers.*;
 /**
  *
  */
-public class RuntimeVersionManagerTests {
+public class RuntimeVersionManagerTests
+{
     @Test
-    public void getRuntimeClientForV1CanParseGoalState() {
+    public void getRuntimeClientForV1CanParseGoalState()
+    {
         RuntimeVersionManager manager = createVersionManagerWithGoalState(
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                         + "<GoalState>"
@@ -46,9 +48,11 @@ public class RuntimeVersionManagerTests {
         RuntimeClient runtimeClient = manager.getRuntimeClient("");
         GoalState goalState = null;
 
-        try {
+        try
+        {
             goalState = runtimeClient.getCurrentGoalState();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
 
@@ -67,7 +71,8 @@ public class RuntimeVersionManagerTests {
     }
 
     @Test
-    public void getRuntimeClientThrowsWhenNoSupportedVersionsFound() {
+    public void getRuntimeClientThrowsWhenNoSupportedVersionsFound()
+    {
         RuntimeVersionManager manager = createVersionManagerWithGoalState(
                 "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
                         + "<GoalState>"
@@ -78,9 +83,11 @@ public class RuntimeVersionManagerTests {
                         + "<Deadline>2011-03-08T03:27:44.0Z</Deadline>"
                         + "</GoalState>", "notSupported");
 
-        try {
+        try
+        {
             manager.getRuntimeClient("");
-        } catch (RuntimeException ex) {
+        } catch (RuntimeException ex)
+        {
             return;
         }
 
@@ -88,10 +95,12 @@ public class RuntimeVersionManagerTests {
     }
 
     private RuntimeVersionManager createVersionManagerWithGoalState(
-            String goalStateXml, String version) {
+            String goalStateXml, String version)
+    {
         File tempGoalState;
 
-        try {
+        try
+        {
             tempGoalState = File.createTempFile("tempGoalState", null);
             FileOutputStream output = new FileOutputStream(tempGoalState);
 
@@ -103,13 +112,15 @@ public class RuntimeVersionManagerTests {
             byte buffer[] = new byte[1024];
             int length = 0;
 
-            while ((length = input.read(buffer)) > 0) {
+            while ((length = input.read(buffer)) > 0)
+            {
                 output.write(buffer, 0, length);
             }
 
             input.close();
             output.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
 

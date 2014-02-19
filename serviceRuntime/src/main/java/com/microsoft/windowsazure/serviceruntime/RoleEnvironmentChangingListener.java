@@ -21,7 +21,8 @@ package com.microsoft.windowsazure.serviceruntime;
  * {@link com.microsoft.windowsazure.serviceruntime.RoleEnvironmentChangingEvent}
  * object.
  */
-public interface RoleEnvironmentChangingListener {
+public interface RoleEnvironmentChangingListener
+{
 
     /**
      * Occurs before a change to the service configuration is applied to the

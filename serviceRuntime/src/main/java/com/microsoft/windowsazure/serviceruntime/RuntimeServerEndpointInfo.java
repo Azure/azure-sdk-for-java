@@ -49,7 +49,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RuntimeServerEndpointInfo")
-class RuntimeServerEndpointInfo {
+class RuntimeServerEndpointInfo
+{
 
     @XmlAttribute(required = true)
     protected String version;
@@ -62,7 +63,8 @@ class RuntimeServerEndpointInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getVersion() {
+    public String getVersion()
+    {
         return version;
     }
 
@@ -73,7 +75,8 @@ class RuntimeServerEndpointInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setVersion(String value) {
+    public void setVersion(String value)
+    {
         this.version = value;
     }
 
@@ -83,7 +86,8 @@ class RuntimeServerEndpointInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getPath() {
+    public String getPath()
+    {
         return path;
     }
 
@@ -94,7 +98,8 @@ class RuntimeServerEndpointInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setPath(String value) {
+    public void setPath(String value)
+    {
         this.path = value;
     }
 

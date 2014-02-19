@@ -38,7 +38,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
 * information)
 */
-public interface OperatingSystemOperations {
+public interface OperatingSystemOperations
+{
     /**
     * The List Operating Systems operation lists the versions of the guest
     * operating system that are currently available in Windows Azure. The

@@ -25,9 +25,11 @@ import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.sun.jersey.api.client.Client;
 
-public class OAuthRestProxyIntegrationTest extends IntegrationTestBase {
+public class OAuthRestProxyIntegrationTest extends IntegrationTestBase
+{
     @Test
-    public void serviceCanBeCalledToCreateAccessToken() throws Exception {
+    public void serviceCanBeCalledToCreateAccessToken() throws Exception
+    {
         // Arrange
         OAuthContract oAuthContract = new OAuthRestProxy(
                 config.create(Client.class), new UserAgentFilter());

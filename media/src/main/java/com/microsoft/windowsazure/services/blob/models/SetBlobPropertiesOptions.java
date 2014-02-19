@@ -27,7 +27,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * value, a blob lease ID, a sequence number and sequence number action value,
  * and any access conditions for the operation.
  */
-public class SetBlobPropertiesOptions extends BlobServiceOptions {
+public class SetBlobPropertiesOptions extends BlobServiceOptions
+{
     private String leaseId;
     private String contentType;
     private Long contentLength;
@@ -51,7 +52,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
     @Override
-    public SetBlobPropertiesOptions setTimeout(Integer timeout) {
+    public SetBlobPropertiesOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -63,7 +65,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the MIME content type value set, if
      *         any.
      */
-    public String getContentType() {
+    public String getContentType()
+    {
         return contentType;
     }
 
@@ -82,7 +85,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setContentType(String contentType) {
+    public SetBlobPropertiesOptions setContentType(String contentType)
+    {
         this.contentType = contentType;
         return this;
     }
@@ -93,7 +97,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * 
      * @return The new size to set for a page blob.
      */
-    public Long getContentLength() {
+    public Long getContentLength()
+    {
         return contentLength;
     }
 
@@ -113,7 +118,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            The new size to set for a page blob.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setContentLength(Long contentLength) {
+    public SetBlobPropertiesOptions setContentLength(Long contentLength)
+    {
         this.contentLength = contentLength;
         return this;
     }
@@ -125,7 +131,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP content encoding value set,
      *         if any.
      */
-    public String getContentEncoding() {
+    public String getContentEncoding()
+    {
         return contentEncoding;
     }
 
@@ -146,7 +153,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            <code>x-ms-blob-content-encoding</code> header value to set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setContentEncoding(String contentEncoding) {
+    public SetBlobPropertiesOptions setContentEncoding(String contentEncoding)
+    {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -158,7 +166,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP content language header
      *         value set, if any.
      */
-    public String getContentLanguage() {
+    public String getContentLanguage()
+    {
         return contentLanguage;
     }
 
@@ -177,7 +186,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            <code>x-ms-blob-content-language</code> header value to set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setContentLanguage(String contentLanguage) {
+    public SetBlobPropertiesOptions setContentLanguage(String contentLanguage)
+    {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -189,7 +199,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the MD5 hash value for the blob
      *         content set, if any.
      */
-    public String getContentMD5() {
+    public String getContentMD5()
+    {
         return contentMD5;
     }
 
@@ -211,7 +222,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            content to set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setContentMD5(String contentMD5) {
+    public SetBlobPropertiesOptions setContentMD5(String contentMD5)
+    {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -223,7 +235,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the HTTP cache control value set, if
      *         any.
      */
-    public String getCacheControl() {
+    public String getCacheControl()
+    {
         return cacheControl;
     }
 
@@ -241,7 +254,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setCacheControl(String cacheControl) {
+    public SetBlobPropertiesOptions setCacheControl(String cacheControl)
+    {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -252,7 +266,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * 
      * @return The sequence number to set, if any.
      */
-    public Long getSequenceNumber() {
+    public Long getSequenceNumber()
+    {
         return sequenceNumber;
     }
 
@@ -281,7 +296,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            The sequence number to set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setSequenceNumber(Long sequenceNumber) {
+    public SetBlobPropertiesOptions setSequenceNumber(Long sequenceNumber)
+    {
         this.sequenceNumber = sequenceNumber;
         return this;
     }
@@ -292,7 +308,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -308,7 +325,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
-    public SetBlobPropertiesOptions setLeaseId(String leaseId) {
+    public SetBlobPropertiesOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -320,7 +338,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A {@link String} containing the sequence number action set, if
      *         any.
      */
-    public String getSequenceNumberAction() {
+    public String getSequenceNumberAction()
+    {
         return sequenceNumberAction;
     }
 
@@ -351,7 +370,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
     public SetBlobPropertiesOptions setSequenceNumberAction(
-            String sequenceNumberAction) {
+            String sequenceNumberAction)
+    {
         this.sequenceNumberAction = sequenceNumberAction;
         return this;
     }
@@ -363,7 +383,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -383,7 +404,8 @@ public class SetBlobPropertiesOptions extends BlobServiceOptions {
      * @return A reference to this {@link SetBlobPropertiesOptions} instance.
      */
     public SetBlobPropertiesOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

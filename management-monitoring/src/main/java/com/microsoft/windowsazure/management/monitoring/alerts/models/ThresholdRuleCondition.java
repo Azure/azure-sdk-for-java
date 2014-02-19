@@ -26,92 +26,89 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import javax.xml.datatype.Duration;
 
 /**
- * A threshold rule condition.
- */
-public class ThresholdRuleCondition extends RuleCondition {
+* A threshold rule condition.
+*/
+public class ThresholdRuleCondition extends RuleCondition
+{
     private RuleDataSource dataSource;
-
+    
     /**
-     * Condition data source.
-     * 
-     * @return The DataSource value.
-     */
-    public RuleDataSource getDataSource() {
+    * Condition data source.
+    * @return The DataSource value.
+    */
+    public RuleDataSource getDataSource()
+    {
         return this.dataSource;
     }
-
+    
     /**
-     * Condition data source.
-     * 
-     * @param dataSourceValue
-     *            The DataSource value.
-     */
-    public void setDataSource(final RuleDataSource dataSourceValue) {
+    * Condition data source.
+    * @param dataSourceValue The DataSource value.
+    */
+    public void setDataSource(final RuleDataSource dataSourceValue)
+    {
         this.dataSource = dataSourceValue;
     }
-
+    
     private ConditionOperator operator;
-
+    
     /**
-     * Condition operator.
-     * 
-     * @return The Operator value.
-     */
-    public ConditionOperator getOperator() {
+    * Condition operator.
+    * @return The Operator value.
+    */
+    public ConditionOperator getOperator()
+    {
         return this.operator;
     }
-
+    
     /**
-     * Condition operator.
-     * 
-     * @param operatorValue
-     *            The Operator value.
-     */
-    public void setOperator(final ConditionOperator operatorValue) {
+    * Condition operator.
+    * @param operatorValue The Operator value.
+    */
+    public void setOperator(final ConditionOperator operatorValue)
+    {
         this.operator = operatorValue;
     }
-
+    
     private double threshold;
-
+    
     /**
-     * Condition threshold.
-     * 
-     * @return The Threshold value.
-     */
-    public double getThreshold() {
+    * Condition threshold.
+    * @return The Threshold value.
+    */
+    public double getThreshold()
+    {
         return this.threshold;
     }
-
+    
     /**
-     * Condition threshold.
-     * 
-     * @param thresholdValue
-     *            The Threshold value.
-     */
-    public void setThreshold(final double thresholdValue) {
+    * Condition threshold.
+    * @param thresholdValue The Threshold value.
+    */
+    public void setThreshold(final double thresholdValue)
+    {
         this.threshold = thresholdValue;
     }
-
+    
     private Duration windowSize;
-
+    
     /**
-     * The time period over which the alert rule is evaluated. Condition window
-     * size depends on the metric.
-     * 
-     * @return The WindowSize value.
-     */
-    public Duration getWindowSize() {
+    * The time period over which the alert rule is evaluated. Condition window
+    * size depends on the metric.
+    * @return The WindowSize value.
+    */
+    public Duration getWindowSize()
+    {
         return this.windowSize;
     }
-
+    
     /**
-     * The time period over which the alert rule is evaluated. Condition window
-     * size depends on the metric.
-     * 
-     * @param windowSizeValue
-     *            The WindowSize value.
-     */
-    public void setWindowSize(final Duration windowSizeValue) {
+    * The time period over which the alert rule is evaluated. Condition window
+    * size depends on the metric.
+    * @param windowSizeValue The WindowSize value.
+    */
+    public void setWindowSize(final Duration windowSizeValue)
+    {
         this.windowSize = windowSizeValue;
     }
 }

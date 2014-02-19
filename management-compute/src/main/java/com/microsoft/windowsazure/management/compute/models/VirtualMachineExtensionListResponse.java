@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The List Resource Extensions operation response.
 */
-public class VirtualMachineExtensionListResponse extends OperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension> {
+public class VirtualMachineExtensionListResponse extends OperationResponse implements Iterable<VirtualMachineExtensionListResponse.ResourceExtension>
+{
     private ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensions;
     
     /**
     * The extensions that are available to add to your cloud service.
     * @return The ResourceExtensions value.
     */
-    public ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> getResourceExtensions() {
+    public ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> getResourceExtensions()
+    {
         return this.resourceExtensions;
     }
     
@@ -45,7 +47,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     * The extensions that are available to add to your cloud service.
     * @param resourceExtensionsValue The ResourceExtensions value.
     */
-    public void setResourceExtensions(final ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensionsValue) {
+    public void setResourceExtensions(final ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensionsValue)
+    {
         this.resourceExtensions = resourceExtensionsValue;
     }
     
@@ -54,7 +57,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     * class.
     *
     */
-    public VirtualMachineExtensionListResponse() {
+    public VirtualMachineExtensionListResponse()
+    {
         super();
         this.resourceExtensions = new ArrayList<VirtualMachineExtensionListResponse.ResourceExtension>();
     }
@@ -63,21 +67,24 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     * Gets the sequence of ResourceExtensions.
     *
     */
-    public Iterator<VirtualMachineExtensionListResponse.ResourceExtension> iterator() {
+    public Iterator<VirtualMachineExtensionListResponse.ResourceExtension> iterator()
+    {
         return this.getResourceExtensions().iterator();
     }
     
     /**
     * An extension available to add to your virtual machine.
     */
-    public static class ResourceExtension {
+    public static class ResourceExtension
+    {
         private String description;
         
         /**
         * The description of the extension.
         * @return The Description value.
         */
-        public String getDescription() {
+        public String getDescription()
+        {
             return this.description;
         }
         
@@ -85,7 +92,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The description of the extension.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue) {
+        public void setDescription(final String descriptionValue)
+        {
             this.description = descriptionValue;
         }
         
@@ -95,7 +103,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The label that is used to identify the extension.
         * @return The Label value.
         */
-        public String getLabel() {
+        public String getLabel()
+        {
             return this.label;
         }
         
@@ -103,7 +112,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The label that is used to identify the extension.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue) {
+        public void setLabel(final String labelValue)
+        {
             this.label = labelValue;
         }
         
@@ -113,7 +123,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The name of the extension.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -121,7 +132,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The name of the extension.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -131,7 +143,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The base64-encoded schema of the private configuration.
         * @return The PrivateConfigurationSchema value.
         */
-        public String getPrivateConfigurationSchema() {
+        public String getPrivateConfigurationSchema()
+        {
             return this.privateConfigurationSchema;
         }
         
@@ -140,7 +153,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
         * value.
         */
-        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue) {
+        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue)
+        {
             this.privateConfigurationSchema = privateConfigurationSchemaValue;
         }
         
@@ -150,7 +164,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The base64-encoded schema of the public configuration.
         * @return The PublicConfigurationSchema value.
         */
-        public String getPublicConfigurationSchema() {
+        public String getPublicConfigurationSchema()
+        {
             return this.publicConfigurationSchema;
         }
         
@@ -159,7 +174,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * @param publicConfigurationSchemaValue The PublicConfigurationSchema
         * value.
         */
-        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue) {
+        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue)
+        {
             this.publicConfigurationSchema = publicConfigurationSchemaValue;
         }
         
@@ -170,7 +186,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * Windows Azure extensions is Microsoft.Compute.
         * @return The Publisher value.
         */
-        public String getPublisher() {
+        public String getPublisher()
+        {
             return this.publisher;
         }
         
@@ -179,7 +196,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * Windows Azure extensions is Microsoft.Compute.
         * @param publisherValue The Publisher value.
         */
-        public void setPublisher(final String publisherValue) {
+        public void setPublisher(final String publisherValue)
+        {
             this.publisher = publisherValue;
         }
         
@@ -189,7 +207,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * A sample configuration file for the resource extension.
         * @return The SampleConfig value.
         */
-        public String getSampleConfig() {
+        public String getSampleConfig()
+        {
             return this.sampleConfig;
         }
         
@@ -197,7 +216,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * A sample configuration file for the resource extension.
         * @param sampleConfigValue The SampleConfig value.
         */
-        public void setSampleConfig(final String sampleConfigValue) {
+        public void setSampleConfig(final String sampleConfigValue)
+        {
             this.sampleConfig = sampleConfigValue;
         }
         
@@ -207,7 +227,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The version of the extension.
         * @return The Version value.
         */
-        public String getVersion() {
+        public String getVersion()
+        {
             return this.version;
         }
         
@@ -215,7 +236,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * The version of the extension.
         * @param versionValue The Version value.
         */
-        public void setVersion(final String versionValue) {
+        public void setVersion(final String versionValue)
+        {
             this.version = versionValue;
         }
     }

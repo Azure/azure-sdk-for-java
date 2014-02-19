@@ -38,11 +38,13 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
+public class ODataSerializationFromJerseyTest extends IntegrationTestBase
+{
 
     @Test
     public void canBuildJerseyClientToCreateAnAssetWhichIsProperlyDeserialized()
-            throws Exception {
+            throws Exception
+    {
         // Build a jersey client object by hand; this is working up to the
         // full integration into the media services rest proxy, but we
         // need to go step by step to begin.
@@ -70,16 +72,17 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
                 .post(AssetInfo.class, m.marshalEntry(requestData));
 
         Assert.assertNotNull(newAsset);
-        Assert.assertEquals(testAssetPrefix + "firstTestAsset",
-                newAsset.getName());
+        Assert.assertEquals(testAssetPrefix + "firstTestAsset", newAsset.getName());
         Assert.assertEquals("some external id", newAsset.getAlternateId());
     }
 
-    private OAuthContract createOAuthContract() {
+    private OAuthContract createOAuthContract()
+    {
         return new OAuthRestProxy(Client.create(), new UserAgentFilter());
     }
 
-    private OAuthTokenManager createTokenManager() throws URISyntaxException {
+    private OAuthTokenManager createTokenManager() throws URISyntaxException
+    {
         return new OAuthTokenManager(
                 createOAuthContract(),
                 new DefaultDateFactory(),
@@ -91,30 +94,33 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
     }
 
     private ResourceLocationManager createLocationManager()
-            throws URISyntaxException {
+            throws URISyntaxException
+    {
         return new ResourceLocationManager(
                 (String) config.getProperty(MediaConfiguration.URI));
     }
 
     @Test
-    public void canCreateAssetThroughMediaServiceAPI() throws Exception {
+    public void canCreateAssetThroughMediaServiceAPI() throws Exception
+    {
         MediaContract client = createService();
         AssetInfo newAsset = client.create(Asset.create().setName(
                 testAssetPrefix + "secondTestAsset"));
 
-        Assert.assertEquals(testAssetPrefix + "secondTestAsset",
-                newAsset.getName());
+        Assert.assertEquals(testAssetPrefix + "secondTestAsset", newAsset.getName());
     }
 
     @Test
-    public void canRetrieveListOfAssets() throws Exception {
+    public void canRetrieveListOfAssets() throws Exception
+    {
         MediaContract client = createService();
         List<AssetInfo> assets = client.list(Asset.list());
 
         Assert.assertNotNull(assets);
     }
 
-    private MediaContract createService() {
+    private MediaContract createService()
+    {
         return config.create(MediaContract.class);
     }
 }

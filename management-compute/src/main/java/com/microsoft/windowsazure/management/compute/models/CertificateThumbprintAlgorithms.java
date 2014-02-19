@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Algorithm that was used to hash a service certificate.
 */
-public class CertificateThumbprintAlgorithms {
+public class CertificateThumbprintAlgorithms
+{
     public static final String Sha1 = "sha1";
 }

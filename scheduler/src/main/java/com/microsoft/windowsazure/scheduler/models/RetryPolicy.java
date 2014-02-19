@@ -26,54 +26,61 @@ package com.microsoft.windowsazure.scheduler.models;
 import javax.xml.datatype.Duration;
 
 /**
- * Retry Policy for the job action.
- */
-public class RetryPolicy {
+* Retry Policy for the job action.
+*/
+public class RetryPolicy
+{
     private Integer retryCount;
-
+    
     /**
-     * Number of times a retry should be attempted.
-     */
-    public Integer getRetryCount() {
+    * Number of times a retry should be attempted.
+    */
+    public Integer getRetryCount()
+    {
         return this.retryCount;
     }
-
+    
     /**
-     * Number of times a retry should be attempted.
-     */
-    public void setRetryCount(Integer retryCount) {
+    * Number of times a retry should be attempted.
+    */
+    public void setRetryCount(Integer retryCount)
+    {
         this.retryCount = retryCount;
     }
-
+    
     private Duration retryInterval;
-
+    
     /**
-     * The interval between retries.
-     */
-    public Duration getRetryInterval() {
+    * The interval between retries.
+    */
+    public Duration getRetryInterval()
+    {
         return this.retryInterval;
     }
-
+    
     /**
-     * The interval between retries.
-     */
-    public void setRetryInterval(Duration retryInterval) {
+    * The interval between retries.
+    */
+    public void setRetryInterval(Duration retryInterval)
+    {
         this.retryInterval = retryInterval;
     }
-
+    
     private RetryType retryType;
-
+    
     /**
-     * The Retry Type of the Retry Policy. Can be either Fixed or None.
-     */
-    public RetryType getRetryType() {
+    * The Retry Type of the Retry Policy. Can be either  Fixed or None.
+    */
+    public RetryType getRetryType()
+    {
         return this.retryType;
     }
-
+    
     /**
-     * The Retry Type of the Retry Policy. Can be either Fixed or None.
-     */
-    public void setRetryType(RetryType retryType) {
+    * The Retry Type of the Retry Policy. Can be either  Fixed or None.
+    */
+    public void setRetryType(RetryType retryType)
+    {
         this.retryType = retryType;
     }
 }

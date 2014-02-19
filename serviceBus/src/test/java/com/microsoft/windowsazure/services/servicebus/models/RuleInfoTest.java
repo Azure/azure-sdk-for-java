@@ -23,10 +23,12 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.servicebus.implementation.Filter;
 import com.microsoft.windowsazure.services.servicebus.implementation.RuleAction;
 
-public class RuleInfoTest {
+public class RuleInfoTest
+{
 
     @Test
-    public void testGetSetFilter() {
+    public void testGetSetFilter()
+    {
         // Arrange
         Filter expectedFilter = new Filter();
         RuleInfo RuleInfo = new RuleInfo();
@@ -40,7 +42,8 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetAction() {
+    public void testGetSetAction()
+    {
         // Arrange
         RuleAction expectedAction = new RuleAction();
         RuleInfo RuleInfo = new RuleInfo();
@@ -54,7 +57,8 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetTag() {
+    public void testGetSetTag()
+    {
         // Arrange
         String expectedTag = "expectedTag";
         RuleInfo RuleInfo = new RuleInfo();
@@ -67,7 +71,8 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "expectedName";
         RuleInfo RuleInfo = new RuleInfo();
@@ -80,7 +85,8 @@ public class RuleInfoTest {
     }
 
     @Test
-    public void testGetSetCreatedAt() {
+    public void testGetSetCreatedAt()
+    {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         RuleInfo RuleInfo = new RuleInfo();

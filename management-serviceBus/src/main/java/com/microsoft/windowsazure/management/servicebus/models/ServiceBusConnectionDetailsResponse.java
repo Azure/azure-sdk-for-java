@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The set of connection details for a service bus entity.
 */
-public class ServiceBusConnectionDetailsResponse extends OperationResponse implements Iterable<ServiceBusConnectionDetail> {
+public class ServiceBusConnectionDetailsResponse extends OperationResponse implements Iterable<ServiceBusConnectionDetail>
+{
     private ArrayList<ServiceBusConnectionDetail> connectionDetails;
     
     /**
     * The set of connection details for a service bus entitiy.
     * @return The ConnectionDetails value.
     */
-    public ArrayList<ServiceBusConnectionDetail> getConnectionDetails() {
+    public ArrayList<ServiceBusConnectionDetail> getConnectionDetails()
+    {
         return this.connectionDetails;
     }
     
@@ -45,7 +47,8 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     * The set of connection details for a service bus entitiy.
     * @param connectionDetailsValue The ConnectionDetails value.
     */
-    public void setConnectionDetails(final ArrayList<ServiceBusConnectionDetail> connectionDetailsValue) {
+    public void setConnectionDetails(final ArrayList<ServiceBusConnectionDetail> connectionDetailsValue)
+    {
         this.connectionDetails = connectionDetailsValue;
     }
     
@@ -54,7 +57,8 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     * class.
     *
     */
-    public ServiceBusConnectionDetailsResponse() {
+    public ServiceBusConnectionDetailsResponse()
+    {
         super();
         this.connectionDetails = new ArrayList<ServiceBusConnectionDetail>();
     }
@@ -63,7 +67,8 @@ public class ServiceBusConnectionDetailsResponse extends OperationResponse imple
     * Gets the sequence of ConnectionDetails.
     *
     */
-    public Iterator<ServiceBusConnectionDetail> iterator() {
+    public Iterator<ServiceBusConnectionDetail> iterator()
+    {
         return this.getConnectionDetails().iterator();
     }
 }

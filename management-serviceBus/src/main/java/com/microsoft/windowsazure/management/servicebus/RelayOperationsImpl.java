@@ -49,13 +49,15 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * relays.
 */
-public class RelayOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, RelayOperations {
+public class RelayOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, RelayOperations
+{
     /**
     * Initializes a new instance of the RelayOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    RelayOperationsImpl(ServiceBusManagementClientImpl client) {
+    RelayOperationsImpl(ServiceBusManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -66,7 +68,8 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
     * @return The Client value.
     */
-    public ServiceBusManagementClientImpl getClient() {
+    public ServiceBusManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -78,10 +81,12 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String relayName) {
+    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String relayName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
             @Override
-            public ServiceBusConnectionDetailsResponse call() throws Exception {
+            public ServiceBusConnectionDetailsResponse call() throws Exception
+            {
                 return getConnectionDetails(namespaceName, relayName);
             }
          });
@@ -103,19 +108,23 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String relayName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String relayName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (namespaceName == null) {
+        if (namespaceName == null)
+        {
             throw new NullPointerException("namespaceName");
         }
-        if (relayName == null) {
+        if (relayName == null)
+        {
             throw new NullPointerException("relayName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -135,18 +144,23 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -164,22 +178,28 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null) {
-                if (feedElement != null) {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
+            if (feedElement != null)
+            {
+                if (feedElement != null)
+                {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
+                    {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
                         result.getConnectionDetails().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null) {
+                        if (contentElement != null)
+                        {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
                             Element connectionDetailElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (connectionDetailElement != null) {
+                            if (connectionDetailElement != null)
+                            {
                                 NodeList elements4 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (keyNameElement != null) {
+                                if (keyNameElement != null)
+                                {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
@@ -187,7 +207,8 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements5 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
                                 Element connectionStringElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (connectionStringElement != null) {
+                                if (connectionStringElement != null)
+                                {
                                     String connectionStringInstance;
                                     connectionStringInstance = connectionStringElement.getTextContent();
                                     entryInstance.setConnectionString(connectionStringInstance);
@@ -195,7 +216,8 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements6 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
                                 Element authorizationTypeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (authorizationTypeElement != null) {
+                                if (authorizationTypeElement != null)
+                                {
                                     String authorizationTypeInstance;
                                     authorizationTypeInstance = authorizationTypeElement.getTextContent();
                                     entryInstance.setAuthorizationType(authorizationTypeInstance);
@@ -203,8 +225,10 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements7 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (rightsSequenceElement != null) {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
+                                if (rightsSequenceElement != null)
+                                {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
+                                    {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -216,16 +240,21 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

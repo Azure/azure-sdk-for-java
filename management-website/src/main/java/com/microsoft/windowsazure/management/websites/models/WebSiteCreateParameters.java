@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Parameters supplied to the Create Web Site operation.
 */
-public class WebSiteCreateParameters {
+public class WebSiteCreateParameters
+{
     private WebSiteComputeMode computeMode;
     
     /**
@@ -38,7 +39,8 @@ public class WebSiteCreateParameters {
     * ServerFarm element.
     * @return The ComputeMode value.
     */
-    public WebSiteComputeMode getComputeMode() {
+    public WebSiteComputeMode getComputeMode()
+    {
         return this.computeMode;
     }
     
@@ -49,7 +51,8 @@ public class WebSiteCreateParameters {
     * ServerFarm element.
     * @param computeModeValue The ComputeMode value.
     */
-    public void setComputeMode(final WebSiteComputeMode computeModeValue) {
+    public void setComputeMode(final WebSiteComputeMode computeModeValue)
+    {
         this.computeMode = computeModeValue;
     }
     
@@ -62,7 +65,8 @@ public class WebSiteCreateParameters {
     * Shared or Standard websites.
     * @return The HostNames value.
     */
-    public ArrayList<String> getHostNames() {
+    public ArrayList<String> getHostNames()
+    {
         return this.hostNames;
     }
     
@@ -73,7 +77,8 @@ public class WebSiteCreateParameters {
     * Shared or Standard websites.
     * @param hostNamesValue The HostNames value.
     */
-    public void setHostNames(final ArrayList<String> hostNamesValue) {
+    public void setHostNames(final ArrayList<String> hostNamesValue)
+    {
         this.hostNames = hostNamesValue;
     }
     
@@ -84,7 +89,8 @@ public class WebSiteCreateParameters {
     * default domain.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -93,7 +99,8 @@ public class WebSiteCreateParameters {
     * default domain.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -104,7 +111,8 @@ public class WebSiteCreateParameters {
     * required value for Standard mode.
     * @return The ServerFarm value.
     */
-    public String getServerFarm() {
+    public String getServerFarm()
+    {
         return this.serverFarm;
     }
     
@@ -113,7 +121,8 @@ public class WebSiteCreateParameters {
     * required value for Standard mode.
     * @param serverFarmValue The ServerFarm value.
     */
-    public void setServerFarm(final String serverFarmValue) {
+    public void setServerFarm(final String serverFarmValue)
+    {
         this.serverFarm = serverFarmValue;
     }
     
@@ -126,7 +135,8 @@ public class WebSiteCreateParameters {
     * information, see Upgrade or Downgrade a Web Site.
     * @return The SiteMode value.
     */
-    public WebSiteMode getSiteMode() {
+    public WebSiteMode getSiteMode()
+    {
         return this.siteMode;
     }
     
@@ -137,7 +147,8 @@ public class WebSiteCreateParameters {
     * information, see Upgrade or Downgrade a Web Site.
     * @param siteModeValue The SiteMode value.
     */
-    public void setSiteMode(final WebSiteMode siteModeValue) {
+    public void setSiteMode(final WebSiteMode siteModeValue)
+    {
         this.siteMode = siteModeValue;
     }
     
@@ -147,7 +158,8 @@ public class WebSiteCreateParameters {
     * Information about the web space to create.
     * @return The WebSpace value.
     */
-    public WebSiteCreateParameters.WebSpaceDetails getWebSpace() {
+    public WebSiteCreateParameters.WebSpaceDetails getWebSpace()
+    {
         return this.webSpace;
     }
     
@@ -155,7 +167,8 @@ public class WebSiteCreateParameters {
     * Information about the web space to create.
     * @param webSpaceValue The WebSpace value.
     */
-    public void setWebSpace(final WebSiteCreateParameters.WebSpaceDetails webSpaceValue) {
+    public void setWebSpace(final WebSiteCreateParameters.WebSpaceDetails webSpaceValue)
+    {
         this.webSpace = webSpaceValue;
     }
     
@@ -165,7 +178,8 @@ public class WebSiteCreateParameters {
     * The name of the webspace.
     * @return The WebSpaceName value.
     */
-    public String getWebSpaceName() {
+    public String getWebSpaceName()
+    {
         return this.webSpaceName;
     }
     
@@ -173,7 +187,8 @@ public class WebSiteCreateParameters {
     * The name of the webspace.
     * @param webSpaceNameValue The WebSpaceName value.
     */
-    public void setWebSpaceName(final String webSpaceNameValue) {
+    public void setWebSpaceName(final String webSpaceNameValue)
+    {
         this.webSpaceName = webSpaceNameValue;
     }
     
@@ -181,14 +196,16 @@ public class WebSiteCreateParameters {
     * Initializes a new instance of the WebSiteCreateParameters class.
     *
     */
-    public WebSiteCreateParameters() {
+    public WebSiteCreateParameters()
+    {
         this.hostNames = new ArrayList<String>();
     }
     
     /**
     * Information about the web space to create.
     */
-    public static class WebSpaceDetails {
+    public static class WebSpaceDetails
+    {
         private String geoRegion;
         
         /**
@@ -196,7 +213,8 @@ public class WebSiteCreateParameters {
         * created.
         * @return The GeoRegion value.
         */
-        public String getGeoRegion() {
+        public String getGeoRegion()
+        {
             return this.geoRegion;
         }
         
@@ -205,7 +223,8 @@ public class WebSiteCreateParameters {
         * created.
         * @param geoRegionValue The GeoRegion value.
         */
-        public void setGeoRegion(final String geoRegionValue) {
+        public void setGeoRegion(final String geoRegionValue)
+        {
             this.geoRegion = geoRegionValue;
         }
         
@@ -215,7 +234,8 @@ public class WebSiteCreateParameters {
         * Required. The name of the webspace.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -223,7 +243,8 @@ public class WebSiteCreateParameters {
         * Required. The name of the webspace.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -233,7 +254,8 @@ public class WebSiteCreateParameters {
         * Required. This value must be VirtualDedicatedPlan.
         * @return The Plan value.
         */
-        public String getPlan() {
+        public String getPlan()
+        {
             return this.plan;
         }
         
@@ -241,7 +263,8 @@ public class WebSiteCreateParameters {
         * Required. This value must be VirtualDedicatedPlan.
         * @param planValue The Plan value.
         */
-        public void setPlan(final String planValue) {
+        public void setPlan(final String planValue)
+        {
             this.plan = planValue;
         }
     }

@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Contains the type and certificate information for the listener.
 */
-public class WindowsRemoteManagementListener {
+public class WindowsRemoteManagementListener
+{
     private String certificateThumbprint;
     
     /**
@@ -37,7 +38,8 @@ public class WindowsRemoteManagementListener {
     * certificate is generated and used for the virtual machine.
     * @return The CertificateThumbprint value.
     */
-    public String getCertificateThumbprint() {
+    public String getCertificateThumbprint()
+    {
         return this.certificateThumbprint;
     }
     
@@ -49,7 +51,8 @@ public class WindowsRemoteManagementListener {
     * certificate is generated and used for the virtual machine.
     * @param certificateThumbprintValue The CertificateThumbprint value.
     */
-    public void setCertificateThumbprint(final String certificateThumbprintValue) {
+    public void setCertificateThumbprint(final String certificateThumbprintValue)
+    {
         this.certificateThumbprint = certificateThumbprintValue;
     }
     
@@ -60,7 +63,8 @@ public class WindowsRemoteManagementListener {
     * value is case sensitive.
     * @return The ListenerType value.
     */
-    public VirtualMachineWindowsRemoteManagementListenerType getListenerType() {
+    public VirtualMachineWindowsRemoteManagementListenerType getListenerType()
+    {
         return this.listenerType;
     }
     
@@ -69,7 +73,8 @@ public class WindowsRemoteManagementListener {
     * value is case sensitive.
     * @param listenerTypeValue The ListenerType value.
     */
-    public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue) {
+    public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue)
+    {
         this.listenerType = listenerTypeValue;
     }
 }

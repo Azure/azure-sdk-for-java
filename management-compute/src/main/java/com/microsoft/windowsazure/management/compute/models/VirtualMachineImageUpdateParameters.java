@@ -29,14 +29,16 @@ import java.util.Calendar;
 /**
 * Parameters supplied to the Update Virtual Machine Image operation.
 */
-public class VirtualMachineImageUpdateParameters {
+public class VirtualMachineImageUpdateParameters
+{
     private String description;
     
     /**
     * Optional. Specifies the description of the OS image.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -44,7 +46,8 @@ public class VirtualMachineImageUpdateParameters {
     * Optional. Specifies the description of the OS image.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -56,7 +59,8 @@ public class VirtualMachineImageUpdateParameters {
     * recommended that the value be a URL that points to a EULA.
     * @return The Eula value.
     */
-    public String getEula() {
+    public String getEula()
+    {
         return this.eula;
     }
     
@@ -66,7 +70,8 @@ public class VirtualMachineImageUpdateParameters {
     * recommended that the value be a URL that points to a EULA.
     * @param eulaValue The Eula value.
     */
-    public void setEula(final String eulaValue) {
+    public void setEula(final String eulaValue)
+    {
         this.eula = eulaValue;
     }
     
@@ -77,7 +82,8 @@ public class VirtualMachineImageUpdateParameters {
     * in the Management Portal.
     * @return The IconUri value.
     */
-    public URI getIconUri() {
+    public URI getIconUri()
+    {
         return this.iconUri;
     }
     
@@ -86,7 +92,8 @@ public class VirtualMachineImageUpdateParameters {
     * in the Management Portal.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue) {
+    public void setIconUri(final URI iconUriValue)
+    {
         this.iconUri = iconUriValue;
     }
     
@@ -96,7 +103,8 @@ public class VirtualMachineImageUpdateParameters {
     * Optional. Specifies a value that can be used to group OS images.
     * @return The ImageFamily value.
     */
-    public String getImageFamily() {
+    public String getImageFamily()
+    {
         return this.imageFamily;
     }
     
@@ -104,7 +112,8 @@ public class VirtualMachineImageUpdateParameters {
     * Optional. Specifies a value that can be used to group OS images.
     * @param imageFamilyValue The ImageFamily value.
     */
-    public void setImageFamily(final String imageFamilyValue) {
+    public void setImageFamily(final String imageFamilyValue)
+    {
         this.imageFamily = imageFamilyValue;
     }
     
@@ -115,7 +124,8 @@ public class VirtualMachineImageUpdateParameters {
     * incur charges above the core price for the virtual machine.
     * @return The IsPremium value.
     */
-    public boolean isPremium() {
+    public boolean isPremium()
+    {
         return this.isPremium;
     }
     
@@ -124,7 +134,8 @@ public class VirtualMachineImageUpdateParameters {
     * incur charges above the core price for the virtual machine.
     * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(final boolean isPremiumValue) {
+    public void setIsPremium(final boolean isPremiumValue)
+    {
         this.isPremium = isPremiumValue;
     }
     
@@ -136,7 +147,8 @@ public class VirtualMachineImageUpdateParameters {
     * platform.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -146,7 +158,8 @@ public class VirtualMachineImageUpdateParameters {
     * platform.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -157,7 +170,8 @@ public class VirtualMachineImageUpdateParameters {
     * available using version 2013-03-01 or higher.
     * @return The Language value.
     */
-    public String getLanguage() {
+    public String getLanguage()
+    {
         return this.language;
     }
     
@@ -166,7 +180,8 @@ public class VirtualMachineImageUpdateParameters {
     * available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
-    public void setLanguage(final String languageValue) {
+    public void setLanguage(final String languageValue)
+    {
         this.language = languageValue;
     }
     
@@ -177,7 +192,8 @@ public class VirtualMachineImageUpdateParameters {
     * privacy policy related to the OS image.
     * @return The PrivacyUri value.
     */
-    public URI getPrivacyUri() {
+    public URI getPrivacyUri()
+    {
         return this.privacyUri;
     }
     
@@ -186,7 +202,8 @@ public class VirtualMachineImageUpdateParameters {
     * privacy policy related to the OS image.
     * @param privacyUriValue The PrivacyUri value.
     */
-    public void setPrivacyUri(final URI privacyUriValue) {
+    public void setPrivacyUri(final URI privacyUriValue)
+    {
         this.privacyUri = privacyUriValue;
     }
     
@@ -197,7 +214,8 @@ public class VirtualMachineImageUpdateParameters {
     * repository.
     * @return The PublishedDate value.
     */
-    public Calendar getPublishedDate() {
+    public Calendar getPublishedDate()
+    {
         return this.publishedDate;
     }
     
@@ -206,7 +224,8 @@ public class VirtualMachineImageUpdateParameters {
     * repository.
     * @param publishedDateValue The PublishedDate value.
     */
-    public void setPublishedDate(final Calendar publishedDateValue) {
+    public void setPublishedDate(final Calendar publishedDateValue)
+    {
         this.publishedDate = publishedDateValue;
     }
     
@@ -217,7 +236,8 @@ public class VirtualMachineImageUpdateParameters {
     * created from the OS image.
     * @return The RecommendedVMSize value.
     */
-    public String getRecommendedVMSize() {
+    public String getRecommendedVMSize()
+    {
         return this.recommendedVMSize;
     }
     
@@ -226,7 +246,8 @@ public class VirtualMachineImageUpdateParameters {
     * created from the OS image.
     * @param recommendedVMSizeValue The RecommendedVMSize value.
     */
-    public void setRecommendedVMSize(final String recommendedVMSizeValue) {
+    public void setRecommendedVMSize(final String recommendedVMSizeValue)
+    {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
     
@@ -238,7 +259,8 @@ public class VirtualMachineImageUpdateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri() {
+    public URI getSmallIconUri()
+    {
         return this.smallIconUri;
     }
     
@@ -248,7 +270,8 @@ public class VirtualMachineImageUpdateParameters {
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue) {
+    public void setSmallIconUri(final URI smallIconUriValue)
+    {
         this.smallIconUri = smallIconUriValue;
     }
 }

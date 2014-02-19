@@ -26,15 +26,19 @@ import javax.xml.bind.Unmarshaller;
 /**
  * 
  */
-class RuntimeVersionProtocolClient {
+class RuntimeVersionProtocolClient
+{
     private final InputChannel inputChannel;
 
-    public RuntimeVersionProtocolClient(InputChannel inputChannel) {
+    public RuntimeVersionProtocolClient(InputChannel inputChannel)
+    {
         this.inputChannel = inputChannel;
     }
 
-    public Map<String, String> getVersionMap(String connectionPath) {
-        try {
+    public Map<String, String> getVersionMap(String connectionPath)
+    {
+        try
+        {
             Map<String, String> versions = new HashMap<String, String>();
             JAXBContext context = JAXBContext
                     .newInstance(RuntimeServerDiscoveryInfo.class.getPackage()
@@ -47,12 +51,14 @@ class RuntimeVersionProtocolClient {
                     .unmarshal(input)).getValue();
 
             for (RuntimeServerEndpointInfo endpointInfo : discoveryInfo
-                    .getRuntimeServerEndpoints().getRuntimeServerEndpoint()) {
+                    .getRuntimeServerEndpoints().getRuntimeServerEndpoint())
+            {
                 versions.put(endpointInfo.getVersion(), endpointInfo.getPath());
             }
 
             return versions;
-        } catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
     }

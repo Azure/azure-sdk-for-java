@@ -31,14 +31,16 @@ import java.util.Iterator;
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class FirewallRuleListResponse extends OperationResponse implements Iterable<FirewallRuleListResponse.FirewallRule> {
+public class FirewallRuleListResponse extends OperationResponse implements Iterable<FirewallRuleListResponse.FirewallRule>
+{
     private ArrayList<FirewallRuleListResponse.FirewallRule> firewallRules;
     
     /**
     * Gets or sets the firewall rules for this SQL Database Server.
     * @return The FirewallRules value.
     */
-    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules() {
+    public ArrayList<FirewallRuleListResponse.FirewallRule> getFirewallRules()
+    {
         return this.firewallRules;
     }
     
@@ -46,7 +48,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     * Gets or sets the firewall rules for this SQL Database Server.
     * @param firewallRulesValue The FirewallRules value.
     */
-    public void setFirewallRules(final ArrayList<FirewallRuleListResponse.FirewallRule> firewallRulesValue) {
+    public void setFirewallRules(final ArrayList<FirewallRuleListResponse.FirewallRule> firewallRulesValue)
+    {
         this.firewallRules = firewallRulesValue;
     }
     
@@ -54,7 +57,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     * Initializes a new instance of the FirewallRuleListResponse class.
     *
     */
-    public FirewallRuleListResponse() {
+    public FirewallRuleListResponse()
+    {
         super();
         this.firewallRules = new ArrayList<FirewallRuleListResponse.FirewallRule>();
     }
@@ -63,21 +67,24 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     * Gets the sequence of FirewallRules.
     *
     */
-    public Iterator<FirewallRuleListResponse.FirewallRule> iterator() {
+    public Iterator<FirewallRuleListResponse.FirewallRule> iterator()
+    {
         return this.getFirewallRules().iterator();
     }
     
     /**
     * Firewall rule.
     */
-    public static class FirewallRule {
+    public static class FirewallRule
+    {
         private InetAddress endIPAddress;
         
         /**
         * Gets or sets the ending IP address applied to this rule.
         * @return The EndIPAddress value.
         */
-        public InetAddress getEndIPAddress() {
+        public InetAddress getEndIPAddress()
+        {
             return this.endIPAddress;
         }
         
@@ -85,7 +92,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the ending IP address applied to this rule.
         * @param endIPAddressValue The EndIPAddress value.
         */
-        public void setEndIPAddress(final InetAddress endIPAddressValue) {
+        public void setEndIPAddress(final InetAddress endIPAddressValue)
+        {
             this.endIPAddress = endIPAddressValue;
         }
         
@@ -95,7 +103,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the name of the Firewall Rule.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -103,7 +112,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the name of the Firewall Rule.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -113,7 +123,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the beginning IP address applied to this rule.
         * @return The StartIPAddress value.
         */
-        public InetAddress getStartIPAddress() {
+        public InetAddress getStartIPAddress()
+        {
             return this.startIPAddress;
         }
         
@@ -121,7 +132,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the beginning IP address applied to this rule.
         * @param startIPAddressValue The StartIPAddress value.
         */
-        public void setStartIPAddress(final InetAddress startIPAddressValue) {
+        public void setStartIPAddress(final InetAddress startIPAddressValue)
+        {
             this.startIPAddress = startIPAddressValue;
         }
         
@@ -131,7 +143,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the type of resource.
         * @return The Type value.
         */
-        public String getType() {
+        public String getType()
+        {
             return this.type;
         }
         
@@ -139,7 +152,8 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
         * Gets or sets the type of resource.
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue) {
+        public void setType(final String typeValue)
+        {
             this.type = typeValue;
         }
     }

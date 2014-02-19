@@ -24,7 +24,8 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 /**
- * A rule data source.
- */
-public abstract class RuleDataSource {
+* A rule data source.
+*/
+public abstract class RuleDataSource
+{
 }

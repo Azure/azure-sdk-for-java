@@ -23,44 +23,45 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum RecurrenceFrequency {
+public enum RecurrenceFrequency
+{
     /**
-     * No recurrence.
-     */
+    * No recurrence.
+    */
     None,
-
+    
     /**
-     * A recurrence value measured in seconds.
-     */
+    * A recurrence value measured in seconds.
+    */
     Second,
-
+    
     /**
-     * A recurrence value measured in minutes.
-     */
+    * A recurrence value measured in minutes.
+    */
     Minute,
-
+    
     /**
-     * A recurrence value measured in hours.
-     */
+    * A recurrence value measured in hours.
+    */
     Hour,
-
+    
     /**
-     * A recurrence value measured in days.
-     */
+    * A recurrence value measured in days.
+    */
     Day,
-
+    
     /**
-     * A recurrence value measured in weeks.
-     */
+    * A recurrence value measured in weeks.
+    */
     Week,
-
+    
     /**
-     * A recurrence value measured in months.
-     */
+    * A recurrence value measured in months.
+    */
     Month,
-
+    
     /**
-     * A recurrence value measured in years.
-     */
+    * A recurrence value measured in years.
+    */
     Year,
 }

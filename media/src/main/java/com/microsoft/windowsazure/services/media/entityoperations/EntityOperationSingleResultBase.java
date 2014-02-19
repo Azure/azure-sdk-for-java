@@ -22,20 +22,23 @@ import com.microsoft.windowsazure.exception.ServiceException;
  * 
  */
 public class EntityOperationSingleResultBase<T> extends EntityOperationBase
-        implements EntityOperationSingleResult<T> {
+        implements EntityOperationSingleResult<T>
+{
     private final Class<T> responseClass;
 
     /**
      * 
      */
-    public EntityOperationSingleResultBase(String uri, Class<T> responseClass) {
+    public EntityOperationSingleResultBase(String uri, Class<T> responseClass)
+    {
         super(uri);
         this.responseClass = responseClass;
     }
 
     public EntityOperationSingleResultBase(
             EntityOperationBase.EntityUriBuilder uriBuilder,
-            Class<T> responseClass) {
+            Class<T> responseClass)
+    {
         super(uriBuilder);
         this.responseClass = responseClass;
     }
@@ -47,11 +50,13 @@ public class EntityOperationSingleResultBase<T> extends EntityOperationBase
      * EntityOperationSingleResult#getResponseClass()
      */
     @Override
-    public Class<T> getResponseClass() {
+    public Class<T> getResponseClass()
+    {
         return responseClass;
     }
 
-    public Object processResponse(Object rawResponse) throws ServiceException {
+    public Object processResponse(Object rawResponse) throws ServiceException
+    {
         return rawResponse;
     }
 }

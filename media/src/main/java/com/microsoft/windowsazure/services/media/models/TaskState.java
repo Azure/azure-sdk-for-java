@@ -20,7 +20,8 @@ import java.security.InvalidParameterException;
 /**
  * Enum defining the state of various tasks.
  */
-public enum TaskState {
+public enum TaskState
+{
 
     /** No state. */
     None(0),
@@ -52,7 +53,8 @@ public enum TaskState {
      * @param code
      *            the code
      */
-    private TaskState(int code) {
+    private TaskState(int code)
+    {
         this.code = code;
     }
 
@@ -61,7 +63,8 @@ public enum TaskState {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return code;
     }
 
@@ -72,8 +75,10 @@ public enum TaskState {
      *            the code
      * @return the corresponding enum value
      */
-    public static TaskState fromCode(int code) {
-        switch (code) {
+    public static TaskState fromCode(int code)
+    {
+        switch (code)
+        {
         case 0:
             return None;
         case 1:

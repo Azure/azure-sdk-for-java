@@ -27,7 +27,8 @@ package com.microsoft.windowsazure.management.scheduler.models;
 * Maximum frequency that can be specified on any job in this job collection.
 * Subset of acceptable frequencies is dependent on the plan.
 */
-public enum JobCollectionRecurrenceFrequency {
+public enum JobCollectionRecurrenceFrequency
+{
     Minute,
     
     Hour,

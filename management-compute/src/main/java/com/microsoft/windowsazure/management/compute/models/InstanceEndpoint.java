@@ -28,7 +28,8 @@ import java.net.InetAddress;
 /**
 * Objects that provide instance endpoint details.
 */
-public class InstanceEndpoint {
+public class InstanceEndpoint
+{
     private Integer localPort;
     
     /**
@@ -37,7 +38,8 @@ public class InstanceEndpoint {
     * deployments.
     * @return The LocalPort value.
     */
-    public Integer getLocalPort() {
+    public Integer getLocalPort()
+    {
         return this.localPort;
     }
     
@@ -47,7 +49,8 @@ public class InstanceEndpoint {
     * deployments.
     * @param localPortValue The LocalPort value.
     */
-    public void setLocalPort(final Integer localPortValue) {
+    public void setLocalPort(final Integer localPortValue)
+    {
         this.localPort = localPortValue;
     }
     
@@ -58,7 +61,8 @@ public class InstanceEndpoint {
     * for Virtual Machine deployments.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -67,7 +71,8 @@ public class InstanceEndpoint {
     * for Virtual Machine deployments.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -77,7 +82,8 @@ public class InstanceEndpoint {
     * The external port of the role instance endpoint.
     * @return The Port value.
     */
-    public int getPort() {
+    public int getPort()
+    {
         return this.port;
     }
     
@@ -85,7 +91,8 @@ public class InstanceEndpoint {
     * The external port of the role instance endpoint.
     * @param portValue The Port value.
     */
-    public void setPort(final int portValue) {
+    public void setPort(final int portValue)
+    {
         this.port = portValue;
     }
     
@@ -95,7 +102,8 @@ public class InstanceEndpoint {
     * Specifies the transport protocol for the endpoint.
     * @return The Protocol value.
     */
-    public String getProtocol() {
+    public String getProtocol()
+    {
         return this.protocol;
     }
     
@@ -103,7 +111,8 @@ public class InstanceEndpoint {
     * Specifies the transport protocol for the endpoint.
     * @param protocolValue The Protocol value.
     */
-    public void setProtocol(final String protocolValue) {
+    public void setProtocol(final String protocolValue)
+    {
         this.protocol = protocolValue;
     }
     
@@ -113,7 +122,8 @@ public class InstanceEndpoint {
     * The Virtual IP of the role endpoint.
     * @return The VirtualIPAddress value.
     */
-    public InetAddress getVirtualIPAddress() {
+    public InetAddress getVirtualIPAddress()
+    {
         return this.virtualIPAddress;
     }
     
@@ -121,7 +131,8 @@ public class InstanceEndpoint {
     * The Virtual IP of the role endpoint.
     * @param virtualIPAddressValue The VirtualIPAddress value.
     */
-    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {
+    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue)
+    {
         this.virtualIPAddress = virtualIPAddressValue;
     }
 }

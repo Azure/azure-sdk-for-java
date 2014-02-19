@@ -31,53 +31,41 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.concurrent.Future;
 
-public interface MetricDefinitionOperations {
+public interface MetricDefinitionOperations
+{
     /**
-     * The List Metric Definitions operation lists the metric definitions for
-     * the resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.The resource id can be built using the
-     *            resource id builder class under utilities
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.The value is either null or
-     *            WindowsAzure.Availability.WindowsAzure.Availability returns
-     *            the metric definitions for endpoint monitoring metrics
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @throws ParseException
-     *             Thrown if there was an error parsing a string in the
-     *             response.
-     * @return The List Metric Definitions operation response.
-     */
-    MetricDefinitionListResponse list(String resourceId,
-            ArrayList<String> metricNames, String metricNamespace)
-            throws IOException, ServiceException, URISyntaxException,
-            ParseException;
-
+    * The List Metric Definitions operation lists the metric definitions for
+    * the resource.
+    *
+    * @param resourceId The id of the resource.The resource id can be built
+    * using the resource id builder class under utilities
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.The value is either
+    * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
+    * metric definitions for endpoint monitoring metrics
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @throws ParseException Thrown if there was an error parsing a string in
+    * the response.
+    * @return The List Metric Definitions operation response.
+    */
+    MetricDefinitionListResponse list(String resourceId, ArrayList<String> metricNames, String metricNamespace) throws IOException, ServiceException, URISyntaxException, ParseException;
+    
     /**
-     * The List Metric Definitions operation lists the metric definitions for
-     * the resource.
-     * 
-     * @param resourceId
-     *            The id of the resource.The resource id can be built using the
-     *            resource id builder class under utilities
-     * @param metricNames
-     *            The names of the metrics.
-     * @param metricNamespace
-     *            The namespace of the metrics.The value is either null or
-     *            WindowsAzure.Availability.WindowsAzure.Availability returns
-     *            the metric definitions for endpoint monitoring metrics
-     * @return The List Metric Definitions operation response.
-     */
-    Future<MetricDefinitionListResponse> listAsync(String resourceId,
-            ArrayList<String> metricNames, String metricNamespace);
+    * The List Metric Definitions operation lists the metric definitions for
+    * the resource.
+    *
+    * @param resourceId The id of the resource.The resource id can be built
+    * using the resource id builder class under utilities
+    * @param metricNames The names of the metrics.
+    * @param metricNamespace The namespace of the metrics.The value is either
+    * null or WindowsAzure.Availability.WindowsAzure.Availability returns the
+    * metric definitions for endpoint monitoring metrics
+    * @return The List Metric Definitions operation response.
+    */
+    Future<MetricDefinitionListResponse> listAsync(String resourceId, ArrayList<String> metricNames, String metricNamespace);
 }

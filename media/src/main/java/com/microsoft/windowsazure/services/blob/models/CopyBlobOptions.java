@@ -30,7 +30,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * conditions to satisfy on the destination, and any access conditions to
  * satisfy on the source.
  */
-public class CopyBlobOptions extends BlobServiceOptions {
+public class CopyBlobOptions extends BlobServiceOptions
+{
     private String leaseId;
     private AccessConditionHeader accessCondition;
     private String sourceLeaseId;
@@ -50,7 +51,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
     @Override
-    public CopyBlobOptions setTimeout(Integer timeout) {
+    public CopyBlobOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -62,7 +64,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return A {@link String} containing the snapshot timestamp value of the
      *         source blob snapshot to list.
      */
-    public String getSourceSnapshot() {
+    public String getSourceSnapshot()
+    {
         return sourceSnapshot;
     }
 
@@ -81,7 +84,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      *            the source blob snapshot to list.
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public CopyBlobOptions setSourceSnapshot(String sourceSnapshot) {
+    public CopyBlobOptions setSourceSnapshot(String sourceSnapshot)
+    {
         this.sourceSnapshot = sourceSnapshot;
         return this;
     }
@@ -93,7 +97,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return A {@link HashMap} of name-value pairs of {@link String}
      *         containing the blob metadata set, if any.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -116,7 +121,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      *            containing the blob metadata to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CopyBlobOptions setMetadata(HashMap<String, String> metadata) {
+    public CopyBlobOptions setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
         return this;
     }
@@ -136,7 +142,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      *            name-value pair to add to the metadata collection.
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
-    public CopyBlobOptions addMetadata(String key, String value) {
+    public CopyBlobOptions addMetadata(String key, String value)
+    {
         this.getMetadata().put(key, value);
         return this;
     }
@@ -147,7 +154,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -163,7 +171,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
-    public CopyBlobOptions setLeaseId(String leaseId) {
+    public CopyBlobOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -174,7 +183,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the source blob lease ID set, if any.
      */
-    public String getSourceLeaseId() {
+    public String getSourceLeaseId()
+    {
         return sourceLeaseId;
     }
 
@@ -190,7 +200,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      *            A {@link String} containing the source blob lease ID to set.
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
-    public CopyBlobOptions setSourceLeaseId(String sourceLeaseId) {
+    public CopyBlobOptions setSourceLeaseId(String sourceLeaseId)
+    {
         this.sourceLeaseId = sourceLeaseId;
         return this;
     }
@@ -202,7 +213,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the destination blob access
      *         conditions set, if any.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -219,7 +231,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
     public CopyBlobOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }
@@ -231,7 +244,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return An {@link AccessCondition} containing the source blob access
      *         conditions set, if any.
      */
-    public AccessConditionHeader getSourceAccessCondition() {
+    public AccessConditionHeader getSourceAccessCondition()
+    {
         return sourceAccessCondition;
     }
 
@@ -248,7 +262,8 @@ public class CopyBlobOptions extends BlobServiceOptions {
      * @return A reference to this {@link CopyBlobOptions} instance.
      */
     public CopyBlobOptions setSourceAccessCondition(
-            AccessConditionHeader sourceAccessCondition) {
+            AccessConditionHeader sourceAccessCondition)
+    {
         this.sourceAccessCondition = sourceAccessCondition;
         return this;
     }

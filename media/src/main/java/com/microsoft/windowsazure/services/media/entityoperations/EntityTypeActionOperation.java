@@ -26,7 +26,8 @@ import com.sun.jersey.api.client.ClientResponse;
  * @param <T>
  *            the generic type
  */
-public interface EntityTypeActionOperation<T> extends EntityOperation {
+public interface EntityTypeActionOperation<T> extends EntityOperation
+{
 
     /**
      * Process type response.

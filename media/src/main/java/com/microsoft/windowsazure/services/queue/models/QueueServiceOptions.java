@@ -22,7 +22,8 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * class defines a server request timeout, which can be applied to all
  * operations.
  */
-public class QueueServiceOptions {
+public class QueueServiceOptions
+{
     // Nullable because it is optional
     private Integer timeout;
 
@@ -35,7 +36,8 @@ public class QueueServiceOptions {
      * 
      * @return The server request timeout value in milliseconds.
      */
-    public Integer getTimeout() {
+    public Integer getTimeout()
+    {
         return timeout;
     }
 
@@ -50,7 +52,8 @@ public class QueueServiceOptions {
      *            The server request timeout value to set in milliseconds.
      * @return A reference to this {@link QueueServiceOptions} instance.
      */
-    public QueueServiceOptions setTimeout(Integer timeout) {
+    public QueueServiceOptions setTimeout(Integer timeout)
+    {
         this.timeout = timeout;
         return this;
     }

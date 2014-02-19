@@ -39,7 +39,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715315.aspx for more
 * information)
 */
-public interface SubscriptionOperations {
+public interface SubscriptionOperations
+{
     /**
     * The Get Subscription operation returns account and resource allocation
     * information on the specified subscription.  (see

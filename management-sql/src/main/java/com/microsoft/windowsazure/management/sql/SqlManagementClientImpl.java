@@ -25,7 +25,7 @@ package com.microsoft.windowsazure.management.sql;
 
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.ManagementConfiguration;
 import java.net.URI;
 import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
@@ -38,14 +38,16 @@ import org.apache.http.impl.client.HttpClientBuilder;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
 * information)
 */
-public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> implements SqlManagementClient {
+public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> implements SqlManagementClient
+{
     private URI baseUri;
     
     /**
     * The URI used as the base for all SQL requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri() {
+    public URI getBaseUri()
+    {
         return this.baseUri;
     }
     
@@ -60,7 +62,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() {
+    public SubscriptionCloudCredentials getCredentials()
+    {
         return this.credentials;
     }
     
@@ -71,7 +74,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * out of Windows Azure blob storage.
     * @return The DacOperations value.
     */
-    public DacOperations getDacOperations() {
+    public DacOperations getDacOperations()
+    {
         return this.dac;
     }
     
@@ -82,7 +86,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Databases' operations for a subscription.
     * @return The DatabaseOperationsOperations value.
     */
-    public DatabaseOperationOperations getDatabaseOperationsOperations() {
+    public DatabaseOperationOperations getDatabaseOperationsOperations()
+    {
         return this.databaseOperations;
     }
     
@@ -93,7 +98,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Databases for a subscription.
     * @return The DatabasesOperations value.
     */
-    public DatabaseOperations getDatabasesOperations() {
+    public DatabaseOperations getDatabasesOperations()
+    {
         return this.databases;
     }
     
@@ -110,7 +116,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * more information)
     * @return The FirewallRulesOperations value.
     */
-    public FirewallRuleOperations getFirewallRulesOperations() {
+    public FirewallRuleOperations getFirewallRulesOperations()
+    {
         return this.firewallRules;
     }
     
@@ -123,7 +130,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * more information)
     * @return The ServersOperations value.
     */
-    public ServerOperations getServersOperations() {
+    public ServerOperations getServersOperations()
+    {
         return this.servers;
     }
     
@@ -134,7 +142,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * Objective for a subscription.
     * @return The ServiceObjectivesOperations value.
     */
-    public ServiceObjectiveOperations getServiceObjectivesOperations() {
+    public ServiceObjectiveOperations getServiceObjectivesOperations()
+    {
         return this.serviceObjectives;
     }
     
@@ -144,7 +153,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    private SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         super(httpBuilder, executorService);
         this.dac = new DacOperationsImpl(this);
         this.databaseOperations = new DatabaseOperationOperationsImpl(this);
@@ -167,12 +177,15 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * service is secure.  No anonymous requests are allowed.
     * @param baseUri The URI used as the base for all SQL requests.
     */
-    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null) {
+        if (baseUri == null)
+        {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -195,9 +208,11 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * the response.
     */
     @Inject
-    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
+    public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -209,7 +224,8 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected SqlManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    protected SqlManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         return new SqlManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
 }

@@ -59,7 +59,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "CurrentRoleInstanceInfo", propOrder = {
 
 })
-class CurrentRoleInstanceInfo {
+class CurrentRoleInstanceInfo
+{
 
     @XmlElement(name = "ConfigurationSettings")
     protected ConfigurationSettingsInfo configurationSettings;
@@ -82,7 +83,8 @@ class CurrentRoleInstanceInfo {
      * @return possible object is {@link ConfigurationSettingsInfo }
      * 
      */
-    public ConfigurationSettingsInfo getConfigurationSettings() {
+    public ConfigurationSettingsInfo getConfigurationSettings()
+    {
         return configurationSettings;
     }
 
@@ -93,7 +95,8 @@ class CurrentRoleInstanceInfo {
      *            allowed object is {@link ConfigurationSettingsInfo }
      * 
      */
-    public void setConfigurationSettings(ConfigurationSettingsInfo value) {
+    public void setConfigurationSettings(ConfigurationSettingsInfo value)
+    {
         this.configurationSettings = value;
     }
 
@@ -103,7 +106,8 @@ class CurrentRoleInstanceInfo {
      * @return possible object is {@link LocalResourcesInfo }
      * 
      */
-    public LocalResourcesInfo getLocalResources() {
+    public LocalResourcesInfo getLocalResources()
+    {
         return localResources;
     }
 
@@ -114,7 +118,8 @@ class CurrentRoleInstanceInfo {
      *            allowed object is {@link LocalResourcesInfo }
      * 
      */
-    public void setLocalResources(LocalResourcesInfo value) {
+    public void setLocalResources(LocalResourcesInfo value)
+    {
         this.localResources = value;
     }
 
@@ -124,7 +129,8 @@ class CurrentRoleInstanceInfo {
      * @return possible object is {@link EndpointsInfo }
      * 
      */
-    public EndpointsInfo getEndpoints() {
+    public EndpointsInfo getEndpoints()
+    {
         return endpoints;
     }
 
@@ -135,7 +141,8 @@ class CurrentRoleInstanceInfo {
      *            allowed object is {@link EndpointsInfo }
      * 
      */
-    public void setEndpoints(EndpointsInfo value) {
+    public void setEndpoints(EndpointsInfo value)
+    {
         this.endpoints = value;
     }
 
@@ -145,7 +152,8 @@ class CurrentRoleInstanceInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -156,7 +164,8 @@ class CurrentRoleInstanceInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setId(String value) {
+    public void setId(String value)
+    {
         this.id = value;
     }
 
@@ -166,7 +175,8 @@ class CurrentRoleInstanceInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getRoleName() {
+    public String getRoleName()
+    {
         return roleName;
     }
 
@@ -177,7 +187,8 @@ class CurrentRoleInstanceInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setRoleName(String value) {
+    public void setRoleName(String value)
+    {
         this.roleName = value;
     }
 
@@ -185,7 +196,8 @@ class CurrentRoleInstanceInfo {
      * Gets the value of the faultDomain property.
      * 
      */
-    public int getFaultDomain() {
+    public int getFaultDomain()
+    {
         return faultDomain;
     }
 
@@ -193,7 +205,8 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the faultDomain property.
      * 
      */
-    public void setFaultDomain(int value) {
+    public void setFaultDomain(int value)
+    {
         this.faultDomain = value;
     }
 
@@ -201,7 +214,8 @@ class CurrentRoleInstanceInfo {
      * Gets the value of the updateDomain property.
      * 
      */
-    public int getUpdateDomain() {
+    public int getUpdateDomain()
+    {
         return updateDomain;
     }
 
@@ -209,7 +223,8 @@ class CurrentRoleInstanceInfo {
      * Sets the value of the updateDomain property.
      * 
      */
-    public void setUpdateDomain(int value) {
+    public void setUpdateDomain(int value)
+    {
         this.updateDomain = value;
     }
 

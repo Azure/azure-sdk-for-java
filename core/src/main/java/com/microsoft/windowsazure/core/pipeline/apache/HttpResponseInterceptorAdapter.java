@@ -19,15 +19,18 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.protocol.HttpContext;
 
-public class HttpResponseInterceptorAdapter implements HttpResponseInterceptor {
+public class HttpResponseInterceptorAdapter implements HttpResponseInterceptor
+{
     private ServiceResponseFilter filter;
 
-    public HttpResponseInterceptorAdapter(ServiceResponseFilter filter) {
+    public HttpResponseInterceptorAdapter(ServiceResponseFilter filter)
+    {
         this.filter = filter;
     }
 
     @Override
-    public void process(HttpResponse response, HttpContext context) {
+    public void process(HttpResponse response, HttpContext context)
+    {
         filter.filter(null, new HttpServiceResponseContext(response, context));
     }
 }

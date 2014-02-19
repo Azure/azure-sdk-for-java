@@ -29,14 +29,16 @@ import java.net.URI;
 /**
 * The primary and secondary access keys for a storage account.
 */
-public class StorageAccountRegenerateKeysResponse extends OperationResponse {
+public class StorageAccountRegenerateKeysResponse extends OperationResponse
+{
     private String primaryKey;
     
     /**
     * The primary access key for the storage account.
     * @return The PrimaryKey value.
     */
-    public String getPrimaryKey() {
+    public String getPrimaryKey()
+    {
         return this.primaryKey;
     }
     
@@ -44,7 +46,8 @@ public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     * The primary access key for the storage account.
     * @param primaryKeyValue The PrimaryKey value.
     */
-    public void setPrimaryKey(final String primaryKeyValue) {
+    public void setPrimaryKey(final String primaryKeyValue)
+    {
         this.primaryKey = primaryKeyValue;
     }
     
@@ -54,7 +57,8 @@ public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     * The secondary access key for the storage account.
     * @return The SecondaryKey value.
     */
-    public String getSecondaryKey() {
+    public String getSecondaryKey()
+    {
         return this.secondaryKey;
     }
     
@@ -62,7 +66,8 @@ public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     * The secondary access key for the storage account.
     * @param secondaryKeyValue The SecondaryKey value.
     */
-    public void setSecondaryKey(final String secondaryKeyValue) {
+    public void setSecondaryKey(final String secondaryKeyValue)
+    {
         this.secondaryKey = secondaryKeyValue;
     }
     
@@ -73,7 +78,8 @@ public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     * Account Properties requests against the storage account.
     * @return The Uri value.
     */
-    public URI getUri() {
+    public URI getUri()
+    {
         return this.uri;
     }
     
@@ -82,7 +88,8 @@ public class StorageAccountRegenerateKeysResponse extends OperationResponse {
     * Account Properties requests against the storage account.
     * @param uriValue The Uri value.
     */
-    public void setUri(final URI uriValue) {
+    public void setUri(final URI uriValue)
+    {
         this.uri = uriValue;
     }
 }

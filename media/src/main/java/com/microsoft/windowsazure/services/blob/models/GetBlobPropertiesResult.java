@@ -30,7 +30,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Blob Properties</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class GetBlobPropertiesResult {
+public class GetBlobPropertiesResult
+{
     private BlobProperties properties;
     private HashMap<String, String> metadata = new HashMap<String, String>();
 
@@ -40,7 +41,8 @@ public class GetBlobPropertiesResult {
      * @return A {@link BlobProperties} instance containing the properties of
      *         the blob.
      */
-    public BlobProperties getProperties() {
+    public BlobProperties getProperties()
+    {
         return properties;
     }
 
@@ -55,7 +57,8 @@ public class GetBlobPropertiesResult {
      *            A {@link BlobProperties} instance containing the properties of
      *            the blob.
      */
-    public void setProperties(BlobProperties properties) {
+    public void setProperties(BlobProperties properties)
+    {
         this.properties = properties;
     }
 
@@ -66,7 +69,8 @@ public class GetBlobPropertiesResult {
      * @return A {@link java.util.HashMap} of key-value pairs of {@link String}
      *         containing the names and values of the blob metadata.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -83,7 +87,8 @@ public class GetBlobPropertiesResult {
      *            {@link String} containing the names and values of the blob
      *            metadata.
      */
-    public void setMetadata(HashMap<String, String> metadata) {
+    public void setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 }

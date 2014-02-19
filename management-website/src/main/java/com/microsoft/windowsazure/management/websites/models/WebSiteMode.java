@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The operation mode of a website.
 */
-public enum WebSiteMode {
+public enum WebSiteMode
+{
     /**
     * This value is Limited for the Free offering.  The default value is
     * Limited.

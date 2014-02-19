@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Specifies the configuration type for the configuration set.
 */
-public class ConfigurationSetTypes {
+public class ConfigurationSetTypes
+{
     public static final String NetworkConfiguration = "NetworkConfiguration";
     
     public static final String WindowsProvisioningConfiguration = "WindowsProvisioningConfiguration";

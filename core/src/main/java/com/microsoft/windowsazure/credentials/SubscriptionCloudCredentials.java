@@ -15,7 +15,8 @@
 
 package com.microsoft.windowsazure.credentials;
 
-public abstract class SubscriptionCloudCredentials extends CloudCredentials {
+public abstract class SubscriptionCloudCredentials extends CloudCredentials
+{
     /*
      * When you create a Windows Azure subscription, it is uniquely identified
      * by a subscription ID. The subscription ID forms part of the URI for every

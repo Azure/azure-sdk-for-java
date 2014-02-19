@@ -57,7 +57,8 @@ import com.microsoft.windowsazure.services.queue.QueueService;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult;
 import com.microsoft.windowsazure.services.queue.models.ListQueuesResult.Queue;
 
-public abstract class IntegrationTestBase {
+public abstract class IntegrationTestBase
+{
     protected static MediaContract service;
     protected static QueueContract queueService;
     protected static Configuration config;
@@ -73,7 +74,7 @@ public abstract class IntegrationTestBase {
     protected static final String validButNonexistAssetId = "nb:cid:UUID:0239f11f-2d36-4e5f-aa35-44d58ccc0973";
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
     protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
-
+    
     protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_ID = "nb:mpid:UUID:2e7aa8f3-4961-4e0c-b4db-0e0439e524f5";
     protected static final String invalidId = "notAValidId";
 
@@ -81,7 +82,8 @@ public abstract class IntegrationTestBase {
     public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
-    public static void setup() throws Exception {
+    public static void setup() throws Exception
+    {
         config = Configuration.getInstance();
         overrideWithEnv(config, MediaConfiguration.URI);
         overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
@@ -100,10 +102,9 @@ public abstract class IntegrationTestBase {
 
         cleanupEnvironment();
     }
-
+    
     protected static void getLatestMediaProcessorID() throws Exception {
-        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service
-                .list(MediaProcessor.list());
+        ListResult<MediaProcessorInfo> listMediaProcessorsResult = service.list(MediaProcessor.list());
         List<MediaProcessorInfo> ps = listMediaProcessorsResult;
         double latestVersion = 0.0;
         int position = -1;
@@ -115,13 +116,15 @@ public abstract class IntegrationTestBase {
                 position = i;
             }
         }
-
-        if (position != -1) {
+        
+        if (position != -1)
+        {
             MEDIA_ENCODER_MEDIA_PROCESSOR_ID = ps.get(position).getId();
-        }
+        }      
     }
 
-    protected static void overrideWithEnv(Configuration config, String key) {
+    protected static void overrideWithEnv(Configuration config, String key)
+    {
         String value = System.getenv(key);
         if (value == null)
             return;
@@ -130,7 +133,8 @@ public abstract class IntegrationTestBase {
     }
 
     protected static void overrideWithEnv(Configuration config, String key,
-            String enviromentKey) {
+            String enviromentKey)
+    {
         String value = System.getenv(enviromentKey);
         if (value == null)
             return;
@@ -139,11 +143,13 @@ public abstract class IntegrationTestBase {
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {
+    public static void cleanup() throws Exception
+    {
         cleanupEnvironment();
     }
 
-    protected static void cleanupEnvironment() {
+    protected static void cleanupEnvironment()
+    {
         removeAllTestLocators();
         removeAllTestAssets();
         removeAllTestAccessPolicies();
@@ -152,138 +158,184 @@ public abstract class IntegrationTestBase {
         removeAllTestQueues();
     }
 
-    private static void removeAllTestQueues() {
-        try {
+    private static void removeAllTestQueues()
+    {
+        try
+        {
             ListQueuesResult listQueueResult = queueService.listQueues();
-            for (Queue queue : listQueueResult.getQueues()) {
-                try {
+            for (Queue queue : listQueueResult.getQueues())
+            {
+                try
+                {
                     queueService.deleteQueue(queue.getName());
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void removeAllTestContentKeys() {
-        try {
+    private static void removeAllTestContentKeys()
+    {
+        try
+        {
             List<ContentKeyInfo> contentKeyInfos = service.list(ContentKey
                     .list());
 
-            for (ContentKeyInfo contentKeyInfo : contentKeyInfos) {
-                try {
+            for (ContentKeyInfo contentKeyInfo : contentKeyInfos)
+            {
+                try
+                {
                     service.delete(ContentKey.delete(contentKeyInfo.getId()));
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void removeAllTestAccessPolicies() {
-        try {
+    private static void removeAllTestAccessPolicies()
+    {
+        try
+        {
             List<AccessPolicyInfo> policies = service.list(AccessPolicy.list());
 
-            for (AccessPolicyInfo policy : policies) {
-                if (policy.getName().startsWith(testPolicyPrefix)) {
+            for (AccessPolicyInfo policy : policies)
+            {
+                if (policy.getName().startsWith(testPolicyPrefix))
+                {
                     service.delete(AccessPolicy.delete(policy.getId()));
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void removeAllTestAssets() {
-        try {
+    private static void removeAllTestAssets()
+    {
+        try
+        {
             List<AssetInfo> listAssetsResult = service.list(Asset.list());
-            for (AssetInfo assetInfo : listAssetsResult) {
-                try {
-                    if (assetInfo.getName().startsWith(testAssetPrefix)) {
+            for (AssetInfo assetInfo : listAssetsResult)
+            {
+                try
+                {
+                    if (assetInfo.getName().startsWith(testAssetPrefix))
+                    {
                         service.delete(Asset.delete(assetInfo.getId()));
                     } else if (assetInfo.getName()
                             .startsWith("JobOutputAsset(")
-                            && assetInfo.getName().contains(testJobPrefix)) {
+                            && assetInfo.getName().contains(testJobPrefix))
+                    {
                         // Delete the temp assets associated with Job results.
                         service.delete(Asset.delete(assetInfo.getId()));
-                    } else if (assetInfo.getName().startsWith("Output")) {
-                        service.delete(Asset.delete(assetInfo.getId()));
-                    } else if (assetInfo.getName().isEmpty()) {
-                        service.delete(Asset.delete(assetInfo.getId()));
+                    } else if (assetInfo.getName().startsWith("Output"))
+                    {
+                    	service.delete(Asset.delete(assetInfo.getId()));
+                    } else if (assetInfo.getName().isEmpty())
+                    {
+                    	service.delete(Asset.delete(assetInfo.getId()));
                     }
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void removeAllTestLocators() {
-        try {
+    private static void removeAllTestLocators()
+    {
+        try
+        {
             ListResult<LocatorInfo> listLocatorsResult = service.list(Locator
                     .list());
-            for (LocatorInfo locatorInfo : listLocatorsResult) {
+            for (LocatorInfo locatorInfo : listLocatorsResult)
+            {
                 AssetInfo ai = service.get(Asset.get(locatorInfo.getAssetId()));
-                if (ai.getName().startsWith(testAssetPrefix)) {
+                if (ai.getName().startsWith(testAssetPrefix))
+                {
                     service.delete(Locator.delete(locatorInfo.getId()));
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void removeAllTestJobs() {
-        try {
+    private static void removeAllTestJobs()
+    {
+        try
+        {
             ListResult<JobInfo> jobs = service.list(Job.list());
-            for (JobInfo job : jobs) {
-                if (job.getName().startsWith(testJobPrefix)) {
+            for (JobInfo job : jobs)
+            {
+                if (job.getName().startsWith(testJobPrefix))
+                {
                     // Job can't be deleted when it's state is
                     // canceling, scheduled,queued or processing
-                    try {
-                        if (isJobBusy(job.getState())) {
+                    try
+                    {
+                        if (isJobBusy(job.getState()))
+                        {
                             service.action(Job.cancel(job.getId()));
                             job = service.get(Job.get(job.getId()));
                         }
 
                         int retryCounter = 0;
-                        while (isJobBusy(job.getState()) && retryCounter < 10) {
+                        while (isJobBusy(job.getState()) && retryCounter < 10)
+                        {
                             Thread.sleep(2000);
                             job = service.get(Job.get(job.getId()));
                             retryCounter++;
                         }
 
-                        if (!isJobBusy(job.getState())) {
+                        if (!isJobBusy(job.getState()))
+                        {
                             service.delete(Job.delete(job.getId()));
-                        } else {
+                        } else
+                        {
                             // Not much to do so except wait.
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static boolean isJobBusy(JobState state) {
+    private static boolean isJobBusy(JobState state)
+    {
         return state == JobState.Canceling || state == JobState.Scheduled
                 || state == JobState.Queued || state == JobState.Processing;
     }
 
-    interface ComponentDelegate {
+    interface ComponentDelegate
+    {
         void verifyEquals(String message, Object expected, Object actual);
     }
 
-    protected static AssetInfo setupAssetWithFile() throws ServiceException {
+    protected static AssetInfo setupAssetWithFile() throws ServiceException
+    {
         String name = UUID.randomUUID().toString();
         String testBlobName = "test" + name + ".bin";
         AssetInfo assetInfo = service.create(Asset.create().setName(
@@ -305,7 +357,8 @@ public abstract class IntegrationTestBase {
     }
 
     protected static LocatorInfo createLocator(AccessPolicyInfo accessPolicy,
-            AssetInfo asset, int startDeltaMinutes) throws ServiceException {
+            AssetInfo asset, int startDeltaMinutes) throws ServiceException
+    {
 
         Date now = new Date();
         Date start = new Date(now.getTime() - (startDeltaMinutes * 60 * 1000));
@@ -315,13 +368,15 @@ public abstract class IntegrationTestBase {
     }
 
     protected <T> void verifyListResultContains(List<T> expectedInfos,
-            Collection<T> actualInfos, ComponentDelegate delegate) {
+            Collection<T> actualInfos, ComponentDelegate delegate)
+    {
         verifyListResultContains("", expectedInfos, actualInfos, delegate);
     }
 
     protected <T> void verifyListResultContains(String message,
             List<T> expectedInfos, Collection<T> actualInfos,
-            ComponentDelegate delegate) {
+            ComponentDelegate delegate)
+    {
         assertNotNull(message + ": actualInfos", actualInfos);
         assertTrue(
                 message
@@ -329,18 +384,23 @@ public abstract class IntegrationTestBase {
                 actualInfos.size() >= expectedInfos.size());
 
         List<T> orderedAndFilteredActualInfo = new ArrayList<T>();
-        try {
-            for (T expectedInfo : expectedInfos) {
+        try
+        {
+            for (T expectedInfo : expectedInfos)
+            {
                 Method getId = expectedInfo.getClass().getMethod("getId");
                 String expectedId = (String) getId.invoke(expectedInfo);
-                for (T actualInfo : actualInfos) {
-                    if (((String) getId.invoke(actualInfo)).equals(expectedId)) {
+                for (T actualInfo : actualInfos)
+                {
+                    if (((String) getId.invoke(actualInfo)).equals(expectedId))
+                    {
                         orderedAndFilteredActualInfo.add(actualInfo);
                         break;
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             // Don't worry about problems here.
             e.printStackTrace();
         }
@@ -349,8 +409,10 @@ public abstract class IntegrationTestBase {
                 + ": actual filtered size should be same as expected size",
                 expectedInfos.size(), orderedAndFilteredActualInfo.size());
 
-        if (delegate != null) {
-            for (int i = 0; i < expectedInfos.size(); i++) {
+        if (delegate != null)
+        {
+            for (int i = 0; i < expectedInfos.size(); i++)
+            {
                 delegate.verifyEquals(message
                         + ": orderedAndFilteredActualInfo " + i,
                         expectedInfos.get(i),
@@ -360,32 +422,40 @@ public abstract class IntegrationTestBase {
     }
 
     protected void assertEqualsNullEmpty(String message, String expected,
-            String actual) {
+            String actual)
+    {
         if ((expected == null || expected.length() == 0)
-                && (actual == null || actual.length() == 0)) {
+                && (actual == null || actual.length() == 0))
+        {
             // both nullOrEmpty, so match.
-        } else {
+        } else
+        {
             assertEquals(message, expected, actual);
         }
     }
 
-    protected void assertDateApproxEquals(Date expected, Date actual) {
+    protected void assertDateApproxEquals(Date expected, Date actual)
+    {
         assertDateApproxEquals("", expected, actual);
     }
 
     protected void assertDateApproxEquals(String message, Date expected,
-            Date actual) {
+            Date actual)
+    {
         // Default allows for a 30 seconds difference in dates, for clock skew,
         // network delays, etc.
         long deltaInMilliseconds = 30000;
 
-        if (expected == null || actual == null) {
+        if (expected == null || actual == null)
+        {
             assertEquals(message, expected, actual);
-        } else {
+        } else
+        {
             long diffInMilliseconds = Math.abs(expected.getTime()
                     - actual.getTime());
 
-            if (diffInMilliseconds > deltaInMilliseconds) {
+            if (diffInMilliseconds > deltaInMilliseconds)
+            {
                 assertEquals(message, expected, actual);
             }
         }

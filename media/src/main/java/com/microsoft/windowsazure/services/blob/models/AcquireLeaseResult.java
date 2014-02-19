@@ -29,7 +29,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * >Lease Blob</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class AcquireLeaseResult {
+public class AcquireLeaseResult
+{
     private String leaseId;
 
     /**
@@ -41,7 +42,8 @@ public class AcquireLeaseResult {
      * @return A {@link String} containing the server-assigned lease ID for the
      *         blob.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -56,7 +58,8 @@ public class AcquireLeaseResult {
      *            A {@link String} containing the server-assigned lease ID for
      *            the blob.
      */
-    public void setLeaseId(String leaseId) {
+    public void setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
     }
 }

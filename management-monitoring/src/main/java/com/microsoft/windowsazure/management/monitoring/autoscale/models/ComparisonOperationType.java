@@ -23,16 +23,17 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum ComparisonOperationType {
+public enum ComparisonOperationType
+{
     Equals,
-
+    
     NotEquals,
-
+    
     GreaterThan,
-
+    
     GreaterThanOrEqual,
-
+    
     LessThan,
-
+    
     LessThanOrEqual,
 }

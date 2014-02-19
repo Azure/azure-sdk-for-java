@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
- * The Get Incident operation response.
- */
-public class IncidentGetResponse extends OperationResponse {
+* The Get Incident operation response.
+*/
+public class IncidentGetResponse extends OperationResponse
+{
     private Incident incident;
-
+    
     /**
-     * The retrieved incident.
-     * 
-     * @return The Incident value.
-     */
-    public Incident getIncident() {
+    * The retrieved incident.
+    * @return The Incident value.
+    */
+    public Incident getIncident()
+    {
         return this.incident;
     }
-
+    
     /**
-     * The retrieved incident.
-     * 
-     * @param incidentValue
-     *            The Incident value.
-     */
-    public void setIncident(final Incident incidentValue) {
+    * The retrieved incident.
+    * @param incidentValue The Incident value.
+    */
+    public void setIncident(final Incident incidentValue)
+    {
         this.incident = incidentValue;
     }
 }

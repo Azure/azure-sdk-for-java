@@ -21,9 +21,11 @@ import com.microsoft.windowsazure.services.queue.implementation.QueueRestProxy;
 import com.microsoft.windowsazure.services.queue.implementation.SharedKeyFilter;
 import com.microsoft.windowsazure.services.queue.implementation.SharedKeyLiteFilter;
 
-public class Exports implements Builder.Exports {
+public class Exports implements Builder.Exports
+{
     @Override
-    public void register(Builder.Registry registry) {
+    public void register(Builder.Registry registry)
+    {
         registry.add(QueueContract.class, QueueExceptionProcessor.class);
         registry.add(QueueExceptionProcessor.class);
         registry.add(QueueRestProxy.class);

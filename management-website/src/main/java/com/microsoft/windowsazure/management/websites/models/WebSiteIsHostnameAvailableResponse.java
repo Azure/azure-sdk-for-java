@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Is Hostname Available operation response.
 */
-public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
+public class WebSiteIsHostnameAvailableResponse extends OperationResponse
+{
     private boolean isAvailable;
     
     /**
     * Indicates if the site name is available.
     * @return The IsAvailable value.
     */
-    public boolean isAvailable() {
+    public boolean isAvailable()
+    {
         return this.isAvailable;
     }
     
@@ -43,7 +45,8 @@ public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
     * Indicates if the site name is available.
     * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(final boolean isAvailableValue) {
+    public void setIsAvailable(final boolean isAvailableValue)
+    {
         this.isAvailable = isAvailableValue;
     }
 }

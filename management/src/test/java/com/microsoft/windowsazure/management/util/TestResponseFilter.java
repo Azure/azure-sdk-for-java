@@ -19,31 +19,31 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 
-public class TestResponseFilter implements ServiceResponseFilter {
+public class TestResponseFilter implements ServiceResponseFilter
+{
     private int called;
     private String identifier;
-
-    public int getCalled() {
-        return this.called;
-    }
-
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    public TestResponseFilter(String identifier) {
+    
+    public int getCalled() { return this.called; }
+    
+    public String getIdentifier() { return this.identifier; }
+    
+    public TestResponseFilter(String identifier)
+    {
         this.called = 0;
         this.identifier = identifier;
     }
-
-    public TestResponseFilter() {
+    
+    public TestResponseFilter()
+    {
         this.called = 0;
     }
-
+    
     @Override
-    public void filter(ServiceRequestContext request,
-            ServiceResponseContext response) {
-        if (response.getProperty("executed") == null) {
+    public void filter (ServiceRequestContext request, ServiceResponseContext response)
+    {
+        if (response.getProperty("executed") == null)
+        {
             response.setProperty("executed", true);
 
             called++;

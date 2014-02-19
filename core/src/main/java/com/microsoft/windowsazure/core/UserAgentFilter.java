@@ -23,7 +23,8 @@ import java.util.Properties;
 /**
  * The Class UserAgentFilter.
  */
-public class UserAgentFilter implements ServiceRequestFilter {
+public class UserAgentFilter implements ServiceRequestFilter
+{
 
     /** The azure SDK product token. */
     private static String azureSDKProductToken;
@@ -31,21 +32,26 @@ public class UserAgentFilter implements ServiceRequestFilter {
     /**
      * Instantiates a new user agent filter.
      */
-    public UserAgentFilter() {
-        if ((azureSDKProductToken == null) || azureSDKProductToken.isEmpty()) {
+    public UserAgentFilter()
+    {
+        if ((azureSDKProductToken == null) || azureSDKProductToken.isEmpty())
+        {
             azureSDKProductToken = createAzureSDKProductToken();
         }
     }
 
     @Override
-    public void filter(ServiceRequestContext request) {
+    public void filter(ServiceRequestContext request)
+    {
         String userAgent;
 
-        if (request.getHeader("User-Agent") != null) {
-            String currentUserAgent = request.getHeader("User-Agent");
+        if (request.getHeader("User-Agent") != null)
+        {
+            String currentUserAgent = (String) request.getHeader("User-Agent");
             userAgent = azureSDKProductToken + " " + currentUserAgent;
             request.removeHeader("User-Agent");
-        } else {
+        } else
+        {
             userAgent = azureSDKProductToken;
         }
 
@@ -57,12 +63,15 @@ public class UserAgentFilter implements ServiceRequestFilter {
      * 
      * @return the string
      */
-    private String createAzureSDKProductToken() {
+    private String createAzureSDKProductToken()
+    {
         String version = getVersionFromResources();
         String productToken;
-        if ((version != null) && (!version.isEmpty())) {
+        if ((version != null) && (!version.isEmpty()))
+        {
             productToken = "Azure-SDK-For-Java/" + version;
-        } else {
+        } else
+        {
             productToken = "Azure-SDK-For-Java";
         }
 
@@ -74,20 +83,24 @@ public class UserAgentFilter implements ServiceRequestFilter {
      * 
      * @return the version from resources
      */
-    private String getVersionFromResources() {
+    private String getVersionFromResources()
+    {
         String version = "unknown";
         Properties properties = new Properties();
-        try {
+        try
+        {
             InputStream inputStream = getClass()
                     .getClassLoader()
                     .getResourceAsStream(
                             "META-INF/maven/com.microsoft.windowsazure/microsoft-windowsazure-api-core/pom.properties");
-            if (inputStream != null) {
+            if (inputStream != null)
+            {
                 properties.load(inputStream);
                 version = properties.getProperty("version");
                 inputStream.close();
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
         }
 
         return version;

@@ -17,6 +17,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-enum ExpectedState {
+enum ExpectedState
+{
     STARTED, STOPPED,
 }

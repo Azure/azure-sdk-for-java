@@ -26,7 +26,8 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * the container. Options that are not set will not be passed to the server with
  * a request.
  */
-public class DeleteContainerOptions extends BlobServiceOptions {
+public class DeleteContainerOptions extends BlobServiceOptions
+{
     private AccessConditionHeader accessCondition;
 
     /**
@@ -41,7 +42,8 @@ public class DeleteContainerOptions extends BlobServiceOptions {
      * @return A reference to this {@link DeleteContainerOptions} instance.
      */
     @Override
-    public DeleteContainerOptions setTimeout(Integer timeout) {
+    public DeleteContainerOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -54,7 +56,8 @@ public class DeleteContainerOptions extends BlobServiceOptions {
      *         modified time conditions for performing the delete container
      *         operation, or <code>null</code> if not set.
      */
-    public AccessConditionHeader getAccessCondition() {
+    public AccessConditionHeader getAccessCondition()
+    {
         return accessCondition;
     }
 
@@ -77,7 +80,8 @@ public class DeleteContainerOptions extends BlobServiceOptions {
      * @return A reference to this {@link DeleteContainerOptions} instance.
      */
     public DeleteContainerOptions setAccessCondition(
-            AccessConditionHeader accessCondition) {
+            AccessConditionHeader accessCondition)
+    {
         this.accessCondition = accessCondition;
         return this;
     }

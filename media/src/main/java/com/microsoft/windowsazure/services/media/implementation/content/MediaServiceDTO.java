@@ -23,6 +23,7 @@ package com.microsoft.windowsazure.services.media.implementation.content;
  * as a generic type parameter or restriction.
  * 
  */
-public interface MediaServiceDTO {
+public interface MediaServiceDTO
+{
 
 }

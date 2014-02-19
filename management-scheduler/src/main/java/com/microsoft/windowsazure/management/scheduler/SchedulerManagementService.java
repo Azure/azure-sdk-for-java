@@ -21,17 +21,19 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public final class SchedulerManagementService {
-    private SchedulerManagementService() {
+public final class SchedulerManagementService
+{
+    private SchedulerManagementService()
+    {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>SchedulerManagementClient</code> API.
-     * 
      * @return An instance of the <code>SchedulerManagementClient</code> API.
      */
-    public static SchedulerManagementClient create() {
+    public static SchedulerManagementClient create()
+    {
         return Configuration.getInstance().create(
                 SchedulerManagementClient.class);
     }
@@ -39,25 +41,25 @@ public final class SchedulerManagementService {
     /**
      * Creates an instance of the <code>SchedulerManagementClient</code> API
      * using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>SchedulerManagementClient</code> API.
      */
-    public static SchedulerManagementClient create(final Configuration config) {
+    public static SchedulerManagementClient create(final Configuration config)
+    {
         return config.create(SchedulerManagementClient.class);
     }
 
     /**
      * Creates an instance of the <code>SchedulerManagementClient</code> API.
-     * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of
-     *            the service management service.
+     *
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
      * @return An instance of the <code>SchedulerManagementClient</code> API.
      */
-    public static SchedulerManagementClient create(final String profile) {
+    public static SchedulerManagementClient create(final String profile)
+    {
         return Configuration.getInstance().create(profile,
                 SchedulerManagementClient.class);
     }
@@ -65,14 +67,14 @@ public final class SchedulerManagementService {
     /**
      * Creates an instance of the <code>SchedulerManagementClient</code> API
      * using the specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>SchedulerManagementClient</code> API.
      */
     public static SchedulerManagementClient create(final String profile,
-            final Configuration config) {
+            final Configuration config)
+    {
         return config.create(profile, SchedulerManagementClient.class);
     }
 }

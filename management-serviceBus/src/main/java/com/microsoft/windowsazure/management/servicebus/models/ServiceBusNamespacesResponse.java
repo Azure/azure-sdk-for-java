@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The response to the request for a listing of namespaces.
 */
-public class ServiceBusNamespacesResponse extends OperationResponse implements Iterable<ServiceBusNamespace> {
+public class ServiceBusNamespacesResponse extends OperationResponse implements Iterable<ServiceBusNamespace>
+{
     private ArrayList<ServiceBusNamespace> namespaces;
     
     /**
     * The list of namespaces.
     * @return The Namespaces value.
     */
-    public ArrayList<ServiceBusNamespace> getNamespaces() {
+    public ArrayList<ServiceBusNamespace> getNamespaces()
+    {
         return this.namespaces;
     }
     
@@ -45,7 +47,8 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     * The list of namespaces.
     * @param namespacesValue The Namespaces value.
     */
-    public void setNamespaces(final ArrayList<ServiceBusNamespace> namespacesValue) {
+    public void setNamespaces(final ArrayList<ServiceBusNamespace> namespacesValue)
+    {
         this.namespaces = namespacesValue;
     }
     
@@ -53,7 +56,8 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     * Initializes a new instance of the ServiceBusNamespacesResponse class.
     *
     */
-    public ServiceBusNamespacesResponse() {
+    public ServiceBusNamespacesResponse()
+    {
         super();
         this.namespaces = new ArrayList<ServiceBusNamespace>();
     }
@@ -62,7 +66,8 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     * Gets the sequence of Namespaces.
     *
     */
-    public Iterator<ServiceBusNamespace> iterator() {
+    public Iterator<ServiceBusNamespace> iterator()
+    {
         return this.getNamespaces().iterator();
     }
 }

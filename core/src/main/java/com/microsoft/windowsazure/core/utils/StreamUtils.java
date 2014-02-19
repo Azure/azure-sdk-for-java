@@ -20,18 +20,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public final class StreamUtils {
-    private StreamUtils() {
+public final class StreamUtils
+{
+    private StreamUtils()
+    {
     }
 
     public static String toString(final InputStream inputStream)
-            throws IOException {
+            throws IOException
+    {
         final BufferedInputStream bufferedStream = new BufferedInputStream(
                 inputStream);
         final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
 
         int result = bufferedStream.read();
-        while (result >= 0) {
+        while (result >= 0)
+        {
             final byte data = (byte) result;
             byteStream.write(data);
             result = bufferedStream.read();

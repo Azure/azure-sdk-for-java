@@ -29,7 +29,8 @@ import java.util.ArrayList;
 * Optional. Configures the Windows Remote Management service on the virtual
 * machine, which enables remote Windows PowerShell.
 */
-public class WindowsRemoteManagementSettings {
+public class WindowsRemoteManagementSettings
+{
     private ArrayList<WindowsRemoteManagementListener> listeners;
     
     /**
@@ -37,7 +38,8 @@ public class WindowsRemoteManagementSettings {
     * Windows PowerShell.
     * @return The Listeners value.
     */
-    public ArrayList<WindowsRemoteManagementListener> getListeners() {
+    public ArrayList<WindowsRemoteManagementListener> getListeners()
+    {
         return this.listeners;
     }
     
@@ -46,7 +48,8 @@ public class WindowsRemoteManagementSettings {
     * Windows PowerShell.
     * @param listenersValue The Listeners value.
     */
-    public void setListeners(final ArrayList<WindowsRemoteManagementListener> listenersValue) {
+    public void setListeners(final ArrayList<WindowsRemoteManagementListener> listenersValue)
+    {
         this.listeners = listenersValue;
     }
     
@@ -54,7 +57,8 @@ public class WindowsRemoteManagementSettings {
     * Initializes a new instance of the WindowsRemoteManagementSettings class.
     *
     */
-    public WindowsRemoteManagementSettings() {
+    public WindowsRemoteManagementSettings()
+    {
         this.listeners = new ArrayList<WindowsRemoteManagementListener>();
     }
 }

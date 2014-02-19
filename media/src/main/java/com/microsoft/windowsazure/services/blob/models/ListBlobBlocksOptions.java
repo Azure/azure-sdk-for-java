@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * timestamp to get the committed blocks of a snapshot, whether to return the
  * committed block list, and whether to return the uncommitted block list.
  */
-public class ListBlobBlocksOptions extends BlobServiceOptions {
+public class ListBlobBlocksOptions extends BlobServiceOptions
+{
     private String leaseId;
     private String snapshot;
     private boolean committedList;
@@ -42,7 +43,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
     @Override
-    public ListBlobBlocksOptions setTimeout(Integer timeout) {
+    public ListBlobBlocksOptions setTimeout(Integer timeout)
+    {
         super.setTimeout(timeout);
         return this;
     }
@@ -53,7 +55,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId() {
+    public String getLeaseId()
+    {
         return leaseId;
     }
 
@@ -69,7 +72,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setLeaseId(String leaseId) {
+    public ListBlobBlocksOptions setLeaseId(String leaseId)
+    {
         this.leaseId = leaseId;
         return this;
     }
@@ -81,7 +85,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to list.
      */
-    public String getSnapshot() {
+    public String getSnapshot()
+    {
         return snapshot;
     }
 
@@ -100,7 +105,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      *            the blob snapshot to list.
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setSnapshot(String snapshot) {
+    public ListBlobBlocksOptions setSnapshot(String snapshot)
+    {
         this.snapshot = snapshot;
         return this;
     }
@@ -112,7 +118,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      * @return A <code>boolean</code> flag value indicating whether to return
      *         the committed blocks of the blob.
      */
-    public boolean isCommittedList() {
+    public boolean isCommittedList()
+    {
         return committedList;
     }
 
@@ -128,7 +135,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      *            blob; otherwise, <code>false</code>.
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setCommittedList(boolean committedList) {
+    public ListBlobBlocksOptions setCommittedList(boolean committedList)
+    {
         this.committedList = committedList;
         return this;
     }
@@ -140,7 +148,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      * @return A <code>boolean</code> flag value indicating whether to return
      *         the uncommitted blocks of the blob.
      */
-    public boolean isUncommittedList() {
+    public boolean isUncommittedList()
+    {
         return uncommittedList;
     }
 
@@ -156,7 +165,8 @@ public class ListBlobBlocksOptions extends BlobServiceOptions {
      *            the blob; otherwise, <code>false</code>.
      * @return A reference to this {@link ListBlobBlocksOptions} instance.
      */
-    public ListBlobBlocksOptions setUncommittedList(boolean uncommittedList) {
+    public ListBlobBlocksOptions setUncommittedList(boolean uncommittedList)
+    {
         this.uncommittedList = uncommittedList;
         return this;
     }

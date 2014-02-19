@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.scheduler.models;
 /**
 * The status of the asynchronous request.
 */
-public enum SchedulerOperationStatus {
+public enum SchedulerOperationStatus
+{
     /**
     * The asynchronous request is in progress.
     */

@@ -21,25 +21,30 @@ import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 
 public class ClientRequestTrackingHandler implements ServiceRequestFilter,
-        ServiceResponseFilter {
+        ServiceResponseFilter
+{
     private final String trackingId;
 
-    public String getTrackingId() {
+    public String getTrackingId()
+    {
         return trackingId;
     }
 
-    public ClientRequestTrackingHandler(String trackingId) {
+    public ClientRequestTrackingHandler(String trackingId)
+    {
         this.trackingId = trackingId;
     }
 
     @Override
-    public void filter(ServiceRequestContext request) {
+    public void filter(ServiceRequestContext request)
+    {
         request.setHeader("client-tracking-id", trackingId);
     }
 
     @Override
     public void filter(ServiceRequestContext request,
-            ServiceResponseContext response) {
+            ServiceResponseContext response)
+    {
         response.setHeader("client-tracking-id", trackingId);
     }
 }

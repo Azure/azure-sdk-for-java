@@ -59,7 +59,8 @@ import com.sun.jersey.core.util.ReaderWriter;
 /**
  * The Class MediaBatchOperations.
  */
-public class MediaBatchOperations {
+public class MediaBatchOperations
+{
 
     private static final int BUFFER_SIZE = 1024;
 
@@ -88,8 +89,10 @@ public class MediaBatchOperations {
      * @throws JAXBException
      */
     public MediaBatchOperations(URI serviceURI) throws JAXBException,
-            ParserConfigurationException {
-        if (serviceURI == null) {
+            ParserConfigurationException
+    {
+        if (serviceURI == null)
+        {
             throw new IllegalArgumentException(
                     "The service URI cannot be null.");
         }
@@ -112,13 +115,15 @@ public class MediaBatchOperations {
      *             the jAXB exception
      */
     public MimeMultipart getMimeMultipart() throws MessagingException,
-            IOException, JAXBException {
+            IOException, JAXBException
+    {
         List<DataSource> bodyPartContents = createRequestBody();
         return toMimeMultipart(bodyPartContents);
 
     }
 
-    private List<DataSource> createRequestBody() throws JAXBException {
+    private List<DataSource> createRequestBody() throws JAXBException
+    {
         List<DataSource> bodyPartContents = new ArrayList<DataSource>();
         int contentId = 1;
 
@@ -145,13 +150,16 @@ public class MediaBatchOperations {
      *             the jAXB exception
      */
     private int addJobPart(List<DataSource> bodyPartContents, URI jobURI,
-            int contentId) throws JAXBException {
+            int contentId) throws JAXBException
+    {
         int jobContentId = contentId;
         validateJobOperation();
 
-        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations)
+        {
             DataSource bodyPartContent = null;
-            if (entityBatchOperation instanceof Job.CreateBatchOperation) {
+            if (entityBatchOperation instanceof Job.CreateBatchOperation)
+            {
                 Job.CreateBatchOperation jobCreateBatchOperation = (Job.CreateBatchOperation) entityBatchOperation;
                 jobContentId = contentId;
                 bodyPartContent = createBatchCreateEntityPart(
@@ -159,7 +167,8 @@ public class MediaBatchOperations {
                         jobCreateBatchOperation.getEntryType(), jobURI,
                         contentId);
                 contentId++;
-                if (bodyPartContent != null) {
+                if (bodyPartContent != null)
+                {
                     bodyPartContents.add(bodyPartContent);
                     break;
                 }
@@ -168,15 +177,19 @@ public class MediaBatchOperations {
         return jobContentId;
     }
 
-    private void validateJobOperation() {
+    private void validateJobOperation()
+    {
         int jobCount = 0;
-        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
-            if (entityBatchOperation instanceof Job.CreateBatchOperation) {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations)
+        {
+            if (entityBatchOperation instanceof Job.CreateBatchOperation)
+            {
                 jobCount++;
             }
         }
 
-        if (jobCount != 1) {
+        if (jobCount != 1)
+        {
             throw new IllegalArgumentException(
                     String.format(
                             "The Job operation is invalid, expect 1 but get %s job(s). ",
@@ -197,10 +210,13 @@ public class MediaBatchOperations {
      *             the jAXB exception
      */
     private void addTaskPart(List<DataSource> bodyPartContents, URI taskURI,
-            int contentId) throws JAXBException {
-        for (EntityBatchOperation entityBatchOperation : entityBatchOperations) {
+            int contentId) throws JAXBException
+    {
+        for (EntityBatchOperation entityBatchOperation : entityBatchOperations)
+        {
             DataSource bodyPartContent = null;
-            if (entityBatchOperation instanceof Task.CreateBatchOperation) {
+            if (entityBatchOperation instanceof Task.CreateBatchOperation)
+            {
                 Task.CreateBatchOperation createTaskOperation = (Task.CreateBatchOperation) entityBatchOperation;
                 bodyPartContent = createBatchCreateEntityPart(
                         createTaskOperation.getVerb(), "Tasks",
@@ -208,7 +224,8 @@ public class MediaBatchOperations {
                 contentId++;
             }
 
-            if (bodyPartContent != null) {
+            if (bodyPartContent != null)
+            {
                 bodyPartContents.add(bodyPartContent);
             }
         }
@@ -226,7 +243,8 @@ public class MediaBatchOperations {
      *             Signals that an I/O exception has occurred.
      */
     private MimeMultipart toMimeMultipart(List<DataSource> bodyPartContents)
-            throws MessagingException, IOException {
+            throws MessagingException, IOException
+    {
         String changeSetId = String.format("changeset_%s", UUID.randomUUID()
                 .toString());
         MimeMultipart changeSets = createChangeSets(bodyPartContents,
@@ -241,7 +259,8 @@ public class MediaBatchOperations {
     }
 
     private MimeBodyPart createMimeBodyPart(MimeMultipart changeSets,
-            String changeSetId) throws MessagingException {
+            String changeSetId) throws MessagingException
+    {
         MimeBodyPart mimeBodyPart = new MimeBodyPart();
         mimeBodyPart.setContent(changeSets);
         String contentType = String.format("multipart/mixed; boundary=%s",
@@ -251,12 +270,14 @@ public class MediaBatchOperations {
     }
 
     private MimeMultipart createChangeSets(List<DataSource> bodyPartContents,
-            String changeSetId) throws MessagingException {
+            String changeSetId) throws MessagingException
+    {
 
         MimeMultipart changeSets = new MimeMultipart(
                 new SetBoundaryMultipartDataSource(changeSetId));
 
-        for (DataSource bodyPart : bodyPartContents) {
+        for (DataSource bodyPart : bodyPartContents)
+        {
             MimeBodyPart mimeBodyPart = new MimeBodyPart();
 
             mimeBodyPart.setDataHandler(new DataHandler(bodyPart));
@@ -286,7 +307,8 @@ public class MediaBatchOperations {
      */
     private DataSource createBatchCreateEntityPart(String verb,
             String entityName, EntryType entryType, URI uri, int contentId)
-            throws JAXBException {
+            throws JAXBException
+    {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         this.oDataAtomMarshaller.marshalEntryType(entryType, stream);
         byte[] bytes = stream.toByteArray();
@@ -324,7 +346,8 @@ public class MediaBatchOperations {
      *             the service exception
      */
     public void parseBatchResult(ClientResponse response) throws IOException,
-            ServiceException {
+            ServiceException
+    {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         InputStream inputStream = response.getEntityInputStream();
         ReaderWriter.writeTo(inputStream, byteArrayOutputStream);
@@ -335,14 +358,16 @@ public class MediaBatchOperations {
         List<DataSource> parts = parseParts(response.getEntityInputStream(),
                 response.getHeaders().getFirst("Content-Type"));
 
-        if (parts.size() == 0 || parts.size() > entityBatchOperations.size()) {
+        if (parts.size() == 0 || parts.size() > entityBatchOperations.size())
+        {
             throw new UniformInterfaceException(String.format(
                     "Batch response from server does not contain the correct amount "
                             + "of parts (expecting %d, received %d instead)",
                     parts.size(), entityBatchOperations.size()), response);
         }
 
-        for (int i = 0; i < parts.size(); i++) {
+        for (int i = 0; i < parts.size(); i++)
+        {
             DataSource ds = parts.get(i);
             EntityBatchOperation entityBatchOperation = entityBatchOperations
                     .get(i);
@@ -351,12 +376,14 @@ public class MediaBatchOperations {
             InternetHeaders headers = parseHeaders(ds);
             InputStream content = parseEntity(ds);
 
-            if (status.getStatus() >= HTTP_ERROR) {
+            if (status.getStatus() >= HTTP_ERROR)
+            {
 
                 InBoundHeaders inBoundHeaders = new InBoundHeaders();
                 @SuppressWarnings("unchecked")
                 Enumeration<Header> e = headers.getAllHeaders();
-                while (e.hasMoreElements()) {
+                while (e.hasMoreElements())
+                {
                     Header header = e.nextElement();
                     inBoundHeaders.putSingle(header.getName(),
                             header.getValue());
@@ -368,21 +395,27 @@ public class MediaBatchOperations {
                 UniformInterfaceException uniformInterfaceException = new UniformInterfaceException(
                         clientResponse);
                 throw uniformInterfaceException;
-            } else if (entityBatchOperation instanceof Job.CreateBatchOperation) {
+            } else if (entityBatchOperation instanceof Job.CreateBatchOperation)
+            {
 
-                try {
+                try
+                {
                     jobInfo = oDataAtomUnmarshaller.unmarshalEntry(content,
                             JobInfo.class);
                     Job.CreateBatchOperation jobCreateBatchOperation = (Job.CreateBatchOperation) entityBatchOperation;
                     jobCreateBatchOperation.setJobInfo(jobInfo);
-                } catch (JAXBException e) {
+                } catch (JAXBException e)
+                {
                     throw new ServiceException(e);
                 }
-            } else if (entityBatchOperation instanceof Task.CreateBatchOperation) {
-                try {
+            } else if (entityBatchOperation instanceof Task.CreateBatchOperation)
+            {
+                try
+                {
                     oDataAtomUnmarshaller.unmarshalEntry(content,
                             TaskInfo.class);
-                } catch (JAXBException e) {
+                } catch (JAXBException e)
+                {
                     throw new ServiceException(e);
                 }
             }
@@ -396,12 +429,16 @@ public class MediaBatchOperations {
      *            the ds
      * @return the internet headers
      */
-    private InternetHeaders parseHeaders(DataSource ds) {
-        try {
+    private InternetHeaders parseHeaders(DataSource ds)
+    {
+        try
+        {
             return new InternetHeaders(ds.getInputStream());
-        } catch (MessagingException e) {
+        } catch (MessagingException e)
+        {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -413,10 +450,13 @@ public class MediaBatchOperations {
      *            the ds
      * @return the input stream
      */
-    private InputStream parseEntity(DataSource ds) {
-        try {
+    private InputStream parseEntity(DataSource ds)
+    {
+        try
+        {
             return ds.getInputStream();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -431,12 +471,16 @@ public class MediaBatchOperations {
      * @return the list
      */
     private List<DataSource> parseParts(final InputStream entityInputStream,
-            final String contentType) {
-        try {
+            final String contentType)
+    {
+        try
+        {
             return parsePartsCore(entityInputStream, contentType);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
-        } catch (MessagingException e) {
+        } catch (MessagingException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -455,7 +499,8 @@ public class MediaBatchOperations {
      *             Signals that an I/O exception has occurred.
      */
     private List<DataSource> parsePartsCore(InputStream entityInputStream,
-            String contentType) throws MessagingException, IOException {
+            String contentType) throws MessagingException, IOException
+    {
         DataSource dataSource = new InputStreamDataSource(entityInputStream,
                 contentType);
         MimeMultipart batch = new MimeMultipart(dataSource);
@@ -465,7 +510,8 @@ public class MediaBatchOperations {
                 batchBody));
 
         List<DataSource> result = new ArrayList<DataSource>();
-        for (int i = 0; i < changeSets.getCount(); i++) {
+        for (int i = 0; i < changeSets.getCount(); i++)
+        {
             BodyPart part = changeSets.getBodyPart(i);
 
             result.add(new InputStreamDataSource(part.getInputStream(), part
@@ -480,7 +526,8 @@ public class MediaBatchOperations {
      * @param entityBatchOperation
      *            the operation
      */
-    public void addOperation(EntityBatchOperation entityBatchOperation) {
+    public void addOperation(EntityBatchOperation entityBatchOperation)
+    {
         this.entityBatchOperations.add(entityBatchOperation);
     }
 
@@ -495,13 +542,17 @@ public class MediaBatchOperations {
      *            the uri
      */
     private void addHttpMethod(ByteArrayOutputStream outputStream, String verb,
-            URI uri) {
-        try {
+            URI uri)
+    {
+        try
+        {
             String method = String.format("%s %s HTTP/1.1\r\n", verb, uri);
             outputStream.write(method.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -515,12 +566,15 @@ public class MediaBatchOperations {
      *            the internet headers
      */
     private void appendHeaders(OutputStream outputStream,
-            InternetHeaders internetHeaders) {
-        try {
+            InternetHeaders internetHeaders)
+    {
+        try
+        {
             // Headers
             @SuppressWarnings("unchecked")
             Enumeration<Header> headers = internetHeaders.getAllHeaders();
-            while (headers.hasMoreElements()) {
+            while (headers.hasMoreElements())
+            {
                 Header header = headers.nextElement();
                 String headerLine = String.format("%s: %s\r\n",
                         header.getName(), header.getValue());
@@ -529,9 +583,11 @@ public class MediaBatchOperations {
 
             // Empty line
             outputStream.write("\r\n".getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e)
+        {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
@@ -545,30 +601,38 @@ public class MediaBatchOperations {
      *            the byte array input stream
      */
     private void appendEntity(OutputStream outputStream,
-            ByteArrayInputStream byteArrayInputStream) {
-        try {
+            ByteArrayInputStream byteArrayInputStream)
+    {
+        try
+        {
             byte[] buffer = new byte[BUFFER_SIZE];
-            while (true) {
+            while (true)
+            {
                 int bytesRead = byteArrayInputStream.read(buffer);
-                if (bytesRead <= 0) {
+                if (bytesRead <= 0)
+                {
                     break;
                 }
                 outputStream.write(buffer, 0, bytesRead);
             }
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
     }
 
-    public List<EntityBatchOperation> getOperations() {
+    public List<EntityBatchOperation> getOperations()
+    {
         return entityBatchOperations;
     }
 
-    public String getBatchId() {
+    public String getBatchId()
+    {
         return this.batchId;
     }
 
-    public MediaType getContentType() {
+    public MediaType getContentType()
+    {
         Map<String, String> parameters = new Hashtable<String, String>();
         parameters.put("boundary", this.batchId);
         MediaType contentType = new MediaType("multipart", "mixed", parameters);

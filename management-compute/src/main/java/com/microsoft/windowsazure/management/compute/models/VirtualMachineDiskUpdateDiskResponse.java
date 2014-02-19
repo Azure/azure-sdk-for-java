@@ -29,7 +29,8 @@ import java.net.URI;
 /**
 * A virtual machine disk associated with your subscription.
 */
-public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
+public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse
+{
     private String affinityGroup;
     
     /**
@@ -39,7 +40,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * group the value is NULL.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() {
+    public String getAffinityGroup()
+    {
         return this.affinityGroup;
     }
     
@@ -50,7 +52,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * group the value is NULL.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue) {
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -60,7 +63,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * Specifies whether the comtained image is a premium image
     * @return The IsPremium value.
     */
-    public Boolean isPremium() {
+    public Boolean isPremium()
+    {
         return this.isPremium;
     }
     
@@ -68,7 +72,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * Specifies whether the comtained image is a premium image
     * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(final Boolean isPremiumValue) {
+    public void setIsPremium(final Boolean isPremiumValue)
+    {
         this.isPremium = isPremiumValue;
     }
     
@@ -78,7 +83,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The friendly name of the disk
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -86,7 +92,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The friendly name of the disk
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -99,7 +106,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * is NULL.
     * @return The Location value.
     */
-    public String getLocation() {
+    public String getLocation()
+    {
         return this.location;
     }
     
@@ -110,7 +118,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * is NULL.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue) {
+    public void setLocation(final String locationValue)
+    {
         this.location = locationValue;
     }
     
@@ -120,7 +129,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The size, in GB, of the disk.
     * @return The LogicalSizeInGB value.
     */
-    public int getLogicalSizeInGB() {
+    public int getLogicalSizeInGB()
+    {
         return this.logicalSizeInGB;
     }
     
@@ -128,7 +138,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The size, in GB, of the disk.
     * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
-    public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
+    public void setLogicalSizeInGB(final int logicalSizeInGBValue)
+    {
         this.logicalSizeInGB = logicalSizeInGBValue;
     }
     
@@ -141,7 +152,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() {
+    public URI getMediaLinkUri()
+    {
         return this.mediaLinkUri;
     }
     
@@ -152,7 +164,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue) {
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
         this.mediaLinkUri = mediaLinkUriValue;
     }
     
@@ -163,7 +176,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * more virtual machines using the disk.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -172,7 +186,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * more virtual machines using the disk.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -182,7 +197,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The Operating System type for the disk.
     * @return The OperatingSystem value.
     */
-    public String getOperatingSystem() {
+    public String getOperatingSystem()
+    {
         return this.operatingSystem;
     }
     
@@ -190,7 +206,8 @@ public class VirtualMachineDiskUpdateDiskResponse extends OperationResponse {
     * The Operating System type for the disk.
     * @param operatingSystemValue The OperatingSystem value.
     */
-    public void setOperatingSystem(final String operatingSystemValue) {
+    public void setOperatingSystem(final String operatingSystemValue)
+    {
         this.operatingSystem = operatingSystemValue;
     }
 }

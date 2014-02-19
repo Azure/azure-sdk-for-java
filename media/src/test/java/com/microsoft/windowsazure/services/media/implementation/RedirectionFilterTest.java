@@ -31,7 +31,8 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.core.header.InBoundHeaders;
 
-public class RedirectionFilterTest {
+public class RedirectionFilterTest
+{
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -40,7 +41,8 @@ public class RedirectionFilterTest {
 
     @Test
     public void whenInvokedAndNotRedirected_shouldAddBaseURIToRequest()
-            throws Exception {
+            throws Exception
+    {
         RequestRecordingFilter sink = new RequestRecordingFilter();
         Client c = Client.create();
         c.addFilter(sink);
@@ -55,7 +57,8 @@ public class RedirectionFilterTest {
 
     @Test
     public void whenInvokedAndRedirected_shouldHaveRedirectedURIInRequest()
-            throws Exception {
+            throws Exception
+    {
         RequestRecordingFilter sink = new RequestRecordingFilter();
         Client c = Client.create();
         c.addFilter(sink);
@@ -75,7 +78,8 @@ public class RedirectionFilterTest {
 
     @Test
     public void whenRedirectedMultipleTimes_requestEndsUpAtFinalRediret()
-            throws Exception {
+            throws Exception
+    {
         RequestRecordingFilter sink = new RequestRecordingFilter();
         Client c = Client.create();
         c.addFilter(sink);
@@ -99,7 +103,8 @@ public class RedirectionFilterTest {
 
     @Test
     public void whenRedirectingToNull_shouldGetClientException()
-            throws Exception {
+            throws Exception
+    {
         RequestRecordingFilter sink = new RequestRecordingFilter();
         Client c = Client.create();
         c.addFilter(sink);
@@ -113,7 +118,8 @@ public class RedirectionFilterTest {
 
     @Test
     public void whenRedirectingToBadURI_shouldGetClientException()
-            throws Exception {
+            throws Exception
+    {
         RequestRecordingFilter sink = new RequestRecordingFilter();
         Client c = Client.create();
         c.addFilter(sink);
@@ -133,12 +139,14 @@ public class RedirectionFilterTest {
     // the wire. Also holds onto the request object that went through
     // the pipeline so that it can be asserted against in the test.
     //
-    private class RequestRecordingFilter extends ClientFilter {
+    private class RequestRecordingFilter extends ClientFilter
+    {
         public ClientRequest request;
 
         @Override
         public ClientResponse handle(ClientRequest request)
-                throws ClientHandlerException {
+                throws ClientHandlerException
+        {
             this.request = request;
 
             ClientResponse response = Mockito.mock(ClientResponse.class);
@@ -152,21 +160,25 @@ public class RedirectionFilterTest {
     // the request goes to.
     //
 
-    private class RedirectingTestFilter extends ClientFilter {
+    private class RedirectingTestFilter extends ClientFilter
+    {
         private final String uriToRedirect;
         private final String uriRedirectedTo;
 
         public RedirectingTestFilter(String uriToRedirect,
-                String uriRedirectedTo) {
+                String uriRedirectedTo)
+        {
             this.uriToRedirect = uriToRedirect;
             this.uriRedirectedTo = uriRedirectedTo;
         }
 
         @Override
         public ClientResponse handle(ClientRequest request)
-                throws ClientHandlerException {
+                throws ClientHandlerException
+        {
 
-            if (request.getURI().toString().startsWith(uriToRedirect)) {
+            if (request.getURI().toString().startsWith(uriToRedirect))
+            {
                 ClientResponse response = Mockito.mock(ClientResponse.class);
                 Mockito.when(response.getClientResponseStatus()).thenReturn(
                         ClientResponse.Status.MOVED_PERMANENTLY);
@@ -174,7 +186,8 @@ public class RedirectionFilterTest {
                 headers.add("location", uriRedirectedTo);
                 Mockito.when(response.getHeaders()).thenReturn(headers);
                 return response;
-            } else {
+            } else
+            {
                 return getNext().handle(request);
             }
         }

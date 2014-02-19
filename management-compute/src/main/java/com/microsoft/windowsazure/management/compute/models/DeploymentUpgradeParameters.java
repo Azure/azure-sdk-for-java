@@ -29,14 +29,16 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Upgrade Deployment operation.
 */
-public class DeploymentUpgradeParameters {
+public class DeploymentUpgradeParameters
+{
     private String configuration;
     
     /**
     * Required. The service configuration file for the deployment.
     * @return The Configuration value.
     */
-    public String getConfiguration() {
+    public String getConfiguration()
+    {
         return this.configuration;
     }
     
@@ -44,7 +46,8 @@ public class DeploymentUpgradeParameters {
     * Required. The service configuration file for the deployment.
     * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(final String configurationValue) {
+    public void setConfiguration(final String configurationValue)
+    {
         this.configuration = configurationValue;
     }
     
@@ -62,7 +65,8 @@ public class DeploymentUpgradeParameters {
     * in a status code 400 (Bad Request) error.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -78,7 +82,8 @@ public class DeploymentUpgradeParameters {
     * in a status code 400 (Bad Request) error.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -93,7 +98,8 @@ public class DeploymentUpgradeParameters {
     * deployment.
     * @return The ExtensionConfiguration value.
     */
-    public ExtensionConfiguration getExtensionConfiguration() {
+    public ExtensionConfiguration getExtensionConfiguration()
+    {
         return this.extensionConfiguration;
     }
     
@@ -106,7 +112,8 @@ public class DeploymentUpgradeParameters {
     * deployment.
     * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue) {
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
+    {
         this.extensionConfiguration = extensionConfigurationValue;
     }
     
@@ -118,7 +125,8 @@ public class DeploymentUpgradeParameters {
     * rollback should proceed; otherwise false.
     * @return The Force value.
     */
-    public boolean isForce() {
+    public boolean isForce()
+    {
         return this.force;
     }
     
@@ -128,7 +136,8 @@ public class DeploymentUpgradeParameters {
     * rollback should proceed; otherwise false.
     * @param forceValue The Force value.
     */
-    public void setForce(final boolean forceValue) {
+    public void setForce(final boolean forceValue)
+    {
         this.force = forceValue;
     }
     
@@ -141,7 +150,8 @@ public class DeploymentUpgradeParameters {
     * your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -152,7 +162,8 @@ public class DeploymentUpgradeParameters {
     * your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -168,7 +179,8 @@ public class DeploymentUpgradeParameters {
     * applied to each update domain in sequence.
     * @return The Mode value.
     */
-    public DeploymentUpgradeMode getMode() {
+    public DeploymentUpgradeMode getMode()
+    {
         return this.mode;
     }
     
@@ -182,7 +194,8 @@ public class DeploymentUpgradeParameters {
     * applied to each update domain in sequence.
     * @param modeValue The Mode value.
     */
-    public void setMode(final DeploymentUpgradeMode modeValue) {
+    public void setMode(final DeploymentUpgradeMode modeValue)
+    {
         this.mode = modeValue;
     }
     
@@ -198,7 +211,8 @@ public class DeploymentUpgradeParameters {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     * @return The PackageUri value.
     */
-    public URI getPackageUri() {
+    public URI getPackageUri()
+    {
         return this.packageUri;
     }
     
@@ -212,7 +226,8 @@ public class DeploymentUpgradeParameters {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     * @param packageUriValue The PackageUri value.
     */
-    public void setPackageUri(final URI packageUriValue) {
+    public void setPackageUri(final URI packageUriValue)
+    {
         this.packageUri = packageUriValue;
     }
     
@@ -222,7 +237,8 @@ public class DeploymentUpgradeParameters {
     * Optional. The name of the specific role instance to update.
     * @return The RoleToUpgrade value.
     */
-    public String getRoleToUpgrade() {
+    public String getRoleToUpgrade()
+    {
         return this.roleToUpgrade;
     }
     
@@ -230,7 +246,8 @@ public class DeploymentUpgradeParameters {
     * Optional. The name of the specific role instance to update.
     * @param roleToUpgradeValue The RoleToUpgrade value.
     */
-    public void setRoleToUpgrade(final String roleToUpgradeValue) {
+    public void setRoleToUpgrade(final String roleToUpgradeValue)
+    {
         this.roleToUpgrade = roleToUpgradeValue;
     }
     
@@ -238,7 +255,8 @@ public class DeploymentUpgradeParameters {
     * Initializes a new instance of the DeploymentUpgradeParameters class.
     *
     */
-    public DeploymentUpgradeParameters() {
+    public DeploymentUpgradeParameters()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

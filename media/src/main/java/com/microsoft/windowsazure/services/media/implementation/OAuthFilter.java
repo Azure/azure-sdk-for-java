@@ -26,7 +26,8 @@ import com.sun.jersey.api.client.ClientResponse;
  * The Jersey filter for OAuth.
  * 
  */
-public class OAuthFilter extends IdempotentClientFilter {
+public class OAuthFilter extends IdempotentClientFilter
+{
     private final OAuthTokenManager oAuthTokenManager;
 
     /**
@@ -35,7 +36,8 @@ public class OAuthFilter extends IdempotentClientFilter {
      * 
      * @param oAuthTokenManager
      */
-    public OAuthFilter(OAuthTokenManager oAuthTokenManager) {
+    public OAuthFilter(OAuthTokenManager oAuthTokenManager)
+    {
         this.oAuthTokenManager = oAuthTokenManager;
     }
 
@@ -46,14 +48,18 @@ public class OAuthFilter extends IdempotentClientFilter {
      * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
      * (com.sun.jersey.api.client.ClientRequest)
      */@Override
-    public ClientResponse doHandle(ClientRequest clientRequest) {
+    public ClientResponse doHandle(ClientRequest clientRequest)
+    {
         String accessToken;
-        try {
+        try
+        {
             accessToken = oAuthTokenManager.getAccessToken();
-        } catch (ServiceException e) {
+        } catch (ServiceException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException e)
+        {
             // must wrap exception because of base class signature
             throw new ClientHandlerException(e);
         }

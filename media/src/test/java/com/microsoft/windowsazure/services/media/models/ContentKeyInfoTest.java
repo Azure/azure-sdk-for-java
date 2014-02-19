@@ -22,10 +22,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.ContentKeyRestType;
 
-public class ContentKeyInfoTest {
+public class ContentKeyInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -39,7 +41,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() {
+    public void testGetSetCreated()
+    {
         // Arrange
         Date expectedCreated = new Date();
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -53,7 +56,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() {
+    public void testGetSetLastModified()
+    {
         // Arrange
         Date expectedLastModified = new Date();
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -67,7 +71,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetContentKeyType() {
+    public void testGetSetContentKeyType()
+    {
         // Arrange
         ContentKeyType expectedContentKeyType = ContentKeyType.ConfigurationEncryption;
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -84,7 +89,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptedContentKey() {
+    public void testGetSetEncryptedContentKey()
+    {
         // Arrange
         String expectedEncryptedContentKey = "testX509Certificate";
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -100,7 +106,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "expectedName";
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -114,7 +121,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetProtectionKeyId() {
+    public void testGetSetProtectionKeyId()
+    {
         // Arrange
         String expectedProtectionKeyId = "expectedProtectionKeyId";
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -130,7 +138,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetProtectionKeyType() {
+    public void testGetSetProtectionKeyType()
+    {
         // Arrange
         ProtectionKeyType expectedProtectionKeyType = ProtectionKeyType.X509CertificateThumbprint;
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,
@@ -147,7 +156,8 @@ public class ContentKeyInfoTest {
     }
 
     @Test
-    public void testGetSetCheckSum() {
+    public void testGetSetCheckSum()
+    {
         // Arrange
         String expectedCheckSum = "testCheckSum";
         ContentKeyInfo contentKeyInfo = new ContentKeyInfo(null,

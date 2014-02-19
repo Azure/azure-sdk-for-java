@@ -36,7 +36,8 @@ package com.microsoft.windowsazure.management.websites;
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166968.aspx for more
 * information)
 */
-public class WebSiteExtendedErrorCodes {
+public class WebSiteExtendedErrorCodes
+{
     /**
     * Access is denied.
     */

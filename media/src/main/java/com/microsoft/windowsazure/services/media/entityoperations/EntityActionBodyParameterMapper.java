@@ -28,7 +28,8 @@ import org.codehaus.jackson.map.SerializationConfig;
 /**
  * The Class entity action body parameter mapper.
  */
-public class EntityActionBodyParameterMapper {
+public class EntityActionBodyParameterMapper
+{
 
     /** The mapper. */
     ObjectMapper mapper;
@@ -36,7 +37,8 @@ public class EntityActionBodyParameterMapper {
     /**
      * Instantiates a new entity action body parameter mapper.
      */
-    public EntityActionBodyParameterMapper() {
+    public EntityActionBodyParameterMapper()
+    {
         mapper = new ObjectMapper();
         mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS,
                 false);
@@ -49,15 +51,20 @@ public class EntityActionBodyParameterMapper {
      *            the value
      * @return the string
      */
-    public String toString(Map<String, Object> value) {
+    public String toString(Map<String, Object> value)
+    {
         Writer writer = new StringWriter();
-        try {
+        try
+        {
             mapper.writeValue(writer, value);
-        } catch (JsonGenerationException e) {
+        } catch (JsonGenerationException e)
+        {
             throw new RuntimeException(e);
-        } catch (JsonMappingException e) {
+        } catch (JsonMappingException e)
+        {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             throw new RuntimeException(e);
         }
         return writer.toString();

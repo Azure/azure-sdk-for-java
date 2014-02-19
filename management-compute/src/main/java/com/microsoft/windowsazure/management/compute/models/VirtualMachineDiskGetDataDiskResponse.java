@@ -29,14 +29,16 @@ import java.net.URI;
 /**
 * The Get Data Disk operation response.
 */
-public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
+public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse
+{
     private String diskLabel;
     
     /**
     * The description of the data disk.
     * @return The DiskLabel value.
     */
-    public String getDiskLabel() {
+    public String getDiskLabel()
+    {
         return this.diskLabel;
     }
     
@@ -44,7 +46,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * The description of the data disk.
     * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(final String diskLabelValue) {
+    public void setDiskLabel(final String diskLabelValue)
+    {
         this.diskLabel = diskLabelValue;
     }
     
@@ -54,7 +57,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * The name of the data disk.
     * @return The DiskName value.
     */
-    public String getDiskName() {
+    public String getDiskName()
+    {
         return this.diskName;
     }
     
@@ -62,7 +66,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * The name of the data disk.
     * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(final String diskNameValue) {
+    public void setDiskName(final String diskNameValue)
+    {
         this.diskName = diskNameValue;
     }
     
@@ -73,7 +78,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching() {
+    public VirtualHardDiskHostCaching getHostCaching()
+    {
         return this.hostCaching;
     }
     
@@ -82,7 +88,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
+    {
         this.hostCaching = hostCachingValue;
     }
     
@@ -92,7 +99,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * The size, in GB, of the data disk.
     * @return The LogicalDiskSizeInGB value.
     */
-    public int getLogicalDiskSizeInGB() {
+    public int getLogicalDiskSizeInGB()
+    {
         return this.logicalDiskSizeInGB;
     }
     
@@ -100,7 +108,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * The size, in GB, of the data disk.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
+    {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
     
@@ -112,7 +121,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * machine.
     * @return The LogicalUnitNumber value.
     */
-    public Integer getLogicalUnitNumber() {
+    public Integer getLogicalUnitNumber()
+    {
         return this.logicalUnitNumber;
     }
     
@@ -122,7 +132,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * machine.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
-    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
+    {
         this.logicalUnitNumber = logicalUnitNumberValue;
     }
     
@@ -134,7 +145,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * value in the operation call.
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri() {
+    public URI getMediaLinkUri()
+    {
         return this.mediaLinkUri;
     }
     
@@ -144,7 +156,8 @@ public class VirtualMachineDiskGetDataDiskResponse extends OperationResponse {
     * value in the operation call.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue) {
+    public void setMediaLinkUri(final URI mediaLinkUriValue)
+    {
         this.mediaLinkUri = mediaLinkUriValue;
     }
 }

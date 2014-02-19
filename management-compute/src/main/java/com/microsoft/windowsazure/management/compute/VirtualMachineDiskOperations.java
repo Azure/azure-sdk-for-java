@@ -49,7 +49,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157188.aspx for more
 * information)
 */
-public interface VirtualMachineDiskOperations {
+public interface VirtualMachineDiskOperations
+{
     /**
     * The Delete Data Disk operation removes the specified data disk from a
     * virtual machine.  (see

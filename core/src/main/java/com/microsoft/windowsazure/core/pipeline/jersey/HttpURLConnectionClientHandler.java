@@ -36,12 +36,14 @@ import com.sun.jersey.api.client.TerminatingClientHandler;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.core.header.InBoundHeaders;
 
-public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
+public class HttpURLConnectionClientHandler extends TerminatingClientHandler
+{
 
     private final int connectionTimeoutMillis;
     private final int readTimeoutMillis;
 
-    public HttpURLConnectionClientHandler(ClientConfig clientConfig) {
+    public HttpURLConnectionClientHandler(ClientConfig clientConfig)
+    {
         connectionTimeoutMillis = readTimeoutFromConfig(clientConfig,
                 ClientConfig.PROPERTY_CONNECT_TIMEOUT);
         readTimeoutMillis = readTimeoutFromConfig(clientConfig,
@@ -49,9 +51,11 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private static int readTimeoutFromConfig(ClientConfig config,
-            String propertyName) {
+            String propertyName)
+    {
         Integer property = (Integer) config.getProperty(propertyName);
-        if (property != null) {
+        if (property != null)
+        {
             return property.intValue();
         }
         throw new IllegalArgumentException(propertyName);
@@ -60,9 +64,11 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     /**
      * Empty "no-op" listener if none registered
      */
-    private static final EntityStreamingListener EMPTY_STREAMING_LISTENER = new EntityStreamingListener() {
+    private static final EntityStreamingListener EMPTY_STREAMING_LISTENER = new EntityStreamingListener()
+    {
         @Override
-        public void onBeforeStreamingEntity(ClientRequest clientRequest) {
+        public void onBeforeStreamingEntity(ClientRequest clientRequest)
+        {
         }
     };
 
@@ -70,7 +76,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
      * OutputStream used for buffering entity body when "Content-Length" is not
      * known in advance.
      */
-    private final class BufferingOutputStream extends OutputStream {
+    private final class BufferingOutputStream extends OutputStream
+    {
         private final ByteArrayOutputStream outputStream;
         private final HttpURLConnection urlConnection;
         private final ClientRequest clientRequest;
@@ -79,7 +86,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
         private BufferingOutputStream(HttpURLConnection urlConnection,
                 ClientRequest clientRequest,
-                EntityStreamingListener entityStreamingListener) {
+                EntityStreamingListener entityStreamingListener)
+        {
             this.outputStream = new ByteArrayOutputStream();
             this.urlConnection = urlConnection;
             this.clientRequest = clientRequest;
@@ -87,10 +95,12 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() throws IOException
+        {
             outputStream.close();
 
-            if (!closed) {
+            if (!closed)
+            {
                 closed = true;
 
                 // Give the listener a last change to modify headers now that
@@ -116,22 +126,26 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         }
 
         @Override
-        public void flush() throws IOException {
+        public void flush() throws IOException
+        {
             outputStream.flush();
         }
 
         @Override
-        public void write(byte[] b, int off, int len) {
+        public void write(byte[] b, int off, int len)
+        {
             outputStream.write(b, off, len);
         }
 
         @Override
-        public void write(byte[] b) throws IOException {
+        public void write(byte[] b) throws IOException
+        {
             outputStream.write(b);
         }
 
         @Override
-        public void write(int b) {
+        public void write(int b)
+        {
             outputStream.write(b);
         }
     }
@@ -141,23 +155,27 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
      * Headers are written just before sending the first bytes to the output
      * stream.
      */
-    private final class StreamingOutputStream extends CommittingOutputStream {
+    private final class StreamingOutputStream extends CommittingOutputStream
+    {
         private final HttpURLConnection urlConnection;
         private final ClientRequest clientRequest;
 
         private StreamingOutputStream(HttpURLConnection urlConnection,
-                ClientRequest clientRequest) {
+                ClientRequest clientRequest)
+        {
             this.urlConnection = urlConnection;
             this.clientRequest = clientRequest;
         }
 
         @Override
-        protected OutputStream getOutputStream() throws IOException {
+        protected OutputStream getOutputStream() throws IOException
+        {
             return urlConnection.getOutputStream();
         }
 
         @Override
-        public void commit() throws IOException {
+        public void commit() throws IOException
+        {
             setURLConnectionHeaders(clientRequest.getHeaders(), urlConnection);
         }
     }
@@ -165,20 +183,23 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     /**
      * Simple response implementation around an HttpURLConnection response
      */
-    private final class URLConnectionResponse extends ClientResponse {
+    private final class URLConnectionResponse extends ClientResponse
+    {
         private final String method;
         private final HttpURLConnection urlConnection;
 
         URLConnectionResponse(int status, InBoundHeaders headers,
                 InputStream entity, String method,
-                HttpURLConnection urlConnection) {
+                HttpURLConnection urlConnection)
+        {
             super(status, headers, entity, getMessageBodyWorkers());
             this.method = method;
             this.urlConnection = urlConnection;
         }
 
         @Override
-        public boolean hasEntity() {
+        public boolean hasEntity()
+        {
             if (method.equals("HEAD") || getEntityInputStream() == null)
                 return false;
 
@@ -188,7 +209,8 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         }
 
         @Override
-        public String toString() {
+        public String toString()
+        {
             return urlConnection.getRequestMethod() + " "
                     + urlConnection.getURL()
                     + " returned a response status of " + this.getStatus()
@@ -198,16 +220,20 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
     @Override
     public ClientResponse handle(final ClientRequest ro)
-            throws ClientHandlerException {
-        try {
+            throws ClientHandlerException
+    {
+        try
+        {
             return doHandle(ro);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw new ClientHandlerException(e);
         }
     }
 
     private ClientResponse doHandle(final ClientRequest clientRequest)
-            throws IOException, MalformedURLException, ProtocolException {
+            throws IOException, MalformedURLException, ProtocolException
+    {
         final HttpURLConnection urlConnection = (HttpURLConnection) clientRequest
                 .getURI().toURL().openConnection();
         urlConnection.setReadTimeout(readTimeoutMillis);
@@ -229,58 +255,66 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         // This is needed because some web servers require a "Content-Length"
         // field for
         // all PUT method calls (unless chunked encoding is used).
-        if (entity == null && "PUT".equals(clientRequest.getMethod())) {
+        if (entity == null && "PUT".equals(clientRequest.getMethod()))
+        {
             entity = new byte[0];
             clientRequest.setEntity(entity);
         }
 
         // Send headers and entity on the wire
-        if (entity != null) {
+        if (entity != null)
+        {
             urlConnection.setDoOutput(true);
 
-            writeRequestEntity(clientRequest,
-                    new RequestEntityWriterListener() {
-                        private boolean inStreamingMode;
+            writeRequestEntity(clientRequest, new RequestEntityWriterListener()
+            {
+                private boolean inStreamingMode;
 
-                        @Override
-                        public void onRequestEntitySize(long size) {
-                            if (size != -1 && size < Integer.MAX_VALUE) {
-                                inStreamingMode = true;
-                                setContentLengthHeader(clientRequest,
-                                        (int) size);
-                                entityStreamingListener
-                                        .onBeforeStreamingEntity(clientRequest);
+                @Override
+                public void onRequestEntitySize(long size)
+                {
+                    if (size != -1 && size < Integer.MAX_VALUE)
+                    {
+                        inStreamingMode = true;
+                        setContentLengthHeader(clientRequest, (int) size);
+                        entityStreamingListener
+                                .onBeforeStreamingEntity(clientRequest);
 
-                                urlConnection
-                                        .setFixedLengthStreamingMode((int) size);
-                            } else {
-                                Integer chunkedEncodingSize = (Integer) clientRequest
-                                        .getProperties()
-                                        .get(ClientConfig.PROPERTY_CHUNKED_ENCODING_SIZE);
-                                if (chunkedEncodingSize != null) {
-                                    inStreamingMode = true;
-                                    entityStreamingListener
-                                            .onBeforeStreamingEntity(clientRequest);
+                        urlConnection.setFixedLengthStreamingMode((int) size);
+                    } else
+                    {
+                        Integer chunkedEncodingSize = (Integer) clientRequest
+                                .getProperties()
+                                .get(ClientConfig.PROPERTY_CHUNKED_ENCODING_SIZE);
+                        if (chunkedEncodingSize != null)
+                        {
+                            inStreamingMode = true;
+                            entityStreamingListener
+                                    .onBeforeStreamingEntity(clientRequest);
 
-                                    urlConnection
-                                            .setChunkedStreamingMode(chunkedEncodingSize);
-                                }
-                            }
+                            urlConnection
+                                    .setChunkedStreamingMode(chunkedEncodingSize);
                         }
+                    }
+                }
 
-                        @Override
-                        public OutputStream onGetOutputStream()
-                                throws IOException {
-                            if (inStreamingMode) {
-                                return new StreamingOutputStream(urlConnection,
-                                        clientRequest);
-                            } else {
-                                return new BufferingOutputStream(urlConnection,
-                                        clientRequest, entityStreamingListener);
-                            }
-                        }
-                    });
-        } else {
+                @Override
+                public OutputStream onGetOutputStream() throws IOException
+                {
+                    if (inStreamingMode)
+                    {
+                        return new StreamingOutputStream(urlConnection,
+                                clientRequest);
+                    }
+                    else
+                    {
+                        return new BufferingOutputStream(urlConnection,
+                                clientRequest, entityStreamingListener);
+                    }
+                }
+            });
+        } else
+        {
             entityStreamingListener.onBeforeStreamingEntity(clientRequest);
             setURLConnectionHeaders(clientRequest.getHeaders(), urlConnection);
         }
@@ -293,25 +327,30 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private EntityStreamingListener getEntityStreamingListener(
-            final ClientRequest clientRequest) {
+            final ClientRequest clientRequest)
+    {
         EntityStreamingListener result = (EntityStreamingListener) clientRequest
                 .getProperties().get(EntityStreamingListener.class.getName());
 
-        if (result != null) {
+        if (result != null)
+        {
             return result;
         }
 
         return EMPTY_STREAMING_LISTENER;
     }
 
-    private void setContentLengthHeader(ClientRequest clientRequest, int size) {
+    private void setContentLengthHeader(ClientRequest clientRequest, int size)
+    {
         // Skip if already set
-        if (clientRequest.getHeaders().getFirst("Content-Length") != null) {
+        if (clientRequest.getHeaders().getFirst("Content-Length") != null)
+        {
             return;
         }
 
         // Skip if size is unknown
-        if (size < 0) {
+        if (size < 0)
+        {
             return;
         }
 
@@ -320,15 +359,21 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
     private void setURLConnectionHeaders(
             MultivaluedMap<String, Object> headers,
-            HttpURLConnection urlConnection) {
-        for (Map.Entry<String, List<Object>> e : headers.entrySet()) {
+            HttpURLConnection urlConnection)
+    {
+        for (Map.Entry<String, List<Object>> e : headers.entrySet())
+        {
             List<Object> vs = e.getValue();
-            if (vs.size() == 1) {
+            if (vs.size() == 1)
+            {
                 urlConnection.setRequestProperty(e.getKey(),
                         ClientRequest.getHeaderValue(vs.get(0)));
-            } else {
+            }
+            else
+            {
                 CommaStringBuilder sb = new CommaStringBuilder();
-                for (Object v : e.getValue()) {
+                for (Object v : e.getValue())
+                {
                     sb.add(ClientRequest.getHeaderValue(v));
                 }
                 urlConnection.setRequestProperty(e.getKey(), sb.toString());
@@ -336,11 +381,14 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
         }
     }
 
-    private InBoundHeaders getInBoundHeaders(HttpURLConnection urlConnection) {
+    private InBoundHeaders getInBoundHeaders(HttpURLConnection urlConnection)
+    {
         InBoundHeaders headers = new InBoundHeaders();
         for (Map.Entry<String, List<String>> e : urlConnection
-                .getHeaderFields().entrySet()) {
-            if (e.getKey() != null) {
+                .getHeaderFields().entrySet())
+        {
+            if (e.getKey() != null)
+            {
                 headers.put(e.getKey(), e.getValue());
             }
         }
@@ -348,10 +396,14 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private InputStream getInputStream(HttpURLConnection urlConnection)
-            throws IOException {
-        if (urlConnection.getResponseCode() < 300) {
+            throws IOException
+    {
+        if (urlConnection.getResponseCode() < 300)
+        {
             return urlConnection.getInputStream();
-        } else {
+        }
+        else
+        {
             InputStream ein = urlConnection.getErrorStream();
             return (ein != null) ? ein : new ByteArrayInputStream(new byte[0]);
         }

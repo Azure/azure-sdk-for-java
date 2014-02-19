@@ -29,7 +29,8 @@ import java.util.HashMap;
 /**
 * The properties that are assigned to the cloud service.
 */
-public class HostedServiceProperties {
+public class HostedServiceProperties
+{
     private String affinityGroup;
     
     /**
@@ -38,7 +39,8 @@ public class HostedServiceProperties {
     * element is not returned.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup() {
+    public String getAffinityGroup()
+    {
         return this.affinityGroup;
     }
     
@@ -48,7 +50,8 @@ public class HostedServiceProperties {
     * element is not returned.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue) {
+    public void setAffinityGroup(final String affinityGroupValue)
+    {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -61,7 +64,8 @@ public class HostedServiceProperties {
     * bereturned by the DateCreated or DateLastModified elements.
     * @return The DateCreated value.
     */
-    public Calendar getDateCreated() {
+    public Calendar getDateCreated()
+    {
         return this.dateCreated;
     }
     
@@ -72,7 +76,8 @@ public class HostedServiceProperties {
     * bereturned by the DateCreated or DateLastModified elements.
     * @param dateCreatedValue The DateCreated value.
     */
-    public void setDateCreated(final Calendar dateCreatedValue) {
+    public void setDateCreated(final Calendar dateCreatedValue)
+    {
         this.dateCreated = dateCreatedValue;
     }
     
@@ -85,7 +90,8 @@ public class HostedServiceProperties {
     * returned by the DateCreated or DateLastModified elements.
     * @return The DateLastModified value.
     */
-    public Calendar getDateLastModified() {
+    public Calendar getDateLastModified()
+    {
         return this.dateLastModified;
     }
     
@@ -96,7 +102,8 @@ public class HostedServiceProperties {
     * returned by the DateCreated or DateLastModified elements.
     * @param dateLastModifiedValue The DateLastModified value.
     */
-    public void setDateLastModified(final Calendar dateLastModifiedValue) {
+    public void setDateLastModified(final Calendar dateLastModifiedValue)
+    {
         this.dateLastModified = dateLastModifiedValue;
     }
     
@@ -106,7 +113,8 @@ public class HostedServiceProperties {
     * The description for the cloud service.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -114,7 +122,8 @@ public class HostedServiceProperties {
     * The description for the cloud service.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -133,7 +142,8 @@ public class HostedServiceProperties {
     * maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -150,7 +160,8 @@ public class HostedServiceProperties {
     * maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -161,7 +172,8 @@ public class HostedServiceProperties {
     * identify the service for your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -170,7 +182,8 @@ public class HostedServiceProperties {
     * identify the service for your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -182,7 +195,8 @@ public class HostedServiceProperties {
     * the AffinityGroup element is not returned.
     * @return The Location value.
     */
-    public String getLocation() {
+    public String getLocation()
+    {
         return this.location;
     }
     
@@ -192,7 +206,8 @@ public class HostedServiceProperties {
     * the AffinityGroup element is not returned.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue) {
+    public void setLocation(final String locationValue)
+    {
         this.location = locationValue;
     }
     
@@ -202,7 +217,8 @@ public class HostedServiceProperties {
     * The status of the cloud service.
     * @return The Status value.
     */
-    public HostedServiceStatus getStatus() {
+    public HostedServiceStatus getStatus()
+    {
         return this.status;
     }
     
@@ -210,7 +226,8 @@ public class HostedServiceProperties {
     * The status of the cloud service.
     * @param statusValue The Status value.
     */
-    public void setStatus(final HostedServiceStatus statusValue) {
+    public void setStatus(final HostedServiceStatus statusValue)
+    {
         this.status = statusValue;
     }
     
@@ -218,7 +235,8 @@ public class HostedServiceProperties {
     * Initializes a new instance of the HostedServiceProperties class.
     *
     */
-    public HostedServiceProperties() {
+    public HostedServiceProperties()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

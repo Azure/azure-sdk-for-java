@@ -29,10 +29,12 @@ import com.microsoft.windowsazure.services.media.implementation.ResourceLocation
  * configuration.
  * 
  */
-public class ExportsTest extends IntegrationTestBase {
+public class ExportsTest extends IntegrationTestBase
+{
 
     @Test
-    public void canResolveLocationManagerFromConfig() throws Exception {
+    public void canResolveLocationManagerFromConfig() throws Exception
+    {
         ResourceLocationManager rlm = config
                 .create(ResourceLocationManager.class);
         URI rootUri = new URI(
@@ -42,7 +44,8 @@ public class ExportsTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canResolveRedirectFilterFromConfig() throws Exception {
+    public void canResolveRedirectFilterFromConfig() throws Exception
+    {
         RedirectFilter filter = config.create(RedirectFilter.class);
         assertNotNull(filter);
     }

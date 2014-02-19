@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.store;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.ManagementConfiguration;
 import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
 import com.microsoft.windowsazure.management.store.models.OperationStatus;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -55,14 +55,16 @@ import org.xml.sax.SAXException;
 * The Windows Azure Store API is a REST API for managing Windows Azure Store
 * add-ins.
 */
-public class StoreManagementClientImpl extends ServiceClient<StoreManagementClient> implements StoreManagementClient {
+public class StoreManagementClientImpl extends ServiceClient<StoreManagementClient> implements StoreManagementClient
+{
     private URI baseUri;
     
     /**
     * The URI used as the base for all Store requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri() {
+    public URI getBaseUri()
+    {
         return this.baseUri;
     }
     
@@ -77,7 +79,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials() {
+    public SubscriptionCloudCredentials getCredentials()
+    {
         return this.credentials;
     }
     
@@ -88,7 +91,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * Azure store service.
     * @return The AddOnsOperations value.
     */
-    public AddOnOperations getAddOnsOperations() {
+    public AddOnOperations getAddOnsOperations()
+    {
         return this.addOns;
     }
     
@@ -99,7 +103,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * Azure store service.
     * @return The CloudServicesOperations value.
     */
-    public CloudServiceOperations getCloudServicesOperations() {
+    public CloudServiceOperations getCloudServicesOperations()
+    {
         return this.cloudServices;
     }
     
@@ -109,7 +114,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    private StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         super(httpBuilder, executorService);
         this.addOns = new AddOnOperationsImpl(this);
         this.cloudServices = new CloudServiceOperationsImpl(this);
@@ -128,12 +134,15 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * service is secure.  No anonymous requests are allowed.
     * @param baseUri The URI used as the base for all Store requests.
     */
-    public StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
+    public StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null) {
+        if (baseUri == null)
+        {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -156,9 +165,11 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * the response.
     */
     @Inject
-    public StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
+    public StoreManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
+    {
         this(httpBuilder, executorService);
-        if (credentials == null) {
+        if (credentials == null)
+        {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -170,7 +181,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected StoreManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
+    protected StoreManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
+    {
         return new StoreManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -196,10 +208,12 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> getOperationStatusAsync(final String requestId) {
+    public Future<AddOnOperationStatusResponse> getOperationStatusAsync(final String requestId)
+    {
         return this.getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception {
+            public AddOnOperationStatusResponse call() throws Exception
+            {
                 return getOperationStatus(requestId);
             }
          });
@@ -235,16 +249,19 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public AddOnOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (requestId == null) {
+        if (requestId == null)
+        {
             throw new NullPointerException("requestId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
@@ -262,18 +279,23 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -291,10 +313,12 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null) {
+            if (operationElement != null)
+            {
                 NodeList elements2 = operationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -302,7 +326,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null) {
+                if (statusElement != null)
+                {
                     OperationStatus statusInstance;
                     statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -310,7 +335,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
                 
                 NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null) {
+                if (httpStatusCodeElement != null)
+                {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -318,13 +344,15 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
                 
                 NodeList elements5 = operationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null) {
+                if (errorElement != null)
+                {
                     AddOnOperationStatusResponse.ErrorDetails errorInstance = new AddOnOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null) {
+                    if (codeElement != null)
+                    {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -332,7 +360,8 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null) {
+                    if (messageElement != null)
+                    {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -341,16 +370,21 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

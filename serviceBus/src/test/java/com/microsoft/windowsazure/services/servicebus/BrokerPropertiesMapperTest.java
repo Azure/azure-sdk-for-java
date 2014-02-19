@@ -27,7 +27,8 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.servicebus.implementation.BrokerProperties;
 import com.microsoft.windowsazure.services.servicebus.implementation.BrokerPropertiesMapper;
 
-public class BrokerPropertiesMapperTest {
+public class BrokerPropertiesMapperTest
+{
 
     private final String testBrokerPropertiesString = "{"
             + "\"CorrelationId\": \"corid\","
@@ -49,7 +50,8 @@ public class BrokerPropertiesMapperTest {
     private static Date schedTimeUtc, lockedUntilUtc;
 
     @BeforeClass
-    public static void setup() {
+    public static void setup()
+    {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.set(1994, 10, 6, 8, 49, 37);
         schedTimeUtc = calendar.getTime();
@@ -61,7 +63,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void jsonStringMapsToBrokerPropertiesObject() {
+    public void jsonStringMapsToBrokerPropertiesObject()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
@@ -76,7 +79,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void nonDefaultPropertiesMapToJsonString() {
+    public void nonDefaultPropertiesMapToJsonString()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
@@ -92,7 +96,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializingAllPossibleValues() {
+    public void deserializingAllPossibleValues()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
@@ -126,7 +131,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void missingDatesDeserializeAsNull() {
+    public void missingDatesDeserializeAsNull()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
 
@@ -139,7 +145,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializeDateInKrKrLocaleCorrectly() {
+    public void deserializeDateInKrKrLocaleCorrectly()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();
@@ -157,7 +164,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializeDateInEnUsLocaleCorrectly() {
+    public void deserializeDateInEnUsLocaleCorrectly()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();
@@ -176,7 +184,8 @@ public class BrokerPropertiesMapperTest {
     }
 
     @Test
-    public void deserializeDateInZhCnLocaleCorrectly() {
+    public void deserializeDateInZhCnLocaleCorrectly()
+    {
         // Arrange
         BrokerPropertiesMapper mapper = new BrokerPropertiesMapper();
         Locale defaultLocale = Locale.getDefault();

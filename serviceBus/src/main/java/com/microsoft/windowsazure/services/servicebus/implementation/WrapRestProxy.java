@@ -28,32 +28,37 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
 
-public class WrapRestProxy implements WrapContract {
+public class WrapRestProxy implements WrapContract
+{
     Client channel;
 
     static Log log = LogFactory.getLog(WrapContract.class);
 
     @Inject
-    public WrapRestProxy(Client channel, UserAgentFilter userAgentFilter) {
+    public WrapRestProxy(Client channel, UserAgentFilter userAgentFilter)
+    {
         this.channel = channel;
         this.channel.addFilter(new ClientFilterRequestAdapter(userAgentFilter));
     }
 
     @Override
     public WrapAccessTokenResult wrapAccessToken(String uri, String name,
-            String password, String scope) throws ServiceException {
+            String password, String scope) throws ServiceException
+    {
         Form requestForm = new Form();
         requestForm.add("wrap_name", name);
         requestForm.add("wrap_password", password);
         requestForm.add("wrap_scope", scope);
 
         Form responseForm;
-        try {
+        try
+        {
             responseForm = channel.resource(uri)
                     .accept(MediaType.APPLICATION_FORM_URLENCODED)
                     .type(MediaType.APPLICATION_FORM_URLENCODED)
                     .post(Form.class, requestForm);
-        } catch (UniformInterfaceException e) {
+        } catch (UniformInterfaceException e)
+        {
             log.warn("WRAP server returned error acquiring access_token", e);
             throw ServiceExceptionFactory.process("WRAP", new ServiceException(
                     "WRAP server returned error acquiring access_token", e));

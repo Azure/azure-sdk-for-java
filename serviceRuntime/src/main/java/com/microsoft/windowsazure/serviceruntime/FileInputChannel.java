@@ -21,14 +21,19 @@ import java.io.InputStream;
 /**
  * 
  */
-class FileInputChannel implements InputChannel {
-    public FileInputChannel() {
+class FileInputChannel implements InputChannel
+{
+    public FileInputChannel()
+    {
     }
 
-    public InputStream getInputStream(String name) {
-        try {
+    public InputStream getInputStream(String name)
+    {
+        try
+        {
             return new FileInputStream(name);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e)
+        {
             throw new RuntimeException(e);
         }
     }

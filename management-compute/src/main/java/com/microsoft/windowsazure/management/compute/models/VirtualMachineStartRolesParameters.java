@@ -28,14 +28,16 @@ import java.util.ArrayList;
 /**
 * Parameters for the start roles operation.
 */
-public class VirtualMachineStartRolesParameters {
+public class VirtualMachineStartRolesParameters
+{
     private ArrayList<String> roles;
     
     /**
     * The set of roles to shut down.
     * @return The Roles value.
     */
-    public ArrayList<String> getRoles() {
+    public ArrayList<String> getRoles()
+    {
         return this.roles;
     }
     
@@ -43,7 +45,8 @@ public class VirtualMachineStartRolesParameters {
     * The set of roles to shut down.
     * @param rolesValue The Roles value.
     */
-    public void setRoles(final ArrayList<String> rolesValue) {
+    public void setRoles(final ArrayList<String> rolesValue)
+    {
         this.roles = rolesValue;
     }
     
@@ -52,7 +55,8 @@ public class VirtualMachineStartRolesParameters {
     * class.
     *
     */
-    public VirtualMachineStartRolesParameters() {
+    public VirtualMachineStartRolesParameters()
+    {
         this.roles = new ArrayList<String>();
     }
 }

@@ -38,16 +38,19 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 /**
  * Tests for the methods and factories of the Asset entity.
  */
-public class AssetEntityTest {
+public class AssetEntityTest
+{
     static final String sampleAssetId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
     private final String expectedUri = String.format("Assets('%s')",
             URLEncoder.encode(sampleAssetId, "UTF-8"));
 
-    public AssetEntityTest() throws Exception {
+    public AssetEntityTest() throws Exception
+    {
     }
 
     @Test
-    public void assetCreateReturnsDefaultCreatePayload() {
+    public void assetCreateReturnsDefaultCreatePayload()
+    {
         AssetType payload = (AssetType) Asset.create().getRequestContents();
 
         assertNotNull(payload);
@@ -61,7 +64,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetCreateCanSetAssetName() {
+    public void assetCreateCanSetAssetName()
+    {
         String name = "assetCreateCanSetAssetName";
 
         Asset.Creator creator = Asset.create().setName(
@@ -80,7 +84,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetGetReturnsExpectedUri() throws Exception {
+    public void assetGetReturnsExpectedUri() throws Exception
+    {
         String expectedUri = String.format("Assets('%s')",
                 URLEncoder.encode(sampleAssetId, "UTF-8"));
 
@@ -90,7 +95,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetListReturnsExpectedUri() {
+    public void assetListReturnsExpectedUri()
+    {
         EntityListOperation<AssetInfo> lister = Asset.list();
 
         assertEquals("Assets", lister.getUri());
@@ -99,7 +105,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetListCanTakeQueryParameters() {
+    public void assetListCanTakeQueryParameters()
+    {
         EntityListOperation<AssetInfo> lister = Asset.list().setTop(10)
                 .setSkip(2);
 
@@ -109,7 +116,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetListCanTakeQueryParametersChained() {
+    public void assetListCanTakeQueryParametersChained()
+    {
         EntityListOperation<AssetInfo> lister = Asset.list().setTop(10)
                 .setSkip(2).set("filter", "something");
 
@@ -121,13 +129,15 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetUpdateReturnsExpectedUri() throws Exception {
+    public void assetUpdateReturnsExpectedUri() throws Exception
+    {
         EntityUpdateOperation updater = Asset.update(sampleAssetId);
         assertEquals(expectedUri, updater.getUri());
     }
 
     @Test
-    public void assetUpdateCanSetNameAndAltId() throws Exception {
+    public void assetUpdateCanSetNameAndAltId() throws Exception
+    {
 
         String expectedName = "newAssetName";
         String expectedAltId = "newAltId";
@@ -142,7 +152,8 @@ public class AssetEntityTest {
     }
 
     @Test
-    public void assetDeleteReturnsExpectedUri() throws Exception {
+    public void assetDeleteReturnsExpectedUri() throws Exception
+    {
         EntityDeleteOperation deleter = Asset.delete(sampleAssetId);
 
         assertEquals(expectedUri, deleter.getUri());
@@ -152,7 +163,8 @@ public class AssetEntityTest {
     private static final String expectedInputAsset = "Job(someJobId)/InputAssets";
 
     @Test
-    public void listForLinkReturnsExpectedUri() throws Exception {
+    public void listForLinkReturnsExpectedUri() throws Exception
+    {
         JobInfo fakeJob = createJob();
 
         EntityListOperation<AssetInfo> lister = Asset.list(fakeJob
@@ -161,7 +173,8 @@ public class AssetEntityTest {
         assertEquals(lister.getUri(), expectedInputAsset);
     }
 
-    private JobInfo createJob() {
+    private JobInfo createJob()
+    {
         EntryType fakeJobEntry = new EntryType();
         addEntryLink(fakeJobEntry, Constants.ODATA_DATA_NS
                 + "/related/OutputMediaAssets", expectedOutputAsset,
@@ -177,7 +190,8 @@ public class AssetEntityTest {
     }
 
     private void addEntryLink(EntryType entry, String rel, String href,
-            String type, String title) {
+            String type, String title)
+    {
         LinkType link = new LinkType();
         link.setRel(rel);
         link.setHref(href);
@@ -190,7 +204,8 @@ public class AssetEntityTest {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private ContentType addEntryContent(EntryType entry, Object content) {
+    private ContentType addEntryContent(EntryType entry, Object content)
+    {
         ContentType contentWrapper = new ContentType();
         contentWrapper.getContent().add(
                 new JAXBElement(Constants.ODATA_PROPERTIES_ELEMENT_NAME,

@@ -24,10 +24,11 @@
 package com.microsoft.windowsazure.management.websites.models;
 
 /**
- * The state of the website.
- */
-public enum WebSiteState {
+* The state of the website.
+*/
+public enum WebSiteState
+{
     Stopped,
-
+    
     Running,
 }

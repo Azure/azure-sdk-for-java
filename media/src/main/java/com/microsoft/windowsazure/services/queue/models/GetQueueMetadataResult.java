@@ -29,7 +29,8 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * Queue Metadata</a> documentation on MSDN for details of the underlying Queue
  * Service REST API operation.
  */
-public class GetQueueMetadataResult {
+public class GetQueueMetadataResult
+{
     private long approximateMessageCount;
     private HashMap<String, String> metadata;
 
@@ -38,7 +39,8 @@ public class GetQueueMetadataResult {
      * 
      * @return The queue's approximate message count.
      */
-    public long getApproximateMessageCount() {
+    public long getApproximateMessageCount()
+    {
         return approximateMessageCount;
     }
 
@@ -50,7 +52,8 @@ public class GetQueueMetadataResult {
      * @param approximateMessageCount
      *            The queue's approximate message count to set.
      */
-    public void setApproximateMessageCount(long approximateMessageCount) {
+    public void setApproximateMessageCount(long approximateMessageCount)
+    {
         this.approximateMessageCount = approximateMessageCount;
     }
 
@@ -62,7 +65,8 @@ public class GetQueueMetadataResult {
      * @return A {@link java.util.HashMap} of key-value {@link String} pairs
      *         containing the metadata set on the queue.
      */
-    public HashMap<String, String> getMetadata() {
+    public HashMap<String, String> getMetadata()
+    {
         return metadata;
     }
 
@@ -75,7 +79,8 @@ public class GetQueueMetadataResult {
      *            A {@link java.util.HashMap} of key-value {@link String} pairs
      *            containing the metadata set on the queue.
      */
-    public void setMetadata(HashMap<String, String> metadata) {
+    public void setMetadata(HashMap<String, String> metadata)
+    {
         this.metadata = metadata;
     }
 }

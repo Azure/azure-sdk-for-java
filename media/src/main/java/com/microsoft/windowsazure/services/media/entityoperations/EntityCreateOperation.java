@@ -24,7 +24,8 @@ import com.microsoft.windowsazure.exception.ServiceException;
  *            the generic type
  */
 public interface EntityCreateOperation<T> extends
-        EntityOperationSingleResult<T> {
+        EntityOperationSingleResult<T>
+{
 
     /**
      * Get the object to be sent to the server containing the request data for

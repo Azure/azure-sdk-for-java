@@ -51,13 +51,15 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for get/stop SQL
 * Databases' operations for a subscription.
 */
-public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperationOperations {
+public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, DatabaseOperationOperations
+{
     /**
     * Initializes a new instance of the DatabaseOperationOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    DatabaseOperationOperationsImpl(SqlManagementClientImpl client) {
+    DatabaseOperationOperationsImpl(SqlManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -68,7 +70,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     * @return The Client value.
     */
-    public SqlManagementClientImpl getClient() {
+    public SqlManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -83,10 +86,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * Guid.
     */
     @Override
-    public Future<DatabaseOperationGetResponse> getAsync(final String serverName, final String operationGuid) {
+    public Future<DatabaseOperationGetResponse> getAsync(final String serverName, final String operationGuid)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationGetResponse>() { 
             @Override
-            public DatabaseOperationGetResponse call() throws Exception {
+            public DatabaseOperationGetResponse call() throws Exception
+            {
                 return get(serverName, operationGuid);
             }
          });
@@ -111,19 +116,23 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * Guid.
     */
     @Override
-    public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public DatabaseOperationGetResponse get(String serverName, String operationGuid) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (operationGuid == null) {
+        if (operationGuid == null)
+        {
             throw new NullPointerException("operationGuid");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -142,18 +151,23 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -171,10 +185,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement != null) {
+            if (serviceResourceElement != null)
+            {
                 NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null) {
+                if (nameElement != null)
+                {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -182,7 +198,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null) {
+                if (typeElement != null)
+                {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -190,7 +207,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null) {
+                if (stateElement != null)
+                {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -198,7 +216,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
                 Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (selfLinkElement != null) {
+                if (selfLinkElement != null)
+                {
                     String selfLinkInstance;
                     selfLinkInstance = selfLinkElement.getTextContent();
                     result.setSelfLink(selfLinkInstance);
@@ -206,7 +225,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
                 Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (parentLinkElement != null) {
+                if (parentLinkElement != null)
+                {
                     String parentLinkInstance;
                     parentLinkInstance = parentLinkElement.getTextContent();
                     result.setParentLink(parentLinkInstance);
@@ -214,7 +234,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
                 Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (idElement != null) {
+                if (idElement != null)
+                {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -222,7 +243,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements8 = serviceResourceElement.getElementsByTagName("StateId");
                 Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (stateIdElement != null) {
+                if (stateIdElement != null)
+                {
                     int stateIdInstance;
                     stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                     result.setStateId(stateIdInstance);
@@ -230,7 +252,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements9 = serviceResourceElement.getElementsByTagName("SessionActivityId");
                 Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (sessionActivityIdElement != null) {
+                if (sessionActivityIdElement != null)
+                {
                     String sessionActivityIdInstance;
                     sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
                     result.setSessionActivityId(sessionActivityIdInstance);
@@ -238,7 +261,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements10 = serviceResourceElement.getElementsByTagName("DatabaseName");
                 Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (databaseNameElement != null) {
+                if (databaseNameElement != null)
+                {
                     String databaseNameInstance;
                     databaseNameInstance = databaseNameElement.getTextContent();
                     result.setDatabaseName(databaseNameInstance);
@@ -246,7 +270,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements11 = serviceResourceElement.getElementsByTagName("PercentComplete");
                 Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (percentCompleteElement != null) {
+                if (percentCompleteElement != null)
+                {
                     int percentCompleteInstance;
                     percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                     result.setPercentComplete(percentCompleteInstance);
@@ -254,7 +279,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements12 = serviceResourceElement.getElementsByTagName("ErrorCode");
                 Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (errorCodeElement != null) {
+                if (errorCodeElement != null)
+                {
                     int errorCodeInstance;
                     errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                     result.setErrorCode(errorCodeInstance);
@@ -262,7 +288,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements13 = serviceResourceElement.getElementsByTagName("Error");
                 Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (errorElement != null) {
+                if (errorElement != null)
+                {
                     String errorInstance;
                     errorInstance = errorElement.getTextContent();
                     result.setError(errorInstance);
@@ -270,7 +297,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements14 = serviceResourceElement.getElementsByTagName("ErrorSeverity");
                 Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (errorSeverityElement != null) {
+                if (errorSeverityElement != null)
+                {
                     int errorSeverityInstance;
                     errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                     result.setErrorSeverity(errorSeverityInstance);
@@ -278,7 +306,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements15 = serviceResourceElement.getElementsByTagName("ErrorState");
                 Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (errorStateElement != null) {
+                if (errorStateElement != null)
+                {
                     int errorStateInstance;
                     errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                     result.setErrorState(errorStateInstance);
@@ -286,7 +315,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements16 = serviceResourceElement.getElementsByTagName("StartTime");
                 Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (startTimeElement != null) {
+                if (startTimeElement != null)
+                {
                     Calendar startTimeInstance;
                     startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                     result.setStartTime(startTimeInstance);
@@ -294,7 +324,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                 
                 NodeList elements17 = serviceResourceElement.getElementsByTagName("LastModifyTime");
                 Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (lastModifyTimeElement != null) {
+                if (lastModifyTimeElement != null)
+                {
                     Calendar lastModifyTimeInstance;
                     lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                     result.setLastModifyTime(lastModifyTimeInstance);
@@ -302,16 +333,21 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -326,10 +362,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * server or database.
     */
     @Override
-    public Future<DatabaseOperationListResponse> listByDatabaseAsync(final String serverName, final String databaseName) {
+    public Future<DatabaseOperationListResponse> listByDatabaseAsync(final String serverName, final String databaseName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
             @Override
-            public DatabaseOperationListResponse call() throws Exception {
+            public DatabaseOperationListResponse call() throws Exception
+            {
                 return listByDatabase(serverName, databaseName);
             }
          });
@@ -352,19 +390,23 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * server or database.
     */
     @Override
-    public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public DatabaseOperationListResponse listByDatabase(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
-        if (databaseName == null) {
+        if (databaseName == null)
+        {
             throw new NullPointerException("databaseName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -384,18 +426,23 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -413,15 +460,18 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
                     
                     NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
@@ -429,7 +479,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null) {
+                    if (typeElement != null)
+                    {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
@@ -437,7 +488,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (stateElement != null) {
+                    if (stateElement != null)
+                    {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
@@ -445,7 +497,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (selfLinkElement != null) {
+                    if (selfLinkElement != null)
+                    {
                         String selfLinkInstance;
                         selfLinkInstance = selfLinkElement.getTextContent();
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
@@ -453,7 +506,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (parentLinkElement != null) {
+                    if (parentLinkElement != null)
+                    {
                         String parentLinkInstance;
                         parentLinkInstance = parentLinkElement.getTextContent();
                         serviceResourceInstance.setParentLink(parentLinkInstance);
@@ -461,7 +515,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (idElement != null) {
+                    if (idElement != null)
+                    {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         serviceResourceInstance.setId(idInstance);
@@ -469,7 +524,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
                     Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (stateIdElement != null) {
+                    if (stateIdElement != null)
+                    {
                         int stateIdInstance;
                         stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
@@ -477,7 +533,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
                     Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sessionActivityIdElement != null) {
+                    if (sessionActivityIdElement != null)
+                    {
                         String sessionActivityIdInstance;
                         sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
                         serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
@@ -485,7 +542,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
                     Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (databaseNameElement != null) {
+                    if (databaseNameElement != null)
+                    {
                         String databaseNameInstance;
                         databaseNameInstance = databaseNameElement.getTextContent();
                         serviceResourceInstance.setDatabaseName(databaseNameInstance);
@@ -493,7 +551,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
                     Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (percentCompleteElement != null) {
+                    if (percentCompleteElement != null)
+                    {
                         int percentCompleteInstance;
                         percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
@@ -501,7 +560,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
                     Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (errorCodeElement != null) {
+                    if (errorCodeElement != null)
+                    {
                         int errorCodeInstance;
                         errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
@@ -509,7 +569,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
                     Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (errorElement != null) {
+                    if (errorElement != null)
+                    {
                         String errorInstance;
                         errorInstance = errorElement.getTextContent();
                         serviceResourceInstance.setError(errorInstance);
@@ -517,7 +578,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
                     Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (errorSeverityElement != null) {
+                    if (errorSeverityElement != null)
+                    {
                         int errorSeverityInstance;
                         errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
@@ -525,7 +587,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
                     Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (errorStateElement != null) {
+                    if (errorStateElement != null)
+                    {
                         int errorStateInstance;
                         errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                         serviceResourceInstance.setErrorState(errorStateInstance);
@@ -533,7 +596,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
                     Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (startTimeElement != null) {
+                    if (startTimeElement != null)
+                    {
                         Calendar startTimeInstance;
                         startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
@@ -541,7 +605,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
                     Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (lastModifyTimeElement != null) {
+                    if (lastModifyTimeElement != null)
+                    {
                         Calendar lastModifyTimeInstance;
                         lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
@@ -550,16 +615,21 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -573,10 +643,12 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * server or database.
     */
     @Override
-    public Future<DatabaseOperationListResponse> listByServerAsync(final String serverName) {
+    public Future<DatabaseOperationListResponse> listByServerAsync(final String serverName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<DatabaseOperationListResponse>() { 
             @Override
-            public DatabaseOperationListResponse call() throws Exception {
+            public DatabaseOperationListResponse call() throws Exception
+            {
                 return listByServer(serverName);
             }
          });
@@ -598,16 +670,19 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
     * server or database.
     */
     @Override
-    public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public DatabaseOperationListResponse listByServer(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
+    {
         // Validate
-        if (serverName == null) {
+        if (serverName == null)
+        {
             throw new NullPointerException("serverName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -625,18 +700,23 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -654,15 +734,18 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourcesSequenceElement != null) {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
+            if (serviceResourcesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     DatabaseOperationListResponse.DatabaseOperation serviceResourceInstance = new DatabaseOperationListResponse.DatabaseOperation();
                     result.getDatabaseOperations().add(serviceResourceInstance);
                     
                     NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null) {
+                    if (nameElement != null)
+                    {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
@@ -670,7 +753,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null) {
+                    if (typeElement != null)
+                    {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
@@ -678,7 +762,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (stateElement != null) {
+                    if (stateElement != null)
+                    {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
@@ -686,7 +771,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (selfLinkElement != null) {
+                    if (selfLinkElement != null)
+                    {
                         String selfLinkInstance;
                         selfLinkInstance = selfLinkElement.getTextContent();
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
@@ -694,7 +780,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (parentLinkElement != null) {
+                    if (parentLinkElement != null)
+                    {
                         String parentLinkInstance;
                         parentLinkInstance = parentLinkElement.getTextContent();
                         serviceResourceInstance.setParentLink(parentLinkInstance);
@@ -702,7 +789,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (idElement != null) {
+                    if (idElement != null)
+                    {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         serviceResourceInstance.setId(idInstance);
@@ -710,7 +798,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements8 = serviceResourcesElement.getElementsByTagName("StateId");
                     Element stateIdElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (stateIdElement != null) {
+                    if (stateIdElement != null)
+                    {
                         int stateIdInstance;
                         stateIdInstance = DatatypeConverter.parseInt(stateIdElement.getTextContent());
                         serviceResourceInstance.setStateId(stateIdInstance);
@@ -718,7 +807,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements9 = serviceResourcesElement.getElementsByTagName("SessionActivityId");
                     Element sessionActivityIdElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (sessionActivityIdElement != null) {
+                    if (sessionActivityIdElement != null)
+                    {
                         String sessionActivityIdInstance;
                         sessionActivityIdInstance = sessionActivityIdElement.getTextContent();
                         serviceResourceInstance.setSessionActivityId(sessionActivityIdInstance);
@@ -726,7 +816,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements10 = serviceResourcesElement.getElementsByTagName("DatabaseName");
                     Element databaseNameElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (databaseNameElement != null) {
+                    if (databaseNameElement != null)
+                    {
                         String databaseNameInstance;
                         databaseNameInstance = databaseNameElement.getTextContent();
                         serviceResourceInstance.setDatabaseName(databaseNameInstance);
@@ -734,7 +825,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements11 = serviceResourcesElement.getElementsByTagName("PercentComplete");
                     Element percentCompleteElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (percentCompleteElement != null) {
+                    if (percentCompleteElement != null)
+                    {
                         int percentCompleteInstance;
                         percentCompleteInstance = DatatypeConverter.parseInt(percentCompleteElement.getTextContent());
                         serviceResourceInstance.setPercentComplete(percentCompleteInstance);
@@ -742,7 +834,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements12 = serviceResourcesElement.getElementsByTagName("ErrorCode");
                     Element errorCodeElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (errorCodeElement != null) {
+                    if (errorCodeElement != null)
+                    {
                         int errorCodeInstance;
                         errorCodeInstance = DatatypeConverter.parseInt(errorCodeElement.getTextContent());
                         serviceResourceInstance.setErrorCode(errorCodeInstance);
@@ -750,7 +843,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements13 = serviceResourcesElement.getElementsByTagName("Error");
                     Element errorElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (errorElement != null) {
+                    if (errorElement != null)
+                    {
                         String errorInstance;
                         errorInstance = errorElement.getTextContent();
                         serviceResourceInstance.setError(errorInstance);
@@ -758,7 +852,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements14 = serviceResourcesElement.getElementsByTagName("ErrorSeverity");
                     Element errorSeverityElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (errorSeverityElement != null) {
+                    if (errorSeverityElement != null)
+                    {
                         int errorSeverityInstance;
                         errorSeverityInstance = DatatypeConverter.parseInt(errorSeverityElement.getTextContent());
                         serviceResourceInstance.setErrorSeverity(errorSeverityInstance);
@@ -766,7 +861,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements15 = serviceResourcesElement.getElementsByTagName("ErrorState");
                     Element errorStateElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (errorStateElement != null) {
+                    if (errorStateElement != null)
+                    {
                         int errorStateInstance;
                         errorStateInstance = DatatypeConverter.parseInt(errorStateElement.getTextContent());
                         serviceResourceInstance.setErrorState(errorStateInstance);
@@ -774,7 +870,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements16 = serviceResourcesElement.getElementsByTagName("StartTime");
                     Element startTimeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (startTimeElement != null) {
+                    if (startTimeElement != null)
+                    {
                         Calendar startTimeInstance;
                         startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                         serviceResourceInstance.setStartTime(startTimeInstance);
@@ -782,7 +879,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
                     
                     NodeList elements17 = serviceResourcesElement.getElementsByTagName("LastModifyTime");
                     Element lastModifyTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (lastModifyTimeElement != null) {
+                    if (lastModifyTimeElement != null)
+                    {
                         Calendar lastModifyTimeInstance;
                         lastModifyTimeInstance = DatatypeConverter.parseDateTime(lastModifyTimeElement.getTextContent());
                         serviceResourceInstance.setLastModifyTime(lastModifyTimeInstance);
@@ -791,16 +889,21 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

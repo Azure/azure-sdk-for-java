@@ -23,24 +23,25 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum ScaleType {
+public enum ScaleType
+{
     /**
-     * The change size.
-     */
+    * The change size.
+    */
     ChangeSize,
-
+    
     /**
-     * The change count.
-     */
+    * The change count.
+    */
     ChangeCount,
-
+    
     /**
-     * The percent change count.
-     */
+    * The percent change count.
+    */
     PercentChangeCount,
-
+    
     /**
-     * The exact count.
-     */
+    * The exact count.
+    */
     ExactCount,
 }

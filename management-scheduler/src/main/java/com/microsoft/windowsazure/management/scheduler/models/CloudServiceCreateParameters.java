@@ -23,90 +23,87 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-public class CloudServiceCreateParameters {
+public class CloudServiceCreateParameters
+{
     private String description;
-
+    
     /**
-     * Description for the cloud service.
-     * 
-     * @return The Description value.
-     */
-    public String getDescription() {
+    * Description for the cloud service.
+    * @return The Description value.
+    */
+    public String getDescription()
+    {
         return this.description;
     }
-
+    
     /**
-     * Description for the cloud service.
-     * 
-     * @param descriptionValue
-     *            The Description value.
-     */
-    public void setDescription(final String descriptionValue) {
+    * Description for the cloud service.
+    * @param descriptionValue The Description value.
+    */
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
-
+    
     private String email;
-
+    
     /**
-     * Optional e-mail address to associate with the service.
-     * 
-     * @return The Email value.
-     */
-    public String getEmail() {
+    * Optional e-mail address to associate with the service.
+    * @return The Email value.
+    */
+    public String getEmail()
+    {
         return this.email;
     }
-
+    
     /**
-     * Optional e-mail address to associate with the service.
-     * 
-     * @param emailValue
-     *            The Email value.
-     */
-    public void setEmail(final String emailValue) {
+    * Optional e-mail address to associate with the service.
+    * @param emailValue The Email value.
+    */
+    public void setEmail(final String emailValue)
+    {
         this.email = emailValue;
     }
-
+    
     private String geoRegion;
-
+    
     /**
-     * The region for the cloud service. This field cannot be updated after the
-     * cloud service is created.
-     * 
-     * @return The GeoRegion value.
-     */
-    public String getGeoRegion() {
+    * The region for the cloud service. This field cannot be updated after the
+    * cloud service is created.
+    * @return The GeoRegion value.
+    */
+    public String getGeoRegion()
+    {
         return this.geoRegion;
     }
-
+    
     /**
-     * The region for the cloud service. This field cannot be updated after the
-     * cloud service is created.
-     * 
-     * @param geoRegionValue
-     *            The GeoRegion value.
-     */
-    public void setGeoRegion(final String geoRegionValue) {
+    * The region for the cloud service. This field cannot be updated after the
+    * cloud service is created.
+    * @param geoRegionValue The GeoRegion value.
+    */
+    public void setGeoRegion(final String geoRegionValue)
+    {
         this.geoRegion = geoRegionValue;
     }
-
+    
     private String label;
-
+    
     /**
-     * Label for the cloud service.
-     * 
-     * @return The Label value.
-     */
-    public String getLabel() {
+    * Label for the cloud service.
+    * @return The Label value.
+    */
+    public String getLabel()
+    {
         return this.label;
     }
-
+    
     /**
-     * Label for the cloud service.
-     * 
-     * @param labelValue
-     *            The Label value.
-     */
-    public void setLabel(final String labelValue) {
+    * Label for the cloud service.
+    * @param labelValue The Label value.
+    */
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
 }

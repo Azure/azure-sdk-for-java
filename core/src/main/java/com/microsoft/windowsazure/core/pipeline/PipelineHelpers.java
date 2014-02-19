@@ -25,63 +25,79 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public final class PipelineHelpers {
-    private PipelineHelpers() {
+public final class PipelineHelpers
+{
+    private PipelineHelpers()
+    {
     }
 
-    private static String createErrorMessage(ClientResponse clientResponse) {
+    private static String createErrorMessage(ClientResponse clientResponse)
+    {
         clientResponse.bufferEntity();
         String errorMessage = clientResponse.toString();
-        if (clientResponse.hasEntity()) {
+        if (clientResponse.hasEntity())
+        {
             errorMessage = errorMessage + " "
                     + clientResponse.getEntity(String.class);
         }
         return errorMessage;
     }
 
-    public static void ThrowIfNotSuccess(ClientResponse clientResponse) {
+    public static void ThrowIfNotSuccess(ClientResponse clientResponse)
+    {
         int statusCode = clientResponse.getStatus();
 
-        if ((statusCode < 200) || (statusCode >= 300)) {
+        if ((statusCode < 200) || (statusCode >= 300))
+        {
             String errorMessage = createErrorMessage(clientResponse);
             throw new UniformInterfaceException(errorMessage, clientResponse);
         }
     }
 
-    public static void ThrowIfError(ClientResponse clientResponse) {
-        if (clientResponse.getStatus() >= 400) {
+    public static void ThrowIfError(ClientResponse clientResponse)
+    {
+        if (clientResponse.getStatus() >= 400)
+        {
             String errorMessage = createErrorMessage(clientResponse);
             throw new UniformInterfaceException(errorMessage, clientResponse);
         }
     }
 
     public static WebResource addOptionalQueryParam(WebResource webResource,
-            String key, Object value) {
-        if (value != null) {
+            String key, Object value)
+    {
+        if (value != null)
+        {
             webResource = webResource.queryParam(key, value.toString());
         }
         return webResource;
     }
 
     public static WebResource addOptionalQueryParam(WebResource webResource,
-            String key, int value, int defaultValue) {
-        if (value != defaultValue) {
+            String key, int value, int defaultValue)
+    {
+        if (value != defaultValue)
+        {
             webResource = webResource.queryParam(key, Integer.toString(value));
         }
         return webResource;
     }
 
     public static Builder addOptionalHeader(Builder builder, String name,
-            Object value) {
-        if (value != null) {
+            Object value)
+    {
+        if (value != null)
+        {
             builder = builder.header(name, value);
         }
         return builder;
     }
 
     public static Builder addOptionalMetadataHeader(Builder builder,
-            Map<String, String> metadata) {
-        for (Entry<String, String> entry : metadata.entrySet()) {
+            Map<String, String> metadata)
+    {
+        for (Entry<String, String> entry : metadata.entrySet())
+        {
             builder = builder.header("x-ms-meta-" + entry.getKey(),
                     entry.getValue());
         }
@@ -89,10 +105,13 @@ public final class PipelineHelpers {
     }
 
     public static Builder addOptionalRangeHeader(Builder builder,
-            Long rangeStart, Long rangeEnd) {
-        if (rangeStart != null) {
+            Long rangeStart, Long rangeEnd)
+    {
+        if (rangeStart != null)
+        {
             String range = rangeStart.toString() + "-";
-            if (rangeEnd != null) {
+            if (rangeEnd != null)
+            {
                 range += rangeEnd.toString();
             }
             builder = addOptionalHeader(builder, "Range", "bytes=" + range);
@@ -101,9 +120,12 @@ public final class PipelineHelpers {
     }
 
     public static Builder addOptionalAccessConditionHeader(Builder builder,
-            AccessConditionHeader accessCondition) {
-        if (accessCondition != null) {
-            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
+            AccessConditionHeader accessCondition)
+    {
+        if (accessCondition != null)
+        {
+            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE)
+            {
                 builder = addOptionalHeader(builder, accessCondition
                         .getHeader().toString(), accessCondition.getValue());
             }
@@ -112,11 +134,15 @@ public final class PipelineHelpers {
     }
 
     public static Builder addOptionalSourceAccessConditionHeader(
-            Builder builder, AccessConditionHeader accessCondition) {
-        if (accessCondition != null) {
-            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE) {
+            Builder builder, AccessConditionHeader accessCondition)
+    {
+        if (accessCondition != null)
+        {
+            if (accessCondition.getHeader() != AccessConditionHeaderType.NONE)
+            {
                 String headerName;
-                switch (accessCondition.getHeader()) {
+                switch (accessCondition.getHeader())
+                {
                 case IF_MATCH:
                     headerName = "x-ms-source-if-match";
                     break;
@@ -140,11 +166,14 @@ public final class PipelineHelpers {
     }
 
     public static HashMap<String, String> getMetadataFromHeaders(
-            ClientResponse response) {
+            ClientResponse response)
+    {
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (Entry<String, List<String>> entry : response.getHeaders()
-                .entrySet()) {
-            if (entry.getKey().startsWith("x-ms-meta-")) {
+                .entrySet())
+        {
+            if (entry.getKey().startsWith("x-ms-meta-"))
+            {
                 String name = entry.getKey().substring("x-ms-meta-".length());
                 String value = entry.getValue().get(0);
                 metadata.put(name, value);

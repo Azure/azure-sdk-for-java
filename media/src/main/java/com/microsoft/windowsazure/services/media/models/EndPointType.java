@@ -20,7 +20,8 @@ import java.security.InvalidParameterException;
 /**
  * Enum defining the type of the end point.
  */
-public enum EndPointType {
+public enum EndPointType
+{
 
     /** Azure Queue. */
     AzureQueue(1);
@@ -34,7 +35,8 @@ public enum EndPointType {
      * @param code
      *            the code
      */
-    private EndPointType(int code) {
+    private EndPointType(int code)
+    {
         this.code = code;
     }
 
@@ -43,7 +45,8 @@ public enum EndPointType {
      * 
      * @return the code
      */
-    public int getCode() {
+    public int getCode()
+    {
         return code;
     }
 
@@ -54,8 +57,10 @@ public enum EndPointType {
      *            the code
      * @return the corresponding enum value
      */
-    public static EndPointType fromCode(int code) {
-        switch (code) {
+    public static EndPointType fromCode(int code)
+    {
+        switch (code)
+        {
         case 1:
             return AzureQueue;
         default:

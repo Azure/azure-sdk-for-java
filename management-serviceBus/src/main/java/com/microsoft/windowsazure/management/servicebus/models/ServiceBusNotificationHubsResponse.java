@@ -30,20 +30,23 @@ import java.util.Iterator;
 /**
 * A standard storage response including an HTTP status code and request ID.
 */
-public class ServiceBusNotificationHubsResponse extends OperationResponse implements Iterable<ServiceBusNotificationHub> {
+public class ServiceBusNotificationHubsResponse extends OperationResponse implements Iterable<ServiceBusNotificationHub>
+{
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
     
     /**
     * @return The NotificationHubs value.
     */
-    public ArrayList<ServiceBusNotificationHub> getNotificationHubs() {
+    public ArrayList<ServiceBusNotificationHub> getNotificationHubs()
+    {
         return this.notificationHubs;
     }
     
     /**
     * @param notificationHubsValue The NotificationHubs value.
     */
-    public void setNotificationHubs(final ArrayList<ServiceBusNotificationHub> notificationHubsValue) {
+    public void setNotificationHubs(final ArrayList<ServiceBusNotificationHub> notificationHubsValue)
+    {
         this.notificationHubs = notificationHubsValue;
     }
     
@@ -52,7 +55,8 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
     * class.
     *
     */
-    public ServiceBusNotificationHubsResponse() {
+    public ServiceBusNotificationHubsResponse()
+    {
         super();
         this.notificationHubs = new ArrayList<ServiceBusNotificationHub>();
     }
@@ -61,7 +65,8 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
     * Gets the sequence of NotificationHubs.
     *
     */
-    public Iterator<ServiceBusNotificationHub> iterator() {
+    public Iterator<ServiceBusNotificationHub> iterator()
+    {
         return this.getNotificationHubs().iterator();
     }
 }

@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Swap Deployment operation.
 */
-public class DeploymentSwapParameters {
+public class DeploymentSwapParameters
+{
     private String productionDeployment;
     
     /**
     * The optional  name of the production deployment.
     * @return The ProductionDeployment value.
     */
-    public String getProductionDeployment() {
+    public String getProductionDeployment()
+    {
         return this.productionDeployment;
     }
     
@@ -41,7 +43,8 @@ public class DeploymentSwapParameters {
     * The optional  name of the production deployment.
     * @param productionDeploymentValue The ProductionDeployment value.
     */
-    public void setProductionDeployment(final String productionDeploymentValue) {
+    public void setProductionDeployment(final String productionDeploymentValue)
+    {
         this.productionDeployment = productionDeploymentValue;
     }
     
@@ -51,7 +54,8 @@ public class DeploymentSwapParameters {
     * Required. The name of the source deployment.
     * @return The SourceDeployment value.
     */
-    public String getSourceDeployment() {
+    public String getSourceDeployment()
+    {
         return this.sourceDeployment;
     }
     
@@ -59,7 +63,8 @@ public class DeploymentSwapParameters {
     * Required. The name of the source deployment.
     * @param sourceDeploymentValue The SourceDeployment value.
     */
-    public void setSourceDeployment(final String sourceDeploymentValue) {
+    public void setSourceDeployment(final String sourceDeploymentValue)
+    {
         this.sourceDeployment = sourceDeploymentValue;
     }
 }

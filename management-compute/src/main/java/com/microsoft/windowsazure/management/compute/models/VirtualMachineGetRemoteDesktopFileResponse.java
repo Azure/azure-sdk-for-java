@@ -28,7 +28,8 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Download RDP file operation response.
 */
-public class VirtualMachineGetRemoteDesktopFileResponse extends OperationResponse {
+public class VirtualMachineGetRemoteDesktopFileResponse extends OperationResponse
+{
     private byte[] remoteDesktopFile;
     
     /**
@@ -36,7 +37,8 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     * remote desktop session to the virtual machine
     * @return The RemoteDesktopFile value.
     */
-    public byte[] getRemoteDesktopFile() {
+    public byte[] getRemoteDesktopFile()
+    {
         return this.remoteDesktopFile;
     }
     
@@ -45,7 +47,8 @@ public class VirtualMachineGetRemoteDesktopFileResponse extends OperationRespons
     * remote desktop session to the virtual machine
     * @param remoteDesktopFileValue The RemoteDesktopFile value.
     */
-    public void setRemoteDesktopFile(final byte[] remoteDesktopFileValue) {
+    public void setRemoteDesktopFile(final byte[] remoteDesktopFileValue)
+    {
         this.remoteDesktopFile = remoteDesktopFileValue;
     }
 }

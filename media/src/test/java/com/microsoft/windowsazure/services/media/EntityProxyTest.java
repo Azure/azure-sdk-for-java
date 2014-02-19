@@ -27,21 +27,25 @@ import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
-public class EntityProxyTest extends IntegrationTestBase {
+public class EntityProxyTest extends IntegrationTestBase
+{
     private static MediaContract entityService;
 
     @BeforeClass
-    public static void entityProxyTestSetup() {
+    public static void entityProxyTestSetup()
+    {
         entityService = config.create(MediaContract.class);
     }
 
     @Test
-    public void canCreateEntityProxy() {
+    public void canCreateEntityProxy()
+    {
         assertNotNull(entityService);
     }
 
     @Test
-    public void canCreateDefaultAssetEntity() throws Exception {
+    public void canCreateDefaultAssetEntity() throws Exception
+    {
 
         AssetInfo asset = entityService.create(Asset.create());
 
@@ -49,7 +53,8 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canCreateAssetOnServerWithNameAndAltId() throws Exception {
+    public void canCreateAssetOnServerWithNameAndAltId() throws Exception
+    {
         String name = testAssetPrefix + "AName";
         String altId = "unit test alt id";
 
@@ -62,7 +67,8 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canRetrieveAssetById() throws Exception {
+    public void canRetrieveAssetById() throws Exception
+    {
         AssetInfo createdAsset = entityService.create(Asset.create().setName(
                 testAssetPrefix + "canRetrieveAssetById"));
 
@@ -75,7 +81,8 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canListAllAssets() throws Exception {
+    public void canListAllAssets() throws Exception
+    {
         int numAssetsToCreate = 4;
         Set<String> expectedAssets = createTestAssets(numAssetsToCreate,
                 "canList");
@@ -84,8 +91,10 @@ public class EntityProxyTest extends IntegrationTestBase {
 
         assertTrue(assets.size() >= numAssetsToCreate);
 
-        for (AssetInfo asset : assets) {
-            if (expectedAssets.contains(asset.getId())) {
+        for (AssetInfo asset : assets)
+        {
+            if (expectedAssets.contains(asset.getId()))
+            {
                 expectedAssets.remove(asset.getId());
             }
         }
@@ -93,7 +102,8 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canListAssetsWithQueryParameters() throws Exception {
+    public void canListAssetsWithQueryParameters() throws Exception
+    {
         createTestAssets(4, "withQuery");
 
         ListResult<AssetInfo> assets = entityService.list(Asset.list()
@@ -103,7 +113,8 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canUpdateAssetNameAndAltId() throws Exception {
+    public void canUpdateAssetNameAndAltId() throws Exception
+    {
         String newName = testAssetPrefix + "newName";
         String newAltId = "updated alt id";
 
@@ -122,13 +133,15 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     @Test
-    public void canDeleteAssetsById() throws Exception {
+    public void canDeleteAssetsById() throws Exception
+    {
         int numToDelete = 3;
         Set<String> assetsToDelete = createTestAssets(numToDelete, "toDelete");
 
         ListResult<AssetInfo> currentAssets = entityService.list(Asset.list());
 
-        for (String id : assetsToDelete) {
+        for (String id : assetsToDelete)
+        {
             entityService.delete(Asset.delete(id));
         }
 
@@ -138,7 +151,8 @@ public class EntityProxyTest extends IntegrationTestBase {
         assertEquals(currentAssets.size() - numToDelete,
                 afterDeleteAssets.size());
 
-        for (AssetInfo asset : afterDeleteAssets) {
+        for (AssetInfo asset : afterDeleteAssets)
+        {
             assetsToDelete.remove(asset.getId());
         }
 
@@ -146,10 +160,12 @@ public class EntityProxyTest extends IntegrationTestBase {
     }
 
     private Set<String> createTestAssets(int numAssets, String namePart)
-            throws Exception {
+            throws Exception
+    {
         Set<String> expectedAssets = new HashSet<String>();
 
-        for (int i = 0; i < numAssets; ++i) {
+        for (int i = 0; i < numAssets; ++i)
+        {
             AssetInfo asset = entityService.create(Asset.create().setName(
                     testAssetPrefix + namePart + Integer.toString(i)));
             expectedAssets.add(asset.getId());

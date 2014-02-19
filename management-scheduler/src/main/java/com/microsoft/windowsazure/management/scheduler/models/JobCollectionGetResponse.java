@@ -28,14 +28,16 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get Job Collection operation response.
 */
-public class JobCollectionGetResponse extends OperationResponse {
+public class JobCollectionGetResponse extends OperationResponse
+{
     private String eTag;
     
     /**
     * ETag of the Job Collection.
     * @return The ETag value.
     */
-    public String getETag() {
+    public String getETag()
+    {
         return this.eTag;
     }
     
@@ -43,7 +45,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * ETag of the Job Collection.
     * @param eTagValue The ETag value.
     */
-    public void setETag(final String eTagValue) {
+    public void setETag(final String eTagValue)
+    {
         this.eTag = eTagValue;
     }
     
@@ -53,7 +56,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Intrinsic settings for the scheduler job collections.
     * @return The IntrinsicSettings value.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings() {
+    public JobCollectionIntrinsicSettings getIntrinsicSettings()
+    {
         return this.intrinsicSettings;
     }
     
@@ -61,7 +65,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Intrinsic settings for the scheduler job collections.
     * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
-    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
+    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue)
+    {
         this.intrinsicSettings = intrinsicSettingsValue;
     }
     
@@ -71,7 +76,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Label for the resource.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -79,7 +85,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Label for the resource.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -89,7 +96,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The promotion code for buying the resource.
     * @return The LastOperationStatus value.
     */
-    public JobCollectionGetResponse.OperationStatus getLastOperationStatus() {
+    public JobCollectionGetResponse.OperationStatus getLastOperationStatus()
+    {
         return this.lastOperationStatus;
     }
     
@@ -97,7 +105,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The promotion code for buying the resource.
     * @param lastOperationStatusValue The LastOperationStatus value.
     */
-    public void setLastOperationStatus(final JobCollectionGetResponse.OperationStatus lastOperationStatusValue) {
+    public void setLastOperationStatus(final JobCollectionGetResponse.OperationStatus lastOperationStatusValue)
+    {
         this.lastOperationStatus = lastOperationStatusValue;
     }
     
@@ -107,7 +116,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Name of the Job Collection.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -115,7 +125,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * Name of the Job Collection.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -125,7 +136,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The plan of the resource.
     * @return The Plan value.
     */
-    public String getPlan() {
+    public String getPlan()
+    {
         return this.plan;
     }
     
@@ -133,7 +145,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The plan of the resource.
     * @param planValue The Plan value.
     */
-    public void setPlan(final String planValue) {
+    public void setPlan(final String planValue)
+    {
         this.plan = planValue;
     }
     
@@ -143,7 +156,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The promotion code for buying the resource.
     * @return The PromotionCode value.
     */
-    public String getPromotionCode() {
+    public String getPromotionCode()
+    {
         return this.promotionCode;
     }
     
@@ -151,7 +165,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * The promotion code for buying the resource.
     * @param promotionCodeValue The PromotionCode value.
     */
-    public void setPromotionCode(final String promotionCodeValue) {
+    public void setPromotionCode(final String promotionCodeValue)
+    {
         this.promotionCode = promotionCodeValue;
     }
     
@@ -163,7 +178,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * registered as default.
     * @return The SchemaVersion value.
     */
-    public String getSchemaVersion() {
+    public String getSchemaVersion()
+    {
         return this.schemaVersion;
     }
     
@@ -173,7 +189,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * registered as default.
     * @param schemaVersionValue The SchemaVersion value.
     */
-    public void setSchemaVersion(final String schemaVersionValue) {
+    public void setSchemaVersion(final String schemaVersionValue)
+    {
         this.schemaVersion = schemaVersionValue;
     }
     
@@ -183,7 +200,8 @@ public class JobCollectionGetResponse extends OperationResponse {
     * State of the Job Collection.
     * @return The State value.
     */
-    public JobCollectionState getState() {
+    public JobCollectionState getState()
+    {
         return this.state;
     }
     
@@ -191,21 +209,24 @@ public class JobCollectionGetResponse extends OperationResponse {
     * State of the Job Collection.
     * @param stateValue The State value.
     */
-    public void setState(final JobCollectionState stateValue) {
+    public void setState(final JobCollectionState stateValue)
+    {
         this.state = stateValue;
     }
     
     /**
     * Result of a previous operation.
     */
-    public static class OperationStatus {
+    public static class OperationStatus
+    {
         private JobCollectionGetResponse.OperationStatusResponseDetails responseDetails;
         
         /**
         * Details about the last operation.
         * @return The ResponseDetails value.
         */
-        public JobCollectionGetResponse.OperationStatusResponseDetails getResponseDetails() {
+        public JobCollectionGetResponse.OperationStatusResponseDetails getResponseDetails()
+        {
             return this.responseDetails;
         }
         
@@ -213,7 +234,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * Details about the last operation.
         * @param responseDetailsValue The ResponseDetails value.
         */
-        public void setResponseDetails(final JobCollectionGetResponse.OperationStatusResponseDetails responseDetailsValue) {
+        public void setResponseDetails(final JobCollectionGetResponse.OperationStatusResponseDetails responseDetailsValue)
+        {
             this.responseDetails = responseDetailsValue;
         }
         
@@ -223,7 +245,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * Status of the last operation.
         * @return The Status value.
         */
-        public SchedulerOperationStatus getStatus() {
+        public SchedulerOperationStatus getStatus()
+        {
             return this.status;
         }
         
@@ -231,7 +254,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * Status of the last operation.
         * @param statusValue The Status value.
         */
-        public void setStatus(final SchedulerOperationStatus statusValue) {
+        public void setStatus(final SchedulerOperationStatus statusValue)
+        {
             this.status = statusValue;
         }
     }
@@ -239,14 +263,16 @@ public class JobCollectionGetResponse extends OperationResponse {
     /**
     * Response details about an operation.
     */
-    public static class OperationStatusResponseDetails {
+    public static class OperationStatusResponseDetails
+    {
         private String message;
         
         /**
         * Message returned by the operation.
         * @return The Message value.
         */
-        public String getMessage() {
+        public String getMessage()
+        {
             return this.message;
         }
         
@@ -254,7 +280,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * Message returned by the operation.
         * @param messageValue The Message value.
         */
-        public void setMessage(final String messageValue) {
+        public void setMessage(final String messageValue)
+        {
             this.message = messageValue;
         }
         
@@ -264,7 +291,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * The HTTP status code of the operation.
         * @return The StatusCode value.
         */
-        public Integer getStatusCode() {
+        public Integer getStatusCode()
+        {
             return this.statusCode;
         }
         
@@ -272,7 +300,8 @@ public class JobCollectionGetResponse extends OperationResponse {
         * The HTTP status code of the operation.
         * @param statusCodeValue The StatusCode value.
         */
-        public void setStatusCode(final Integer statusCodeValue) {
+        public void setStatusCode(final Integer statusCodeValue)
+        {
             this.statusCode = statusCodeValue;
         }
     }

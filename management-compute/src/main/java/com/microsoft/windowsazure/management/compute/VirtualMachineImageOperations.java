@@ -45,7 +45,8 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for more
 * information)
 */
-public interface VirtualMachineImageOperations {
+public interface VirtualMachineImageOperations
+{
     /**
     * The Add OS Image operation adds an operating system image that is stored
     * in a storage account and is available from the image repository.  (see

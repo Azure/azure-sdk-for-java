@@ -17,7 +17,8 @@ package com.microsoft.windowsazure.core.utils;
 /**
  * Specifies the kinds of conditional headers that may be set for a request.
  */
-public enum AccessConditionHeaderType {
+public enum AccessConditionHeaderType
+{
     /**
      * Specifies that no conditional headers are set.
      */
@@ -51,8 +52,10 @@ public enum AccessConditionHeaderType {
      *         value.
      */
     @Override
-    public String toString() {
-        switch (this) {
+    public String toString()
+    {
+        switch (this)
+        {
         case IF_MATCH:
             return "If-Match";
         case IF_UNMODIFIED_SINCE:

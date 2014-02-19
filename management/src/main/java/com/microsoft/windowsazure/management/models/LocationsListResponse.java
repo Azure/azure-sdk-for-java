@@ -30,14 +30,16 @@ import java.util.Iterator;
 /**
 * The List Locations operation response.
 */
-public class LocationsListResponse extends OperationResponse implements Iterable<LocationsListResponse.Location> {
+public class LocationsListResponse extends OperationResponse implements Iterable<LocationsListResponse.Location>
+{
     private ArrayList<LocationsListResponse.Location> locations;
     
     /**
     * The data center locations that are valid for your subscription.
     * @return The Locations value.
     */
-    public ArrayList<LocationsListResponse.Location> getLocations() {
+    public ArrayList<LocationsListResponse.Location> getLocations()
+    {
         return this.locations;
     }
     
@@ -45,7 +47,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     * The data center locations that are valid for your subscription.
     * @param locationsValue The Locations value.
     */
-    public void setLocations(final ArrayList<LocationsListResponse.Location> locationsValue) {
+    public void setLocations(final ArrayList<LocationsListResponse.Location> locationsValue)
+    {
         this.locations = locationsValue;
     }
     
@@ -53,7 +56,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     * Initializes a new instance of the LocationsListResponse class.
     *
     */
-    public LocationsListResponse() {
+    public LocationsListResponse()
+    {
         super();
         this.locations = new ArrayList<LocationsListResponse.Location>();
     }
@@ -62,21 +66,24 @@ public class LocationsListResponse extends OperationResponse implements Iterable
     * Gets the sequence of Locations.
     *
     */
-    public Iterator<LocationsListResponse.Location> iterator() {
+    public Iterator<LocationsListResponse.Location> iterator()
+    {
         return this.getLocations().iterator();
     }
     
     /**
     * A data center location that is valid for your subscription.
     */
-    public static class Location {
+    public static class Location
+    {
         private ArrayList<String> availableServices;
         
         /**
         * Indicates the services available at a location.
         * @return The AvailableServices value.
         */
-        public ArrayList<String> getAvailableServices() {
+        public ArrayList<String> getAvailableServices()
+        {
             return this.availableServices;
         }
         
@@ -84,7 +91,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * Indicates the services available at a location.
         * @param availableServicesValue The AvailableServices value.
         */
-        public void setAvailableServices(final ArrayList<String> availableServicesValue) {
+        public void setAvailableServices(final ArrayList<String> availableServicesValue)
+        {
             this.availableServices = availableServicesValue;
         }
         
@@ -94,7 +102,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * The localized name of data center location.
         * @return The DisplayName value.
         */
-        public String getDisplayName() {
+        public String getDisplayName()
+        {
             return this.displayName;
         }
         
@@ -102,7 +111,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * The localized name of data center location.
         * @param displayNameValue The DisplayName value.
         */
-        public void setDisplayName(final String displayNameValue) {
+        public void setDisplayName(final String displayNameValue)
+        {
             this.displayName = displayNameValue;
         }
         
@@ -113,7 +123,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * subscription.
         * @return The Name value.
         */
-        public String getName() {
+        public String getName()
+        {
             return this.name;
         }
         
@@ -122,7 +133,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * subscription.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue) {
+        public void setName(final String nameValue)
+        {
             this.name = nameValue;
         }
         
@@ -130,7 +142,8 @@ public class LocationsListResponse extends OperationResponse implements Iterable
         * Initializes a new instance of the Location class.
         *
         */
-        public Location() {
+        public Location()
+        {
             this.availableServices = new ArrayList<String>();
         }
     }

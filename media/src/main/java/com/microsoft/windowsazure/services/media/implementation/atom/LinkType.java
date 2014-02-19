@@ -69,7 +69,8 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "linkType", propOrder = { "content" })
-public class LinkType {
+public class LinkType
+{
 
     @XmlValue
     protected String content;
@@ -107,7 +108,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getContent() {
+    public String getContent()
+    {
         return content;
     }
 
@@ -118,7 +120,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setContent(String value) {
+    public void setContent(String value)
+    {
         this.content = value;
     }
 
@@ -128,7 +131,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getHref() {
+    public String getHref()
+    {
         return href;
     }
 
@@ -139,7 +143,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setHref(String value) {
+    public void setHref(String value)
+    {
         this.href = value;
     }
 
@@ -149,7 +154,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getRel() {
+    public String getRel()
+    {
         return rel;
     }
 
@@ -160,7 +166,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setRel(String value) {
+    public void setRel(String value)
+    {
         this.rel = value;
     }
 
@@ -170,7 +177,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getType() {
+    public String getType()
+    {
         return type;
     }
 
@@ -181,7 +189,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setType(String value) {
+    public void setType(String value)
+    {
         this.type = value;
     }
 
@@ -191,7 +200,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getHreflang() {
+    public String getHreflang()
+    {
         return hreflang;
     }
 
@@ -202,7 +212,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setHreflang(String value) {
+    public void setHreflang(String value)
+    {
         this.hreflang = value;
     }
 
@@ -212,7 +223,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
@@ -223,7 +235,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setTitle(String value) {
+    public void setTitle(String value)
+    {
         this.title = value;
     }
 
@@ -233,7 +246,8 @@ public class LinkType {
      * @return possible object is {@link BigInteger }
      * 
      */
-    public BigInteger getLength() {
+    public BigInteger getLength()
+    {
         return length;
     }
 
@@ -244,7 +258,8 @@ public class LinkType {
      *            allowed object is {@link BigInteger }
      * 
      */
-    public void setLength(BigInteger value) {
+    public void setLength(BigInteger value)
+    {
         this.length = value;
     }
 
@@ -254,7 +269,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getBase() {
+    public String getBase()
+    {
         return base;
     }
 
@@ -265,7 +281,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value) {
+    public void setBase(String value)
+    {
         this.base = value;
     }
 
@@ -275,7 +292,8 @@ public class LinkType {
      * @return possible object is {@link String }
      * 
      */
-    public String getLang() {
+    public String getLang()
+    {
         return lang;
     }
 
@@ -286,7 +304,8 @@ public class LinkType {
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value) {
+    public void setLang(String value)
+    {
         this.lang = value;
     }
 
@@ -304,7 +323,8 @@ public class LinkType {
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes() {
+    public Map<QName, String> getOtherAttributes()
+    {
         return otherAttributes;
     }
 

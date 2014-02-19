@@ -56,7 +56,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleInstanceInfo", propOrder = {
 
 })
-class RoleInstanceInfo {
+class RoleInstanceInfo
+{
 
     @XmlElement(name = "Endpoints", required = true)
     protected EndpointsInfo endpoints;
@@ -73,7 +74,8 @@ class RoleInstanceInfo {
      * @return possible object is {@link EndpointsInfo }
      * 
      */
-    public EndpointsInfo getEndpoints() {
+    public EndpointsInfo getEndpoints()
+    {
         return endpoints;
     }
 
@@ -84,7 +86,8 @@ class RoleInstanceInfo {
      *            allowed object is {@link EndpointsInfo }
      * 
      */
-    public void setEndpoints(EndpointsInfo value) {
+    public void setEndpoints(EndpointsInfo value)
+    {
         this.endpoints = value;
     }
 
@@ -94,7 +97,8 @@ class RoleInstanceInfo {
      * @return possible object is {@link String }
      * 
      */
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
@@ -105,7 +109,8 @@ class RoleInstanceInfo {
      *            allowed object is {@link String }
      * 
      */
-    public void setId(String value) {
+    public void setId(String value)
+    {
         this.id = value;
     }
 
@@ -113,7 +118,8 @@ class RoleInstanceInfo {
      * Gets the value of the faultDomain property.
      * 
      */
-    public int getFaultDomain() {
+    public int getFaultDomain()
+    {
         return faultDomain;
     }
 
@@ -121,7 +127,8 @@ class RoleInstanceInfo {
      * Sets the value of the faultDomain property.
      * 
      */
-    public void setFaultDomain(int value) {
+    public void setFaultDomain(int value)
+    {
         this.faultDomain = value;
     }
 
@@ -129,7 +136,8 @@ class RoleInstanceInfo {
      * Gets the value of the updateDomain property.
      * 
      */
-    public int getUpdateDomain() {
+    public int getUpdateDomain()
+    {
         return updateDomain;
     }
 
@@ -137,7 +145,8 @@ class RoleInstanceInfo {
      * Sets the value of the updateDomain property.
      * 
      */
-    public void setUpdateDomain(int value) {
+    public void setUpdateDomain(int value)
+    {
         this.updateDomain = value;
     }
 

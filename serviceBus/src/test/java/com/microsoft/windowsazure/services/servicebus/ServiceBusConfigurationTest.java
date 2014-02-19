@@ -19,9 +19,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ServiceBusConfigurationTest {
+public class ServiceBusConfigurationTest
+{
     @Test
-    public void ConfigureSetsExpectedProperties() {
+    public void ConfigureSetsExpectedProperties()
+    {
         // Arrange
         Configuration config = new Configuration();
 
@@ -40,7 +42,8 @@ public class ServiceBusConfigurationTest {
     }
 
     @Test
-    public void UsingProfileAddsPrefix() {
+    public void UsingProfileAddsPrefix()
+    {
         // Arrange
         Configuration config = new Configuration();
 

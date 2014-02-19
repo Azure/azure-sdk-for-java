@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.servicebus.models;
 /**
 * Statistics about the current usage of a service bus entity.
 */
-public class CountDetails {
+public class CountDetails
+{
     private int activeMessageCount;
     
     /**
     * The current number of active messages.
     * @return The ActiveMessageCount value.
     */
-    public int getActiveMessageCount() {
+    public int getActiveMessageCount()
+    {
         return this.activeMessageCount;
     }
     
@@ -41,7 +43,8 @@ public class CountDetails {
     * The current number of active messages.
     * @param activeMessageCountValue The ActiveMessageCount value.
     */
-    public void setActiveMessageCount(final int activeMessageCountValue) {
+    public void setActiveMessageCount(final int activeMessageCountValue)
+    {
         this.activeMessageCount = activeMessageCountValue;
     }
     
@@ -51,7 +54,8 @@ public class CountDetails {
     * The current number of dead letters.
     * @return The DeadLetterMessageCount value.
     */
-    public int getDeadLetterMessageCount() {
+    public int getDeadLetterMessageCount()
+    {
         return this.deadLetterMessageCount;
     }
     
@@ -59,7 +63,8 @@ public class CountDetails {
     * The current number of dead letters.
     * @param deadLetterMessageCountValue The DeadLetterMessageCount value.
     */
-    public void setDeadLetterMessageCount(final int deadLetterMessageCountValue) {
+    public void setDeadLetterMessageCount(final int deadLetterMessageCountValue)
+    {
         this.deadLetterMessageCount = deadLetterMessageCountValue;
     }
     
@@ -69,7 +74,8 @@ public class CountDetails {
     * The current number of scheduled messages.
     * @return The ScheduledMessageCount value.
     */
-    public int getScheduledMessageCount() {
+    public int getScheduledMessageCount()
+    {
         return this.scheduledMessageCount;
     }
     
@@ -77,7 +83,8 @@ public class CountDetails {
     * The current number of scheduled messages.
     * @param scheduledMessageCountValue The ScheduledMessageCount value.
     */
-    public void setScheduledMessageCount(final int scheduledMessageCountValue) {
+    public void setScheduledMessageCount(final int scheduledMessageCountValue)
+    {
         this.scheduledMessageCount = scheduledMessageCountValue;
     }
     
@@ -87,7 +94,8 @@ public class CountDetails {
     * The current number of transfer dead letters.
     * @return The TransferDeadLetterMessageCount value.
     */
-    public int getTransferDeadLetterMessageCount() {
+    public int getTransferDeadLetterMessageCount()
+    {
         return this.transferDeadLetterMessageCount;
     }
     
@@ -96,7 +104,8 @@ public class CountDetails {
     * @param transferDeadLetterMessageCountValue The
     * TransferDeadLetterMessageCount value.
     */
-    public void setTransferDeadLetterMessageCount(final int transferDeadLetterMessageCountValue) {
+    public void setTransferDeadLetterMessageCount(final int transferDeadLetterMessageCountValue)
+    {
         this.transferDeadLetterMessageCount = transferDeadLetterMessageCountValue;
     }
     
@@ -106,7 +115,8 @@ public class CountDetails {
     * The current number of transfer messages.
     * @return The TransferMessageCount value.
     */
-    public int getTransferMessageCount() {
+    public int getTransferMessageCount()
+    {
         return this.transferMessageCount;
     }
     
@@ -114,7 +124,8 @@ public class CountDetails {
     * The current number of transfer messages.
     * @param transferMessageCountValue The TransferMessageCount value.
     */
-    public void setTransferMessageCount(final int transferMessageCountValue) {
+    public void setTransferMessageCount(final int transferMessageCountValue)
+    {
         this.transferMessageCount = transferMessageCountValue;
     }
 }

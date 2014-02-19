@@ -28,7 +28,8 @@ import java.util.ArrayList;
 /**
 * Parameters supplied to the Create Virtual Machine Deployment operation.
 */
-public class VirtualMachineCreateDeploymentParameters {
+public class VirtualMachineCreateDeploymentParameters
+{
     private DeploymentSlot deploymentSlot;
     
     /**
@@ -36,7 +37,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * machine.  Possible values are: Staging, Production.
     * @return The DeploymentSlot value.
     */
-    public DeploymentSlot getDeploymentSlot() {
+    public DeploymentSlot getDeploymentSlot()
+    {
         return this.deploymentSlot;
     }
     
@@ -45,7 +47,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * machine.  Possible values are: Staging, Production.
     * @param deploymentSlotValue The DeploymentSlot value.
     */
-    public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue) {
+    public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue)
+    {
         this.deploymentSlot = deploymentSlotValue;
     }
     
@@ -55,7 +58,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * Optional. Contains a list of DNS servers to associate with themachine.
     * @return The DnsSettings value.
     */
-    public DnsSettings getDnsSettings() {
+    public DnsSettings getDnsSettings()
+    {
         return this.dnsSettings;
     }
     
@@ -63,7 +67,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * Optional. Contains a list of DNS servers to associate with themachine.
     * @param dnsSettingsValue The DnsSettings value.
     */
-    public void setDnsSettings(final DnsSettings dnsSettingsValue) {
+    public void setDnsSettings(final DnsSettings dnsSettingsValue)
+    {
         this.dnsSettings = dnsSettingsValue;
     }
     
@@ -76,7 +81,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * tracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -87,7 +93,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -98,7 +105,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * among other deployments for the hosted service.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -107,7 +115,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * among other deployments for the hosted service.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -119,7 +128,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * the Create Reserved IP operation.
     * @return The ReservedIPName value.
     */
-    public String getReservedIPName() {
+    public String getReservedIPName()
+    {
         return this.reservedIPName;
     }
     
@@ -129,7 +139,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * the Create Reserved IP operation.
     * @param reservedIPNameValue The ReservedIPName value.
     */
-    public void setReservedIPName(final String reservedIPNameValue) {
+    public void setReservedIPName(final String reservedIPNameValue)
+    {
         this.reservedIPName = reservedIPNameValue;
     }
     
@@ -140,7 +151,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * deployment.
     * @return The Roles value.
     */
-    public ArrayList<Role> getRoles() {
+    public ArrayList<Role> getRoles()
+    {
         return this.roles;
     }
     
@@ -149,7 +161,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * deployment.
     * @param rolesValue The Roles value.
     */
-    public void setRoles(final ArrayList<Role> rolesValue) {
+    public void setRoles(final ArrayList<Role> rolesValue)
+    {
         this.roles = rolesValue;
     }
     
@@ -161,7 +174,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * Network Configuration operation.
     * @return The VirtualNetworkName value.
     */
-    public String getVirtualNetworkName() {
+    public String getVirtualNetworkName()
+    {
         return this.virtualNetworkName;
     }
     
@@ -171,7 +185,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * Network Configuration operation.
     * @param virtualNetworkNameValue The VirtualNetworkName value.
     */
-    public void setVirtualNetworkName(final String virtualNetworkNameValue) {
+    public void setVirtualNetworkName(final String virtualNetworkNameValue)
+    {
         this.virtualNetworkName = virtualNetworkNameValue;
     }
     
@@ -180,7 +195,8 @@ public class VirtualMachineCreateDeploymentParameters {
     * VirtualMachineCreateDeploymentParameters class.
     *
     */
-    public VirtualMachineCreateDeploymentParameters() {
+    public VirtualMachineCreateDeploymentParameters()
+    {
         this.roles = new ArrayList<Role>();
     }
 }

@@ -15,8 +15,7 @@
 package com.microsoft.windowsazure.core.utils;
 
 /**
- * Defines constants for use with blob operations, HTTP headers, and query
- * strings.
+ * Defines constants for use with blob operations, HTTP headers, and query strings.
  */
 public final class Constants {
     /**
@@ -111,8 +110,7 @@ public final class Constants {
         /**
          * The header that specifies blob caching control.
          */
-        public static final String CACHE_CONTROL_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "blob-cache-control";
+        public static final String CACHE_CONTROL_HEADER = PREFIX_FOR_STORAGE_HEADER + "blob-cache-control";
 
         /**
          * The Comp value.
@@ -152,8 +150,7 @@ public final class Constants {
         /**
          * The header for copy source.
          */
-        public static final String COPY_SOURCE_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "copy-source";
+        public static final String COPY_SOURCE_HEADER = PREFIX_FOR_STORAGE_HEADER + "copy-source";
 
         /**
          * The header that specifies the date.
@@ -163,8 +160,7 @@ public final class Constants {
         /**
          * The header to delete snapshots.
          */
-        public static final String DELETE_SNAPSHOT_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "delete-snapshots";
+        public static final String DELETE_SNAPSHOT_HEADER = PREFIX_FOR_STORAGE_HEADER + "delete-snapshots";
 
         /**
          * The ETag header.
@@ -199,62 +195,52 @@ public final class Constants {
         /**
          * The header that specifies lease ID.
          */
-        public static final String LEASE_ID_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "lease-id";
+        public static final String LEASE_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "lease-id";
 
         /**
          * The header that specifies lease status.
          */
-        public static final String LEASE_STATUS = PREFIX_FOR_STORAGE_HEADER
-                + "lease-status";
+        public static final String LEASE_STATUS = PREFIX_FOR_STORAGE_HEADER + "lease-status";
 
         /**
          * The header that specifies lease state.
          */
-        public static final String LEASE_STATE = PREFIX_FOR_STORAGE_HEADER
-                + "lease-state";
+        public static final String LEASE_STATE = PREFIX_FOR_STORAGE_HEADER + "lease-state";
 
         /**
          * The header that specifies lease duration.
          */
-        public static final String LEASE_DURATION = PREFIX_FOR_STORAGE_HEADER
-                + "lease-duration";
+        public static final String LEASE_DURATION = PREFIX_FOR_STORAGE_HEADER + "lease-duration";
 
         /**
          * The header that specifies copy status.
          */
-        public static final String COPY_STATUS = PREFIX_FOR_STORAGE_HEADER
-                + "copy-status";
+        public static final String COPY_STATUS = PREFIX_FOR_STORAGE_HEADER + "copy-status";
 
         /**
          * The header that specifies copy progress.
          */
-        public static final String COPY_PROGRESS = PREFIX_FOR_STORAGE_HEADER
-                + "copy-progress";
+        public static final String COPY_PROGRESS = PREFIX_FOR_STORAGE_HEADER + "copy-progress";
 
         /**
          * The header that specifies copy status description.
          */
-        public static final String COPY_STATUS_DESCRIPTION = PREFIX_FOR_STORAGE_HEADER
-                + "copy-status-description";
+        public static final String COPY_STATUS_DESCRIPTION = PREFIX_FOR_STORAGE_HEADER + "copy-status-description";
 
         /**
          * The header that specifies copy id.
          */
-        public static final String COPY_ID = PREFIX_FOR_STORAGE_HEADER
-                + "copy-id";
+        public static final String COPY_ID = PREFIX_FOR_STORAGE_HEADER + "copy-id";
 
         /**
          * The header that specifies copy source.
          */
-        public static final String COPY_SOURCE = PREFIX_FOR_STORAGE_HEADER
-                + "copy-source";
+        public static final String COPY_SOURCE = PREFIX_FOR_STORAGE_HEADER + "copy-source";
 
         /**
          * The header that specifies copy completion time.
          */
-        public static final String COPY_COMPLETION_TIME = PREFIX_FOR_STORAGE_HEADER
-                + "copy-completion-time";
+        public static final String COPY_COMPLETION_TIME = PREFIX_FOR_STORAGE_HEADER + "copy-completion-time";
 
         /**
          * The header prefix for metadata.
@@ -272,11 +258,9 @@ public final class Constants {
         public static final String RANGE = "Range";
 
         /**
-         * The header that specifies if the request will populate the ContentMD5
-         * header for range gets.
+         * The header that specifies if the request will populate the ContentMD5 header for range gets.
          */
-        public static final String RANGE_GET_CONTENT_MD5 = PREFIX_FOR_STORAGE_HEADER
-                + "range-get-content-md5";
+        public static final String RANGE_GET_CONTENT_MD5 = PREFIX_FOR_STORAGE_HEADER + "range-get-content-md5";
 
         /**
          * The format string for specifying ranges.
@@ -286,20 +270,17 @@ public final class Constants {
         /**
          * The header that indicates the request ID.
          */
-        public static final String REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "request-id";
+        public static final String REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "request-id";
 
         /**
          * The header that indicates the client request ID.
          */
-        public static final String CLIENT_REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "client-request-id";
+        public static final String CLIENT_REQUEST_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "client-request-id";
 
         /**
          * The header for the If-Match condition.
          */
-        public static final String SOURCE_IF_MATCH_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "source-if-match";
+        public static final String SOURCE_IF_MATCH_HEADER = PREFIX_FOR_STORAGE_HEADER + "source-if-match";
 
         /**
          * The header for the If-Modified-Since condition.
@@ -310,8 +291,7 @@ public final class Constants {
         /**
          * The header for the If-None-Match condition.
          */
-        public static final String SOURCE_IF_NONE_MATCH_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "source-if-none-match";
+        public static final String SOURCE_IF_NONE_MATCH_HEADER = PREFIX_FOR_STORAGE_HEADER + "source-if-none-match";
 
         /**
          * The header for the If-Unmodified-Since condition.
@@ -322,20 +302,17 @@ public final class Constants {
         /**
          * The header for the source lease id.
          */
-        public static final String SOURCE_LEASE_ID_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "source-lease-id";
+        public static final String SOURCE_LEASE_ID_HEADER = PREFIX_FOR_STORAGE_HEADER + "source-lease-id";
 
         /**
          * The header for data ranges.
          */
-        public static final String STORAGE_RANGE_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "range";
+        public static final String STORAGE_RANGE_HEADER = PREFIX_FOR_STORAGE_HEADER + "range";
 
         /**
          * The header for storage version.
          */
-        public static final String STORAGE_VERSION_HEADER = PREFIX_FOR_STORAGE_HEADER
-                + "version";
+        public static final String STORAGE_VERSION_HEADER = PREFIX_FOR_STORAGE_HEADER + "version";
 
         /**
          * The current storage version header value.
@@ -611,8 +588,7 @@ public final class Constants {
     /**
      * The maximum size, in bytes, of a given stream mark operation.
      */
-    // Note if BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES is updated
-    // then this needs to be as well.
+    // Note if BlobConstants.MAX_SINGLE_UPLOAD_BLOB_SIZE_IN_BYTES is updated then this needs to be as well.
     public static final int MAX_MARK_LENGTH = 64 * MB;
 
     /**

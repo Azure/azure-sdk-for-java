@@ -28,7 +28,8 @@ import java.util.Calendar;
 /**
 * Parameters supplied to the List Subscription Operations operation.
 */
-public class SubscriptionListOperationsParameters {
+public class SubscriptionListOperationsParameters
+{
     private String continuationToken;
     
     /**
@@ -41,7 +42,8 @@ public class SubscriptionListOperationsParameters {
     * specified StartTime.
     * @return The ContinuationToken value.
     */
-    public String getContinuationToken() {
+    public String getContinuationToken()
+    {
         return this.continuationToken;
     }
     
@@ -55,7 +57,8 @@ public class SubscriptionListOperationsParameters {
     * specified StartTime.
     * @param continuationTokenValue The ContinuationToken value.
     */
-    public void setContinuationToken(final String continuationTokenValue) {
+    public void setContinuationToken(final String continuationTokenValue)
+    {
         this.continuationToken = continuationTokenValue;
     }
     
@@ -67,7 +70,8 @@ public class SubscriptionListOperationsParameters {
     * indicate the timeframe to retrieve subscription operations.
     * @return The EndTime value.
     */
-    public Calendar getEndTime() {
+    public Calendar getEndTime()
+    {
         return this.endTime;
     }
     
@@ -77,7 +81,8 @@ public class SubscriptionListOperationsParameters {
     * indicate the timeframe to retrieve subscription operations.
     * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(final Calendar endTimeValue) {
+    public void setEndTime(final Calendar endTimeValue)
+    {
         this.endTime = endTimeValue;
     }
     
@@ -90,7 +95,8 @@ public class SubscriptionListOperationsParameters {
     * filter is not applied.
     * @return The ObjectIdFilter value.
     */
-    public String getObjectIdFilter() {
+    public String getObjectIdFilter()
+    {
         return this.objectIdFilter;
     }
     
@@ -101,7 +107,8 @@ public class SubscriptionListOperationsParameters {
     * filter is not applied.
     * @param objectIdFilterValue The ObjectIdFilter value.
     */
-    public void setObjectIdFilter(final String objectIdFilterValue) {
+    public void setObjectIdFilter(final String objectIdFilterValue)
+    {
         this.objectIdFilter = objectIdFilterValue;
     }
     
@@ -115,7 +122,8 @@ public class SubscriptionListOperationsParameters {
     * filter is not applied.
     * @return The OperationStatus value.
     */
-    public OperationStatus getOperationStatus() {
+    public OperationStatus getOperationStatus()
+    {
         return this.operationStatus;
     }
     
@@ -127,7 +135,8 @@ public class SubscriptionListOperationsParameters {
     * filter is not applied.
     * @param operationStatusValue The OperationStatus value.
     */
-    public void setOperationStatus(final OperationStatus operationStatusValue) {
+    public void setOperationStatus(final OperationStatus operationStatusValue)
+    {
         this.operationStatus = operationStatusValue;
     }
     
@@ -140,7 +149,8 @@ public class SubscriptionListOperationsParameters {
     * parameter cannot indicate a start date of more than 90 days in the past.
     * @return The StartTime value.
     */
-    public Calendar getStartTime() {
+    public Calendar getStartTime()
+    {
         return this.startTime;
     }
     
@@ -151,7 +161,8 @@ public class SubscriptionListOperationsParameters {
     * parameter cannot indicate a start date of more than 90 days in the past.
     * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(final Calendar startTimeValue) {
+    public void setStartTime(final Calendar startTimeValue)
+    {
         this.startTime = startTimeValue;
     }
 }

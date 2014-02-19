@@ -15,6 +15,7 @@
 package com.microsoft.windowsazure.services.servicebus.models;
 
 public class ListSubscriptionsOptions extends
-        AbstractListOptions<ListSubscriptionsOptions> {
+        AbstractListOptions<ListSubscriptionsOptions>
+{
     public static final ListSubscriptionsOptions DEFAULT = new ListSubscriptionsOptions();
 }

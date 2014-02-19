@@ -20,7 +20,8 @@ import com.microsoft.windowsazure.Configuration;
  * Provides functionality to create a service bus configuration.
  * 
  */
-public class ServiceBusConfiguration {
+public class ServiceBusConfiguration
+{
 
     /**
      * Defines the configuration connection string constant.
@@ -90,7 +91,8 @@ public class ServiceBusConfiguration {
     public static Configuration configureWithWrapAuthentication(
             String namespace, String authenticationName,
             String authenticationPassword, String serviceBusRootUri,
-            String wrapRootUri) {
+            String wrapRootUri)
+    {
         return configureWithWrapAuthentication(null,
                 Configuration.getInstance(), namespace, authenticationName,
                 authenticationPassword, serviceBusRootUri, wrapRootUri);
@@ -137,7 +139,8 @@ public class ServiceBusConfiguration {
     public static Configuration configureWithWrapAuthentication(
             Configuration configuration, String namespace,
             String authenticationName, String authenticationPassword,
-            String serviceBusRootUri, String wrapRootUri) {
+            String serviceBusRootUri, String wrapRootUri)
+    {
         return configureWithWrapAuthentication(null, configuration, namespace,
                 authenticationName, authenticationPassword, serviceBusRootUri,
                 wrapRootUri);
@@ -187,11 +190,14 @@ public class ServiceBusConfiguration {
     public static Configuration configureWithWrapAuthentication(String profile,
             Configuration configuration, String namespace,
             String authenticationName, String authenticationPassword,
-            String serviceBusRootUri, String wrapRootUri) {
+            String serviceBusRootUri, String wrapRootUri)
+    {
 
-        if (profile == null) {
+        if (profile == null)
+        {
             profile = "";
-        } else if (profile.length() != 0 && !profile.endsWith(".")) {
+        } else if (profile.length() != 0 && !profile.endsWith("."))
+        {
             profile = profile + ".";
         }
 
@@ -225,11 +231,14 @@ public class ServiceBusConfiguration {
      *         creating an instance of the <code>ServiceBusService</code> class.
      */
     public static Configuration configureWithConnectionString(String profile,
-            Configuration configuration, String connectionString) {
+            Configuration configuration, String connectionString)
+    {
 
-        if (profile == null) {
+        if (profile == null)
+        {
             profile = "";
-        } else if (profile.length() != 0 && !profile.endsWith(".")) {
+        } else if (profile.length() != 0 && !profile.endsWith("."))
+        {
             profile = profile + ".";
         }
 

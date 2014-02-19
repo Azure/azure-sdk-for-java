@@ -19,11 +19,13 @@ import java.util.Map;
 import com.microsoft.windowsazure.core.Builder;
 
 public class AlterClassWithProperties implements
-        Builder.Alteration<ClassWithProperties> {
+        Builder.Alteration<ClassWithProperties>
+{
     @Override
     public ClassWithProperties alter(String profile,
             ClassWithProperties instance, Builder builder,
-            Map<String, Object> properties) {
+            Map<String, Object> properties)
+    {
         instance.setFoo(instance.getFoo() + " - changed");
         return instance;
     }

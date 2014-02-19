@@ -22,10 +22,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.NotificationEndPointType;
 
-public class NotificationEndPointInfoTest {
+public class NotificationEndPointInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         // Arrange
         String expectedId = "expectedId";
         NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
@@ -40,7 +42,8 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         // Arrange
         String expectedName = "notificationEndPointName";
         NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
@@ -54,7 +57,8 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() throws Exception {
+    public void testGetSetCreated() throws Exception
+    {
         // Arrange
         Date expectedCreated = new Date();
 
@@ -71,7 +75,8 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetEndPointType() throws Exception {
+    public void testGetSetEndPointType() throws Exception
+    {
         // Arrange
         EndPointType expectedEndPointType = EndPointType.AzureQueue;
         NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(
@@ -88,7 +93,8 @@ public class NotificationEndPointInfoTest {
     }
 
     @Test
-    public void testGetSetEndPointAddress() {
+    public void testGetSetEndPointAddress()
+    {
         // Arrange
         String expectedEndPointAddress = "testGetSetEndPointAddress";
         NotificationEndPointInfo notificationEndPointInfo = new NotificationEndPointInfo(

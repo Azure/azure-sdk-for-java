@@ -29,13 +29,16 @@ import org.w3c.dom.Element;
  */
 public class MetadataAdapter
         extends
-        XmlAdapter<MetadataAdapter.MetadataHashMapType, HashMap<String, String>> {
+        XmlAdapter<MetadataAdapter.MetadataHashMapType, HashMap<String, String>>
+{
 
     @Override
     public HashMap<String, String> unmarshal(MetadataHashMapType arg0)
-            throws Exception {
+            throws Exception
+    {
         HashMap<String, String> result = new HashMap<String, String>();
-        for (Element entry : arg0.getEntries()) {
+        for (Element entry : arg0.getEntries())
+        {
             result.put(entry.getLocalName(), entry.getFirstChild()
                     .getNodeValue());
         }
@@ -44,20 +47,24 @@ public class MetadataAdapter
 
     @Override
     public MetadataHashMapType marshal(HashMap<String, String> arg0)
-            throws Exception {
+            throws Exception
+    {
         // We don't need marshaling for blob/container metadata
         throw new OperationNotSupportedException();
     }
 
-    public static class MetadataHashMapType {
+    public static class MetadataHashMapType
+    {
         private List<Element> entries = new ArrayList<Element>();
 
         @XmlAnyElement
-        public List<Element> getEntries() {
+        public List<Element> getEntries()
+        {
             return entries;
         }
 
-        public void setEntries(List<Element> entries) {
+        public void setEntries(List<Element> entries)
+        {
             this.entries = entries;
         }
     }

@@ -28,14 +28,16 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Change Configuration Deployment operation.
 */
-public class DeploymentChangeConfigurationParameters {
+public class DeploymentChangeConfigurationParameters
+{
     private String configuration;
     
     /**
     * Required. The encoded service configuration file for the deployment.
     * @return The Configuration value.
     */
-    public String getConfiguration() {
+    public String getConfiguration()
+    {
         return this.configuration;
     }
     
@@ -43,7 +45,8 @@ public class DeploymentChangeConfigurationParameters {
     * Required. The encoded service configuration file for the deployment.
     * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(final String configurationValue) {
+    public void setConfiguration(final String configurationValue)
+    {
         this.configuration = configurationValue;
     }
     
@@ -61,7 +64,8 @@ public class DeploymentChangeConfigurationParameters {
     * in a status code 400 (Bad Request) error.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -77,7 +81,8 @@ public class DeploymentChangeConfigurationParameters {
     * in a status code 400 (Bad Request) error.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -92,7 +97,8 @@ public class DeploymentChangeConfigurationParameters {
     * deployment.
     * @return The ExtensionConfiguration value.
     */
-    public ExtensionConfiguration getExtensionConfiguration() {
+    public ExtensionConfiguration getExtensionConfiguration()
+    {
         return this.extensionConfiguration;
     }
     
@@ -105,7 +111,8 @@ public class DeploymentChangeConfigurationParameters {
     * deployment.
     * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue) {
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
+    {
         this.extensionConfiguration = extensionConfigurationValue;
     }
     
@@ -118,7 +125,8 @@ public class DeploymentChangeConfigurationParameters {
     * applied to each update domain for the service.
     * @return The Mode value.
     */
-    public DeploymentChangeConfigurationMode getMode() {
+    public DeploymentChangeConfigurationMode getMode()
+    {
         return this.mode;
     }
     
@@ -129,7 +137,8 @@ public class DeploymentChangeConfigurationParameters {
     * applied to each update domain for the service.
     * @param modeValue The Mode value.
     */
-    public void setMode(final DeploymentChangeConfigurationMode modeValue) {
+    public void setMode(final DeploymentChangeConfigurationMode modeValue)
+    {
         this.mode = modeValue;
     }
     
@@ -142,7 +151,8 @@ public class DeploymentChangeConfigurationParameters {
     * service package.
     * @return The TreatWarningsAsError value.
     */
-    public Boolean isTreatWarningsAsError() {
+    public Boolean isTreatWarningsAsError()
+    {
         return this.treatWarningsAsError;
     }
     
@@ -153,7 +163,8 @@ public class DeploymentChangeConfigurationParameters {
     * service package.
     * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue) {
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
+    {
         this.treatWarningsAsError = treatWarningsAsErrorValue;
     }
     
@@ -162,7 +173,8 @@ public class DeploymentChangeConfigurationParameters {
     * class.
     *
     */
-    public DeploymentChangeConfigurationParameters() {
+    public DeploymentChangeConfigurationParameters()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

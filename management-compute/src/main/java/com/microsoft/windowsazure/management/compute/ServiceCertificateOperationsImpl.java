@@ -69,13 +69,15 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
 * information)
 */
-public class ServiceCertificateOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, ServiceCertificateOperations {
+public class ServiceCertificateOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, ServiceCertificateOperations
+{
     /**
     * Initializes a new instance of the ServiceCertificateOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    ServiceCertificateOperationsImpl(ComputeManagementClientImpl client) {
+    ServiceCertificateOperationsImpl(ComputeManagementClientImpl client)
+    {
         this.client = client;
     }
     
@@ -86,7 +88,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient() {
+    public ComputeManagementClientImpl getClient()
+    {
         return this.client;
     }
     
@@ -105,10 +108,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
+    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return beginCreating(serviceName, parameters);
             }
          });
@@ -139,23 +144,28 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCreating(String serviceName, ServiceCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getData() == null) {
+        if (parameters.getData() == null)
+        {
             throw new NullPointerException("parameters.Data");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -190,7 +200,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         certificateFormatElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.certificateFormatToString(parameters.getCertificateFormat())));
         certificateFileElement.appendChild(certificateFormatElement);
         
-        if (parameters.getPassword() != null) {
+        if (parameters.getPassword() != null)
+        {
             Element passwordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Password");
             passwordElement.appendChild(requestDoc.createTextNode(parameters.getPassword()));
             certificateFileElement.appendChild(passwordElement);
@@ -209,18 +220,23 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -230,16 +246,21 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -260,10 +281,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters) {
+    public Future<OperationResponse> beginDeletingAsync(final ServiceCertificateDeleteParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception {
+            public OperationResponse call() throws Exception
+            {
                 return beginDeleting(parameters);
             }
          });
@@ -288,26 +311,32 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException {
+    public OperationResponse beginDeleting(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getServiceName() == null) {
+        if (parameters.getServiceName() == null)
+        {
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        if (parameters.getThumbprint() == null) {
+        if (parameters.getThumbprint() == null)
+        {
             throw new NullPointerException("parameters.Thumbprint");
         }
-        if (parameters.getThumbprintAlgorithm() == null) {
+        if (parameters.getThumbprintAlgorithm() == null)
+        {
             throw new NullPointerException("parameters.ThumbprintAlgorithm");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -325,18 +354,23 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED) {
+            if (statusCode != HttpStatus.SC_ACCEPTED)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -346,16 +380,21 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -384,10 +423,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
+    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public ComputeOperationStatusResponse call() throws Exception
+            {
                 return create(serviceName, parameters);
             }
          });
@@ -437,47 +478,59 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
+    {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getServiceCertificatesOperations().beginCreatingAsync(serviceName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
-                if (result.getError() != null) {
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else
+                {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -485,8 +538,11 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             return result;
-        } finally {
-            if (this.getClient() != null && shouldTrace) {
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
                 this.getClient().close();
             }
         }
@@ -514,10 +570,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters) {
+    public Future<ComputeOperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public ComputeOperationStatusResponse call() throws Exception
+            {
                 return delete(parameters);
             }
          });
@@ -559,46 +617,58 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
+    {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getServiceCertificatesOperations().beginDeletingAsync(parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+            while ((result.getStatus() != OperationStatus.InProgress) == false)
+            {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded) {
-                if (result.getError() != null) {
+            if (result.getStatus() != OperationStatus.Succeeded)
+            {
+                if (result.getError() != null)
+                {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                } else {
+                }
+                else
+                {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace) {
+                    if (shouldTrace)
+                    {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -606,8 +676,11 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             return result;
-        } finally {
-            if (this.getClient() != null && shouldTrace) {
+        }
+        finally
+        {
+            if (this.getClient() != null && shouldTrace)
+            {
                 this.getClient().close();
             }
         }
@@ -624,10 +697,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The Get Service Certificate operation response.
     */
     @Override
-    public Future<ServiceCertificateGetResponse> getAsync(final ServiceCertificateGetParameters parameters) {
+    public Future<ServiceCertificateGetResponse> getAsync(final ServiceCertificateGetParameters parameters)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateGetResponse>() { 
             @Override
-            public ServiceCertificateGetResponse call() throws Exception {
+            public ServiceCertificateGetResponse call() throws Exception
+            {
                 return get(parameters);
             }
          });
@@ -654,26 +729,32 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The Get Service Certificate operation response.
     */
     @Override
-    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceCertificateGetResponse get(ServiceCertificateGetParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (parameters == null) {
+        if (parameters == null)
+        {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getServiceName() == null) {
+        if (parameters.getServiceName() == null)
+        {
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
-        if (parameters.getThumbprint() == null) {
+        if (parameters.getThumbprint() == null)
+        {
             throw new NullPointerException("parameters.Thumbprint");
         }
-        if (parameters.getThumbprintAlgorithm() == null) {
+        if (parameters.getThumbprintAlgorithm() == null)
+        {
             throw new NullPointerException("parameters.ThumbprintAlgorithm");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -691,18 +772,23 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -720,10 +806,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Certificate");
             Element certificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (certificateElement != null) {
+            if (certificateElement != null)
+            {
                 NodeList elements2 = certificateElement.getElementsByTagName("Data");
                 Element dataElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (dataElement != null) {
+                if (dataElement != null)
+                {
                     byte[] dataInstance;
                     dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
                     result.setData(dataInstance);
@@ -731,16 +819,21 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -756,10 +849,12 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The List Service Certificates operation response.
     */
     @Override
-    public Future<ServiceCertificateListResponse> listAsync(final String serviceName) {
+    public Future<ServiceCertificateListResponse> listAsync(final String serviceName)
+    {
         return this.getClient().getExecutorService().submit(new Callable<ServiceCertificateListResponse>() { 
             @Override
-            public ServiceCertificateListResponse call() throws Exception {
+            public ServiceCertificateListResponse call() throws Exception
+            {
                 return list(serviceName);
             }
          });
@@ -785,9 +880,11 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * @return The List Service Certificates operation response.
     */
     @Override
-    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public ServiceCertificateListResponse list(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
+    {
         // Validate
-        if (serviceName == null) {
+        if (serviceName == null)
+        {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
@@ -795,7 +892,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace) {
+        if (shouldTrace)
+        {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -813,18 +911,23 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
         
         // Send Request
         HttpResponse httpResponse = null;
-        try {
-            if (shouldTrace) {
+        try
+        {
+            if (shouldTrace)
+            {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK) {
+            if (statusCode != HttpStatus.SC_OK)
+            {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace) {
+                if (shouldTrace)
+                {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -842,15 +945,18 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             
             NodeList elements = responseDoc.getElementsByTagName("Certificates");
             Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (certificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1) {
+            if (certificatesSequenceElement != null)
+            {
+                for (int i1 = 0; i1 < certificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i1 = i1 + 1)
+                {
                     org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) certificatesSequenceElement.getElementsByTagName("Certificate").item(i1));
                     ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
                     result.getCertificates().add(certificateInstance);
                     
                     NodeList elements2 = certificatesElement.getElementsByTagName("CertificateUrl");
                     Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (certificateUrlElement != null) {
+                    if (certificateUrlElement != null)
+                    {
                         URI certificateUrlInstance;
                         certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
                         certificateInstance.setCertificateUri(certificateUrlInstance);
@@ -858,7 +964,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements3 = certificatesElement.getElementsByTagName("Thumbprint");
                     Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (thumbprintElement != null) {
+                    if (thumbprintElement != null)
+                    {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
                         certificateInstance.setThumbprint(thumbprintInstance);
@@ -866,7 +973,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements4 = certificatesElement.getElementsByTagName("ThumbprintAlgorithm");
                     Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null) {
+                    if (thumbprintAlgorithmElement != null)
+                    {
                         String thumbprintAlgorithmInstance;
                         thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                         certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
@@ -874,7 +982,8 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
                     
                     NodeList elements5 = certificatesElement.getElementsByTagName("Data");
                     Element dataElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (dataElement != null) {
+                    if (dataElement != null)
+                    {
                         byte[] dataInstance;
                         dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
                         certificateInstance.setData(dataInstance);
@@ -883,16 +992,21 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
+            {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace) {
+            if (shouldTrace)
+            {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        } finally {
-            if (httpResponse != null && httpResponse.getEntity() != null) {
+        }
+        finally
+        {
+            if (httpResponse != null && httpResponse.getEntity() != null)
+            {
                 httpResponse.getEntity().getContent().close();
             }
         }

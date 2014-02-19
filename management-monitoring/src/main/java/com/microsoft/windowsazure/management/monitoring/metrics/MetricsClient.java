@@ -27,33 +27,32 @@ import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import java.net.URI;
 
-public interface MetricsClient extends FilterableService<MetricsClient> {
+public interface MetricsClient extends FilterableService<MetricsClient>
+{
     /**
-     * Optional base uri parameter.
-     * 
-     * @return The BaseUri value.
-     */
-    URI getBaseUri();
-
+    * Optional base uri parameter.
+    * @return The BaseUri value.
+    */
+    URI getBaseUri(); 
+    
     /**
-     * Windows Azure subscription id.
-     * 
-     * @return The Credentials value.
-     */
-    SubscriptionCloudCredentials getCredentials();
-
+    * Windows Azure subscription id.
+    * @return The Credentials value.
+    */
+    SubscriptionCloudCredentials getCredentials(); 
+    
     /**
-     * @return The MetricDefinitionsOperations value.
-     */
-    MetricDefinitionOperations getMetricDefinitionsOperations();
-
+    * @return The MetricDefinitionsOperations value.
+    */
+    MetricDefinitionOperations getMetricDefinitionsOperations(); 
+    
     /**
-     * @return The MetricSettingsOperations value.
-     */
-    MetricSettingOperations getMetricSettingsOperations();
-
+    * @return The MetricSettingsOperations value.
+    */
+    MetricSettingOperations getMetricSettingsOperations(); 
+    
     /**
-     * @return The MetricValuesOperations value.
-     */
-    MetricValueOperations getMetricValuesOperations();
+    * @return The MetricValuesOperations value.
+    */
+    MetricValueOperations getMetricValuesOperations(); 
 }

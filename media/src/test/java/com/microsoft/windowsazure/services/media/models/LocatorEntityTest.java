@@ -32,19 +32,22 @@ import com.microsoft.windowsazure.services.media.implementation.content.LocatorR
  * Tests for the Locator entity
  * 
  */
-public class LocatorEntityTest {
+public class LocatorEntityTest
+{
     private final String exampleAssetId = "nb:cid:UUID:61a5ebbe-d5e0-49a5-b28c-e9535321b6cd";
     private final String exampleAccessPolicyId = "nb:pid:UUID:c82307be-1a81-4554-ba7d-cf6dfa735a5a";
     private final String exampleLocatorId = "nb:lid:UUID:f282b0a1-fb21-4b83-87d6-d4c96d77aef9";
     private final String expectedLocatorUri = String.format("Locators('%s')",
             URLEncoder.encode(exampleLocatorId, "UTF-8"));
 
-    public LocatorEntityTest() throws Exception {
+    public LocatorEntityTest() throws Exception
+    {
 
     }
 
     @Test
-    public void createLocatorHasCorrectUrl() throws Exception {
+    public void createLocatorHasCorrectUrl() throws Exception
+    {
         EntityCreateOperation<LocatorInfo> creator = Locator.create(
                 exampleAccessPolicyId, exampleAssetId, LocatorType.SAS);
 
@@ -52,7 +55,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorHasCorrectPayload() throws Exception {
+    public void createLocatorHasCorrectPayload() throws Exception
+    {
         LocatorRestType locatorType = (LocatorRestType) Locator.create(
                 exampleAccessPolicyId, exampleAssetId, LocatorType.SAS)
                 .getRequestContents();
@@ -66,7 +70,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorCanSetStartTime() throws Exception {
+    public void createLocatorCanSetStartTime() throws Exception
+    {
         Date now = new Date();
 
         EntityCreateOperation<LocatorInfo> creator = Locator.create(
@@ -84,7 +89,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorCanSetPath() throws Exception {
+    public void createLocatorCanSetPath() throws Exception
+    {
 
         String expectedPath = "testExpectedPath";
 
@@ -100,7 +106,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorCanSetBaseUri() throws Exception {
+    public void createLocatorCanSetBaseUri() throws Exception
+    {
 
         String expectedBaseUri = "testExpectedBaseUri";
 
@@ -116,7 +123,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void createLocatorCanSetContentAccessComponent() throws Exception {
+    public void createLocatorCanSetContentAccessComponent() throws Exception
+    {
 
         String expectedContentAccessComponent = "testExpectedContentAccessComponent";
 
@@ -133,12 +141,14 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void getLocatorGivesExpectedUri() throws Exception {
+    public void getLocatorGivesExpectedUri() throws Exception
+    {
         assertEquals(expectedLocatorUri, Locator.get(exampleLocatorId).getUri());
     }
 
     @Test
-    public void listLocatorReturnsExpectedUri() {
+    public void listLocatorReturnsExpectedUri()
+    {
         EntityListOperation<LocatorInfo> lister = Locator.list();
 
         assertEquals("Locators", lister.getUri());
@@ -147,7 +157,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void listLocatorCanTakeQueryParameters() {
+    public void listLocatorCanTakeQueryParameters()
+    {
 
         EntityListOperation<LocatorInfo> lister = Locator.list().setTop(10)
                 .setSkip(2);
@@ -158,13 +169,15 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void locatorUpdateReturnsExpectedUri() throws Exception {
+    public void locatorUpdateReturnsExpectedUri() throws Exception
+    {
         EntityUpdateOperation updater = Locator.update(exampleLocatorId);
         assertEquals(expectedLocatorUri, updater.getUri());
     }
 
     @Test
-    public void locatorUpdateCanSetStarTime() throws Exception {
+    public void locatorUpdateCanSetStarTime() throws Exception
+    {
         Date now = new Date();
 
         Date tenMinutesAgo = new Date(now.getTime() - 10 * 60 * 1000);
@@ -179,7 +192,8 @@ public class LocatorEntityTest {
     }
 
     @Test
-    public void locatorDeleteReturnsExpectedUri() throws Exception {
+    public void locatorDeleteReturnsExpectedUri() throws Exception
+    {
         EntityDeleteOperation deleter = Locator.delete(exampleLocatorId);
 
         assertEquals(expectedLocatorUri, deleter.getUri());

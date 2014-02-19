@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.models;
 /**
 * The subscription status.
 */
-public enum SubscriptionStatus {
+public enum SubscriptionStatus
+{
     Active,
     
     Disabled,

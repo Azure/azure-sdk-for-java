@@ -27,161 +27,156 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * An alert rule.
- */
-public class Rule {
+* An alert rule.
+*/
+public class Rule
+{
     private ArrayList<RuleAction> actions;
-
+    
     /**
-     * Rule actions.
-     * 
-     * @return The Actions value.
-     */
-    public ArrayList<RuleAction> getActions() {
+    * Rule actions.
+    * @return The Actions value.
+    */
+    public ArrayList<RuleAction> getActions()
+    {
         return this.actions;
     }
-
+    
     /**
-     * Rule actions.
-     * 
-     * @param actionsValue
-     *            The Actions value.
-     */
-    public void setActions(final ArrayList<RuleAction> actionsValue) {
+    * Rule actions.
+    * @param actionsValue The Actions value.
+    */
+    public void setActions(final ArrayList<RuleAction> actionsValue)
+    {
         this.actions = actionsValue;
     }
-
+    
     private RuleCondition condition;
-
+    
     /**
-     * Rule condition.
-     * 
-     * @return The Condition value.
-     */
-    public RuleCondition getCondition() {
+    * Rule condition.
+    * @return The Condition value.
+    */
+    public RuleCondition getCondition()
+    {
         return this.condition;
     }
-
+    
     /**
-     * Rule condition.
-     * 
-     * @param conditionValue
-     *            The Condition value.
-     */
-    public void setCondition(final RuleCondition conditionValue) {
+    * Rule condition.
+    * @param conditionValue The Condition value.
+    */
+    public void setCondition(final RuleCondition conditionValue)
+    {
         this.condition = conditionValue;
     }
-
+    
     private String description;
-
+    
     /**
-     * Rule description.
-     * 
-     * @return The Description value.
-     */
-    public String getDescription() {
+    * Rule description.
+    * @return The Description value.
+    */
+    public String getDescription()
+    {
         return this.description;
     }
-
+    
     /**
-     * Rule description.
-     * 
-     * @param descriptionValue
-     *            The Description value.
-     */
-    public void setDescription(final String descriptionValue) {
+    * Rule description.
+    * @param descriptionValue The Description value.
+    */
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
-
+    
     private String id;
-
+    
     /**
-     * Rule identifier.
-     * 
-     * @return The Id value.
-     */
-    public String getId() {
+    * Rule identifier.
+    * @return The Id value.
+    */
+    public String getId()
+    {
         return this.id;
     }
-
+    
     /**
-     * Rule identifier.
-     * 
-     * @param idValue
-     *            The Id value.
-     */
-    public void setId(final String idValue) {
+    * Rule identifier.
+    * @param idValue The Id value.
+    */
+    public void setId(final String idValue)
+    {
         this.id = idValue;
     }
-
+    
     private boolean isEnabled;
-
+    
     /**
-     * A flag that determines whether the rule is enabled or disabled.
-     * 
-     * @return The IsEnabled value.
-     */
-    public boolean isEnabled() {
+    * A flag that determines whether the rule is enabled or disabled.
+    * @return The IsEnabled value.
+    */
+    public boolean isEnabled()
+    {
         return this.isEnabled;
     }
-
+    
     /**
-     * A flag that determines whether the rule is enabled or disabled.
-     * 
-     * @param isEnabledValue
-     *            The IsEnabled value.
-     */
-    public void setIsEnabled(final boolean isEnabledValue) {
+    * A flag that determines whether the rule is enabled or disabled.
+    * @param isEnabledValue The IsEnabled value.
+    */
+    public void setIsEnabled(final boolean isEnabledValue)
+    {
         this.isEnabled = isEnabledValue;
     }
-
+    
     private Calendar lastUpdatedTime;
-
+    
     /**
-     * Rule last updated time.
-     * 
-     * @return The LastUpdatedTime value.
-     */
-    public Calendar getLastUpdatedTime() {
+    * Rule last updated time.
+    * @return The LastUpdatedTime value.
+    */
+    public Calendar getLastUpdatedTime()
+    {
         return this.lastUpdatedTime;
     }
-
+    
     /**
-     * Rule last updated time.
-     * 
-     * @param lastUpdatedTimeValue
-     *            The LastUpdatedTime value.
-     */
-    public void setLastUpdatedTime(final Calendar lastUpdatedTimeValue) {
+    * Rule last updated time.
+    * @param lastUpdatedTimeValue The LastUpdatedTime value.
+    */
+    public void setLastUpdatedTime(final Calendar lastUpdatedTimeValue)
+    {
         this.lastUpdatedTime = lastUpdatedTimeValue;
     }
-
+    
     private String name;
-
+    
     /**
-     * Rule name.
-     * 
-     * @return The Name value.
-     */
-    public String getName() {
+    * Rule name.
+    * @return The Name value.
+    */
+    public String getName()
+    {
         return this.name;
     }
-
+    
     /**
-     * Rule name.
-     * 
-     * @param nameValue
-     *            The Name value.
-     */
-    public void setName(final String nameValue) {
+    * Rule name.
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
-
+    
     /**
-     * Initializes a new instance of the Rule class.
-     * 
-     */
-    public Rule() {
+    * Initializes a new instance of the Rule class.
+    *
+    */
+    public Rule()
+    {
         this.actions = new ArrayList<RuleAction>();
     }
 }

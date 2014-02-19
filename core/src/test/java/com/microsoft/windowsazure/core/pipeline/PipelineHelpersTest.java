@@ -24,10 +24,12 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 
-public class PipelineHelpersTest {
+public class PipelineHelpersTest
+{
     @Test
     public void addOptionalSourceAccessConditionHeaderSuccess()
-            throws Exception {
+            throws Exception
+    {
         // Arrange
         Client client = Client.create();
         WebResource webResource = client.resource("http://www.microsoft.com");

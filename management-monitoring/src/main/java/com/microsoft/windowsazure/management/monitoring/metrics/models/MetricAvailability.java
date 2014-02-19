@@ -26,49 +26,48 @@ package com.microsoft.windowsazure.management.monitoring.metrics.models;
 import javax.xml.datatype.Duration;
 
 /**
- * Metric availability specifies the time grain (aggregation interval) and the
- * retention period for that timegrain.
- */
-public class MetricAvailability {
+* Metric availability specifies the time grain (aggregation interval) and the
+* retention period for that timegrain.
+*/
+public class MetricAvailability
+{
     private Duration retention;
-
+    
     /**
-     * The retention period for the metric at the specified timegrain.
-     * 
-     * @return The Retention value.
-     */
-    public Duration getRetention() {
+    * The retention period for the metric at the specified timegrain.
+    * @return The Retention value.
+    */
+    public Duration getRetention()
+    {
         return this.retention;
     }
-
+    
     /**
-     * The retention period for the metric at the specified timegrain.
-     * 
-     * @param retentionValue
-     *            The Retention value.
-     */
-    public void setRetention(final Duration retentionValue) {
+    * The retention period for the metric at the specified timegrain.
+    * @param retentionValue The Retention value.
+    */
+    public void setRetention(final Duration retentionValue)
+    {
         this.retention = retentionValue;
     }
-
+    
     private Duration timeGrain;
-
+    
     /**
-     * The time grain specifies the aggregation interval for the metric.
-     * 
-     * @return The TimeGrain value.
-     */
-    public Duration getTimeGrain() {
+    * The time grain specifies the aggregation interval for the metric.
+    * @return The TimeGrain value.
+    */
+    public Duration getTimeGrain()
+    {
         return this.timeGrain;
     }
-
+    
     /**
-     * The time grain specifies the aggregation interval for the metric.
-     * 
-     * @param timeGrainValue
-     *            The TimeGrain value.
-     */
-    public void setTimeGrain(final Duration timeGrainValue) {
+    * The time grain specifies the aggregation interval for the metric.
+    * @param timeGrainValue The TimeGrain value.
+    */
+    public void setTimeGrain(final Duration timeGrainValue)
+    {
         this.timeGrain = timeGrainValue;
     }
 }

@@ -30,7 +30,8 @@ package com.microsoft.windowsazure.management.compute.models;
 * for the virtual machine, you must call the Add Service Certificate operation
 * or add the certificate via the Windows Azure Management portal.
 */
-public class StoredCertificateSettings {
+public class StoredCertificateSettings
+{
     private String storeName;
     
     /**
@@ -38,7 +39,8 @@ public class StoredCertificateSettings {
     * certificate.  For example, “My”.
     * @return The StoreName value.
     */
-    public String getStoreName() {
+    public String getStoreName()
+    {
         return this.storeName;
     }
     
@@ -47,7 +49,8 @@ public class StoredCertificateSettings {
     * certificate.  For example, “My”.
     * @param storeNameValue The StoreName value.
     */
-    public void setStoreName(final String storeNameValue) {
+    public void setStoreName(final String storeNameValue)
+    {
         this.storeName = storeNameValue;
     }
     
@@ -58,7 +61,8 @@ public class StoredCertificateSettings {
     * The thumbprint must specify an existing service certificate.
     * @return The Thumbprint value.
     */
-    public String getThumbprint() {
+    public String getThumbprint()
+    {
         return this.thumbprint;
     }
     
@@ -67,7 +71,8 @@ public class StoredCertificateSettings {
     * The thumbprint must specify an existing service certificate.
     * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(final String thumbprintValue) {
+    public void setThumbprint(final String thumbprintValue)
+    {
         this.thumbprint = thumbprintValue;
     }
 }

@@ -28,20 +28,23 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Update Storage Account operation.
 */
-public class StorageAccountUpdateParameters {
+public class StorageAccountUpdateParameters
+{
     private String description;
     
     /**
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
     /**
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -61,7 +64,8 @@ public class StorageAccountUpdateParameters {
     * an extended property by setting the value to NULL.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -79,7 +83,8 @@ public class StorageAccountUpdateParameters {
     * an extended property by setting the value to NULL.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -102,7 +107,8 @@ public class StorageAccountUpdateParameters {
     * no additional charge.
     * @return The GeoReplicationEnabled value.
     */
-    public Boolean isGeoReplicationEnabled() {
+    public Boolean isGeoReplicationEnabled()
+    {
         return this.geoReplicationEnabled;
     }
     
@@ -123,7 +129,8 @@ public class StorageAccountUpdateParameters {
     * no additional charge.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(final Boolean geoReplicationEnabledValue) {
+    public void setGeoReplicationEnabled(final Boolean geoReplicationEnabledValue)
+    {
         this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
@@ -135,7 +142,8 @@ public class StorageAccountUpdateParameters {
     * identify the storage account for your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -145,7 +153,8 @@ public class StorageAccountUpdateParameters {
     * identify the storage account for your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -153,7 +162,8 @@ public class StorageAccountUpdateParameters {
     * Initializes a new instance of the StorageAccountUpdateParameters class.
     *
     */
-    public StorageAccountUpdateParameters() {
+    public StorageAccountUpdateParameters()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

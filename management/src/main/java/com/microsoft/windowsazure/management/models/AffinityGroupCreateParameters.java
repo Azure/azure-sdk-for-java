@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.models;
 /**
 * Parameters supplied to the Create Affinity Group operation.
 */
-public class AffinityGroupCreateParameters {
+public class AffinityGroupCreateParameters
+{
     private String description;
     
     /**
@@ -34,7 +35,8 @@ public class AffinityGroupCreateParameters {
     * to 1024 characters in length.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -43,7 +45,8 @@ public class AffinityGroupCreateParameters {
     * to 1024 characters in length.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -55,10 +58,14 @@ public class AffinityGroupCreateParameters {
     * affinity group if not provided.
     * @return The Label value.
     */
-    public String getLabel() {
-        if (this.label == null) {
+    public String getLabel()
+    {
+        if (this.label == null)
+        {
             return this.getName();
-        } else {
+        }
+        else
+        {
             return this.label;
         }
     }
@@ -69,7 +76,8 @@ public class AffinityGroupCreateParameters {
     * affinity group if not provided.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -80,7 +88,8 @@ public class AffinityGroupCreateParameters {
     * created. To list available locations, see the List Locations operation.
     * @return The Location value.
     */
-    public String getLocation() {
+    public String getLocation()
+    {
         return this.location;
     }
     
@@ -89,7 +98,8 @@ public class AffinityGroupCreateParameters {
     * created. To list available locations, see the List Locations operation.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue) {
+    public void setLocation(final String locationValue)
+    {
         this.location = locationValue;
     }
     
@@ -100,7 +110,8 @@ public class AffinityGroupCreateParameters {
     * subscription.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -109,7 +120,8 @@ public class AffinityGroupCreateParameters {
     * subscription.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
 }

@@ -29,14 +29,16 @@ import java.net.URI;
 /**
 * The Get Web Site Repository operation response.
 */
-public class WebSiteGetRepositoryResponse extends OperationResponse {
+public class WebSiteGetRepositoryResponse extends OperationResponse
+{
     private URI uri;
     
     /**
     * Contains the URI of the web site repository.
     * @return The Uri value.
     */
-    public URI getUri() {
+    public URI getUri()
+    {
         return this.uri;
     }
     
@@ -44,7 +46,8 @@ public class WebSiteGetRepositoryResponse extends OperationResponse {
     * Contains the URI of the web site repository.
     * @param uriValue The Uri value.
     */
-    public void setUri(final URI uriValue) {
+    public void setUri(final URI uriValue)
+    {
         this.uri = uriValue;
     }
 }

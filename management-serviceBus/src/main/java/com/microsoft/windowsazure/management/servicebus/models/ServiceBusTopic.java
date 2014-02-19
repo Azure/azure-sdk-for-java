@@ -26,14 +26,16 @@ package com.microsoft.windowsazure.management.servicebus.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ServiceBusTopic {
+public class ServiceBusTopic
+{
     private Calendar accessedAt;
     
     /**
     * The time the queue was last accessed.
     * @return The AccessedAt value.
     */
-    public Calendar getAccessedAt() {
+    public Calendar getAccessedAt()
+    {
         return this.accessedAt;
     }
     
@@ -41,7 +43,8 @@ public class ServiceBusTopic {
     * The time the queue was last accessed.
     * @param accessedAtValue The AccessedAt value.
     */
-    public void setAccessedAt(final Calendar accessedAtValue) {
+    public void setAccessedAt(final Calendar accessedAtValue)
+    {
         this.accessedAt = accessedAtValue;
     }
     
@@ -53,7 +56,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The AuthorizationRules value.
     */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
+    {
         return this.authorizationRules;
     }
     
@@ -63,7 +67,8 @@ public class ServiceBusTopic {
     * more information)
     * @param authorizationRulesValue The AuthorizationRules value.
     */
-    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {
+    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
+    {
         this.authorizationRules = authorizationRulesValue;
     }
     
@@ -73,7 +78,8 @@ public class ServiceBusTopic {
     * Implemented.
     * @return The AutoDeleteOnIdle value.
     */
-    public String getAutoDeleteOnIdle() {
+    public String getAutoDeleteOnIdle()
+    {
         return this.autoDeleteOnIdle;
     }
     
@@ -81,7 +87,8 @@ public class ServiceBusTopic {
     * Implemented.
     * @param autoDeleteOnIdleValue The AutoDeleteOnIdle value.
     */
-    public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue) {
+    public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue)
+    {
         this.autoDeleteOnIdle = autoDeleteOnIdleValue;
     }
     
@@ -91,7 +98,8 @@ public class ServiceBusTopic {
     * Current queue statistics.
     * @return The CountDetails value.
     */
-    public CountDetails getCountDetails() {
+    public CountDetails getCountDetails()
+    {
         return this.countDetails;
     }
     
@@ -99,7 +107,8 @@ public class ServiceBusTopic {
     * Current queue statistics.
     * @param countDetailsValue The CountDetails value.
     */
-    public void setCountDetails(final CountDetails countDetailsValue) {
+    public void setCountDetails(final CountDetails countDetailsValue)
+    {
         this.countDetails = countDetailsValue;
     }
     
@@ -109,7 +118,8 @@ public class ServiceBusTopic {
     * The time the queue was created at.
     * @return The CreatedAt value.
     */
-    public Calendar getCreatedAt() {
+    public Calendar getCreatedAt()
+    {
         return this.createdAt;
     }
     
@@ -117,7 +127,8 @@ public class ServiceBusTopic {
     * The time the queue was created at.
     * @param createdAtValue The CreatedAt value.
     */
-    public void setCreatedAt(final Calendar createdAtValue) {
+    public void setCreatedAt(final Calendar createdAtValue)
+    {
         this.createdAt = createdAtValue;
     }
     
@@ -135,7 +146,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The DefaultMessageTimeToLive value.
     */
-    public String getDefaultMessageTimeToLive() {
+    public String getDefaultMessageTimeToLive()
+    {
         return this.defaultMessageTimeToLive;
     }
     
@@ -151,7 +163,8 @@ public class ServiceBusTopic {
     * more information)
     * @param defaultMessageTimeToLiveValue The DefaultMessageTimeToLive value.
     */
-    public void setDefaultMessageTimeToLive(final String defaultMessageTimeToLiveValue) {
+    public void setDefaultMessageTimeToLive(final String defaultMessageTimeToLiveValue)
+    {
         this.defaultMessageTimeToLive = defaultMessageTimeToLiveValue;
     }
     
@@ -164,7 +177,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The DuplicateDetectionHistoryTimeWindow value.
     */
-    public String getDuplicateDetectionHistoryTimeWindow() {
+    public String getDuplicateDetectionHistoryTimeWindow()
+    {
         return this.duplicateDetectionHistoryTimeWindow;
     }
     
@@ -176,7 +190,8 @@ public class ServiceBusTopic {
     * @param duplicateDetectionHistoryTimeWindowValue The
     * DuplicateDetectionHistoryTimeWindow value.
     */
-    public void setDuplicateDetectionHistoryTimeWindow(final String duplicateDetectionHistoryTimeWindowValue) {
+    public void setDuplicateDetectionHistoryTimeWindow(final String duplicateDetectionHistoryTimeWindowValue)
+    {
         this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindowValue;
     }
     
@@ -192,7 +207,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The EnableBatchedOperations value.
     */
-    public boolean isEnableBatchedOperations() {
+    public boolean isEnableBatchedOperations()
+    {
         return this.enableBatchedOperations;
     }
     
@@ -206,7 +222,8 @@ public class ServiceBusTopic {
     * more information)
     * @param enableBatchedOperationsValue The EnableBatchedOperations value.
     */
-    public void setEnableBatchedOperations(final boolean enableBatchedOperationsValue) {
+    public void setEnableBatchedOperations(final boolean enableBatchedOperationsValue)
+    {
         this.enableBatchedOperations = enableBatchedOperationsValue;
     }
     
@@ -216,7 +233,8 @@ public class ServiceBusTopic {
     * The current availability status of the topic.
     * @return The EntityAvailabilityStatus value.
     */
-    public String getEntityAvailabilityStatus() {
+    public String getEntityAvailabilityStatus()
+    {
         return this.entityAvailabilityStatus;
     }
     
@@ -224,7 +242,8 @@ public class ServiceBusTopic {
     * The current availability status of the topic.
     * @param entityAvailabilityStatusValue The EntityAvailabilityStatus value.
     */
-    public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue) {
+    public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue)
+    {
         this.entityAvailabilityStatus = entityAvailabilityStatusValue;
     }
     
@@ -236,7 +255,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The FilteringMessagesBeforePublishing value.
     */
-    public boolean isFilteringMessagesBeforePublishing() {
+    public boolean isFilteringMessagesBeforePublishing()
+    {
         return this.filteringMessagesBeforePublishing;
     }
     
@@ -247,7 +267,8 @@ public class ServiceBusTopic {
     * @param filteringMessagesBeforePublishingValue The
     * FilteringMessagesBeforePublishing value.
     */
-    public void setFilteringMessagesBeforePublishing(final boolean filteringMessagesBeforePublishingValue) {
+    public void setFilteringMessagesBeforePublishing(final boolean filteringMessagesBeforePublishingValue)
+    {
         this.filteringMessagesBeforePublishing = filteringMessagesBeforePublishingValue;
     }
     
@@ -259,7 +280,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The IsAnonymousAccessible value.
     */
-    public boolean isAnonymousAccessible() {
+    public boolean isAnonymousAccessible()
+    {
         return this.isAnonymousAccessible;
     }
     
@@ -269,7 +291,8 @@ public class ServiceBusTopic {
     * more information)
     * @param isAnonymousAccessibleValue The IsAnonymousAccessible value.
     */
-    public void setIsAnonymousAccessible(final boolean isAnonymousAccessibleValue) {
+    public void setIsAnonymousAccessible(final boolean isAnonymousAccessibleValue)
+    {
         this.isAnonymousAccessible = isAnonymousAccessibleValue;
     }
     
@@ -289,7 +312,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The MaxSizeInMegabytes value.
     */
-    public int getMaxSizeInMegabytes() {
+    public int getMaxSizeInMegabytes()
+    {
         return this.maxSizeInMegabytes;
     }
     
@@ -307,7 +331,8 @@ public class ServiceBusTopic {
     * more information)
     * @param maxSizeInMegabytesValue The MaxSizeInMegabytes value.
     */
-    public void setMaxSizeInMegabytes(final int maxSizeInMegabytesValue) {
+    public void setMaxSizeInMegabytes(final int maxSizeInMegabytesValue)
+    {
         this.maxSizeInMegabytes = maxSizeInMegabytesValue;
     }
     
@@ -317,7 +342,8 @@ public class ServiceBusTopic {
     * The name of the topic.
     * @return The Name value.
     */
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
     
@@ -325,7 +351,8 @@ public class ServiceBusTopic {
     * The name of the topic.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue) {
+    public void setName(final String nameValue)
+    {
         this.name = nameValue;
     }
     
@@ -339,7 +366,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The RequiresDuplicateDetection value.
     */
-    public boolean isRequiresDuplicateDetection() {
+    public boolean isRequiresDuplicateDetection()
+    {
         return this.requiresDuplicateDetection;
     }
     
@@ -352,7 +380,8 @@ public class ServiceBusTopic {
     * @param requiresDuplicateDetectionValue The RequiresDuplicateDetection
     * value.
     */
-    public void setRequiresDuplicateDetection(final boolean requiresDuplicateDetectionValue) {
+    public void setRequiresDuplicateDetection(final boolean requiresDuplicateDetectionValue)
+    {
         this.requiresDuplicateDetection = requiresDuplicateDetectionValue;
     }
     
@@ -365,7 +394,8 @@ public class ServiceBusTopic {
     * for more information)
     * @return The SizeInBytes value.
     */
-    public int getSizeInBytes() {
+    public int getSizeInBytes()
+    {
         return this.sizeInBytes;
     }
     
@@ -376,7 +406,8 @@ public class ServiceBusTopic {
     * for more information)
     * @param sizeInBytesValue The SizeInBytes value.
     */
-    public void setSizeInBytes(final int sizeInBytesValue) {
+    public void setSizeInBytes(final int sizeInBytesValue)
+    {
         this.sizeInBytes = sizeInBytesValue;
     }
     
@@ -389,7 +420,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The Status value.
     */
-    public String getStatus() {
+    public String getStatus()
+    {
         return this.status;
     }
     
@@ -400,7 +432,8 @@ public class ServiceBusTopic {
     * more information)
     * @param statusValue The Status value.
     */
-    public void setStatus(final String statusValue) {
+    public void setStatus(final String statusValue)
+    {
         this.status = statusValue;
     }
     
@@ -410,7 +443,8 @@ public class ServiceBusTopic {
     * The current number of subscriptions to the topic.
     * @return The SubscriptionCount value.
     */
-    public int getSubscriptionCount() {
+    public int getSubscriptionCount()
+    {
         return this.subscriptionCount;
     }
     
@@ -418,7 +452,8 @@ public class ServiceBusTopic {
     * The current number of subscriptions to the topic.
     * @param subscriptionCountValue The SubscriptionCount value.
     */
-    public void setSubscriptionCount(final int subscriptionCountValue) {
+    public void setSubscriptionCount(final int subscriptionCountValue)
+    {
         this.subscriptionCount = subscriptionCountValue;
     }
     
@@ -430,7 +465,8 @@ public class ServiceBusTopic {
     * more information)
     * @return The SupportOrdering value.
     */
-    public boolean isSupportOrdering() {
+    public boolean isSupportOrdering()
+    {
         return this.supportOrdering;
     }
     
@@ -440,7 +476,8 @@ public class ServiceBusTopic {
     * more information)
     * @param supportOrderingValue The SupportOrdering value.
     */
-    public void setSupportOrdering(final boolean supportOrderingValue) {
+    public void setSupportOrdering(final boolean supportOrderingValue)
+    {
         this.supportOrdering = supportOrderingValue;
     }
     
@@ -450,7 +487,8 @@ public class ServiceBusTopic {
     * The time the queue was last updated.
     * @return The UpdatedAt value.
     */
-    public Calendar getUpdatedAt() {
+    public Calendar getUpdatedAt()
+    {
         return this.updatedAt;
     }
     
@@ -458,7 +496,8 @@ public class ServiceBusTopic {
     * The time the queue was last updated.
     * @param updatedAtValue The UpdatedAt value.
     */
-    public void setUpdatedAt(final Calendar updatedAtValue) {
+    public void setUpdatedAt(final Calendar updatedAtValue)
+    {
         this.updatedAt = updatedAtValue;
     }
     
@@ -466,7 +505,8 @@ public class ServiceBusTopic {
     * Initializes a new instance of the ServiceBusTopic class.
     *
     */
-    public ServiceBusTopic() {
+    public ServiceBusTopic()
+    {
         this.authorizationRules = new ArrayList<ServiceBusSharedAccessAuthorizationRule>();
     }
 }

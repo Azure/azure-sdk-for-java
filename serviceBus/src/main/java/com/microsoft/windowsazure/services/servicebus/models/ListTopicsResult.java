@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * Represents the result of a <code>listTopics</code> operation.
  */
-public class ListTopicsResult {
+public class ListTopicsResult
+{
 
     private List<TopicInfo> items;
 
@@ -29,7 +30,8 @@ public class ListTopicsResult {
      * @return A <code>List</code> of {@link TopicInfo} objects that represent
      *         the items in the result list.
      */
-    public List<TopicInfo> getItems() {
+    public List<TopicInfo> getItems()
+    {
         return items;
     }
 
@@ -40,7 +42,8 @@ public class ListTopicsResult {
      *            A <code>List</code> object that contains the {@link TopicInfo}
      *            objects assigned as the value of the result.
      */
-    public void setItems(List<TopicInfo> items) {
+    public void setItems(List<TopicInfo> items)
+    {
         this.items = items;
     }
 }

@@ -20,7 +20,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
 /**
  * The Class Ipv4.
  */
-public class Ipv4 {
+public class Ipv4
+{
 
     /** The name. */
     private String name;
@@ -34,12 +35,14 @@ public class Ipv4 {
      * @return the name
      */
     @JsonProperty("Name")
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
     @JsonProperty("Name")
-    public Ipv4 setName(String name) {
+    public Ipv4 setName(String name)
+    {
         this.name = name;
         return this;
     }
@@ -50,12 +53,14 @@ public class Ipv4 {
      * @return the ip
      */
     @JsonProperty("IP")
-    public String getIp() {
+    public String getIp()
+    {
         return this.ip;
     }
 
     @JsonProperty("IP")
-    public Ipv4 setIp(String ip) {
+    public Ipv4 setIp(String ip)
+    {
         this.ip = ip;
         return this;
     }

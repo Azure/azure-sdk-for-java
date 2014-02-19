@@ -21,17 +21,19 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class MetricsService {
-    private MetricsService() {
+public class MetricsService
+{
+    private MetricsService()
+    {
         // class is not instantiated
     }
 
     /**
      * Creates an instance of the <code>MetricsClient</code> API.
-     * 
      * @return An instance of the <code>MetricsClient</code> API.
      */
-    public static MetricsClient create() {
+    public static MetricsClient create()
+    {
         return Configuration.getInstance().create(MetricsClient.class);
     }
 
@@ -39,38 +41,38 @@ public class MetricsService {
      * Creates an instance of the <code>MetricsClient</code> API using the
      * specified configuration.
      * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>MetricsClient</code> API.
      */
-    public static MetricsClient create(final Configuration config) {
+    public static MetricsClient create(final Configuration config)
+    {
         return config.create(MetricsClient.class);
     }
 
     /**
      * Creates an instance of the <code>MetricsClient</code> API.
      * 
-     * @param profile
-     *            A <code>String</code> object that representing the profile of
-     *            the service management service.
+     * @param profile A <code>String</code> object that representing the profile
+     * of the service management service.
      * @return An instance of the <code>MetricsClient</code> API.
      */
-    public static MetricsClient create(final String profile) {
+    public static MetricsClient create(final String profile)
+    {
         return Configuration.getInstance().create(profile, MetricsClient.class);
     }
 
     /**
      * Creates an instance of the <code>MetricsClient</code> API using the
      * specified configuration.
-     * 
-     * @param config
-     *            A <code>Configuration</code> object that represents the
-     *            configuration for the service management.
+     *
+     * @param config A <code>Configuration</code> object that represents the
+     * configuration for the service management.
      * @return An instance of the <code>MetricsClient</code> API.
      */
     public static MetricsClient create(final String profile,
-            final Configuration config) {
+            final Configuration config)
+    {
         return config.create(profile, MetricsClient.class);
     }
 }

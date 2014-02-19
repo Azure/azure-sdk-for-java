@@ -29,14 +29,16 @@ import java.util.Calendar;
 /**
 * The Get Management Certificate operation response.
 */
-public class ManagementCertificateGetResponse extends OperationResponse {
+public class ManagementCertificateGetResponse extends OperationResponse
+{
     private Calendar created;
     
     /**
     * The time that the management certificate was created, in UTC.
     * @return The Created value.
     */
-    public Calendar getCreated() {
+    public Calendar getCreated()
+    {
         return this.created;
     }
     
@@ -44,7 +46,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * The time that the management certificate was created, in UTC.
     * @param createdValue The Created value.
     */
-    public void setCreated(final Calendar createdValue) {
+    public void setCreated(final Calendar createdValue)
+    {
         this.created = createdValue;
     }
     
@@ -55,7 +58,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * certificate in .cer format.
     * @return The Data value.
     */
-    public byte[] getData() {
+    public byte[] getData()
+    {
         return this.data;
     }
     
@@ -64,7 +68,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * certificate in .cer format.
     * @param dataValue The Data value.
     */
-    public void setData(final byte[] dataValue) {
+    public void setData(final byte[] dataValue)
+    {
         this.data = dataValue;
     }
     
@@ -74,7 +79,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * A base64 representation of the management certificate public key.
     * @return The PublicKey value.
     */
-    public byte[] getPublicKey() {
+    public byte[] getPublicKey()
+    {
         return this.publicKey;
     }
     
@@ -82,7 +88,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * A base64 representation of the management certificate public key.
     * @param publicKeyValue The PublicKey value.
     */
-    public void setPublicKey(final byte[] publicKeyValue) {
+    public void setPublicKey(final byte[] publicKeyValue)
+    {
         this.publicKey = publicKeyValue;
     }
     
@@ -93,7 +100,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * thumb print is the same value as the one specified by the request URI.
     * @return The Thumbprint value.
     */
-    public String getThumbprint() {
+    public String getThumbprint()
+    {
         return this.thumbprint;
     }
     
@@ -102,7 +110,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     * thumb print is the same value as the one specified by the request URI.
     * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(final String thumbprintValue) {
+    public void setThumbprint(final String thumbprintValue)
+    {
         this.thumbprint = thumbprintValue;
     }
 }

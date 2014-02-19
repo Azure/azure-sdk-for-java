@@ -22,10 +22,12 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetFileType;
 
-public class AssetFileInfoTest {
+public class AssetFileInfoTest
+{
 
     @Test
-    public void testGetSetId() {
+    public void testGetSetId()
+    {
         String expectedId = "testId";
         AssetFileInfo file = new AssetFileInfo(null,
                 new AssetFileType().setId(expectedId));
@@ -37,7 +39,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetName() {
+    public void testGetSetName()
+    {
         String expectedName = "testName";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setName(expectedName));
@@ -49,7 +52,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetContentFileSize() {
+    public void testGetSetContentFileSize()
+    {
         // Arrange
         Long expectedContentFileSize = 1234l;
         AssetFileInfo fileInfo = new AssetFileInfo(null,
@@ -64,7 +68,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetParentAssetId() {
+    public void testGetSetParentAssetId()
+    {
         String expectedParentAssetId = "testParentAssetId";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setParentAssetId(expectedParentAssetId));
@@ -75,7 +80,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionVersion() {
+    public void testGetSetEncryptionVersion()
+    {
         String expectedEncryptionVersion = "testEncryptionVersion";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType()
@@ -87,7 +93,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionScheme() {
+    public void testGetSetEncryptionScheme()
+    {
         // Arrange
         String expectedEncryptionScheme = "testEncryptionScheme";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
@@ -102,7 +109,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetIsEncrypted() {
+    public void testGetSetIsEncrypted()
+    {
         // Arrange
         Boolean expectedIsEncrypted = true;
         AssetFileInfo fileInfo = new AssetFileInfo(null,
@@ -116,7 +124,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetEncryptionKeyId() {
+    public void testGetSetEncryptionKeyId()
+    {
         String expectedEncryptionKeyId = "testEncryptionKeyId";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setEncryptionKeyId(expectedEncryptionKeyId));
@@ -127,7 +136,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetInitializationVector() {
+    public void testGetSetInitializationVector()
+    {
         String expectedInitializationVector = "testInitializationVector";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType()
@@ -140,7 +150,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetIsPrimary() {
+    public void testGetSetIsPrimary()
+    {
         // Arrange
         Boolean expectedIsPrimary = true;
         AssetFileInfo fileInfo = new AssetFileInfo(null,
@@ -154,7 +165,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetLastModified() {
+    public void testGetSetLastModified()
+    {
         Date expectedLastModified = new Date();
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setLastModified(expectedLastModified));
@@ -165,7 +177,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetCreated() {
+    public void testGetSetCreated()
+    {
         Date expectedCreated = new Date();
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setCreated(expectedCreated));
@@ -176,7 +189,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetMimeType() {
+    public void testGetSetMimeType()
+    {
         String expectedMimeType = "testMimeType";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setMimeType(expectedMimeType));
@@ -187,7 +201,8 @@ public class AssetFileInfoTest {
     }
 
     @Test
-    public void testGetSetContentChecksum() {
+    public void testGetSetContentChecksum()
+    {
         String expectedContentChecksum = "testContentChecksum";
         AssetFileInfo fileInfo = new AssetFileInfo(null,
                 new AssetFileType().setContentChecksum(expectedContentChecksum));

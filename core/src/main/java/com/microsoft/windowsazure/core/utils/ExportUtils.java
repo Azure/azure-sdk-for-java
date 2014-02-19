@@ -21,14 +21,18 @@ import java.util.Map;
  * Helper functions useful when creating Exports classses.
  * 
  */
-public abstract class ExportUtils {
+public abstract class ExportUtils
+{
 
-    private static String normalizeProfile(String profile) {
-        if (profile == null || profile.equals("")) {
+    private static String normalizeProfile(String profile)
+    {
+        if (profile == null || profile.equals(""))
+        {
             return "";
         }
 
-        if (profile.endsWith(".")) {
+        if (profile.endsWith("."))
+        {
             return profile;
         }
 
@@ -48,10 +52,12 @@ public abstract class ExportUtils {
      * @return the property value, or null if it is not set.
      */
     public static Object getPropertyIfExists(String profile,
-            Map<String, Object> properties, String propertyName) {
+            Map<String, Object> properties, String propertyName)
+    {
         String fullPropertyName = normalizeProfile(profile) + propertyName;
 
-        if (properties.containsKey(fullPropertyName)) {
+        if (properties.containsKey(fullPropertyName))
+        {
             return properties.get(fullPropertyName);
         }
         return null;

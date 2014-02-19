@@ -26,12 +26,16 @@ import org.xml.sax.InputSource;
 /**
  * 
  */
-class XmlGoalStateDeserializer {
-    public XmlGoalStateDeserializer() {
+class XmlGoalStateDeserializer
+{
+    public XmlGoalStateDeserializer()
+    {
     }
 
-    public GoalState deserialize(String document) {
-        try {
+    public GoalState deserialize(String document)
+    {
+        try
+        {
             JAXBContext context = JAXBContext.newInstance(GoalStateInfo.class
                     .getPackage().getName());
             Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -48,7 +52,8 @@ class XmlGoalStateDeserializer {
                     goalStateInfo.getDeadline(),
                     goalStateInfo.getCurrentStateEndpoint());
 
-        } catch (JAXBException e) {
+        } catch (JAXBException e)
+        {
             throw new RuntimeException(e);
         }
     }

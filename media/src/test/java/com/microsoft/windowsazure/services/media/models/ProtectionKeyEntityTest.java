@@ -24,13 +24,16 @@ import org.junit.Test;
 /**
  * Tests for the methods and factories of the ProtectionKey entity.
  */
-public class ProtectionKeyEntityTest {
+public class ProtectionKeyEntityTest
+{
 
-    public ProtectionKeyEntityTest() throws Exception {
+    public ProtectionKeyEntityTest() throws Exception
+    {
     }
 
     @Test
-    public void ProtectionKeyIdReturnsPayloadWithTheRightProtectionKeyType() {
+    public void ProtectionKeyIdReturnsPayloadWithTheRightProtectionKeyType()
+    {
         List<String> contentKeyTypeArray = ProtectionKey
                 .getProtectionKeyId(ContentKeyType.StorageEncryption)
                 .getQueryParameters().get("contentKeyType");
@@ -41,7 +44,8 @@ public class ProtectionKeyEntityTest {
     }
 
     @Test
-    public void ProtectionKeyReturnsPayloadWithTheRightProtectionKeyId() {
+    public void ProtectionKeyReturnsPayloadWithTheRightProtectionKeyId()
+    {
         String expectedProtectionKeyId = "expectedProtectionKey";
         String actualProtectionKeyId = ProtectionKey
                 .getProtectionKey(expectedProtectionKeyId).getQueryParameters()

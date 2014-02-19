@@ -53,12 +53,14 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
  * for sending to the Media Services REST endpoints.
  * 
  */
-public class ODataAtomMarshaller {
+public class ODataAtomMarshaller
+{
     private final Marshaller marshaller;
     private final DocumentBuilder documentBuilder;
 
     public ODataAtomMarshaller() throws JAXBException,
-            ParserConfigurationException {
+            ParserConfigurationException
+    {
         JAXBContext context = JAXBContext.newInstance(getMarshalledClasses(),
                 null);
         marshaller = context.createMarshaller();
@@ -78,7 +80,8 @@ public class ODataAtomMarshaller {
      * @throws JAXBException
      *             if content is malformed/not marshallable
      */
-    public Document marshalEntry(Object content) throws JAXBException {
+    public Document marshalEntry(Object content) throws JAXBException
+    {
         JAXBElement<EntryType> entryElement = createEntry(content);
 
         Document doc = documentBuilder.newDocument();
@@ -102,19 +105,22 @@ public class ODataAtomMarshaller {
      *             if content is malformed/not marshallable
      */
     public void marshalEntry(Object content, OutputStream stream)
-            throws JAXBException {
+            throws JAXBException
+    {
         marshaller.marshal(createEntry(content), stream);
     }
 
     public void marshalEntryType(EntryType entryType, OutputStream stream)
-            throws JAXBException {
+            throws JAXBException
+    {
         marshaller.marshal(new JAXBElement<EntryType>(new QName(
                 Constants.ATOM_NS, "entry"), EntryType.class, entryType),
                 stream);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private JAXBElement<EntryType> createEntry(Object content) {
+    private JAXBElement<EntryType> createEntry(Object content)
+    {
         ContentType atomContent = new ContentType();
         EntryType atomEntry = new EntryType();
 
@@ -134,7 +140,8 @@ public class ODataAtomMarshaller {
         return entryElement;
     }
 
-    private static Class<?>[] getMarshalledClasses() {
+    private static Class<?>[] getMarshalledClasses()
+    {
         List<Class<?>> classes = new ArrayList<Class<?>>();
         classes.add(AccessPolicyType.class);
         classes.add(AssetType.class);

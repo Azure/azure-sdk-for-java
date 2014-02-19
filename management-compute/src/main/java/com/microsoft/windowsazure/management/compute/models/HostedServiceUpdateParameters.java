@@ -28,7 +28,8 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Update Hosted Service operation.
 */
-public class HostedServiceUpdateParameters {
+public class HostedServiceUpdateParameters
+{
     private String description;
     
     /**
@@ -37,7 +38,8 @@ public class HostedServiceUpdateParameters {
     * or Description, or for both.
     * @return The Description value.
     */
-    public String getDescription() {
+    public String getDescription()
+    {
         return this.description;
     }
     
@@ -47,7 +49,8 @@ public class HostedServiceUpdateParameters {
     * or Description, or for both.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue) {
+    public void setDescription(final String descriptionValue)
+    {
         this.description = descriptionValue;
     }
     
@@ -66,7 +69,8 @@ public class HostedServiceUpdateParameters {
     * maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties() {
+    public HashMap<String, String> getExtendedProperties()
+    {
         return this.extendedProperties;
     }
     
@@ -83,7 +87,8 @@ public class HostedServiceUpdateParameters {
     * maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
+    {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -97,7 +102,8 @@ public class HostedServiceUpdateParameters {
     * your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel() {
+    public String getLabel()
+    {
         return this.label;
     }
     
@@ -109,7 +115,8 @@ public class HostedServiceUpdateParameters {
     * your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue) {
+    public void setLabel(final String labelValue)
+    {
         this.label = labelValue;
     }
     
@@ -117,7 +124,8 @@ public class HostedServiceUpdateParameters {
     * Initializes a new instance of the HostedServiceUpdateParameters class.
     *
     */
-    public HostedServiceUpdateParameters() {
+    public HostedServiceUpdateParameters()
+    {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

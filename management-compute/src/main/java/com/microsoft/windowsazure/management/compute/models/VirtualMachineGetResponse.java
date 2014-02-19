@@ -29,7 +29,8 @@ import java.util.ArrayList;
 /**
 * The Get Virtual Machine operation response.
 */
-public class VirtualMachineGetResponse extends OperationResponse {
+public class VirtualMachineGetResponse extends OperationResponse
+{
     private String availabilitySetName;
     
     /**
@@ -39,7 +40,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * allocated to different nodes to maximize availability.
     * @return The AvailabilitySetName value.
     */
-    public String getAvailabilitySetName() {
+    public String getAvailabilitySetName()
+    {
         return this.availabilitySetName;
     }
     
@@ -50,7 +52,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * allocated to different nodes to maximize availability.
     * @param availabilitySetNameValue The AvailabilitySetName value.
     */
-    public void setAvailabilitySetName(final String availabilitySetNameValue) {
+    public void setAvailabilitySetName(final String availabilitySetNameValue)
+    {
         this.availabilitySetName = availabilitySetNameValue;
     }
     
@@ -61,7 +64,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * application configuration settings.
     * @return The ConfigurationSets value.
     */
-    public ArrayList<ConfigurationSet> getConfigurationSets() {
+    public ArrayList<ConfigurationSet> getConfigurationSets()
+    {
         return this.configurationSets;
     }
     
@@ -70,7 +74,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * application configuration settings.
     * @param configurationSetsValue The ConfigurationSets value.
     */
-    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue) {
+    public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue)
+    {
         this.configurationSets = configurationSetsValue;
     }
     
@@ -81,7 +86,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * the virtual machine.
     * @return The DataVirtualHardDisks value.
     */
-    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
+    public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks()
+    {
         return this.dataVirtualHardDisks;
     }
     
@@ -90,7 +96,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * the virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
-    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
+    public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue)
+    {
         this.dataVirtualHardDisks = dataVirtualHardDisksValue;
     }
     
@@ -101,7 +108,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * listener for WinRM.
     * @return The DefaultWinRmCertificateThumbprint value.
     */
-    public String getDefaultWinRmCertificateThumbprint() {
+    public String getDefaultWinRmCertificateThumbprint()
+    {
         return this.defaultWinRmCertificateThumbprint;
     }
     
@@ -111,7 +119,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * @param defaultWinRmCertificateThumbprintValue The
     * DefaultWinRmCertificateThumbprint value.
     */
-    public void setDefaultWinRmCertificateThumbprint(final String defaultWinRmCertificateThumbprintValue) {
+    public void setDefaultWinRmCertificateThumbprint(final String defaultWinRmCertificateThumbprintValue)
+    {
         this.defaultWinRmCertificateThumbprint = defaultWinRmCertificateThumbprintValue;
     }
     
@@ -122,7 +131,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * running.
     * @return The OsVersion value.
     */
-    public String getOsVersion() {
+    public String getOsVersion()
+    {
         return this.osVersion;
     }
     
@@ -131,7 +141,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * running.
     * @param osVersionValue The OsVersion value.
     */
-    public void setOsVersion(final String osVersionValue) {
+    public void setOsVersion(final String osVersionValue)
+    {
         this.osVersion = osVersionValue;
     }
     
@@ -142,7 +153,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
-    public OSVirtualHardDisk getOSVirtualHardDisk() {
+    public OSVirtualHardDisk getOSVirtualHardDisk()
+    {
         return this.oSVirtualHardDisk;
     }
     
@@ -151,7 +163,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
-    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
+    public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue)
+    {
         this.oSVirtualHardDisk = oSVirtualHardDiskValue;
     }
     
@@ -161,7 +174,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * The name for the virtual machine. The name is unique within Windows Azure.
     * @return The RoleName value.
     */
-    public String getRoleName() {
+    public String getRoleName()
+    {
         return this.roleName;
     }
     
@@ -169,7 +183,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * The name for the virtual machine. The name is unique within Windows Azure.
     * @param roleNameValue The RoleName value.
     */
-    public void setRoleName(final String roleNameValue) {
+    public void setRoleName(final String roleNameValue)
+    {
         this.roleName = roleNameValue;
     }
     
@@ -179,7 +194,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * The size of the virtual machine.
     * @return The RoleSize value.
     */
-    public String getRoleSize() {
+    public String getRoleSize()
+    {
         return this.roleSize;
     }
     
@@ -187,7 +203,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * The size of the virtual machine.
     * @param roleSizeValue The RoleSize value.
     */
-    public void setRoleSize(final String roleSizeValue) {
+    public void setRoleSize(final String roleSizeValue)
+    {
         this.roleSize = roleSizeValue;
     }
     
@@ -198,7 +215,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * PersistentVMRole.
     * @return The RoleType value.
     */
-    public VirtualMachineRoleType getRoleType() {
+    public VirtualMachineRoleType getRoleType()
+    {
         return this.roleType;
     }
     
@@ -207,7 +225,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * PersistentVMRole.
     * @param roleTypeValue The RoleType value.
     */
-    public void setRoleType(final VirtualMachineRoleType roleTypeValue) {
+    public void setRoleType(final VirtualMachineRoleType roleTypeValue)
+    {
         this.roleType = roleTypeValue;
     }
     
@@ -215,7 +234,8 @@ public class VirtualMachineGetResponse extends OperationResponse {
     * Initializes a new instance of the VirtualMachineGetResponse class.
     *
     */
-    public VirtualMachineGetResponse() {
+    public VirtualMachineGetResponse()
+    {
         super();
         this.configurationSets = new ArrayList<ConfigurationSet>();
         this.dataVirtualHardDisks = new ArrayList<DataVirtualHardDisk>();
