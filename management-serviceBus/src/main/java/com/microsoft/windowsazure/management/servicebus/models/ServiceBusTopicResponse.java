@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * A response to a request for a particular topic.
 */
-public class ServiceBusTopicResponse extends OperationResponse
-{
+public class ServiceBusTopicResponse extends OperationResponse {
     private ServiceBusTopic topic;
     
     /**
     * The requested topic.
     * @return The Topic value.
     */
-    public ServiceBusTopic getTopic()
-    {
+    public ServiceBusTopic getTopic() {
         return this.topic;
     }
     
@@ -45,8 +43,7 @@ public class ServiceBusTopicResponse extends OperationResponse
     * The requested topic.
     * @param topicValue The Topic value.
     */
-    public void setTopic(final ServiceBusTopic topicValue)
-    {
+    public void setTopic(final ServiceBusTopic topicValue) {
         this.topic = topicValue;
     }
 }

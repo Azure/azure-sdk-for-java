@@ -43,8 +43,7 @@ import org.xml.sax.SAXException;
 /**
 * Operations for managing web spaces beneath your subscription.
 */
-public interface WebSpaceOperations
-{
+public interface WebSpaceOperations {
     /**
     * Creates a source control user allowed to publish to this web space.
     *

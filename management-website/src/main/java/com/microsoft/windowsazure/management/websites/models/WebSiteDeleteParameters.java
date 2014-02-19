@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The Delete Web Site operation parameters.
 */
-public class WebSiteDeleteParameters
-{
+public class WebSiteDeleteParameters {
     private boolean deleteAllSlots;
     
     /**
     * Delete all slots for the web site.
     * @return The DeleteAllSlots value.
     */
-    public boolean isDeleteAllSlots()
-    {
+    public boolean isDeleteAllSlots() {
         return this.deleteAllSlots;
     }
     
@@ -43,8 +41,7 @@ public class WebSiteDeleteParameters
     * Delete all slots for the web site.
     * @param deleteAllSlotsValue The DeleteAllSlots value.
     */
-    public void setDeleteAllSlots(final boolean deleteAllSlotsValue)
-    {
+    public void setDeleteAllSlots(final boolean deleteAllSlotsValue) {
         this.deleteAllSlots = deleteAllSlotsValue;
     }
     
@@ -55,8 +52,7 @@ public class WebSiteDeleteParameters
     * delete the server farm.
     * @return The DeleteEmptyServerFarm value.
     */
-    public boolean isDeleteEmptyServerFarm()
-    {
+    public boolean isDeleteEmptyServerFarm() {
         return this.deleteEmptyServerFarm;
     }
     
@@ -65,8 +61,7 @@ public class WebSiteDeleteParameters
     * delete the server farm.
     * @param deleteEmptyServerFarmValue The DeleteEmptyServerFarm value.
     */
-    public void setDeleteEmptyServerFarm(final boolean deleteEmptyServerFarmValue)
-    {
+    public void setDeleteEmptyServerFarm(final boolean deleteEmptyServerFarmValue) {
         this.deleteEmptyServerFarm = deleteEmptyServerFarmValue;
     }
     
@@ -76,8 +71,7 @@ public class WebSiteDeleteParameters
     * Delete the metrics for the web site.
     * @return The DeleteMetrics value.
     */
-    public boolean isDeleteMetrics()
-    {
+    public boolean isDeleteMetrics() {
         return this.deleteMetrics;
     }
     
@@ -85,8 +79,7 @@ public class WebSiteDeleteParameters
     * Delete the metrics for the web site.
     * @param deleteMetricsValue The DeleteMetrics value.
     */
-    public void setDeleteMetrics(final boolean deleteMetricsValue)
-    {
+    public void setDeleteMetrics(final boolean deleteMetricsValue) {
         this.deleteMetrics = deleteMetricsValue;
     }
 }

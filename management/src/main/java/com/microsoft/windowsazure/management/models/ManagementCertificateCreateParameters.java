@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.models;
 /**
 * Parameters supplied to the Create Management Certificate operation.
 */
-public class ManagementCertificateCreateParameters
-{
+public class ManagementCertificateCreateParameters {
     private byte[] data;
     
     /**
     * The certificate’s raw data in base-64 encoded .cer format.
     * @return The Data value.
     */
-    public byte[] getData()
-    {
+    public byte[] getData() {
         return this.data;
     }
     
@@ -43,8 +41,7 @@ public class ManagementCertificateCreateParameters
     * The certificate’s raw data in base-64 encoded .cer format.
     * @param dataValue The Data value.
     */
-    public void setData(final byte[] dataValue)
-    {
+    public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }
     
@@ -54,8 +51,7 @@ public class ManagementCertificateCreateParameters
     * A base64 representation of the management certificate public key.
     * @return The PublicKey value.
     */
-    public byte[] getPublicKey()
-    {
+    public byte[] getPublicKey() {
         return this.publicKey;
     }
     
@@ -63,8 +59,7 @@ public class ManagementCertificateCreateParameters
     * A base64 representation of the management certificate public key.
     * @param publicKeyValue The PublicKey value.
     */
-    public void setPublicKey(final byte[] publicKeyValue)
-    {
+    public void setPublicKey(final byte[] publicKeyValue) {
         this.publicKey = publicKeyValue;
     }
     
@@ -74,8 +69,7 @@ public class ManagementCertificateCreateParameters
     * The thumb print that uniquely identifies the management certificate.
     * @return The Thumbprint value.
     */
-    public String getThumbprint()
-    {
+    public String getThumbprint() {
         return this.thumbprint;
     }
     
@@ -83,8 +77,7 @@ public class ManagementCertificateCreateParameters
     * The thumb print that uniquely identifies the management certificate.
     * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(final String thumbprintValue)
-    {
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
 }

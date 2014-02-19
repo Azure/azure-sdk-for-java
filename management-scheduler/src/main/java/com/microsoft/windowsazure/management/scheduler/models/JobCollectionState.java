@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.scheduler.models;
 /**
 * State of the Job Collection resource.
 */
-public enum JobCollectionState
-{
+public enum JobCollectionState {
     /**
     * Service Manager knows about the resource but the state is still Unknown
     * which might either be a result of failed communication with the RP or

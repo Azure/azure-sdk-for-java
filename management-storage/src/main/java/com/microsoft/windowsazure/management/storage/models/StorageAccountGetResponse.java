@@ -31,8 +31,7 @@ import java.util.HashMap;
 /**
 * The Get Storage Account Properties operation response.
 */
-public class StorageAccountGetResponse extends OperationResponse
-{
+public class StorageAccountGetResponse extends OperationResponse {
     private ArrayList<String> capabilities;
     
     /**
@@ -41,8 +40,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * PersistentVMRole. Otherwise, this element will not be present.
     * @return The Capabilities value.
     */
-    public ArrayList<String> getCapabilities()
-    {
+    public ArrayList<String> getCapabilities() {
         return this.capabilities;
     }
     
@@ -52,8 +50,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * PersistentVMRole. Otherwise, this element will not be present.
     * @param capabilitiesValue The Capabilities value.
     */
-    public void setCapabilities(final ArrayList<String> capabilitiesValue)
-    {
+    public void setCapabilities(final ArrayList<String> capabilitiesValue) {
         this.capabilities = capabilitiesValue;
     }
     
@@ -72,8 +69,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * property value has a maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties()
-    {
+    public HashMap<String, String> getExtendedProperties() {
         return this.extendedProperties;
     }
     
@@ -90,8 +86,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * property value has a maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-    {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -101,8 +96,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * Details about the storage account.
     * @return The Properties value.
     */
-    public StorageServiceProperties getProperties()
-    {
+    public StorageServiceProperties getProperties() {
         return this.properties;
     }
     
@@ -110,8 +104,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * Details about the storage account.
     * @param propertiesValue The Properties value.
     */
-    public void setProperties(final StorageServiceProperties propertiesValue)
-    {
+    public void setProperties(final StorageServiceProperties propertiesValue) {
         this.properties = propertiesValue;
     }
     
@@ -125,8 +118,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
     * @return The ServiceName value.
     */
-    public String getServiceName()
-    {
+    public String getServiceName() {
         return this.serviceName;
     }
     
@@ -138,8 +130,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue)
-    {
+    public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
     
@@ -150,8 +141,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * Account Properties requests against the storage account.
     * @return The Uri value.
     */
-    public URI getUri()
-    {
+    public URI getUri() {
         return this.uri;
     }
     
@@ -160,8 +150,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * Account Properties requests against the storage account.
     * @param uriValue The Uri value.
     */
-    public void setUri(final URI uriValue)
-    {
+    public void setUri(final URI uriValue) {
         this.uri = uriValue;
     }
     
@@ -169,8 +158,7 @@ public class StorageAccountGetResponse extends OperationResponse
     * Initializes a new instance of the StorageAccountGetResponse class.
     *
     */
-    public StorageAccountGetResponse()
-    {
+    public StorageAccountGetResponse() {
         super();
         this.capabilities = new ArrayList<String>();
         this.extendedProperties = new HashMap<String, String>();

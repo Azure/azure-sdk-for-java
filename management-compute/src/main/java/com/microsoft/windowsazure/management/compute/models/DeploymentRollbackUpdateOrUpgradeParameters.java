@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Rollback Update Or Upgrade operation.
 */
-public class DeploymentRollbackUpdateOrUpgradeParameters
-{
+public class DeploymentRollbackUpdateOrUpgradeParameters {
     private boolean force;
     
     /**
@@ -36,8 +35,7 @@ public class DeploymentRollbackUpdateOrUpgradeParameters
     * should proceed; otherwise false.
     * @return The Force value.
     */
-    public boolean isForce()
-    {
+    public boolean isForce() {
         return this.force;
     }
     
@@ -47,8 +45,7 @@ public class DeploymentRollbackUpdateOrUpgradeParameters
     * should proceed; otherwise false.
     * @param forceValue The Force value.
     */
-    public void setForce(final boolean forceValue)
-    {
+    public void setForce(final boolean forceValue) {
         this.force = forceValue;
     }
     
@@ -58,8 +55,7 @@ public class DeploymentRollbackUpdateOrUpgradeParameters
     * Required. Specifies whether the rollback should proceed automatically.
     * @return The Mode value.
     */
-    public RollbackUpdateOrUpgradeMode getMode()
-    {
+    public RollbackUpdateOrUpgradeMode getMode() {
         return this.mode;
     }
     
@@ -67,8 +63,7 @@ public class DeploymentRollbackUpdateOrUpgradeParameters
     * Required. Specifies whether the rollback should proceed automatically.
     * @param modeValue The Mode value.
     */
-    public void setMode(final RollbackUpdateOrUpgradeMode modeValue)
-    {
+    public void setMode(final RollbackUpdateOrUpgradeMode modeValue) {
         this.mode = modeValue;
     }
 }

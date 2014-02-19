@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.servicebus;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.servicebus.models.OperationStatus;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusLocation;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusOperationStatusResponse;
@@ -59,16 +59,14 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/hh780776.aspx for more
 * information)
 */
-public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusManagementClient> implements ServiceBusManagementClient
-{
+public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusManagementClient> implements ServiceBusManagementClient {
     private URI baseUri;
     
     /**
     * The URI used as the base for all Service Bus requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri()
-    {
+    public URI getBaseUri() {
         return this.baseUri;
     }
     
@@ -83,8 +81,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials()
-    {
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
@@ -95,8 +92,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Bus namespaces.
     * @return The NamespacesOperations value.
     */
-    public NamespaceOperations getNamespacesOperations()
-    {
+    public NamespaceOperations getNamespacesOperations() {
         return this.namespaces;
     }
     
@@ -107,8 +103,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Bus notification hubs.
     * @return The NotificationHubsOperations value.
     */
-    public NotificationHubOperations getNotificationHubsOperations()
-    {
+    public NotificationHubOperations getNotificationHubsOperations() {
         return this.notificationHubs;
     }
     
@@ -119,8 +114,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Bus queues.
     * @return The QueuesOperations value.
     */
-    public QueueOperations getQueuesOperations()
-    {
+    public QueueOperations getQueuesOperations() {
         return this.queues;
     }
     
@@ -131,8 +125,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Bus relays.
     * @return The RelaysOperations value.
     */
-    public RelayOperations getRelaysOperations()
-    {
+    public RelayOperations getRelaysOperations() {
         return this.relays;
     }
     
@@ -143,8 +136,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * Bus topics for a namespace.
     * @return The TopicsOperations value.
     */
-    public TopicOperations getTopicsOperations()
-    {
+    public TopicOperations getTopicsOperations() {
         return this.topics;
     }
     
@@ -154,8 +146,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    private ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.namespaces = new NamespaceOperationsImpl(this);
         this.notificationHubs = new NotificationHubOperationsImpl(this);
@@ -177,15 +168,12 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * service is secure.  No anonymous requests are allowed.
     * @param baseUri The URI used as the base for all Service Bus requests.
     */
-    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
-    {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -208,11 +196,9 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * the response.
     */
     @Inject
-    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
-    {
+    public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -224,8 +210,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected ServiceBusManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    protected ServiceBusManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new ServiceBusManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -251,12 +236,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * failure.
     */
     @Override
-    public Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(final String requestId)
-    {
+    public Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(final String requestId) {
         return this.getExecutorService().submit(new Callable<ServiceBusOperationStatusResponse>() { 
             @Override
-            public ServiceBusOperationStatusResponse call() throws Exception
-            {
+            public ServiceBusOperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -292,19 +275,16 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * failure.
     */
     @Override
-    public ServiceBusOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServiceBusOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (requestId == null)
-        {
+        if (requestId == null) {
             throw new NullPointerException("requestId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
@@ -322,23 +302,18 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -356,12 +331,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null)
-            {
+            if (operationElement != null) {
                 NodeList elements2 = operationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -369,8 +342,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     OperationStatus statusInstance;
                     statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -378,8 +350,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                 
                 NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null)
-                {
+                if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -387,15 +358,13 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                 
                 NodeList elements5 = operationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null)
-                {
+                if (errorElement != null) {
                     ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null)
-                    {
+                    if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -403,8 +372,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
+                    if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -413,21 +381,16 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -442,12 +405,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @return A response to a request for a list of regions.
     */
     @Override
-    public Future<ServiceBusRegionsResponse> getServiceBusRegionsAsync()
-    {
+    public Future<ServiceBusRegionsResponse> getServiceBusRegionsAsync() {
         return this.getExecutorService().submit(new Callable<ServiceBusRegionsResponse>() { 
             @Override
-            public ServiceBusRegionsResponse call() throws Exception
-            {
+            public ServiceBusRegionsResponse call() throws Exception {
                 return getServiceBusRegions();
             }
          });
@@ -470,15 +431,13 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * @return A response to a request for a list of regions.
     */
     @Override
-    public ServiceBusRegionsResponse getServiceBusRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServiceBusRegionsResponse getServiceBusRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "getServiceBusRegionsAsync", tracingParameters);
@@ -497,23 +456,18 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -531,28 +485,22 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null)
-            {
-                if (feedElement != null)
-                {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
-                    {
+            if (feedElement != null) {
+                if (feedElement != null) {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusLocation entryInstance = new ServiceBusLocation();
                         result.getRegions().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null)
-                        {
+                        if (contentElement != null) {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
                             Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (regionCodeDescriptionElement != null)
-                            {
+                            if (regionCodeDescriptionElement != null) {
                                 NodeList elements4 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
                                 Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (codeElement != null)
-                                {
+                                if (codeElement != null) {
                                     String codeInstance;
                                     codeInstance = codeElement.getTextContent();
                                     entryInstance.setCode(codeInstance);
@@ -560,8 +508,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                                 
                                 NodeList elements5 = regionCodeDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
                                 Element fullNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (fullNameElement != null)
-                                {
+                                if (fullNameElement != null) {
                                     String fullNameInstance;
                                     fullNameInstance = fullNameElement.getTextContent();
                                     entryInstance.setFullName(fullNameInstance);
@@ -573,21 +520,16 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

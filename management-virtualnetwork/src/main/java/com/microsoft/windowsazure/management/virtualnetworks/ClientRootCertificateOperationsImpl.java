@@ -53,16 +53,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class ClientRootCertificateOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ClientRootCertificateOperations
-{
+public class ClientRootCertificateOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, ClientRootCertificateOperations {
     /**
     * Initializes a new instance of the ClientRootCertificateOperationsImpl
     * class.
     *
     * @param client Reference to the service client.
     */
-    ClientRootCertificateOperationsImpl(VirtualNetworkManagementClientImpl client)
-    {
+    ClientRootCertificateOperationsImpl(VirtualNetworkManagementClientImpl client) {
         this.client = client;
     }
     
@@ -73,8 +71,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     * @return The Client value.
     */
-    public VirtualNetworkManagementClientImpl getClient()
-    {
+    public VirtualNetworkManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -92,12 +89,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> createAsync(final String virtualNetworkName, final ClientRootCertificateCreateParameters parameters)
-    {
+    public Future<GatewayOperationResponse> createAsync(final String virtualNetworkName, final ClientRootCertificateCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return create(virtualNetworkName, parameters);
             }
          });
@@ -135,27 +130,22 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayOperationResponse create(String virtualNetworkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getCertificate() == null)
-        {
+        if (parameters.getCertificate() == null) {
             throw new NullPointerException("parameters.Certificate");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -181,23 +171,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -215,12 +200,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -228,21 +211,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -261,12 +239,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> deleteAsync(final String virtualNetworkName, final String certificateThumbprint)
-    {
+    public Future<GatewayOperationResponse> deleteAsync(final String virtualNetworkName, final String certificateThumbprint) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return delete(virtualNetworkName, certificateThumbprint);
             }
          });
@@ -303,23 +279,19 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public GatewayOperationResponse delete(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayOperationResponse delete(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (certificateThumbprint == null)
-        {
+        if (certificateThumbprint == null) {
             throw new NullPointerException("certificateThumbprint");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -339,23 +311,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -373,12 +340,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -386,21 +351,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -420,12 +380,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public Future<ClientRootCertificateGetResponse> getAsync(final String virtualNetworkName, final String certificateThumbprint)
-    {
+    public Future<ClientRootCertificateGetResponse> getAsync(final String virtualNetworkName, final String certificateThumbprint) {
         return this.getClient().getExecutorService().submit(new Callable<ClientRootCertificateGetResponse>() { 
             @Override
-            public ClientRootCertificateGetResponse call() throws Exception
-            {
+            public ClientRootCertificateGetResponse call() throws Exception {
                 return get(virtualNetworkName, certificateThumbprint);
             }
          });
@@ -453,23 +411,19 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * request ID.
     */
     @Override
-    public ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ClientRootCertificateGetResponse get(String virtualNetworkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (certificateThumbprint == null)
-        {
+        if (certificateThumbprint == null) {
             throw new NullPointerException("certificateThumbprint");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -488,23 +442,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -518,21 +467,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             result.setCertificate(StreamUtils.toString(responseContent));
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -550,12 +494,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * @return The response to the list client root certificates request.
     */
     @Override
-    public Future<ClientRootCertificateListResponse> listAsync(final String virtualNetworkName)
-    {
+    public Future<ClientRootCertificateListResponse> listAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<ClientRootCertificateListResponse>() { 
             @Override
-            public ClientRootCertificateListResponse call() throws Exception
-            {
+            public ClientRootCertificateListResponse call() throws Exception {
                 return list(virtualNetworkName);
             }
          });
@@ -581,19 +523,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
     * @return The response to the list client root certificates request.
     */
     @Override
-    public ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ClientRootCertificateListResponse list(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -612,23 +551,18 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -646,18 +580,15 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             
             NodeList elements = responseDoc.getElementsByTagName("ClientRootCertificates");
             Element clientRootCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (clientRootCertificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1)
-                {
+            if (clientRootCertificatesSequenceElement != null) {
+                for (int i1 = 0; i1 < clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element clientRootCertificatesElement = ((org.w3c.dom.Element) clientRootCertificatesSequenceElement.getElementsByTagName("ClientRootCertificate").item(i1));
                     ClientRootCertificateListResponse.ClientRootCertificate clientRootCertificateInstance = new ClientRootCertificateListResponse.ClientRootCertificate();
                     result.getClientRootCertificates().add(clientRootCertificateInstance);
                     
                     NodeList elements2 = clientRootCertificatesElement.getElementsByTagName("ExpirationTime");
                     Element expirationTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (expirationTimeElement != null)
-                    {
+                    if (expirationTimeElement != null) {
                         Calendar expirationTimeInstance;
                         expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                         clientRootCertificateInstance.setExpirationTime(expirationTimeInstance);
@@ -665,8 +596,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
                     
                     NodeList elements3 = clientRootCertificatesElement.getElementsByTagName("Subject");
                     Element subjectElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (subjectElement != null)
-                    {
+                    if (subjectElement != null) {
                         String subjectInstance;
                         subjectInstance = subjectElement.getTextContent();
                         clientRootCertificateInstance.setSubject(subjectInstance);
@@ -674,8 +604,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
                     
                     NodeList elements4 = clientRootCertificatesElement.getElementsByTagName("Thumbprint");
                     Element thumbprintElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
+                    if (thumbprintElement != null) {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
                         clientRootCertificateInstance.setThumbprint(thumbprintInstance);
@@ -684,21 +613,16 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Vi
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

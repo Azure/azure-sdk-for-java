@@ -41,13 +41,12 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface StorageManagementClient extends FilterableService<StorageManagementClient>
-{
+public interface StorageManagementClient extends FilterableService<StorageManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -58,7 +57,7 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * The Service Management API includes operations for managing the storage
@@ -67,7 +66,7 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * more information)
     * @return The StorageAccountsOperations value.
     */
-    StorageAccountOperations getStorageAccountsOperations(); 
+    StorageAccountOperations getStorageAccountsOperations();
     
     /**
     * The Get Operation Status operation returns the status of thespecified

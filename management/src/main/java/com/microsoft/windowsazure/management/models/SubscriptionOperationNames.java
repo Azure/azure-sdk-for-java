@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.models;
 /**
 * The name of a subscription operation.
 */
-public class SubscriptionOperationNames
-{
+public class SubscriptionOperationNames {
     public static final String ActivateDomainName = "ActivateDomainName";
     
     public static final String AddCertificates = "AddCertificates";

@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public class GeoRegionNames
-{
+public class GeoRegionNames {
     public static final String EastUS = "East US";
     
     public static final String WestUS = "West US";

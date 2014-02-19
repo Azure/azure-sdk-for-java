@@ -29,16 +29,14 @@ import java.util.ArrayList;
 /**
 * The respoonse to the get supported platform configuration request.
 */
-public class GatewayListSupportedDevicesResponse extends OperationResponse
-{
+public class GatewayListSupportedDevicesResponse extends OperationResponse {
     private ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendors;
     
     /**
     * The set of supported vendors.
     * @return The Vendors value.
     */
-    public ArrayList<GatewayListSupportedDevicesResponse.Vendor> getVendors()
-    {
+    public ArrayList<GatewayListSupportedDevicesResponse.Vendor> getVendors() {
         return this.vendors;
     }
     
@@ -46,8 +44,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     * The set of supported vendors.
     * @param vendorsValue The Vendors value.
     */
-    public void setVendors(final ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendorsValue)
-    {
+    public void setVendors(final ArrayList<GatewayListSupportedDevicesResponse.Vendor> vendorsValue) {
         this.vendors = vendorsValue;
     }
     
@@ -57,8 +54,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     * The version for this device configuration list.
     * @return The Version value.
     */
-    public String getVersion()
-    {
+    public String getVersion() {
         return this.version;
     }
     
@@ -66,8 +62,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     * The version for this device configuration list.
     * @param versionValue The Version value.
     */
-    public void setVersion(final String versionValue)
-    {
+    public void setVersion(final String versionValue) {
         this.version = versionValue;
     }
     
@@ -76,22 +71,19 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     * class.
     *
     */
-    public GatewayListSupportedDevicesResponse()
-    {
+    public GatewayListSupportedDevicesResponse() {
         super();
         this.vendors = new ArrayList<GatewayListSupportedDevicesResponse.Vendor>();
     }
     
-    public static class OSFamily
-    {
+    public static class OSFamily {
         private String name;
         
         /**
         * The name of the os family.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -99,8 +91,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The name of the os family.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
     }
@@ -108,16 +99,14 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     /**
     * The name and supported OS Families for this vendor on the platform.
     */
-    public static class Platform
-    {
+    public static class Platform {
         private String name;
         
         /**
         * The platform name.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -125,8 +114,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The platform name.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -136,8 +124,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The supported OS Families for this platform.
         * @return The OSFamilies value.
         */
-        public ArrayList<GatewayListSupportedDevicesResponse.OSFamily> getOSFamilies()
-        {
+        public ArrayList<GatewayListSupportedDevicesResponse.OSFamily> getOSFamilies() {
             return this.oSFamilies;
         }
         
@@ -145,8 +132,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The supported OS Families for this platform.
         * @param oSFamiliesValue The OSFamilies value.
         */
-        public void setOSFamilies(final ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamiliesValue)
-        {
+        public void setOSFamilies(final ArrayList<GatewayListSupportedDevicesResponse.OSFamily> oSFamiliesValue) {
             this.oSFamilies = oSFamiliesValue;
         }
         
@@ -154,8 +140,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * Initializes a new instance of the Platform class.
         *
         */
-        public Platform()
-        {
+        public Platform() {
             this.oSFamilies = new ArrayList<GatewayListSupportedDevicesResponse.OSFamily>();
         }
     }
@@ -163,16 +148,14 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
     /**
     * The name and supported platforms for the vendor.
     */
-    public static class Vendor
-    {
+    public static class Vendor {
         private String name;
         
         /**
         * The vendor name.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -180,8 +163,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The vendor name.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -191,8 +173,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The supported platforms for the vendor.
         * @return The Platforms value.
         */
-        public ArrayList<GatewayListSupportedDevicesResponse.Platform> getPlatforms()
-        {
+        public ArrayList<GatewayListSupportedDevicesResponse.Platform> getPlatforms() {
             return this.platforms;
         }
         
@@ -200,8 +181,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * The supported platforms for the vendor.
         * @param platformsValue The Platforms value.
         */
-        public void setPlatforms(final ArrayList<GatewayListSupportedDevicesResponse.Platform> platformsValue)
-        {
+        public void setPlatforms(final ArrayList<GatewayListSupportedDevicesResponse.Platform> platformsValue) {
             this.platforms = platformsValue;
         }
         
@@ -209,8 +189,7 @@ public class GatewayListSupportedDevicesResponse extends OperationResponse
         * Initializes a new instance of the Vendor class.
         *
         */
-        public Vendor()
-        {
+        public Vendor() {
             this.platforms = new ArrayList<GatewayListSupportedDevicesResponse.Platform>();
         }
     }

@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get Network Configuration operation response.
 */
-public class NetworkGetConfigurationResponse extends OperationResponse
-{
+public class NetworkGetConfigurationResponse extends OperationResponse {
     private String configuration;
     
     /**
     * The network configuration for this subscription.
     * @return The Configuration value.
     */
-    public String getConfiguration()
-    {
+    public String getConfiguration() {
         return this.configuration;
     }
     
@@ -45,8 +43,7 @@ public class NetworkGetConfigurationResponse extends OperationResponse
     * The network configuration for this subscription.
     * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(final String configurationValue)
-    {
+    public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }
 }

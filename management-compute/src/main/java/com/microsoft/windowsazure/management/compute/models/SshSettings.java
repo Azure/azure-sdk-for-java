@@ -30,16 +30,14 @@ import java.util.ArrayList;
 * image during provisioning. This element is only used with the
 * LinuxProvisioningConfiguration set.
 */
-public class SshSettings
-{
+public class SshSettings {
     private ArrayList<SshSettingKeyPair> keyPairs;
     
     /**
     * Optional. Specifies the collection of SSH public keys.
     * @return The KeyPairs value.
     */
-    public ArrayList<SshSettingKeyPair> getKeyPairs()
-    {
+    public ArrayList<SshSettingKeyPair> getKeyPairs() {
         return this.keyPairs;
     }
     
@@ -47,8 +45,7 @@ public class SshSettings
     * Optional. Specifies the collection of SSH public keys.
     * @param keyPairsValue The KeyPairs value.
     */
-    public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue)
-    {
+    public void setKeyPairs(final ArrayList<SshSettingKeyPair> keyPairsValue) {
         this.keyPairs = keyPairsValue;
     }
     
@@ -58,8 +55,7 @@ public class SshSettings
     * Optional. Specifies the collection of SSH public keys.
     * @return The PublicKeys value.
     */
-    public ArrayList<SshSettingPublicKey> getPublicKeys()
-    {
+    public ArrayList<SshSettingPublicKey> getPublicKeys() {
         return this.publicKeys;
     }
     
@@ -67,8 +63,7 @@ public class SshSettings
     * Optional. Specifies the collection of SSH public keys.
     * @param publicKeysValue The PublicKeys value.
     */
-    public void setPublicKeys(final ArrayList<SshSettingPublicKey> publicKeysValue)
-    {
+    public void setPublicKeys(final ArrayList<SshSettingPublicKey> publicKeysValue) {
         this.publicKeys = publicKeysValue;
     }
     
@@ -76,8 +71,7 @@ public class SshSettings
     * Initializes a new instance of the SshSettings class.
     *
     */
-    public SshSettings()
-    {
+    public SshSettings() {
         this.keyPairs = new ArrayList<SshSettingKeyPair>();
         this.publicKeys = new ArrayList<SshSettingPublicKey>();
     }

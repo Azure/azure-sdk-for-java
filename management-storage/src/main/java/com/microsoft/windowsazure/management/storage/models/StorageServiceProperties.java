@@ -30,16 +30,14 @@ import java.util.Calendar;
 /**
 * Details about a storage account.
 */
-public class StorageServiceProperties
-{
+public class StorageServiceProperties {
     private String affinityGroup;
     
     /**
     * The affinity group with which this storage account is associated.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup()
-    {
+    public String getAffinityGroup() {
         return this.affinityGroup;
     }
     
@@ -47,8 +45,7 @@ public class StorageServiceProperties
     * The affinity group with which this storage account is associated.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue)
-    {
+    public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -58,8 +55,7 @@ public class StorageServiceProperties
     * The user supplied description of the storage account.
     * @return The Description value.
     */
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
     
@@ -67,8 +63,7 @@ public class StorageServiceProperties
     * The user supplied description of the storage account.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue)
-    {
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
     
@@ -79,8 +74,7 @@ public class StorageServiceProperties
     * table object.
     * @return The Endpoints value.
     */
-    public ArrayList<URI> getEndpoints()
-    {
+    public ArrayList<URI> getEndpoints() {
         return this.endpoints;
     }
     
@@ -89,8 +83,7 @@ public class StorageServiceProperties
     * table object.
     * @param endpointsValue The Endpoints value.
     */
-    public void setEndpoints(final ArrayList<URI> endpointsValue)
-    {
+    public void setEndpoints(final ArrayList<URI> endpointsValue) {
         this.endpoints = endpointsValue;
     }
     
@@ -101,8 +94,7 @@ public class StorageServiceProperties
     * exists at this time.
     * @return The GeoPrimaryRegion value.
     */
-    public String getGeoPrimaryRegion()
-    {
+    public String getGeoPrimaryRegion() {
         return this.geoPrimaryRegion;
     }
     
@@ -111,8 +103,7 @@ public class StorageServiceProperties
     * exists at this time.
     * @param geoPrimaryRegionValue The GeoPrimaryRegion value.
     */
-    public void setGeoPrimaryRegion(final String geoPrimaryRegionValue)
-    {
+    public void setGeoPrimaryRegion(final String geoPrimaryRegionValue) {
         this.geoPrimaryRegion = geoPrimaryRegionValue;
     }
     
@@ -125,8 +116,7 @@ public class StorageServiceProperties
     * enabled; otherwise false.
     * @return The GeoReplicationEnabled value.
     */
-    public boolean isGeoReplicationEnabled()
-    {
+    public boolean isGeoReplicationEnabled() {
         return this.geoReplicationEnabled;
     }
     
@@ -137,8 +127,7 @@ public class StorageServiceProperties
     * enabled; otherwise false.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
-    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue)
-    {
+    public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
         this.geoReplicationEnabled = geoReplicationEnabledValue;
     }
     
@@ -150,8 +139,7 @@ public class StorageServiceProperties
     * geo-replication is “off” for this account.
     * @return The GeoSecondaryRegion value.
     */
-    public String getGeoSecondaryRegion()
-    {
+    public String getGeoSecondaryRegion() {
         return this.geoSecondaryRegion;
     }
     
@@ -161,8 +149,7 @@ public class StorageServiceProperties
     * geo-replication is “off” for this account.
     * @param geoSecondaryRegionValue The GeoSecondaryRegion value.
     */
-    public void setGeoSecondaryRegion(final String geoSecondaryRegionValue)
-    {
+    public void setGeoSecondaryRegion(final String geoSecondaryRegionValue) {
         this.geoSecondaryRegion = geoSecondaryRegionValue;
     }
     
@@ -174,8 +161,7 @@ public class StorageServiceProperties
     * your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -185,8 +171,7 @@ public class StorageServiceProperties
     * your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -201,8 +186,7 @@ public class StorageServiceProperties
     * of a failover.
     * @return The LastGeoFailoverTime value.
     */
-    public Calendar getLastGeoFailoverTime()
-    {
+    public Calendar getLastGeoFailoverTime() {
         return this.lastGeoFailoverTime;
     }
     
@@ -215,8 +199,7 @@ public class StorageServiceProperties
     * of a failover.
     * @param lastGeoFailoverTimeValue The LastGeoFailoverTime value.
     */
-    public void setLastGeoFailoverTime(final Calendar lastGeoFailoverTimeValue)
-    {
+    public void setLastGeoFailoverTime(final Calendar lastGeoFailoverTimeValue) {
         this.lastGeoFailoverTime = lastGeoFailoverTimeValue;
     }
     
@@ -228,8 +211,7 @@ public class StorageServiceProperties
     * an affinity group.
     * @return The Location value.
     */
-    public String getLocation()
-    {
+    public String getLocation() {
         return this.location;
     }
     
@@ -239,8 +221,7 @@ public class StorageServiceProperties
     * an affinity group.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue)
-    {
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
     
@@ -250,8 +231,7 @@ public class StorageServiceProperties
     * The status of the storage account at the time the operation was called.
     * @return The Status value.
     */
-    public StorageServiceStatus getStatus()
-    {
+    public StorageServiceStatus getStatus() {
         return this.status;
     }
     
@@ -259,8 +239,7 @@ public class StorageServiceProperties
     * The status of the storage account at the time the operation was called.
     * @param statusValue The Status value.
     */
-    public void setStatus(final StorageServiceStatus statusValue)
-    {
+    public void setStatus(final StorageServiceStatus statusValue) {
         this.status = statusValue;
     }
     
@@ -270,8 +249,7 @@ public class StorageServiceProperties
     * Indicates whether the primary storage region is available.
     * @return The StatusOfGeoPrimaryRegion value.
     */
-    public GeoRegionStatus getStatusOfGeoPrimaryRegion()
-    {
+    public GeoRegionStatus getStatusOfGeoPrimaryRegion() {
         return this.statusOfGeoPrimaryRegion;
     }
     
@@ -279,8 +257,7 @@ public class StorageServiceProperties
     * Indicates whether the primary storage region is available.
     * @param statusOfGeoPrimaryRegionValue The StatusOfGeoPrimaryRegion value.
     */
-    public void setStatusOfGeoPrimaryRegion(final GeoRegionStatus statusOfGeoPrimaryRegionValue)
-    {
+    public void setStatusOfGeoPrimaryRegion(final GeoRegionStatus statusOfGeoPrimaryRegionValue) {
         this.statusOfGeoPrimaryRegion = statusOfGeoPrimaryRegionValue;
     }
     
@@ -290,8 +267,7 @@ public class StorageServiceProperties
     * Indicates whether the secondary storage region is available.
     * @return The StatusOfGeoSecondaryRegion value.
     */
-    public GeoRegionStatus getStatusOfGeoSecondaryRegion()
-    {
+    public GeoRegionStatus getStatusOfGeoSecondaryRegion() {
         return this.statusOfGeoSecondaryRegion;
     }
     
@@ -300,8 +276,7 @@ public class StorageServiceProperties
     * @param statusOfGeoSecondaryRegionValue The StatusOfGeoSecondaryRegion
     * value.
     */
-    public void setStatusOfGeoSecondaryRegion(final GeoRegionStatus statusOfGeoSecondaryRegionValue)
-    {
+    public void setStatusOfGeoSecondaryRegion(final GeoRegionStatus statusOfGeoSecondaryRegionValue) {
         this.statusOfGeoSecondaryRegion = statusOfGeoSecondaryRegionValue;
     }
     
@@ -309,8 +284,7 @@ public class StorageServiceProperties
     * Initializes a new instance of the StorageServiceProperties class.
     *
     */
-    public StorageServiceProperties()
-    {
+    public StorageServiceProperties() {
         this.endpoints = new ArrayList<URI>();
     }
 }

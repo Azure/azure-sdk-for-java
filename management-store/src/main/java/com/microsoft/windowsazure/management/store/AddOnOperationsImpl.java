@@ -58,15 +58,13 @@ import org.xml.sax.SAXException;
 * Provides REST operations for working with Store add-ins from the Windows
 * Azure store service.
 */
-public class AddOnOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, AddOnOperations
-{
+public class AddOnOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, AddOnOperations {
     /**
     * Initializes a new instance of the AddOnOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    AddOnOperationsImpl(StoreManagementClientImpl client)
-    {
+    AddOnOperationsImpl(StoreManagementClientImpl client) {
         this.client = client;
     }
     
@@ -77,8 +75,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
     * @return The Client value.
     */
-    public StoreManagementClientImpl getClient()
-    {
+    public StoreManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -103,12 +100,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters)
-    {
+    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return beginCreating(cloudServiceName, resourceName, addOnName, parameters);
             }
          });
@@ -145,39 +140,31 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceName == null)
-        {
+        if (resourceName == null) {
             throw new NullPointerException("resourceName");
         }
-        if (addOnName == null)
-        {
+        if (addOnName == null) {
             throw new NullPointerException("addOnName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getPlan() == null)
-        {
+        if (parameters.getPlan() == null) {
             throw new NullPointerException("parameters.Plan");
         }
-        if (parameters.getType() == null)
-        {
+        if (parameters.getType() == null) {
             throw new NullPointerException("parameters.Type");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -214,8 +201,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
         planElement.appendChild(requestDoc.createTextNode(parameters.getPlan()));
         resourceElement.appendChild(planElement);
         
-        if (parameters.getPromotionCode() != null)
-        {
+        if (parameters.getPromotionCode() != null) {
             Element promotionCodeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PromotionCode");
             promotionCodeElement.appendChild(requestDoc.createTextNode(parameters.getPromotionCode()));
             resourceElement.appendChild(promotionCodeElement);
@@ -234,23 +220,18 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -260,21 +241,16 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -301,12 +277,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginDeletingAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName)
-    {
+    public Future<AddOnOperationStatusResponse> beginDeletingAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return beginDeleting(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName);
             }
          });
@@ -337,31 +311,25 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceProviderNamespace == null)
-        {
+        if (resourceProviderNamespace == null) {
             throw new NullPointerException("resourceProviderNamespace");
         }
-        if (resourceProviderType == null)
-        {
+        if (resourceProviderType == null) {
             throw new NullPointerException("resourceProviderType");
         }
-        if (resourceProviderName == null)
-        {
+        if (resourceProviderName == null) {
             throw new NullPointerException("resourceProviderName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -382,23 +350,18 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -408,21 +371,16 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -449,12 +407,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> createAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters)
-    {
+    public Future<AddOnOperationStatusResponse> createAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return create(cloudServiceName, resourceName, addOnName, parameters);
             }
          });
@@ -493,13 +449,11 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -508,46 +462,39 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             AddOnOperationStatusResponse response = client2.getAddOnsOperations().beginCreatingAsync(cloudServiceName, resourceName, addOnName, parameters).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
             AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -555,11 +502,8 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -586,12 +530,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> deleteAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName)
-    {
+    public Future<AddOnOperationStatusResponse> deleteAsync(final String cloudServiceName, final String resourceProviderNamespace, final String resourceProviderType, final String resourceProviderName) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return delete(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName);
             }
          });
@@ -630,13 +572,11 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -645,46 +585,39 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             tracingParameters.put("resourceProviderName", resourceProviderName);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             AddOnOperationStatusResponse response = client2.getAddOnsOperations().beginDeletingAsync(cloudServiceName, resourceProviderNamespace, resourceProviderType, resourceProviderName).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
             AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -692,11 +625,8 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -723,12 +653,10 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> updateAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnUpdateParameters parameters)
-    {
+    public Future<AddOnOperationStatusResponse> updateAsync(final String cloudServiceName, final String resourceName, final String addOnName, final AddOnUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return update(cloudServiceName, resourceName, addOnName, parameters);
             }
          });
@@ -765,39 +693,31 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (resourceName == null)
-        {
+        if (resourceName == null) {
             throw new NullPointerException("resourceName");
         }
-        if (addOnName == null)
-        {
+        if (addOnName == null) {
             throw new NullPointerException("addOnName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getPlan() == null)
-        {
+        if (parameters.getPlan() == null) {
             throw new NullPointerException("parameters.Plan");
         }
-        if (parameters.getType() == null)
-        {
+        if (parameters.getType() == null) {
             throw new NullPointerException("parameters.Type");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -835,8 +755,7 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
         planElement.appendChild(requestDoc.createTextNode(parameters.getPlan()));
         resourceElement.appendChild(planElement);
         
-        if (parameters.getPromotionCode() != null)
-        {
+        if (parameters.getPromotionCode() != null) {
             Element promotionCodeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PromotionCode");
             promotionCodeElement.appendChild(requestDoc.createTextNode(parameters.getPromotionCode()));
             resourceElement.appendChild(promotionCodeElement);
@@ -855,23 +774,18 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -881,21 +795,16 @@ public class AddOnOperationsImpl implements ServiceOperations<StoreManagementCli
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

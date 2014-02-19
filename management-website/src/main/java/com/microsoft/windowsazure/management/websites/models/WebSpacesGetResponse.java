@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get Web Space Details operation response.
 */
-public class WebSpacesGetResponse extends OperationResponse
-{
+public class WebSpacesGetResponse extends OperationResponse {
     private WebSpaceAvailabilityState availabilityState;
     
     /**
     * Possible values are Normal or Limited.
     * @return The AvailabilityState value.
     */
-    public WebSpaceAvailabilityState getAvailabilityState()
-    {
+    public WebSpaceAvailabilityState getAvailabilityState() {
         return this.availabilityState;
     }
     
@@ -45,8 +43,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * Possible values are Normal or Limited.
     * @param availabilityStateValue The AvailabilityState value.
     */
-    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue)
-    {
+    public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
         this.availabilityState = availabilityStateValue;
     }
     
@@ -56,8 +53,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The current number of workers.
     * @return The CurrentNumberOfWorkers value.
     */
-    public Integer getCurrentNumberOfWorkers()
-    {
+    public Integer getCurrentNumberOfWorkers() {
         return this.currentNumberOfWorkers;
     }
     
@@ -65,8 +61,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The current number of workers.
     * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
     */
-    public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue)
-    {
+    public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue) {
         this.currentNumberOfWorkers = currentNumberOfWorkersValue;
     }
     
@@ -76,8 +71,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The current worker size. Possible values are Small, Medium, or Large.
     * @return The CurrentWorkerSize value.
     */
-    public WebSpaceWorkerSize getCurrentWorkerSize()
-    {
+    public WebSpaceWorkerSize getCurrentWorkerSize() {
         return this.currentWorkerSize;
     }
     
@@ -85,8 +79,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The current worker size. Possible values are Small, Medium, or Large.
     * @param currentWorkerSizeValue The CurrentWorkerSize value.
     */
-    public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue)
-    {
+    public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue) {
         this.currentWorkerSize = currentWorkerSizeValue;
     }
     
@@ -96,8 +89,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The location of the datacenter for the web space.
     * @return The GeoLocation value.
     */
-    public String getGeoLocation()
-    {
+    public String getGeoLocation() {
         return this.geoLocation;
     }
     
@@ -105,8 +97,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The location of the datacenter for the web space.
     * @param geoLocationValue The GeoLocation value.
     */
-    public void setGeoLocation(final String geoLocationValue)
-    {
+    public void setGeoLocation(final String geoLocationValue) {
         this.geoLocation = geoLocationValue;
     }
     
@@ -116,8 +107,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The geographical region where the webspace is located.
     * @return The GeoRegion value.
     */
-    public String getGeoRegion()
-    {
+    public String getGeoRegion() {
         return this.geoRegion;
     }
     
@@ -125,8 +115,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The geographical region where the webspace is located.
     * @param geoRegionValue The GeoRegion value.
     */
-    public void setGeoRegion(final String geoRegionValue)
-    {
+    public void setGeoRegion(final String geoRegionValue) {
         this.geoRegion = geoRegionValue;
     }
     
@@ -136,8 +125,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The name of the webspace.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -145,8 +133,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The name of the webspace.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -156,8 +143,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The name of the webspace.
     * @return The Plan value.
     */
-    public String getPlan()
-    {
+    public String getPlan() {
         return this.plan;
     }
     
@@ -165,8 +151,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The name of the webspace.
     * @param planValue The Plan value.
     */
-    public void setPlan(final String planValue)
-    {
+    public void setPlan(final String planValue) {
         this.plan = planValue;
     }
     
@@ -178,8 +163,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * operational issue.
     * @return The Status value.
     */
-    public WebSpaceStatus getStatus()
-    {
+    public WebSpaceStatus getStatus() {
         return this.status;
     }
     
@@ -189,8 +173,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * operational issue.
     * @param statusValue The Status value.
     */
-    public void setStatus(final WebSpaceStatus statusValue)
-    {
+    public void setStatus(final WebSpaceStatus statusValue) {
         this.status = statusValue;
     }
     
@@ -200,8 +183,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The subscription ID.
     * @return The Subscription value.
     */
-    public String getSubscription()
-    {
+    public String getSubscription() {
         return this.subscription;
     }
     
@@ -209,8 +191,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * The subscription ID.
     * @param subscriptionValue The Subscription value.
     */
-    public void setSubscription(final String subscriptionValue)
-    {
+    public void setSubscription(final String subscriptionValue) {
         this.subscription = subscriptionValue;
     }
     
@@ -221,8 +202,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * the equivalents are 0 = Small, 1 = Medium, 2 = Large.
     * @return The WorkerSize value.
     */
-    public WebSpaceWorkerSize getWorkerSize()
-    {
+    public WebSpaceWorkerSize getWorkerSize() {
         return this.workerSize;
     }
     
@@ -231,8 +211,7 @@ public class WebSpacesGetResponse extends OperationResponse
     * the equivalents are 0 = Small, 1 = Medium, 2 = Large.
     * @param workerSizeValue The WorkerSize value.
     */
-    public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue)
-    {
+    public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {
         this.workerSize = workerSizeValue;
     }
 }

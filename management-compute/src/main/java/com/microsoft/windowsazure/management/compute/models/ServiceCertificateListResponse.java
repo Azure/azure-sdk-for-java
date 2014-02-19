@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The List Service Certificates operation response.
 */
-public class ServiceCertificateListResponse extends OperationResponse implements Iterable<ServiceCertificateListResponse.Certificate>
-{
+public class ServiceCertificateListResponse extends OperationResponse implements Iterable<ServiceCertificateListResponse.Certificate> {
     private ArrayList<ServiceCertificateListResponse.Certificate> certificates;
     
     /**
     * The service certificates that are valid for your subscription.
     * @return The Certificates value.
     */
-    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates()
-    {
+    public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates() {
         return this.certificates;
     }
     
@@ -48,8 +46,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     * The service certificates that are valid for your subscription.
     * @param certificatesValue The Certificates value.
     */
-    public void setCertificates(final ArrayList<ServiceCertificateListResponse.Certificate> certificatesValue)
-    {
+    public void setCertificates(final ArrayList<ServiceCertificateListResponse.Certificate> certificatesValue) {
         this.certificates = certificatesValue;
     }
     
@@ -57,8 +54,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     * Initializes a new instance of the ServiceCertificateListResponse class.
     *
     */
-    public ServiceCertificateListResponse()
-    {
+    public ServiceCertificateListResponse() {
         super();
         this.certificates = new ArrayList<ServiceCertificateListResponse.Certificate>();
     }
@@ -67,16 +63,14 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     * Gets the sequence of Certificates.
     *
     */
-    public Iterator<ServiceCertificateListResponse.Certificate> iterator()
-    {
+    public Iterator<ServiceCertificateListResponse.Certificate> iterator() {
         return this.getCertificates().iterator();
     }
     
     /**
     * A service certificate that is valid for your subscription.
     */
-    public static class Certificate
-    {
+    public static class Certificate {
         private URI certificateUri;
         
         /**
@@ -84,8 +78,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * Certificate requests against the certificate store.
         * @return The CertificateUri value.
         */
-        public URI getCertificateUri()
-        {
+        public URI getCertificateUri() {
             return this.certificateUri;
         }
         
@@ -94,8 +87,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * Certificate requests against the certificate store.
         * @param certificateUriValue The CertificateUri value.
         */
-        public void setCertificateUri(final URI certificateUriValue)
-        {
+        public void setCertificateUri(final URI certificateUriValue) {
             this.certificateUri = certificateUriValue;
         }
         
@@ -105,8 +97,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The public part of the service certificate as a .cer file.
         * @return The Data value.
         */
-        public byte[] getData()
-        {
+        public byte[] getData() {
             return this.data;
         }
         
@@ -114,8 +105,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The public part of the service certificate as a .cer file.
         * @param dataValue The Data value.
         */
-        public void setData(final byte[] dataValue)
-        {
+        public void setData(final byte[] dataValue) {
             this.data = dataValue;
         }
         
@@ -125,8 +115,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The X509 certificate thumb print property of the service certificate.
         * @return The Thumbprint value.
         */
-        public String getThumbprint()
-        {
+        public String getThumbprint() {
             return this.thumbprint;
         }
         
@@ -134,8 +123,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * The X509 certificate thumb print property of the service certificate.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue)
-        {
+        public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
         
@@ -146,8 +134,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * Currently SHA-1 is the only supported algorithm.
         * @return The ThumbprintAlgorithm value.
         */
-        public String getThumbprintAlgorithm()
-        {
+        public String getThumbprintAlgorithm() {
             return this.thumbprintAlgorithm;
         }
         
@@ -156,8 +143,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         * Currently SHA-1 is the only supported algorithm.
         * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-        {
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
             this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
     }

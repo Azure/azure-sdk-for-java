@@ -66,16 +66,14 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
 * information)
 */
-public class ManagementCertificateOperationsImpl implements ServiceOperations<ManagementClientImpl>, ManagementCertificateOperations
-{
+public class ManagementCertificateOperationsImpl implements ServiceOperations<ManagementClientImpl>, ManagementCertificateOperations {
     /**
     * Initializes a new instance of the ManagementCertificateOperationsImpl
     * class.
     *
     * @param client Reference to the service client.
     */
-    ManagementCertificateOperationsImpl(ManagementClientImpl client)
-    {
+    ManagementCertificateOperationsImpl(ManagementClientImpl client) {
         this.client = client;
     }
     
@@ -86,8 +84,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * microsoft.windowsazure.management.ManagementClientImpl.
     * @return The Client value.
     */
-    public ManagementClientImpl getClient()
-    {
+    public ManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -105,12 +102,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters)
-    {
+    public Future<OperationResponse> createAsync(final ManagementCertificateCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -140,19 +135,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -178,22 +170,19 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         Element subscriptionCertificateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificate");
         requestDoc.appendChild(subscriptionCertificateElement);
         
-        if (parameters.getPublicKey() != null)
-        {
+        if (parameters.getPublicKey() != null) {
             Element subscriptionCertificatePublicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificatePublicKey");
             subscriptionCertificatePublicKeyElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPublicKey()))));
             subscriptionCertificateElement.appendChild(subscriptionCertificatePublicKeyElement);
         }
         
-        if (parameters.getThumbprint() != null)
-        {
+        if (parameters.getThumbprint() != null) {
             Element subscriptionCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateThumbprint");
             subscriptionCertificateThumbprintElement.appendChild(requestDoc.createTextNode(parameters.getThumbprint()));
             subscriptionCertificateElement.appendChild(subscriptionCertificateThumbprintElement);
         }
         
-        if (parameters.getData() != null)
-        {
+        if (parameters.getData() != null) {
             Element subscriptionCertificateDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubscriptionCertificateData");
             subscriptionCertificateDataElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getData()))));
             subscriptionCertificateElement.appendChild(subscriptionCertificateDataElement);
@@ -212,23 +201,18 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -238,21 +222,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -271,12 +250,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String thumbprint)
-    {
+    public Future<OperationResponse> deleteAsync(final String thumbprint) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return delete(thumbprint);
             }
          });
@@ -299,19 +276,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * request ID.
     */
     @Override
-    public OperationResponse delete(String thumbprint) throws IOException, ServiceException
-    {
+    public OperationResponse delete(String thumbprint) throws IOException, ServiceException {
         // Validate
-        if (thumbprint == null)
-        {
+        if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("thumbprint", thumbprint);
@@ -329,23 +303,18 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_FOUND)
-            {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_FOUND) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -355,21 +324,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -389,12 +353,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The Get Management Certificate operation response.
     */
     @Override
-    public Future<ManagementCertificateGetResponse> getAsync(final String thumbprint)
-    {
+    public Future<ManagementCertificateGetResponse> getAsync(final String thumbprint) {
         return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateGetResponse>() { 
             @Override
-            public ManagementCertificateGetResponse call() throws Exception
-            {
+            public ManagementCertificateGetResponse call() throws Exception {
                 return get(thumbprint);
             }
          });
@@ -424,19 +386,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The Get Management Certificate operation response.
     */
     @Override
-    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (thumbprint == null)
-        {
+        if (thumbprint == null) {
             throw new NullPointerException("thumbprint");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("thumbprint", thumbprint);
@@ -454,23 +413,18 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -488,12 +442,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             
             NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificate");
             Element subscriptionCertificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (subscriptionCertificateElement != null)
-            {
+            if (subscriptionCertificateElement != null) {
                 NodeList elements2 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificatePublicKey");
                 Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (subscriptionCertificatePublicKeyElement != null)
-                {
+                if (subscriptionCertificatePublicKeyElement != null) {
                     byte[] subscriptionCertificatePublicKeyInstance;
                     subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
                     result.setPublicKey(subscriptionCertificatePublicKeyInstance);
@@ -501,8 +453,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 
                 NodeList elements3 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateThumbprint");
                 Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (subscriptionCertificateThumbprintElement != null)
-                {
+                if (subscriptionCertificateThumbprintElement != null) {
                     String subscriptionCertificateThumbprintInstance;
                     subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
                     result.setThumbprint(subscriptionCertificateThumbprintInstance);
@@ -510,8 +461,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 
                 NodeList elements4 = subscriptionCertificateElement.getElementsByTagName("SubscriptionCertificateData");
                 Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (subscriptionCertificateDataElement != null)
-                {
+                if (subscriptionCertificateDataElement != null) {
                     byte[] subscriptionCertificateDataInstance;
                     subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
                     result.setData(subscriptionCertificateDataInstance);
@@ -519,8 +469,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                 
                 NodeList elements5 = subscriptionCertificateElement.getElementsByTagName("Created");
                 Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (createdElement != null)
-                {
+                if (createdElement != null) {
                     Calendar createdInstance;
                     createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
                     result.setCreated(createdInstance);
@@ -528,21 +477,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -560,12 +504,10 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The List Management Certificates operation response.
     */
     @Override
-    public Future<ManagementCertificateListResponse> listAsync()
-    {
+    public Future<ManagementCertificateListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<ManagementCertificateListResponse>() { 
             @Override
-            public ManagementCertificateListResponse call() throws Exception
-            {
+            public ManagementCertificateListResponse call() throws Exception {
                 return list();
             }
          });
@@ -591,15 +533,13 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
     * @return The List Management Certificates operation response.
     */
     @Override
-    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -616,23 +556,18 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -650,18 +585,15 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             
             NodeList elements = responseDoc.getElementsByTagName("SubscriptionCertificates");
             Element subscriptionCertificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (subscriptionCertificatesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1)
-                {
+            if (subscriptionCertificatesSequenceElement != null) {
+                for (int i1 = 0; i1 < subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element subscriptionCertificatesElement = ((org.w3c.dom.Element) subscriptionCertificatesSequenceElement.getElementsByTagName("SubscriptionCertificate").item(i1));
                     ManagementCertificateListResponse.SubscriptionCertificate subscriptionCertificateInstance = new ManagementCertificateListResponse.SubscriptionCertificate();
                     result.getSubscriptionCertificates().add(subscriptionCertificateInstance);
                     
                     NodeList elements2 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificatePublicKey");
                     Element subscriptionCertificatePublicKeyElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (subscriptionCertificatePublicKeyElement != null)
-                    {
+                    if (subscriptionCertificatePublicKeyElement != null) {
                         byte[] subscriptionCertificatePublicKeyInstance;
                         subscriptionCertificatePublicKeyInstance = subscriptionCertificatePublicKeyElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificatePublicKeyElement.getTextContent().getBytes()) : null;
                         subscriptionCertificateInstance.setPublicKey(subscriptionCertificatePublicKeyInstance);
@@ -669,8 +601,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     
                     NodeList elements3 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateThumbprint");
                     Element subscriptionCertificateThumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (subscriptionCertificateThumbprintElement != null)
-                    {
+                    if (subscriptionCertificateThumbprintElement != null) {
                         String subscriptionCertificateThumbprintInstance;
                         subscriptionCertificateThumbprintInstance = subscriptionCertificateThumbprintElement.getTextContent();
                         subscriptionCertificateInstance.setThumbprint(subscriptionCertificateThumbprintInstance);
@@ -678,8 +609,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     
                     NodeList elements4 = subscriptionCertificatesElement.getElementsByTagName("SubscriptionCertificateData");
                     Element subscriptionCertificateDataElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (subscriptionCertificateDataElement != null)
-                    {
+                    if (subscriptionCertificateDataElement != null) {
                         byte[] subscriptionCertificateDataInstance;
                         subscriptionCertificateDataInstance = subscriptionCertificateDataElement.getTextContent() != null ? Base64.decodeBase64(subscriptionCertificateDataElement.getTextContent().getBytes()) : null;
                         subscriptionCertificateInstance.setData(subscriptionCertificateDataInstance);
@@ -687,8 +617,7 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
                     
                     NodeList elements5 = subscriptionCertificatesElement.getElementsByTagName("Created");
                     Element createdElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (createdElement != null)
-                    {
+                    if (createdElement != null) {
                         Calendar createdInstance;
                         createdInstance = DatatypeConverter.parseDateTime(createdElement.getTextContent());
                         subscriptionCertificateInstance.setCreated(createdInstance);
@@ -697,21 +626,16 @@ public class ManagementCertificateOperationsImpl implements ServiceOperations<Ma
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

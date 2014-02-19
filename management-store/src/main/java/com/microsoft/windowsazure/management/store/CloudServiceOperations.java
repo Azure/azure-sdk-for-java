@@ -38,8 +38,7 @@ import org.xml.sax.SAXException;
 * Provides REST operations for working with cloud services from the Windows
 * Azure store service.
 */
-public interface CloudServiceOperations
-{
+public interface CloudServiceOperations {
     /**
     * The Create Cloud Service operation creates a Windows Azure cloud service
     * in a Windows Azure subscription.

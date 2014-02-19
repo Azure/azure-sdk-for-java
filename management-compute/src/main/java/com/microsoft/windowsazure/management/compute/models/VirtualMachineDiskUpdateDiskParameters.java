@@ -28,8 +28,7 @@ import java.net.URI;
 /**
 * Parameters supplied to the Update Virtual Disk Image operation.
 */
-public class VirtualMachineDiskUpdateDiskParameters
-{
+public class VirtualMachineDiskUpdateDiskParameters {
     private Boolean hasOperatingSystem;
     
     /**
@@ -38,8 +37,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * OS Drive.
     * @return The HasOperatingSystem value.
     */
-    public Boolean isHasOperatingSystem()
-    {
+    public Boolean isHasOperatingSystem() {
         return this.hasOperatingSystem;
     }
     
@@ -49,8 +47,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * OS Drive.
     * @param hasOperatingSystemValue The HasOperatingSystem value.
     */
-    public void setHasOperatingSystem(final Boolean hasOperatingSystemValue)
-    {
+    public void setHasOperatingSystem(final Boolean hasOperatingSystemValue) {
         this.hasOperatingSystem = hasOperatingSystemValue;
     }
     
@@ -60,8 +57,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * Required. Specifies the friendly name of the disk.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -69,8 +65,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * Required. Specifies the friendly name of the disk.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -83,8 +78,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri()
-    {
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
     
@@ -95,8 +89,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
     
@@ -107,8 +100,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * identify the disk when creating virtual machines from the disk.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -117,8 +109,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * identify the disk when creating virtual machines from the disk.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -129,8 +120,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * Linux, Windows.
     * @return The OperatingSystemType value.
     */
-    public String getOperatingSystemType()
-    {
+    public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
     
@@ -139,8 +129,7 @@ public class VirtualMachineDiskUpdateDiskParameters
     * Linux, Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(final String operatingSystemTypeValue)
-    {
+    public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
 }

@@ -38,8 +38,7 @@ import org.xml.sax.SAXException;
 * Provides REST operations for working with Store add-ins from the Windows
 * Azure store service.
 */
-public interface AddOnOperations
-{
+public interface AddOnOperations {
     /**
     * The Create Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.

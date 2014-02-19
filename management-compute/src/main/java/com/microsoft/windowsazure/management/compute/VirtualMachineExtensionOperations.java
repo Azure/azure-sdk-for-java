@@ -37,8 +37,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
 * information)
 */
-public interface VirtualMachineExtensionOperations
-{
+public interface VirtualMachineExtensionOperations {
     /**
     * The List Resource Extensions operation lists the resource extensions that
     * are available to add to a Virtual Machine. In Windows Azure, a process

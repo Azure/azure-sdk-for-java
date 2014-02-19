@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-public class JobCollectionMaxRecurrence
-{
+public class JobCollectionMaxRecurrence {
     private JobCollectionRecurrenceFrequency frequency;
     
     /**
@@ -32,8 +31,7 @@ public class JobCollectionMaxRecurrence
     * job collection.
     * @return The Frequency value.
     */
-    public JobCollectionRecurrenceFrequency getFrequency()
-    {
+    public JobCollectionRecurrenceFrequency getFrequency() {
         return this.frequency;
     }
     
@@ -42,8 +40,7 @@ public class JobCollectionMaxRecurrence
     * job collection.
     * @param frequencyValue The Frequency value.
     */
-    public void setFrequency(final JobCollectionRecurrenceFrequency frequencyValue)
-    {
+    public void setFrequency(final JobCollectionRecurrenceFrequency frequencyValue) {
         this.frequency = frequencyValue;
     }
     
@@ -53,8 +50,7 @@ public class JobCollectionMaxRecurrence
     * Defines the interval.
     * @return The Interval value.
     */
-    public int getInterval()
-    {
+    public int getInterval() {
         return this.interval;
     }
     
@@ -62,8 +58,7 @@ public class JobCollectionMaxRecurrence
     * Defines the interval.
     * @param intervalValue The Interval value.
     */
-    public void setInterval(final int intervalValue)
-    {
+    public void setInterval(final int intervalValue) {
         this.interval = intervalValue;
     }
 }

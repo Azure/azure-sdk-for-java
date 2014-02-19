@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The size of a web space worker.
 */
-public enum WebSpaceWorkerSize
-{
+public enum WebSpaceWorkerSize {
     Small,
     
     Medium,

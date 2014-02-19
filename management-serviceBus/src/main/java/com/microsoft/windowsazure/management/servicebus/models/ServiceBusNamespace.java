@@ -29,8 +29,7 @@ import java.util.Calendar;
 /**
 * A service bus namespace.
 */
-public class ServiceBusNamespace
-{
+public class ServiceBusNamespace {
     private URI acsManagementEndpoint;
     
     /**
@@ -39,8 +38,7 @@ public class ServiceBusNamespace
     * more information)
     * @return The AcsManagementEndpoint value.
     */
-    public URI getAcsManagementEndpoint()
-    {
+    public URI getAcsManagementEndpoint() {
         return this.acsManagementEndpoint;
     }
     
@@ -50,8 +48,7 @@ public class ServiceBusNamespace
     * more information)
     * @param acsManagementEndpointValue The AcsManagementEndpoint value.
     */
-    public void setAcsManagementEndpoint(final URI acsManagementEndpointValue)
-    {
+    public void setAcsManagementEndpoint(final URI acsManagementEndpointValue) {
         this.acsManagementEndpoint = acsManagementEndpointValue;
     }
     
@@ -61,8 +58,7 @@ public class ServiceBusNamespace
     * The time the namespace was created.
     * @return The CreatedAt value.
     */
-    public Calendar getCreatedAt()
-    {
+    public Calendar getCreatedAt() {
         return this.createdAt;
     }
     
@@ -70,8 +66,7 @@ public class ServiceBusNamespace
     * The time the namespace was created.
     * @param createdAtValue The CreatedAt value.
     */
-    public void setCreatedAt(final Calendar createdAtValue)
-    {
+    public void setCreatedAt(final Calendar createdAtValue) {
         this.createdAt = createdAtValue;
     }
     
@@ -81,8 +76,7 @@ public class ServiceBusNamespace
     * Whether or not the namespace is currently enabled.
     * @return The Enabled value.
     */
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return this.enabled;
     }
     
@@ -90,8 +84,7 @@ public class ServiceBusNamespace
     * Whether or not the namespace is currently enabled.
     * @param enabledValue The Enabled value.
     */
-    public void setEnabled(final boolean enabledValue)
-    {
+    public void setEnabled(final boolean enabledValue) {
         this.enabled = enabledValue;
     }
     
@@ -101,8 +94,7 @@ public class ServiceBusNamespace
     * The name of the namespace.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -110,8 +102,7 @@ public class ServiceBusNamespace
     * The name of the namespace.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -125,8 +116,7 @@ public class ServiceBusNamespace
     * more information)
     * @return The Region value.
     */
-    public String getRegion()
-    {
+    public String getRegion() {
         return this.region;
     }
     
@@ -138,8 +128,7 @@ public class ServiceBusNamespace
     * more information)
     * @param regionValue The Region value.
     */
-    public void setRegion(final String regionValue)
-    {
+    public void setRegion(final String regionValue) {
         this.region = regionValue;
     }
     
@@ -151,8 +140,7 @@ public class ServiceBusNamespace
     * more information)
     * @return The ServiceBusEndpoint value.
     */
-    public URI getServiceBusEndpoint()
-    {
+    public URI getServiceBusEndpoint() {
         return this.serviceBusEndpoint;
     }
     
@@ -162,8 +150,7 @@ public class ServiceBusNamespace
     * more information)
     * @param serviceBusEndpointValue The ServiceBusEndpoint value.
     */
-    public void setServiceBusEndpoint(final URI serviceBusEndpointValue)
-    {
+    public void setServiceBusEndpoint(final URI serviceBusEndpointValue) {
         this.serviceBusEndpoint = serviceBusEndpointValue;
     }
     
@@ -176,8 +163,7 @@ public class ServiceBusNamespace
     * more information)
     * @return The Status value.
     */
-    public String getStatus()
-    {
+    public String getStatus() {
         return this.status;
     }
     
@@ -188,8 +174,7 @@ public class ServiceBusNamespace
     * more information)
     * @param statusValue The Status value.
     */
-    public void setStatus(final String statusValue)
-    {
+    public void setStatus(final String statusValue) {
         this.status = statusValue;
     }
     
@@ -199,8 +184,7 @@ public class ServiceBusNamespace
     * The Id of the Azure subscription associated with the namespace.
     * @return The SubscriptionId value.
     */
-    public String getSubscriptionId()
-    {
+    public String getSubscriptionId() {
         return this.subscriptionId;
     }
     
@@ -208,8 +192,7 @@ public class ServiceBusNamespace
     * The Id of the Azure subscription associated with the namespace.
     * @param subscriptionIdValue The SubscriptionId value.
     */
-    public void setSubscriptionId(final String subscriptionIdValue)
-    {
+    public void setSubscriptionId(final String subscriptionIdValue) {
         this.subscriptionId = subscriptionIdValue;
     }
 }

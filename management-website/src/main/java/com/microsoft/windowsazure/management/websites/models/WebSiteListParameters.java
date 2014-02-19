@@ -28,16 +28,14 @@ import java.util.ArrayList;
 /**
 * The List Web Sites operation parameters.
 */
-public class WebSiteListParameters
-{
+public class WebSiteListParameters {
     private ArrayList<String> propertiesToInclude;
     
     /**
     * Specifies a list of the names of any addtional parameters to return.
     * @return The PropertiesToInclude value.
     */
-    public ArrayList<String> getPropertiesToInclude()
-    {
+    public ArrayList<String> getPropertiesToInclude() {
         return this.propertiesToInclude;
     }
     
@@ -45,8 +43,7 @@ public class WebSiteListParameters
     * Specifies a list of the names of any addtional parameters to return.
     * @param propertiesToIncludeValue The PropertiesToInclude value.
     */
-    public void setPropertiesToInclude(final ArrayList<String> propertiesToIncludeValue)
-    {
+    public void setPropertiesToInclude(final ArrayList<String> propertiesToIncludeValue) {
         this.propertiesToInclude = propertiesToIncludeValue;
     }
     
@@ -54,8 +51,7 @@ public class WebSiteListParameters
     * Initializes a new instance of the WebSiteListParameters class.
     *
     */
-    public WebSiteListParameters()
-    {
+    public WebSiteListParameters() {
         this.propertiesToInclude = new ArrayList<String>();
     }
 }

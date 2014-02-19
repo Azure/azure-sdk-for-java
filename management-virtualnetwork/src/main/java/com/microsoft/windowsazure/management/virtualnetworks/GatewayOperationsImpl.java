@@ -76,15 +76,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, GatewayOperations
-{
+public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, GatewayOperations {
     /**
     * Initializes a new instance of the GatewayOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    GatewayOperationsImpl(VirtualNetworkManagementClientImpl client)
-    {
+    GatewayOperationsImpl(VirtualNetworkManagementClientImpl client) {
         this.client = client;
     }
     
@@ -95,8 +93,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     * @return The Client value.
     */
-    public VirtualNetworkManagementClientImpl getClient()
-    {
+    public VirtualNetworkManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -117,12 +114,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginConnectDisconnectOrTestingAsync(final String virtualNetworkName, final String localNetworkSiteName, final GatewayConnectDisconnectOrTestParameters parameters)
-    {
+    public Future<GatewayOperationResponse> beginConnectDisconnectOrTestingAsync(final String virtualNetworkName, final String localNetworkSiteName, final GatewayConnectDisconnectOrTestParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return beginConnectDisconnectOrTesting(virtualNetworkName, localNetworkSiteName, parameters);
             }
          });
@@ -155,27 +150,22 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginConnectDisconnectOrTesting(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public GatewayOperationResponse beginConnectDisconnectOrTesting(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (localNetworkSiteName == null)
-        {
+        if (localNetworkSiteName == null) {
             throw new NullPointerException("localNetworkSiteName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -207,10 +197,9 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         operationElement.appendChild(requestDoc.createTextNode(parameters.getOperation().toString()));
         updateConnectionElement.appendChild(operationElement);
         
-        if (parameters.getIPAddress() != null)
-        {
+        if (parameters.getIPAddress() != null) {
             Element iPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IPAddress");
-            iPAddressElement.appendChild(requestDoc.createTextNode(parameters.getIPAddress().toString()));
+            iPAddressElement.appendChild(requestDoc.createTextNode(parameters.getIPAddress().getHostAddress()));
             updateConnectionElement.appendChild(iPAddressElement);
         }
         
@@ -227,23 +216,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -261,12 +245,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -274,21 +256,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -308,12 +285,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginCreatingAsync(final String virtualNetworkName, final GatewayCreateParameters parameters)
-    {
+    public Future<GatewayOperationResponse> beginCreatingAsync(final String virtualNetworkName, final GatewayCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return beginCreating(virtualNetworkName, parameters);
             }
          });
@@ -343,23 +318,19 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginCreating(String virtualNetworkName, GatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public GatewayOperationResponse beginCreating(String virtualNetworkName, GatewayCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -403,23 +374,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
+            if (statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -437,12 +403,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -450,21 +414,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -481,12 +440,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginDeletingAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayOperationResponse> beginDeletingAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return beginDeleting(virtualNetworkName);
             }
          });
@@ -511,19 +468,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginDeleting(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayOperationResponse beginDeleting(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -542,23 +496,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -576,12 +525,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -589,21 +536,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -620,12 +562,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginFailoverAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayOperationResponse> beginFailoverAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return beginFailover(virtualNetworkName);
             }
          });
@@ -650,19 +590,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginFailover(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayOperationResponse beginFailover(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -687,23 +624,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -721,12 +653,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -734,21 +664,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -770,12 +695,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> beginResetSharedKeyAsync(final String virtualNetworkName, final String localNetworkName, final GatewayResetSharedKeyParameters parameters)
-    {
+    public Future<GatewayOperationResponse> beginResetSharedKeyAsync(final String virtualNetworkName, final String localNetworkName, final GatewayResetSharedKeyParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return beginResetSharedKey(virtualNetworkName, localNetworkName, parameters);
             }
          });
@@ -807,27 +730,22 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse beginResetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public GatewayOperationResponse beginResetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (localNetworkName == null)
-        {
+        if (localNetworkName == null) {
             throw new NullPointerException("localNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -872,23 +790,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -906,12 +819,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -919,21 +830,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -963,12 +869,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> connectDisconnectOrTestAsync(final String virtualNetworkName, final String localNetworkSiteName, final GatewayConnectDisconnectOrTestParameters parameters)
-    {
+    public Future<GatewayGetOperationStatusResponse> connectDisconnectOrTestAsync(final String virtualNetworkName, final String localNetworkSiteName, final GatewayConnectDisconnectOrTestParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return connectDisconnectOrTest(virtualNetworkName, localNetworkSiteName, parameters);
             }
          });
@@ -1010,13 +914,11 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse connectDisconnectOrTest(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public GatewayGetOperationStatusResponse connectDisconnectOrTest(String virtualNetworkName, String localNetworkSiteName, GatewayConnectDisconnectOrTestParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -1024,46 +926,36 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "connectDisconnectOrTestAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             GatewayOperationResponse response = client2.getGatewaysOperations().beginConnectDisconnectOrTestingAsync(virtualNetworkName, localNetworkSiteName, parameters).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != GatewayOperationStatus.Successful) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1071,11 +963,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1102,12 +991,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> createAsync(final String virtualNetworkName, final GatewayCreateParameters parameters)
-    {
+    public Future<GatewayGetOperationStatusResponse> createAsync(final String virtualNetworkName, final GatewayCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return create(virtualNetworkName, parameters);
             }
          });
@@ -1152,59 +1039,47 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse create(String virtualNetworkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayGetOperationStatusResponse create(String virtualNetworkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             GatewayOperationResponse response = client2.getGatewaysOperations().beginCreatingAsync(virtualNetworkName, parameters).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != GatewayOperationStatus.Successful) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1212,11 +1087,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1240,12 +1112,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> deleteAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayGetOperationStatusResponse> deleteAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return delete(virtualNetworkName);
             }
          });
@@ -1287,58 +1157,46 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse delete(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException
-    {
+    public GatewayGetOperationStatusResponse delete(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             GatewayOperationResponse response = client2.getGatewaysOperations().beginDeletingAsync(virtualNetworkName).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != GatewayOperationStatus.Successful) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1346,11 +1204,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1374,12 +1229,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> failoverAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayGetOperationStatusResponse> failoverAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return failover(virtualNetworkName);
             }
          });
@@ -1415,58 +1268,46 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse failover(String virtualNetworkName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public GatewayGetOperationStatusResponse failover(String virtualNetworkName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
             CloudTracing.enter(invocationId, this, "failoverAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             GatewayOperationResponse response = client2.getGatewaysOperations().beginFailoverAsync(virtualNetworkName).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != GatewayOperationStatus.Successful) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1474,11 +1315,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1498,12 +1336,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayOperationResponse> generateVpnClientPackageAsync(final String virtualNetworkName, final GatewayGenerateVpnClientPackageParameters parameters)
-    {
+    public Future<GatewayOperationResponse> generateVpnClientPackageAsync(final String virtualNetworkName, final GatewayGenerateVpnClientPackageParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayOperationResponse>() { 
             @Override
-            public GatewayOperationResponse call() throws Exception
-            {
+            public GatewayOperationResponse call() throws Exception {
                 return generateVpnClientPackage(virtualNetworkName, parameters);
             }
          });
@@ -1533,23 +1369,19 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayOperationResponse generateVpnClientPackage(String virtualNetworkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public GatewayOperationResponse generateVpnClientPackage(String virtualNetworkName, GatewayGenerateVpnClientPackageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -1593,23 +1425,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
+            if (statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1627,12 +1454,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperationAsyncResponse");
             Element gatewayOperationAsyncResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationAsyncResponseElement != null)
-            {
+            if (gatewayOperationAsyncResponseElement != null) {
                 NodeList elements2 = gatewayOperationAsyncResponseElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setOperationId(idInstance);
@@ -1640,21 +1465,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1672,12 +1492,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public Future<GatewayGetResponse> getAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayGetResponse> getAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetResponse>() { 
             @Override
-            public GatewayGetResponse call() throws Exception
-            {
+            public GatewayGetResponse call() throws Exception {
                 return get(virtualNetworkName);
             }
          });
@@ -1703,19 +1521,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * request ID.
     */
     @Override
-    public GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayGetResponse get(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -1733,23 +1548,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1767,12 +1577,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("Gateway");
             Element gatewayElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayElement != null)
-            {
+            if (gatewayElement != null) {
                 NodeList elements2 = gatewayElement.getElementsByTagName("State");
                 Element stateElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (stateElement != null)
-                {
+                if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -1780,8 +1588,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements3 = gatewayElement.getElementsByTagName("VIPAddress");
                 Element vIPAddressElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (vIPAddressElement != null)
-                {
+                if (vIPAddressElement != null) {
                     InetAddress vIPAddressInstance;
                     vIPAddressInstance = InetAddress.getByName(vIPAddressElement.getTextContent());
                     result.setVipAddress(vIPAddressInstance);
@@ -1789,15 +1596,13 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements4 = gatewayElement.getElementsByTagName("LastEvent");
                 Element lastEventElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (lastEventElement != null)
-                {
+                if (lastEventElement != null) {
                     GatewayEvent lastEventInstance = new GatewayEvent();
                     result.setLastEvent(lastEventInstance);
                     
                     NodeList elements5 = lastEventElement.getElementsByTagName("Timestamp");
                     Element timestampElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (timestampElement != null)
-                    {
+                    if (timestampElement != null) {
                         Calendar timestampInstance;
                         timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                         lastEventInstance.setTimestamp(timestampInstance);
@@ -1805,8 +1610,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements6 = lastEventElement.getElementsByTagName("Id");
                     Element idElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (idElement != null)
-                    {
+                    if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         lastEventInstance.setId(idInstance);
@@ -1814,8 +1618,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements7 = lastEventElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
+                    if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         lastEventInstance.setMessage(messageInstance);
@@ -1823,8 +1626,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements8 = lastEventElement.getElementsByTagName("Data");
                     Element dataElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (dataElement != null)
-                    {
+                    if (dataElement != null) {
                         String dataInstance;
                         dataInstance = dataElement.getTextContent();
                         lastEventInstance.setData(dataInstance);
@@ -1833,8 +1635,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements9 = gatewayElement.getElementsByTagName("GatewayType");
                 Element gatewayTypeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (gatewayTypeElement != null)
-                {
+                if (gatewayTypeElement != null) {
                     GatewayType gatewayTypeInstance;
                     gatewayTypeInstance = GatewayType.valueOf(gatewayTypeElement.getTextContent());
                     result.setGatewayType(gatewayTypeInstance);
@@ -1842,21 +1643,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1876,12 +1672,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * configuration script request.
     */
     @Override
-    public Future<GatewayGetDeviceConfigurationScriptResponse> getDeviceConfigurationScriptAsync(final String virtualNetworkName, final GatewayGetDeviceConfigurationScriptParameters parameters)
-    {
+    public Future<GatewayGetDeviceConfigurationScriptResponse> getDeviceConfigurationScriptAsync(final String virtualNetworkName, final GatewayGetDeviceConfigurationScriptParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetDeviceConfigurationScriptResponse>() { 
             @Override
-            public GatewayGetDeviceConfigurationScriptResponse call() throws Exception
-            {
+            public GatewayGetDeviceConfigurationScriptResponse call() throws Exception {
                 return getDeviceConfigurationScript(virtualNetworkName, parameters);
             }
          });
@@ -1905,23 +1699,19 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * configuration script request.
     */
     @Override
-    public GatewayGetDeviceConfigurationScriptResponse getDeviceConfigurationScript(String virtualNetworkName, GatewayGetDeviceConfigurationScriptParameters parameters) throws IOException, ServiceException
-    {
+    public GatewayGetDeviceConfigurationScriptResponse getDeviceConfigurationScript(String virtualNetworkName, GatewayGetDeviceConfigurationScriptParameters parameters) throws IOException, ServiceException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -1931,16 +1721,13 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "/gateway/vpndeviceconfigurationscript" + "?";
-        if (parameters.getVendor() != null)
-        {
+        if (parameters.getVendor() != null) {
             url = url + "vendor=" + URLEncoder.encode(parameters.getVendor(), "UTF-8");
         }
-        if (parameters.getPlatform() != null)
-        {
+        if (parameters.getPlatform() != null) {
             url = url + "&" + "platform=" + URLEncoder.encode(parameters.getPlatform(), "UTF-8");
         }
-        if (parameters.getOSFamily() != null)
-        {
+        if (parameters.getOSFamily() != null) {
             url = url + "&" + "OSfamily=" + URLEncoder.encode(parameters.getOSFamily(), "UTF-8");
         }
         
@@ -1952,23 +1739,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1982,21 +1764,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             result.setConfigurationScript(StreamUtils.toString(responseContent));
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2020,12 +1797,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> getOperationStatusAsync(final String operationId)
-    {
+    public Future<GatewayGetOperationStatusResponse> getOperationStatusAsync(final String operationId) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return getOperationStatus(operationId);
             }
          });
@@ -2057,19 +1832,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse getOperationStatus(String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayGetOperationStatusResponse getOperationStatus(String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (operationId == null)
-        {
+        if (operationId == null) {
             throw new NullPointerException("operationId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("operationId", operationId);
@@ -2087,23 +1859,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2121,12 +1888,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("GatewayOperation");
             Element gatewayOperationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (gatewayOperationElement != null)
-            {
+            if (gatewayOperationElement != null) {
                 NodeList elements2 = gatewayOperationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -2134,8 +1899,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements3 = gatewayOperationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     GatewayOperationStatus statusInstance;
                     statusInstance = GatewayOperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -2143,8 +1907,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements4 = gatewayOperationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null)
-                {
+                if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -2152,15 +1915,13 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                 
                 NodeList elements5 = gatewayOperationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null)
-                {
+                if (errorElement != null) {
                     GatewayGetOperationStatusResponse.ErrorDetails errorInstance = new GatewayGetOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null)
-                    {
+                    if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -2168,8 +1929,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
+                    if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -2178,21 +1938,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2211,12 +1966,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * @return The response to the get shared key request.
     */
     @Override
-    public Future<GatewayGetSharedKeyResponse> getSharedKeyAsync(final String virtualNetworkName, final String localNetworkName)
-    {
+    public Future<GatewayGetSharedKeyResponse> getSharedKeyAsync(final String virtualNetworkName, final String localNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetSharedKeyResponse>() { 
             @Override
-            public GatewayGetSharedKeyResponse call() throws Exception
-            {
+            public GatewayGetSharedKeyResponse call() throws Exception {
                 return getSharedKey(virtualNetworkName, localNetworkName);
             }
          });
@@ -2243,23 +1996,19 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * @return The response to the get shared key request.
     */
     @Override
-    public GatewayGetSharedKeyResponse getSharedKey(String virtualNetworkName, String localNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayGetSharedKeyResponse getSharedKey(String virtualNetworkName, String localNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (localNetworkName == null)
-        {
+        if (localNetworkName == null) {
             throw new NullPointerException("localNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -2278,23 +2027,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2312,12 +2056,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("SharedKey");
             Element sharedKeyElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (sharedKeyElement != null)
-            {
+            if (sharedKeyElement != null) {
                 NodeList elements2 = sharedKeyElement.getElementsByTagName("Value");
                 Element valueElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (valueElement != null)
-                {
+                if (valueElement != null) {
                     String valueInstance;
                     valueInstance = valueElement.getTextContent();
                     result.setSharedKey(valueInstance);
@@ -2325,21 +2067,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2357,12 +2094,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * Gateway.
     */
     @Override
-    public Future<GatewayListConnectionsResponse> listConnectionsAsync(final String virtualNetworkName)
-    {
+    public Future<GatewayListConnectionsResponse> listConnectionsAsync(final String virtualNetworkName) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayListConnectionsResponse>() { 
             @Override
-            public GatewayListConnectionsResponse call() throws Exception
-            {
+            public GatewayListConnectionsResponse call() throws Exception {
                 return listConnections(virtualNetworkName);
             }
          });
@@ -2388,19 +2123,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * Gateway.
     */
     @Override
-    public GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayListConnectionsResponse listConnections(String virtualNetworkName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -2418,23 +2150,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2452,18 +2179,15 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagName("Connections");
             Element connectionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (connectionsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < connectionsSequenceElement.getElementsByTagName("Connection").getLength(); i1 = i1 + 1)
-                {
+            if (connectionsSequenceElement != null) {
+                for (int i1 = 0; i1 < connectionsSequenceElement.getElementsByTagName("Connection").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element connectionsElement = ((org.w3c.dom.Element) connectionsSequenceElement.getElementsByTagName("Connection").item(i1));
                     GatewayListConnectionsResponse.GatewayConnection connectionInstance = new GatewayListConnectionsResponse.GatewayConnection();
                     result.getConnections().add(connectionInstance);
                     
                     NodeList elements2 = connectionsElement.getElementsByTagName("LocalNetworkSiteName");
                     Element localNetworkSiteNameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (localNetworkSiteNameElement != null)
-                    {
+                    if (localNetworkSiteNameElement != null) {
                         String localNetworkSiteNameInstance;
                         localNetworkSiteNameInstance = localNetworkSiteNameElement.getTextContent();
                         connectionInstance.setLocalNetworkSiteName(localNetworkSiteNameInstance);
@@ -2471,8 +2195,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements3 = connectionsElement.getElementsByTagName("ConnectivityState");
                     Element connectivityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (connectivityStateElement != null)
-                    {
+                    if (connectivityStateElement != null) {
                         GatewayConnectivityState connectivityStateInstance;
                         connectivityStateInstance = GatewayConnectivityState.valueOf(connectivityStateElement.getTextContent());
                         connectionInstance.setConnectivityState(connectivityStateInstance);
@@ -2480,15 +2203,13 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements4 = connectionsElement.getElementsByTagName("LastEvent");
                     Element lastEventElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (lastEventElement != null)
-                    {
+                    if (lastEventElement != null) {
                         GatewayEvent lastEventInstance = new GatewayEvent();
                         connectionInstance.setLastEvent(lastEventInstance);
                         
                         NodeList elements5 = lastEventElement.getElementsByTagName("Timestamp");
                         Element timestampElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (timestampElement != null)
-                        {
+                        if (timestampElement != null) {
                             Calendar timestampInstance;
                             timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                             lastEventInstance.setTimestamp(timestampInstance);
@@ -2496,8 +2217,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                         
                         NodeList elements6 = lastEventElement.getElementsByTagName("Id");
                         Element idElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (idElement != null)
-                        {
+                        if (idElement != null) {
                             String idInstance;
                             idInstance = idElement.getTextContent();
                             lastEventInstance.setId(idInstance);
@@ -2505,8 +2225,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                         
                         NodeList elements7 = lastEventElement.getElementsByTagName("Message");
                         Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (messageElement != null)
-                        {
+                        if (messageElement != null) {
                             String messageInstance;
                             messageInstance = messageElement.getTextContent();
                             lastEventInstance.setMessage(messageInstance);
@@ -2514,8 +2233,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                         
                         NodeList elements8 = lastEventElement.getElementsByTagName("Data");
                         Element dataElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (dataElement != null)
-                        {
+                        if (dataElement != null) {
                             String dataInstance;
                             dataInstance = dataElement.getTextContent();
                             lastEventInstance.setData(dataInstance);
@@ -2524,8 +2242,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements9 = connectionsElement.getElementsByTagName("IngressBytesTransferred");
                     Element ingressBytesTransferredElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (ingressBytesTransferredElement != null)
-                    {
+                    if (ingressBytesTransferredElement != null) {
                         long ingressBytesTransferredInstance;
                         ingressBytesTransferredInstance = DatatypeConverter.parseLong(ingressBytesTransferredElement.getTextContent());
                         connectionInstance.setIngressBytesTransferred(ingressBytesTransferredInstance);
@@ -2533,8 +2250,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements10 = connectionsElement.getElementsByTagName("EgressBytesTransferred");
                     Element egressBytesTransferredElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (egressBytesTransferredElement != null)
-                    {
+                    if (egressBytesTransferredElement != null) {
                         long egressBytesTransferredInstance;
                         egressBytesTransferredInstance = DatatypeConverter.parseLong(egressBytesTransferredElement.getTextContent());
                         connectionInstance.setEgressBytesTransferred(egressBytesTransferredInstance);
@@ -2542,8 +2258,7 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements11 = connectionsElement.getElementsByTagName("LastConnectionEstablished");
                     Element lastConnectionEstablishedElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (lastConnectionEstablishedElement != null)
-                    {
+                    if (lastConnectionEstablishedElement != null) {
                         Calendar lastConnectionEstablishedInstance;
                         lastConnectionEstablishedInstance = DatatypeConverter.parseDateTime(lastConnectionEstablishedElement.getTextContent());
                         connectionInstance.setLastConnectionEstablished(lastConnectionEstablishedInstance);
@@ -2551,10 +2266,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
                     
                     NodeList elements12 = connectionsElement.getElementsByTagName("AllocatedIPAddresses");
                     Element allocatedIPAddressesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (allocatedIPAddressesSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < allocatedIPAddressesSequenceElement.getElementsByTagName("string").getLength(); i2 = i2 + 1)
-                        {
+                    if (allocatedIPAddressesSequenceElement != null) {
+                        for (int i2 = 0; i2 < allocatedIPAddressesSequenceElement.getElementsByTagName("string").getLength(); i2 = i2 + 1) {
                             org.w3c.dom.Element allocatedIPAddressesElement = ((org.w3c.dom.Element) allocatedIPAddressesSequenceElement.getElementsByTagName("string").item(i2));
                             connectionInstance.getAllocatedIPAddresses().add(allocatedIPAddressesElement.getTextContent());
                         }
@@ -2563,21 +2276,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2592,12 +2300,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * @return The respoonse to the get supported platform configuration request.
     */
     @Override
-    public Future<GatewayListSupportedDevicesResponse> listSupportedDevicesAsync()
-    {
+    public Future<GatewayListSupportedDevicesResponse> listSupportedDevicesAsync() {
         return this.getClient().getExecutorService().submit(new Callable<GatewayListSupportedDevicesResponse>() { 
             @Override
-            public GatewayListSupportedDevicesResponse call() throws Exception
-            {
+            public GatewayListSupportedDevicesResponse call() throws Exception {
                 return listSupportedDevices();
             }
          });
@@ -2620,15 +2326,13 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * @return The respoonse to the get supported platform configuration request.
     */
     @Override
-    public GatewayListSupportedDevicesResponse listSupportedDevices() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public GatewayListSupportedDevicesResponse listSupportedDevices() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listSupportedDevicesAsync", tracingParameters);
@@ -2645,23 +2349,18 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2679,53 +2378,42 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             
             NodeList elements = responseDoc.getElementsByTagNameNS("", "VpnDeviceList");
             Element vpnDeviceListElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (vpnDeviceListElement != null)
-            {
+            if (vpnDeviceListElement != null) {
                 Attr versionAttribute = vpnDeviceListElement.getAttributeNodeNS("", "version");
-                if (versionAttribute != null)
-                {
+                if (versionAttribute != null) {
                     result.setVersion(versionAttribute.getValue());
                 }
                 
-                if (vpnDeviceListElement != null)
-                {
-                    for (int i1 = 0; i1 < vpnDeviceListElement.getElementsByTagNameNS("", "Vendor").getLength(); i1 = i1 + 1)
-                    {
+                if (vpnDeviceListElement != null) {
+                    for (int i1 = 0; i1 < vpnDeviceListElement.getElementsByTagNameNS("", "Vendor").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element vendorsElement = ((org.w3c.dom.Element) vpnDeviceListElement.getElementsByTagNameNS("", "Vendor").item(i1));
                         GatewayListSupportedDevicesResponse.Vendor vendorInstance = new GatewayListSupportedDevicesResponse.Vendor();
                         result.getVendors().add(vendorInstance);
                         
                         Attr nameAttribute = vendorsElement.getAttributeNodeNS("", "name");
-                        if (nameAttribute != null)
-                        {
+                        if (nameAttribute != null) {
                             vendorInstance.setName(nameAttribute.getValue());
                         }
                         
-                        if (vendorsElement != null)
-                        {
-                            for (int i2 = 0; i2 < vendorsElement.getElementsByTagNameNS("", "Platform").getLength(); i2 = i2 + 1)
-                            {
+                        if (vendorsElement != null) {
+                            for (int i2 = 0; i2 < vendorsElement.getElementsByTagNameNS("", "Platform").getLength(); i2 = i2 + 1) {
                                 org.w3c.dom.Element platformsElement = ((org.w3c.dom.Element) vendorsElement.getElementsByTagNameNS("", "Platform").item(i2));
                                 GatewayListSupportedDevicesResponse.Platform platformInstance = new GatewayListSupportedDevicesResponse.Platform();
                                 vendorInstance.getPlatforms().add(platformInstance);
                                 
                                 Attr nameAttribute2 = platformsElement.getAttributeNodeNS("", "name");
-                                if (nameAttribute2 != null)
-                                {
+                                if (nameAttribute2 != null) {
                                     platformInstance.setName(nameAttribute2.getValue());
                                 }
                                 
-                                if (platformsElement != null)
-                                {
-                                    for (int i3 = 0; i3 < platformsElement.getElementsByTagNameNS("", "OSFamily").getLength(); i3 = i3 + 1)
-                                    {
+                                if (platformsElement != null) {
+                                    for (int i3 = 0; i3 < platformsElement.getElementsByTagNameNS("", "OSFamily").getLength(); i3 = i3 + 1) {
                                         org.w3c.dom.Element oSFamiliesElement = ((org.w3c.dom.Element) platformsElement.getElementsByTagNameNS("", "OSFamily").item(i3));
                                         GatewayListSupportedDevicesResponse.OSFamily oSFamilyInstance = new GatewayListSupportedDevicesResponse.OSFamily();
                                         platformInstance.getOSFamilies().add(oSFamilyInstance);
                                         
                                         Attr nameAttribute3 = oSFamiliesElement.getAttributeNodeNS("", "name");
-                                        if (nameAttribute3 != null)
-                                        {
+                                        if (nameAttribute3 != null) {
                                             oSFamilyInstance.setName(nameAttribute3.getValue());
                                         }
                                     }
@@ -2737,21 +2425,16 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2780,12 +2463,10 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public Future<GatewayGetOperationStatusResponse> resetSharedKeyAsync(final String virtualNetworkName, final String localNetworkName, final GatewayResetSharedKeyParameters parameters)
-    {
+    public Future<GatewayGetOperationStatusResponse> resetSharedKeyAsync(final String virtualNetworkName, final String localNetworkName, final GatewayResetSharedKeyParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<GatewayGetOperationStatusResponse>() { 
             @Override
-            public GatewayGetOperationStatusResponse call() throws Exception
-            {
+            public GatewayGetOperationStatusResponse call() throws Exception {
                 return resetSharedKey(virtualNetworkName, localNetworkName, parameters);
             }
          });
@@ -2826,13 +2507,11 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse resetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public GatewayGetOperationStatusResponse resetSharedKey(String virtualNetworkName, String localNetworkName, GatewayResetSharedKeyParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         VirtualNetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -2840,46 +2519,36 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "resetSharedKeyAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             GatewayOperationResponse response = client2.getGatewaysOperations().beginResetSharedKeyAsync(virtualNetworkName, localNetworkName, parameters).get();
             GatewayGetOperationStatusResponse result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != GatewayOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getGatewaysOperations().getOperationStatusAsync(response.getOperationId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != GatewayOperationStatus.Successful)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != GatewayOperationStatus.Successful) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -2887,11 +2556,8 @@ public class GatewayOperationsImpl implements ServiceOperations<VirtualNetworkMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }

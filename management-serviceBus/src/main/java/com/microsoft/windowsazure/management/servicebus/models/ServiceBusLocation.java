@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.servicebus.models;
 /**
 * A region code and name pairing.
 */
-public class ServiceBusLocation
-{
+public class ServiceBusLocation {
     private String code;
     
     /**
     * The region code.
     * @return The Code value.
     */
-    public String getCode()
-    {
+    public String getCode() {
         return this.code;
     }
     
@@ -43,8 +41,7 @@ public class ServiceBusLocation
     * The region code.
     * @param codeValue The Code value.
     */
-    public void setCode(final String codeValue)
-    {
+    public void setCode(final String codeValue) {
         this.code = codeValue;
     }
     
@@ -54,8 +51,7 @@ public class ServiceBusLocation
     * The fulle name of the region.
     * @return The FullName value.
     */
-    public String getFullName()
-    {
+    public String getFullName() {
         return this.fullName;
     }
     
@@ -63,8 +59,7 @@ public class ServiceBusLocation
     * The fulle name of the region.
     * @param fullNameValue The FullName value.
     */
-    public void setFullName(final String fullNameValue)
-    {
+    public void setFullName(final String fullNameValue) {
         this.fullName = fullNameValue;
     }
 }

@@ -39,13 +39,12 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
 * information)
 */
-public interface VirtualNetworkManagementClient extends FilterableService<VirtualNetworkManagementClient>
-{
+public interface VirtualNetworkManagementClient extends FilterableService<VirtualNetworkManagementClient> {
     /**
     * The URI used as the base for all SQL requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -56,32 +55,32 @@ public interface VirtualNetworkManagementClient extends FilterableService<Virtua
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * @return The ClientRootCertificatesOperations value.
     */
-    ClientRootCertificateOperations getClientRootCertificatesOperations(); 
+    ClientRootCertificateOperations getClientRootCertificatesOperations();
     
     /**
     * @return The GatewaysOperations value.
     */
-    GatewayOperations getGatewaysOperations(); 
+    GatewayOperations getGatewaysOperations();
     
     /**
     * @return The NetworksOperations value.
     */
-    NetworkOperations getNetworksOperations(); 
+    NetworkOperations getNetworksOperations();
     
     /**
     * @return The ReservedIPsOperations value.
     */
-    ReservedIPOperations getReservedIPsOperations(); 
+    ReservedIPOperations getReservedIPsOperations();
     
     /**
     * @return The StaticIPsOperations value.
     */
-    StaticIPOperations getStaticIPsOperations(); 
+    StaticIPOperations getStaticIPsOperations();
     
     /**
     * The Get Operation Status operation returns the status of thespecified

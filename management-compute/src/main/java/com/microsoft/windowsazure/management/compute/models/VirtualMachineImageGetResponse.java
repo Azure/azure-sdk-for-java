@@ -30,8 +30,7 @@ import java.util.Calendar;
 /**
 * A virtual machine image associated with your subscription.
 */
-public class VirtualMachineImageGetResponse extends OperationResponse
-{
+public class VirtualMachineImageGetResponse extends OperationResponse {
     private String affinityGroup;
     
     /**
@@ -42,8 +41,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * This value is NULL for platform images.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup()
-    {
+    public String getAffinityGroup() {
         return this.affinityGroup;
     }
     
@@ -55,8 +53,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * This value is NULL for platform images.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue)
-    {
+    public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -67,8 +64,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * category User.
     * @return The Category value.
     */
-    public String getCategory()
-    {
+    public String getCategory() {
         return this.category;
     }
     
@@ -77,8 +73,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * category User.
     * @param categoryValue The Category value.
     */
-    public void setCategory(final String categoryValue)
-    {
+    public void setCategory(final String categoryValue) {
         this.category = categoryValue;
     }
     
@@ -88,8 +83,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the description of the image.
     * @return The Description value.
     */
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
     
@@ -97,8 +91,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the description of the image.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue)
-    {
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
     
@@ -110,8 +103,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * that the value be a URL that points to a EULA.
     * @return The Eula value.
     */
-    public String getEula()
-    {
+    public String getEula() {
         return this.eula;
     }
     
@@ -121,8 +113,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * that the value be a URL that points to a EULA.
     * @param eulaValue The Eula value.
     */
-    public void setEula(final String eulaValue)
-    {
+    public void setEula(final String eulaValue) {
         this.eula = eulaValue;
     }
     
@@ -132,8 +123,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Provides the URI to the icon for this Operating System Image.
     * @return The IconUri value.
     */
-    public URI getIconUri()
-    {
+    public URI getIconUri() {
         return this.iconUri;
     }
     
@@ -141,8 +131,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Provides the URI to the icon for this Operating System Image.
     * @param iconUriValue The IconUri value.
     */
-    public void setIconUri(final URI iconUriValue)
-    {
+    public void setIconUri(final URI iconUriValue) {
         this.iconUri = iconUriValue;
     }
     
@@ -152,8 +141,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies a value that can be used to group images.
     * @return The ImageFamily value.
     */
-    public String getImageFamily()
-    {
+    public String getImageFamily() {
         return this.imageFamily;
     }
     
@@ -161,8 +149,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies a value that can be used to group images.
     * @param imageFamilyValue The ImageFamily value.
     */
-    public void setImageFamily(final String imageFamilyValue)
-    {
+    public void setImageFamily(final String imageFamilyValue) {
         this.imageFamily = imageFamilyValue;
     }
     
@@ -174,8 +161,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * additional details, see the PricingDetailLink element.
     * @return The IsPremium value.
     */
-    public Boolean isPremium()
-    {
+    public Boolean isPremium() {
         return this.isPremium;
     }
     
@@ -185,8 +171,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * additional details, see the PricingDetailLink element.
     * @param isPremiumValue The IsPremium value.
     */
-    public void setIsPremium(final Boolean isPremiumValue)
-    {
+    public void setIsPremium(final Boolean isPremiumValue) {
         this.isPremium = isPremiumValue;
     }
     
@@ -196,8 +181,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * An identifier for the image.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -205,8 +189,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * An identifier for the image.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -217,8 +200,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * available using version 2013-03-01 or higher.
     * @return The Language value.
     */
-    public String getLanguage()
-    {
+    public String getLanguage() {
         return this.language;
     }
     
@@ -227,8 +209,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
-    public void setLanguage(final String languageValue)
-    {
+    public void setLanguage(final String languageValue) {
         this.language = languageValue;
     }
     
@@ -243,8 +224,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * NULL for platform images.
     * @return The Location value.
     */
-    public String getLocation()
-    {
+    public String getLocation() {
         return this.location;
     }
     
@@ -257,8 +237,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * NULL for platform images.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue)
-    {
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
     
@@ -268,8 +247,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The size, in GB, of the image.
     * @return The LogicalSizeInGB value.
     */
-    public double getLogicalSizeInGB()
-    {
+    public double getLogicalSizeInGB() {
         return this.logicalSizeInGB;
     }
     
@@ -277,8 +255,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The size, in GB, of the image.
     * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
-    public void setLogicalSizeInGB(final double logicalSizeInGBValue)
-    {
+    public void setLogicalSizeInGB(final double logicalSizeInGBValue) {
         this.logicalSizeInGB = logicalSizeInGBValue;
     }
     
@@ -291,8 +268,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * http://example.blob.core.windows.net/disks/myimage.vhd
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri()
-    {
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
     
@@ -303,8 +279,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * http://example.blob.core.windows.net/disks/myimage.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
     
@@ -315,8 +290,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * when creating one or more virtual machines using the image.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -325,8 +299,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * when creating one or more virtual machines using the image.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -337,8 +310,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Windows.
     * @return The OperatingSystemType value.
     */
-    public String getOperatingSystemType()
-    {
+    public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
     
@@ -347,8 +319,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(final String operatingSystemTypeValue)
-    {
+    public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
     
@@ -359,8 +330,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * policy related to the image.
     * @return The PrivacyUri value.
     */
-    public URI getPrivacyUri()
-    {
+    public URI getPrivacyUri() {
         return this.privacyUri;
     }
     
@@ -369,8 +339,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * policy related to the image.
     * @param privacyUriValue The PrivacyUri value.
     */
-    public void setPrivacyUri(final URI privacyUriValue)
-    {
+    public void setPrivacyUri(final URI privacyUriValue) {
         this.privacyUri = privacyUriValue;
     }
     
@@ -380,8 +349,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the date when the image was added to the image repository.
     * @return The PublishedDate value.
     */
-    public Calendar getPublishedDate()
-    {
+    public Calendar getPublishedDate() {
         return this.publishedDate;
     }
     
@@ -389,8 +357,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Specifies the date when the image was added to the image repository.
     * @param publishedDateValue The PublishedDate value.
     */
-    public void setPublishedDate(final Calendar publishedDateValue)
-    {
+    public void setPublishedDate(final Calendar publishedDateValue) {
         this.publishedDate = publishedDateValue;
     }
     
@@ -400,8 +367,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The name of the publisher of this OS Image in Windows Azure.
     * @return The PublisherName value.
     */
-    public String getPublisherName()
-    {
+    public String getPublisherName() {
         return this.publisherName;
     }
     
@@ -409,8 +375,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * The name of the publisher of this OS Image in Windows Azure.
     * @param publisherNameValue The PublisherName value.
     */
-    public void setPublisherName(final String publisherNameValue)
-    {
+    public void setPublisherName(final String publisherNameValue) {
         this.publisherName = publisherNameValue;
     }
     
@@ -421,8 +386,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * created from the OS image.
     * @return The RecommendedVMSize value.
     */
-    public String getRecommendedVMSize()
-    {
+    public String getRecommendedVMSize() {
         return this.recommendedVMSize;
     }
     
@@ -431,8 +395,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * created from the OS image.
     * @param recommendedVMSizeValue The RecommendedVMSize value.
     */
-    public void setRecommendedVMSize(final String recommendedVMSizeValue)
-    {
+    public void setRecommendedVMSize(final String recommendedVMSizeValue) {
         this.recommendedVMSize = recommendedVMSizeValue;
     }
     
@@ -442,8 +405,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Indicates whther the image should be shown in the windows azure portal.
     * @return The ShowInGui value.
     */
-    public Boolean isShowInGui()
-    {
+    public Boolean isShowInGui() {
         return this.showInGui;
     }
     
@@ -451,8 +413,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * Indicates whther the image should be shown in the windows azure portal.
     * @param showInGuiValue The ShowInGui value.
     */
-    public void setShowInGui(final Boolean showInGuiValue)
-    {
+    public void setShowInGui(final Boolean showInGuiValue) {
         this.showInGui = showInGuiValue;
     }
     
@@ -464,8 +425,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * element is only available using version 2013-03-01 or higher.
     * @return The SmallIconUri value.
     */
-    public URI getSmallIconUri()
-    {
+    public URI getSmallIconUri() {
         return this.smallIconUri;
     }
     
@@ -475,8 +435,7 @@ public class VirtualMachineImageGetResponse extends OperationResponse
     * element is only available using version 2013-03-01 or higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
-    public void setSmallIconUri(final URI smallIconUriValue)
-    {
+    public void setSmallIconUri(final URI smallIconUriValue) {
         this.smallIconUri = smallIconUriValue;
     }
 }

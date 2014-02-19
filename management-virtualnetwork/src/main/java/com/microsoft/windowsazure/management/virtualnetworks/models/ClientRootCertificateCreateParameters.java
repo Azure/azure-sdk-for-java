@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public class ClientRootCertificateCreateParameters
-{
+public class ClientRootCertificateCreateParameters {
     private String certificate;
     
     /**
@@ -32,8 +31,7 @@ public class ClientRootCertificateCreateParameters
     * string
     * @return The Certificate value.
     */
-    public String getCertificate()
-    {
+    public String getCertificate() {
         return this.certificate;
     }
     
@@ -42,8 +40,7 @@ public class ClientRootCertificateCreateParameters
     * string
     * @param certificateValue The Certificate value.
     */
-    public void setCertificate(final String certificateValue)
-    {
+    public void setCertificate(final String certificateValue) {
         this.certificate = certificateValue;
     }
 }

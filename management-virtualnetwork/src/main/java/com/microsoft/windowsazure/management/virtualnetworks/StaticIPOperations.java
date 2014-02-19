@@ -31,8 +31,7 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public interface StaticIPOperations
-{
+public interface StaticIPOperations {
     /**
     * The Check Static IP operation retrieves the details for the availability
     * of static IP addresses for the given virtual network.

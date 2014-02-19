@@ -28,16 +28,14 @@ import java.net.URI;
 /**
 * Parameters supplied to the Create Virtual Disk Image operation.
 */
-public class VirtualMachineDiskCreateDiskParameters
-{
+public class VirtualMachineDiskCreateDiskParameters {
     private String label;
     
     /**
     * Required. Specifies the friendly name of the disk.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -45,8 +43,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * Required. Specifies the friendly name of the disk.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -59,8 +56,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @return The MediaLinkUri value.
     */
-    public URI getMediaLinkUri()
-    {
+    public URI getMediaLinkUri() {
         return this.mediaLinkUri;
     }
     
@@ -71,8 +67,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
-    public void setMediaLinkUri(final URI mediaLinkUriValue)
-    {
+    public void setMediaLinkUri(final URI mediaLinkUriValue) {
         this.mediaLinkUri = mediaLinkUriValue;
     }
     
@@ -83,8 +78,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * identify the disk when creating virtual machines from the disk.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -93,8 +87,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * identify the disk when creating virtual machines from the disk.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -105,8 +98,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * Linux, Windows.
     * @return The OperatingSystemType value.
     */
-    public String getOperatingSystemType()
-    {
+    public String getOperatingSystemType() {
         return this.operatingSystemType;
     }
     
@@ -115,8 +107,7 @@ public class VirtualMachineDiskCreateDiskParameters
     * Linux, Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
-    public void setOperatingSystemType(final String operatingSystemTypeValue)
-    {
+    public void setOperatingSystemType(final String operatingSystemTypeValue) {
         this.operatingSystemType = operatingSystemTypeValue;
     }
 }

@@ -29,16 +29,14 @@ import java.net.InetAddress;
 /**
 * A standard storage response including an HTTP status code and request ID.
 */
-public class GatewayGetResponse extends OperationResponse
-{
+public class GatewayGetResponse extends OperationResponse {
     private GatewayType gatewayType;
     
     /**
     * The type of gateway routing used for this virtual network.
     * @return The GatewayType value.
     */
-    public GatewayType getGatewayType()
-    {
+    public GatewayType getGatewayType() {
         return this.gatewayType;
     }
     
@@ -46,8 +44,7 @@ public class GatewayGetResponse extends OperationResponse
     * The type of gateway routing used for this virtual network.
     * @param gatewayTypeValue The GatewayType value.
     */
-    public void setGatewayType(final GatewayType gatewayTypeValue)
-    {
+    public void setGatewayType(final GatewayType gatewayTypeValue) {
         this.gatewayType = gatewayTypeValue;
     }
     
@@ -57,8 +54,7 @@ public class GatewayGetResponse extends OperationResponse
     * The last recorded event for this virtual network gateway.
     * @return The LastEvent value.
     */
-    public GatewayEvent getLastEvent()
-    {
+    public GatewayEvent getLastEvent() {
         return this.lastEvent;
     }
     
@@ -66,8 +62,7 @@ public class GatewayGetResponse extends OperationResponse
     * The last recorded event for this virtual network gateway.
     * @param lastEventValue The LastEvent value.
     */
-    public void setLastEvent(final GatewayEvent lastEventValue)
-    {
+    public void setLastEvent(final GatewayEvent lastEventValue) {
         this.lastEvent = lastEventValue;
     }
     
@@ -77,8 +72,7 @@ public class GatewayGetResponse extends OperationResponse
     * The provisioning state of the virtual network gateway.
     * @return The State value.
     */
-    public String getState()
-    {
+    public String getState() {
         return this.state;
     }
     
@@ -86,8 +80,7 @@ public class GatewayGetResponse extends OperationResponse
     * The provisioning state of the virtual network gateway.
     * @param stateValue The State value.
     */
-    public void setState(final String stateValue)
-    {
+    public void setState(final String stateValue) {
         this.state = stateValue;
     }
     
@@ -97,8 +90,7 @@ public class GatewayGetResponse extends OperationResponse
     * The virtual IP address for this virtual network gateway.
     * @return The VipAddress value.
     */
-    public InetAddress getVipAddress()
-    {
+    public InetAddress getVipAddress() {
         return this.vipAddress;
     }
     
@@ -106,8 +98,7 @@ public class GatewayGetResponse extends OperationResponse
     * The virtual IP address for this virtual network gateway.
     * @param vipAddressValue The VipAddress value.
     */
-    public void setVipAddress(final InetAddress vipAddressValue)
-    {
+    public void setVipAddress(final InetAddress vipAddressValue) {
         this.vipAddress = vipAddressValue;
     }
 }

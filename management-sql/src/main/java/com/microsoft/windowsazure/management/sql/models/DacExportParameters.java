@@ -28,16 +28,14 @@ import java.net.URI;
 /**
 * Parameters supplied to the DAC Export operation.
 */
-public class DacExportParameters
-{
+public class DacExportParameters {
     private DacExportParameters.BlobCredentialsParameter blobCredentials;
     
     /**
     * Gets or sets credentials for getting the DAC.
     * @return The BlobCredentials value.
     */
-    public DacExportParameters.BlobCredentialsParameter getBlobCredentials()
-    {
+    public DacExportParameters.BlobCredentialsParameter getBlobCredentials() {
         return this.blobCredentials;
     }
     
@@ -45,8 +43,7 @@ public class DacExportParameters
     * Gets or sets credentials for getting the DAC.
     * @param blobCredentialsValue The BlobCredentials value.
     */
-    public void setBlobCredentials(final DacExportParameters.BlobCredentialsParameter blobCredentialsValue)
-    {
+    public void setBlobCredentials(final DacExportParameters.BlobCredentialsParameter blobCredentialsValue) {
         this.blobCredentials = blobCredentialsValue;
     }
     
@@ -56,8 +53,7 @@ public class DacExportParameters
     * Gets or sets connection information for the SQL Server Database.
     * @return The ConnectionInfo value.
     */
-    public DacExportParameters.ConnectionInfoParameter getConnectionInfo()
-    {
+    public DacExportParameters.ConnectionInfoParameter getConnectionInfo() {
         return this.connectionInfo;
     }
     
@@ -65,24 +61,21 @@ public class DacExportParameters
     * Gets or sets connection information for the SQL Server Database.
     * @param connectionInfoValue The ConnectionInfo value.
     */
-    public void setConnectionInfo(final DacExportParameters.ConnectionInfoParameter connectionInfoValue)
-    {
+    public void setConnectionInfo(final DacExportParameters.ConnectionInfoParameter connectionInfoValue) {
         this.connectionInfo = connectionInfoValue;
     }
     
     /**
     * Credentials for getting the DAC.
     */
-    public static class BlobCredentialsParameter
-    {
+    public static class BlobCredentialsParameter {
         private String storageAccessKey;
         
         /**
         * Gets or sets the key for the Windows Azure Storage account.
         * @return The StorageAccessKey value.
         */
-        public String getStorageAccessKey()
-        {
+        public String getStorageAccessKey() {
             return this.storageAccessKey;
         }
         
@@ -90,8 +83,7 @@ public class DacExportParameters
         * Gets or sets the key for the Windows Azure Storage account.
         * @param storageAccessKeyValue The StorageAccessKey value.
         */
-        public void setStorageAccessKey(final String storageAccessKeyValue)
-        {
+        public void setStorageAccessKey(final String storageAccessKeyValue) {
             this.storageAccessKey = storageAccessKeyValue;
         }
         
@@ -102,8 +94,7 @@ public class DacExportParameters
         * Storage.
         * @return The Uri value.
         */
-        public URI getUri()
-        {
+        public URI getUri() {
             return this.uri;
         }
         
@@ -112,8 +103,7 @@ public class DacExportParameters
         * Storage.
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue)
-        {
+        public void setUri(final URI uriValue) {
             this.uri = uriValue;
         }
     }
@@ -121,16 +111,14 @@ public class DacExportParameters
     /**
     * Connection information for the SQL Server Database.
     */
-    public static class ConnectionInfoParameter
-    {
+    public static class ConnectionInfoParameter {
         private String databaseName;
         
         /**
         * Gets or sets the name of the database.
         * @return The DatabaseName value.
         */
-        public String getDatabaseName()
-        {
+        public String getDatabaseName() {
             return this.databaseName;
         }
         
@@ -138,8 +126,7 @@ public class DacExportParameters
         * Gets or sets the name of the database.
         * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(final String databaseNameValue)
-        {
+        public void setDatabaseName(final String databaseNameValue) {
             this.databaseName = databaseNameValue;
         }
         
@@ -149,8 +136,7 @@ public class DacExportParameters
         * Gets or sets the password for the database user.
         * @return The Password value.
         */
-        public String getPassword()
-        {
+        public String getPassword() {
             return this.password;
         }
         
@@ -158,8 +144,7 @@ public class DacExportParameters
         * Gets or sets the password for the database user.
         * @param passwordValue The Password value.
         */
-        public void setPassword(final String passwordValue)
-        {
+        public void setPassword(final String passwordValue) {
             this.password = passwordValue;
         }
         
@@ -169,8 +154,7 @@ public class DacExportParameters
         * Gets or sets the SQL server name.
         * @return The ServerName value.
         */
-        public String getServerName()
-        {
+        public String getServerName() {
             return this.serverName;
         }
         
@@ -178,8 +162,7 @@ public class DacExportParameters
         * Gets or sets the SQL server name.
         * @param serverNameValue The ServerName value.
         */
-        public void setServerName(final String serverNameValue)
-        {
+        public void setServerName(final String serverNameValue) {
             this.serverName = serverNameValue;
         }
         
@@ -189,8 +172,7 @@ public class DacExportParameters
         * Gets or sets the username of the database user.
         * @return The UserName value.
         */
-        public String getUserName()
-        {
+        public String getUserName() {
             return this.userName;
         }
         
@@ -198,8 +180,7 @@ public class DacExportParameters
         * Gets or sets the username of the database user.
         * @param userNameValue The UserName value.
         */
-        public void setUserName(final String userNameValue)
-        {
+        public void setUserName(final String userNameValue) {
             this.userName = userNameValue;
         }
     }

@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.scheduler.models;
 
-public class JobCollectionQuota
-{
+public class JobCollectionQuota {
     private Integer maxJobCount;
     
     /**
@@ -32,8 +31,7 @@ public class JobCollectionQuota
     * Maximum value is dependent on the plan.
     * @return The MaxJobCount value.
     */
-    public Integer getMaxJobCount()
-    {
+    public Integer getMaxJobCount() {
         return this.maxJobCount;
     }
     
@@ -42,8 +40,7 @@ public class JobCollectionQuota
     * Maximum value is dependent on the plan.
     * @param maxJobCountValue The MaxJobCount value.
     */
-    public void setMaxJobCount(final Integer maxJobCountValue)
-    {
+    public void setMaxJobCount(final Integer maxJobCountValue) {
         this.maxJobCount = maxJobCountValue;
     }
     
@@ -53,8 +50,7 @@ public class JobCollectionQuota
     * Maximum number of occurrences for all jobs in the job collection.
     * @return The MaxJobOccurrence value.
     */
-    public Integer getMaxJobOccurrence()
-    {
+    public Integer getMaxJobOccurrence() {
         return this.maxJobOccurrence;
     }
     
@@ -62,8 +58,7 @@ public class JobCollectionQuota
     * Maximum number of occurrences for all jobs in the job collection.
     * @param maxJobOccurrenceValue The MaxJobOccurrence value.
     */
-    public void setMaxJobOccurrence(final Integer maxJobOccurrenceValue)
-    {
+    public void setMaxJobOccurrence(final Integer maxJobOccurrenceValue) {
         this.maxJobOccurrence = maxJobOccurrenceValue;
     }
     
@@ -74,8 +69,7 @@ public class JobCollectionQuota
     * job collection.
     * @return The MaxRecurrence value.
     */
-    public JobCollectionMaxRecurrence getMaxRecurrence()
-    {
+    public JobCollectionMaxRecurrence getMaxRecurrence() {
         return this.maxRecurrence;
     }
     
@@ -84,8 +78,7 @@ public class JobCollectionQuota
     * job collection.
     * @param maxRecurrenceValue The MaxRecurrence value.
     */
-    public void setMaxRecurrence(final JobCollectionMaxRecurrence maxRecurrenceValue)
-    {
+    public void setMaxRecurrence(final JobCollectionMaxRecurrence maxRecurrenceValue) {
         this.maxRecurrence = maxRecurrenceValue;
     }
 }

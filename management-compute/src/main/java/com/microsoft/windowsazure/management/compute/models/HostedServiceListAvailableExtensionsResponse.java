@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The List Available Extensions operation response.
 */
-public class HostedServiceListAvailableExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListAvailableExtensionsResponse.ExtensionImage>
-{
+public class HostedServiceListAvailableExtensionsResponse extends OperationResponse implements Iterable<HostedServiceListAvailableExtensionsResponse.ExtensionImage> {
     private ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImages;
     
     /**
     * The extensions that are available to add to your cloud service.
     * @return The ExtensionImages value.
     */
-    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages()
-    {
+    public ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> getExtensionImages() {
         return this.extensionImages;
     }
     
@@ -47,8 +45,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     * The extensions that are available to add to your cloud service.
     * @param extensionImagesValue The ExtensionImages value.
     */
-    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue)
-    {
+    public void setExtensionImages(final ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage> extensionImagesValue) {
         this.extensionImages = extensionImagesValue;
     }
     
@@ -57,8 +54,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     * HostedServiceListAvailableExtensionsResponse class.
     *
     */
-    public HostedServiceListAvailableExtensionsResponse()
-    {
+    public HostedServiceListAvailableExtensionsResponse() {
         super();
         this.extensionImages = new ArrayList<HostedServiceListAvailableExtensionsResponse.ExtensionImage>();
     }
@@ -67,24 +63,21 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
     * Gets the sequence of ExtensionImages.
     *
     */
-    public Iterator<HostedServiceListAvailableExtensionsResponse.ExtensionImage> iterator()
-    {
+    public Iterator<HostedServiceListAvailableExtensionsResponse.ExtensionImage> iterator() {
         return this.getExtensionImages().iterator();
     }
     
     /**
     * An extension available to add to your cloud service.
     */
-    public static class ExtensionImage
-    {
+    public static class ExtensionImage {
         private String description;
         
         /**
         * The description of the extension.
         * @return The Description value.
         */
-        public String getDescription()
-        {
+        public String getDescription() {
             return this.description;
         }
         
@@ -92,8 +85,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The description of the extension.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue)
-        {
+        public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
         
@@ -104,8 +96,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * WebRole, WorkerRole, or WebRole|WorkerRole.
         * @return The HostingResources value.
         */
-        public HostingResources getHostingResources()
-        {
+        public HostingResources getHostingResources() {
             return this.hostingResources;
         }
         
@@ -114,8 +105,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * WebRole, WorkerRole, or WebRole|WorkerRole.
         * @param hostingResourcesValue The HostingResources value.
         */
-        public void setHostingResources(final HostingResources hostingResourcesValue)
-        {
+        public void setHostingResources(final HostingResources hostingResourcesValue) {
             this.hostingResources = hostingResourcesValue;
         }
         
@@ -125,8 +115,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The label that is used to identify the extension.
         * @return The Label value.
         */
-        public String getLabel()
-        {
+        public String getLabel() {
             return this.label;
         }
         
@@ -134,8 +123,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The label that is used to identify the extension.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue)
-        {
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
         
@@ -145,8 +133,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The schema of the private configuration.
         * @return The PrivateConfigurationSchema value.
         */
-        public String getPrivateConfigurationSchema()
-        {
+        public String getPrivateConfigurationSchema() {
             return this.privateConfigurationSchema;
         }
         
@@ -155,8 +142,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
         * value.
         */
-        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue)
-        {
+        public void setPrivateConfigurationSchema(final String privateConfigurationSchemaValue) {
             this.privateConfigurationSchema = privateConfigurationSchemaValue;
         }
         
@@ -167,8 +153,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @return The ProviderNamespace value.
         */
-        public String getProviderNamespace()
-        {
+        public String getProviderNamespace() {
             return this.providerNamespace;
         }
         
@@ -177,8 +162,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
         * @param providerNamespaceValue The ProviderNamespace value.
         */
-        public void setProviderNamespace(final String providerNamespaceValue)
-        {
+        public void setProviderNamespace(final String providerNamespaceValue) {
             this.providerNamespace = providerNamespaceValue;
         }
         
@@ -188,8 +172,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The schema of the public configuration.
         * @return The PublicConfigurationSchema value.
         */
-        public String getPublicConfigurationSchema()
-        {
+        public String getPublicConfigurationSchema() {
             return this.publicConfigurationSchema;
         }
         
@@ -198,8 +181,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * @param publicConfigurationSchemaValue The PublicConfigurationSchema
         * value.
         */
-        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue)
-        {
+        public void setPublicConfigurationSchema(final String publicConfigurationSchemaValue) {
             this.publicConfigurationSchema = publicConfigurationSchemaValue;
         }
         
@@ -210,8 +192,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * encryption.
         * @return The ThumbprintAlgorithm value.
         */
-        public String getThumbprintAlgorithm()
-        {
+        public String getThumbprintAlgorithm() {
             return this.thumbprintAlgorithm;
         }
         
@@ -220,8 +201,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * encryption.
         * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
-        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-        {
+        public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
             this.thumbprintAlgorithm = thumbprintAlgorithmValue;
         }
         
@@ -231,8 +211,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Required. The type of the extension.
         * @return The Type value.
         */
-        public String getType()
-        {
+        public String getType() {
             return this.type;
         }
         
@@ -240,8 +219,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * Required. The type of the extension.
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue)
-        {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
         
@@ -251,8 +229,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The version of the extension.
         * @return The Version value.
         */
-        public String getVersion()
-        {
+        public String getVersion() {
             return this.version;
         }
         
@@ -260,8 +237,7 @@ public class HostedServiceListAvailableExtensionsResponse extends OperationRespo
         * The version of the extension.
         * @param versionValue The Version value.
         */
-        public void setVersion(final String versionValue)
-        {
+        public void setVersion(final String versionValue) {
             this.version = versionValue;
         }
     }

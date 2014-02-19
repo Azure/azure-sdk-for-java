@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.storage.models;
 /**
 * The status of the storage account at the time the operation was called.
 */
-public enum StorageServiceStatus
-{
+public enum StorageServiceStatus {
     /**
     * The Storage Account had been created.
     */

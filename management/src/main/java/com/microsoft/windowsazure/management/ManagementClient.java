@@ -41,13 +41,12 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface ManagementClient extends FilterableService<ManagementClient>
-{
+public interface ManagementClient extends FilterableService<ManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -58,7 +57,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * Operations for managing affinity groups beneath your subscription.  (see
@@ -66,7 +65,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * more information)
     * @return The AffinityGroupsOperations value.
     */
-    AffinityGroupOperations getAffinityGroupsOperations(); 
+    AffinityGroupOperations getAffinityGroupsOperations();
     
     /**
     * The Service Management API includes operations for listing the available
@@ -75,7 +74,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * more information)
     * @return The LocationsOperations value.
     */
-    LocationOperations getLocationsOperations(); 
+    LocationOperations getLocationsOperations();
     
     /**
     * You can use management certificates, which are also known as subscription
@@ -85,14 +84,14 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * more information)
     * @return The ManagementCertificatesOperations value.
     */
-    ManagementCertificateOperations getManagementCertificatesOperations(); 
+    ManagementCertificateOperations getManagementCertificatesOperations();
     
     /**
     * The Service Management API includes operations for listing the available
     * role sizes for VMs in your subscription.
     * @return The RoleSizesOperations value.
     */
-    RoleSizeOperations getRoleSizesOperations(); 
+    RoleSizeOperations getRoleSizesOperations();
     
     /**
     * Operation for listing subscription operations and details.  (see
@@ -100,7 +99,7 @@ public interface ManagementClient extends FilterableService<ManagementClient>
     * more information)
     * @return The SubscriptionsOperations value.
     */
-    SubscriptionOperations getSubscriptionsOperations(); 
+    SubscriptionOperations getSubscriptionsOperations();
     
     /**
     * The Get Operation Status operation returns the status of thespecified

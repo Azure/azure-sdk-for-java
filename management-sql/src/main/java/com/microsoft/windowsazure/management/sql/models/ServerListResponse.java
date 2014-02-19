@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The response structure for the Server List operation.
 */
-public class ServerListResponse extends OperationResponse implements Iterable<ServerListResponse.Server>
-{
+public class ServerListResponse extends OperationResponse implements Iterable<ServerListResponse.Server> {
     private ArrayList<ServerListResponse.Server> servers;
     
     /**
     * Gets or sets the SQL Servers that are valid for your subscription.
     * @return The Servers value.
     */
-    public ArrayList<ServerListResponse.Server> getServers()
-    {
+    public ArrayList<ServerListResponse.Server> getServers() {
         return this.servers;
     }
     
@@ -48,8 +46,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     * Gets or sets the SQL Servers that are valid for your subscription.
     * @param serversValue The Servers value.
     */
-    public void setServers(final ArrayList<ServerListResponse.Server> serversValue)
-    {
+    public void setServers(final ArrayList<ServerListResponse.Server> serversValue) {
         this.servers = serversValue;
     }
     
@@ -57,8 +54,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     * Initializes a new instance of the ServerListResponse class.
     *
     */
-    public ServerListResponse()
-    {
+    public ServerListResponse() {
         super();
         this.servers = new ArrayList<ServerListResponse.Server>();
     }
@@ -67,24 +63,21 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     * Gets the sequence of Servers.
     *
     */
-    public Iterator<ServerListResponse.Server> iterator()
-    {
+    public Iterator<ServerListResponse.Server> iterator() {
         return this.getServers().iterator();
     }
     
     /**
     * An individual server in your Windows Azure subscription.
     */
-    public static class Server
-    {
+    public static class Server {
         private String administratorUserName;
         
         /**
         * Gets or sets the name of an administrator for this server.
         * @return The AdministratorUserName value.
         */
-        public String getAdministratorUserName()
-        {
+        public String getAdministratorUserName() {
             return this.administratorUserName;
         }
         
@@ -92,8 +85,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Gets or sets the name of an administrator for this server.
         * @param administratorUserNameValue The AdministratorUserName value.
         */
-        public void setAdministratorUserName(final String administratorUserNameValue)
-        {
+        public void setAdministratorUserName(final String administratorUserNameValue) {
             this.administratorUserName = administratorUserNameValue;
         }
         
@@ -104,8 +96,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * an individual server.
         * @return The Features value.
         */
-        public HashMap<String, String> getFeatures()
-        {
+        public HashMap<String, String> getFeatures() {
             return this.features;
         }
         
@@ -114,8 +105,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * an individual server.
         * @param featuresValue The Features value.
         */
-        public void setFeatures(final HashMap<String, String> featuresValue)
-        {
+        public void setFeatures(final HashMap<String, String> featuresValue) {
             this.features = featuresValue;
         }
         
@@ -126,8 +116,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * your subscription.
         * @return The Location value.
         */
-        public String getLocation()
-        {
+        public String getLocation() {
             return this.location;
         }
         
@@ -136,8 +125,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * your subscription.
         * @param locationValue The Location value.
         */
-        public void setLocation(final String locationValue)
-        {
+        public void setLocation(final String locationValue) {
             this.location = locationValue;
         }
         
@@ -147,8 +135,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Gets or sets the name of a SQL Server running in your subscription.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -156,8 +143,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Gets or sets the name of a SQL Server running in your subscription.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -165,8 +151,7 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
         * Initializes a new instance of the Server class.
         *
         */
-        public Server()
-        {
+        public Server() {
             this.features = new HashMap<String, String>();
         }
     }

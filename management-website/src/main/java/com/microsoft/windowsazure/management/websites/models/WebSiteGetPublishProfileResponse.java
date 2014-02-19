@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The Get Web Site Publish Profile operation response.
 */
-public class WebSiteGetPublishProfileResponse extends OperationResponse implements Iterable<WebSiteGetPublishProfileResponse.PublishProfile>
-{
+public class WebSiteGetPublishProfileResponse extends OperationResponse implements Iterable<WebSiteGetPublishProfileResponse.PublishProfile> {
     private ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfiles;
     
     /**
     * Contains one or more publish profiles.
     * @return The PublishProfiles value.
     */
-    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles()
-    {
+    public ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> getPublishProfiles() {
         return this.publishProfiles;
     }
     
@@ -48,8 +46,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     * Contains one or more publish profiles.
     * @param publishProfilesValue The PublishProfiles value.
     */
-    public void setPublishProfiles(final ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfilesValue)
-    {
+    public void setPublishProfiles(final ArrayList<WebSiteGetPublishProfileResponse.PublishProfile> publishProfilesValue) {
         this.publishProfiles = publishProfilesValue;
     }
     
@@ -57,8 +54,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     * Initializes a new instance of the WebSiteGetPublishProfileResponse class.
     *
     */
-    public WebSiteGetPublishProfileResponse()
-    {
+    public WebSiteGetPublishProfileResponse() {
         super();
         this.publishProfiles = new ArrayList<WebSiteGetPublishProfileResponse.PublishProfile>();
     }
@@ -67,8 +63,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     * Gets the sequence of PublishProfiles.
     *
     */
-    public Iterator<WebSiteGetPublishProfileResponse.PublishProfile> iterator()
-    {
+    public Iterator<WebSiteGetPublishProfileResponse.PublishProfile> iterator() {
         return this.getPublishProfiles().iterator();
     }
     
@@ -76,16 +71,14 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     * Contains attributes that contain information for a single database
     * connection.
     */
-    public static class Database
-    {
+    public static class Database {
         private String connectionString;
         
         /**
         * Contains a database connection string.
         * @return The ConnectionString value.
         */
-        public String getConnectionString()
-        {
+        public String getConnectionString() {
             return this.connectionString;
         }
         
@@ -93,8 +86,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Contains a database connection string.
         * @param connectionStringValue The ConnectionString value.
         */
-        public void setConnectionString(final String connectionStringValue)
-        {
+        public void setConnectionString(final String connectionStringValue) {
             this.connectionString = connectionStringValue;
         }
         
@@ -104,8 +96,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Contains the friendly name of the connection string.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -113,8 +104,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Contains the friendly name of the connection string.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -125,8 +115,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * "MySQL").
         * @return The ProviderName value.
         */
-        public String getProviderName()
-        {
+        public String getProviderName() {
             return this.providerName;
         }
         
@@ -135,8 +124,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * "MySQL").
         * @param providerNameValue The ProviderName value.
         */
-        public void setProviderName(final String providerNameValue)
-        {
+        public void setProviderName(final String providerNameValue) {
             this.providerName = providerNameValue;
         }
         
@@ -145,16 +133,14 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         /**
         * @return The Type value.
         */
-        public String getType()
-        {
+        public String getType() {
             return this.type;
         }
         
         /**
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue)
-        {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
     }
@@ -162,16 +148,14 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
     /**
     * Contains attributes that hold publish profile values.
     */
-    public static class PublishProfile
-    {
+    public static class PublishProfile {
         private URI controlPanelUri;
         
         /**
         * The URL of the control panel for the web site.
         * @return The ControlPanelUri value.
         */
-        public URI getControlPanelUri()
-        {
+        public URI getControlPanelUri() {
             return this.controlPanelUri;
         }
         
@@ -179,8 +163,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL of the control panel for the web site.
         * @param controlPanelUriValue The ControlPanelUri value.
         */
-        public void setControlPanelUri(final URI controlPanelUriValue)
-        {
+        public void setControlPanelUri(final URI controlPanelUriValue) {
             this.controlPanelUri = controlPanelUriValue;
         }
         
@@ -191,8 +174,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * site application.
         * @return The Databases value.
         */
-        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases()
-        {
+        public ArrayList<WebSiteGetPublishProfileResponse.Database> getDatabases() {
             return this.databases;
         }
         
@@ -201,8 +183,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * site application.
         * @param databasesValue The Databases value.
         */
-        public void setDatabases(final ArrayList<WebSiteGetPublishProfileResponse.Database> databasesValue)
-        {
+        public void setDatabases(final ArrayList<WebSiteGetPublishProfileResponse.Database> databasesValue) {
             this.databases = databasesValue;
         }
         
@@ -212,8 +193,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL of the website that will be published to.
         * @return The DestinationAppUri value.
         */
-        public URI getDestinationAppUri()
-        {
+        public URI getDestinationAppUri() {
             return this.destinationAppUri;
         }
         
@@ -221,8 +201,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL of the website that will be published to.
         * @param destinationAppUriValue The DestinationAppUri value.
         */
-        public void setDestinationAppUri(final URI destinationAppUriValue)
-        {
+        public void setDestinationAppUri(final URI destinationAppUriValue) {
             this.destinationAppUri = destinationAppUriValue;
         }
         
@@ -233,8 +212,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * This attribute applies only if publishMethod is set to FTP.
         * @return The FtpPassiveMode value.
         */
-        public boolean isFtpPassiveMode()
-        {
+        public boolean isFtpPassiveMode() {
             return this.ftpPassiveMode;
         }
         
@@ -243,8 +221,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * This attribute applies only if publishMethod is set to FTP.
         * @param ftpPassiveModeValue The FtpPassiveMode value.
         */
-        public void setFtpPassiveMode(final boolean ftpPassiveModeValue)
-        {
+        public void setFtpPassiveMode(final boolean ftpPassiveModeValue) {
             this.ftpPassiveMode = ftpPassiveModeValue;
         }
         
@@ -254,8 +231,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL of the forum of the hosting provider.
         * @return The HostingProviderForumUri value.
         */
-        public URI getHostingProviderForumUri()
-        {
+        public URI getHostingProviderForumUri() {
             return this.hostingProviderForumUri;
         }
         
@@ -263,8 +239,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL of the forum of the hosting provider.
         * @param hostingProviderForumUriValue The HostingProviderForumUri value.
         */
-        public void setHostingProviderForumUri(final URI hostingProviderForumUriValue)
-        {
+        public void setHostingProviderForumUri(final URI hostingProviderForumUriValue) {
             this.hostingProviderForumUri = hostingProviderForumUriValue;
         }
         
@@ -275,8 +250,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * applies only if publishMethod is set to MSDeploy.
         * @return The MSDeploySite value.
         */
-        public String getMSDeploySite()
-        {
+        public String getMSDeploySite() {
             return this.mSDeploySite;
         }
         
@@ -285,8 +259,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * applies only if publishMethod is set to MSDeploy.
         * @param mSDeploySiteValue The MSDeploySite value.
         */
-        public void setMSDeploySite(final String mSDeploySiteValue)
-        {
+        public void setMSDeploySite(final String mSDeploySiteValue) {
             this.mSDeploySite = mSDeploySiteValue;
         }
         
@@ -297,8 +270,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * the web site connects to a MySQL database.
         * @return The MySqlConnectionString value.
         */
-        public String getMySqlConnectionString()
-        {
+        public String getMySqlConnectionString() {
             return this.mySqlConnectionString;
         }
         
@@ -307,8 +279,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * the web site connects to a MySQL database.
         * @param mySqlConnectionStringValue The MySqlConnectionString value.
         */
-        public void setMySqlConnectionString(final String mySqlConnectionStringValue)
-        {
+        public void setMySqlConnectionString(final String mySqlConnectionStringValue) {
             this.mySqlConnectionString = mySqlConnectionStringValue;
         }
         
@@ -318,8 +289,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The unique name of the publish profile.
         * @return The ProfileName value.
         */
-        public String getProfileName()
-        {
+        public String getProfileName() {
             return this.profileName;
         }
         
@@ -327,8 +297,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The unique name of the publish profile.
         * @param profileNameValue The ProfileName value.
         */
-        public void setProfileName(final String profileNameValue)
-        {
+        public void setProfileName(final String profileNameValue) {
             this.profileName = profileNameValue;
         }
         
@@ -338,8 +307,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The publish method, such as MSDeploy or FTP.
         * @return The PublishMethod value.
         */
-        public String getPublishMethod()
-        {
+        public String getPublishMethod() {
             return this.publishMethod;
         }
         
@@ -347,8 +315,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The publish method, such as MSDeploy or FTP.
         * @param publishMethodValue The PublishMethod value.
         */
-        public void setPublishMethod(final String publishMethodValue)
-        {
+        public void setPublishMethod(final String publishMethodValue) {
             this.publishMethod = publishMethodValue;
         }
         
@@ -358,8 +325,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL to which content will be uploaded.
         * @return The PublishUrl value.
         */
-        public String getPublishUrl()
-        {
+        public String getPublishUrl() {
             return this.publishUrl;
         }
         
@@ -367,8 +333,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The URL to which content will be uploaded.
         * @param publishUrlValue The PublishUrl value.
         */
-        public void setPublishUrl(final String publishUrlValue)
-        {
+        public void setPublishUrl(final String publishUrlValue) {
             this.publishUrl = publishUrlValue;
         }
         
@@ -379,8 +344,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * application, if the web site connects to a SQL Server database.
         * @return The SqlServerConnectionString value.
         */
-        public String getSqlServerConnectionString()
-        {
+        public String getSqlServerConnectionString() {
             return this.sqlServerConnectionString;
         }
         
@@ -390,8 +354,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * @param sqlServerConnectionStringValue The SqlServerConnectionString
         * value.
         */
-        public void setSqlServerConnectionString(final String sqlServerConnectionStringValue)
-        {
+        public void setSqlServerConnectionString(final String sqlServerConnectionStringValue) {
             this.sqlServerConnectionString = sqlServerConnectionStringValue;
         }
         
@@ -401,8 +364,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The name for the identity that will be used for publishing.
         * @return The UserName value.
         */
-        public String getUserName()
-        {
+        public String getUserName() {
             return this.userName;
         }
         
@@ -410,8 +372,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * The name for the identity that will be used for publishing.
         * @param userNameValue The UserName value.
         */
-        public void setUserName(final String userNameValue)
-        {
+        public void setUserName(final String userNameValue) {
             this.userName = userNameValue;
         }
         
@@ -421,8 +382,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Hash value of the password that will be used for publishing.
         * @return The UserPassword value.
         */
-        public String getUserPassword()
-        {
+        public String getUserPassword() {
             return this.userPassword;
         }
         
@@ -430,8 +390,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Hash value of the password that will be used for publishing.
         * @param userPasswordValue The UserPassword value.
         */
-        public void setUserPassword(final String userPasswordValue)
-        {
+        public void setUserPassword(final String userPasswordValue) {
             this.userPassword = userPasswordValue;
         }
         
@@ -439,8 +398,7 @@ public class WebSiteGetPublishProfileResponse extends OperationResponse implemen
         * Initializes a new instance of the PublishProfile class.
         *
         */
-        public PublishProfile()
-        {
+        public PublishProfile() {
             this.databases = new ArrayList<WebSiteGetPublishProfileResponse.Database>();
         }
     }

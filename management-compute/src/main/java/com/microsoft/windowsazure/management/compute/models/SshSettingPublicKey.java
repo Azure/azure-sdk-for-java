@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Specifies a public key in the SSH settings.
 */
-public class SshSettingPublicKey
-{
+public class SshSettingPublicKey {
     private String fingerprint;
     
     /**
@@ -35,8 +34,7 @@ public class SshSettingPublicKey
     * associated with the hosted service that includes the SSH public key.
     * @return The Fingerprint value.
     */
-    public String getFingerprint()
-    {
+    public String getFingerprint() {
         return this.fingerprint;
     }
     
@@ -45,8 +43,7 @@ public class SshSettingPublicKey
     * associated with the hosted service that includes the SSH public key.
     * @param fingerprintValue The Fingerprint value.
     */
-    public void setFingerprint(final String fingerprintValue)
-    {
+    public void setFingerprint(final String fingerprintValue) {
         this.fingerprint = fingerprintValue;
     }
     
@@ -59,8 +56,7 @@ public class SshSettingPublicKey
     * Example:/home/user/.ssh/authorized_keys
     * @return The Path value.
     */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
     
@@ -71,8 +67,7 @@ public class SshSettingPublicKey
     * Example:/home/user/.ssh/authorized_keys
     * @param pathValue The Path value.
     */
-    public void setPath(final String pathValue)
-    {
+    public void setPath(final String pathValue) {
         this.path = pathValue;
     }
 }

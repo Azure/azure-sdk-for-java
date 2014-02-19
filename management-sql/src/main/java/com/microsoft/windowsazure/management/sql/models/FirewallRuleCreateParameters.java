@@ -28,16 +28,14 @@ import java.net.InetAddress;
 /**
 * The parameters for the Create Firewall Rule operation.
 */
-public class FirewallRuleCreateParameters
-{
+public class FirewallRuleCreateParameters {
     private InetAddress endIPAddress;
     
     /**
     * Gets or sets the ending IP address applied to this firewall rule.
     * @return The EndIPAddress value.
     */
-    public InetAddress getEndIPAddress()
-    {
+    public InetAddress getEndIPAddress() {
         return this.endIPAddress;
     }
     
@@ -45,8 +43,7 @@ public class FirewallRuleCreateParameters
     * Gets or sets the ending IP address applied to this firewall rule.
     * @param endIPAddressValue The EndIPAddress value.
     */
-    public void setEndIPAddress(final InetAddress endIPAddressValue)
-    {
+    public void setEndIPAddress(final InetAddress endIPAddressValue) {
         this.endIPAddress = endIPAddressValue;
     }
     
@@ -56,8 +53,7 @@ public class FirewallRuleCreateParameters
     * Gets or sets the name of this firewall rule.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -65,8 +61,7 @@ public class FirewallRuleCreateParameters
     * Gets or sets the name of this firewall rule.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -76,8 +71,7 @@ public class FirewallRuleCreateParameters
     * Gets or sets the beginning IP address applied to this firewall rule.
     * @return The StartIPAddress value.
     */
-    public InetAddress getStartIPAddress()
-    {
+    public InetAddress getStartIPAddress() {
         return this.startIPAddress;
     }
     
@@ -85,8 +79,7 @@ public class FirewallRuleCreateParameters
     * Gets or sets the beginning IP address applied to this firewall rule.
     * @param startIPAddressValue The StartIPAddress value.
     */
-    public void setStartIPAddress(final InetAddress startIPAddressValue)
-    {
+    public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
     }
 }

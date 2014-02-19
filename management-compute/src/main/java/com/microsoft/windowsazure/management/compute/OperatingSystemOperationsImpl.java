@@ -53,15 +53,13 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ff684169.aspx for more
 * information)
 */
-public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, OperatingSystemOperations
-{
+public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, OperatingSystemOperations {
     /**
     * Initializes a new instance of the OperatingSystemOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    OperatingSystemOperationsImpl(ComputeManagementClientImpl client)
-    {
+    OperatingSystemOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
     
@@ -72,8 +70,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient()
-    {
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -92,12 +89,10 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * @return The List Operating Systems operation response.
     */
     @Override
-    public Future<OperatingSystemListResponse> listAsync()
-    {
+    public Future<OperatingSystemListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<OperatingSystemListResponse>() { 
             @Override
-            public OperatingSystemListResponse call() throws Exception
-            {
+            public OperatingSystemListResponse call() throws Exception {
                 return list();
             }
          });
@@ -128,15 +123,13 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * @return The List Operating Systems operation response.
     */
     @Override
-    public OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public OperatingSystemListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -153,23 +146,18 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -187,18 +175,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             
             NodeList elements = responseDoc.getElementsByTagName("OperatingSystems");
             Element operatingSystemsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operatingSystemsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1)
-                {
+            if (operatingSystemsSequenceElement != null) {
+                for (int i1 = 0; i1 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i1));
                     OperatingSystemListResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListResponse.OperatingSystem();
                     result.getOperatingSystems().add(operatingSystemInstance);
                     
                     NodeList elements2 = operatingSystemsElement.getElementsByTagName("Version");
                     Element versionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (versionElement != null)
-                    {
+                    if (versionElement != null) {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         operatingSystemInstance.setVersion(versionInstance);
@@ -206,8 +191,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements3 = operatingSystemsElement.getElementsByTagName("Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         operatingSystemInstance.setLabel(labelInstance);
@@ -215,8 +199,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements4 = operatingSystemsElement.getElementsByTagName("IsDefault");
                     Element isDefaultElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (isDefaultElement != null)
-                    {
+                    if (isDefaultElement != null) {
                         boolean isDefaultInstance;
                         isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                         operatingSystemInstance.setIsDefault(isDefaultInstance);
@@ -224,8 +207,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements5 = operatingSystemsElement.getElementsByTagName("IsActive");
                     Element isActiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (isActiveElement != null)
-                    {
+                    if (isActiveElement != null) {
                         boolean isActiveInstance;
                         isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
                         operatingSystemInstance.setIsActive(isActiveInstance);
@@ -233,8 +215,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements6 = operatingSystemsElement.getElementsByTagName("Family");
                     Element familyElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (familyElement != null)
-                    {
+                    if (familyElement != null) {
                         int familyInstance;
                         familyInstance = DatatypeConverter.parseInt(familyElement.getTextContent());
                         operatingSystemInstance.setFamily(familyInstance);
@@ -242,8 +223,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements7 = operatingSystemsElement.getElementsByTagName("FamilyLabel");
                     Element familyLabelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (familyLabelElement != null)
-                    {
+                    if (familyLabelElement != null) {
                         String familyLabelInstance;
                         familyLabelInstance = familyLabelElement.getTextContent() != null ? new String(Base64.decodeBase64(familyLabelElement.getTextContent().getBytes())) : null;
                         operatingSystemInstance.setFamilyLabel(familyLabelInstance);
@@ -252,21 +232,16 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -286,12 +261,10 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * @return The List Operating System Families operation response.
     */
     @Override
-    public Future<OperatingSystemListFamiliesResponse> listFamiliesAsync()
-    {
+    public Future<OperatingSystemListFamiliesResponse> listFamiliesAsync() {
         return this.getClient().getExecutorService().submit(new Callable<OperatingSystemListFamiliesResponse>() { 
             @Override
-            public OperatingSystemListFamiliesResponse call() throws Exception
-            {
+            public OperatingSystemListFamiliesResponse call() throws Exception {
                 return listFamilies();
             }
          });
@@ -319,15 +292,13 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
     * @return The List Operating System Families operation response.
     */
     @Override
-    public OperatingSystemListFamiliesResponse listFamilies() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public OperatingSystemListFamiliesResponse listFamilies() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listFamiliesAsync", tracingParameters);
@@ -344,23 +315,18 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -378,18 +344,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             
             NodeList elements = responseDoc.getElementsByTagName("OperatingSystemFamilies");
             Element operatingSystemFamiliesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operatingSystemFamiliesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").getLength(); i1 = i1 + 1)
-                {
+            if (operatingSystemFamiliesSequenceElement != null) {
+                for (int i1 = 0; i1 < operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element operatingSystemFamiliesElement = ((org.w3c.dom.Element) operatingSystemFamiliesSequenceElement.getElementsByTagName("OperatingSystemFamily").item(i1));
                     OperatingSystemListFamiliesResponse.OperatingSystemFamily operatingSystemFamilyInstance = new OperatingSystemListFamiliesResponse.OperatingSystemFamily();
                     result.getOperatingSystemFamilies().add(operatingSystemFamilyInstance);
                     
                     NodeList elements2 = operatingSystemFamiliesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         int nameInstance;
                         nameInstance = DatatypeConverter.parseInt(nameElement.getTextContent());
                         operatingSystemFamilyInstance.setName(nameInstance);
@@ -397,8 +360,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements3 = operatingSystemFamiliesElement.getElementsByTagName("Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         operatingSystemFamilyInstance.setLabel(labelInstance);
@@ -406,18 +368,15 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     
                     NodeList elements4 = operatingSystemFamiliesElement.getElementsByTagName("OperatingSystems");
                     Element operatingSystemsSequenceElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (operatingSystemsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i2 = i2 + 1)
-                        {
+                    if (operatingSystemsSequenceElement != null) {
+                        for (int i2 = 0; i2 < operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").getLength(); i2 = i2 + 1) {
                             org.w3c.dom.Element operatingSystemsElement = ((org.w3c.dom.Element) operatingSystemsSequenceElement.getElementsByTagName("OperatingSystem").item(i2));
                             OperatingSystemListFamiliesResponse.OperatingSystem operatingSystemInstance = new OperatingSystemListFamiliesResponse.OperatingSystem();
                             operatingSystemFamilyInstance.getOperatingSystems().add(operatingSystemInstance);
                             
                             NodeList elements5 = operatingSystemsElement.getElementsByTagName("Version");
                             Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                            if (versionElement != null)
-                            {
+                            if (versionElement != null) {
                                 String versionInstance;
                                 versionInstance = versionElement.getTextContent();
                                 operatingSystemInstance.setVersion(versionInstance);
@@ -425,8 +384,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             
                             NodeList elements6 = operatingSystemsElement.getElementsByTagName("Label");
                             Element labelElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                            if (labelElement2 != null)
-                            {
+                            if (labelElement2 != null) {
                                 String labelInstance2;
                                 labelInstance2 = labelElement2.getTextContent() != null ? new String(Base64.decodeBase64(labelElement2.getTextContent().getBytes())) : null;
                                 operatingSystemInstance.setLabel(labelInstance2);
@@ -434,8 +392,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             
                             NodeList elements7 = operatingSystemsElement.getElementsByTagName("IsDefault");
                             Element isDefaultElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                            if (isDefaultElement != null)
-                            {
+                            if (isDefaultElement != null) {
                                 boolean isDefaultInstance;
                                 isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                                 operatingSystemInstance.setIsDefault(isDefaultInstance);
@@ -443,8 +400,7 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             
                             NodeList elements8 = operatingSystemsElement.getElementsByTagName("IsActive");
                             Element isActiveElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (isActiveElement != null)
-                            {
+                            if (isActiveElement != null) {
                                 boolean isActiveInstance;
                                 isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
                                 operatingSystemInstance.setIsActive(isActiveInstance);
@@ -455,21 +411,16 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

@@ -80,15 +80,13 @@ import org.xml.sax.SAXException;
 /**
 * Operations for managing web spaces beneath your subscription.
 */
-public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, WebSpaceOperations
-{
+public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManagementClientImpl>, WebSpaceOperations {
     /**
     * Initializes a new instance of the WebSpaceOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    WebSpaceOperationsImpl(WebSiteManagementClientImpl client)
-    {
+    WebSpaceOperationsImpl(WebSiteManagementClientImpl client) {
         this.client = client;
     }
     
@@ -99,8 +97,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * microsoft.windowsazure.management.websites.WebSiteManagementClientImpl.
     * @return The Client value.
     */
-    public WebSiteManagementClientImpl getClient()
-    {
+    public WebSiteManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -114,12 +111,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Create Publishing User operation response.
     */
     @Override
-    public Future<WebSpacesCreatePublishingUserResponse> createPublishingUserAsync(final String username, final String password, final WebSpacesCreatePublishingUserParameters parameters)
-    {
+    public Future<WebSpacesCreatePublishingUserResponse> createPublishingUserAsync(final String username, final String password, final WebSpacesCreatePublishingUserParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesCreatePublishingUserResponse>() { 
             @Override
-            public WebSpacesCreatePublishingUserResponse call() throws Exception
-            {
+            public WebSpacesCreatePublishingUserResponse call() throws Exception {
                 return createPublishingUser(username, password, parameters);
             }
          });
@@ -145,25 +140,19 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Create Publishing User operation response.
     */
     @Override
-    public WebSpacesCreatePublishingUserResponse createPublishingUser(String username, String password, WebSpacesCreatePublishingUserParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public WebSpacesCreatePublishingUserResponse createPublishingUser(String username, String password, WebSpacesCreatePublishingUserParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (username == null)
-        {
+        if (username == null) {
             throw new NullPointerException("username");
         }
-        if (password == null)
-        {
+        if (password == null) {
             throw new NullPointerException("password");
         }
-        if (parameters != null)
-        {
-            if (parameters.getPublishingPassword() == null)
-            {
+        if (parameters != null) {
+            if (parameters.getPublishingPassword() == null) {
                 throw new NullPointerException("parameters.PublishingPassword");
             }
-            if (parameters.getPublishingUserName() == null)
-            {
+            if (parameters.getPublishingUserName() == null) {
                 throw new NullPointerException("parameters.PublishingUserName");
             }
         }
@@ -171,8 +160,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("username", username);
@@ -197,13 +185,11 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document requestDoc = documentBuilder.newDocument();
         
-        if (parameters != null)
-        {
+        if (parameters != null) {
             Element userElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "User");
             requestDoc.appendChild(userElement);
             
-            if (parameters.getName() != null)
-            {
+            if (parameters.getName() != null) {
                 Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                 nameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
                 userElement.appendChild(nameElement);
@@ -231,23 +217,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
+            if (statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -265,12 +246,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagName("User");
             Element userElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (userElement2 != null)
-            {
+            if (userElement2 != null) {
                 NodeList elements2 = userElement2.getElementsByTagName("Name");
                 Element nameElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement2 != null)
-                {
+                if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
@@ -278,8 +257,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements3 = userElement2.getElementsByTagName("PublishingPassword");
                 Element publishingPasswordElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (publishingPasswordElement2 != null)
-                {
+                if (publishingPasswordElement2 != null) {
                     String publishingPasswordInstance;
                     publishingPasswordInstance = publishingPasswordElement2.getTextContent();
                     result.setPublishingPassword(publishingPasswordInstance);
@@ -287,8 +265,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements4 = userElement2.getElementsByTagName("PublishingUserName");
                 Element publishingUserNameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (publishingUserNameElement2 != null)
-                {
+                if (publishingUserNameElement2 != null) {
                     String publishingUserNameInstance;
                     publishingUserNameInstance = publishingUserNameElement2.getTextContent();
                     result.setPublishingUserName(publishingUserNameInstance);
@@ -296,21 +273,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -326,12 +298,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get Web Space Details operation response.
     */
     @Override
-    public Future<WebSpacesGetResponse> getAsync(final String webSpaceName)
-    {
+    public Future<WebSpacesGetResponse> getAsync(final String webSpaceName) {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesGetResponse>() { 
             @Override
-            public WebSpacesGetResponse call() throws Exception
-            {
+            public WebSpacesGetResponse call() throws Exception {
                 return get(webSpaceName);
             }
          });
@@ -357,19 +327,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get Web Space Details operation response.
     */
     @Override
-    public WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public WebSpacesGetResponse get(String webSpaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -387,23 +354,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -421,12 +383,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagName("WebSpaces");
             Element webSpacesElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (webSpacesElement != null)
-            {
+            if (webSpacesElement != null) {
                 NodeList elements2 = webSpacesElement.getElementsByTagName("AvailabilityState");
                 Element availabilityStateElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (availabilityStateElement != null)
-                {
+                if (availabilityStateElement != null) {
                     WebSpaceAvailabilityState availabilityStateInstance;
                     availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                     result.setAvailabilityState(availabilityStateInstance);
@@ -434,16 +394,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements3 = webSpacesElement.getElementsByTagName("CurrentNumberOfWorkers");
                 Element currentNumberOfWorkersElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (currentNumberOfWorkersElement != null && (currentNumberOfWorkersElement.getTextContent() == null || currentNumberOfWorkersElement.getTextContent().isEmpty() == true) == false)
-                {
+                if (currentNumberOfWorkersElement != null && (currentNumberOfWorkersElement.getTextContent() == null || currentNumberOfWorkersElement.getTextContent().isEmpty() == true) == false) {
                     boolean isNil = false;
                     Attr nilAttribute = currentNumberOfWorkersElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute != null)
-                    {
+                    if (nilAttribute != null) {
                         isNil = "true".equals(nilAttribute.getValue());
                     }
-                    if (isNil == false)
-                    {
+                    if (isNil == false) {
                         int currentNumberOfWorkersInstance;
                         currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                         result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -452,16 +409,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements4 = webSpacesElement.getElementsByTagName("CurrentWorkerSize");
                 Element currentWorkerSizeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (currentWorkerSizeElement != null && (currentWorkerSizeElement.getTextContent() == null || currentWorkerSizeElement.getTextContent().isEmpty() == true) == false)
-                {
+                if (currentWorkerSizeElement != null && (currentWorkerSizeElement.getTextContent() == null || currentWorkerSizeElement.getTextContent().isEmpty() == true) == false) {
                     boolean isNil2 = false;
                     Attr nilAttribute2 = currentWorkerSizeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute2 != null)
-                    {
+                    if (nilAttribute2 != null) {
                         isNil2 = "true".equals(nilAttribute2.getValue());
                     }
-                    if (isNil2 == false)
-                    {
+                    if (isNil2 == false) {
                         WebSpaceWorkerSize currentWorkerSizeInstance;
                         currentWorkerSizeInstance = WebSpaceWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                         result.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -470,8 +424,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements5 = webSpacesElement.getElementsByTagName("GeoLocation");
                 Element geoLocationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (geoLocationElement != null)
-                {
+                if (geoLocationElement != null) {
                     String geoLocationInstance;
                     geoLocationInstance = geoLocationElement.getTextContent();
                     result.setGeoLocation(geoLocationInstance);
@@ -479,8 +432,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements6 = webSpacesElement.getElementsByTagName("GeoRegion");
                 Element geoRegionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (geoRegionElement != null)
-                {
+                if (geoRegionElement != null) {
                     String geoRegionInstance;
                     geoRegionInstance = geoRegionElement.getTextContent();
                     result.setGeoRegion(geoRegionInstance);
@@ -488,8 +440,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements7 = webSpacesElement.getElementsByTagName("Name");
                 Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (nameElement != null)
-                {
+                if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -497,8 +448,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements8 = webSpacesElement.getElementsByTagName("Plan");
                 Element planElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (planElement != null)
-                {
+                if (planElement != null) {
                     String planInstance;
                     planInstance = planElement.getTextContent();
                     result.setPlan(planInstance);
@@ -506,8 +456,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements9 = webSpacesElement.getElementsByTagName("Status");
                 Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     WebSpaceStatus statusInstance;
                     statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -515,8 +464,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements10 = webSpacesElement.getElementsByTagName("Subscription");
                 Element subscriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (subscriptionElement != null)
-                {
+                if (subscriptionElement != null) {
                     String subscriptionInstance;
                     subscriptionInstance = subscriptionElement.getTextContent();
                     result.setSubscription(subscriptionInstance);
@@ -524,8 +472,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                 
                 NodeList elements11 = webSpacesElement.getElementsByTagName("WorkerSize");
                 Element workerSizeElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (workerSizeElement != null && (workerSizeElement.getTextContent() == null || workerSizeElement.getTextContent().isEmpty() == true) == false)
-                {
+                if (workerSizeElement != null && (workerSizeElement.getTextContent() == null || workerSizeElement.getTextContent().isEmpty() == true) == false) {
                     WebSpaceWorkerSize workerSizeInstance;
                     workerSizeInstance = WebSpaceWorkerSize.valueOf(workerSizeElement.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
@@ -533,21 +480,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -559,12 +501,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get DNS Suffix operation response.
     */
     @Override
-    public Future<WebSpacesGetDnsSuffixResponse> getDnsSuffixAsync()
-    {
+    public Future<WebSpacesGetDnsSuffixResponse> getDnsSuffixAsync() {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesGetDnsSuffixResponse>() { 
             @Override
-            public WebSpacesGetDnsSuffixResponse call() throws Exception
-            {
+            public WebSpacesGetDnsSuffixResponse call() throws Exception {
                 return getDnsSuffix();
             }
          });
@@ -584,15 +524,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get DNS Suffix operation response.
     */
     @Override
-    public WebSpacesGetDnsSuffixResponse getDnsSuffix() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public WebSpacesGetDnsSuffixResponse getDnsSuffix() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "getDnsSuffixAsync", tracingParameters);
@@ -609,23 +547,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -643,27 +576,21 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/", "string");
             Element stringElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (stringElement != null)
-            {
+            if (stringElement != null) {
                 result.setDnsSuffix(stringElement.getTextContent());
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -678,12 +605,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Web Spaces operation response.
     */
     @Override
-    public Future<WebSpacesListResponse> listAsync()
-    {
+    public Future<WebSpacesListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesListResponse>() { 
             @Override
-            public WebSpacesListResponse call() throws Exception
-            {
+            public WebSpacesListResponse call() throws Exception {
                 return list();
             }
          });
@@ -706,15 +631,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Web Spaces operation response.
     */
     @Override
-    public WebSpacesListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public WebSpacesListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -731,23 +654,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -765,18 +683,15 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagName("WebSpaces");
             Element webSpacesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (webSpacesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < webSpacesSequenceElement.getElementsByTagName("WebSpace").getLength(); i1 = i1 + 1)
-                {
+            if (webSpacesSequenceElement != null) {
+                for (int i1 = 0; i1 < webSpacesSequenceElement.getElementsByTagName("WebSpace").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element webSpacesElement = ((org.w3c.dom.Element) webSpacesSequenceElement.getElementsByTagName("WebSpace").item(i1));
                     WebSpacesListResponse.WebSpace webSpaceInstance = new WebSpacesListResponse.WebSpace();
                     result.getWebSpaces().add(webSpaceInstance);
                     
                     NodeList elements2 = webSpacesElement.getElementsByTagName("AvailabilityState");
                     Element availabilityStateElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (availabilityStateElement != null)
-                    {
+                    if (availabilityStateElement != null) {
                         WebSpaceAvailabilityState availabilityStateInstance;
                         availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         webSpaceInstance.setAvailabilityState(availabilityStateInstance);
@@ -784,16 +699,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements3 = webSpacesElement.getElementsByTagName("CurrentNumberOfWorkers");
                     Element currentNumberOfWorkersElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (currentNumberOfWorkersElement != null && (currentNumberOfWorkersElement.getTextContent() == null || currentNumberOfWorkersElement.getTextContent().isEmpty() == true) == false)
-                    {
+                    if (currentNumberOfWorkersElement != null && (currentNumberOfWorkersElement.getTextContent() == null || currentNumberOfWorkersElement.getTextContent().isEmpty() == true) == false) {
                         boolean isNil = false;
                         Attr nilAttribute = currentNumberOfWorkersElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute != null)
-                        {
+                        if (nilAttribute != null) {
                             isNil = "true".equals(nilAttribute.getValue());
                         }
-                        if (isNil == false)
-                        {
+                        if (isNil == false) {
                             int currentNumberOfWorkersInstance;
                             currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                             webSpaceInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
@@ -802,16 +714,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements4 = webSpacesElement.getElementsByTagName("CurrentWorkerSize");
                     Element currentWorkerSizeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (currentWorkerSizeElement != null && (currentWorkerSizeElement.getTextContent() == null || currentWorkerSizeElement.getTextContent().isEmpty() == true) == false)
-                    {
+                    if (currentWorkerSizeElement != null && (currentWorkerSizeElement.getTextContent() == null || currentWorkerSizeElement.getTextContent().isEmpty() == true) == false) {
                         boolean isNil2 = false;
                         Attr nilAttribute2 = currentWorkerSizeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute2 != null)
-                        {
+                        if (nilAttribute2 != null) {
                             isNil2 = "true".equals(nilAttribute2.getValue());
                         }
-                        if (isNil2 == false)
-                        {
+                        if (isNil2 == false) {
                             WebSpaceWorkerSize currentWorkerSizeInstance;
                             currentWorkerSizeInstance = WebSpaceWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                             webSpaceInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
@@ -820,8 +729,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements5 = webSpacesElement.getElementsByTagName("GeoLocation");
                     Element geoLocationElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (geoLocationElement != null)
-                    {
+                    if (geoLocationElement != null) {
                         String geoLocationInstance;
                         geoLocationInstance = geoLocationElement.getTextContent();
                         webSpaceInstance.setGeoLocation(geoLocationInstance);
@@ -829,8 +737,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements6 = webSpacesElement.getElementsByTagName("GeoRegion");
                     Element geoRegionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (geoRegionElement != null)
-                    {
+                    if (geoRegionElement != null) {
                         String geoRegionInstance;
                         geoRegionInstance = geoRegionElement.getTextContent();
                         webSpaceInstance.setGeoRegion(geoRegionInstance);
@@ -838,8 +745,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements7 = webSpacesElement.getElementsByTagName("Name");
                     Element nameElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         webSpaceInstance.setName(nameInstance);
@@ -847,8 +753,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements8 = webSpacesElement.getElementsByTagName("Plan");
                     Element planElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (planElement != null)
-                    {
+                    if (planElement != null) {
                         String planInstance;
                         planInstance = planElement.getTextContent();
                         webSpaceInstance.setPlan(planInstance);
@@ -856,8 +761,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements9 = webSpacesElement.getElementsByTagName("Status");
                     Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (statusElement != null)
-                    {
+                    if (statusElement != null) {
                         WebSpaceStatus statusInstance;
                         statusInstance = WebSpaceStatus.valueOf(statusElement.getTextContent());
                         webSpaceInstance.setStatus(statusInstance);
@@ -865,8 +769,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements10 = webSpacesElement.getElementsByTagName("Subscription");
                     Element subscriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (subscriptionElement != null)
-                    {
+                    if (subscriptionElement != null) {
                         String subscriptionInstance;
                         subscriptionInstance = subscriptionElement.getTextContent();
                         webSpaceInstance.setSubscription(subscriptionInstance);
@@ -874,8 +777,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements11 = webSpacesElement.getElementsByTagName("WorkerSize");
                     Element workerSizeElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (workerSizeElement != null && (workerSizeElement.getTextContent() == null || workerSizeElement.getTextContent().isEmpty() == true) == false)
-                    {
+                    if (workerSizeElement != null && (workerSizeElement.getTextContent() == null || workerSizeElement.getTextContent().isEmpty() == true) == false) {
                         WebSpaceWorkerSize workerSizeInstance;
                         workerSizeInstance = WebSpaceWorkerSize.valueOf(workerSizeElement.getTextContent());
                         webSpaceInstance.setWorkerSize(workerSizeInstance);
@@ -884,21 +786,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -910,12 +807,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get DNS Suffix operation response.
     */
     @Override
-    public Future<WebSpacesListGeoRegionsResponse> listGeoRegionsAsync()
-    {
+    public Future<WebSpacesListGeoRegionsResponse> listGeoRegionsAsync() {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesListGeoRegionsResponse>() { 
             @Override
-            public WebSpacesListGeoRegionsResponse call() throws Exception
-            {
+            public WebSpacesListGeoRegionsResponse call() throws Exception {
                 return listGeoRegions();
             }
          });
@@ -935,15 +830,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The Get DNS Suffix operation response.
     */
     @Override
-    public WebSpacesListGeoRegionsResponse listGeoRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public WebSpacesListGeoRegionsResponse listGeoRegions() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listGeoRegionsAsync", tracingParameters);
@@ -960,23 +853,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -994,18 +882,15 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagName("GeoRegions");
             Element geoRegionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (geoRegionsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < geoRegionsSequenceElement.getElementsByTagName("GeoRegion").getLength(); i1 = i1 + 1)
-                {
+            if (geoRegionsSequenceElement != null) {
+                for (int i1 = 0; i1 < geoRegionsSequenceElement.getElementsByTagName("GeoRegion").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element geoRegionsElement = ((org.w3c.dom.Element) geoRegionsSequenceElement.getElementsByTagName("GeoRegion").item(i1));
                     WebSpacesListGeoRegionsResponse.GeoRegion geoRegionInstance = new WebSpacesListGeoRegionsResponse.GeoRegion();
                     result.getGeoRegions().add(geoRegionInstance);
                     
                     NodeList elements2 = geoRegionsElement.getElementsByTagName("Description");
                     Element descriptionElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         geoRegionInstance.setDescription(descriptionInstance);
@@ -1013,8 +898,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements3 = geoRegionsElement.getElementsByTagName("Name");
                     Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         geoRegionInstance.setName(nameInstance);
@@ -1022,16 +906,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements4 = geoRegionsElement.getElementsByTagName("SortOrder");
                     Element sortOrderElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (sortOrderElement != null)
-                    {
+                    if (sortOrderElement != null) {
                         boolean isNil = false;
                         Attr nilAttribute = sortOrderElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute != null)
-                        {
+                        if (nilAttribute != null) {
                             isNil = "true".equals(nilAttribute.getValue());
                         }
-                        if (isNil == false)
-                        {
+                        if (isNil == false) {
                             int sortOrderInstance;
                             sortOrderInstance = DatatypeConverter.parseInt(sortOrderElement.getTextContent());
                             geoRegionInstance.setSortOrder(sortOrderInstance);
@@ -1041,21 +922,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1067,12 +943,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Publishing Users operation response.
     */
     @Override
-    public Future<WebSpacesListPublishingUsersResponse> listPublishingUsersAsync()
-    {
+    public Future<WebSpacesListPublishingUsersResponse> listPublishingUsersAsync() {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesListPublishingUsersResponse>() { 
             @Override
-            public WebSpacesListPublishingUsersResponse call() throws Exception
-            {
+            public WebSpacesListPublishingUsersResponse call() throws Exception {
                 return listPublishingUsers();
             }
          });
@@ -1092,15 +966,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Publishing Users operation response.
     */
     @Override
-    public WebSpacesListPublishingUsersResponse listPublishingUsers() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public WebSpacesListPublishingUsersResponse listPublishingUsers() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listPublishingUsersAsync", tracingParameters);
@@ -1117,23 +989,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1151,10 +1018,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "ArrayOfstring");
             Element arrayOfstringSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (arrayOfstringSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < arrayOfstringSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1)
-                {
+            if (arrayOfstringSequenceElement != null) {
+                for (int i1 = 0; i1 < arrayOfstringSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element arrayOfstringElement = ((org.w3c.dom.Element) arrayOfstringSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i1));
                     WebSpacesListPublishingUsersResponse.User stringInstance = new WebSpacesListPublishingUsersResponse.User();
                     result.getUsers().add(stringInstance);
@@ -1166,21 +1031,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1197,12 +1057,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Web Sites operation response.
     */
     @Override
-    public Future<WebSpacesListWebSitesResponse> listWebSitesAsync(final String webSpaceName, final WebSiteListParameters parameters)
-    {
+    public Future<WebSpacesListWebSitesResponse> listWebSitesAsync(final String webSpaceName, final WebSiteListParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<WebSpacesListWebSitesResponse>() { 
             @Override
-            public WebSpacesListWebSitesResponse call() throws Exception
-            {
+            public WebSpacesListWebSitesResponse call() throws Exception {
                 return listWebSites(webSpaceName, parameters);
             }
          });
@@ -1229,19 +1087,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * @return The List Web Sites operation response.
     */
     @Override
-    public WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public WebSpacesListWebSitesResponse listWebSites(String webSpaceName, WebSiteListParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -1251,8 +1106,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites" + "?";
-        if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0)
-        {
+        if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0) {
             url = url + "&" + "propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
         }
         
@@ -1264,23 +1118,18 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1298,18 +1147,15 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             
             NodeList elements = responseDoc.getElementsByTagName("Sites");
             Element sitesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (sitesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < sitesSequenceElement.getElementsByTagName("Site").getLength(); i1 = i1 + 1)
-                {
+            if (sitesSequenceElement != null) {
+                for (int i1 = 0; i1 < sitesSequenceElement.getElementsByTagName("Site").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element sitesElement = ((org.w3c.dom.Element) sitesSequenceElement.getElementsByTagName("Site").item(i1));
                     WebSite siteInstance = new WebSite();
                     result.getWebSites().add(siteInstance);
                     
                     NodeList elements2 = sitesElement.getElementsByTagName("AdminEnabled");
                     Element adminEnabledElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (adminEnabledElement != null)
-                    {
+                    if (adminEnabledElement != null) {
                         boolean adminEnabledInstance;
                         adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
                         siteInstance.setAdminEnabled(adminEnabledInstance);
@@ -1317,8 +1163,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements3 = sitesElement.getElementsByTagName("AvailabilityState");
                     Element availabilityStateElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (availabilityStateElement != null)
-                    {
+                    if (availabilityStateElement != null) {
                         WebSpaceAvailabilityState availabilityStateInstance;
                         availabilityStateInstance = WebSpaceAvailabilityState.valueOf(availabilityStateElement.getTextContent());
                         siteInstance.setAvailabilityState(availabilityStateInstance);
@@ -1326,8 +1171,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements4 = sitesElement.getElementsByTagName("ComputeMode");
                     Element computeModeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (computeModeElement != null)
-                    {
+                    if (computeModeElement != null) {
                         WebSiteComputeMode computeModeInstance;
                         computeModeInstance = WebSiteComputeMode.valueOf(computeModeElement.getTextContent());
                         siteInstance.setComputeMode(computeModeInstance);
@@ -1335,8 +1179,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements5 = sitesElement.getElementsByTagName("Enabled");
                     Element enabledElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (enabledElement != null)
-                    {
+                    if (enabledElement != null) {
                         boolean enabledInstance;
                         enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                         siteInstance.setEnabled(enabledInstance);
@@ -1344,10 +1187,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements6 = sitesElement.getElementsByTagName("EnabledHostNames");
                     Element enabledHostNamesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (enabledHostNamesSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1)
-                        {
+                    if (enabledHostNamesSequenceElement != null) {
+                        for (int i2 = 0; i2 < enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1) {
                             org.w3c.dom.Element enabledHostNamesElement = ((org.w3c.dom.Element) enabledHostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
                             siteInstance.getEnabledHostNames().add(enabledHostNamesElement.getTextContent());
                         }
@@ -1355,18 +1196,15 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements7 = sitesElement.getElementsByTagName("HostNameSslStates");
                     Element hostNameSslStatesSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (hostNameSslStatesSequenceElement != null)
-                    {
-                        for (int i3 = 0; i3 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i3 = i3 + 1)
-                        {
+                    if (hostNameSslStatesSequenceElement != null) {
+                        for (int i3 = 0; i3 < hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").getLength(); i3 = i3 + 1) {
                             org.w3c.dom.Element hostNameSslStatesElement = ((org.w3c.dom.Element) hostNameSslStatesSequenceElement.getElementsByTagName("WebSiteHostNameSslState").item(i3));
                             WebSite.WebSiteHostNameSslState webSiteHostNameSslStateInstance = new WebSite.WebSiteHostNameSslState();
                             siteInstance.getHostNameSslStates().add(webSiteHostNameSslStateInstance);
                             
                             NodeList elements8 = hostNameSslStatesElement.getElementsByTagName("Name");
                             Element nameElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (nameElement != null)
-                            {
+                            if (nameElement != null) {
                                 String nameInstance;
                                 nameInstance = nameElement.getTextContent();
                                 webSiteHostNameSslStateInstance.setName(nameInstance);
@@ -1374,8 +1212,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                             
                             NodeList elements9 = hostNameSslStatesElement.getElementsByTagName("SslState");
                             Element sslStateElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                            if (sslStateElement != null)
-                            {
+                            if (sslStateElement != null) {
                                 WebSiteSslState sslStateInstance;
                                 sslStateInstance = WebSiteSslState.valueOf(sslStateElement.getTextContent());
                                 webSiteHostNameSslStateInstance.setSslState(sslStateInstance);
@@ -1383,16 +1220,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                             
                             NodeList elements10 = hostNameSslStatesElement.getElementsByTagName("Thumbprint");
                             Element thumbprintElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                            if (thumbprintElement != null)
-                            {
+                            if (thumbprintElement != null) {
                                 boolean isNil = false;
                                 Attr nilAttribute = thumbprintElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute != null)
-                                {
+                                if (nilAttribute != null) {
                                     isNil = "true".equals(nilAttribute.getValue());
                                 }
-                                if (isNil == false)
-                                {
+                                if (isNil == false) {
                                     String thumbprintInstance;
                                     thumbprintInstance = thumbprintElement.getTextContent();
                                     webSiteHostNameSslStateInstance.setThumbprint(thumbprintInstance);
@@ -1401,16 +1235,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                             
                             NodeList elements11 = hostNameSslStatesElement.getElementsByTagName("VirtualIP");
                             Element virtualIPElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                            if (virtualIPElement != null)
-                            {
+                            if (virtualIPElement != null) {
                                 boolean isNil2 = false;
                                 Attr nilAttribute2 = virtualIPElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute2 != null)
-                                {
+                                if (nilAttribute2 != null) {
                                     isNil2 = "true".equals(nilAttribute2.getValue());
                                 }
-                                if (isNil2 == false)
-                                {
+                                if (isNil2 == false) {
                                     InetAddress virtualIPInstance;
                                     virtualIPInstance = InetAddress.getByName(virtualIPElement.getTextContent());
                                     webSiteHostNameSslStateInstance.setVirtualIP(virtualIPInstance);
@@ -1421,10 +1252,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements12 = sitesElement.getElementsByTagName("HostNames");
                     Element hostNamesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (hostNamesSequenceElement != null)
-                    {
-                        for (int i4 = 0; i4 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i4 = i4 + 1)
-                        {
+                    if (hostNamesSequenceElement != null) {
+                        for (int i4 = 0; i4 < hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i4 = i4 + 1) {
                             org.w3c.dom.Element hostNamesElement = ((org.w3c.dom.Element) hostNamesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i4));
                             siteInstance.getHostNames().add(hostNamesElement.getTextContent());
                         }
@@ -1432,8 +1261,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements13 = sitesElement.getElementsByTagName("LastModifiedTimeUtc");
                     Element lastModifiedTimeUtcElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                    if (lastModifiedTimeUtcElement != null)
-                    {
+                    if (lastModifiedTimeUtcElement != null) {
                         Calendar lastModifiedTimeUtcInstance;
                         lastModifiedTimeUtcInstance = DatatypeConverter.parseDateTime(lastModifiedTimeUtcElement.getTextContent());
                         siteInstance.setLastModifiedTimeUtc(lastModifiedTimeUtcInstance);
@@ -1441,8 +1269,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements14 = sitesElement.getElementsByTagName("Name");
                     Element nameElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                    if (nameElement2 != null)
-                    {
+                    if (nameElement2 != null) {
                         String nameInstance2;
                         nameInstance2 = nameElement2.getTextContent();
                         siteInstance.setName(nameInstance2);
@@ -1450,16 +1277,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements15 = sitesElement.getElementsByTagName("Owner");
                     Element ownerElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                    if (ownerElement != null)
-                    {
+                    if (ownerElement != null) {
                         boolean isNil3 = false;
                         Attr nilAttribute3 = ownerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute3 != null)
-                        {
+                        if (nilAttribute3 != null) {
                             isNil3 = "true".equals(nilAttribute3.getValue());
                         }
-                        if (isNil3 == false)
-                        {
+                        if (isNil3 == false) {
                             String ownerInstance;
                             ownerInstance = ownerElement.getTextContent();
                             siteInstance.setOwner(ownerInstance);
@@ -1468,8 +1292,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements16 = sitesElement.getElementsByTagName("RepositorySiteName");
                     Element repositorySiteNameElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                    if (repositorySiteNameElement != null)
-                    {
+                    if (repositorySiteNameElement != null) {
                         String repositorySiteNameInstance;
                         repositorySiteNameInstance = repositorySiteNameElement.getTextContent();
                         siteInstance.setRepositorySiteName(repositorySiteNameInstance);
@@ -1477,8 +1300,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements17 = sitesElement.getElementsByTagName("RuntimeAvailabilityState");
                     Element runtimeAvailabilityStateElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                    if (runtimeAvailabilityStateElement != null)
-                    {
+                    if (runtimeAvailabilityStateElement != null) {
                         WebSiteRuntimeAvailabilityState runtimeAvailabilityStateInstance;
                         runtimeAvailabilityStateInstance = WebSiteRuntimeAvailabilityState.valueOf(runtimeAvailabilityStateElement.getTextContent());
                         siteInstance.setRuntimeAvailabilityState(runtimeAvailabilityStateInstance);
@@ -1486,34 +1308,27 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements18 = sitesElement.getElementsByTagName("SSLCertificates");
                     Element sSLCertificatesSequenceElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                    if (sSLCertificatesSequenceElement != null)
-                    {
+                    if (sSLCertificatesSequenceElement != null) {
                         boolean isNil4 = false;
                         Attr nilAttribute4 = sSLCertificatesSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                        if (nilAttribute4 != null)
-                        {
+                        if (nilAttribute4 != null) {
                             isNil4 = "true".equals(nilAttribute4.getValue());
                         }
-                        if (isNil4 == false)
-                        {
-                            for (int i5 = 0; i5 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i5 = i5 + 1)
-                            {
+                        if (isNil4 == false) {
+                            for (int i5 = 0; i5 < sSLCertificatesSequenceElement.getElementsByTagName("Certificate").getLength(); i5 = i5 + 1) {
                                 org.w3c.dom.Element sSLCertificatesElement = ((org.w3c.dom.Element) sSLCertificatesSequenceElement.getElementsByTagName("Certificate").item(i5));
                                 WebSite.WebSiteSslCertificate certificateInstance = new WebSite.WebSiteSslCertificate();
                                 siteInstance.getSslCertificates().add(certificateInstance);
                                 
                                 NodeList elements19 = sSLCertificatesElement.getElementsByTagName("ExpirationDate");
                                 Element expirationDateElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (expirationDateElement != null && (expirationDateElement.getTextContent() == null || expirationDateElement.getTextContent().isEmpty() == true) == false) {
                                     boolean isNil5 = false;
                                     Attr nilAttribute5 = expirationDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute5 != null)
-                                    {
+                                    if (nilAttribute5 != null) {
                                         isNil5 = "true".equals(nilAttribute5.getValue());
                                     }
-                                    if (isNil5 == false)
-                                    {
+                                    if (isNil5 == false) {
                                         Calendar expirationDateInstance;
                                         expirationDateInstance = DatatypeConverter.parseDateTime(expirationDateElement.getTextContent());
                                         certificateInstance.setExpirationDate(expirationDateInstance);
@@ -1522,16 +1337,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements20 = sSLCertificatesElement.getElementsByTagName("FriendlyName");
                                 Element friendlyNameElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                if (friendlyNameElement != null)
-                                {
+                                if (friendlyNameElement != null) {
                                     boolean isNil6 = false;
                                     Attr nilAttribute6 = friendlyNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute6 != null)
-                                    {
+                                    if (nilAttribute6 != null) {
                                         isNil6 = "true".equals(nilAttribute6.getValue());
                                     }
-                                    if (isNil6 == false)
-                                    {
+                                    if (isNil6 == false) {
                                         String friendlyNameInstance;
                                         friendlyNameInstance = friendlyNameElement.getTextContent();
                                         certificateInstance.setFriendlyName(friendlyNameInstance);
@@ -1540,18 +1352,14 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements21 = sSLCertificatesElement.getElementsByTagName("HostNames");
                                 Element hostNamesSequenceElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                if (hostNamesSequenceElement2 != null)
-                                {
+                                if (hostNamesSequenceElement2 != null) {
                                     boolean isNil7 = false;
                                     Attr nilAttribute7 = hostNamesSequenceElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute7 != null)
-                                    {
+                                    if (nilAttribute7 != null) {
                                         isNil7 = "true".equals(nilAttribute7.getValue());
                                     }
-                                    if (isNil7 == false)
-                                    {
-                                        for (int i6 = 0; i6 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i6 = i6 + 1)
-                                        {
+                                    if (isNil7 == false) {
+                                        for (int i6 = 0; i6 < hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i6 = i6 + 1) {
                                             org.w3c.dom.Element hostNamesElement2 = ((org.w3c.dom.Element) hostNamesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i6));
                                             certificateInstance.getHostNames().add(hostNamesElement2.getTextContent());
                                         }
@@ -1560,16 +1368,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements22 = sSLCertificatesElement.getElementsByTagName("IssueDate");
                                 Element issueDateElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                                if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (issueDateElement != null && (issueDateElement.getTextContent() == null || issueDateElement.getTextContent().isEmpty() == true) == false) {
                                     boolean isNil8 = false;
                                     Attr nilAttribute8 = issueDateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute8 != null)
-                                    {
+                                    if (nilAttribute8 != null) {
                                         isNil8 = "true".equals(nilAttribute8.getValue());
                                     }
-                                    if (isNil8 == false)
-                                    {
+                                    if (isNil8 == false) {
                                         Calendar issueDateInstance;
                                         issueDateInstance = DatatypeConverter.parseDateTime(issueDateElement.getTextContent());
                                         certificateInstance.setIssueDate(issueDateInstance);
@@ -1578,16 +1383,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements23 = sSLCertificatesElement.getElementsByTagName("Issuer");
                                 Element issuerElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (issuerElement != null)
-                                {
+                                if (issuerElement != null) {
                                     boolean isNil9 = false;
                                     Attr nilAttribute9 = issuerElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute9 != null)
-                                    {
+                                    if (nilAttribute9 != null) {
                                         isNil9 = "true".equals(nilAttribute9.getValue());
                                     }
-                                    if (isNil9 == false)
-                                    {
+                                    if (isNil9 == false) {
                                         String issuerInstance;
                                         issuerInstance = issuerElement.getTextContent();
                                         certificateInstance.setIssuer(issuerInstance);
@@ -1596,16 +1398,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements24 = sSLCertificatesElement.getElementsByTagName("Password");
                                 Element passwordElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                if (passwordElement != null)
-                                {
+                                if (passwordElement != null) {
                                     boolean isNil10 = false;
                                     Attr nilAttribute10 = passwordElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute10 != null)
-                                    {
+                                    if (nilAttribute10 != null) {
                                         isNil10 = "true".equals(nilAttribute10.getValue());
                                     }
-                                    if (isNil10 == false)
-                                    {
+                                    if (isNil10 == false) {
                                         String passwordInstance;
                                         passwordInstance = passwordElement.getTextContent();
                                         certificateInstance.setPassword(passwordInstance);
@@ -1614,16 +1413,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements25 = sSLCertificatesElement.getElementsByTagName("PfxBlob");
                                 Element pfxBlobElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                                if (pfxBlobElement != null)
-                                {
+                                if (pfxBlobElement != null) {
                                     boolean isNil11 = false;
                                     Attr nilAttribute11 = pfxBlobElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute11 != null)
-                                    {
+                                    if (nilAttribute11 != null) {
                                         isNil11 = "true".equals(nilAttribute11.getValue());
                                     }
-                                    if (isNil11 == false)
-                                    {
+                                    if (isNil11 == false) {
                                         byte[] pfxBlobInstance;
                                         pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
                                         certificateInstance.setPfxBlob(pfxBlobInstance);
@@ -1632,16 +1428,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements26 = sSLCertificatesElement.getElementsByTagName("SelfLink");
                                 Element selfLinkElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                                if (selfLinkElement != null)
-                                {
+                                if (selfLinkElement != null) {
                                     boolean isNil12 = false;
                                     Attr nilAttribute12 = selfLinkElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute12 != null)
-                                    {
+                                    if (nilAttribute12 != null) {
                                         isNil12 = "true".equals(nilAttribute12.getValue());
                                     }
-                                    if (isNil12 == false)
-                                    {
+                                    if (isNil12 == false) {
                                         URI selfLinkInstance;
                                         selfLinkInstance = new URI(selfLinkElement.getTextContent());
                                         certificateInstance.setSelfLinkUri(selfLinkInstance);
@@ -1650,16 +1443,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements27 = sSLCertificatesElement.getElementsByTagName("SiteName");
                                 Element siteNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                                if (siteNameElement != null)
-                                {
+                                if (siteNameElement != null) {
                                     boolean isNil13 = false;
                                     Attr nilAttribute13 = siteNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute13 != null)
-                                    {
+                                    if (nilAttribute13 != null) {
                                         isNil13 = "true".equals(nilAttribute13.getValue());
                                     }
-                                    if (isNil13 == false)
-                                    {
+                                    if (isNil13 == false) {
                                         String siteNameInstance;
                                         siteNameInstance = siteNameElement.getTextContent();
                                         certificateInstance.setSiteName(siteNameInstance);
@@ -1668,16 +1458,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements28 = sSLCertificatesElement.getElementsByTagName("SubjectName");
                                 Element subjectNameElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                                if (subjectNameElement != null)
-                                {
+                                if (subjectNameElement != null) {
                                     boolean isNil14 = false;
                                     Attr nilAttribute14 = subjectNameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute14 != null)
-                                    {
+                                    if (nilAttribute14 != null) {
                                         isNil14 = "true".equals(nilAttribute14.getValue());
                                     }
-                                    if (isNil14 == false)
-                                    {
+                                    if (isNil14 == false) {
                                         String subjectNameInstance;
                                         subjectNameInstance = subjectNameElement.getTextContent();
                                         certificateInstance.setSubjectName(subjectNameInstance);
@@ -1686,16 +1473,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements29 = sSLCertificatesElement.getElementsByTagName("Thumbprint");
                                 Element thumbprintElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                                if (thumbprintElement2 != null)
-                                {
+                                if (thumbprintElement2 != null) {
                                     boolean isNil15 = false;
                                     Attr nilAttribute15 = thumbprintElement2.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute15 != null)
-                                    {
+                                    if (nilAttribute15 != null) {
                                         isNil15 = "true".equals(nilAttribute15.getValue());
                                     }
-                                    if (isNil15 == false)
-                                    {
+                                    if (isNil15 == false) {
                                         String thumbprintInstance2;
                                         thumbprintInstance2 = thumbprintElement2.getTextContent();
                                         certificateInstance.setThumbprint(thumbprintInstance2);
@@ -1704,16 +1488,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements30 = sSLCertificatesElement.getElementsByTagName("ToDelete");
                                 Element toDeleteElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                                if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (toDeleteElement != null && (toDeleteElement.getTextContent() == null || toDeleteElement.getTextContent().isEmpty() == true) == false) {
                                     boolean isNil16 = false;
                                     Attr nilAttribute16 = toDeleteElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute16 != null)
-                                    {
+                                    if (nilAttribute16 != null) {
                                         isNil16 = "true".equals(nilAttribute16.getValue());
                                     }
-                                    if (isNil16 == false)
-                                    {
+                                    if (isNil16 == false) {
                                         boolean toDeleteInstance;
                                         toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
                                         certificateInstance.setIsToBeDeleted(toDeleteInstance);
@@ -1722,16 +1503,13 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                 
                                 NodeList elements31 = sSLCertificatesElement.getElementsByTagName("Valid");
                                 Element validElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                                if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (validElement != null && (validElement.getTextContent() == null || validElement.getTextContent().isEmpty() == true) == false) {
                                     boolean isNil17 = false;
                                     Attr nilAttribute17 = validElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                    if (nilAttribute17 != null)
-                                    {
+                                    if (nilAttribute17 != null) {
                                         isNil17 = "true".equals(nilAttribute17.getValue());
                                     }
-                                    if (isNil17 == false)
-                                    {
+                                    if (isNil17 == false) {
                                         boolean validInstance;
                                         validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
                                         certificateInstance.setIsValid(validInstance);
@@ -1743,8 +1521,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements32 = sitesElement.getElementsByTagName("SelfLink");
                     Element selfLinkElement2 = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-                    if (selfLinkElement2 != null)
-                    {
+                    if (selfLinkElement2 != null) {
                         URI selfLinkInstance2;
                         selfLinkInstance2 = new URI(selfLinkElement2.getTextContent());
                         siteInstance.setUri(selfLinkInstance2);
@@ -1752,8 +1529,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements33 = sitesElement.getElementsByTagName("ServerFarm");
                     Element serverFarmElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-                    if (serverFarmElement != null)
-                    {
+                    if (serverFarmElement != null) {
                         String serverFarmInstance;
                         serverFarmInstance = serverFarmElement.getTextContent();
                         siteInstance.setServerFarm(serverFarmInstance);
@@ -1761,8 +1537,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements34 = sitesElement.getElementsByTagName("SiteMode");
                     Element siteModeElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-                    if (siteModeElement != null)
-                    {
+                    if (siteModeElement != null) {
                         WebSiteMode siteModeInstance;
                         siteModeInstance = WebSiteMode.valueOf(siteModeElement.getTextContent());
                         siteInstance.setSiteMode(siteModeInstance);
@@ -1770,17 +1545,14 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements35 = sitesElement.getElementsByTagName("SiteProperties");
                     Element sitePropertiesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-                    if (sitePropertiesElement != null)
-                    {
+                    if (sitePropertiesElement != null) {
                         WebSite.WebSiteProperties sitePropertiesInstance = new WebSite.WebSiteProperties();
                         siteInstance.setSiteProperties(sitePropertiesInstance);
                         
                         NodeList elements36 = sitePropertiesElement.getElementsByTagName("AppSettings");
                         Element appSettingsSequenceElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                        if (appSettingsSequenceElement != null)
-                        {
-                            for (int i7 = 0; i7 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1)
-                            {
+                        if (appSettingsSequenceElement != null) {
+                            for (int i7 = 0; i7 < appSettingsSequenceElement.getElementsByTagName("NameValuePair").getLength(); i7 = i7 + 1) {
                                 org.w3c.dom.Element appSettingsElement = ((org.w3c.dom.Element) appSettingsSequenceElement.getElementsByTagName("NameValuePair").item(i7));
                                 NodeList elements37 = appSettingsElement.getElementsByTagName("Name");
                                 String appSettingsKey = elements37.getLength() > 0 ? ((org.w3c.dom.Element) elements37.item(0)).getTextContent() : null;
@@ -1792,10 +1564,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         
                         NodeList elements39 = sitePropertiesElement.getElementsByTagName("Metadata");
                         Element metadataSequenceElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                        if (metadataSequenceElement != null)
-                        {
-                            for (int i8 = 0; i8 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1)
-                            {
+                        if (metadataSequenceElement != null) {
+                            for (int i8 = 0; i8 < metadataSequenceElement.getElementsByTagName("NameValuePair").getLength(); i8 = i8 + 1) {
                                 org.w3c.dom.Element metadataElement = ((org.w3c.dom.Element) metadataSequenceElement.getElementsByTagName("NameValuePair").item(i8));
                                 NodeList elements40 = metadataElement.getElementsByTagName("Name");
                                 String metadataKey = elements40.getLength() > 0 ? ((org.w3c.dom.Element) elements40.item(0)).getTextContent() : null;
@@ -1807,10 +1577,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                         
                         NodeList elements42 = sitePropertiesElement.getElementsByTagName("Properties");
                         Element propertiesSequenceElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                        if (propertiesSequenceElement != null)
-                        {
-                            for (int i9 = 0; i9 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i9 = i9 + 1)
-                            {
+                        if (propertiesSequenceElement != null) {
+                            for (int i9 = 0; i9 < propertiesSequenceElement.getElementsByTagName("NameValuePair").getLength(); i9 = i9 + 1) {
                                 org.w3c.dom.Element propertiesElement = ((org.w3c.dom.Element) propertiesSequenceElement.getElementsByTagName("NameValuePair").item(i9));
                                 NodeList elements43 = propertiesElement.getElementsByTagName("Name");
                                 String propertiesKey = elements43.getLength() > 0 ? ((org.w3c.dom.Element) elements43.item(0)).getTextContent() : null;
@@ -1823,8 +1591,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements45 = sitesElement.getElementsByTagName("State");
                     Element stateElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-                    if (stateElement != null)
-                    {
+                    if (stateElement != null) {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         siteInstance.setState(stateInstance);
@@ -1832,8 +1599,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements46 = sitesElement.getElementsByTagName("UsageState");
                     Element usageStateElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-                    if (usageStateElement != null)
-                    {
+                    if (usageStateElement != null) {
                         WebSiteUsageState usageStateInstance;
                         usageStateInstance = WebSiteUsageState.valueOf(usageStateElement.getTextContent());
                         siteInstance.setUsageState(usageStateInstance);
@@ -1841,8 +1607,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     
                     NodeList elements47 = sitesElement.getElementsByTagName("WebSpace");
                     Element webSpaceElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-                    if (webSpaceElement != null)
-                    {
+                    if (webSpaceElement != null) {
                         String webSpaceInstance;
                         webSpaceInstance = webSpaceElement.getTextContent();
                         siteInstance.setWebSpace(webSpaceInstance);
@@ -1851,21 +1616,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

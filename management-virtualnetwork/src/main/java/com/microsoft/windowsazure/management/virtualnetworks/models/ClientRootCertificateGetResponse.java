@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * A standard storage response including an HTTP status code and request ID.
 */
-public class ClientRootCertificateGetResponse extends OperationResponse
-{
+public class ClientRootCertificateGetResponse extends OperationResponse {
     private String certificate;
     
     /**
     * The current client root certificate for the network gateway.
     * @return The Certificate value.
     */
-    public String getCertificate()
-    {
+    public String getCertificate() {
         return this.certificate;
     }
     
@@ -45,8 +43,7 @@ public class ClientRootCertificateGetResponse extends OperationResponse
     * The current client root certificate for the network gateway.
     * @param certificateValue The Certificate value.
     */
-    public void setCertificate(final String certificateValue)
-    {
+    public void setCertificate(final String certificateValue) {
         this.certificate = certificateValue;
     }
 }

@@ -103,15 +103,13 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
 * information)
 */
-public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineOperations
-{
+public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineOperations {
     /**
     * Initializes a new instance of the VirtualMachineOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    VirtualMachineOperationsImpl(ComputeManagementClientImpl client)
-    {
+    VirtualMachineOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
     
@@ -122,8 +120,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient()
-    {
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -149,12 +146,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginCapturingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
-    {
+    public Future<OperationResponse> beginCapturingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginCapturing(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -192,125 +187,93 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getProvisioningConfiguration() != null)
-        {
-            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
-            {
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
-                {
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null)
-                    {
+        if (parameters.getProvisioningConfiguration() != null) {
+            if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null) {
                         throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.Password");
                     }
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName() == null)
-                    {
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getUserName() == null) {
                         throw new NullPointerException("parameters.ProvisioningConfiguration.DomainJoin.Credentials.UserName");
                     }
                 }
             }
-            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() < 1)
-            {
+            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() < 1) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
             }
-            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() > 64)
-            {
+            if (parameters.getProvisioningConfiguration().getHostName() != null && parameters.getProvisioningConfiguration().getHostName().length() > 64) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.HostName");
             }
-            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
-            {
-                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
-                {
-                    for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
-                    {
-                        if (keyPairsParameterItem.getFingerprint() == null)
-                        {
+            if (parameters.getProvisioningConfiguration().getSshSettings() != null) {
+                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null) {
+                    for (SshSettingKeyPair keyPairsParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs()) {
+                        if (keyPairsParameterItem.getFingerprint() == null) {
                             throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Fingerprint");
                         }
-                        if (keyPairsParameterItem.getPath() == null)
-                        {
+                        if (keyPairsParameterItem.getPath() == null) {
                             throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.KeyPairs.Path");
                         }
                     }
                 }
-                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
-                {
-                    for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
-                    {
-                        if (publicKeysParameterItem.getFingerprint() == null)
-                        {
+                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null) {
+                    for (SshSettingPublicKey publicKeysParameterItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys()) {
+                        if (publicKeysParameterItem.getFingerprint() == null) {
                             throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Fingerprint");
                         }
-                        if (publicKeysParameterItem.getPath() == null)
-                        {
+                        if (publicKeysParameterItem.getPath() == null) {
                             throw new NullPointerException("parameters.ProvisioningConfiguration.SshSettings.PublicKeys.Path");
                         }
                     }
                 }
             }
-            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
-            {
-                for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
-                {
-                    if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                    {
+            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null) {
+                for (StoredCertificateSettings storedCertificateSettingsParameterItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings()) {
+                    if (storedCertificateSettingsParameterItem.getStoreName() == null) {
                         throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.StoreName");
                     }
-                    if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                    {
+                    if (storedCertificateSettingsParameterItem.getThumbprint() == null) {
                         throw new NullPointerException("parameters.ProvisioningConfiguration.StoredCertificateSettings.Thumbprint");
                     }
                 }
             }
-            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() < 1)
-            {
+            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() < 1) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
             }
-            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32)
-            {
+            if (parameters.getProvisioningConfiguration().getUserName() != null && parameters.getProvisioningConfiguration().getUserName().length() > 32) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserName");
             }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0))
-            {
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() < 6 && (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() == false || parameters.getProvisioningConfiguration().getUserPassword().length() != 0)) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
             }
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72)
-            {
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null && parameters.getProvisioningConfiguration().getUserPassword().length() > 72) {
                 throw new IllegalArgumentException("parameters.ProvisioningConfiguration.UserPassword");
             }
         }
-        if (parameters.getTargetImageLabel() == null)
-        {
+        if (parameters.getTargetImageLabel() == null) {
             throw new NullPointerException("parameters.TargetImageLabel");
         }
-        if (parameters.getTargetImageName() == null)
-        {
+        if (parameters.getTargetImageName() == null) {
             throw new NullPointerException("parameters.TargetImageName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -347,61 +310,51 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         postCaptureActionElement.appendChild(requestDoc.createTextNode(parameters.getPostCaptureAction().toString()));
         captureRoleOperationElement.appendChild(postCaptureActionElement);
         
-        if (parameters.getProvisioningConfiguration() != null)
-        {
+        if (parameters.getProvisioningConfiguration() != null) {
             Element provisioningConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisioningConfiguration");
             captureRoleOperationElement.appendChild(provisioningConfigurationElement);
             
-            if (parameters.getProvisioningConfiguration().getConfigurationSetType() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getConfigurationSetType() != null) {
                 Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                 configurationSetTypeElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getConfigurationSetType()));
                 provisioningConfigurationElement.appendChild(configurationSetTypeElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getInputEndpoints() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getInputEndpoints() != null) {
                 Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints())
-                {
+                for (InputEndpoint inputEndpointsItem : parameters.getProvisioningConfiguration().getInputEndpoints()) {
                     Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
                     inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                     
-                    if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
-                    {
+                    if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
                         Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                         loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
                         inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                     }
                     
-                    if (inputEndpointsItem.getLocalPort() != null)
-                    {
+                    if (inputEndpointsItem.getLocalPort() != null) {
                         Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                         localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                         inputEndpointElement.appendChild(localPortElement);
                     }
                     
-                    if (inputEndpointsItem.getName() != null)
-                    {
+                    if (inputEndpointsItem.getName() != null) {
                         Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                         nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
                         inputEndpointElement.appendChild(nameElement);
                     }
                     
-                    if (inputEndpointsItem.getPort() != null)
-                    {
+                    if (inputEndpointsItem.getPort() != null) {
                         Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
                         portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                         inputEndpointElement.appendChild(portElement);
                     }
                     
-                    if (inputEndpointsItem.getLoadBalancerProbe() != null)
-                    {
+                    if (inputEndpointsItem.getLoadBalancerProbe() != null) {
                         Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                         inputEndpointElement.appendChild(loadBalancerProbeElement);
                         
-                        if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
                             Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
                             pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
                             loadBalancerProbeElement.appendChild(pathElement);
@@ -415,78 +368,66 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
                         loadBalancerProbeElement.appendChild(protocolElement);
                         
-                        if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
                             Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                             intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                             loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                         }
                         
-                        if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
                             Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                             timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                             loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                         }
                     }
                     
-                    if (inputEndpointsItem.getProtocol() != null)
-                    {
+                    if (inputEndpointsItem.getProtocol() != null) {
                         Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                         protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
                         inputEndpointElement.appendChild(protocolElement2);
                     }
                     
-                    if (inputEndpointsItem.getVirtualIPAddress() != null)
-                    {
+                    if (inputEndpointsItem.getVirtualIPAddress() != null) {
                         Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
+                        vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
                         inputEndpointElement.appendChild(vipElement);
                     }
                     
-                    if (inputEndpointsItem.isEnableDirectServerReturn() != null)
-                    {
+                    if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
                         Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                         enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                         inputEndpointElement.appendChild(enableDirectServerReturnElement);
                     }
                     
-                    if (inputEndpointsItem.getEndpointAcl() != null)
-                    {
+                    if (inputEndpointsItem.getEndpointAcl() != null) {
                         Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                         inputEndpointElement.appendChild(endpointAclElement);
                         
-                        if (inputEndpointsItem.getEndpointAcl().getRules() != null)
-                        {
+                        if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
                             Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
-                            {
+                            for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
                                 Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
                                 rulesSequenceElement.appendChild(ruleElement);
                                 
-                                if (rulesItem.getOrder() != null)
-                                {
+                                if (rulesItem.getOrder() != null) {
                                     Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
                                     orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                     ruleElement.appendChild(orderElement);
                                 }
                                 
-                                if (rulesItem.getAction() != null)
-                                {
+                                if (rulesItem.getAction() != null) {
                                     Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
                                     actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
                                     ruleElement.appendChild(actionElement);
                                 }
                                 
-                                if (rulesItem.getRemoteSubnet() != null)
-                                {
+                                if (rulesItem.getRemoteSubnet() != null) {
                                     Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                     remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
                                     ruleElement.appendChild(remoteSubnetElement);
                                 }
                                 
-                                if (rulesItem.getDescription() != null)
-                                {
+                                if (rulesItem.getDescription() != null) {
                                     Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
                                     descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
                                     ruleElement.appendChild(descriptionElement);
@@ -499,11 +440,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(inputEndpointsSequenceElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getSubnetNames() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getSubnetNames() != null) {
                 Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames())
-                {
+                for (String subnetNamesItem : parameters.getProvisioningConfiguration().getSubnetNames()) {
                     Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
                     subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
                     subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
@@ -511,60 +450,51 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(subnetNamesSequenceElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress() != null) {
                 Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                 staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getStaticVirtualNetworkIPAddress()));
                 provisioningConfigurationElement.appendChild(staticVirtualNetworkIPAddressElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getComputerName() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getComputerName() != null) {
                 Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                 computerNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getComputerName()));
                 provisioningConfigurationElement.appendChild(computerNameElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getAdminPassword() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getAdminPassword() != null) {
                 Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
                 adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
                 provisioningConfigurationElement.appendChild(adminPasswordElement);
             }
             
-            if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null)
-            {
+            if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null) {
                 Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                 resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(resetPasswordOnFirstLogonElement);
             }
             
-            if (parameters.getProvisioningConfiguration().isEnableAutomaticUpdates() != null)
-            {
+            if (parameters.getProvisioningConfiguration().isEnableAutomaticUpdates() != null) {
                 Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                 enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isEnableAutomaticUpdates()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(enableAutomaticUpdatesElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getTimeZone() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getTimeZone() != null) {
                 Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
                 timeZoneElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getTimeZone()));
                 provisioningConfigurationElement.appendChild(timeZoneElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getDomainJoin() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
                 Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
                 provisioningConfigurationElement.appendChild(domainJoinElement);
                 
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
                     Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
                     domainJoinElement.appendChild(credentialsElement);
                     
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain() != null)
-                    {
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain() != null) {
                         Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
                         domainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getDomain()));
                         credentialsElement.appendChild(domainElement);
@@ -579,27 +509,23 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     credentialsElement.appendChild(passwordElement);
                 }
                 
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin() != null) {
                     Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
                     joinDomainElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getDomainToJoin()));
                     domainJoinElement.appendChild(joinDomainElement);
                 }
                 
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU() != null) {
                     Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                     machineObjectOUElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getLdapMachineObjectOU()));
                     domainJoinElement.appendChild(machineObjectOUElement);
                 }
                 
-                if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning() != null) {
                     Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
                     domainJoinElement.appendChild(provisioningElement);
                     
-                    if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData() != null)
-                    {
+                    if (parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData() != null) {
                         Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
                         accountDataElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getDomainJoin().getProvisioning().getAccountData()));
                         provisioningElement.appendChild(accountDataElement);
@@ -607,11 +533,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getStoredCertificateSettings() != null) {
                 Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings())
-                {
+                for (StoredCertificateSettings storedCertificateSettingsItem : parameters.getProvisioningConfiguration().getStoredCertificateSettings()) {
                     Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
                     storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
                     
@@ -630,21 +554,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(storedCertificateSettingsSequenceElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement() != null) {
                 Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
                 provisioningConfigurationElement.appendChild(winRMElement);
                 
-                if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners() != null) {
                     Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                    for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners())
-                    {
+                    for (WindowsRemoteManagementListener listenersItem : parameters.getProvisioningConfiguration().getWindowsRemoteManagement().getListeners()) {
                         Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                         listenersSequenceElement.appendChild(listenerElement);
                         
-                        if (listenersItem.getCertificateThumbprint() != null)
-                        {
+                        if (listenersItem.getCertificateThumbprint() != null) {
                             Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                             certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                             listenerElement.appendChild(certificateThumbprintElement);
@@ -658,51 +578,43 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            if (parameters.getProvisioningConfiguration().getAdminUserName() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getAdminUserName() != null) {
                 Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                 adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
                 provisioningConfigurationElement.appendChild(adminUsernameElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getHostName() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getHostName() != null) {
                 Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                 hostNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getHostName()));
                 provisioningConfigurationElement.appendChild(hostNameElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getUserName() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getUserName() != null) {
                 Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
                 userNameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserName()));
                 provisioningConfigurationElement.appendChild(userNameElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getUserPassword() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getUserPassword() != null) {
                 Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
                 userPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getUserPassword()));
                 provisioningConfigurationElement.appendChild(userPasswordElement);
             }
             
-            if (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() != null)
-            {
+            if (parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication() != null) {
                 Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                 disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.getProvisioningConfiguration().isDisableSshPasswordAuthentication()).toLowerCase()));
                 provisioningConfigurationElement.appendChild(disableSshPasswordAuthenticationElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getSshSettings() != null)
-            {
+            if (parameters.getProvisioningConfiguration().getSshSettings() != null) {
                 Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
                 provisioningConfigurationElement.appendChild(sSHElement);
                 
-                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys() != null) {
                     Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                    for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys())
-                    {
+                    for (SshSettingPublicKey publicKeysItem : parameters.getProvisioningConfiguration().getSshSettings().getPublicKeys()) {
                         Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
                         publicKeysSequenceElement.appendChild(publicKeyElement);
                         
@@ -717,11 +629,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     sSHElement.appendChild(publicKeysSequenceElement);
                 }
                 
-                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null)
-                {
+                if (parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs() != null) {
                     Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                    for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs())
-                    {
+                    for (SshSettingKeyPair keyPairsItem : parameters.getProvisioningConfiguration().getSshSettings().getKeyPairs()) {
                         Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
                         keyPairsSequenceElement.appendChild(keyPairElement);
                         
@@ -759,23 +669,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -785,21 +690,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -828,12 +728,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters)
-    {
+    public Future<OperationResponse> beginCreatingAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginCreating(serviceName, deploymentName, parameters);
             }
          });
@@ -872,120 +770,89 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginCreating(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getConfigurationSets() != null)
-        {
-            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
-            {
-                if (configurationSetsParameterItem.getDomainJoin() != null)
-                {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
-                    {
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
-                        {
+        if (parameters.getConfigurationSets() != null) {
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getDomainJoin() != null) {
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
                         }
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                        {
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-                {
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
                 }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-                {
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
                 }
-                if (configurationSetsParameterItem.getSshSettings() != null)
-                {
-                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
-                    {
-                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
-                        {
-                            if (keyPairsParameterItem.getFingerprint() == null)
-                            {
+                if (configurationSetsParameterItem.getSshSettings() != null) {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null) {
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs()) {
+                            if (keyPairsParameterItem.getFingerprint() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
                             }
-                            if (keyPairsParameterItem.getPath() == null)
-                            {
+                            if (keyPairsParameterItem.getPath() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
                             }
                         }
                     }
-                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
-                    {
-                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
-                        {
-                            if (publicKeysParameterItem.getFingerprint() == null)
-                            {
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null) {
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys()) {
+                            if (publicKeysParameterItem.getFingerprint() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
                             }
-                            if (publicKeysParameterItem.getPath() == null)
-                            {
+                            if (publicKeysParameterItem.getPath() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
                             }
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
-                {
-                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-                    {
-                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                        {
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null) {
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings()) {
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
                         }
-                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                        {
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-                {
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-                {
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-                {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-                {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
             }
         }
-        if (parameters.getRoleName() == null)
-        {
+        if (parameters.getRoleName() == null) {
             throw new NullPointerException("parameters.RoleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1021,64 +888,53 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         roleTypeElement.appendChild(requestDoc.createTextNode("PersistentVMRole"));
         persistentVMRoleElement.appendChild(roleTypeElement);
         
-        if (parameters.getConfigurationSets() != null)
-        {
+        if (parameters.getConfigurationSets() != null) {
             Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets())
-            {
+            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
                 Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
                 configurationSetsSequenceElement.appendChild(configurationSetElement);
                 
-                if (configurationSetsItem.getConfigurationSetType() != null)
-                {
+                if (configurationSetsItem.getConfigurationSetType() != null) {
                     Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                     configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
                     configurationSetElement.appendChild(configurationSetTypeElement);
                 }
                 
-                if (configurationSetsItem.getInputEndpoints() != null)
-                {
+                if (configurationSetsItem.getInputEndpoints() != null) {
                     Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints())
-                    {
+                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
                         Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
                         inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                         
-                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
                             Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                             loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
                             inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                         }
                         
-                        if (inputEndpointsItem.getLocalPort() != null)
-                        {
+                        if (inputEndpointsItem.getLocalPort() != null) {
                             Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                             localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                             inputEndpointElement.appendChild(localPortElement);
                         }
                         
-                        if (inputEndpointsItem.getName() != null)
-                        {
+                        if (inputEndpointsItem.getName() != null) {
                             Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                             nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
                             inputEndpointElement.appendChild(nameElement);
                         }
                         
-                        if (inputEndpointsItem.getPort() != null)
-                        {
+                        if (inputEndpointsItem.getPort() != null) {
                             Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
                             portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                             inputEndpointElement.appendChild(portElement);
                         }
                         
-                        if (inputEndpointsItem.getLoadBalancerProbe() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
                             Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                             inputEndpointElement.appendChild(loadBalancerProbeElement);
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
                                 Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
                                 pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
                                 loadBalancerProbeElement.appendChild(pathElement);
@@ -1092,78 +948,66 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
                             loadBalancerProbeElement.appendChild(protocolElement);
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
                                 Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                 intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                 loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                             }
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
                                 Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                 timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                 loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
                         
-                        if (inputEndpointsItem.getProtocol() != null)
-                        {
+                        if (inputEndpointsItem.getProtocol() != null) {
                             Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                             protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
                             inputEndpointElement.appendChild(protocolElement2);
                         }
                         
-                        if (inputEndpointsItem.getVirtualIPAddress() != null)
-                        {
+                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
                             Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
-                        if (inputEndpointsItem.isEnableDirectServerReturn() != null)
-                        {
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                             enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
-                        if (inputEndpointsItem.getEndpointAcl() != null)
-                        {
+                        if (inputEndpointsItem.getEndpointAcl() != null) {
                             Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                             inputEndpointElement.appendChild(endpointAclElement);
                             
-                            if (inputEndpointsItem.getEndpointAcl().getRules() != null)
-                            {
+                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
                                 Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
-                                {
+                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
                                     Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
                                     rulesSequenceElement.appendChild(ruleElement);
                                     
-                                    if (rulesItem.getOrder() != null)
-                                    {
+                                    if (rulesItem.getOrder() != null) {
                                         Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
                                         orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                         ruleElement.appendChild(orderElement);
                                     }
                                     
-                                    if (rulesItem.getAction() != null)
-                                    {
+                                    if (rulesItem.getAction() != null) {
                                         Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
                                         actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
                                         ruleElement.appendChild(actionElement);
                                     }
                                     
-                                    if (rulesItem.getRemoteSubnet() != null)
-                                    {
+                                    if (rulesItem.getRemoteSubnet() != null) {
                                         Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                         remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
                                         ruleElement.appendChild(remoteSubnetElement);
                                     }
                                     
-                                    if (rulesItem.getDescription() != null)
-                                    {
+                                    if (rulesItem.getDescription() != null) {
                                         Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
                                         descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
                                         ruleElement.appendChild(descriptionElement);
@@ -1176,11 +1020,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(inputEndpointsSequenceElement);
                 }
                 
-                if (configurationSetsItem.getSubnetNames() != null)
-                {
+                if (configurationSetsItem.getSubnetNames() != null) {
                     Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames())
-                    {
+                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
                         Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
                         subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
                         subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
@@ -1188,60 +1030,51 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(subnetNamesSequenceElement);
                 }
                 
-                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
-                {
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
                     Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                     staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
                     configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
                 }
                 
-                if (configurationSetsItem.getComputerName() != null)
-                {
+                if (configurationSetsItem.getComputerName() != null) {
                     Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                     computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                if (configurationSetsItem.getAdminPassword() != null)
-                {
+                if (configurationSetsItem.getAdminPassword() != null) {
                     Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
                     adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
                     configurationSetElement.appendChild(adminPasswordElement);
                 }
                 
-                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
-                {
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                     resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
-                if (configurationSetsItem.isEnableAutomaticUpdates() != null)
-                {
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                     enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
-                if (configurationSetsItem.getTimeZone() != null)
-                {
+                if (configurationSetsItem.getTimeZone() != null) {
                     Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
                     timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
                     configurationSetElement.appendChild(timeZoneElement);
                 }
                 
-                if (configurationSetsItem.getDomainJoin() != null)
-                {
+                if (configurationSetsItem.getDomainJoin() != null) {
                     Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
                     configurationSetElement.appendChild(domainJoinElement);
                     
-                    if (configurationSetsItem.getDomainJoin().getCredentials() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
                         Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
                         domainJoinElement.appendChild(credentialsElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
                             Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
                             domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
                             credentialsElement.appendChild(domainElement);
@@ -1256,27 +1089,23 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         credentialsElement.appendChild(passwordElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
                         Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
                         joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
                         domainJoinElement.appendChild(joinDomainElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
                         Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                         machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
                         domainJoinElement.appendChild(machineObjectOUElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
                         Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
                         domainJoinElement.appendChild(provisioningElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
                             Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
                             accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
                             provisioningElement.appendChild(accountDataElement);
@@ -1284,11 +1113,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getStoredCertificateSettings() != null)
-                {
+                if (configurationSetsItem.getStoredCertificateSettings() != null) {
                     Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings())
-                    {
+                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
                         Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
                         storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
                         
@@ -1307,21 +1134,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
                 }
                 
-                if (configurationSetsItem.getWindowsRemoteManagement() != null)
-                {
+                if (configurationSetsItem.getWindowsRemoteManagement() != null) {
                     Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
                     configurationSetElement.appendChild(winRMElement);
                     
-                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null)
-                    {
+                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
                         Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners())
-                        {
+                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
                             Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                             listenersSequenceElement.appendChild(listenerElement);
                             
-                            if (listenersItem.getCertificateThumbprint() != null)
-                            {
+                            if (listenersItem.getCertificateThumbprint() != null) {
                                 Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                 certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                 listenerElement.appendChild(certificateThumbprintElement);
@@ -1335,51 +1158,43 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getAdminUserName() != null)
-                {
+                if (configurationSetsItem.getAdminUserName() != null) {
                     Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                     adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
                     configurationSetElement.appendChild(adminUsernameElement);
                 }
                 
-                if (configurationSetsItem.getHostName() != null)
-                {
+                if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                     hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
                     configurationSetElement.appendChild(hostNameElement);
                 }
                 
-                if (configurationSetsItem.getUserName() != null)
-                {
+                if (configurationSetsItem.getUserName() != null) {
                     Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
                     userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
                     configurationSetElement.appendChild(userNameElement);
                 }
                 
-                if (configurationSetsItem.getUserPassword() != null)
-                {
+                if (configurationSetsItem.getUserPassword() != null) {
                     Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
                     userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
                     configurationSetElement.appendChild(userPasswordElement);
                 }
                 
-                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
-                {
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                     disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
-                if (configurationSetsItem.getSshSettings() != null)
-                {
+                if (configurationSetsItem.getSshSettings() != null) {
                     Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
                     configurationSetElement.appendChild(sSHElement);
                     
-                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null)
-                    {
+                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
                         Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys())
-                        {
+                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
                             Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
                             publicKeysSequenceElement.appendChild(publicKeyElement);
                             
@@ -1394,11 +1209,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         sSHElement.appendChild(publicKeysSequenceElement);
                     }
                     
-                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null)
-                    {
+                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
                         Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs())
-                        {
+                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
                             Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
                             keyPairsSequenceElement.appendChild(keyPairElement);
                             
@@ -1417,73 +1230,61 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
         }
         
-        if (parameters.getAvailabilitySetName() != null)
-        {
+        if (parameters.getAvailabilitySetName() != null) {
             Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
             availabilitySetNameElement.appendChild(requestDoc.createTextNode(parameters.getAvailabilitySetName()));
             persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
-        if (parameters.getResourceExtensionReferences() != null)
-        {
+        if (parameters.getResourceExtensionReferences() != null) {
             Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences())
-            {
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
                 Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
                 resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
                 
-                if (resourceExtensionReferencesItem.getReferenceName() != null)
-                {
+                if (resourceExtensionReferencesItem.getReferenceName() != null) {
                     Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
                     referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
                     resourceExtensionReferenceElement.appendChild(referenceNameElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getPublisher() != null)
-                {
+                if (resourceExtensionReferencesItem.getPublisher() != null) {
                     Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
                     publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
                     resourceExtensionReferenceElement.appendChild(publisherElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getName() != null)
-                {
+                if (resourceExtensionReferencesItem.getName() != null) {
                     Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                     nameElement2.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
                     resourceExtensionReferenceElement.appendChild(nameElement2);
                 }
                 
-                if (resourceExtensionReferencesItem.getVersion() != null)
-                {
+                if (resourceExtensionReferencesItem.getVersion() != null) {
                     Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
                     versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
                     resourceExtensionReferenceElement.appendChild(versionElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
-                {
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
                     Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
-                    {
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
                         Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
                         resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
                         
-                        if (resourceExtensionParameterValuesItem.getKey() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getKey() != null) {
                             Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
                             keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
                             resourceExtensionParameterValueElement.appendChild(keyElement);
                         }
                         
-                        if (resourceExtensionParameterValuesItem.getValue() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getValue() != null) {
                             Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
                             valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
                             resourceExtensionParameterValueElement.appendChild(valueElement);
                         }
                         
-                        if (resourceExtensionParameterValuesItem.getType() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getType() != null) {
                             Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
                             typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
                             resourceExtensionParameterValueElement.appendChild(typeElement);
@@ -1492,8 +1293,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getState() != null)
-                {
+                if (resourceExtensionReferencesItem.getState() != null) {
                     Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
                     stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
                     resourceExtensionReferenceElement.appendChild(stateElement);
@@ -1502,37 +1302,31 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
         }
         
-        if (parameters.getDataVirtualHardDisks() != null)
-        {
+        if (parameters.getDataVirtualHardDisks() != null) {
             Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks())
-            {
+            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
                 Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
                 dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
                 
-                if (dataVirtualHardDisksItem.getHostCaching() != null)
-                {
+                if (dataVirtualHardDisksItem.getHostCaching() != null) {
                     Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                     hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching().toString()));
                     dataVirtualHardDiskElement.appendChild(hostCachingElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskLabel() != null)
-                {
+                if (dataVirtualHardDisksItem.getDiskLabel() != null) {
                     Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                     diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskLabel()));
                     dataVirtualHardDiskElement.appendChild(diskLabelElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskName() != null)
-                {
+                if (dataVirtualHardDisksItem.getDiskName() != null) {
                     Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                     diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
                     dataVirtualHardDiskElement.appendChild(diskNameElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
-                {
+                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
                     Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
                     lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                     dataVirtualHardDiskElement.appendChild(lunElement);
@@ -1542,8 +1336,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                 dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                 
-                if (dataVirtualHardDisksItem.getMediaLink() != null)
-                {
+                if (dataVirtualHardDisksItem.getMediaLink() != null) {
                     Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                     dataVirtualHardDiskElement.appendChild(mediaLinkElement);
@@ -1552,63 +1345,54 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
         }
         
-        if (parameters.getOSVirtualHardDisk() != null)
-        {
+        if (parameters.getOSVirtualHardDisk() != null) {
             Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
             persistentVMRoleElement.appendChild(oSVirtualHardDiskElement);
             
-            if (parameters.getOSVirtualHardDisk().getHostCaching() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getHostCaching() != null) {
                 Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                 hostCachingElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getHostCaching().toString()));
                 oSVirtualHardDiskElement.appendChild(hostCachingElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getDiskLabel() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getDiskLabel() != null) {
                 Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                 diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskLabel()));
                 oSVirtualHardDiskElement.appendChild(diskLabelElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getDiskName() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getDiskName() != null) {
                 Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                 diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskName()));
                 oSVirtualHardDiskElement.appendChild(diskNameElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getMediaLink() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getMediaLink() != null) {
                 Element mediaLinkElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                 mediaLinkElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getMediaLink().toString()));
                 oSVirtualHardDiskElement.appendChild(mediaLinkElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getSourceImageName() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getSourceImageName() != null) {
                 Element sourceImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                 sourceImageNameElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getSourceImageName()));
                 oSVirtualHardDiskElement.appendChild(sourceImageNameElement);
             }
             
-            if (parameters.getOSVirtualHardDisk().getOperatingSystem() != null)
-            {
+            if (parameters.getOSVirtualHardDisk().getOperatingSystem() != null) {
                 Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
                 osElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getOperatingSystem()));
                 oSVirtualHardDiskElement.appendChild(osElement);
             }
         }
         
-        if (parameters.getRoleSize() != null)
-        {
+        if (parameters.getRoleSize() != null) {
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
             roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
         }
         
-        if (parameters.isProvisionGuestAgent() != null)
-        {
+        if (parameters.isProvisionGuestAgent() != null) {
             Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
             provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isProvisionGuestAgent()).toLowerCase()));
             persistentVMRoleElement.appendChild(provisionGuestAgentElement);
@@ -1627,23 +1411,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1653,21 +1432,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1691,12 +1465,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginCreatingDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters)
-    {
+    public Future<OperationResponse> beginCreatingDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginCreatingDeployment(serviceName, parameters);
             }
          });
@@ -1730,122 +1502,88 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginCreatingDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getLabel().length() > 100)
-        {
+        if (parameters.getLabel().length() > 100) {
             throw new IllegalArgumentException("parameters.Label");
         }
-        if (parameters.getName() == null)
-        {
+        if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
-        if (parameters.getRoles() == null)
-        {
+        if (parameters.getRoles() == null) {
             throw new NullPointerException("parameters.Roles");
         }
-        if (parameters.getRoles() != null)
-        {
-            for (Role rolesParameterItem : parameters.getRoles())
-            {
-                if (rolesParameterItem.getConfigurationSets() != null)
-                {
-                    for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets())
-                    {
-                        if (configurationSetsParameterItem.getDomainJoin() != null)
-                        {
-                            if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
-                            {
-                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
-                                {
+        if (parameters.getRoles() != null) {
+            for (Role rolesParameterItem : parameters.getRoles()) {
+                if (rolesParameterItem.getConfigurationSets() != null) {
+                    for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets()) {
+                        if (configurationSetsParameterItem.getDomainJoin() != null) {
+                            if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
                                     throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.Password");
                                 }
-                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                                {
+                                if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null) {
                                     throw new NullPointerException("parameters.Roles.ConfigurationSets.DomainJoin.Credentials.UserName");
                                 }
                             }
                         }
-                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-                        {
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
                         }
-                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-                        {
+                        if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.HostName");
                         }
-                        if (configurationSetsParameterItem.getSshSettings() != null)
-                        {
-                            if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
-                            {
-                                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
-                                {
-                                    if (keyPairsParameterItem.getFingerprint() == null)
-                                    {
+                        if (configurationSetsParameterItem.getSshSettings() != null) {
+                            if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null) {
+                                for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs()) {
+                                    if (keyPairsParameterItem.getFingerprint() == null) {
                                         throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
                                     }
-                                    if (keyPairsParameterItem.getPath() == null)
-                                    {
+                                    if (keyPairsParameterItem.getPath() == null) {
                                         throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.KeyPairs.Path");
                                     }
                                 }
                             }
-                            if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
-                            {
-                                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
-                                {
-                                    if (publicKeysParameterItem.getFingerprint() == null)
-                                    {
+                            if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null) {
+                                for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys()) {
+                                    if (publicKeysParameterItem.getFingerprint() == null) {
                                         throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
                                     }
-                                    if (publicKeysParameterItem.getPath() == null)
-                                    {
+                                    if (publicKeysParameterItem.getPath() == null) {
                                         throw new NullPointerException("parameters.Roles.ConfigurationSets.SshSettings.PublicKeys.Path");
                                     }
                                 }
                             }
                         }
-                        if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
-                        {
-                            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-                            {
-                                if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                                {
+                        if (configurationSetsParameterItem.getStoredCertificateSettings() != null) {
+                            for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings()) {
+                                if (storedCertificateSettingsParameterItem.getStoreName() == null) {
                                     throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.StoreName");
                                 }
-                                if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                                {
+                                if (storedCertificateSettingsParameterItem.getThumbprint() == null) {
                                     throw new NullPointerException("parameters.Roles.ConfigurationSets.StoredCertificateSettings.Thumbprint");
                                 }
                             }
                         }
-                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-                        {
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
                         }
-                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-                        {
+                        if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserName");
                         }
-                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-                        {
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
-                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-                        {
+                        if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
                             throw new IllegalArgumentException("parameters.Roles.ConfigurationSets.UserPassword");
                         }
                     }
@@ -1856,8 +1594,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1897,90 +1634,75 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         deploymentElement.appendChild(labelElement);
         
         Element roleListSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleList");
-        for (Role roleListItem : parameters.getRoles())
-        {
+        for (Role roleListItem : parameters.getRoles()) {
             Element roleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Role");
             roleListSequenceElement.appendChild(roleElement);
             
-            if (roleListItem.getRoleName() != null)
-            {
+            if (roleListItem.getRoleName() != null) {
                 Element roleNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleName");
                 roleNameElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleName()));
                 roleElement.appendChild(roleNameElement);
             }
             
-            if (roleListItem.getOSVersion() != null)
-            {
+            if (roleListItem.getOSVersion() != null) {
                 Element osVersionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OsVersion");
                 osVersionElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVersion()));
                 roleElement.appendChild(osVersionElement);
             }
             
-            if (roleListItem.getRoleType() != null)
-            {
+            if (roleListItem.getRoleType() != null) {
                 Element roleTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleType");
                 roleTypeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleType()));
                 roleElement.appendChild(roleTypeElement);
             }
             
-            if (roleListItem.getConfigurationSets() != null)
-            {
+            if (roleListItem.getConfigurationSets() != null) {
                 Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-                for (ConfigurationSet configurationSetsItem : roleListItem.getConfigurationSets())
-                {
+                for (ConfigurationSet configurationSetsItem : roleListItem.getConfigurationSets()) {
                     Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
                     configurationSetsSequenceElement.appendChild(configurationSetElement);
                     
-                    if (configurationSetsItem.getConfigurationSetType() != null)
-                    {
+                    if (configurationSetsItem.getConfigurationSetType() != null) {
                         Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                         configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
                         configurationSetElement.appendChild(configurationSetTypeElement);
                     }
                     
-                    if (configurationSetsItem.getInputEndpoints() != null)
-                    {
+                    if (configurationSetsItem.getInputEndpoints() != null) {
                         Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                        for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints())
-                        {
+                        for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
                             Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
                             inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                             
-                            if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
                                 Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                                 loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
                                 inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                             }
                             
-                            if (inputEndpointsItem.getLocalPort() != null)
-                            {
+                            if (inputEndpointsItem.getLocalPort() != null) {
                                 Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                                 localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                                 inputEndpointElement.appendChild(localPortElement);
                             }
                             
-                            if (inputEndpointsItem.getName() != null)
-                            {
+                            if (inputEndpointsItem.getName() != null) {
                                 Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                                 nameElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
                                 inputEndpointElement.appendChild(nameElement2);
                             }
                             
-                            if (inputEndpointsItem.getPort() != null)
-                            {
+                            if (inputEndpointsItem.getPort() != null) {
                                 Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
                                 portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                                 inputEndpointElement.appendChild(portElement);
                             }
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe() != null) {
                                 Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                                 inputEndpointElement.appendChild(loadBalancerProbeElement);
                                 
-                                if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                                {
+                                if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
                                     Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
                                     pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
                                     loadBalancerProbeElement.appendChild(pathElement);
@@ -1994,78 +1716,66 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
                                 loadBalancerProbeElement.appendChild(protocolElement);
                                 
-                                if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                                {
+                                if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
                                     Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                     intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                     loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                                 }
                                 
-                                if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                                {
+                                if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
                                     Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                     timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                     loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                                 }
                             }
                             
-                            if (inputEndpointsItem.getProtocol() != null)
-                            {
+                            if (inputEndpointsItem.getProtocol() != null) {
                                 Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                                 protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
                                 inputEndpointElement.appendChild(protocolElement2);
                             }
                             
-                            if (inputEndpointsItem.getVirtualIPAddress() != null)
-                            {
+                            if (inputEndpointsItem.getVirtualIPAddress() != null) {
                                 Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                                vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
+                                vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
                                 inputEndpointElement.appendChild(vipElement);
                             }
                             
-                            if (inputEndpointsItem.isEnableDirectServerReturn() != null)
-                            {
+                            if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
                                 Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                 enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                                 inputEndpointElement.appendChild(enableDirectServerReturnElement);
                             }
                             
-                            if (inputEndpointsItem.getEndpointAcl() != null)
-                            {
+                            if (inputEndpointsItem.getEndpointAcl() != null) {
                                 Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                                 inputEndpointElement.appendChild(endpointAclElement);
                                 
-                                if (inputEndpointsItem.getEndpointAcl().getRules() != null)
-                                {
+                                if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
                                     Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                    for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
-                                    {
+                                    for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
                                         Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
                                         rulesSequenceElement.appendChild(ruleElement);
                                         
-                                        if (rulesItem.getOrder() != null)
-                                        {
+                                        if (rulesItem.getOrder() != null) {
                                             Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
                                             orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                             ruleElement.appendChild(orderElement);
                                         }
                                         
-                                        if (rulesItem.getAction() != null)
-                                        {
+                                        if (rulesItem.getAction() != null) {
                                             Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
                                             actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
                                             ruleElement.appendChild(actionElement);
                                         }
                                         
-                                        if (rulesItem.getRemoteSubnet() != null)
-                                        {
+                                        if (rulesItem.getRemoteSubnet() != null) {
                                             Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                             remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
                                             ruleElement.appendChild(remoteSubnetElement);
                                         }
                                         
-                                        if (rulesItem.getDescription() != null)
-                                        {
+                                        if (rulesItem.getDescription() != null) {
                                             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
                                             descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
                                             ruleElement.appendChild(descriptionElement);
@@ -2078,11 +1788,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(inputEndpointsSequenceElement);
                     }
                     
-                    if (configurationSetsItem.getSubnetNames() != null)
-                    {
+                    if (configurationSetsItem.getSubnetNames() != null) {
                         Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                        for (String subnetNamesItem : configurationSetsItem.getSubnetNames())
-                        {
+                        for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
                             Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
                             subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
                             subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
@@ -2090,60 +1798,51 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(subnetNamesSequenceElement);
                     }
                     
-                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
-                    {
+                    if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
                         Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                         staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
                         configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
                     }
                     
-                    if (configurationSetsItem.getComputerName() != null)
-                    {
+                    if (configurationSetsItem.getComputerName() != null) {
                         Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                         computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
                         configurationSetElement.appendChild(computerNameElement);
                     }
                     
-                    if (configurationSetsItem.getAdminPassword() != null)
-                    {
+                    if (configurationSetsItem.getAdminPassword() != null) {
                         Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
                         adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
                         configurationSetElement.appendChild(adminPasswordElement);
                     }
                     
-                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
-                    {
+                    if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                         resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                         configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                     }
                     
-                    if (configurationSetsItem.isEnableAutomaticUpdates() != null)
-                    {
+                    if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
                         Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                         enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                         configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                     }
                     
-                    if (configurationSetsItem.getTimeZone() != null)
-                    {
+                    if (configurationSetsItem.getTimeZone() != null) {
                         Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
                         timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
                         configurationSetElement.appendChild(timeZoneElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin() != null) {
                         Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
                         configurationSetElement.appendChild(domainJoinElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getCredentials() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
                             Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
                             domainJoinElement.appendChild(credentialsElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null)
-                            {
+                            if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
                                 Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
                                 domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
                                 credentialsElement.appendChild(domainElement);
@@ -2158,27 +1857,23 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             credentialsElement.appendChild(passwordElement);
                         }
                         
-                        if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
                             Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
                             joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
                             domainJoinElement.appendChild(joinDomainElement);
                         }
                         
-                        if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
                             Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                             machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
                             domainJoinElement.appendChild(machineObjectOUElement);
                         }
                         
-                        if (configurationSetsItem.getDomainJoin().getProvisioning() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
                             Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
                             domainJoinElement.appendChild(provisioningElement);
                             
-                            if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null)
-                            {
+                            if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
                                 Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
                                 accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
                                 provisioningElement.appendChild(accountDataElement);
@@ -2186,11 +1881,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    if (configurationSetsItem.getStoredCertificateSettings() != null)
-                    {
+                    if (configurationSetsItem.getStoredCertificateSettings() != null) {
                         Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                        for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings())
-                        {
+                        for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
                             Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
                             storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
                             
@@ -2209,21 +1902,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
                     }
                     
-                    if (configurationSetsItem.getWindowsRemoteManagement() != null)
-                    {
+                    if (configurationSetsItem.getWindowsRemoteManagement() != null) {
                         Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
                         configurationSetElement.appendChild(winRMElement);
                         
-                        if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null)
-                        {
+                        if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
                             Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                            for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners())
-                            {
+                            for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
                                 Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                                 listenersSequenceElement.appendChild(listenerElement);
                                 
-                                if (listenersItem.getCertificateThumbprint() != null)
-                                {
+                                if (listenersItem.getCertificateThumbprint() != null) {
                                     Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                     certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                     listenerElement.appendChild(certificateThumbprintElement);
@@ -2237,51 +1926,43 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    if (configurationSetsItem.getAdminUserName() != null)
-                    {
+                    if (configurationSetsItem.getAdminUserName() != null) {
                         Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                         adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
                         configurationSetElement.appendChild(adminUsernameElement);
                     }
                     
-                    if (configurationSetsItem.getHostName() != null)
-                    {
+                    if (configurationSetsItem.getHostName() != null) {
                         Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                         hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
                         configurationSetElement.appendChild(hostNameElement);
                     }
                     
-                    if (configurationSetsItem.getUserName() != null)
-                    {
+                    if (configurationSetsItem.getUserName() != null) {
                         Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
                         userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
                         configurationSetElement.appendChild(userNameElement);
                     }
                     
-                    if (configurationSetsItem.getUserPassword() != null)
-                    {
+                    if (configurationSetsItem.getUserPassword() != null) {
                         Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
                         userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
                         configurationSetElement.appendChild(userPasswordElement);
                     }
                     
-                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
-                    {
+                    if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
                         Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                         disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                         configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                     }
                     
-                    if (configurationSetsItem.getSshSettings() != null)
-                    {
+                    if (configurationSetsItem.getSshSettings() != null) {
                         Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
                         configurationSetElement.appendChild(sSHElement);
                         
-                        if (configurationSetsItem.getSshSettings().getPublicKeys() != null)
-                        {
+                        if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
                             Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                            for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys())
-                            {
+                            for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
                                 Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
                                 publicKeysSequenceElement.appendChild(publicKeyElement);
                                 
@@ -2296,11 +1977,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             sSHElement.appendChild(publicKeysSequenceElement);
                         }
                         
-                        if (configurationSetsItem.getSshSettings().getKeyPairs() != null)
-                        {
+                        if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
                             Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                            for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs())
-                            {
+                            for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
                                 Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
                                 keyPairsSequenceElement.appendChild(keyPairElement);
                                 
@@ -2319,66 +1998,55 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(configurationSetsSequenceElement);
             }
             
-            if (roleListItem.getResourceExtensionReferences() != null)
-            {
+            if (roleListItem.getResourceExtensionReferences() != null) {
                 Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-                for (ResourceExtensionReference resourceExtensionReferencesItem : roleListItem.getResourceExtensionReferences())
-                {
+                for (ResourceExtensionReference resourceExtensionReferencesItem : roleListItem.getResourceExtensionReferences()) {
                     Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
                     resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
                     
-                    if (resourceExtensionReferencesItem.getReferenceName() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getReferenceName() != null) {
                         Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
                         referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
                         resourceExtensionReferenceElement.appendChild(referenceNameElement);
                     }
                     
-                    if (resourceExtensionReferencesItem.getPublisher() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getPublisher() != null) {
                         Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
                         publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
                         resourceExtensionReferenceElement.appendChild(publisherElement);
                     }
                     
-                    if (resourceExtensionReferencesItem.getName() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getName() != null) {
                         Element nameElement3 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                         nameElement3.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
                         resourceExtensionReferenceElement.appendChild(nameElement3);
                     }
                     
-                    if (resourceExtensionReferencesItem.getVersion() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getVersion() != null) {
                         Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
                         versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
                         resourceExtensionReferenceElement.appendChild(versionElement);
                     }
                     
-                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
                         Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                        for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
-                        {
+                        for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
                             Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
                             resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
                             
-                            if (resourceExtensionParameterValuesItem.getKey() != null)
-                            {
+                            if (resourceExtensionParameterValuesItem.getKey() != null) {
                                 Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
                                 keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
                                 resourceExtensionParameterValueElement.appendChild(keyElement);
                             }
                             
-                            if (resourceExtensionParameterValuesItem.getValue() != null)
-                            {
+                            if (resourceExtensionParameterValuesItem.getValue() != null) {
                                 Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
                                 valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
                                 resourceExtensionParameterValueElement.appendChild(valueElement);
                             }
                             
-                            if (resourceExtensionParameterValuesItem.getType() != null)
-                            {
+                            if (resourceExtensionParameterValuesItem.getType() != null) {
                                 Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
                                 typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
                                 resourceExtensionParameterValueElement.appendChild(typeElement);
@@ -2387,8 +2055,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
                     }
                     
-                    if (resourceExtensionReferencesItem.getState() != null)
-                    {
+                    if (resourceExtensionReferencesItem.getState() != null) {
                         Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
                         stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
                         resourceExtensionReferenceElement.appendChild(stateElement);
@@ -2397,44 +2064,37 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(resourceExtensionReferencesSequenceElement);
             }
             
-            if (roleListItem.getAvailabilitySetName() != null)
-            {
+            if (roleListItem.getAvailabilitySetName() != null) {
                 Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                 availabilitySetNameElement.appendChild(requestDoc.createTextNode(roleListItem.getAvailabilitySetName()));
                 roleElement.appendChild(availabilitySetNameElement);
             }
             
-            if (roleListItem.getDataVirtualHardDisks() != null)
-            {
+            if (roleListItem.getDataVirtualHardDisks() != null) {
                 Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-                for (DataVirtualHardDisk dataVirtualHardDisksItem : roleListItem.getDataVirtualHardDisks())
-                {
+                for (DataVirtualHardDisk dataVirtualHardDisksItem : roleListItem.getDataVirtualHardDisks()) {
                     Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
                     dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
                     
-                    if (dataVirtualHardDisksItem.getHostCaching() != null)
-                    {
+                    if (dataVirtualHardDisksItem.getHostCaching() != null) {
                         Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                         hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching().toString()));
                         dataVirtualHardDiskElement.appendChild(hostCachingElement);
                     }
                     
-                    if (dataVirtualHardDisksItem.getDiskLabel() != null)
-                    {
+                    if (dataVirtualHardDisksItem.getDiskLabel() != null) {
                         Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                         diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskLabel()));
                         dataVirtualHardDiskElement.appendChild(diskLabelElement);
                     }
                     
-                    if (dataVirtualHardDisksItem.getDiskName() != null)
-                    {
+                    if (dataVirtualHardDisksItem.getDiskName() != null) {
                         Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                         diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
                         dataVirtualHardDiskElement.appendChild(diskNameElement);
                     }
                     
-                    if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
-                    {
+                    if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
                         Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
                         lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                         dataVirtualHardDiskElement.appendChild(lunElement);
@@ -2444,8 +2104,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                     dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                     
-                    if (dataVirtualHardDisksItem.getMediaLink() != null)
-                    {
+                    if (dataVirtualHardDisksItem.getMediaLink() != null) {
                         Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                         mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                         dataVirtualHardDiskElement.appendChild(mediaLinkElement);
@@ -2454,77 +2113,66 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(dataVirtualHardDisksSequenceElement);
             }
             
-            if (roleListItem.getLabel() != null)
-            {
+            if (roleListItem.getLabel() != null) {
                 Element labelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
                 labelElement2.appendChild(requestDoc.createTextNode(roleListItem.getLabel()));
                 roleElement.appendChild(labelElement2);
             }
             
-            if (roleListItem.getOSVirtualHardDisk() != null)
-            {
+            if (roleListItem.getOSVirtualHardDisk() != null) {
                 Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
                 roleElement.appendChild(oSVirtualHardDiskElement);
                 
-                if (roleListItem.getOSVirtualHardDisk().getHostCaching() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getHostCaching() != null) {
                     Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                     hostCachingElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getHostCaching().toString()));
                     oSVirtualHardDiskElement.appendChild(hostCachingElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getDiskLabel() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getDiskLabel() != null) {
                     Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                     diskLabelElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getDiskLabel()));
                     oSVirtualHardDiskElement.appendChild(diskLabelElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getDiskName() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getDiskName() != null) {
                     Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                     diskNameElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getDiskName()));
                     oSVirtualHardDiskElement.appendChild(diskNameElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getMediaLink() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getMediaLink() != null) {
                     Element mediaLinkElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     mediaLinkElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getMediaLink().toString()));
                     oSVirtualHardDiskElement.appendChild(mediaLinkElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getSourceImageName() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getSourceImageName() != null) {
                     Element sourceImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
                     sourceImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getSourceImageName()));
                     oSVirtualHardDiskElement.appendChild(sourceImageNameElement);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getOperatingSystem() != null)
-                {
+                if (roleListItem.getOSVirtualHardDisk().getOperatingSystem() != null) {
                     Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
                     osElement.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getOperatingSystem()));
                     oSVirtualHardDiskElement.appendChild(osElement);
                 }
             }
             
-            if (roleListItem.getRoleSize() != null)
-            {
+            if (roleListItem.getRoleSize() != null) {
                 Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
                 roleSizeElement.appendChild(requestDoc.createTextNode(roleListItem.getRoleSize()));
                 roleElement.appendChild(roleSizeElement);
             }
             
-            if (roleListItem.isProvisionGuestAgent() != null)
-            {
+            if (roleListItem.isProvisionGuestAgent() != null) {
                 Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
                 provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(roleListItem.isProvisionGuestAgent()).toLowerCase()));
                 roleElement.appendChild(provisionGuestAgentElement);
             }
             
-            if (roleListItem.getDefaultWinRmCertificateThumbprint() != null)
-            {
+            if (roleListItem.getDefaultWinRmCertificateThumbprint() != null) {
                 Element defaultWinRmCertificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DefaultWinRmCertificateThumbprint");
                 defaultWinRmCertificateThumbprintElement.appendChild(requestDoc.createTextNode(roleListItem.getDefaultWinRmCertificateThumbprint()));
                 roleElement.appendChild(defaultWinRmCertificateThumbprintElement);
@@ -2532,37 +2180,31 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         deploymentElement.appendChild(roleListSequenceElement);
         
-        if (parameters.getVirtualNetworkName() != null)
-        {
+        if (parameters.getVirtualNetworkName() != null) {
             Element virtualNetworkNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VirtualNetworkName");
             virtualNetworkNameElement.appendChild(requestDoc.createTextNode(parameters.getVirtualNetworkName()));
             deploymentElement.appendChild(virtualNetworkNameElement);
         }
         
-        if (parameters.getDnsSettings() != null)
-        {
+        if (parameters.getDnsSettings() != null) {
             Element dnsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Dns");
             deploymentElement.appendChild(dnsElement);
             
-            if (parameters.getDnsSettings().getDnsServers() != null)
-            {
+            if (parameters.getDnsSettings().getDnsServers() != null) {
                 Element dnsServersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServers");
-                for (DnsServer dnsServersItem : parameters.getDnsSettings().getDnsServers())
-                {
+                for (DnsServer dnsServersItem : parameters.getDnsSettings().getDnsServers()) {
                     Element dnsServerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DnsServer");
                     dnsServersSequenceElement.appendChild(dnsServerElement);
                     
-                    if (dnsServersItem.getName() != null)
-                    {
+                    if (dnsServersItem.getName() != null) {
                         Element nameElement4 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                         nameElement4.appendChild(requestDoc.createTextNode(dnsServersItem.getName()));
                         dnsServerElement.appendChild(nameElement4);
                     }
                     
-                    if (dnsServersItem.getAddress() != null)
-                    {
+                    if (dnsServersItem.getAddress() != null) {
                         Element addressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Address");
-                        addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress().toString()));
+                        addressElement.appendChild(requestDoc.createTextNode(dnsServersItem.getAddress().getHostAddress()));
                         dnsServerElement.appendChild(addressElement);
                     }
                 }
@@ -2570,8 +2212,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
         }
         
-        if (parameters.getReservedIPName() != null)
-        {
+        if (parameters.getReservedIPName() != null) {
             Element reservedIPNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReservedIPName");
             reservedIPNameElement.appendChild(requestDoc.createTextNode(parameters.getReservedIPName()));
             deploymentElement.appendChild(reservedIPNameElement);
@@ -2590,23 +2231,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2616,21 +2252,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2650,12 +2281,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage)
-    {
+    public Future<OperationResponse> beginDeletingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(serviceName, deploymentName, virtualMachineName, deleteFromStorage);
             }
          });
@@ -2679,27 +2308,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeleting(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -2711,8 +2335,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roles/" + virtualMachineName + "?";
-        if (deleteFromStorage == true)
-        {
+        if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
         
@@ -2724,23 +2347,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2750,21 +2368,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2782,12 +2395,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginRestartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<OperationResponse> beginRestartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginRestarting(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -2809,27 +2420,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
-    {
+    public OperationResponse beginRestarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -2856,23 +2462,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2882,21 +2483,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -2915,12 +2511,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginShutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters)
-    {
+    public Future<OperationResponse> beginShutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginShutdown(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -2949,31 +2543,25 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginShutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3023,23 +2611,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3049,21 +2632,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3080,12 +2658,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginShuttingDownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters)
-    {
+    public Future<OperationResponse> beginShuttingDownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginShuttingDownRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -3112,27 +2688,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginShuttingDownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3164,11 +2735,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         operationTypeElement.appendChild(requestDoc.createTextNode("ShutdownRolesOperation"));
         shutdownRolesOperationElement.appendChild(operationTypeElement);
         
-        if (parameters.getRoles() != null)
-        {
+        if (parameters.getRoles() != null) {
             Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
-            for (String rolesItem : parameters.getRoles())
-            {
+            for (String rolesItem : parameters.getRoles()) {
                 Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                 rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
                 rolesSequenceElement.appendChild(rolesItemElement);
@@ -3176,8 +2745,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             shutdownRolesOperationElement.appendChild(rolesSequenceElement);
         }
         
-        if (parameters.getPostShutdownAction() != null)
-        {
+        if (parameters.getPostShutdownAction() != null) {
             Element postShutdownActionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PostShutdownAction");
             postShutdownActionElement.appendChild(requestDoc.createTextNode(parameters.getPostShutdownAction().toString()));
             shutdownRolesOperationElement.appendChild(postShutdownActionElement);
@@ -3196,23 +2764,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3222,21 +2785,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3254,12 +2812,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginStartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<OperationResponse> beginStartingAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginStarting(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -3281,27 +2837,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
-    {
+    public OperationResponse beginStarting(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3328,23 +2879,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3354,21 +2900,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3384,12 +2925,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginStartingRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters)
-    {
+    public Future<OperationResponse> beginStartingRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginStartingRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -3415,27 +2954,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginStartingRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3467,11 +3001,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         operationTypeElement.appendChild(requestDoc.createTextNode("StartRolesOperation"));
         startRolesOperationElement.appendChild(operationTypeElement);
         
-        if (parameters.getRoles() != null)
-        {
+        if (parameters.getRoles() != null) {
             Element rolesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Roles");
-            for (String rolesItem : parameters.getRoles())
-            {
+            for (String rolesItem : parameters.getRoles()) {
                 Element rolesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                 rolesItemElement.appendChild(requestDoc.createTextNode(rolesItem));
                 rolesSequenceElement.appendChild(rolesItemElement);
@@ -3492,23 +3024,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3518,21 +3045,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3553,12 +3075,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters)
-    {
+    public Future<OperationResponse> beginUpdatingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginUpdating(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -3589,128 +3109,95 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginUpdating(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getConfigurationSets() != null)
-        {
-            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets())
-            {
-                if (configurationSetsParameterItem.getDomainJoin() != null)
-                {
-                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null)
-                    {
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null)
-                        {
+        if (parameters.getConfigurationSets() != null) {
+            for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getDomainJoin() != null) {
+                    if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.Password");
                         }
-                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null)
-                        {
+                        if (configurationSetsParameterItem.getDomainJoin().getCredentials().getUserName() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.DomainJoin.Credentials.UserName");
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1)
-                {
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() < 1) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
                 }
-                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64)
-                {
+                if (configurationSetsParameterItem.getHostName() != null && configurationSetsParameterItem.getHostName().length() > 64) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.HostName");
                 }
-                if (configurationSetsParameterItem.getSshSettings() != null)
-                {
-                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null)
-                    {
-                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs())
-                        {
-                            if (keyPairsParameterItem.getFingerprint() == null)
-                            {
+                if (configurationSetsParameterItem.getSshSettings() != null) {
+                    if (configurationSetsParameterItem.getSshSettings().getKeyPairs() != null) {
+                        for (SshSettingKeyPair keyPairsParameterItem : configurationSetsParameterItem.getSshSettings().getKeyPairs()) {
+                            if (keyPairsParameterItem.getFingerprint() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Fingerprint");
                             }
-                            if (keyPairsParameterItem.getPath() == null)
-                            {
+                            if (keyPairsParameterItem.getPath() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.KeyPairs.Path");
                             }
                         }
                     }
-                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null)
-                    {
-                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys())
-                        {
-                            if (publicKeysParameterItem.getFingerprint() == null)
-                            {
+                    if (configurationSetsParameterItem.getSshSettings().getPublicKeys() != null) {
+                        for (SshSettingPublicKey publicKeysParameterItem : configurationSetsParameterItem.getSshSettings().getPublicKeys()) {
+                            if (publicKeysParameterItem.getFingerprint() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Fingerprint");
                             }
-                            if (publicKeysParameterItem.getPath() == null)
-                            {
+                            if (publicKeysParameterItem.getPath() == null) {
                                 throw new NullPointerException("parameters.ConfigurationSets.SshSettings.PublicKeys.Path");
                             }
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getStoredCertificateSettings() != null)
-                {
-                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings())
-                    {
-                        if (storedCertificateSettingsParameterItem.getStoreName() == null)
-                        {
+                if (configurationSetsParameterItem.getStoredCertificateSettings() != null) {
+                    for (StoredCertificateSettings storedCertificateSettingsParameterItem : configurationSetsParameterItem.getStoredCertificateSettings()) {
+                        if (storedCertificateSettingsParameterItem.getStoreName() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.StoreName");
                         }
-                        if (storedCertificateSettingsParameterItem.getThumbprint() == null)
-                        {
+                        if (storedCertificateSettingsParameterItem.getThumbprint() == null) {
                             throw new NullPointerException("parameters.ConfigurationSets.StoredCertificateSettings.Thumbprint");
                         }
                     }
                 }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1)
-                {
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() < 1) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32)
-                {
+                if (configurationSetsParameterItem.getUserName() != null && configurationSetsParameterItem.getUserName().length() > 32) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserName");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0))
-                {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() < 6 && (configurationSetsParameterItem.isDisableSshPasswordAuthentication() == false || configurationSetsParameterItem.getUserPassword().length() != 0)) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
-                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72)
-                {
+                if (configurationSetsParameterItem.getUserPassword() != null && configurationSetsParameterItem.getUserPassword().length() > 72) {
                     throw new IllegalArgumentException("parameters.ConfigurationSets.UserPassword");
                 }
             }
         }
-        if (parameters.getOSVirtualHardDisk() == null)
-        {
+        if (parameters.getOSVirtualHardDisk() == null) {
             throw new NullPointerException("parameters.OSVirtualHardDisk");
         }
-        if (parameters.getRoleName() == null)
-        {
+        if (parameters.getRoleName() == null) {
             throw new NullPointerException("parameters.RoleName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3747,64 +3234,53 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         roleTypeElement.appendChild(requestDoc.createTextNode("PersistentVMRole"));
         persistentVMRoleElement.appendChild(roleTypeElement);
         
-        if (parameters.getConfigurationSets() != null)
-        {
+        if (parameters.getConfigurationSets() != null) {
             Element configurationSetsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
-            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets())
-            {
+            for (ConfigurationSet configurationSetsItem : parameters.getConfigurationSets()) {
                 Element configurationSetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSet");
                 configurationSetsSequenceElement.appendChild(configurationSetElement);
                 
-                if (configurationSetsItem.getConfigurationSetType() != null)
-                {
+                if (configurationSetsItem.getConfigurationSetType() != null) {
                     Element configurationSetTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ConfigurationSetType");
                     configurationSetTypeElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getConfigurationSetType()));
                     configurationSetElement.appendChild(configurationSetTypeElement);
                 }
                 
-                if (configurationSetsItem.getInputEndpoints() != null)
-                {
+                if (configurationSetsItem.getInputEndpoints() != null) {
                     Element inputEndpointsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoints");
-                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints())
-                    {
+                    for (InputEndpoint inputEndpointsItem : configurationSetsItem.getInputEndpoints()) {
                         Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
                         inputEndpointsSequenceElement.appendChild(inputEndpointElement);
                         
-                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancedEndpointSetName() != null) {
                             Element loadBalancedEndpointSetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointSetName");
                             loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancedEndpointSetName()));
                             inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                         }
                         
-                        if (inputEndpointsItem.getLocalPort() != null)
-                        {
+                        if (inputEndpointsItem.getLocalPort() != null) {
                             Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                             localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLocalPort())));
                             inputEndpointElement.appendChild(localPortElement);
                         }
                         
-                        if (inputEndpointsItem.getName() != null)
-                        {
+                        if (inputEndpointsItem.getName() != null) {
                             Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                             nameElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getName()));
                             inputEndpointElement.appendChild(nameElement);
                         }
                         
-                        if (inputEndpointsItem.getPort() != null)
-                        {
+                        if (inputEndpointsItem.getPort() != null) {
                             Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
                             portElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getPort())));
                             inputEndpointElement.appendChild(portElement);
                         }
                         
-                        if (inputEndpointsItem.getLoadBalancerProbe() != null)
-                        {
+                        if (inputEndpointsItem.getLoadBalancerProbe() != null) {
                             Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                             inputEndpointElement.appendChild(loadBalancerProbeElement);
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getPath() != null) {
                                 Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
                                 pathElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getLoadBalancerProbe().getPath()));
                                 loadBalancerProbeElement.appendChild(pathElement);
@@ -3818,78 +3294,66 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(inputEndpointsItem.getLoadBalancerProbe().getProtocol())));
                             loadBalancerProbeElement.appendChild(protocolElement);
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
                                 Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                                 intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                                 loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                             }
                             
-                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                            {
+                            if (inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
                                 Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                                 timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(inputEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                                 loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                             }
                         }
                         
-                        if (inputEndpointsItem.getProtocol() != null)
-                        {
+                        if (inputEndpointsItem.getProtocol() != null) {
                             Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                             protocolElement2.appendChild(requestDoc.createTextNode(inputEndpointsItem.getProtocol()));
                             inputEndpointElement.appendChild(protocolElement2);
                         }
                         
-                        if (inputEndpointsItem.getVirtualIPAddress() != null)
-                        {
+                        if (inputEndpointsItem.getVirtualIPAddress() != null) {
                             Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().toString()));
+                            vipElement.appendChild(requestDoc.createTextNode(inputEndpointsItem.getVirtualIPAddress().getHostAddress()));
                             inputEndpointElement.appendChild(vipElement);
                         }
                         
-                        if (inputEndpointsItem.isEnableDirectServerReturn() != null)
-                        {
+                        if (inputEndpointsItem.isEnableDirectServerReturn() != null) {
                             Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                             enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(inputEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                             inputEndpointElement.appendChild(enableDirectServerReturnElement);
                         }
                         
-                        if (inputEndpointsItem.getEndpointAcl() != null)
-                        {
+                        if (inputEndpointsItem.getEndpointAcl() != null) {
                             Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                             inputEndpointElement.appendChild(endpointAclElement);
                             
-                            if (inputEndpointsItem.getEndpointAcl().getRules() != null)
-                            {
+                            if (inputEndpointsItem.getEndpointAcl().getRules() != null) {
                                 Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules())
-                                {
+                                for (AccessControlListRule rulesItem : inputEndpointsItem.getEndpointAcl().getRules()) {
                                     Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
                                     rulesSequenceElement.appendChild(ruleElement);
                                     
-                                    if (rulesItem.getOrder() != null)
-                                    {
+                                    if (rulesItem.getOrder() != null) {
                                         Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
                                         orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                                         ruleElement.appendChild(orderElement);
                                     }
                                     
-                                    if (rulesItem.getAction() != null)
-                                    {
+                                    if (rulesItem.getAction() != null) {
                                         Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
                                         actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
                                         ruleElement.appendChild(actionElement);
                                     }
                                     
-                                    if (rulesItem.getRemoteSubnet() != null)
-                                    {
+                                    if (rulesItem.getRemoteSubnet() != null) {
                                         Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                                         remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
                                         ruleElement.appendChild(remoteSubnetElement);
                                     }
                                     
-                                    if (rulesItem.getDescription() != null)
-                                    {
+                                    if (rulesItem.getDescription() != null) {
                                         Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
                                         descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
                                         ruleElement.appendChild(descriptionElement);
@@ -3902,11 +3366,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(inputEndpointsSequenceElement);
                 }
                 
-                if (configurationSetsItem.getSubnetNames() != null)
-                {
+                if (configurationSetsItem.getSubnetNames() != null) {
                     Element subnetNamesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetNames");
-                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames())
-                    {
+                    for (String subnetNamesItem : configurationSetsItem.getSubnetNames()) {
                         Element subnetNamesItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SubnetName");
                         subnetNamesItemElement.appendChild(requestDoc.createTextNode(subnetNamesItem));
                         subnetNamesSequenceElement.appendChild(subnetNamesItemElement);
@@ -3914,60 +3376,51 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(subnetNamesSequenceElement);
                 }
                 
-                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null)
-                {
+                if (configurationSetsItem.getStaticVirtualNetworkIPAddress() != null) {
                     Element staticVirtualNetworkIPAddressElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StaticVirtualNetworkIPAddress");
                     staticVirtualNetworkIPAddressElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getStaticVirtualNetworkIPAddress()));
                     configurationSetElement.appendChild(staticVirtualNetworkIPAddressElement);
                 }
                 
-                if (configurationSetsItem.getComputerName() != null)
-                {
+                if (configurationSetsItem.getComputerName() != null) {
                     Element computerNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ComputerName");
                     computerNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getComputerName()));
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                if (configurationSetsItem.getAdminPassword() != null)
-                {
+                if (configurationSetsItem.getAdminPassword() != null) {
                     Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
                     adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
                     configurationSetElement.appendChild(adminPasswordElement);
                 }
                 
-                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null)
-                {
+                if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                     resetPasswordOnFirstLogonElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isResetPasswordOnFirstLogon()).toLowerCase()));
                     configurationSetElement.appendChild(resetPasswordOnFirstLogonElement);
                 }
                 
-                if (configurationSetsItem.isEnableAutomaticUpdates() != null)
-                {
+                if (configurationSetsItem.isEnableAutomaticUpdates() != null) {
                     Element enableAutomaticUpdatesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                     enableAutomaticUpdatesElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isEnableAutomaticUpdates()).toLowerCase()));
                     configurationSetElement.appendChild(enableAutomaticUpdatesElement);
                 }
                 
-                if (configurationSetsItem.getTimeZone() != null)
-                {
+                if (configurationSetsItem.getTimeZone() != null) {
                     Element timeZoneElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeZone");
                     timeZoneElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getTimeZone()));
                     configurationSetElement.appendChild(timeZoneElement);
                 }
                 
-                if (configurationSetsItem.getDomainJoin() != null)
-                {
+                if (configurationSetsItem.getDomainJoin() != null) {
                     Element domainJoinElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DomainJoin");
                     configurationSetElement.appendChild(domainJoinElement);
                     
-                    if (configurationSetsItem.getDomainJoin().getCredentials() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getCredentials() != null) {
                         Element credentialsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Credentials");
                         domainJoinElement.appendChild(credentialsElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getCredentials().getDomain() != null) {
                             Element domainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Domain");
                             domainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getCredentials().getDomain()));
                             credentialsElement.appendChild(domainElement);
@@ -3982,27 +3435,23 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         credentialsElement.appendChild(passwordElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getDomainToJoin() != null) {
                         Element joinDomainElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "JoinDomain");
                         joinDomainElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getDomainToJoin()));
                         domainJoinElement.appendChild(joinDomainElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getLdapMachineObjectOU() != null) {
                         Element machineObjectOUElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MachineObjectOU");
                         machineObjectOUElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getLdapMachineObjectOU()));
                         domainJoinElement.appendChild(machineObjectOUElement);
                     }
                     
-                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null)
-                    {
+                    if (configurationSetsItem.getDomainJoin().getProvisioning() != null) {
                         Element provisioningElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Provisioning");
                         domainJoinElement.appendChild(provisioningElement);
                         
-                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null)
-                        {
+                        if (configurationSetsItem.getDomainJoin().getProvisioning().getAccountData() != null) {
                             Element accountDataElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AccountData");
                             accountDataElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getDomainJoin().getProvisioning().getAccountData()));
                             provisioningElement.appendChild(accountDataElement);
@@ -4010,11 +3459,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getStoredCertificateSettings() != null)
-                {
+                if (configurationSetsItem.getStoredCertificateSettings() != null) {
                     Element storedCertificateSettingsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
-                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings())
-                    {
+                    for (StoredCertificateSettings storedCertificateSettingsItem : configurationSetsItem.getStoredCertificateSettings()) {
                         Element certificateSettingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateSetting");
                         storedCertificateSettingsSequenceElement.appendChild(certificateSettingElement);
                         
@@ -4033,21 +3480,17 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(storedCertificateSettingsSequenceElement);
                 }
                 
-                if (configurationSetsItem.getWindowsRemoteManagement() != null)
-                {
+                if (configurationSetsItem.getWindowsRemoteManagement() != null) {
                     Element winRMElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "WinRM");
                     configurationSetElement.appendChild(winRMElement);
                     
-                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null)
-                    {
+                    if (configurationSetsItem.getWindowsRemoteManagement().getListeners() != null) {
                         Element listenersSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listeners");
-                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners())
-                        {
+                        for (WindowsRemoteManagementListener listenersItem : configurationSetsItem.getWindowsRemoteManagement().getListeners()) {
                             Element listenerElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Listener");
                             listenersSequenceElement.appendChild(listenerElement);
                             
-                            if (listenersItem.getCertificateThumbprint() != null)
-                            {
+                            if (listenersItem.getCertificateThumbprint() != null) {
                                 Element certificateThumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CertificateThumbprint");
                                 certificateThumbprintElement.appendChild(requestDoc.createTextNode(listenersItem.getCertificateThumbprint()));
                                 listenerElement.appendChild(certificateThumbprintElement);
@@ -4061,51 +3504,43 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getAdminUserName() != null)
-                {
+                if (configurationSetsItem.getAdminUserName() != null) {
                     Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
                     adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
                     configurationSetElement.appendChild(adminUsernameElement);
                 }
                 
-                if (configurationSetsItem.getHostName() != null)
-                {
+                if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
                     hostNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getHostName()));
                     configurationSetElement.appendChild(hostNameElement);
                 }
                 
-                if (configurationSetsItem.getUserName() != null)
-                {
+                if (configurationSetsItem.getUserName() != null) {
                     Element userNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserName");
                     userNameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserName()));
                     configurationSetElement.appendChild(userNameElement);
                 }
                 
-                if (configurationSetsItem.getUserPassword() != null)
-                {
+                if (configurationSetsItem.getUserPassword() != null) {
                     Element userPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UserPassword");
                     userPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getUserPassword()));
                     configurationSetElement.appendChild(userPasswordElement);
                 }
                 
-                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null)
-                {
+                if (configurationSetsItem.isDisableSshPasswordAuthentication() != null) {
                     Element disableSshPasswordAuthenticationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                     disableSshPasswordAuthenticationElement.appendChild(requestDoc.createTextNode(Boolean.toString(configurationSetsItem.isDisableSshPasswordAuthentication()).toLowerCase()));
                     configurationSetElement.appendChild(disableSshPasswordAuthenticationElement);
                 }
                 
-                if (configurationSetsItem.getSshSettings() != null)
-                {
+                if (configurationSetsItem.getSshSettings() != null) {
                     Element sSHElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SSH");
                     configurationSetElement.appendChild(sSHElement);
                     
-                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null)
-                    {
+                    if (configurationSetsItem.getSshSettings().getPublicKeys() != null) {
                         Element publicKeysSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKeys");
-                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys())
-                        {
+                        for (SshSettingPublicKey publicKeysItem : configurationSetsItem.getSshSettings().getPublicKeys()) {
                             Element publicKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicKey");
                             publicKeysSequenceElement.appendChild(publicKeyElement);
                             
@@ -4120,11 +3555,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         sSHElement.appendChild(publicKeysSequenceElement);
                     }
                     
-                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null)
-                    {
+                    if (configurationSetsItem.getSshSettings().getKeyPairs() != null) {
                         Element keyPairsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPairs");
-                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs())
-                        {
+                        for (SshSettingKeyPair keyPairsItem : configurationSetsItem.getSshSettings().getKeyPairs()) {
                             Element keyPairElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "KeyPair");
                             keyPairsSequenceElement.appendChild(keyPairElement);
                             
@@ -4143,73 +3576,61 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(configurationSetsSequenceElement);
         }
         
-        if (parameters.getAvailabilitySetName() != null)
-        {
+        if (parameters.getAvailabilitySetName() != null) {
             Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
             availabilitySetNameElement.appendChild(requestDoc.createTextNode(parameters.getAvailabilitySetName()));
             persistentVMRoleElement.appendChild(availabilitySetNameElement);
         }
         
-        if (parameters.getResourceExtensionReferences() != null)
-        {
+        if (parameters.getResourceExtensionReferences() != null) {
             Element resourceExtensionReferencesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
-            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences())
-            {
+            for (ResourceExtensionReference resourceExtensionReferencesItem : parameters.getResourceExtensionReferences()) {
                 Element resourceExtensionReferenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference");
                 resourceExtensionReferencesSequenceElement.appendChild(resourceExtensionReferenceElement);
                 
-                if (resourceExtensionReferencesItem.getReferenceName() != null)
-                {
+                if (resourceExtensionReferencesItem.getReferenceName() != null) {
                     Element referenceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ReferenceName");
                     referenceNameElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getReferenceName()));
                     resourceExtensionReferenceElement.appendChild(referenceNameElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getPublisher() != null)
-                {
+                if (resourceExtensionReferencesItem.getPublisher() != null) {
                     Element publisherElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Publisher");
                     publisherElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getPublisher()));
                     resourceExtensionReferenceElement.appendChild(publisherElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getName() != null)
-                {
+                if (resourceExtensionReferencesItem.getName() != null) {
                     Element nameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                     nameElement2.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getName()));
                     resourceExtensionReferenceElement.appendChild(nameElement2);
                 }
                 
-                if (resourceExtensionReferencesItem.getVersion() != null)
-                {
+                if (resourceExtensionReferencesItem.getVersion() != null) {
                     Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
                     versionElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getVersion()));
                     resourceExtensionReferenceElement.appendChild(versionElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null)
-                {
+                if (resourceExtensionReferencesItem.getResourceExtensionParameterValues() != null) {
                     Element resourceExtensionParameterValuesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
-                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues())
-                    {
+                    for (ResourceExtensionParameterValue resourceExtensionParameterValuesItem : resourceExtensionReferencesItem.getResourceExtensionParameterValues()) {
                         Element resourceExtensionParameterValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue");
                         resourceExtensionParameterValuesSequenceElement.appendChild(resourceExtensionParameterValueElement);
                         
-                        if (resourceExtensionParameterValuesItem.getKey() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getKey() != null) {
                             Element keyElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Key");
                             keyElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getKey()));
                             resourceExtensionParameterValueElement.appendChild(keyElement);
                         }
                         
-                        if (resourceExtensionParameterValuesItem.getValue() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getValue() != null) {
                             Element valueElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Value");
                             valueElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(resourceExtensionParameterValuesItem.getValue().getBytes()))));
                             resourceExtensionParameterValueElement.appendChild(valueElement);
                         }
                         
-                        if (resourceExtensionParameterValuesItem.getType() != null)
-                        {
+                        if (resourceExtensionParameterValuesItem.getType() != null) {
                             Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
                             typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
                             resourceExtensionParameterValueElement.appendChild(typeElement);
@@ -4218,8 +3639,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     resourceExtensionReferenceElement.appendChild(resourceExtensionParameterValuesSequenceElement);
                 }
                 
-                if (resourceExtensionReferencesItem.getState() != null)
-                {
+                if (resourceExtensionReferencesItem.getState() != null) {
                     Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
                     stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
                     resourceExtensionReferenceElement.appendChild(stateElement);
@@ -4228,37 +3648,31 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
         }
         
-        if (parameters.getDataVirtualHardDisks() != null)
-        {
+        if (parameters.getDataVirtualHardDisks() != null) {
             Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
-            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks())
-            {
+            for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
                 Element dataVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk");
                 dataVirtualHardDisksSequenceElement.appendChild(dataVirtualHardDiskElement);
                 
-                if (dataVirtualHardDisksItem.getHostCaching() != null)
-                {
+                if (dataVirtualHardDisksItem.getHostCaching() != null) {
                     Element hostCachingElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
                     hostCachingElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getHostCaching().toString()));
                     dataVirtualHardDiskElement.appendChild(hostCachingElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskLabel() != null)
-                {
+                if (dataVirtualHardDisksItem.getDiskLabel() != null) {
                     Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
                     diskLabelElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskLabel()));
                     dataVirtualHardDiskElement.appendChild(diskLabelElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskName() != null)
-                {
+                if (dataVirtualHardDisksItem.getDiskName() != null) {
                     Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
                     diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
                     dataVirtualHardDiskElement.appendChild(diskNameElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null)
-                {
+                if (dataVirtualHardDisksItem.getLogicalUnitNumber() != null) {
                     Element lunElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Lun");
                     lunElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalUnitNumber())));
                     dataVirtualHardDiskElement.appendChild(lunElement);
@@ -4268,8 +3682,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
                 dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
                 
-                if (dataVirtualHardDisksItem.getMediaLink() != null)
-                {
+                if (dataVirtualHardDisksItem.getMediaLink() != null) {
                     Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                     dataVirtualHardDiskElement.appendChild(mediaLinkElement);
@@ -4281,57 +3694,49 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         Element oSVirtualHardDiskElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSVirtualHardDisk");
         persistentVMRoleElement.appendChild(oSVirtualHardDiskElement);
         
-        if (parameters.getOSVirtualHardDisk().getHostCaching() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getHostCaching() != null) {
             Element hostCachingElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostCaching");
             hostCachingElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getHostCaching().toString()));
             oSVirtualHardDiskElement.appendChild(hostCachingElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getDiskLabel() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getDiskLabel() != null) {
             Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
             diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskLabel()));
             oSVirtualHardDiskElement.appendChild(diskLabelElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getDiskName() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getDiskName() != null) {
             Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
             diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskName()));
             oSVirtualHardDiskElement.appendChild(diskNameElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getMediaLink() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getMediaLink() != null) {
             Element mediaLinkElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
             mediaLinkElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getMediaLink().toString()));
             oSVirtualHardDiskElement.appendChild(mediaLinkElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getSourceImageName() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getSourceImageName() != null) {
             Element sourceImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceImageName");
             sourceImageNameElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getSourceImageName()));
             oSVirtualHardDiskElement.appendChild(sourceImageNameElement);
         }
         
-        if (parameters.getOSVirtualHardDisk().getOperatingSystem() != null)
-        {
+        if (parameters.getOSVirtualHardDisk().getOperatingSystem() != null) {
             Element osElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OS");
             osElement.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getOperatingSystem()));
             oSVirtualHardDiskElement.appendChild(osElement);
         }
         
-        if (parameters.getRoleSize() != null)
-        {
+        if (parameters.getRoleSize() != null) {
             Element roleSizeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RoleSize");
             roleSizeElement.appendChild(requestDoc.createTextNode(parameters.getRoleSize()));
             persistentVMRoleElement.appendChild(roleSizeElement);
         }
         
-        if (parameters.isProvisionGuestAgent() != null)
-        {
+        if (parameters.isProvisionGuestAgent() != null) {
             Element provisionGuestAgentElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
             provisionGuestAgentElement.appendChild(requestDoc.createTextNode(Boolean.toString(parameters.isProvisionGuestAgent()).toLowerCase()));
             persistentVMRoleElement.appendChild(provisionGuestAgentElement);
@@ -4350,23 +3755,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -4376,21 +3776,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -4410,12 +3805,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters)
-    {
+    public Future<OperationResponse> beginUpdatingLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginUpdatingLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
             }
          });
@@ -4445,27 +3838,20 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginUpdatingLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getLoadBalancedEndpoints() != null)
-        {
-            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints())
-            {
-                if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null)
-                {
+        if (parameters.getLoadBalancedEndpoints() != null) {
+            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsParameterItem : parameters.getLoadBalancedEndpoints()) {
+                if (loadBalancedEndpointsParameterItem.getLoadBalancedEndpointSetName() == null) {
                     throw new NullPointerException("parameters.LoadBalancedEndpoints.LoadBalancedEndpointSetName");
                 }
             }
@@ -4474,8 +3860,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -4503,10 +3888,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         Element loadBalancedEndpointListElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancedEndpointList");
         requestDoc.appendChild(loadBalancedEndpointListElement);
         
-        if (parameters.getLoadBalancedEndpoints() != null)
-        {
-            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsItem : parameters.getLoadBalancedEndpoints())
-            {
+        if (parameters.getLoadBalancedEndpoints() != null) {
+            for (VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint loadBalancedEndpointsItem : parameters.getLoadBalancedEndpoints()) {
                 Element inputEndpointElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "InputEndpoint");
                 loadBalancedEndpointListElement.appendChild(inputEndpointElement);
                 
@@ -4514,34 +3897,29 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 loadBalancedEndpointSetNameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancedEndpointSetName()));
                 inputEndpointElement.appendChild(loadBalancedEndpointSetNameElement);
                 
-                if (loadBalancedEndpointsItem.getLocalPort() != null)
-                {
+                if (loadBalancedEndpointsItem.getLocalPort() != null) {
                     Element localPortElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LocalPort");
                     localPortElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLocalPort())));
                     inputEndpointElement.appendChild(localPortElement);
                 }
                 
-                if (loadBalancedEndpointsItem.getName() != null)
-                {
+                if (loadBalancedEndpointsItem.getName() != null) {
                     Element nameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Name");
                     nameElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getName()));
                     inputEndpointElement.appendChild(nameElement);
                 }
                 
-                if (loadBalancedEndpointsItem.getPort() != null)
-                {
+                if (loadBalancedEndpointsItem.getPort() != null) {
                     Element portElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Port");
                     portElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getPort())));
                     inputEndpointElement.appendChild(portElement);
                 }
                 
-                if (loadBalancedEndpointsItem.getLoadBalancerProbe() != null)
-                {
+                if (loadBalancedEndpointsItem.getLoadBalancerProbe() != null) {
                     Element loadBalancerProbeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LoadBalancerProbe");
                     inputEndpointElement.appendChild(loadBalancerProbeElement);
                     
-                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getPath() != null)
-                    {
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getPath() != null) {
                         Element pathElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Path");
                         pathElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getLoadBalancerProbe().getPath()));
                         loadBalancerProbeElement.appendChild(pathElement);
@@ -4555,37 +3933,32 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     protocolElement.appendChild(requestDoc.createTextNode(ComputeManagementClientImpl.loadBalancerProbeTransportProtocolToString(loadBalancedEndpointsItem.getLoadBalancerProbe().getProtocol())));
                     loadBalancerProbeElement.appendChild(protocolElement);
                     
-                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null)
-                    {
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds() != null) {
                         Element intervalInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntervalInSeconds");
                         intervalInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getIntervalInSeconds())));
                         loadBalancerProbeElement.appendChild(intervalInSecondsElement);
                     }
                     
-                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null)
-                    {
+                    if (loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds() != null) {
                         Element timeoutInSecondsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "TimeoutInSeconds");
                         timeoutInSecondsElement.appendChild(requestDoc.createTextNode(Integer.toString(loadBalancedEndpointsItem.getLoadBalancerProbe().getTimeoutInSeconds())));
                         loadBalancerProbeElement.appendChild(timeoutInSecondsElement);
                     }
                 }
                 
-                if (loadBalancedEndpointsItem.getProtocol() != null)
-                {
+                if (loadBalancedEndpointsItem.getProtocol() != null) {
                     Element protocolElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Protocol");
                     protocolElement2.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getProtocol()));
                     inputEndpointElement.appendChild(protocolElement2);
                 }
                 
-                if (loadBalancedEndpointsItem.getVirtualIPAddress() != null)
-                {
+                if (loadBalancedEndpointsItem.getVirtualIPAddress() != null) {
                     Element vipElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Vip");
-                    vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress().toString()));
+                    vipElement.appendChild(requestDoc.createTextNode(loadBalancedEndpointsItem.getVirtualIPAddress().getHostAddress()));
                     inputEndpointElement.appendChild(vipElement);
                 }
                 
-                if (loadBalancedEndpointsItem.isEnableDirectServerReturn() != null)
-                {
+                if (loadBalancedEndpointsItem.isEnableDirectServerReturn() != null) {
                     Element enableDirectServerReturnElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                     enableDirectServerReturnElement.appendChild(requestDoc.createTextNode(Boolean.toString(loadBalancedEndpointsItem.isEnableDirectServerReturn()).toLowerCase()));
                     inputEndpointElement.appendChild(enableDirectServerReturnElement);
@@ -4594,37 +3967,31 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 Element endpointAclElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "EndpointAcl");
                 inputEndpointElement.appendChild(endpointAclElement);
                 
-                if (loadBalancedEndpointsItem.getRules() != null)
-                {
+                if (loadBalancedEndpointsItem.getRules() != null) {
                     Element rulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rules");
-                    for (AccessControlListRule rulesItem : loadBalancedEndpointsItem.getRules())
-                    {
+                    for (AccessControlListRule rulesItem : loadBalancedEndpointsItem.getRules()) {
                         Element ruleElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Rule");
                         rulesSequenceElement.appendChild(ruleElement);
                         
-                        if (rulesItem.getOrder() != null)
-                        {
+                        if (rulesItem.getOrder() != null) {
                             Element orderElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Order");
                             orderElement.appendChild(requestDoc.createTextNode(Integer.toString(rulesItem.getOrder())));
                             ruleElement.appendChild(orderElement);
                         }
                         
-                        if (rulesItem.getAction() != null)
-                        {
+                        if (rulesItem.getAction() != null) {
                             Element actionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Action");
                             actionElement.appendChild(requestDoc.createTextNode(rulesItem.getAction()));
                             ruleElement.appendChild(actionElement);
                         }
                         
-                        if (rulesItem.getRemoteSubnet() != null)
-                        {
+                        if (rulesItem.getRemoteSubnet() != null) {
                             Element remoteSubnetElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "RemoteSubnet");
                             remoteSubnetElement.appendChild(requestDoc.createTextNode(rulesItem.getRemoteSubnet()));
                             ruleElement.appendChild(remoteSubnetElement);
                         }
                         
-                        if (rulesItem.getDescription() != null)
-                        {
+                        if (rulesItem.getDescription() != null) {
                             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
                             descriptionElement.appendChild(requestDoc.createTextNode(rulesItem.getDescription()));
                             ruleElement.appendChild(descriptionElement);
@@ -4648,23 +4015,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -4674,21 +4036,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -4723,12 +4080,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return capture(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -4775,13 +4130,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -4790,46 +4143,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "captureAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -4837,11 +4180,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -4877,12 +4217,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return create(serviceName, deploymentName, parameters);
             }
          });
@@ -4939,13 +4277,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
-    {
+    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -4953,46 +4289,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -5000,11 +4326,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -5035,12 +4358,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> createDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return createDeployment(serviceName, parameters);
             }
          });
@@ -5083,59 +4404,47 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createDeploymentAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingDeploymentAsync(serviceName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -5143,11 +4452,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -5174,12 +4480,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage)
-    {
+    public Future<ComputeOperationStatusResponse> deleteAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return delete(serviceName, deploymentName, virtualMachineName, deleteFromStorage);
             }
          });
@@ -5220,13 +4524,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
-    {
+    public ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -5235,46 +4537,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(serviceName, deploymentName, virtualMachineName, deleteFromStorage).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -5282,11 +4574,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -5304,12 +4593,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The Get Virtual Machine operation response.
     */
     @Override
-    public Future<VirtualMachineGetResponse> getAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<VirtualMachineGetResponse> getAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetResponse>() { 
             @Override
-            public VirtualMachineGetResponse call() throws Exception
-            {
+            public VirtualMachineGetResponse call() throws Exception {
                 return get(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -5337,27 +4624,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The Get Virtual Machine operation response.
     */
     @Override
-    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public VirtualMachineGetResponse get(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -5377,23 +4659,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -5411,12 +4688,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             
             NodeList elements = responseDoc.getElementsByTagName("PersistentVMRole");
             Element persistentVMRoleElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (persistentVMRoleElement != null)
-            {
+            if (persistentVMRoleElement != null) {
                 NodeList elements2 = persistentVMRoleElement.getElementsByTagName("RoleName");
                 Element roleNameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (roleNameElement != null)
-                {
+                if (roleNameElement != null) {
                     String roleNameInstance;
                     roleNameInstance = roleNameElement.getTextContent();
                     result.setRoleName(roleNameInstance);
@@ -5424,8 +4699,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements3 = persistentVMRoleElement.getElementsByTagName("OsVersion");
                 Element osVersionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (osVersionElement != null)
-                {
+                if (osVersionElement != null) {
                     String osVersionInstance;
                     osVersionInstance = osVersionElement.getTextContent();
                     result.setOsVersion(osVersionInstance);
@@ -5433,8 +4707,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements4 = persistentVMRoleElement.getElementsByTagName("RoleType");
                 Element roleTypeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (roleTypeElement != null)
-                {
+                if (roleTypeElement != null) {
                     VirtualMachineRoleType roleTypeInstance;
                     roleTypeInstance = VirtualMachineRoleType.valueOf(roleTypeElement.getTextContent());
                     result.setRoleType(roleTypeInstance);
@@ -5442,8 +4715,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements5 = persistentVMRoleElement.getElementsByTagName("AvailabilitySetName");
                 Element availabilitySetNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (availabilitySetNameElement != null)
-                {
+                if (availabilitySetNameElement != null) {
                     String availabilitySetNameInstance;
                     availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
                     result.setAvailabilitySetName(availabilitySetNameInstance);
@@ -5451,8 +4723,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements6 = persistentVMRoleElement.getElementsByTagName("RoleSize");
                 Element roleSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (roleSizeElement != null)
-                {
+                if (roleSizeElement != null) {
                     String roleSizeInstance;
                     roleSizeInstance = roleSizeElement.getTextContent();
                     result.setRoleSize(roleSizeInstance);
@@ -5460,8 +4731,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements7 = persistentVMRoleElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
                 Element defaultWinRmCertificateThumbprintElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (defaultWinRmCertificateThumbprintElement != null)
-                {
+                if (defaultWinRmCertificateThumbprintElement != null) {
                     String defaultWinRmCertificateThumbprintInstance;
                     defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
                     result.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
@@ -5469,18 +4739,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements8 = persistentVMRoleElement.getElementsByTagName("ConfigurationSets");
                 Element configurationSetsSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (configurationSetsSequenceElement != null)
-                {
-                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1)
-                    {
+                if (configurationSetsSequenceElement != null) {
+                    for (int i1 = 0; i1 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i1));
                         ConfigurationSet configurationSetInstance = new ConfigurationSet();
                         result.getConfigurationSets().add(configurationSetInstance);
                         
                         NodeList elements9 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
                         Element configurationSetTypeElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (configurationSetTypeElement != null)
-                        {
+                        if (configurationSetTypeElement != null) {
                             String configurationSetTypeInstance;
                             configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
                             configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
@@ -5488,18 +4755,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements10 = configurationSetsElement.getElementsByTagName("InputEndpoints");
                         Element inputEndpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (inputEndpointsSequenceElement != null)
-                        {
-                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1)
-                            {
+                        if (inputEndpointsSequenceElement != null) {
+                            for (int i2 = 0; i2 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i2 = i2 + 1) {
                                 org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i2));
                                 InputEndpoint inputEndpointInstance = new InputEndpoint();
                                 configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                 
                                 NodeList elements11 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
                                 Element loadBalancedEndpointSetNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (loadBalancedEndpointSetNameElement != null)
-                                {
+                                if (loadBalancedEndpointSetNameElement != null) {
                                     String loadBalancedEndpointSetNameInstance;
                                     loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
                                     inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
@@ -5507,8 +4771,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements12 = inputEndpointsElement.getElementsByTagName("LocalPort");
                                 Element localPortElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                     int localPortInstance;
                                     localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                     inputEndpointInstance.setLocalPort(localPortInstance);
@@ -5516,8 +4779,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements13 = inputEndpointsElement.getElementsByTagName("Name");
                                 Element nameElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                if (nameElement != null)
-                                {
+                                if (nameElement != null) {
                                     String nameInstance;
                                     nameInstance = nameElement.getTextContent();
                                     inputEndpointInstance.setName(nameInstance);
@@ -5525,8 +4787,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements14 = inputEndpointsElement.getElementsByTagName("Port");
                                 Element portElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                     int portInstance;
                                     portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                     inputEndpointInstance.setPort(portInstance);
@@ -5534,15 +4795,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements15 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
                                 Element loadBalancerProbeElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (loadBalancerProbeElement != null)
-                                {
+                                if (loadBalancerProbeElement != null) {
                                     LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                     inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                     
                                     NodeList elements16 = loadBalancerProbeElement.getElementsByTagName("Path");
                                     Element pathElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                    if (pathElement != null)
-                                    {
+                                    if (pathElement != null) {
                                         String pathInstance;
                                         pathInstance = pathElement.getTextContent();
                                         loadBalancerProbeInstance.setPath(pathInstance);
@@ -5550,8 +4809,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements17 = loadBalancerProbeElement.getElementsByTagName("Port");
                                     Element portElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                    if (portElement2 != null)
-                                    {
+                                    if (portElement2 != null) {
                                         int portInstance2;
                                         portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                         loadBalancerProbeInstance.setPort(portInstance2);
@@ -5559,8 +4817,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements18 = loadBalancerProbeElement.getElementsByTagName("Protocol");
                                     Element protocolElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                    if (protocolElement != null)
-                                    {
+                                    if (protocolElement != null) {
                                         LoadBalancerProbeTransportProtocol protocolInstance;
                                         protocolInstance = ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement.getTextContent());
                                         loadBalancerProbeInstance.setProtocol(protocolInstance);
@@ -5568,8 +4825,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements19 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
                                     Element intervalInSecondsElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
-                                    {
+                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                         int intervalInSecondsInstance;
                                         intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                         loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
@@ -5577,8 +4833,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements20 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
                                     Element timeoutInSecondsElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
-                                    {
+                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                         int timeoutInSecondsInstance;
                                         timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                         loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
@@ -5587,8 +4842,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements21 = inputEndpointsElement.getElementsByTagName("Protocol");
                                 Element protocolElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                if (protocolElement2 != null)
-                                {
+                                if (protocolElement2 != null) {
                                     String protocolInstance2;
                                     protocolInstance2 = protocolElement2.getTextContent();
                                     inputEndpointInstance.setProtocol(protocolInstance2);
@@ -5596,8 +4850,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements22 = inputEndpointsElement.getElementsByTagName("Vip");
                                 Element vipElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                                if (vipElement != null)
-                                {
+                                if (vipElement != null) {
                                     InetAddress vipInstance;
                                     vipInstance = InetAddress.getByName(vipElement.getTextContent());
                                     inputEndpointInstance.setVirtualIPAddress(vipInstance);
@@ -5605,8 +4858,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements23 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
                                 Element enableDirectServerReturnElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableDirectServerReturnInstance;
                                     enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                     inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
@@ -5614,25 +4866,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements24 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
                                 Element endpointAclElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                if (endpointAclElement != null)
-                                {
+                                if (endpointAclElement != null) {
                                     EndpointAcl endpointAclInstance = new EndpointAcl();
                                     inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                     
                                     NodeList elements25 = endpointAclElement.getElementsByTagName("Rules");
                                     Element rulesSequenceElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                                    if (rulesSequenceElement != null)
-                                    {
-                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1)
-                                        {
+                                    if (rulesSequenceElement != null) {
+                                        for (int i3 = 0; i3 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i3 = i3 + 1) {
                                             org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i3));
                                             AccessControlListRule ruleInstance = new AccessControlListRule();
                                             endpointAclInstance.getRules().add(ruleInstance);
                                             
                                             NodeList elements26 = rulesElement.getElementsByTagName("Order");
                                             Element orderElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                                            if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
-                                            {
+                                            if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                 int orderInstance;
                                                 orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                 ruleInstance.setOrder(orderInstance);
@@ -5640,8 +4888,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             
                                             NodeList elements27 = rulesElement.getElementsByTagName("Action");
                                             Element actionElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                                            if (actionElement != null)
-                                            {
+                                            if (actionElement != null) {
                                                 String actionInstance;
                                                 actionInstance = actionElement.getTextContent();
                                                 ruleInstance.setAction(actionInstance);
@@ -5649,8 +4896,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             
                                             NodeList elements28 = rulesElement.getElementsByTagName("RemoteSubnet");
                                             Element remoteSubnetElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                                            if (remoteSubnetElement != null)
-                                            {
+                                            if (remoteSubnetElement != null) {
                                                 String remoteSubnetInstance;
                                                 remoteSubnetInstance = remoteSubnetElement.getTextContent();
                                                 ruleInstance.setRemoteSubnet(remoteSubnetInstance);
@@ -5658,8 +4904,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                             
                                             NodeList elements29 = rulesElement.getElementsByTagName("Description");
                                             Element descriptionElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                                            if (descriptionElement != null)
-                                            {
+                                            if (descriptionElement != null) {
                                                 String descriptionInstance;
                                                 descriptionInstance = descriptionElement.getTextContent();
                                                 ruleInstance.setDescription(descriptionInstance);
@@ -5672,10 +4917,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements30 = configurationSetsElement.getElementsByTagName("SubnetNames");
                         Element subnetNamesSequenceElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                        if (subnetNamesSequenceElement != null)
-                        {
-                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1)
-                            {
+                        if (subnetNamesSequenceElement != null) {
+                            for (int i4 = 0; i4 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i4 = i4 + 1) {
                                 org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i4));
                                 configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                             }
@@ -5683,8 +4926,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements31 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
                         Element staticVirtualNetworkIPAddressElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                        if (staticVirtualNetworkIPAddressElement != null)
-                        {
+                        if (staticVirtualNetworkIPAddressElement != null) {
                             String staticVirtualNetworkIPAddressInstance;
                             staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
                             configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
@@ -5692,8 +4934,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements32 = configurationSetsElement.getElementsByTagName("ComputerName");
                         Element computerNameElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-                        if (computerNameElement != null)
-                        {
+                        if (computerNameElement != null) {
                             String computerNameInstance;
                             computerNameInstance = computerNameElement.getTextContent();
                             configurationSetInstance.setComputerName(computerNameInstance);
@@ -5701,8 +4942,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements33 = configurationSetsElement.getElementsByTagName("AdminPassword");
                         Element adminPasswordElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-                        if (adminPasswordElement != null)
-                        {
+                        if (adminPasswordElement != null) {
                             String adminPasswordInstance;
                             adminPasswordInstance = adminPasswordElement.getTextContent();
                             configurationSetInstance.setAdminPassword(adminPasswordInstance);
@@ -5710,8 +4950,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements34 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
                         Element resetPasswordOnFirstLogonElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                             boolean resetPasswordOnFirstLogonInstance;
                             resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                             configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
@@ -5719,8 +4958,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements35 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
                         Element enableAutomaticUpdatesElement = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                             boolean enableAutomaticUpdatesInstance;
                             enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                             configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
@@ -5728,8 +4966,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements36 = configurationSetsElement.getElementsByTagName("TimeZone");
                         Element timeZoneElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                        if (timeZoneElement != null)
-                        {
+                        if (timeZoneElement != null) {
                             String timeZoneInstance;
                             timeZoneInstance = timeZoneElement.getTextContent();
                             configurationSetInstance.setTimeZone(timeZoneInstance);
@@ -5737,22 +4974,19 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements37 = configurationSetsElement.getElementsByTagName("DomainJoin");
                         Element domainJoinElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
-                        if (domainJoinElement != null)
-                        {
+                        if (domainJoinElement != null) {
                             DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                             configurationSetInstance.setDomainJoin(domainJoinInstance);
                             
                             NodeList elements38 = domainJoinElement.getElementsByTagName("Credentials");
                             Element credentialsElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
-                            if (credentialsElement != null)
-                            {
+                            if (credentialsElement != null) {
                                 DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                 domainJoinInstance.setCredentials(credentialsInstance);
                                 
                                 NodeList elements39 = credentialsElement.getElementsByTagName("Domain");
                                 Element domainElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                                if (domainElement != null)
-                                {
+                                if (domainElement != null) {
                                     String domainInstance;
                                     domainInstance = domainElement.getTextContent();
                                     credentialsInstance.setDomain(domainInstance);
@@ -5760,8 +4994,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements40 = credentialsElement.getElementsByTagName("Username");
                                 Element usernameElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
-                                if (usernameElement != null)
-                                {
+                                if (usernameElement != null) {
                                     String usernameInstance;
                                     usernameInstance = usernameElement.getTextContent();
                                     credentialsInstance.setUserName(usernameInstance);
@@ -5769,8 +5002,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements41 = credentialsElement.getElementsByTagName("Password");
                                 Element passwordElement = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
-                                if (passwordElement != null)
-                                {
+                                if (passwordElement != null) {
                                     String passwordInstance;
                                     passwordInstance = passwordElement.getTextContent();
                                     credentialsInstance.setPassword(passwordInstance);
@@ -5779,8 +5011,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             NodeList elements42 = domainJoinElement.getElementsByTagName("JoinDomain");
                             Element joinDomainElement = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                            if (joinDomainElement != null)
-                            {
+                            if (joinDomainElement != null) {
                                 String joinDomainInstance;
                                 joinDomainInstance = joinDomainElement.getTextContent();
                                 domainJoinInstance.setDomainToJoin(joinDomainInstance);
@@ -5788,8 +5019,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             NodeList elements43 = domainJoinElement.getElementsByTagName("MachineObjectOU");
                             Element machineObjectOUElement = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
-                            if (machineObjectOUElement != null)
-                            {
+                            if (machineObjectOUElement != null) {
                                 String machineObjectOUInstance;
                                 machineObjectOUInstance = machineObjectOUElement.getTextContent();
                                 domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
@@ -5797,15 +5027,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             NodeList elements44 = domainJoinElement.getElementsByTagName("Provisioning");
                             Element provisioningElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
-                            if (provisioningElement != null)
-                            {
+                            if (provisioningElement != null) {
                                 DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                 domainJoinInstance.setProvisioning(provisioningInstance);
                                 
                                 NodeList elements45 = provisioningElement.getElementsByTagName("AccountData");
                                 Element accountDataElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-                                if (accountDataElement != null)
-                                {
+                                if (accountDataElement != null) {
                                     String accountDataInstance;
                                     accountDataInstance = accountDataElement.getTextContent();
                                     provisioningInstance.setAccountData(accountDataInstance);
@@ -5815,24 +5043,20 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements46 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
                         Element storedCertificateSettingsSequenceElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-                        if (storedCertificateSettingsSequenceElement != null)
-                        {
-                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1)
-                            {
+                        if (storedCertificateSettingsSequenceElement != null) {
+                            for (int i5 = 0; i5 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i5 = i5 + 1) {
                                 org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i5));
                                 StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                 configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                 
                                 NodeList elements47 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
                                 Element storeLocationElement = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-                                if (storeLocationElement != null)
-                                {
+                                if (storeLocationElement != null) {
                                 }
                                 
                                 NodeList elements48 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
                                 Element storeNameElement = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
-                                if (storeNameElement != null)
-                                {
+                                if (storeNameElement != null) {
                                     String storeNameInstance;
                                     storeNameInstance = storeNameElement.getTextContent();
                                     certificateSettingInstance.setStoreName(storeNameInstance);
@@ -5840,8 +5064,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                 
                                 NodeList elements49 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
                                 Element thumbprintElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
-                                if (thumbprintElement != null)
-                                {
+                                if (thumbprintElement != null) {
                                     String thumbprintInstance;
                                     thumbprintInstance = thumbprintElement.getTextContent();
                                     certificateSettingInstance.setThumbprint(thumbprintInstance);
@@ -5851,25 +5074,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements50 = configurationSetsElement.getElementsByTagName("WinRM");
                         Element winRMElement = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
-                        if (winRMElement != null)
-                        {
+                        if (winRMElement != null) {
                             WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                             configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                             
                             NodeList elements51 = winRMElement.getElementsByTagName("Listeners");
                             Element listenersSequenceElement = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
-                            if (listenersSequenceElement != null)
-                            {
-                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1)
-                                {
+                            if (listenersSequenceElement != null) {
+                                for (int i6 = 0; i6 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i6 = i6 + 1) {
                                     org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i6));
                                     WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                     winRMInstance.getListeners().add(listenerInstance);
                                     
                                     NodeList elements52 = listenersElement.getElementsByTagName("Protocol");
                                     Element protocolElement3 = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
-                                    if (protocolElement3 != null)
-                                    {
+                                    if (protocolElement3 != null) {
                                         VirtualMachineWindowsRemoteManagementListenerType protocolInstance3;
                                         protocolInstance3 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement3.getTextContent());
                                         listenerInstance.setListenerType(protocolInstance3);
@@ -5877,8 +5096,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements53 = listenersElement.getElementsByTagName("CertificateThumbprint");
                                     Element certificateThumbprintElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
-                                    if (certificateThumbprintElement != null)
-                                    {
+                                    if (certificateThumbprintElement != null) {
                                         String certificateThumbprintInstance;
                                         certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
                                         listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
@@ -5889,8 +5107,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements54 = configurationSetsElement.getElementsByTagName("AdminUsername");
                         Element adminUsernameElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
-                        if (adminUsernameElement != null)
-                        {
+                        if (adminUsernameElement != null) {
                             String adminUsernameInstance;
                             adminUsernameInstance = adminUsernameElement.getTextContent();
                             configurationSetInstance.setAdminUserName(adminUsernameInstance);
@@ -5898,8 +5115,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements55 = configurationSetsElement.getElementsByTagName("HostName");
                         Element hostNameElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
-                        if (hostNameElement != null)
-                        {
+                        if (hostNameElement != null) {
                             String hostNameInstance;
                             hostNameInstance = hostNameElement.getTextContent();
                             configurationSetInstance.setHostName(hostNameInstance);
@@ -5907,8 +5123,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements56 = configurationSetsElement.getElementsByTagName("UserName");
                         Element userNameElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
-                        if (userNameElement != null)
-                        {
+                        if (userNameElement != null) {
                             String userNameInstance;
                             userNameInstance = userNameElement.getTextContent();
                             configurationSetInstance.setUserName(userNameInstance);
@@ -5916,8 +5131,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements57 = configurationSetsElement.getElementsByTagName("UserPassword");
                         Element userPasswordElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
-                        if (userPasswordElement != null)
-                        {
+                        if (userPasswordElement != null) {
                             String userPasswordInstance;
                             userPasswordInstance = userPasswordElement.getTextContent();
                             configurationSetInstance.setUserPassword(userPasswordInstance);
@@ -5925,8 +5139,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements58 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
                         Element disableSshPasswordAuthenticationElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
-                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                             boolean disableSshPasswordAuthenticationInstance;
                             disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                             configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
@@ -5934,25 +5147,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements59 = configurationSetsElement.getElementsByTagName("SSH");
                         Element sSHElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
-                        if (sSHElement != null)
-                        {
+                        if (sSHElement != null) {
                             SshSettings sSHInstance = new SshSettings();
                             configurationSetInstance.setSshSettings(sSHInstance);
                             
                             NodeList elements60 = sSHElement.getElementsByTagName("PublicKeys");
                             Element publicKeysSequenceElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
-                            if (publicKeysSequenceElement != null)
-                            {
-                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1)
-                                {
+                            if (publicKeysSequenceElement != null) {
+                                for (int i7 = 0; i7 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i7 = i7 + 1) {
                                     org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i7));
                                     SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                     sSHInstance.getPublicKeys().add(publicKeyInstance);
                                     
                                     NodeList elements61 = publicKeysElement.getElementsByTagName("Fingerprint");
                                     Element fingerprintElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
-                                    if (fingerprintElement != null)
-                                    {
+                                    if (fingerprintElement != null) {
                                         String fingerprintInstance;
                                         fingerprintInstance = fingerprintElement.getTextContent();
                                         publicKeyInstance.setFingerprint(fingerprintInstance);
@@ -5960,8 +5169,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements62 = publicKeysElement.getElementsByTagName("Path");
                                     Element pathElement2 = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
-                                    if (pathElement2 != null)
-                                    {
+                                    if (pathElement2 != null) {
                                         String pathInstance2;
                                         pathInstance2 = pathElement2.getTextContent();
                                         publicKeyInstance.setPath(pathInstance2);
@@ -5971,18 +5179,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             NodeList elements63 = sSHElement.getElementsByTagName("KeyPairs");
                             Element keyPairsSequenceElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
-                            if (keyPairsSequenceElement != null)
-                            {
-                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1)
-                                {
+                            if (keyPairsSequenceElement != null) {
+                                for (int i8 = 0; i8 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i8 = i8 + 1) {
                                     org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i8));
                                     SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                     sSHInstance.getKeyPairs().add(keyPairInstance);
                                     
                                     NodeList elements64 = keyPairsElement.getElementsByTagName("Fingerprint");
                                     Element fingerprintElement2 = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
-                                    if (fingerprintElement2 != null)
-                                    {
+                                    if (fingerprintElement2 != null) {
                                         String fingerprintInstance2;
                                         fingerprintInstance2 = fingerprintElement2.getTextContent();
                                         keyPairInstance.setFingerprint(fingerprintInstance2);
@@ -5990,8 +5195,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                                     
                                     NodeList elements65 = keyPairsElement.getElementsByTagName("Path");
                                     Element pathElement3 = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
-                                    if (pathElement3 != null)
-                                    {
+                                    if (pathElement3 != null) {
                                         String pathInstance3;
                                         pathInstance3 = pathElement3.getTextContent();
                                         keyPairInstance.setPath(pathInstance3);
@@ -6004,18 +5208,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements66 = persistentVMRoleElement.getElementsByTagName("DataVirtualHardDisks");
                 Element dataVirtualHardDisksSequenceElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
-                if (dataVirtualHardDisksSequenceElement != null)
-                {
-                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1)
-                    {
+                if (dataVirtualHardDisksSequenceElement != null) {
+                    for (int i9 = 0; i9 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i9 = i9 + 1) {
                         org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i9));
                         DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                         result.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                         
                         NodeList elements67 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
                         Element hostCachingElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
-                        if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                             VirtualHardDiskHostCaching hostCachingInstance;
                             hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
                             dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
@@ -6023,8 +5224,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements68 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
                         Element diskLabelElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
-                        if (diskLabelElement != null)
-                        {
+                        if (diskLabelElement != null) {
                             String diskLabelInstance;
                             diskLabelInstance = diskLabelElement.getTextContent();
                             dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
@@ -6032,8 +5232,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements69 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
                         Element diskNameElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
-                        if (diskNameElement != null)
-                        {
+                        if (diskNameElement != null) {
                             String diskNameInstance;
                             diskNameInstance = diskNameElement.getTextContent();
                             dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
@@ -6041,8 +5240,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements70 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
                         Element lunElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
-                        if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                             int lunInstance;
                             lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                             dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
@@ -6050,8 +5248,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements71 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
                         Element logicalDiskSizeInGBElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
-                        if (logicalDiskSizeInGBElement != null)
-                        {
+                        if (logicalDiskSizeInGBElement != null) {
                             int logicalDiskSizeInGBInstance;
                             logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -6059,8 +5256,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         NodeList elements72 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
                         Element mediaLinkElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
-                        if (mediaLinkElement != null)
-                        {
+                        if (mediaLinkElement != null) {
                             URI mediaLinkInstance;
                             mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                             dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
@@ -6070,15 +5266,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 NodeList elements73 = persistentVMRoleElement.getElementsByTagName("OSVirtualHardDisk");
                 Element oSVirtualHardDiskElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
-                if (oSVirtualHardDiskElement != null)
-                {
+                if (oSVirtualHardDiskElement != null) {
                     OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                     result.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                     
                     NodeList elements74 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
                     Element hostCachingElement2 = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
-                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false)
-                    {
+                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                         VirtualHardDiskHostCaching hostCachingInstance2;
                         hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
                         oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
@@ -6086,8 +5280,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements75 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
                     Element diskLabelElement2 = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
-                    if (diskLabelElement2 != null)
-                    {
+                    if (diskLabelElement2 != null) {
                         String diskLabelInstance2;
                         diskLabelInstance2 = diskLabelElement2.getTextContent();
                         oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
@@ -6095,8 +5288,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements76 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
                     Element diskNameElement2 = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
-                    if (diskNameElement2 != null)
-                    {
+                    if (diskNameElement2 != null) {
                         String diskNameInstance2;
                         diskNameInstance2 = diskNameElement2.getTextContent();
                         oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
@@ -6104,8 +5296,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements77 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
                     Element mediaLinkElement2 = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
-                    if (mediaLinkElement2 != null)
-                    {
+                    if (mediaLinkElement2 != null) {
                         URI mediaLinkInstance2;
                         mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
                         oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
@@ -6113,8 +5304,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements78 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
                     Element sourceImageNameElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
-                    if (sourceImageNameElement != null)
-                    {
+                    if (sourceImageNameElement != null) {
                         String sourceImageNameInstance;
                         sourceImageNameInstance = sourceImageNameElement.getTextContent();
                         oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
@@ -6122,8 +5312,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     NodeList elements79 = oSVirtualHardDiskElement.getElementsByTagName("OS");
                     Element osElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
-                    if (osElement != null)
-                    {
+                    if (osElement != null) {
                         String osInstance;
                         osInstance = osElement.getTextContent();
                         oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
@@ -6132,21 +5321,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -6164,12 +5348,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The Download RDP file operation response.
     */
     @Override
-    public Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<VirtualMachineGetRemoteDesktopFileResponse>() { 
             @Override
-            public VirtualMachineGetRemoteDesktopFileResponse call() throws Exception
-            {
+            public VirtualMachineGetRemoteDesktopFileResponse call() throws Exception {
                 return getRemoteDesktopFile(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -6191,27 +5373,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * @return The Download RDP file operation response.
     */
     @Override
-    public VirtualMachineGetRemoteDesktopFileResponse getRemoteDesktopFile(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException
-    {
+    public VirtualMachineGetRemoteDesktopFileResponse getRemoteDesktopFile(String serviceName, String deploymentName, String virtualMachineName) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
-        if (deploymentName == null)
-        {
+        if (deploymentName == null) {
             throw new NullPointerException("deploymentName");
         }
-        if (virtualMachineName == null)
-        {
+        if (virtualMachineName == null) {
             throw new NullPointerException("virtualMachineName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6231,23 +5408,18 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -6261,21 +5433,16 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             result.setRemoteDesktopFile(StreamUtils.toString(responseContent).getBytes("UTF-8"));
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -6300,12 +5467,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> restartAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<ComputeOperationStatusResponse> restartAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return restart(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -6342,13 +5507,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6356,46 +5519,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("virtualMachineName", virtualMachineName);
             CloudTracing.enter(invocationId, this, "restartAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginRestartingAsync(serviceName, deploymentName, virtualMachineName).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -6403,11 +5556,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -6433,12 +5583,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> shutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> shutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return shutdown(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -6476,13 +5624,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6491,46 +5637,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "shutdownAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -6538,11 +5674,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -6566,12 +5699,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> shutdownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> shutdownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return shutdownRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -6607,13 +5738,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6621,46 +5750,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "shutdownRolesAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -6668,11 +5787,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -6697,12 +5813,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> startAsync(final String serviceName, final String deploymentName, final String virtualMachineName)
-    {
+    public Future<ComputeOperationStatusResponse> startAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return start(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -6739,13 +5853,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6753,46 +5865,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("virtualMachineName", virtualMachineName);
             CloudTracing.enter(invocationId, this, "startAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginStartingAsync(serviceName, deploymentName, virtualMachineName).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -6800,11 +5902,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -6827,12 +5926,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> startRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> startRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return startRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -6867,13 +5964,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -6881,46 +5976,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "startRolesAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginStartingRolesAsync(serviceName, deploymentName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -6928,11 +6013,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -6960,12 +6042,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return update(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -7015,13 +6095,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException
-    {
+    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -7030,46 +6108,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -7077,11 +6145,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -7108,12 +6173,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return updateLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
             }
          });
@@ -7152,13 +6215,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -7166,46 +6227,36 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "updateLoadBalancedEndpointSetAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -7213,11 +6264,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }

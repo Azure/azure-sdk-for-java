@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The List Disks operation response.
 */
-public class VirtualMachineDiskListResponse extends OperationResponse implements Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk>
-{
+public class VirtualMachineDiskListResponse extends OperationResponse implements Iterable<VirtualMachineDiskListResponse.VirtualMachineDisk> {
     private ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks;
     
     /**
     * The virtual machine disks associated with your subscription.
     * @return The Disks value.
     */
-    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks()
-    {
+    public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks() {
         return this.disks;
     }
     
@@ -48,8 +46,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     * The virtual machine disks associated with your subscription.
     * @param disksValue The Disks value.
     */
-    public void setDisks(final ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disksValue)
-    {
+    public void setDisks(final ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disksValue) {
         this.disks = disksValue;
     }
     
@@ -57,8 +54,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     * Initializes a new instance of the VirtualMachineDiskListResponse class.
     *
     */
-    public VirtualMachineDiskListResponse()
-    {
+    public VirtualMachineDiskListResponse() {
         super();
         this.disks = new ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk>();
     }
@@ -67,16 +63,14 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     * Gets the sequence of Disks.
     *
     */
-    public Iterator<VirtualMachineDiskListResponse.VirtualMachineDisk> iterator()
-    {
+    public Iterator<VirtualMachineDiskListResponse.VirtualMachineDisk> iterator() {
         return this.getDisks().iterator();
     }
     
     /**
     * A virtual machine disk associated with your subscription.
     */
-    public static class VirtualMachineDisk
-    {
+    public static class VirtualMachineDisk {
         private String affinityGroup;
         
         /**
@@ -86,8 +80,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * to an affinity group the value is NULL.
         * @return The AffinityGroup value.
         */
-        public String getAffinityGroup()
-        {
+        public String getAffinityGroup() {
             return this.affinityGroup;
         }
         
@@ -98,8 +91,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * to an affinity group the value is NULL.
         * @param affinityGroupValue The AffinityGroup value.
         */
-        public void setAffinityGroup(final String affinityGroupValue)
-        {
+        public void setAffinityGroup(final String affinityGroupValue) {
             this.affinityGroup = affinityGroupValue;
         }
         
@@ -109,8 +101,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Specifies thether the disk is known to be corrupt.
         * @return The IsCorrupted value.
         */
-        public Boolean isCorrupted()
-        {
+        public Boolean isCorrupted() {
             return this.isCorrupted;
         }
         
@@ -118,8 +109,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Specifies thether the disk is known to be corrupt.
         * @param isCorruptedValue The IsCorrupted value.
         */
-        public void setIsCorrupted(final Boolean isCorruptedValue)
-        {
+        public void setIsCorrupted(final Boolean isCorruptedValue) {
             this.isCorrupted = isCorruptedValue;
         }
         
@@ -130,8 +120,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * image.
         * @return The IsPremium value.
         */
-        public Boolean isPremium()
-        {
+        public Boolean isPremium() {
             return this.isPremium;
         }
         
@@ -140,8 +129,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * image.
         * @param isPremiumValue The IsPremium value.
         */
-        public void setIsPremium(final Boolean isPremiumValue)
-        {
+        public void setIsPremium(final Boolean isPremiumValue) {
             this.isPremium = isPremiumValue;
         }
         
@@ -151,8 +139,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The friendly name of the disk.
         * @return The Label value.
         */
-        public String getLabel()
-        {
+        public String getLabel() {
             return this.label;
         }
         
@@ -160,8 +147,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The friendly name of the disk.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue)
-        {
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
         
@@ -174,8 +160,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * the value is NULL.
         * @return The Location value.
         */
-        public String getLocation()
-        {
+        public String getLocation() {
             return this.location;
         }
         
@@ -186,8 +171,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * the value is NULL.
         * @param locationValue The Location value.
         */
-        public void setLocation(final String locationValue)
-        {
+        public void setLocation(final String locationValue) {
             this.location = locationValue;
         }
         
@@ -197,8 +181,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The size, in GB, of the disk.
         * @return The LogicalSizeInGB value.
         */
-        public int getLogicalSizeInGB()
-        {
+        public int getLogicalSizeInGB() {
             return this.logicalSizeInGB;
         }
         
@@ -206,8 +189,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The size, in GB, of the disk.
         * @param logicalSizeInGBValue The LogicalSizeInGB value.
         */
-        public void setLogicalSizeInGB(final int logicalSizeInGBValue)
-        {
+        public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
             this.logicalSizeInGB = logicalSizeInGBValue;
         }
         
@@ -221,8 +203,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         * @return The MediaLinkUri value.
         */
-        public URI getMediaLinkUri()
-        {
+        public URI getMediaLinkUri() {
             return this.mediaLinkUri;
         }
         
@@ -234,8 +215,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         * @param mediaLinkUriValue The MediaLinkUri value.
         */
-        public void setMediaLinkUri(final URI mediaLinkUriValue)
-        {
+        public void setMediaLinkUri(final URI mediaLinkUriValue) {
             this.mediaLinkUri = mediaLinkUriValue;
         }
         
@@ -246,8 +226,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * or more virtual machines using the disk.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -256,8 +235,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * or more virtual machines using the disk.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -268,8 +246,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Linux, Windows, NULL.
         * @return The OperatingSystemType value.
         */
-        public String getOperatingSystemType()
-        {
+        public String getOperatingSystemType() {
             return this.operatingSystemType;
         }
         
@@ -278,8 +255,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Linux, Windows, NULL.
         * @param operatingSystemTypeValue The OperatingSystemType value.
         */
-        public void setOperatingSystemType(final String operatingSystemTypeValue)
-        {
+        public void setOperatingSystemType(final String operatingSystemTypeValue) {
             this.operatingSystemType = operatingSystemTypeValue;
         }
         
@@ -292,8 +268,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Disk operations.
         * @return The SourceImageName value.
         */
-        public String getSourceImageName()
-        {
+        public String getSourceImageName() {
             return this.sourceImageName;
         }
         
@@ -304,8 +279,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * Disk operations.
         * @param sourceImageNameValue The SourceImageName value.
         */
-        public void setSourceImageName(final String sourceImageNameValue)
-        {
+        public void setSourceImageName(final String sourceImageNameValue) {
             this.sourceImageName = sourceImageNameValue;
         }
         
@@ -317,8 +291,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * to a virtual machine.
         * @return The UsageDetails value.
         */
-        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails()
-        {
+        public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails() {
             return this.usageDetails;
         }
         
@@ -328,8 +301,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * to a virtual machine.
         * @param usageDetailsValue The UsageDetails value.
         */
-        public void setUsageDetails(final VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetailsValue)
-        {
+        public void setUsageDetails(final VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetailsValue) {
             this.usageDetails = usageDetailsValue;
         }
     }
@@ -339,16 +311,14 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     * the disk. A disk cannot be deleted as long as it is attached to a
     * virtual machine.
     */
-    public static class VirtualMachineDiskUsageDetails
-    {
+    public static class VirtualMachineDiskUsageDetails {
         private String deploymentName;
         
         /**
         * The deployment in which the disk is being used.
         * @return The DeploymentName value.
         */
-        public String getDeploymentName()
-        {
+        public String getDeploymentName() {
             return this.deploymentName;
         }
         
@@ -356,8 +326,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The deployment in which the disk is being used.
         * @param deploymentNameValue The DeploymentName value.
         */
-        public void setDeploymentName(final String deploymentNameValue)
-        {
+        public void setDeploymentName(final String deploymentNameValue) {
             this.deploymentName = deploymentNameValue;
         }
         
@@ -367,8 +336,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The hosted service in which the disk is being used.
         * @return The HostedServiceName value.
         */
-        public String getHostedServiceName()
-        {
+        public String getHostedServiceName() {
             return this.hostedServiceName;
         }
         
@@ -376,8 +344,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The hosted service in which the disk is being used.
         * @param hostedServiceNameValue The HostedServiceName value.
         */
-        public void setHostedServiceName(final String hostedServiceNameValue)
-        {
+        public void setHostedServiceName(final String hostedServiceNameValue) {
             this.hostedServiceName = hostedServiceNameValue;
         }
         
@@ -387,8 +354,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The virtual machine that the disk is attached to.
         * @return The RoleName value.
         */
-        public String getRoleName()
-        {
+        public String getRoleName() {
             return this.roleName;
         }
         
@@ -396,8 +362,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         * The virtual machine that the disk is attached to.
         * @param roleNameValue The RoleName value.
         */
-        public void setRoleName(final String roleNameValue)
-        {
+        public void setRoleName(final String roleNameValue) {
             this.roleName = roleNameValue;
         }
     }

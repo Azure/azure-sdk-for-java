@@ -31,23 +31,20 @@ import java.util.Iterator;
 /**
 * Preview Only. The response structure for the Server List operation
 */
-public class NetworkReservedIPListResponse extends OperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP>
-{
+public class NetworkReservedIPListResponse extends OperationResponse implements Iterable<NetworkReservedIPListResponse.ReservedIP> {
     private ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPs;
     
     /**
     * @return The ReservedIPs value.
     */
-    public ArrayList<NetworkReservedIPListResponse.ReservedIP> getReservedIPs()
-    {
+    public ArrayList<NetworkReservedIPListResponse.ReservedIP> getReservedIPs() {
         return this.reservedIPs;
     }
     
     /**
     * @param reservedIPsValue The ReservedIPs value.
     */
-    public void setReservedIPs(final ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPsValue)
-    {
+    public void setReservedIPs(final ArrayList<NetworkReservedIPListResponse.ReservedIP> reservedIPsValue) {
         this.reservedIPs = reservedIPsValue;
     }
     
@@ -55,8 +52,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
     * Initializes a new instance of the NetworkReservedIPListResponse class.
     *
     */
-    public NetworkReservedIPListResponse()
-    {
+    public NetworkReservedIPListResponse() {
         super();
         this.reservedIPs = new ArrayList<NetworkReservedIPListResponse.ReservedIP>();
     }
@@ -65,24 +61,21 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
     * Gets the sequence of ReservedIPs.
     *
     */
-    public Iterator<NetworkReservedIPListResponse.ReservedIP> iterator()
-    {
+    public Iterator<NetworkReservedIPListResponse.ReservedIP> iterator() {
         return this.getReservedIPs().iterator();
     }
     
     /**
     * A reserved IP associated with your subscription.
     */
-    public static class ReservedIP
-    {
+    public static class ReservedIP {
         private InetAddress address;
         
         /**
         * The IP address of the reserved IP.
         * @return The Address value.
         */
-        public InetAddress getAddress()
-        {
+        public InetAddress getAddress() {
             return this.address;
         }
         
@@ -90,8 +83,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The IP address of the reserved IP.
         * @param addressValue The Address value.
         */
-        public void setAddress(final InetAddress addressValue)
-        {
+        public void setAddress(final InetAddress addressValue) {
             this.address = addressValue;
         }
         
@@ -102,8 +94,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * virtual network exists.
         * @return The AffinityGroup value.
         */
-        public String getAffinityGroup()
-        {
+        public String getAffinityGroup() {
             return this.affinityGroup;
         }
         
@@ -112,8 +103,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * virtual network exists.
         * @param affinityGroupValue The AffinityGroup value.
         */
-        public void setAffinityGroup(final String affinityGroupValue)
-        {
+        public void setAffinityGroup(final String affinityGroupValue) {
             this.affinityGroup = affinityGroupValue;
         }
         
@@ -123,8 +113,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The name of the deployment the IP belongs to, if being used.
         * @return The DeploymentName value.
         */
-        public String getDeploymentName()
-        {
+        public String getDeploymentName() {
             return this.deploymentName;
         }
         
@@ -132,8 +121,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The name of the deployment the IP belongs to, if being used.
         * @param deploymentNameValue The DeploymentName value.
         */
-        public void setDeploymentName(final String deploymentNameValue)
-        {
+        public void setDeploymentName(final String deploymentNameValue) {
             this.deploymentName = deploymentNameValue;
         }
         
@@ -143,8 +131,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * A unique string identifier that represents the reserved IP.
         * @return The Id value.
         */
-        public String getId()
-        {
+        public String getId() {
             return this.id;
         }
         
@@ -152,8 +139,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * A unique string identifier that represents the reserved IP.
         * @param idValue The Id value.
         */
-        public void setId(final String idValue)
-        {
+        public void setId(final String idValue) {
             this.id = idValue;
         }
         
@@ -163,8 +149,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The indicator of whether the reserved IP is being used.
         * @return The InUse value.
         */
-        public boolean isInUse()
-        {
+        public boolean isInUse() {
             return this.inUse;
         }
         
@@ -172,8 +157,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The indicator of whether the reserved IP is being used.
         * @param inUseValue The InUse value.
         */
-        public void setInUse(final boolean inUseValue)
-        {
+        public void setInUse(final boolean inUseValue) {
             this.inUse = inUseValue;
         }
         
@@ -183,8 +167,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The friendly identifier of the site.
         * @return The Label value.
         */
-        public String getLabel()
-        {
+        public String getLabel() {
             return this.label;
         }
         
@@ -192,8 +175,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The friendly identifier of the site.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue)
-        {
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
         
@@ -203,8 +185,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * Name of the reserved IP.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -212,8 +193,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * Name of the reserved IP.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -223,8 +203,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The name of the service the IP belongs to, if being used.
         * @return The ServiceName value.
         */
-        public String getServiceName()
-        {
+        public String getServiceName() {
             return this.serviceName;
         }
         
@@ -232,8 +211,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * The name of the service the IP belongs to, if being used.
         * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(final String serviceNameValue)
-        {
+        public void setServiceName(final String serviceNameValue) {
             this.serviceName = serviceNameValue;
         }
         
@@ -244,8 +222,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * Deleting, Unavailable)
         * @return The State value.
         */
-        public String getState()
-        {
+        public String getState() {
             return this.state;
         }
         
@@ -254,8 +231,7 @@ public class NetworkReservedIPListResponse extends OperationResponse implements 
         * Deleting, Unavailable)
         * @param stateValue The State value.
         */
-        public void setState(final String stateValue)
-        {
+        public void setState(final String stateValue) {
             this.state = stateValue;
         }
     }

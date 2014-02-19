@@ -50,8 +50,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for more
 * information)
 */
-public interface DeploymentOperations
-{
+public interface DeploymentOperations {
     /**
     * The Change Deployment Configuration operation initiates a change to the
     * deployment configuration.  The Change Deployment Configuration operation

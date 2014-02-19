@@ -29,8 +29,7 @@ import java.util.Calendar;
 /**
 * The Get Web Site Historical Usage Metrics parameters.
 */
-public class WebSiteGetHistoricalUsageMetricsParameters
-{
+public class WebSiteGetHistoricalUsageMetricsParameters {
     private Calendar endTime;
     
     /**
@@ -38,8 +37,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * specified, the current time is used.
     * @return The EndTime value.
     */
-    public Calendar getEndTime()
-    {
+    public Calendar getEndTime() {
         return this.endTime;
     }
     
@@ -48,8 +46,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * specified, the current time is used.
     * @param endTimeValue The EndTime value.
     */
-    public void setEndTime(final Calendar endTimeValue)
-    {
+    public void setEndTime(final Calendar endTimeValue) {
         this.endTime = endTimeValue;
     }
     
@@ -61,8 +58,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * returned.
     * @return The MetricNames value.
     */
-    public ArrayList<String> getMetricNames()
-    {
+    public ArrayList<String> getMetricNames() {
         return this.metricNames;
     }
     
@@ -72,8 +68,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * returned.
     * @param metricNamesValue The MetricNames value.
     */
-    public void setMetricNames(final ArrayList<String> metricNamesValue)
-    {
+    public void setMetricNames(final ArrayList<String> metricNamesValue) {
         this.metricNames = metricNamesValue;
     }
     
@@ -84,8 +79,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * specified, the beginning of the current hour is used.
     * @return The StartTime value.
     */
-    public Calendar getStartTime()
-    {
+    public Calendar getStartTime() {
         return this.startTime;
     }
     
@@ -94,8 +88,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * specified, the beginning of the current hour is used.
     * @param startTimeValue The StartTime value.
     */
-    public void setStartTime(final Calendar startTimeValue)
-    {
+    public void setStartTime(final Calendar startTimeValue) {
         this.startTime = startTimeValue;
     }
     
@@ -104,8 +97,7 @@ public class WebSiteGetHistoricalUsageMetricsParameters
     * WebSiteGetHistoricalUsageMetricsParameters class.
     *
     */
-    public WebSiteGetHistoricalUsageMetricsParameters()
-    {
+    public WebSiteGetHistoricalUsageMetricsParameters() {
         this.metricNames = new ArrayList<String>();
     }
 }

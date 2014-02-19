@@ -27,16 +27,14 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 * The vendor, platform, and os family ofthe requested device configuration
 * script.
 */
-public class GatewayGetDeviceConfigurationScriptParameters
-{
+public class GatewayGetDeviceConfigurationScriptParameters {
     private String oSFamily;
     
     /**
     * The device OS Family.
     * @return The OSFamily value.
     */
-    public String getOSFamily()
-    {
+    public String getOSFamily() {
         return this.oSFamily;
     }
     
@@ -44,8 +42,7 @@ public class GatewayGetDeviceConfigurationScriptParameters
     * The device OS Family.
     * @param oSFamilyValue The OSFamily value.
     */
-    public void setOSFamily(final String oSFamilyValue)
-    {
+    public void setOSFamily(final String oSFamilyValue) {
         this.oSFamily = oSFamilyValue;
     }
     
@@ -55,8 +52,7 @@ public class GatewayGetDeviceConfigurationScriptParameters
     * The device platform.
     * @return The Platform value.
     */
-    public String getPlatform()
-    {
+    public String getPlatform() {
         return this.platform;
     }
     
@@ -64,8 +60,7 @@ public class GatewayGetDeviceConfigurationScriptParameters
     * The device platform.
     * @param platformValue The Platform value.
     */
-    public void setPlatform(final String platformValue)
-    {
+    public void setPlatform(final String platformValue) {
         this.platform = platformValue;
     }
     
@@ -75,8 +70,7 @@ public class GatewayGetDeviceConfigurationScriptParameters
     * The name of the device vendor.
     * @return The Vendor value.
     */
-    public String getVendor()
-    {
+    public String getVendor() {
         return this.vendor;
     }
     
@@ -84,8 +78,7 @@ public class GatewayGetDeviceConfigurationScriptParameters
     * The name of the device vendor.
     * @param vendorValue The Vendor value.
     */
-    public void setVendor(final String vendorValue)
-    {
+    public void setVendor(final String vendorValue) {
         this.vendor = vendorValue;
     }
 }

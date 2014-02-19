@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.virtualnetworks;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.virtualnetworks.models.LocalNetworkConnectionType;
 import com.microsoft.windowsazure.management.virtualnetworks.models.OperationStatus;
 import com.microsoft.windowsazure.management.virtualnetworks.models.VirtualNetworkOperationStatusResponse;
@@ -58,16 +58,14 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157182.aspx for more
 * information)
 */
-public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNetworkManagementClient> implements VirtualNetworkManagementClient
-{
+public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNetworkManagementClient> implements VirtualNetworkManagementClient {
     private URI baseUri;
     
     /**
     * The URI used as the base for all SQL requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri()
-    {
+    public URI getBaseUri() {
         return this.baseUri;
     }
     
@@ -82,8 +80,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials()
-    {
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
@@ -92,8 +89,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * @return The ClientRootCertificatesOperations value.
     */
-    public ClientRootCertificateOperations getClientRootCertificatesOperations()
-    {
+    public ClientRootCertificateOperations getClientRootCertificatesOperations() {
         return this.clientRootCertificates;
     }
     
@@ -102,8 +98,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * @return The GatewaysOperations value.
     */
-    public GatewayOperations getGatewaysOperations()
-    {
+    public GatewayOperations getGatewaysOperations() {
         return this.gateways;
     }
     
@@ -112,8 +107,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * @return The NetworksOperations value.
     */
-    public NetworkOperations getNetworksOperations()
-    {
+    public NetworkOperations getNetworksOperations() {
         return this.networks;
     }
     
@@ -122,8 +116,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * @return The ReservedIPsOperations value.
     */
-    public ReservedIPOperations getReservedIPsOperations()
-    {
+    public ReservedIPOperations getReservedIPsOperations() {
         return this.reservedIPs;
     }
     
@@ -132,8 +125,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     /**
     * @return The StaticIPsOperations value.
     */
-    public StaticIPOperations getStaticIPsOperations()
-    {
+    public StaticIPOperations getStaticIPsOperations() {
         return this.staticIPs;
     }
     
@@ -144,8 +136,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    private VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.clientRootCertificates = new ClientRootCertificateOperationsImpl(this);
         this.gateways = new GatewayOperationsImpl(this);
@@ -168,15 +159,12 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * service is secure.  No anonymous requests are allowed.
     * @param baseUri The URI used as the base for all SQL requests.
     */
-    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
-    {
+    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -201,11 +189,9 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * the response.
     */
     @Inject
-    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
-    {
+    public VirtualNetworkManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -217,8 +203,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected VirtualNetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    protected VirtualNetworkManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new VirtualNetworkManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -244,12 +229,10 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * failure.
     */
     @Override
-    public Future<VirtualNetworkOperationStatusResponse> getOperationStatusAsync(final String requestId)
-    {
+    public Future<VirtualNetworkOperationStatusResponse> getOperationStatusAsync(final String requestId) {
         return this.getExecutorService().submit(new Callable<VirtualNetworkOperationStatusResponse>() { 
             @Override
-            public VirtualNetworkOperationStatusResponse call() throws Exception
-            {
+            public VirtualNetworkOperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -285,19 +268,16 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * failure.
     */
     @Override
-    public VirtualNetworkOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public VirtualNetworkOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (requestId == null)
-        {
+        if (requestId == null) {
             throw new NullPointerException("requestId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
@@ -315,23 +295,18 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -349,12 +324,10 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null)
-            {
+            if (operationElement != null) {
                 NodeList elements2 = operationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -362,8 +335,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     OperationStatus statusInstance;
                     statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -371,8 +343,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
                 
                 NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null)
-                {
+                if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -380,15 +351,13 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
                 
                 NodeList elements5 = operationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null)
-                {
+                if (errorElement != null) {
                     VirtualNetworkOperationStatusResponse.ErrorDetails errorInstance = new VirtualNetworkOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null)
-                    {
+                    if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -396,8 +365,7 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
+                    if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -406,21 +374,16 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -432,14 +395,11 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * @param value The value to parse.
     * @return The enum value.
     */
-     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value)
-    {
-        if ("IPsec".equals(value))
-        {
+     static LocalNetworkConnectionType parseLocalNetworkConnectionType(String value) {
+        if ("IPsec".equals(value)) {
             return LocalNetworkConnectionType.IPSecurity;
         }
-        if ("Dedicated".equals(value))
-        {
+        if ("Dedicated".equals(value)) {
             return LocalNetworkConnectionType.Dedicated;
         }
         throw new IllegalArgumentException("value");
@@ -451,14 +411,11 @@ public class VirtualNetworkManagementClientImpl extends ServiceClient<VirtualNet
     * @param value The value to convert to a string.
     * @return The enum value as a string.
     */
-     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value)
-    {
-        if (value == LocalNetworkConnectionType.IPSecurity)
-        {
+     static String localNetworkConnectionTypeToString(LocalNetworkConnectionType value) {
+        if (value == LocalNetworkConnectionType.IPSecurity) {
             return "IPsec";
         }
-        if (value == LocalNetworkConnectionType.Dedicated)
-        {
+        if (value == LocalNetworkConnectionType.Dedicated) {
             return "Dedicated";
         }
         throw new IllegalArgumentException("value");

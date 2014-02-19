@@ -34,8 +34,7 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public interface ClientRootCertificateOperations
-{
+public interface ClientRootCertificateOperations {
     /**
     * The Upload Client Root Certificate operation is used to upload a new
     * client root certificate to Windows Azure.  (see

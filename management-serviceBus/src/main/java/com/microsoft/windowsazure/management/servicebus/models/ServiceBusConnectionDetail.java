@@ -28,16 +28,14 @@ import java.util.ArrayList;
 /**
 * A connection string for a service bus entity.
 */
-public class ServiceBusConnectionDetail
-{
+public class ServiceBusConnectionDetail {
     private String authorizationType;
     
     /**
     * The type of authorization for the connection to the entity.
     * @return The AuthorizationType value.
     */
-    public String getAuthorizationType()
-    {
+    public String getAuthorizationType() {
         return this.authorizationType;
     }
     
@@ -45,8 +43,7 @@ public class ServiceBusConnectionDetail
     * The type of authorization for the connection to the entity.
     * @param authorizationTypeValue The AuthorizationType value.
     */
-    public void setAuthorizationType(final String authorizationTypeValue)
-    {
+    public void setAuthorizationType(final String authorizationTypeValue) {
         this.authorizationType = authorizationTypeValue;
     }
     
@@ -56,8 +53,7 @@ public class ServiceBusConnectionDetail
     * The connection string to the entity.
     * @return The ConnectionString value.
     */
-    public String getConnectionString()
-    {
+    public String getConnectionString() {
         return this.connectionString;
     }
     
@@ -65,8 +61,7 @@ public class ServiceBusConnectionDetail
     * The connection string to the entity.
     * @param connectionStringValue The ConnectionString value.
     */
-    public void setConnectionString(final String connectionStringValue)
-    {
+    public void setConnectionString(final String connectionStringValue) {
         this.connectionString = connectionStringValue;
     }
     
@@ -76,8 +71,7 @@ public class ServiceBusConnectionDetail
     * The name of the key used in the connection.
     * @return The KeyName value.
     */
-    public String getKeyName()
-    {
+    public String getKeyName() {
         return this.keyName;
     }
     
@@ -85,8 +79,7 @@ public class ServiceBusConnectionDetail
     * The name of the key used in the connection.
     * @param keyNameValue The KeyName value.
     */
-    public void setKeyName(final String keyNameValue)
-    {
+    public void setKeyName(final String keyNameValue) {
         this.keyName = keyNameValue;
     }
     
@@ -96,8 +89,7 @@ public class ServiceBusConnectionDetail
     * The rights connections to the entity via the connection string will have.
     * @return The Rights value.
     */
-    public ArrayList<AccessRight> getRights()
-    {
+    public ArrayList<AccessRight> getRights() {
         return this.rights;
     }
     
@@ -105,8 +97,7 @@ public class ServiceBusConnectionDetail
     * The rights connections to the entity via the connection string will have.
     * @param rightsValue The Rights value.
     */
-    public void setRights(final ArrayList<AccessRight> rightsValue)
-    {
+    public void setRights(final ArrayList<AccessRight> rightsValue) {
         this.rights = rightsValue;
     }
     
@@ -114,8 +105,7 @@ public class ServiceBusConnectionDetail
     * Initializes a new instance of the ServiceBusConnectionDetail class.
     *
     */
-    public ServiceBusConnectionDetail()
-    {
+    public ServiceBusConnectionDetail() {
         this.rights = new ArrayList<AccessRight>();
     }
 }

@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public enum ServerFarmStatus
-{
+public enum ServerFarmStatus {
     Ready,
     
     Pending,

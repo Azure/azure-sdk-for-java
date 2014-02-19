@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Required. Specifies the key, value, and type of the parameter.
 */
-public class ResourceExtensionParameterValue
-{
+public class ResourceExtensionParameterValue {
     private String key;
     
     /**
     * Key
     * @return The Key value.
     */
-    public String getKey()
-    {
+    public String getKey() {
         return this.key;
     }
     
@@ -43,8 +41,7 @@ public class ResourceExtensionParameterValue
     * Key
     * @param keyValue The Key value.
     */
-    public void setKey(final String keyValue)
-    {
+    public void setKey(final String keyValue) {
         this.key = keyValue;
     }
     
@@ -56,8 +53,7 @@ public class ResourceExtensionParameterValue
     * private parameter for a maximum of two parameters.
     * @return The Type value.
     */
-    public ResourceExtensionParameterValueType getType()
-    {
+    public ResourceExtensionParameterValueType getType() {
         return this.type;
     }
     
@@ -67,8 +63,7 @@ public class ResourceExtensionParameterValue
     * private parameter for a maximum of two parameters.
     * @param typeValue The Type value.
     */
-    public void setType(final ResourceExtensionParameterValueType typeValue)
-    {
+    public void setType(final ResourceExtensionParameterValueType typeValue) {
         this.type = typeValue;
     }
     
@@ -78,8 +73,7 @@ public class ResourceExtensionParameterValue
     * Value
     * @return The Value value.
     */
-    public String getValue()
-    {
+    public String getValue() {
         return this.value;
     }
     
@@ -87,8 +81,7 @@ public class ResourceExtensionParameterValue
     * Value
     * @param valueValue The Value value.
     */
-    public void setValue(final String valueValue)
-    {
+    public void setValue(final String valueValue) {
         this.value = valueValue;
     }
 }

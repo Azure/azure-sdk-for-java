@@ -62,15 +62,13 @@ import org.xml.sax.SAXException;
 * Provides REST operations for working with cloud services from the Windows
 * Azure store service.
 */
-public class CloudServiceOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, CloudServiceOperations
-{
+public class CloudServiceOperationsImpl implements ServiceOperations<StoreManagementClientImpl>, CloudServiceOperations {
     /**
     * Initializes a new instance of the CloudServiceOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    CloudServiceOperationsImpl(StoreManagementClientImpl client)
-    {
+    CloudServiceOperationsImpl(StoreManagementClientImpl client) {
         this.client = client;
     }
     
@@ -81,8 +79,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * microsoft.windowsazure.management.store.StoreManagementClientImpl.
     * @return The Client value.
     */
-    public StoreManagementClientImpl getClient()
-    {
+    public StoreManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -103,12 +100,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final CloudServiceCreateParameters parameters)
-    {
+    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final CloudServiceCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return beginCreating(parameters);
             }
          });
@@ -141,35 +136,28 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() == null)
-        {
+        if (parameters.getDescription() == null) {
             throw new NullPointerException("parameters.Description");
         }
-        if (parameters.getGeoRegion() == null)
-        {
+        if (parameters.getGeoRegion() == null) {
             throw new NullPointerException("parameters.GeoRegion");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getName() == null)
-        {
+        if (parameters.getName() == null) {
             throw new NullPointerException("parameters.Name");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -224,23 +212,18 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -250,21 +233,16 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             AddOnOperationStatusResponse result = null;
             result = new AddOnOperationStatusResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -287,12 +265,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> createAsync(final CloudServiceCreateParameters parameters)
-    {
+    public Future<AddOnOperationStatusResponse> createAsync(final CloudServiceCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception
-            {
+            public AddOnOperationStatusResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -327,58 +303,49 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public AddOnOperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             AddOnOperationStatusResponse response = client2.getCloudServicesOperations().beginCreatingAsync(parameters).get();
+            if (response.getStatus() == OperationStatus.Succeeded) {
+                return response;
+            }
             AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -386,11 +353,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -403,12 +367,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * @return The response structure for the Cloud Service List operation.
     */
     @Override
-    public Future<CloudServiceListResponse> listAsync()
-    {
+    public Future<CloudServiceListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<CloudServiceListResponse>() { 
             @Override
-            public CloudServiceListResponse call() throws Exception
-            {
+            public CloudServiceListResponse call() throws Exception {
                 return list();
             }
          });
@@ -429,15 +391,13 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * @return The response structure for the Cloud Service List operation.
     */
     @Override
-    public CloudServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public CloudServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -454,23 +414,18 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -488,18 +443,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             
             NodeList elements = responseDoc.getElementsByTagName("CloudServices");
             Element cloudServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (cloudServicesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1)
-                {
+            if (cloudServicesSequenceElement != null) {
+                for (int i1 = 0; i1 < cloudServicesSequenceElement.getElementsByTagName("CloudService").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element cloudServicesElement = ((org.w3c.dom.Element) cloudServicesSequenceElement.getElementsByTagName("CloudService").item(i1));
                     CloudServiceListResponse.CloudService cloudServiceInstance = new CloudServiceListResponse.CloudService();
                     result.getCloudServices().add(cloudServiceInstance);
                     
                     NodeList elements2 = cloudServicesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         cloudServiceInstance.setName(nameInstance);
@@ -507,8 +459,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                     
                     NodeList elements3 = cloudServicesElement.getElementsByTagName("Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         cloudServiceInstance.setLabel(labelInstance);
@@ -516,8 +467,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                     
                     NodeList elements4 = cloudServicesElement.getElementsByTagName("Description");
                     Element descriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         cloudServiceInstance.setDescription(descriptionInstance);
@@ -525,8 +475,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                     
                     NodeList elements5 = cloudServicesElement.getElementsByTagName("GeoRegion");
                     Element geoRegionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (geoRegionElement != null)
-                    {
+                    if (geoRegionElement != null) {
                         String geoRegionInstance;
                         geoRegionInstance = geoRegionElement.getTextContent();
                         cloudServiceInstance.setGeoRegion(geoRegionInstance);
@@ -534,18 +483,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                     
                     NodeList elements6 = cloudServicesElement.getElementsByTagName("Resources");
                     Element resourcesSequenceElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (resourcesSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1)
-                        {
+                    if (resourcesSequenceElement != null) {
+                        for (int i2 = 0; i2 < resourcesSequenceElement.getElementsByTagName("Resource").getLength(); i2 = i2 + 1) {
                             org.w3c.dom.Element resourcesElement = ((org.w3c.dom.Element) resourcesSequenceElement.getElementsByTagName("Resource").item(i2));
                             CloudServiceListResponse.CloudService.AddOnResource resourceInstance = new CloudServiceListResponse.CloudService.AddOnResource();
                             cloudServiceInstance.getResources().add(resourceInstance);
                             
                             NodeList elements7 = resourcesElement.getElementsByTagName("ResourceProviderNamespace");
                             Element resourceProviderNamespaceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                            if (resourceProviderNamespaceElement != null)
-                            {
+                            if (resourceProviderNamespaceElement != null) {
                                 String resourceProviderNamespaceInstance;
                                 resourceProviderNamespaceInstance = resourceProviderNamespaceElement.getTextContent();
                                 resourceInstance.setNamespace(resourceProviderNamespaceInstance);
@@ -553,8 +499,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements8 = resourcesElement.getElementsByTagName("Type");
                             Element typeElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (typeElement != null)
-                            {
+                            if (typeElement != null) {
                                 String typeInstance;
                                 typeInstance = typeElement.getTextContent();
                                 resourceInstance.setType(typeInstance);
@@ -562,8 +507,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements9 = resourcesElement.getElementsByTagName("Name");
                             Element nameElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                            if (nameElement2 != null)
-                            {
+                            if (nameElement2 != null) {
                                 String nameInstance2;
                                 nameInstance2 = nameElement2.getTextContent();
                                 resourceInstance.setName(nameInstance2);
@@ -571,8 +515,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements10 = resourcesElement.getElementsByTagName("Plan");
                             Element planElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                            if (planElement != null)
-                            {
+                            if (planElement != null) {
                                 String planInstance;
                                 planInstance = planElement.getTextContent();
                                 resourceInstance.setPlan(planInstance);
@@ -580,8 +523,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements11 = resourcesElement.getElementsByTagName("SchemaVersion");
                             Element schemaVersionElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                            if (schemaVersionElement != null)
-                            {
+                            if (schemaVersionElement != null) {
                                 String schemaVersionInstance;
                                 schemaVersionInstance = schemaVersionElement.getTextContent();
                                 resourceInstance.setSchemaVersion(schemaVersionInstance);
@@ -589,8 +531,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements12 = resourcesElement.getElementsByTagName("ETag");
                             Element eTagElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                            if (eTagElement != null)
-                            {
+                            if (eTagElement != null) {
                                 String eTagInstance;
                                 eTagInstance = eTagElement.getTextContent();
                                 resourceInstance.setETag(eTagInstance);
@@ -598,8 +539,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements13 = resourcesElement.getElementsByTagName("State");
                             Element stateElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                            if (stateElement != null)
-                            {
+                            if (stateElement != null) {
                                 String stateInstance;
                                 stateInstance = stateElement.getTextContent();
                                 resourceInstance.setState(stateInstance);
@@ -607,18 +547,15 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements14 = resourcesElement.getElementsByTagName("UsageMeters");
                             Element usageMetersSequenceElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                            if (usageMetersSequenceElement != null)
-                            {
-                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1)
-                                {
+                            if (usageMetersSequenceElement != null) {
+                                for (int i3 = 0; i3 < usageMetersSequenceElement.getElementsByTagName("UsageMeter").getLength(); i3 = i3 + 1) {
                                     org.w3c.dom.Element usageMetersElement = ((org.w3c.dom.Element) usageMetersSequenceElement.getElementsByTagName("UsageMeter").item(i3));
                                     CloudServiceListResponse.CloudService.AddOnResource.UsageLimit usageMeterInstance = new CloudServiceListResponse.CloudService.AddOnResource.UsageLimit();
                                     resourceInstance.getUsageLimits().add(usageMeterInstance);
                                     
                                     NodeList elements15 = usageMetersElement.getElementsByTagName("Name");
                                     Element nameElement3 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                    if (nameElement3 != null)
-                                    {
+                                    if (nameElement3 != null) {
                                         String nameInstance3;
                                         nameInstance3 = nameElement3.getTextContent();
                                         usageMeterInstance.setName(nameInstance3);
@@ -626,8 +563,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     
                                     NodeList elements16 = usageMetersElement.getElementsByTagName("Unit");
                                     Element unitElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                    if (unitElement != null)
-                                    {
+                                    if (unitElement != null) {
                                         String unitInstance;
                                         unitInstance = unitElement.getTextContent();
                                         usageMeterInstance.setUnit(unitInstance);
@@ -635,8 +571,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     
                                     NodeList elements17 = usageMetersElement.getElementsByTagName("Included");
                                     Element includedElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                    if (includedElement != null)
-                                    {
+                                    if (includedElement != null) {
                                         long includedInstance;
                                         includedInstance = DatatypeConverter.parseLong(includedElement.getTextContent());
                                         usageMeterInstance.setAmountIncluded(includedInstance);
@@ -644,8 +579,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                     
                                     NodeList elements18 = usageMetersElement.getElementsByTagName("Used");
                                     Element usedElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                    if (usedElement != null)
-                                    {
+                                    if (usedElement != null) {
                                         long usedInstance;
                                         usedInstance = DatatypeConverter.parseLong(usedElement.getTextContent());
                                         usageMeterInstance.setAmountUsed(usedInstance);
@@ -655,10 +589,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements19 = resourcesElement.getElementsByTagName("OutputItems");
                             Element outputItemsSequenceElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (outputItemsSequenceElement != null)
-                            {
-                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1)
-                                {
+                            if (outputItemsSequenceElement != null) {
+                                for (int i4 = 0; i4 < outputItemsSequenceElement.getElementsByTagName("OutputItem").getLength(); i4 = i4 + 1) {
                                     org.w3c.dom.Element outputItemsElement = ((org.w3c.dom.Element) outputItemsSequenceElement.getElementsByTagName("OutputItem").item(i4));
                                     NodeList elements20 = outputItemsElement.getElementsByTagName("Key");
                                     String outputItemsKey = elements20.getLength() > 0 ? ((org.w3c.dom.Element) elements20.item(0)).getTextContent() : null;
@@ -670,15 +602,13 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                             
                             NodeList elements22 = resourcesElement.getElementsByTagName("OperationStatus");
                             Element operationStatusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                            if (operationStatusElement != null)
-                            {
+                            if (operationStatusElement != null) {
                                 CloudServiceListResponse.CloudService.AddOnResource.OperationStatus operationStatusInstance = new CloudServiceListResponse.CloudService.AddOnResource.OperationStatus();
                                 resourceInstance.setStatus(operationStatusInstance);
                                 
                                 NodeList elements23 = operationStatusElement.getElementsByTagName("Type");
                                 Element typeElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (typeElement2 != null)
-                                {
+                                if (typeElement2 != null) {
                                     String typeInstance2;
                                     typeInstance2 = typeElement2.getTextContent();
                                     operationStatusInstance.setType(typeInstance2);
@@ -686,8 +616,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                                 
                                 NodeList elements24 = operationStatusElement.getElementsByTagName("Result");
                                 Element resultElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                if (resultElement != null)
-                                {
+                                if (resultElement != null) {
                                     String resultInstance;
                                     resultInstance = resultElement.getTextContent();
                                     operationStatusInstance.setResult(resultInstance);
@@ -699,21 +628,16 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

@@ -28,8 +28,7 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Create Hosted Service operation.
 */
-public class HostedServiceCreateParameters
-{
+public class HostedServiceCreateParameters {
     private String affinityGroup;
     
     /**
@@ -41,8 +40,7 @@ public class HostedServiceCreateParameters
     * List Affinity Groups operation.
     * @return The AffinityGroup value.
     */
-    public String getAffinityGroup()
-    {
+    public String getAffinityGroup() {
         return this.affinityGroup;
     }
     
@@ -55,8 +53,7 @@ public class HostedServiceCreateParameters
     * List Affinity Groups operation.
     * @param affinityGroupValue The AffinityGroup value.
     */
-    public void setAffinityGroup(final String affinityGroupValue)
-    {
+    public void setAffinityGroup(final String affinityGroupValue) {
         this.affinityGroup = affinityGroupValue;
     }
     
@@ -67,8 +64,7 @@ public class HostedServiceCreateParameters
     * to 1024 characters in length.
     * @return The Description value.
     */
-    public String getDescription()
-    {
+    public String getDescription() {
         return this.description;
     }
     
@@ -77,8 +73,7 @@ public class HostedServiceCreateParameters
     * to 1024 characters in length.
     * @param descriptionValue The Description value.
     */
-    public void setDescription(final String descriptionValue)
-    {
+    public void setDescription(final String descriptionValue) {
         this.description = descriptionValue;
     }
     
@@ -97,8 +92,7 @@ public class HostedServiceCreateParameters
     * maximum length of 255 characters.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties()
-    {
+    public HashMap<String, String> getExtendedProperties() {
         return this.extendedProperties;
     }
     
@@ -115,8 +109,7 @@ public class HostedServiceCreateParameters
     * maximum length of 255 characters.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-    {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -128,14 +121,10 @@ public class HostedServiceCreateParameters
     * account for your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel()
-    {
-        if (this.label == null)
-        {
+    public String getLabel() {
+        if (this.label == null) {
             return this.getServiceName();
-        }
-        else
-        {
+        } else {
             return this.label;
         }
     }
@@ -146,8 +135,7 @@ public class HostedServiceCreateParameters
     * account for your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -159,8 +147,7 @@ public class HostedServiceCreateParameters
     * not both. To list available locations, use the List Locations operation.
     * @return The Location value.
     */
-    public String getLocation()
-    {
+    public String getLocation() {
         return this.location;
     }
     
@@ -170,8 +157,7 @@ public class HostedServiceCreateParameters
     * not both. To list available locations, use the List Locations operation.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue)
-    {
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
     
@@ -183,8 +169,7 @@ public class HostedServiceCreateParameters
     * service.
     * @return The ServiceName value.
     */
-    public String getServiceName()
-    {
+    public String getServiceName() {
         return this.serviceName;
     }
     
@@ -194,8 +179,7 @@ public class HostedServiceCreateParameters
     * service.
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue)
-    {
+    public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
     
@@ -203,8 +187,7 @@ public class HostedServiceCreateParameters
     * Initializes a new instance of the HostedServiceCreateParameters class.
     *
     */
-    public HostedServiceCreateParameters()
-    {
+    public HostedServiceCreateParameters() {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

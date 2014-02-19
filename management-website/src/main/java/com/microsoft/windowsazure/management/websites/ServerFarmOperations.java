@@ -43,8 +43,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for more
 * information)
 */
-public interface ServerFarmOperations
-{
+public interface ServerFarmOperations {
     /**
     * You can create a server farm by issuing an HTTP POST request. Only one
     * server farm per webspace is permitted. You can retrieve server farm

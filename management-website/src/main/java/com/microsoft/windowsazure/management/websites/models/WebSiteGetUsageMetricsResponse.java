@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The Get Web Site Usage Metrics operation response.
 */
-public class WebSiteGetUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric>
-{
+public class WebSiteGetUsageMetricsResponse extends OperationResponse implements Iterable<WebSiteGetUsageMetricsResponse.UsageMetric> {
     private ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics;
     
     /**
     * The usage metrics for the web site.
     * @return The UsageMetrics value.
     */
-    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics()
-    {
+    public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics() {
         return this.usageMetrics;
     }
     
@@ -48,8 +46,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     * The usage metrics for the web site.
     * @param usageMetricsValue The UsageMetrics value.
     */
-    public void setUsageMetrics(final ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetricsValue)
-    {
+    public void setUsageMetrics(final ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetricsValue) {
         this.usageMetrics = usageMetricsValue;
     }
     
@@ -57,8 +54,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     * Initializes a new instance of the WebSiteGetUsageMetricsResponse class.
     *
     */
-    public WebSiteGetUsageMetricsResponse()
-    {
+    public WebSiteGetUsageMetricsResponse() {
         super();
         this.usageMetrics = new ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric>();
     }
@@ -67,16 +63,14 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     * Gets the sequence of UsageMetrics.
     *
     */
-    public Iterator<WebSiteGetUsageMetricsResponse.UsageMetric> iterator()
-    {
+    public Iterator<WebSiteGetUsageMetricsResponse.UsageMetric> iterator() {
         return this.getUsageMetrics().iterator();
     }
     
     /**
     * A specific usage metric.
     */
-    public static class UsageMetric
-    {
+    public static class UsageMetric {
         private WebSiteComputeMode computeMode;
         
         /**
@@ -85,8 +79,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * return value is Shared.
         * @return The ComputeMode value.
         */
-        public WebSiteComputeMode getComputeMode()
-        {
+        public WebSiteComputeMode getComputeMode() {
             return this.computeMode;
         }
         
@@ -96,8 +89,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * return value is Shared.
         * @param computeModeValue The ComputeMode value.
         */
-        public void setComputeMode(final WebSiteComputeMode computeModeValue)
-        {
+        public void setComputeMode(final WebSiteComputeMode computeModeValue) {
             this.computeMode = computeModeValue;
         }
         
@@ -108,8 +100,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * measurement specified by the Unit element.
         * @return The CurrentValue value.
         */
-        public String getCurrentValue()
-        {
+        public String getCurrentValue() {
             return this.currentValue;
         }
         
@@ -118,8 +109,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * measurement specified by the Unit element.
         * @param currentValueValue The CurrentValue value.
         */
-        public void setCurrentValue(final String currentValueValue)
-        {
+        public void setCurrentValue(final String currentValueValue) {
             this.currentValue = currentValueValue;
         }
         
@@ -129,8 +119,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The display name of the metric (includes spaces).
         * @return The DisplayName value.
         */
-        public String getDisplayName()
-        {
+        public String getDisplayName() {
             return this.displayName;
         }
         
@@ -138,8 +127,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The display name of the metric (includes spaces).
         * @param displayNameValue The DisplayName value.
         */
-        public void setDisplayName(final String displayNameValue)
-        {
+        public void setDisplayName(final String displayNameValue) {
             this.displayName = displayNameValue;
         }
         
@@ -155,8 +143,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * sites. For free web sites, limits are enforced at the webspace level.
         * @return The Limit value.
         */
-        public String getLimit()
-        {
+        public String getLimit() {
             return this.limit;
         }
         
@@ -170,8 +157,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * sites. For free web sites, limits are enforced at the webspace level.
         * @param limitValue The Limit value.
         */
-        public void setLimit(final String limitValue)
-        {
+        public void setLimit(final String limitValue) {
             this.limit = limitValue;
         }
         
@@ -182,8 +168,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * as that of the ResourceName element.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -192,8 +177,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * as that of the ResourceName element.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -203,8 +187,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The time at which the metric will be reset.
         * @return The NextResetTime value.
         */
-        public Calendar getNextResetTime()
-        {
+        public Calendar getNextResetTime() {
             return this.nextResetTime;
         }
         
@@ -212,8 +195,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The time at which the metric will be reset.
         * @param nextResetTimeValue The NextResetTime value.
         */
-        public void setNextResetTime(final Calendar nextResetTimeValue)
-        {
+        public void setNextResetTime(final Calendar nextResetTimeValue) {
             this.nextResetTime = nextResetTimeValue;
         }
         
@@ -223,8 +205,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The name of the resource being measured.
         * @return The ResourceName value.
         */
-        public String getResourceName()
-        {
+        public String getResourceName() {
             return this.resourceName;
         }
         
@@ -232,8 +213,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The name of the resource being measured.
         * @param resourceNameValue The ResourceName value.
         */
-        public void setResourceName(final String resourceNameValue)
-        {
+        public void setResourceName(final String resourceNameValue) {
             this.resourceName = resourceNameValue;
         }
         
@@ -245,8 +225,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * in Standard Mode return null.
         * @return The SiteMode value.
         */
-        public WebSiteMode getSiteMode()
-        {
+        public WebSiteMode getSiteMode() {
             return this.siteMode;
         }
         
@@ -256,8 +235,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * in Standard Mode return null.
         * @param siteModeValue The SiteMode value.
         */
-        public void setSiteMode(final WebSiteMode siteModeValue)
-        {
+        public void setSiteMode(final WebSiteMode siteModeValue) {
             this.siteMode = siteModeValue;
         }
         
@@ -267,8 +245,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The unit of measure for the given metric.
         * @return The Unit value.
         */
-        public String getUnit()
-        {
+        public String getUnit() {
             return this.unit;
         }
         
@@ -276,8 +253,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         * The unit of measure for the given metric.
         * @param unitValue The Unit value.
         */
-        public void setUnit(final String unitValue)
-        {
+        public void setUnit(final String unitValue) {
             this.unit = unitValue;
         }
     }

@@ -27,8 +27,7 @@ package com.microsoft.windowsazure.management.compute.models;
 * Required. Specifies the action that is performed after the capture operation
 * finishes.
 */
-public enum PostCaptureAction
-{
+public enum PostCaptureAction {
     /**
     * Causes the virtual machine to be deleted after the image has been captured
     */

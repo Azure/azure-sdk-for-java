@@ -28,16 +28,14 @@ import java.util.Calendar;
 /**
 * A management event for the virtual network gateway.
 */
-public class GatewayEvent
-{
+public class GatewayEvent {
     private String data;
     
     /**
     * Additional data associated with this event.
     * @return The Data value.
     */
-    public String getData()
-    {
+    public String getData() {
         return this.data;
     }
     
@@ -45,8 +43,7 @@ public class GatewayEvent
     * Additional data associated with this event.
     * @param dataValue The Data value.
     */
-    public void setData(final String dataValue)
-    {
+    public void setData(final String dataValue) {
         this.data = dataValue;
     }
     
@@ -56,8 +53,7 @@ public class GatewayEvent
     * The event ID.
     * @return The Id value.
     */
-    public String getId()
-    {
+    public String getId() {
         return this.id;
     }
     
@@ -65,8 +61,7 @@ public class GatewayEvent
     * The event ID.
     * @param idValue The Id value.
     */
-    public void setId(final String idValue)
-    {
+    public void setId(final String idValue) {
         this.id = idValue;
     }
     
@@ -76,8 +71,7 @@ public class GatewayEvent
     * The event message.
     * @return The Message value.
     */
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.message;
     }
     
@@ -85,8 +79,7 @@ public class GatewayEvent
     * The event message.
     * @param messageValue The Message value.
     */
-    public void setMessage(final String messageValue)
-    {
+    public void setMessage(final String messageValue) {
         this.message = messageValue;
     }
     
@@ -96,8 +89,7 @@ public class GatewayEvent
     * The date and time when the event occurred.
     * @return The Timestamp value.
     */
-    public Calendar getTimestamp()
-    {
+    public Calendar getTimestamp() {
         return this.timestamp;
     }
     
@@ -105,8 +97,7 @@ public class GatewayEvent
     * The date and time when the event occurred.
     * @param timestampValue The Timestamp value.
     */
-    public void setTimestamp(final Calendar timestampValue)
-    {
+    public void setTimestamp(final Calendar timestampValue) {
         this.timestamp = timestampValue;
     }
 }

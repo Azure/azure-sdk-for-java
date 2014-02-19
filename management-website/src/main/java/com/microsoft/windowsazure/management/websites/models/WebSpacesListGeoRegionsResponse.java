@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The Get DNS Suffix operation response.
 */
-public class WebSpacesListGeoRegionsResponse extends OperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion>
-{
+public class WebSpacesListGeoRegionsResponse extends OperationResponse implements Iterable<WebSpacesListGeoRegionsResponse.GeoRegion> {
     private ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions;
     
     /**
     * The available geo regions.
     * @return The GeoRegions value.
     */
-    public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions()
-    {
+    public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions() {
         return this.geoRegions;
     }
     
@@ -47,8 +45,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     * The available geo regions.
     * @param geoRegionsValue The GeoRegions value.
     */
-    public void setGeoRegions(final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue)
-    {
+    public void setGeoRegions(final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue) {
         this.geoRegions = geoRegionsValue;
     }
     
@@ -56,8 +53,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     * Initializes a new instance of the WebSpacesListGeoRegionsResponse class.
     *
     */
-    public WebSpacesListGeoRegionsResponse()
-    {
+    public WebSpacesListGeoRegionsResponse() {
         super();
         this.geoRegions = new ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion>();
     }
@@ -66,24 +62,21 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     * Gets the sequence of GeoRegions.
     *
     */
-    public Iterator<WebSpacesListGeoRegionsResponse.GeoRegion> iterator()
-    {
+    public Iterator<WebSpacesListGeoRegionsResponse.GeoRegion> iterator() {
         return this.getGeoRegions().iterator();
     }
     
     /**
     * An available geo region for a web space.
     */
-    public static class GeoRegion
-    {
+    public static class GeoRegion {
         private String description;
         
         /**
         * Geo Region description.
         * @return The Description value.
         */
-        public String getDescription()
-        {
+        public String getDescription() {
             return this.description;
         }
         
@@ -91,8 +84,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Geo Region description.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue)
-        {
+        public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
         
@@ -102,8 +94,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Name of the region.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -111,8 +102,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Name of the region.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -122,8 +112,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Sort order.
         * @return The SortOrder value.
         */
-        public int getSortOrder()
-        {
+        public int getSortOrder() {
             return this.sortOrder;
         }
         
@@ -131,8 +120,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         * Sort order.
         * @param sortOrderValue The SortOrder value.
         */
-        public void setSortOrder(final int sortOrderValue)
-        {
+        public void setSortOrder(final int sortOrderValue) {
             this.sortOrder = sortOrderValue;
         }
     }

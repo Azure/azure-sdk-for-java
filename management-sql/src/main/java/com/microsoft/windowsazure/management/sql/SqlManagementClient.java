@@ -33,13 +33,12 @@ import java.net.URI;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715283.aspx for more
 * information)
 */
-public interface SqlManagementClient extends FilterableService<SqlManagementClient>
-{
+public interface SqlManagementClient extends FilterableService<SqlManagementClient> {
     /**
     * The URI used as the base for all SQL requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -50,28 +49,28 @@ public interface SqlManagementClient extends FilterableService<SqlManagementClie
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * Includes operations for importing and exporting SQL Databases into and
     * out of Windows Azure blob storage.
     * @return The DacOperations value.
     */
-    DacOperations getDacOperations(); 
+    DacOperations getDacOperations();
     
     /**
     * The SQL Database Management API includes operations for get/stop SQL
     * Databases' operations for a subscription.
     * @return The DatabaseOperationsOperations value.
     */
-    DatabaseOperationOperations getDatabaseOperationsOperations(); 
+    DatabaseOperationOperations getDatabaseOperationsOperations();
     
     /**
     * The SQL Database Management API includes operations for managing SQL
     * Databases for a subscription.
     * @return The DatabasesOperations value.
     */
-    DatabaseOperations getDatabasesOperations(); 
+    DatabaseOperations getDatabasesOperations();
     
     /**
     * The Windows Azure SQL Database Management API includes operations for
@@ -84,7 +83,7 @@ public interface SqlManagementClient extends FilterableService<SqlManagementClie
     * more information)
     * @return The FirewallRulesOperations value.
     */
-    FirewallRuleOperations getFirewallRulesOperations(); 
+    FirewallRuleOperations getFirewallRulesOperations();
     
     /**
     * The SQL Database Management API includes operations for managing SQL
@@ -93,12 +92,12 @@ public interface SqlManagementClient extends FilterableService<SqlManagementClie
     * more information)
     * @return The ServersOperations value.
     */
-    ServerOperations getServersOperations(); 
+    ServerOperations getServersOperations();
     
     /**
     * The SQL Database Management API includes operations for getting Service
     * Objective for a subscription.
     * @return The ServiceObjectivesOperations value.
     */
-    ServiceObjectiveOperations getServiceObjectivesOperations(); 
+    ServiceObjectiveOperations getServiceObjectivesOperations();
 }

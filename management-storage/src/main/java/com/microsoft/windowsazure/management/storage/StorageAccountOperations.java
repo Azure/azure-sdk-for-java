@@ -48,8 +48,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460790.aspx for more
 * information)
 */
-public interface StorageAccountOperations
-{
+public interface StorageAccountOperations {
     /**
     * The Create Storage Account operation creates a new storage account in
     * Windows Azure.  (see

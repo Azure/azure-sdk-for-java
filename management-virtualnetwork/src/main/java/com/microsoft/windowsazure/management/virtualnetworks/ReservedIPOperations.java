@@ -36,8 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
-public interface ReservedIPOperations
-{
+public interface ReservedIPOperations {
     /**
     * Preview Only. The Create Reserved IP operation creates a reserved IP from
     * your the subscription.

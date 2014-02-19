@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Get Service Certificate operation.
 */
-public class ServiceCertificateGetParameters
-{
+public class ServiceCertificateGetParameters {
     private String serviceName;
     
     /**
     * The DNS prefix name of your service.
     * @return The ServiceName value.
     */
-    public String getServiceName()
-    {
+    public String getServiceName() {
         return this.serviceName;
     }
     
@@ -43,8 +41,7 @@ public class ServiceCertificateGetParameters
     * The DNS prefix name of your service.
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue)
-    {
+    public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
     
@@ -54,8 +51,7 @@ public class ServiceCertificateGetParameters
     * The hexadecimal representation of the thumbprint.
     * @return The Thumbprint value.
     */
-    public String getThumbprint()
-    {
+    public String getThumbprint() {
         return this.thumbprint;
     }
     
@@ -63,8 +59,7 @@ public class ServiceCertificateGetParameters
     * The hexadecimal representation of the thumbprint.
     * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(final String thumbprintValue)
-    {
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
     
@@ -74,8 +69,7 @@ public class ServiceCertificateGetParameters
     * The algorithm for the certificate's thumbprint.
     * @return The ThumbprintAlgorithm value.
     */
-    public String getThumbprintAlgorithm()
-    {
+    public String getThumbprintAlgorithm() {
         return this.thumbprintAlgorithm;
     }
     
@@ -83,8 +77,7 @@ public class ServiceCertificateGetParameters
     * The algorithm for the certificate's thumbprint.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
-    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-    {
+    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
         this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
 }

@@ -45,8 +45,7 @@ import org.xml.sax.SAXException;
 * (see http://msdn.microsoft.com/en-us/library/windowsazure/gg715276.aspx for
 * more information)
 */
-public interface FirewallRuleOperations
-{
+public interface FirewallRuleOperations {
     /**
     * Adds a new server-level firewall rule for a SQL Database server that
     * belongs to a subscription.  (see

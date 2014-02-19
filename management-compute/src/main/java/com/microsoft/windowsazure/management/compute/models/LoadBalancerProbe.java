@@ -28,8 +28,7 @@ package com.microsoft.windowsazure.management.compute.models;
 * Azure load balancer uses to monitor the availability of this virtual machine
 * before forwarding traffic to the endpoint
 */
-public class LoadBalancerProbe
-{
+public class LoadBalancerProbe {
     private Integer intervalInSeconds;
     
     /**
@@ -37,8 +36,7 @@ public class LoadBalancerProbe
     * minimum value is 5 seconds. If not specified, the default is 15 seconds.
     * @return The IntervalInSeconds value.
     */
-    public Integer getIntervalInSeconds()
-    {
+    public Integer getIntervalInSeconds() {
         return this.intervalInSeconds;
     }
     
@@ -47,8 +45,7 @@ public class LoadBalancerProbe
     * minimum value is 5 seconds. If not specified, the default is 15 seconds.
     * @param intervalInSecondsValue The IntervalInSeconds value.
     */
-    public void setIntervalInSeconds(final Integer intervalInSecondsValue)
-    {
+    public void setIntervalInSeconds(final Integer intervalInSecondsValue) {
         this.intervalInSeconds = intervalInSecondsValue;
     }
     
@@ -60,8 +57,7 @@ public class LoadBalancerProbe
     * be NULL.
     * @return The Path value.
     */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
     
@@ -71,8 +67,7 @@ public class LoadBalancerProbe
     * be NULL.
     * @param pathValue The Path value.
     */
-    public void setPath(final String pathValue)
-    {
+    public void setPath(final String pathValue) {
         this.path = pathValue;
     }
     
@@ -83,8 +78,7 @@ public class LoadBalancerProbe
     * status.
     * @return The Port value.
     */
-    public int getPort()
-    {
+    public int getPort() {
         return this.port;
     }
     
@@ -93,8 +87,7 @@ public class LoadBalancerProbe
     * status.
     * @param portValue The Port value.
     */
-    public void setPort(final int portValue)
-    {
+    public void setPort(final int portValue) {
         this.port = portValue;
     }
     
@@ -105,8 +98,7 @@ public class LoadBalancerProbe
     * status.
     * @return The Protocol value.
     */
-    public LoadBalancerProbeTransportProtocol getProtocol()
-    {
+    public LoadBalancerProbeTransportProtocol getProtocol() {
         return this.protocol;
     }
     
@@ -115,8 +107,7 @@ public class LoadBalancerProbe
     * status.
     * @param protocolValue The Protocol value.
     */
-    public void setProtocol(final LoadBalancerProbeTransportProtocol protocolValue)
-    {
+    public void setProtocol(final LoadBalancerProbeTransportProtocol protocolValue) {
         this.protocol = protocolValue;
     }
     
@@ -127,8 +118,7 @@ public class LoadBalancerProbe
     * value is 11 seconds. If not specified, the default is 31 seconds.
     * @return The TimeoutInSeconds value.
     */
-    public Integer getTimeoutInSeconds()
-    {
+    public Integer getTimeoutInSeconds() {
         return this.timeoutInSeconds;
     }
     
@@ -137,8 +127,7 @@ public class LoadBalancerProbe
     * value is 11 seconds. If not specified, the default is 31 seconds.
     * @param timeoutInSecondsValue The TimeoutInSeconds value.
     */
-    public void setTimeoutInSeconds(final Integer timeoutInSecondsValue)
-    {
+    public void setTimeoutInSeconds(final Integer timeoutInSecondsValue) {
         this.timeoutInSeconds = timeoutInSecondsValue;
     }
 }

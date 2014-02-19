@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public class WebSpaceNames
-{
+public class WebSpaceNames {
     public static final String EastUSWebSpace = "eastuswebspace";
     
     public static final String WestUSWebSpace = "westuswebspace";

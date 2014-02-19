@@ -41,8 +41,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460798.aspx for more
 * information)
 */
-public interface AffinityGroupOperations
-{
+public interface AffinityGroupOperations {
     /**
     * The Create Affinity Group operation creates a new affinity group for the
     * specified subscription.  (see

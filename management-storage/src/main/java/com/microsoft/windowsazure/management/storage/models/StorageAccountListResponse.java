@@ -32,23 +32,20 @@ import java.util.Iterator;
 /**
 * The List Storage Accounts operation response.
 */
-public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageService>
-{
+public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageService> {
     private ArrayList<StorageAccountListResponse.StorageService> storageServices;
     
     /**
     * @return The StorageServices value.
     */
-    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices()
-    {
+    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices() {
         return this.storageServices;
     }
     
     /**
     * @param storageServicesValue The StorageServices value.
     */
-    public void setStorageServices(final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue)
-    {
+    public void setStorageServices(final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue) {
         this.storageServices = storageServicesValue;
     }
     
@@ -56,8 +53,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     * Initializes a new instance of the StorageAccountListResponse class.
     *
     */
-    public StorageAccountListResponse()
-    {
+    public StorageAccountListResponse() {
         super();
         this.storageServices = new ArrayList<StorageAccountListResponse.StorageService>();
     }
@@ -66,16 +62,14 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     * Gets the sequence of StorageServices.
     *
     */
-    public Iterator<StorageAccountListResponse.StorageService> iterator()
-    {
+    public Iterator<StorageAccountListResponse.StorageService> iterator() {
         return this.getStorageServices().iterator();
     }
     
     /**
     * A Storage Service associated with your subscription.
     */
-    public static class StorageService
-    {
+    public static class StorageService {
         private HashMap<String, String> extendedProperties;
         
         /**
@@ -92,8 +86,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * maximum length of 255 characters.
         * @return The ExtendedProperties value.
         */
-        public HashMap<String, String> getExtendedProperties()
-        {
+        public HashMap<String, String> getExtendedProperties() {
             return this.extendedProperties;
         }
         
@@ -111,8 +104,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * maximum length of 255 characters.
         * @param extendedPropertiesValue The ExtendedProperties value.
         */
-        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-        {
+        public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
             this.extendedProperties = extendedPropertiesValue;
         }
         
@@ -122,8 +114,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Details about the storage account.
         * @return The Properties value.
         */
-        public StorageServiceProperties getProperties()
-        {
+        public StorageServiceProperties getProperties() {
             return this.properties;
         }
         
@@ -131,8 +122,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Details about the storage account.
         * @param propertiesValue The Properties value.
         */
-        public void setProperties(final StorageServiceProperties propertiesValue)
-        {
+        public void setProperties(final StorageServiceProperties propertiesValue) {
             this.properties = propertiesValue;
         }
         
@@ -146,8 +136,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
         * @return The ServiceName value.
         */
-        public String getServiceName()
-        {
+        public String getServiceName() {
             return this.serviceName;
         }
         
@@ -159,8 +148,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * http://MyStorageAccount.blob.core.windows.net/mycontainer/
         * @param serviceNameValue The ServiceName value.
         */
-        public void setServiceName(final String serviceNameValue)
-        {
+        public void setServiceName(final String serviceNameValue) {
             this.serviceName = serviceNameValue;
         }
         
@@ -171,8 +159,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Account Properties requests against the storage account.
         * @return The Uri value.
         */
-        public URI getUri()
-        {
+        public URI getUri() {
             return this.uri;
         }
         
@@ -181,8 +168,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Account Properties requests against the storage account.
         * @param uriValue The Uri value.
         */
-        public void setUri(final URI uriValue)
-        {
+        public void setUri(final URI uriValue) {
             this.uri = uriValue;
         }
         
@@ -190,8 +176,7 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Initializes a new instance of the StorageService class.
         *
         */
-        public StorageService()
-        {
+        public StorageService() {
             this.extendedProperties = new HashMap<String, String>();
         }
     }

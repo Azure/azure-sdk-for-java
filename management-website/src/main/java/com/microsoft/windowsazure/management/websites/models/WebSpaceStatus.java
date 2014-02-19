@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The status of a web space.
 */
-public enum WebSpaceStatus
-{
+public enum WebSpaceStatus {
     Ready,
     
     Limited,

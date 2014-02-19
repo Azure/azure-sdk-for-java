@@ -35,22 +35,21 @@ import java.util.concurrent.Future;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
-public interface SchedulerManagementClient extends FilterableService<SchedulerManagementClient>
-{
+public interface SchedulerManagementClient extends FilterableService<SchedulerManagementClient> {
     /**
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * @return The JobCollectionsOperations value.
     */
-    JobCollectionOperations getJobCollectionsOperations(); 
+    JobCollectionOperations getJobCollectionsOperations();
     
     /**
     * The Get Operation Status operation returns the status of thespecified

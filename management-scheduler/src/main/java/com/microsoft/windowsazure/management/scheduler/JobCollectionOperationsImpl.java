@@ -71,15 +71,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerManagementClientImpl>, JobCollectionOperations
-{
+public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerManagementClientImpl>, JobCollectionOperations {
     /**
     * Initializes a new instance of the JobCollectionOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    JobCollectionOperationsImpl(SchedulerManagementClientImpl client)
-    {
+    JobCollectionOperationsImpl(SchedulerManagementClientImpl client) {
         this.client = client;
     }
     
@@ -90,8 +88,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * microsoft.windowsazure.management.scheduler.SchedulerManagementClientImpl.
     * @return The Client value.
     */
-    public SchedulerManagementClientImpl getClient()
-    {
+    public SchedulerManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -106,12 +103,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Create Job Collection operation response.
     */
     @Override
-    public Future<JobCollectionCreateResponse> beginCreatingAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionCreateParameters parameters)
-    {
+    public Future<JobCollectionCreateResponse> beginCreatingAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<JobCollectionCreateResponse>() { 
             @Override
-            public JobCollectionCreateResponse call() throws Exception
-            {
+            public JobCollectionCreateResponse call() throws Exception {
                 return beginCreating(cloudServiceName, jobCollectionName, parameters);
             }
          });
@@ -138,31 +133,25 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Create Job Collection operation response.
     */
     @Override
-    public JobCollectionCreateResponse beginCreating(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public JobCollectionCreateResponse beginCreating(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
-        if (jobCollectionName.length() > 100)
-        {
+        if (jobCollectionName.length() > 100) {
             throw new IllegalArgumentException("jobCollectionName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -190,15 +179,13 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         Element resourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Resource");
         requestDoc.appendChild(resourceElement);
         
-        if (parameters.getSchemaVersion() != null)
-        {
+        if (parameters.getSchemaVersion() != null) {
             Element schemaVersionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SchemaVersion");
             schemaVersionElement.appendChild(requestDoc.createTextNode(parameters.getSchemaVersion()));
             resourceElement.appendChild(schemaVersionElement);
         }
         
-        if (parameters.getIntrinsicSettings() != null)
-        {
+        if (parameters.getIntrinsicSettings() != null) {
             Element intrinsicSettingsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
             resourceElement.appendChild(intrinsicSettingsElement);
             
@@ -206,27 +193,23 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
             intrinsicSettingsElement.appendChild(planElement);
             
-            if (parameters.getIntrinsicSettings().getQuota() != null)
-            {
+            if (parameters.getIntrinsicSettings().getQuota() != null) {
                 Element quotaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Quota");
                 intrinsicSettingsElement.appendChild(quotaElement);
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxJobCount() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxJobCount() != null) {
                     Element maxJobCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxJobCount");
                     maxJobCountElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getIntrinsicSettings().getQuota().getMaxJobCount())));
                     quotaElement.appendChild(maxJobCountElement);
                 }
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence() != null) {
                     Element maxJobOccurrenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
                     maxJobOccurrenceElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence())));
                     quotaElement.appendChild(maxJobOccurrenceElement);
                 }
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null) {
                     Element maxRecurrenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
                     quotaElement.appendChild(maxRecurrenceElement);
                     
@@ -241,8 +224,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             }
         }
         
-        if (parameters.getLabel() != null)
-        {
+        if (parameters.getLabel() != null) {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
             labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
             resourceElement.appendChild(labelElement);
@@ -261,23 +243,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -287,25 +264,19 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             JobCollectionCreateResponse result = null;
             result = new JobCollectionCreateResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("ETag").length > 0)
-            {
+            if (httpResponse.getHeaders("ETag").length > 0) {
                 result.setETag(httpResponse.getFirstHeader("ETag").getValue());
             }
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -320,12 +291,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAsync(final String cloudServiceName, final String jobCollectionName)
-    {
+    public Future<OperationResponse> beginDeletingAsync(final String cloudServiceName, final String jobCollectionName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginDeleting(cloudServiceName, jobCollectionName);
             }
          });
@@ -344,23 +313,19 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * request ID.
     */
     @Override
-    public OperationResponse beginDeleting(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeleting(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -379,23 +344,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -405,21 +365,16 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -436,12 +391,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Update Job Collection operation response.
     */
     @Override
-    public Future<JobCollectionUpdateResponse> beginUpdatingAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionUpdateParameters parameters)
-    {
+    public Future<JobCollectionUpdateResponse> beginUpdatingAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<JobCollectionUpdateResponse>() { 
             @Override
-            public JobCollectionUpdateResponse call() throws Exception
-            {
+            public JobCollectionUpdateResponse call() throws Exception {
                 return beginUpdating(cloudServiceName, jobCollectionName, parameters);
             }
          });
@@ -468,35 +421,28 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Update Job Collection operation response.
     */
     @Override
-    public JobCollectionUpdateResponse beginUpdating(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public JobCollectionUpdateResponse beginUpdating(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
-        if (jobCollectionName.length() > 100)
-        {
+        if (jobCollectionName.length() > 100) {
             throw new IllegalArgumentException("jobCollectionName");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getETag() == null)
-        {
+        if (parameters.getETag() == null) {
             throw new NullPointerException("parameters.ETag");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -525,8 +471,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         Element resourceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Resource");
         requestDoc.appendChild(resourceElement);
         
-        if (parameters.getSchemaVersion() != null)
-        {
+        if (parameters.getSchemaVersion() != null) {
             Element schemaVersionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SchemaVersion");
             schemaVersionElement.appendChild(requestDoc.createTextNode(parameters.getSchemaVersion()));
             resourceElement.appendChild(schemaVersionElement);
@@ -535,8 +480,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         Element eTagElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ETag");
         resourceElement.appendChild(eTagElement);
         
-        if (parameters.getIntrinsicSettings() != null)
-        {
+        if (parameters.getIntrinsicSettings() != null) {
             Element intrinsicSettingsElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "IntrinsicSettings");
             resourceElement.appendChild(intrinsicSettingsElement);
             
@@ -544,27 +488,23 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             planElement.appendChild(requestDoc.createTextNode(parameters.getIntrinsicSettings().getPlan().toString()));
             intrinsicSettingsElement.appendChild(planElement);
             
-            if (parameters.getIntrinsicSettings().getQuota() != null)
-            {
+            if (parameters.getIntrinsicSettings().getQuota() != null) {
                 Element quotaElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Quota");
                 intrinsicSettingsElement.appendChild(quotaElement);
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxJobCount() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxJobCount() != null) {
                     Element maxJobCountElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxJobCount");
                     maxJobCountElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getIntrinsicSettings().getQuota().getMaxJobCount())));
                     quotaElement.appendChild(maxJobCountElement);
                 }
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence() != null) {
                     Element maxJobOccurrenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxJobOccurrence");
                     maxJobOccurrenceElement.appendChild(requestDoc.createTextNode(Integer.toString(parameters.getIntrinsicSettings().getQuota().getMaxJobOccurrence())));
                     quotaElement.appendChild(maxJobOccurrenceElement);
                 }
                 
-                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null)
-                {
+                if (parameters.getIntrinsicSettings().getQuota().getMaxRecurrence() != null) {
                     Element maxRecurrenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MaxRecurrence");
                     quotaElement.appendChild(maxRecurrenceElement);
                     
@@ -579,8 +519,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             }
         }
         
-        if (parameters.getLabel() != null)
-        {
+        if (parameters.getLabel() != null) {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
             labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
             resourceElement.appendChild(labelElement);
@@ -599,23 +538,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -625,25 +559,19 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             JobCollectionUpdateResponse result = null;
             result = new JobCollectionUpdateResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("ETag").length > 0)
-            {
+            if (httpResponse.getHeaders("ETag").length > 0) {
                 result.setETag(httpResponse.getFirstHeader("ETag").getValue());
             }
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -660,12 +588,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Check Name Availability operation response.
     */
     @Override
-    public Future<JobCollectionCheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String cloudServiceName, final String jobCollectionName)
-    {
+    public Future<JobCollectionCheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String cloudServiceName, final String jobCollectionName) {
         return this.getClient().getExecutorService().submit(new Callable<JobCollectionCheckNameAvailabilityResponse>() { 
             @Override
-            public JobCollectionCheckNameAvailabilityResponse call() throws Exception
-            {
+            public JobCollectionCheckNameAvailabilityResponse call() throws Exception {
                 return checkNameAvailability(cloudServiceName, jobCollectionName);
             }
          });
@@ -690,27 +616,22 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Check Name Availability operation response.
     */
     @Override
-    public JobCollectionCheckNameAvailabilityResponse checkNameAvailability(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public JobCollectionCheckNameAvailabilityResponse checkNameAvailability(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
-        if (jobCollectionName.length() > 100)
-        {
+        if (jobCollectionName.length() > 100) {
             throw new IllegalArgumentException("jobCollectionName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -731,23 +652,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -765,12 +681,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             NodeList elements = responseDoc.getElementsByTagName("ResourceNameAvailabilityResponse");
             Element resourceNameAvailabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (resourceNameAvailabilityResponseElement != null)
-            {
+            if (resourceNameAvailabilityResponseElement != null) {
                 NodeList elements2 = resourceNameAvailabilityResponseElement.getElementsByTagName("IsAvailable");
                 Element isAvailableElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (isAvailableElement != null)
-                {
+                if (isAvailableElement != null) {
                     boolean isAvailableInstance;
                     isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
                     result.setIsAvailable(isAvailableInstance);
@@ -778,21 +692,16 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -817,12 +726,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public Future<SchedulerOperationStatusResponse> createAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionCreateParameters parameters)
-    {
+    public Future<SchedulerOperationStatusResponse> createAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<SchedulerOperationStatusResponse>() { 
             @Override
-            public SchedulerOperationStatusResponse call() throws Exception
-            {
+            public SchedulerOperationStatusResponse call() throws Exception {
                 return create(cloudServiceName, jobCollectionName, parameters);
             }
          });
@@ -859,13 +766,11 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public SchedulerOperationStatusResponse create(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public SchedulerOperationStatusResponse create(String cloudServiceName, String jobCollectionName, JobCollectionCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         SchedulerManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -873,46 +778,36 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             JobCollectionCreateResponse response = client2.getJobCollectionsOperations().beginCreatingAsync(cloudServiceName, jobCollectionName, parameters).get();
             SchedulerOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 15;
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -921,11 +816,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             result.setETag(response.getETag());
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -947,12 +839,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public Future<SchedulerOperationStatusResponse> deleteAsync(final String cloudServiceName, final String jobCollectionName)
-    {
+    public Future<SchedulerOperationStatusResponse> deleteAsync(final String cloudServiceName, final String jobCollectionName) {
         return this.getClient().getExecutorService().submit(new Callable<SchedulerOperationStatusResponse>() { 
             @Override
-            public SchedulerOperationStatusResponse call() throws Exception
-            {
+            public SchedulerOperationStatusResponse call() throws Exception {
                 return delete(cloudServiceName, jobCollectionName);
             }
          });
@@ -986,59 +876,47 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public SchedulerOperationStatusResponse delete(String cloudServiceName, String jobCollectionName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public SchedulerOperationStatusResponse delete(String cloudServiceName, String jobCollectionName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         SchedulerManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
             tracingParameters.put("jobCollectionName", jobCollectionName);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getJobCollectionsOperations().beginDeletingAsync(cloudServiceName, jobCollectionName).get();
             SchedulerOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 15;
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1046,11 +924,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1064,12 +939,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Get Job Collection operation response.
     */
     @Override
-    public Future<JobCollectionGetResponse> getAsync(final String cloudServiceName, final String jobCollectionName)
-    {
+    public Future<JobCollectionGetResponse> getAsync(final String cloudServiceName, final String jobCollectionName) {
         return this.getClient().getExecutorService().submit(new Callable<JobCollectionGetResponse>() { 
             @Override
-            public JobCollectionGetResponse call() throws Exception
-            {
+            public JobCollectionGetResponse call() throws Exception {
                 return get(cloudServiceName, jobCollectionName);
             }
          });
@@ -1091,23 +964,19 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * @return The Get Job Collection operation response.
     */
     @Override
-    public JobCollectionGetResponse get(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public JobCollectionGetResponse get(String cloudServiceName, String jobCollectionName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -1126,23 +995,18 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1160,12 +1024,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             NodeList elements = responseDoc.getElementsByTagName("Resource");
             Element resourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (resourceElement != null)
-            {
+            if (resourceElement != null) {
                 NodeList elements2 = resourceElement.getElementsByTagName("Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
-                {
+                if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -1173,8 +1035,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements3 = resourceElement.getElementsByTagName("ETag");
                 Element eTagElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (eTagElement != null)
-                {
+                if (eTagElement != null) {
                     String eTagInstance;
                     eTagInstance = eTagElement.getTextContent();
                     result.setETag(eTagInstance);
@@ -1182,8 +1043,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements4 = resourceElement.getElementsByTagName("State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null)
-                {
+                if (stateElement != null) {
                     JobCollectionState stateInstance;
                     stateInstance = JobCollectionState.valueOf(stateElement.getTextContent());
                     result.setState(stateInstance);
@@ -1191,8 +1051,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements5 = resourceElement.getElementsByTagName("SchemaVersion");
                 Element schemaVersionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (schemaVersionElement != null)
-                {
+                if (schemaVersionElement != null) {
                     String schemaVersionInstance;
                     schemaVersionInstance = schemaVersionElement.getTextContent();
                     result.setSchemaVersion(schemaVersionInstance);
@@ -1200,8 +1059,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements6 = resourceElement.getElementsByTagName("Plan");
                 Element planElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (planElement != null)
-                {
+                if (planElement != null) {
                     String planInstance;
                     planInstance = planElement.getTextContent();
                     result.setPlan(planInstance);
@@ -1209,8 +1067,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements7 = resourceElement.getElementsByTagName("PromotionCode");
                 Element promotionCodeElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (promotionCodeElement != null)
-                {
+                if (promotionCodeElement != null) {
                     String promotionCodeInstance;
                     promotionCodeInstance = promotionCodeElement.getTextContent();
                     result.setPromotionCode(promotionCodeInstance);
@@ -1218,15 +1075,13 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements8 = resourceElement.getElementsByTagName("IntrinsicSettings");
                 Element intrinsicSettingsElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (intrinsicSettingsElement != null)
-                {
+                if (intrinsicSettingsElement != null) {
                     JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
                     result.setIntrinsicSettings(intrinsicSettingsInstance);
                     
                     NodeList elements9 = intrinsicSettingsElement.getElementsByTagName("Plan");
                     Element planElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (planElement2 != null)
-                    {
+                    if (planElement2 != null) {
                         JobCollectionPlan planInstance2;
                         planInstance2 = JobCollectionPlan.valueOf(planElement2.getTextContent());
                         intrinsicSettingsInstance.setPlan(planInstance2);
@@ -1234,15 +1089,13 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     
                     NodeList elements10 = intrinsicSettingsElement.getElementsByTagName("Quota");
                     Element quotaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (quotaElement != null)
-                    {
+                    if (quotaElement != null) {
                         JobCollectionQuota quotaInstance = new JobCollectionQuota();
                         intrinsicSettingsInstance.setQuota(quotaInstance);
                         
                         NodeList elements11 = quotaElement.getElementsByTagName("MaxJobCount");
                         Element maxJobCountElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (maxJobCountElement != null && (maxJobCountElement.getTextContent() == null || maxJobCountElement.getTextContent().isEmpty() == true) == false) {
                             int maxJobCountInstance;
                             maxJobCountInstance = DatatypeConverter.parseInt(maxJobCountElement.getTextContent());
                             quotaInstance.setMaxJobCount(maxJobCountInstance);
@@ -1250,8 +1103,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         
                         NodeList elements12 = quotaElement.getElementsByTagName("MaxJobOccurrence");
                         Element maxJobOccurrenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false)
-                        {
+                        if (maxJobOccurrenceElement != null && (maxJobOccurrenceElement.getTextContent() == null || maxJobOccurrenceElement.getTextContent().isEmpty() == true) == false) {
                             int maxJobOccurrenceInstance;
                             maxJobOccurrenceInstance = DatatypeConverter.parseInt(maxJobOccurrenceElement.getTextContent());
                             quotaInstance.setMaxJobOccurrence(maxJobOccurrenceInstance);
@@ -1259,15 +1111,13 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         
                         NodeList elements13 = quotaElement.getElementsByTagName("MaxRecurrence");
                         Element maxRecurrenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (maxRecurrenceElement != null)
-                        {
+                        if (maxRecurrenceElement != null) {
                             JobCollectionMaxRecurrence maxRecurrenceInstance = new JobCollectionMaxRecurrence();
                             quotaInstance.setMaxRecurrence(maxRecurrenceInstance);
                             
                             NodeList elements14 = maxRecurrenceElement.getElementsByTagName("Frequency");
                             Element frequencyElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                            if (frequencyElement != null)
-                            {
+                            if (frequencyElement != null) {
                                 JobCollectionRecurrenceFrequency frequencyInstance;
                                 frequencyInstance = JobCollectionRecurrenceFrequency.valueOf(frequencyElement.getTextContent());
                                 maxRecurrenceInstance.setFrequency(frequencyInstance);
@@ -1275,8 +1125,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                             
                             NodeList elements15 = maxRecurrenceElement.getElementsByTagName("Interval");
                             Element intervalElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                            if (intervalElement != null)
-                            {
+                            if (intervalElement != null) {
                                 int intervalInstance;
                                 intervalInstance = DatatypeConverter.parseInt(intervalElement.getTextContent());
                                 maxRecurrenceInstance.setInterval(intervalInstance);
@@ -1287,8 +1136,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements16 = resourceElement.getElementsByTagName("Label");
                 Element labelElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                if (labelElement != null)
-                {
+                if (labelElement != null) {
                     String labelInstance;
                     labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                     result.setLabel(labelInstance);
@@ -1296,22 +1144,19 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                 
                 NodeList elements17 = resourceElement.getElementsByTagName("OperationStatus");
                 Element operationStatusElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                if (operationStatusElement != null)
-                {
+                if (operationStatusElement != null) {
                     JobCollectionGetResponse.OperationStatus operationStatusInstance = new JobCollectionGetResponse.OperationStatus();
                     result.setLastOperationStatus(operationStatusInstance);
                     
                     NodeList elements18 = operationStatusElement.getElementsByTagName("Error");
                     Element errorElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                    if (errorElement != null)
-                    {
+                    if (errorElement != null) {
                         JobCollectionGetResponse.OperationStatusResponseDetails errorInstance = new JobCollectionGetResponse.OperationStatusResponseDetails();
                         operationStatusInstance.setResponseDetails(errorInstance);
                         
                         NodeList elements19 = errorElement.getElementsByTagName("HttpCode");
                         Element httpCodeElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                        if (httpCodeElement != null)
-                        {
+                        if (httpCodeElement != null) {
                             Integer httpCodeInstance;
                             httpCodeInstance = Integer.valueOf(httpCodeElement.getTextContent());
                             errorInstance.setStatusCode(httpCodeInstance);
@@ -1319,8 +1164,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                         
                         NodeList elements20 = errorElement.getElementsByTagName("Message");
                         Element messageElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                        if (messageElement != null)
-                        {
+                        if (messageElement != null) {
                             String messageInstance;
                             messageInstance = messageElement.getTextContent();
                             errorInstance.setMessage(messageInstance);
@@ -1329,8 +1173,7 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     
                     NodeList elements21 = operationStatusElement.getElementsByTagName("Result");
                     Element resultElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                    if (resultElement != null)
-                    {
+                    if (resultElement != null) {
                         SchedulerOperationStatus resultInstance;
                         resultInstance = SchedulerOperationStatus.valueOf(resultElement.getTextContent());
                         operationStatusInstance.setStatus(resultInstance);
@@ -1339,21 +1182,16 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1378,12 +1216,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public Future<SchedulerOperationStatusResponse> updateAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionUpdateParameters parameters)
-    {
+    public Future<SchedulerOperationStatusResponse> updateAsync(final String cloudServiceName, final String jobCollectionName, final JobCollectionUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<SchedulerOperationStatusResponse>() { 
             @Override
-            public SchedulerOperationStatusResponse call() throws Exception
-            {
+            public SchedulerOperationStatusResponse call() throws Exception {
                 return update(cloudServiceName, jobCollectionName, parameters);
             }
          });
@@ -1420,13 +1256,11 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * failure.
     */
     @Override
-    public SchedulerOperationStatusResponse update(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public SchedulerOperationStatusResponse update(String cloudServiceName, String jobCollectionName, JobCollectionUpdateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         SchedulerManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("cloudServiceName", cloudServiceName);
@@ -1434,46 +1268,36 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             JobCollectionUpdateResponse response = client2.getJobCollectionsOperations().beginUpdatingAsync(cloudServiceName, jobCollectionName, parameters).get();
             SchedulerOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 15;
-            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != SchedulerOperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 10;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != SchedulerOperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != SchedulerOperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1482,11 +1306,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
             
             result.setETag(response.getETag());
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }

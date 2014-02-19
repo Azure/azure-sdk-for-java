@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The List Role Sizes operation response.
 */
-public class RoleSizeListResponse extends OperationResponse implements Iterable<RoleSizeListResponse.RoleSize>
-{
+public class RoleSizeListResponse extends OperationResponse implements Iterable<RoleSizeListResponse.RoleSize> {
     private ArrayList<RoleSizeListResponse.RoleSize> roleSizes;
     
     /**
     * The role sizes that are valid for your subscription.
     * @return The RoleSizes value.
     */
-    public ArrayList<RoleSizeListResponse.RoleSize> getRoleSizes()
-    {
+    public ArrayList<RoleSizeListResponse.RoleSize> getRoleSizes() {
         return this.roleSizes;
     }
     
@@ -47,8 +45,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     * The role sizes that are valid for your subscription.
     * @param roleSizesValue The RoleSizes value.
     */
-    public void setRoleSizes(final ArrayList<RoleSizeListResponse.RoleSize> roleSizesValue)
-    {
+    public void setRoleSizes(final ArrayList<RoleSizeListResponse.RoleSize> roleSizesValue) {
         this.roleSizes = roleSizesValue;
     }
     
@@ -56,8 +53,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     * Initializes a new instance of the RoleSizeListResponse class.
     *
     */
-    public RoleSizeListResponse()
-    {
+    public RoleSizeListResponse() {
         super();
         this.roleSizes = new ArrayList<RoleSizeListResponse.RoleSize>();
     }
@@ -66,24 +62,21 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     * Gets the sequence of RoleSizes.
     *
     */
-    public Iterator<RoleSizeListResponse.RoleSize> iterator()
-    {
+    public Iterator<RoleSizeListResponse.RoleSize> iterator() {
         return this.getRoleSizes().iterator();
     }
     
     /**
     * A role size that is valid for your subscription.
     */
-    public static class RoleSize
-    {
+    public static class RoleSize {
         private int cores;
         
         /**
         * Number of cores available for the role size.
         * @return The Cores value.
         */
-        public int getCores()
-        {
+        public int getCores() {
             return this.cores;
         }
         
@@ -91,8 +84,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Number of cores available for the role size.
         * @param coresValue The Cores value.
         */
-        public void setCores(final int coresValue)
-        {
+        public void setCores(final int coresValue) {
             this.cores = coresValue;
         }
         
@@ -102,8 +94,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Localized label of the role size.
         * @return The Label value.
         */
-        public String getLabel()
-        {
+        public String getLabel() {
             return this.label;
         }
         
@@ -111,8 +102,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Localized label of the role size.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue)
-        {
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
         
@@ -122,8 +112,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Memory available for the role size.
         * @return The MemoryInMb value.
         */
-        public int getMemoryInMb()
-        {
+        public int getMemoryInMb() {
             return this.memoryInMb;
         }
         
@@ -131,8 +120,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Memory available for the role size.
         * @param memoryInMbValue The MemoryInMb value.
         */
-        public void setMemoryInMb(final int memoryInMbValue)
-        {
+        public void setMemoryInMb(final int memoryInMbValue) {
             this.memoryInMb = memoryInMbValue;
         }
         
@@ -142,8 +130,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * The name of a role size that is valid for your subscription.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -151,8 +138,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * The name of a role size that is valid for your subscription.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -162,8 +148,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Indicating if the role size is supported by VMs.
         * @return The SupportedByVirtualMachines value.
         */
-        public boolean isSupportedByVirtualMachines()
-        {
+        public boolean isSupportedByVirtualMachines() {
             return this.supportedByVirtualMachines;
         }
         
@@ -172,8 +157,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * @param supportedByVirtualMachinesValue The SupportedByVirtualMachines
         * value.
         */
-        public void setSupportedByVirtualMachines(final boolean supportedByVirtualMachinesValue)
-        {
+        public void setSupportedByVirtualMachines(final boolean supportedByVirtualMachinesValue) {
             this.supportedByVirtualMachines = supportedByVirtualMachinesValue;
         }
         
@@ -183,8 +167,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * Indicating if the role size is supported by web/worker roles.
         * @return The SupportedByWebWorkerRoles value.
         */
-        public boolean isSupportedByWebWorkerRoles()
-        {
+        public boolean isSupportedByWebWorkerRoles() {
             return this.supportedByWebWorkerRoles;
         }
         
@@ -193,8 +176,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         * @param supportedByWebWorkerRolesValue The SupportedByWebWorkerRoles
         * value.
         */
-        public void setSupportedByWebWorkerRoles(final boolean supportedByWebWorkerRolesValue)
-        {
+        public void setSupportedByWebWorkerRoles(final boolean supportedByWebWorkerRolesValue) {
             this.supportedByWebWorkerRoles = supportedByWebWorkerRolesValue;
         }
     }
