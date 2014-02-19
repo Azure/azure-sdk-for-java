@@ -16,18 +16,24 @@ package com.microsoft.windowsazure.management.configuration;
 
 import java.io.*;
 import java.lang.IllegalArgumentException;
+import java.lang.reflect.Field;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.CertificateException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.utils.KeyStoreType;
 
@@ -94,11 +100,15 @@ public final class PublishSettingsLoader {
 			throw new IllegalArgumentException("could not parse publishsettings file", e);
 		}
 
-		KeyStore store;
+		KeyStore store = null;
 		try {
-			store = KeyStore.getInstance("pkcs12");
+			if (Float.valueOf( System.getProperty("java.specification.version")) < 1.7 ) {
+				// Use Bouncy Castle Provider for java versions less than 1.7
+				store = getBCProviderKeyStore();
+			} else {
+				store = KeyStore.getInstance("PKCS12");
+			}
 			store.load(null, "".toCharArray());
-
 			InputStream sslInputStream = new ByteArrayInputStream(Base64.decodeBase64(certificate));
 
 			store.load(sslInputStream, "".toCharArray());
@@ -107,14 +117,38 @@ public final class PublishSettingsLoader {
 			out.close();
 
 		} catch (KeyStoreException e) {
-			throw new IllegalArgumentException("could create keystore from publishsettings file", e);
+			throw new IllegalArgumentException("could not create keystore from publishsettings file", e);
 		} catch (CertificateException e) {
-			throw new IllegalArgumentException("could create keystore from publishsettings file", e);
+			throw new IllegalArgumentException("could not create keystore from publishsettings file", e);
 		} catch (NoSuchAlgorithmException e) {
-			throw new IllegalArgumentException("could create keystore from publishsettings file", e);
+			throw new IllegalArgumentException("could not create keystore from publishsettings file", e);
 		}
-
+		
 		return ManagementConfiguration.configure(subscriptionId, outStore, "", KeyStoreType.pkcs12);
+	}
+	
+	/**
+	 * Sun JCE provider cannot open password less pfx files , refer to
+	 * discussion @ https://community.oracle.com/thread/2334304
+	 * 
+	 * To read password less pfx files in java versions less than 1.7 need to use
+	 * BouncyCastle's JCE provider
+	 */
+	private static KeyStore getBCProviderKeyStore() {
+		KeyStore keyStore = null;
+		try {
+			// Loading Bouncy castle classes dynamically so that BC dependency is only for java 1.6 clients  
+			Class<?> providerClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+			Security.addProvider((Provider) providerClass.newInstance());
+                 
+			Field field = providerClass.getField("PROVIDER_NAME");
+			keyStore = KeyStore.getInstance("PKCS12",field.get(null).toString());
+		} catch (Exception e) {
+			// Using catch all exception class to avoid repeated code in different catch blocks
+			throw new RuntimeException("Could not create keystore from publishsettings file."
+					+ "Make sure java versions less than 1.7 has bouncycastle jar in classpath", e);
+		} 
+		return keyStore;
 	}
 
 }
