@@ -24,42 +24,26 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 /**
-* Parameters supplied to the Regenerate Keys operation.
+* The status of the storage account at the time the operation was called.
 */
-public class StorageAccountRegenerateKeysParameters {
-    private StorageKeyType keyType;
+public enum StorageAccountStatus {
+    /**
+    * The Storage Account had been created.
+    */
+    Created,
     
     /**
-    * Specifies which key to regenerate.
-    * @return The KeyType value.
+    * The Storage Account is being created.
     */
-    public StorageKeyType getKeyType() {
-        return this.keyType;
-    }
+    Creating,
     
     /**
-    * Specifies which key to regenerate.
-    * @param keyTypeValue The KeyType value.
+    * The DNS name for the storage account is being propagated.
     */
-    public void setKeyType(final StorageKeyType keyTypeValue) {
-        this.keyType = keyTypeValue;
-    }
-    
-    private String name;
+    ResolvingDns,
     
     /**
-    * The name of the desired storage account.
-    * @return The Name value.
+    * The Storage Account is being deleted.
     */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * The name of the desired storage account.
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
+    Deleting,
 }

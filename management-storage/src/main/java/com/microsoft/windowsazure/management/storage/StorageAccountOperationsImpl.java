@@ -34,12 +34,12 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountCreate
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountListResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountProperties;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceProperties;
-import com.microsoft.windowsazure.management.storage.models.StorageServiceStatus;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -159,21 +159,21 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (parameters.getLabel().length() > 100) {
             throw new IllegalArgumentException("parameters.Label");
         }
-        if (parameters.getServiceName() == null) {
-            throw new NullPointerException("parameters.ServiceName");
+        if (parameters.getName() == null) {
+            throw new NullPointerException("parameters.Name");
         }
-        if (parameters.getServiceName().length() < 3) {
-            throw new IllegalArgumentException("parameters.ServiceName");
+        if (parameters.getName().length() < 3) {
+            throw new IllegalArgumentException("parameters.Name");
         }
-        if (parameters.getServiceName().length() > 24) {
-            throw new IllegalArgumentException("parameters.ServiceName");
+        if (parameters.getName().length() > 24) {
+            throw new IllegalArgumentException("parameters.Name");
         }
-        for (char serviceNameChar : parameters.getServiceName().toCharArray()) {
-            if (Character.isLowerCase(serviceNameChar) == false && Character.isDigit(serviceNameChar) == false) {
-                throw new IllegalArgumentException("parameters.ServiceName");
+        for (char nameChar : parameters.getName().toCharArray()) {
+            if (Character.isLowerCase(nameChar) == false && Character.isDigit(nameChar) == false) {
+                throw new IllegalArgumentException("parameters.Name");
             }
         }
-        // TODO: Validate parameters.ServiceName is a valid DNS name.
+        // TODO: Validate parameters.Name is a valid DNS name.
         int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0) + (parameters.getLocation() != null ? 1 : 0);
         if (locationCount != 1) {
             throw new IllegalArgumentException("Only one of parameters.AffinityGroup, parameters.Location may be provided.");
@@ -209,7 +209,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         requestDoc.appendChild(createStorageServiceInputElement);
         
         Element serviceNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ServiceName");
-        serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getServiceName()));
+        serviceNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
         createStorageServiceInputElement.appendChild(serviceNameElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
@@ -318,16 +318,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param serviceName The desired storage account name to check for
+    * @param accountName The desired storage account name to check for
     * availability.
     * @return The response to a storage account check name availability request.
     */
     @Override
-    public Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String serviceName) {
+    public Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String accountName) {
         return this.getClient().getExecutorService().submit(new Callable<CheckNameAvailabilityResponse>() { 
             @Override
             public CheckNameAvailabilityResponse call() throws Exception {
-                return checkNameAvailability(serviceName);
+                return checkNameAvailability(accountName);
             }
          });
     }
@@ -338,7 +338,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param serviceName The desired storage account name to check for
+    * @param accountName The desired storage account name to check for
     * availability.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -351,10 +351,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The response to a storage account check name availability request.
     */
     @Override
-    public CheckNameAvailabilityResponse checkNameAvailability(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public CheckNameAvailabilityResponse checkNameAvailability(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
+        if (accountName == null) {
+            throw new NullPointerException("accountName");
         }
         
         // Tracing
@@ -363,12 +363,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("accountName", accountName);
             CloudTracing.enter(invocationId, this, "checkNameAvailabilityAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/operations/isavailable/" + serviceName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/operations/isavailable/" + accountName;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -567,16 +567,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param serviceName The name of the storage account.
+    * @param accountName The name of the storage account.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serviceName) {
+    public Future<OperationResponse> deleteAsync(final String accountName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
-                return delete(serviceName);
+                return delete(accountName);
             }
          });
     }
@@ -587,7 +587,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param serviceName The name of the storage account.
+    * @param accountName The name of the storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -596,10 +596,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serviceName) throws IOException, ServiceException {
+    public OperationResponse delete(String accountName) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
+        if (accountName == null) {
+            throw new NullPointerException("accountName");
         }
         
         // Tracing
@@ -608,12 +608,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("accountName", accountName);
             CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -665,15 +665,15 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to get.
+    * @param accountName Name of the storage account to get.
     * @return The Get Storage Account Properties operation response.
     */
     @Override
-    public Future<StorageAccountGetResponse> getAsync(final String serviceName) {
+    public Future<StorageAccountGetResponse> getAsync(final String accountName) {
         return this.getClient().getExecutorService().submit(new Callable<StorageAccountGetResponse>() { 
             @Override
             public StorageAccountGetResponse call() throws Exception {
-                return get(serviceName);
+                return get(accountName);
             }
          });
     }
@@ -684,7 +684,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to get.
+    * @param accountName Name of the storage account to get.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -698,10 +698,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The Get Storage Account Properties operation response.
     */
     @Override
-    public StorageAccountGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public StorageAccountGetResponse get(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
+        if (accountName == null) {
+            throw new NullPointerException("accountName");
         }
         
         // Tracing
@@ -710,12 +710,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("accountName", accountName);
             CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -768,13 +768,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
-                    result.setServiceName(serviceNameInstance);
+                    result.setName(serviceNameInstance);
                 }
                 
                 NodeList elements4 = storageServiceElement.getElementsByTagName("StorageServiceProperties");
                 Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                 if (storageServicePropertiesElement != null) {
-                    StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
+                    StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
                     result.setProperties(storageServicePropertiesInstance);
                     
                     NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
@@ -819,8 +819,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
                     Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                     if (statusElement != null) {
-                        StorageServiceStatus statusInstance;
-                        statusInstance = StorageServiceStatus.valueOf(statusElement.getTextContent());
+                        StorageAccountStatus statusInstance;
+                        statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
                         storageServicePropertiesInstance.setStatus(statusInstance);
                     }
                     
@@ -927,15 +927,15 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param serviceName The name of the desired storage account.
+    * @param accountName The name of the desired storage account.
     * @return The primary and secondary access keys for a storage account.
     */
     @Override
-    public Future<StorageAccountGetKeysResponse> getKeysAsync(final String serviceName) {
+    public Future<StorageAccountGetKeysResponse> getKeysAsync(final String accountName) {
         return this.getClient().getExecutorService().submit(new Callable<StorageAccountGetKeysResponse>() { 
             @Override
             public StorageAccountGetKeysResponse call() throws Exception {
-                return getKeys(serviceName);
+                return getKeys(accountName);
             }
          });
     }
@@ -946,7 +946,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param serviceName The name of the desired storage account.
+    * @param accountName The name of the desired storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -960,10 +960,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * @return The primary and secondary access keys for a storage account.
     */
     @Override
-    public StorageAccountGetKeysResponse getKeys(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public StorageAccountGetKeysResponse getKeys(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
+        if (accountName == null) {
+            throw new NullPointerException("accountName");
         }
         
         // Tracing
@@ -972,12 +972,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("accountName", accountName);
             CloudTracing.enter(invocationId, this, "getKeysAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName + "/keys";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName + "/keys";
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1152,17 +1152,17 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             NodeList elements = responseDoc.getElementsByTagName("StorageServices");
             Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
             if (storageServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < storageServicesSequenceElement.getElementsByTagName("StorageService").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageService").item(i1));
-                    StorageAccountListResponse.StorageService storageServiceInstance = new StorageAccountListResponse.StorageService();
-                    result.getStorageServices().add(storageServiceInstance);
+                for (int i1 = 0; i1 < storageServicesSequenceElement.getElementsByTagName("StorageAccount").getLength(); i1 = i1 + 1) {
+                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) storageServicesSequenceElement.getElementsByTagName("StorageAccount").item(i1));
+                    StorageAccountListResponse.StorageAccount storageAccountInstance = new StorageAccountListResponse.StorageAccount();
+                    result.getStorageAccounts().add(storageAccountInstance);
                     
                     NodeList elements2 = storageServicesElement.getElementsByTagName("Url");
                     Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
                     if (urlElement != null) {
                         URI urlInstance;
                         urlInstance = new URI(urlElement.getTextContent());
-                        storageServiceInstance.setUri(urlInstance);
+                        storageAccountInstance.setUri(urlInstance);
                     }
                     
                     NodeList elements3 = storageServicesElement.getElementsByTagName("ServiceName");
@@ -1170,14 +1170,14 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     if (serviceNameElement != null) {
                         String serviceNameInstance;
                         serviceNameInstance = serviceNameElement.getTextContent();
-                        storageServiceInstance.setServiceName(serviceNameInstance);
+                        storageAccountInstance.setName(serviceNameInstance);
                     }
                     
                     NodeList elements4 = storageServicesElement.getElementsByTagName("StorageServiceProperties");
                     Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
                     if (storageServicePropertiesElement != null) {
-                        StorageServiceProperties storageServicePropertiesInstance = new StorageServiceProperties();
-                        storageServiceInstance.setProperties(storageServicePropertiesInstance);
+                        StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
+                        storageAccountInstance.setProperties(storageServicePropertiesInstance);
                         
                         NodeList elements5 = storageServicePropertiesElement.getElementsByTagName("Description");
                         Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
@@ -1221,8 +1221,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         NodeList elements9 = storageServicePropertiesElement.getElementsByTagName("Status");
                         Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
                         if (statusElement != null) {
-                            StorageServiceStatus statusInstance;
-                            statusInstance = StorageServiceStatus.valueOf(statusElement.getTextContent());
+                            StorageAccountStatus statusInstance;
+                            statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
                             storageServicePropertiesInstance.setStatus(statusInstance);
                         }
                         
@@ -1293,7 +1293,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
                             NodeList elements19 = extendedPropertiesElement.getElementsByTagName("Value");
                             String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
-                            storageServiceInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
+                            storageAccountInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                         }
                     }
                 }
@@ -1361,8 +1361,8 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getServiceName() == null) {
-            throw new NullPointerException("parameters.ServiceName");
+        if (parameters.getName() == null) {
+            throw new NullPointerException("parameters.Name");
         }
         
         // Tracing
@@ -1376,7 +1376,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getServiceName() + "/keys" + "?" + "action=regenerate";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + parameters.getName() + "/keys" + "?" + "action=regenerate";
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -1493,18 +1493,18 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to update.
+    * @param accountName Name of the storage account to update.
     * @param parameters Parameters supplied to the Update Storage Account
     * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> updateAsync(final String serviceName, final StorageAccountUpdateParameters parameters) {
+    public Future<OperationResponse> updateAsync(final String accountName, final StorageAccountUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
-                return update(serviceName, parameters);
+                return update(accountName, parameters);
             }
          });
     }
@@ -1516,7 +1516,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to update.
+    * @param accountName Name of the storage account to update.
     * @param parameters Parameters supplied to the Update Storage Account
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -1533,23 +1533,23 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * request ID.
     */
     @Override
-    public OperationResponse update(String serviceName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null) {
-            throw new NullPointerException("serviceName");
+        if (accountName == null) {
+            throw new NullPointerException("accountName");
         }
-        if (serviceName.length() < 3) {
-            throw new IllegalArgumentException("serviceName");
+        if (accountName.length() < 3) {
+            throw new IllegalArgumentException("accountName");
         }
-        if (serviceName.length() > 24) {
-            throw new IllegalArgumentException("serviceName");
+        if (accountName.length() > 24) {
+            throw new IllegalArgumentException("accountName");
         }
-        for (char serviceNameChar : serviceName.toCharArray()) {
-            if (Character.isLowerCase(serviceNameChar) == false && Character.isDigit(serviceNameChar) == false) {
-                throw new IllegalArgumentException("serviceName");
+        for (char accountNameChar : accountName.toCharArray()) {
+            if (Character.isLowerCase(accountNameChar) == false && Character.isDigit(accountNameChar) == false) {
+                throw new IllegalArgumentException("accountName");
             }
         }
-        // TODO: Validate serviceName is a valid DNS name.
+        // TODO: Validate accountName is a valid DNS name.
         if (parameters == null) {
             throw new NullPointerException("parameters");
         }
@@ -1563,13 +1563,13 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("accountName", accountName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "updateAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + serviceName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/storageservices/" + accountName;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

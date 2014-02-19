@@ -90,13 +90,39 @@ public class StorageAccountGetResponse extends OperationResponse {
         this.extendedProperties = extendedPropertiesValue;
     }
     
-    private StorageServiceProperties properties;
+    private String name;
+    
+    /**
+    * The name of the storage account. This name is the DNS prefix name and can
+    * be used to access blobs, queues, and tables in the storage account.  For
+    * example, if the service name is MyStorageAccount you could access the
+    * blob containers by calling:
+    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @return The Name value.
+    */
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+    * The name of the storage account. This name is the DNS prefix name and can
+    * be used to access blobs, queues, and tables in the storage account.  For
+    * example, if the service name is MyStorageAccount you could access the
+    * blob containers by calling:
+    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue) {
+        this.name = nameValue;
+    }
+    
+    private StorageAccountProperties properties;
     
     /**
     * Details about the storage account.
     * @return The Properties value.
     */
-    public StorageServiceProperties getProperties() {
+    public StorageAccountProperties getProperties() {
         return this.properties;
     }
     
@@ -104,34 +130,8 @@ public class StorageAccountGetResponse extends OperationResponse {
     * Details about the storage account.
     * @param propertiesValue The Properties value.
     */
-    public void setProperties(final StorageServiceProperties propertiesValue) {
+    public void setProperties(final StorageAccountProperties propertiesValue) {
         this.properties = propertiesValue;
-    }
-    
-    private String serviceName;
-    
-    /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
-    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-    * @return The ServiceName value.
-    */
-    public String getServiceName() {
-        return this.serviceName;
-    }
-    
-    /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
-    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-    * @param serviceNameValue The ServiceName value.
-    */
-    public void setServiceName(final String serviceNameValue) {
-        this.serviceName = serviceNameValue;
     }
     
     private URI uri;

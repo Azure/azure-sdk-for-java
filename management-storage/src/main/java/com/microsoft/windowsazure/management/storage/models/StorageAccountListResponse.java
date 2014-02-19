@@ -32,21 +32,21 @@ import java.util.Iterator;
 /**
 * The List Storage Accounts operation response.
 */
-public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageService> {
-    private ArrayList<StorageAccountListResponse.StorageService> storageServices;
+public class StorageAccountListResponse extends OperationResponse implements Iterable<StorageAccountListResponse.StorageAccount> {
+    private ArrayList<StorageAccountListResponse.StorageAccount> storageAccounts;
     
     /**
-    * @return The StorageServices value.
+    * @return The StorageAccounts value.
     */
-    public ArrayList<StorageAccountListResponse.StorageService> getStorageServices() {
-        return this.storageServices;
+    public ArrayList<StorageAccountListResponse.StorageAccount> getStorageAccounts() {
+        return this.storageAccounts;
     }
     
     /**
-    * @param storageServicesValue The StorageServices value.
+    * @param storageAccountsValue The StorageAccounts value.
     */
-    public void setStorageServices(final ArrayList<StorageAccountListResponse.StorageService> storageServicesValue) {
-        this.storageServices = storageServicesValue;
+    public void setStorageAccounts(final ArrayList<StorageAccountListResponse.StorageAccount> storageAccountsValue) {
+        this.storageAccounts = storageAccountsValue;
     }
     
     /**
@@ -55,21 +55,21 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
     */
     public StorageAccountListResponse() {
         super();
-        this.storageServices = new ArrayList<StorageAccountListResponse.StorageService>();
+        this.storageAccounts = new ArrayList<StorageAccountListResponse.StorageAccount>();
     }
     
     /**
-    * Gets the sequence of StorageServices.
+    * Gets the sequence of StorageAccounts.
     *
     */
-    public Iterator<StorageAccountListResponse.StorageService> iterator() {
-        return this.getStorageServices().iterator();
+    public Iterator<StorageAccountListResponse.StorageAccount> iterator() {
+        return this.getStorageAccounts().iterator();
     }
     
     /**
     * A Storage Service associated with your subscription.
     */
-    public static class StorageService {
+    public static class StorageAccount {
         private HashMap<String, String> extendedProperties;
         
         /**
@@ -108,13 +108,39 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
             this.extendedProperties = extendedPropertiesValue;
         }
         
-        private StorageServiceProperties properties;
+        private String name;
+        
+        /**
+        * The name of the storage account. This name is the DNS prefix name and
+        * can be used to access blobs, queues, and tables in the storage
+        * account.  For example, if the service name is MyStorageAccount you
+        * could access the blob containers by calling:
+        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+        * @return The Name value.
+        */
+        public String getName() {
+            return this.name;
+        }
+        
+        /**
+        * The name of the storage account. This name is the DNS prefix name and
+        * can be used to access blobs, queues, and tables in the storage
+        * account.  For example, if the service name is MyStorageAccount you
+        * could access the blob containers by calling:
+        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
+        * @param nameValue The Name value.
+        */
+        public void setName(final String nameValue) {
+            this.name = nameValue;
+        }
+        
+        private StorageAccountProperties properties;
         
         /**
         * Details about the storage account.
         * @return The Properties value.
         */
-        public StorageServiceProperties getProperties() {
+        public StorageAccountProperties getProperties() {
             return this.properties;
         }
         
@@ -122,34 +148,8 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         * Details about the storage account.
         * @param propertiesValue The Properties value.
         */
-        public void setProperties(final StorageServiceProperties propertiesValue) {
+        public void setProperties(final StorageAccountProperties propertiesValue) {
             this.properties = propertiesValue;
-        }
-        
-        private String serviceName;
-        
-        /**
-        * The name of the storage account. This name is the DNS prefix name and
-        * can be used to access blobs, queues, and tables in the storage
-        * account.  For example, if the service name is MyStorageAccount you
-        * could access the blob containers by calling:
-        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-        * @return The ServiceName value.
-        */
-        public String getServiceName() {
-            return this.serviceName;
-        }
-        
-        /**
-        * The name of the storage account. This name is the DNS prefix name and
-        * can be used to access blobs, queues, and tables in the storage
-        * account.  For example, if the service name is MyStorageAccount you
-        * could access the blob containers by calling:
-        * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-        * @param serviceNameValue The ServiceName value.
-        */
-        public void setServiceName(final String serviceNameValue) {
-            this.serviceName = serviceNameValue;
         }
         
         private URI uri;
@@ -173,10 +173,10 @@ public class StorageAccountListResponse extends OperationResponse implements Ite
         }
         
         /**
-        * Initializes a new instance of the StorageService class.
+        * Initializes a new instance of the StorageAccount class.
         *
         */
-        public StorageService() {
+        public StorageAccount() {
             this.extendedProperties = new HashMap<String, String>();
         }
     }

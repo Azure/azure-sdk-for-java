@@ -145,7 +145,7 @@ public class StorageAccountCreateParameters {
     */
     public String getLabel() {
         if (this.label == null) {
-            return this.getServiceName();
+            return this.getName();
         } else {
             return this.label;
         }
@@ -185,7 +185,7 @@ public class StorageAccountCreateParameters {
         this.location = locationValue;
     }
     
-    private String serviceName;
+    private String name;
     
     /**
     * Required. A name for the storage account that is unique within Windows
@@ -194,10 +194,10 @@ public class StorageAccountCreateParameters {
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
-    * @return The ServiceName value.
+    * @return The Name value.
     */
-    public String getServiceName() {
-        return this.serviceName;
+    public String getName() {
+        return this.name;
     }
     
     /**
@@ -207,10 +207,10 @@ public class StorageAccountCreateParameters {
     * DNS prefix name and can be used to access blobs, queues, and tables in
     * the storage account.  For example:
     * http://ServiceName.blob.core.windows.net/mycontainer/
-    * @param serviceNameValue The ServiceName value.
+    * @param nameValue The Name value.
     */
-    public void setServiceName(final String serviceNameValue) {
-        this.serviceName = serviceNameValue;
+    public void setName(final String nameValue) {
+        this.name = nameValue;
     }
     
     /**

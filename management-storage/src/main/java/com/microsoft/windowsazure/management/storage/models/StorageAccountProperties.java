@@ -30,7 +30,7 @@ import java.util.Calendar;
 /**
 * Details about a storage account.
 */
-public class StorageServiceProperties {
+public class StorageAccountProperties {
     private String affinityGroup;
     
     /**
@@ -225,13 +225,13 @@ public class StorageServiceProperties {
         this.location = locationValue;
     }
     
-    private StorageServiceStatus status;
+    private StorageAccountStatus status;
     
     /**
     * The status of the storage account at the time the operation was called.
     * @return The Status value.
     */
-    public StorageServiceStatus getStatus() {
+    public StorageAccountStatus getStatus() {
         return this.status;
     }
     
@@ -239,7 +239,7 @@ public class StorageServiceProperties {
     * The status of the storage account at the time the operation was called.
     * @param statusValue The Status value.
     */
-    public void setStatus(final StorageServiceStatus statusValue) {
+    public void setStatus(final StorageAccountStatus statusValue) {
         this.status = statusValue;
     }
     
@@ -281,10 +281,10 @@ public class StorageServiceProperties {
     }
     
     /**
-    * Initializes a new instance of the StorageServiceProperties class.
+    * Initializes a new instance of the StorageAccountProperties class.
     *
     */
-    public StorageServiceProperties() {
+    public StorageAccountProperties() {
         this.endpoints = new ArrayList<URI>();
     }
 }
