@@ -73,7 +73,6 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -406,19 +405,16 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AvailabilityResponse");
-            Element availabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element availabilityResponseElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "AvailabilityResponse");
             if (availabilityResponseElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(availabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "Result");
-                Element resultElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element resultElement = XmlUtility.getElementByTagNameNS(availabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "Result");
                 if (resultElement != null) {
                     boolean resultInstance;
                     resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                     result.setIsAvailable(resultInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(availabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "Reason");
-                Element reasonElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element reasonElement = XmlUtility.getElementByTagNameNS(availabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "Reason");
                 if (reasonElement != null) {
                     boolean isNil = false;
                     Attr nilAttribute = reasonElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -753,33 +749,28 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element urlElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
-                Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element serviceNameElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                 if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setName(serviceNameInstance);
                 }
                 
-                NodeList elements4 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
-                Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element storageServicePropertiesElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
                 if (storageServicePropertiesElement != null) {
                     StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
                     result.setProperties(storageServicePropertiesInstance);
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                    Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element descriptionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     if (descriptionElement != null) {
                         boolean isNil = false;
                         Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -793,89 +784,78 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         }
                     }
                     
-                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                    Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element affinityGroupElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                     if (affinityGroupElement != null) {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         storageServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
                     }
                     
-                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                    Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element locationElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Location");
                     if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         storageServicePropertiesInstance.setLocation(locationInstance);
                     }
                     
-                    NodeList elements8 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                    Element labelElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         storageServicePropertiesInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements9 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                    Element statusElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null) {
                         StorageAccountStatus statusInstance;
                         statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
                         storageServicePropertiesInstance.setStatus(statusInstance);
                     }
                     
-                    NodeList elements10 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Endpoints");
-                    Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                    Element endpointsSequenceElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Endpoints");
                     if (endpointsSequenceElement != null) {
-                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").getLength(); i1 = i1 + 1) {
-                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").item(i1));
+                        for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").size(); i1 = i1 + 1) {
+                            org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").get(i1));
                             storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                         }
                     }
                     
-                    NodeList elements11 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                    Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                    Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
                     if (geoReplicationEnabledElement != null) {
                         boolean geoReplicationEnabledInstance;
                         geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
                         storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                     }
                     
-                    NodeList elements12 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
-                    Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                    Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                     if (geoPrimaryRegionElement != null) {
                         String geoPrimaryRegionInstance;
                         geoPrimaryRegionInstance = geoPrimaryRegionElement.getTextContent();
                         storageServicePropertiesInstance.setGeoPrimaryRegion(geoPrimaryRegionInstance);
                     }
                     
-                    NodeList elements13 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
-                    Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                    Element statusOfPrimaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
                     if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false) {
                         GeoRegionStatus statusOfPrimaryInstance;
                         statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
                         storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                     }
                     
-                    NodeList elements14 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "LastGeoFailoverTime");
-                    Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                    Element lastGeoFailoverTimeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "LastGeoFailoverTime");
                     if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false) {
                         Calendar lastGeoFailoverTimeInstance;
                         lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
                         storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                     }
                     
-                    NodeList elements15 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoSecondaryRegion");
-                    Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                    Element geoSecondaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoSecondaryRegion");
                     if (geoSecondaryRegionElement != null) {
                         String geoSecondaryRegionInstance;
                         geoSecondaryRegionInstance = geoSecondaryRegionElement.getTextContent();
                         storageServicePropertiesInstance.setGeoSecondaryRegion(geoSecondaryRegionInstance);
                     }
                     
-                    NodeList elements16 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
-                    Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                    Element statusOfSecondaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
                     if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false) {
                         GeoRegionStatus statusOfSecondaryInstance;
                         statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
@@ -883,24 +863,20 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     }
                 }
                 
-                NodeList elements17 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-                Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").getLength(); i2 = i2 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").item(i2));
-                        NodeList elements18 = XmlUtility.getElementsByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                        String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
-                        NodeList elements19 = XmlUtility.getElementsByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value");
-                        String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
+                    for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i2 = i2 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i2));
+                        String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
+                        String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
                 
-                NodeList elements20 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
-                Element capabilitiesSequenceElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
+                Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
                 if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").getLength(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").item(i3));
+                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i3 = i3 + 1) {
+                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i3));
                         result.getCapabilities().add(capabilitiesElement.getTextContent());
                     }
                 }
@@ -1015,30 +991,25 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element urlElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceKeys");
-                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element storageServiceKeysElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceKeys");
                 if (storageServiceKeysElement != null) {
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Primary");
-                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element primaryElement = XmlUtility.getElementByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Primary");
                     if (primaryElement != null) {
                         String primaryInstance;
                         primaryInstance = primaryElement.getTextContent();
                         result.setPrimaryKey(primaryInstance);
                     }
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Secondary");
-                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element secondaryElement = XmlUtility.getElementByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Secondary");
                     if (secondaryElement != null) {
                         String secondaryInstance;
                         secondaryInstance = secondaryElement.getTextContent();
@@ -1150,38 +1121,33 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageServices");
-            Element storageServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element storageServicesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageServices");
             if (storageServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").get(i1));
                     StorageAccountListResponse.StorageAccount storageAccountInstance = new StorageAccountListResponse.StorageAccount();
                     result.getStorageAccounts().add(storageAccountInstance);
                     
-                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                    Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element urlElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
                     if (urlElement != null) {
                         URI urlInstance;
                         urlInstance = new URI(urlElement.getTextContent());
                         storageAccountInstance.setUri(urlInstance);
                     }
                     
-                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
-                    Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element serviceNameElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                     if (serviceNameElement != null) {
                         String serviceNameInstance;
                         serviceNameInstance = serviceNameElement.getTextContent();
                         storageAccountInstance.setName(serviceNameInstance);
                     }
                     
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
-                    Element storageServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element storageServicePropertiesElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
                     if (storageServicePropertiesElement != null) {
                         StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
                         storageAccountInstance.setProperties(storageServicePropertiesInstance);
                         
-                        NodeList elements5 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
-                        Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                        Element descriptionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                         if (descriptionElement != null) {
                             boolean isNil = false;
                             Attr nilAttribute = descriptionElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
@@ -1195,89 +1161,78 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             }
                         }
                         
-                        NodeList elements6 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
-                        Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                        Element affinityGroupElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
                         if (affinityGroupElement != null) {
                             String affinityGroupInstance;
                             affinityGroupInstance = affinityGroupElement.getTextContent();
                             storageServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
                         }
                         
-                        NodeList elements7 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Location");
-                        Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                        Element locationElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Location");
                         if (locationElement != null) {
                             String locationInstance;
                             locationInstance = locationElement.getTextContent();
                             storageServicePropertiesInstance.setLocation(locationInstance);
                         }
                         
-                        NodeList elements8 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                        Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
+                        Element labelElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement != null) {
                             String labelInstance;
                             labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                             storageServicePropertiesInstance.setLabel(labelInstance);
                         }
                         
-                        NodeList elements9 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                        Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
+                        Element statusElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Status");
                         if (statusElement != null) {
                             StorageAccountStatus statusInstance;
                             statusInstance = StorageAccountStatus.valueOf(statusElement.getTextContent());
                             storageServicePropertiesInstance.setStatus(statusInstance);
                         }
                         
-                        NodeList elements10 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Endpoints");
-                        Element endpointsSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
+                        Element endpointsSequenceElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Endpoints");
                         if (endpointsSequenceElement != null) {
-                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").getLength(); i2 = i2 + 1) {
-                                org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").item(i2));
+                            for (int i2 = 0; i2 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").size(); i2 = i2 + 1) {
+                                org.w3c.dom.Element endpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(endpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Endpoint").get(i2));
                                 storageServicePropertiesInstance.getEndpoints().add(new URI(endpointsElement.getTextContent()));
                             }
                         }
                         
-                        NodeList elements11 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
-                        Element geoReplicationEnabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
+                        Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
                         if (geoReplicationEnabledElement != null) {
                             boolean geoReplicationEnabledInstance;
                             geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
                             storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                         }
                         
-                        NodeList elements12 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
-                        Element geoPrimaryRegionElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
+                        Element geoPrimaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoPrimaryRegion");
                         if (geoPrimaryRegionElement != null) {
                             String geoPrimaryRegionInstance;
                             geoPrimaryRegionInstance = geoPrimaryRegionElement.getTextContent();
                             storageServicePropertiesInstance.setGeoPrimaryRegion(geoPrimaryRegionInstance);
                         }
                         
-                        NodeList elements13 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
-                        Element statusOfPrimaryElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
+                        Element statusOfPrimaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfPrimary");
                         if (statusOfPrimaryElement != null && (statusOfPrimaryElement.getTextContent() == null || statusOfPrimaryElement.getTextContent().isEmpty() == true) == false) {
                             GeoRegionStatus statusOfPrimaryInstance;
                             statusOfPrimaryInstance = GeoRegionStatus.valueOf(statusOfPrimaryElement.getTextContent());
                             storageServicePropertiesInstance.setStatusOfGeoPrimaryRegion(statusOfPrimaryInstance);
                         }
                         
-                        NodeList elements14 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "LastGeoFailoverTime");
-                        Element lastGeoFailoverTimeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
+                        Element lastGeoFailoverTimeElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "LastGeoFailoverTime");
                         if (lastGeoFailoverTimeElement != null && (lastGeoFailoverTimeElement.getTextContent() == null || lastGeoFailoverTimeElement.getTextContent().isEmpty() == true) == false) {
                             Calendar lastGeoFailoverTimeInstance;
                             lastGeoFailoverTimeInstance = DatatypeConverter.parseDateTime(lastGeoFailoverTimeElement.getTextContent());
                             storageServicePropertiesInstance.setLastGeoFailoverTime(lastGeoFailoverTimeInstance);
                         }
                         
-                        NodeList elements15 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoSecondaryRegion");
-                        Element geoSecondaryRegionElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
+                        Element geoSecondaryRegionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoSecondaryRegion");
                         if (geoSecondaryRegionElement != null) {
                             String geoSecondaryRegionInstance;
                             geoSecondaryRegionInstance = geoSecondaryRegionElement.getTextContent();
                             storageServicePropertiesInstance.setGeoSecondaryRegion(geoSecondaryRegionInstance);
                         }
                         
-                        NodeList elements16 = XmlUtility.getElementsByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
-                        Element statusOfSecondaryElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
+                        Element statusOfSecondaryElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "StatusOfSecondary");
                         if (statusOfSecondaryElement != null && (statusOfSecondaryElement.getTextContent() == null || statusOfSecondaryElement.getTextContent().isEmpty() == true) == false) {
                             GeoRegionStatus statusOfSecondaryInstance;
                             statusOfSecondaryInstance = GeoRegionStatus.valueOf(statusOfSecondaryElement.getTextContent());
@@ -1285,15 +1240,12 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         }
                     }
                     
-                    NodeList elements17 = XmlUtility.getElementsByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-                    Element extendedPropertiesSequenceElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
+                    Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                     if (extendedPropertiesSequenceElement != null) {
-                        for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").getLength(); i3 = i3 + 1) {
-                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").item(i3));
-                            NodeList elements18 = XmlUtility.getElementsByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                            String extendedPropertiesKey = elements18.getLength() > 0 ? ((org.w3c.dom.Element) elements18.item(0)).getTextContent() : null;
-                            NodeList elements19 = XmlUtility.getElementsByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value");
-                            String extendedPropertiesValue = elements19.getLength() > 0 ? ((org.w3c.dom.Element) elements19.item(0)).getTextContent() : null;
+                        for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i3 = i3 + 1) {
+                            org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i3));
+                            String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
+                            String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                             storageAccountInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                         }
                     }
@@ -1439,30 +1391,25 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
-            Element storageServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
-                Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element urlElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceKeys");
-                Element storageServiceKeysElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element storageServiceKeysElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceKeys");
                 if (storageServiceKeysElement != null) {
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Primary");
-                    Element primaryElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element primaryElement = XmlUtility.getElementByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Primary");
                     if (primaryElement != null) {
                         String primaryInstance;
                         primaryInstance = primaryElement.getTextContent();
                         result.setPrimaryKey(primaryInstance);
                     }
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Secondary");
-                    Element secondaryElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element secondaryElement = XmlUtility.getElementByTagNameNS(storageServiceKeysElement, "http://schemas.microsoft.com/windowsazure", "Secondary");
                     if (secondaryElement != null) {
                         String secondaryInstance;
                         secondaryInstance = secondaryElement.getTextContent();

@@ -62,7 +62,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -719,11 +718,9 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificate");
-            Element certificateElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element certificateElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificate");
             if (certificateElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(certificateElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                Element dataElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element dataElement = XmlUtility.getElementByTagNameNS(certificateElement, "http://schemas.microsoft.com/windowsazure", "Data");
                 if (dataElement != null) {
                     byte[] dataInstance;
                     dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;
@@ -841,40 +838,35 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificates");
-            Element certificatesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element certificatesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Certificates");
             if (certificatesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element certificatesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(certificatesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Certificate").get(i1));
                     ServiceCertificateListResponse.Certificate certificateInstance = new ServiceCertificateListResponse.Certificate();
                     result.getCertificates().add(certificateInstance);
                     
-                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "CertificateUrl");
-                    Element certificateUrlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element certificateUrlElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "CertificateUrl");
                     if (certificateUrlElement != null) {
                         URI certificateUrlInstance;
                         certificateUrlInstance = new URI(certificateUrlElement.getTextContent());
                         certificateInstance.setCertificateUri(certificateUrlInstance);
                     }
                     
-                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
-                    Element thumbprintElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element thumbprintElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Thumbprint");
                     if (thumbprintElement != null) {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
                         certificateInstance.setThumbprint(thumbprintInstance);
                     }
                     
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
-                    Element thumbprintAlgorithmElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element thumbprintAlgorithmElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
                     if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
                         thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                         certificateInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
                     }
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Data");
-                    Element dataElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element dataElement = XmlUtility.getElementByTagNameNS(certificatesElement, "http://schemas.microsoft.com/windowsazure", "Data");
                     if (dataElement != null) {
                         byte[] dataInstance;
                         dataInstance = dataElement.getTextContent() != null ? Base64.decodeBase64(dataElement.getTextContent().getBytes()) : null;

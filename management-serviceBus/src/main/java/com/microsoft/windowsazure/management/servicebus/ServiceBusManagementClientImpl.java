@@ -51,7 +51,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -330,49 +329,42 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
-            Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element operationElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "Operation");
             if (operationElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
-                Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element idElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "ID");
                 if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     OperationStatus statusInstance;
                     statusInstance = OperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
                 }
                 
-                NodeList elements4 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
-                Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element httpStatusCodeElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "HttpStatusCode");
                 if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
                 }
                 
-                NodeList elements5 = XmlUtility.getElementsByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
-                Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
                     ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
-                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                    Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
                     if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
                     }
                     
-                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                    Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element messageElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Message");
                     if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
@@ -484,31 +476,26 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
-            Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element feedElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://www.w3.org/2005/Atom", "feed");
             if (feedElement != null) {
                 if (feedElement != null) {
-                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
-                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").item(i1));
+                    for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").size(); i1 = i1 + 1) {
+                        org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(feedElement, "http://www.w3.org/2005/Atom", "entry").get(i1));
                         ServiceBusLocation entryInstance = new ServiceBusLocation();
                         result.getRegions().add(entryInstance);
                         
-                        NodeList elements2 = XmlUtility.getElementsByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
-                        Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                        Element contentElement = XmlUtility.getElementByTagNameNS(entriesElement, "http://www.w3.org/2005/Atom", "content");
                         if (contentElement != null) {
-                            NodeList elements3 = XmlUtility.getElementsByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
-                            Element regionCodeDescriptionElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                            Element regionCodeDescriptionElement = XmlUtility.getElementByTagNameNS(contentElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RegionCodeDescription");
                             if (regionCodeDescriptionElement != null) {
-                                NodeList elements4 = XmlUtility.getElementsByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
-                                Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                                Element codeElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Code");
                                 if (codeElement != null) {
                                     String codeInstance;
                                     codeInstance = codeElement.getTextContent();
                                     entryInstance.setCode(codeInstance);
                                 }
                                 
-                                NodeList elements5 = XmlUtility.getElementsByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
-                                Element fullNameElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                                Element fullNameElement = XmlUtility.getElementByTagNameNS(regionCodeDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FullName");
                                 if (fullNameElement != null) {
                                     String fullNameInstance;
                                     fullNameInstance = fullNameElement.getTextContent();

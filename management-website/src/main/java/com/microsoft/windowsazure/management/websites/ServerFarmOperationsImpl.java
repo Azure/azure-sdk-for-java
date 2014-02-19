@@ -61,7 +61,6 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -256,51 +255,44 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
-            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serverFarmElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement2 != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element currentNumberOfWorkersElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
                 if (currentNumberOfWorkersElement2 != null) {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element currentWorkerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
                 if (currentWorkerSizeElement2 != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
                 
-                NodeList elements4 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element nameElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements5 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element numberOfWorkersElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
                 if (numberOfWorkersElement2 != null) {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
-                NodeList elements6 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
-                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                 if (workerSizeElement2 != null) {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
                 
-                NodeList elements7 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element statusElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement2 != null) {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());
@@ -549,51 +541,44 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
-            Element serverFarmElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serverFarmElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element currentNumberOfWorkersElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
                 if (currentNumberOfWorkersElement != null) {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-                Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element currentWorkerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
                 if (currentWorkerSizeElement != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
                 
-                NodeList elements4 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element nameElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements5 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-                Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element numberOfWorkersElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
                 if (numberOfWorkersElement != null) {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
-                NodeList elements6 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
-                Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                 if (workerSizeElement != null) {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
                 
-                NodeList elements7 = XmlUtility.getElementsByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element statusElement = XmlUtility.getElementByTagNameNS(serverFarmElement, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement != null) {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
@@ -722,56 +707,49 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarms");
-            Element serverFarmsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serverFarmsSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarms");
             if (serverFarmsSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serverFarmsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServerFarm").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serverFarmsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServerFarm").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serverFarmsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServerFarm").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element serverFarmsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serverFarmsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ServerFarm").get(i1));
                     ServerFarmListResponse.ServerFarm serverFarmInstance = new ServerFarmListResponse.ServerFarm();
                     result.getServerFarms().add(serverFarmInstance);
                     
-                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-                    Element currentNumberOfWorkersElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element currentNumberOfWorkersElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
                     if (currentNumberOfWorkersElement != null) {
                         int currentNumberOfWorkersInstance;
                         currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement.getTextContent());
                         serverFarmInstance.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                     }
                     
-                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-                    Element currentWorkerSizeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element currentWorkerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
                     if (currentWorkerSizeElement != null) {
                         ServerFarmWorkerSize currentWorkerSizeInstance;
                         currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement.getTextContent());
                         serverFarmInstance.setCurrentWorkerSize(currentWorkerSizeInstance);
                     }
                     
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    Element nameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element nameElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serverFarmInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-                    Element numberOfWorkersElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element numberOfWorkersElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
                     if (numberOfWorkersElement != null) {
                         int numberOfWorkersInstance;
                         numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement.getTextContent());
                         serverFarmInstance.setNumberOfWorkers(numberOfWorkersInstance);
                     }
                     
-                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
-                    Element workerSizeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element workerSizeElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                     if (workerSizeElement != null) {
                         ServerFarmWorkerSize workerSizeInstance;
                         workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement.getTextContent());
                         serverFarmInstance.setWorkerSize(workerSizeInstance);
                     }
                     
-                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    Element statusElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element statusElement = XmlUtility.getElementByTagNameNS(serverFarmsElement, "http://schemas.microsoft.com/windowsazure", "Status");
                     if (statusElement != null) {
                         ServerFarmStatus statusInstance;
                         statusInstance = ServerFarmStatus.valueOf(statusElement.getTextContent());
@@ -962,51 +940,44 @@ public class ServerFarmOperationsImpl implements ServiceOperations<WebSiteManage
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
             Document responseDoc = documentBuilder2.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
-            Element serverFarmElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element serverFarmElement2 = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServerFarm");
             if (serverFarmElement2 != null) {
-                NodeList elements2 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
-                Element currentNumberOfWorkersElement2 = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                Element currentNumberOfWorkersElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentNumberOfWorkers");
                 if (currentNumberOfWorkersElement2 != null) {
                     int currentNumberOfWorkersInstance;
                     currentNumberOfWorkersInstance = DatatypeConverter.parseInt(currentNumberOfWorkersElement2.getTextContent());
                     result.setCurrentNumberOfWorkers(currentNumberOfWorkersInstance);
                 }
                 
-                NodeList elements3 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
-                Element currentWorkerSizeElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                Element currentWorkerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "CurrentWorkerSize");
                 if (currentWorkerSizeElement2 != null) {
                     ServerFarmWorkerSize currentWorkerSizeInstance;
                     currentWorkerSizeInstance = ServerFarmWorkerSize.valueOf(currentWorkerSizeElement2.getTextContent());
                     result.setCurrentWorkerSize(currentWorkerSizeInstance);
                 }
                 
-                NodeList elements4 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Name");
-                Element nameElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                Element nameElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Name");
                 if (nameElement2 != null) {
                     String nameInstance;
                     nameInstance = nameElement2.getTextContent();
                     result.setName(nameInstance);
                 }
                 
-                NodeList elements5 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
-                Element numberOfWorkersElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                Element numberOfWorkersElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "NumberOfWorkers");
                 if (numberOfWorkersElement2 != null) {
                     int numberOfWorkersInstance;
                     numberOfWorkersInstance = DatatypeConverter.parseInt(numberOfWorkersElement2.getTextContent());
                     result.setNumberOfWorkers(numberOfWorkersInstance);
                 }
                 
-                NodeList elements6 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
-                Element workerSizeElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                Element workerSizeElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "WorkerSize");
                 if (workerSizeElement2 != null) {
                     ServerFarmWorkerSize workerSizeInstance;
                     workerSizeInstance = ServerFarmWorkerSize.valueOf(workerSizeElement2.getTextContent());
                     result.setWorkerSize(workerSizeInstance);
                 }
                 
-                NodeList elements7 = XmlUtility.getElementsByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Status");
-                Element statusElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                Element statusElement2 = XmlUtility.getElementByTagNameNS(serverFarmElement2, "http://schemas.microsoft.com/windowsazure", "Status");
                 if (statusElement2 != null) {
                     ServerFarmStatus statusInstance;
                     statusInstance = ServerFarmStatus.valueOf(statusElement2.getTextContent());

@@ -42,7 +42,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -151,56 +150,49 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document responseDoc = documentBuilder.parse(responseContent);
             
-            NodeList elements = XmlUtility.getElementsByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "RoleSizes");
-            Element roleSizesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
+            Element roleSizesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "RoleSizes");
             if (roleSizesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").getLength(); i1 = i1 + 1) {
-                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").item(i1));
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleSizesSequenceElement, "http://schemas.microsoft.com/windowsazure", "RoleSize").get(i1));
                     RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
                     result.getRoleSizes().add(roleSizeInstance);
                     
-                    NodeList elements2 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                    Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
+                    Element nameElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Name");
                     if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         roleSizeInstance.setName(nameInstance);
                     }
                     
-                    NodeList elements3 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Label");
-                    Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
+                    Element labelElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         roleSizeInstance.setLabel(labelInstance);
                     }
                     
-                    NodeList elements4 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Cores");
-                    Element coresElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
+                    Element coresElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "Cores");
                     if (coresElement != null) {
                         int coresInstance;
                         coresInstance = DatatypeConverter.parseInt(coresElement.getTextContent());
                         roleSizeInstance.setCores(coresInstance);
                     }
                     
-                    NodeList elements5 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MemoryInMb");
-                    Element memoryInMbElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
+                    Element memoryInMbElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "MemoryInMb");
                     if (memoryInMbElement != null) {
                         int memoryInMbInstance;
                         memoryInMbInstance = DatatypeConverter.parseInt(memoryInMbElement.getTextContent());
                         roleSizeInstance.setMemoryInMb(memoryInMbInstance);
                     }
                     
-                    NodeList elements6 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
-                    Element supportedByWebWorkerRolesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
+                    Element supportedByWebWorkerRolesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
                     if (supportedByWebWorkerRolesElement != null) {
                         boolean supportedByWebWorkerRolesInstance;
                         supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
                         roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
                     }
                     
-                    NodeList elements7 = XmlUtility.getElementsByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
-                    Element supportedByVirtualMachinesElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
+                    Element supportedByVirtualMachinesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
                     if (supportedByVirtualMachinesElement != null) {
                         boolean supportedByVirtualMachinesInstance;
                         supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
