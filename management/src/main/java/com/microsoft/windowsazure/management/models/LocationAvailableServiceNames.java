@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.models;
 /**
 * Indicates the services available at a location.
 */
-public class LocationAvailableServiceNames
-{
+public class LocationAvailableServiceNames {
     public static final String Compute = "Compute";
     
     public static final String Storage = "Storage";

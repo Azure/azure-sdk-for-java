@@ -29,16 +29,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 * The configuration script returned from the get device configuration script
 * request.
 */
-public class GatewayGetDeviceConfigurationScriptResponse extends OperationResponse
-{
+public class GatewayGetDeviceConfigurationScriptResponse extends OperationResponse {
     private String configurationScript;
     
     /**
     * The requested configuration script for the local network device.
     * @return The ConfigurationScript value.
     */
-    public String getConfigurationScript()
-    {
+    public String getConfigurationScript() {
         return this.configurationScript;
     }
     
@@ -46,8 +44,7 @@ public class GatewayGetDeviceConfigurationScriptResponse extends OperationRespon
     * The requested configuration script for the local network device.
     * @param configurationScriptValue The ConfigurationScript value.
     */
-    public void setConfigurationScript(final String configurationScriptValue)
-    {
+    public void setConfigurationScript(final String configurationScriptValue) {
         this.configurationScript = configurationScriptValue;
     }
 }

@@ -32,16 +32,14 @@ import java.util.Iterator;
 /**
 * The response structure for the DAC GetStatus operation.
 */
-public class DacGetStatusResponse extends OperationResponse implements Iterable<DacGetStatusResponse.StatusInfo>
-{
+public class DacGetStatusResponse extends OperationResponse implements Iterable<DacGetStatusResponse.StatusInfo> {
     private ArrayList<DacGetStatusResponse.StatusInfo> statusInfoList;
     
     /**
     * Gets or sets the list of statuses relevant to this import/export request.
     * @return The StatusInfoList value.
     */
-    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList()
-    {
+    public ArrayList<DacGetStatusResponse.StatusInfo> getStatusInfoList() {
         return this.statusInfoList;
     }
     
@@ -49,8 +47,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     * Gets or sets the list of statuses relevant to this import/export request.
     * @param statusInfoListValue The StatusInfoList value.
     */
-    public void setStatusInfoList(final ArrayList<DacGetStatusResponse.StatusInfo> statusInfoListValue)
-    {
+    public void setStatusInfoList(final ArrayList<DacGetStatusResponse.StatusInfo> statusInfoListValue) {
         this.statusInfoList = statusInfoListValue;
     }
     
@@ -58,8 +55,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     * Initializes a new instance of the DacGetStatusResponse class.
     *
     */
-    public DacGetStatusResponse()
-    {
+    public DacGetStatusResponse() {
         super();
         this.statusInfoList = new ArrayList<DacGetStatusResponse.StatusInfo>();
     }
@@ -68,16 +64,14 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     * Gets the sequence of StatusInfoList.
     *
     */
-    public Iterator<DacGetStatusResponse.StatusInfo> iterator()
-    {
+    public Iterator<DacGetStatusResponse.StatusInfo> iterator() {
         return this.getStatusInfoList().iterator();
     }
     
     /**
     * Status of a DAC import.
     */
-    public static class StatusInfo
-    {
+    public static class StatusInfo {
         private URI blobUri;
         
         /**
@@ -85,8 +79,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Storage to be imported.
         * @return The BlobUri value.
         */
-        public URI getBlobUri()
-        {
+        public URI getBlobUri() {
             return this.blobUri;
         }
         
@@ -95,8 +88,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Storage to be imported.
         * @param blobUriValue The BlobUri value.
         */
-        public void setBlobUri(final URI blobUriValue)
-        {
+        public void setBlobUri(final URI blobUriValue) {
             this.blobUri = blobUriValue;
         }
         
@@ -107,8 +99,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * imported.
         * @return The DatabaseName value.
         */
-        public String getDatabaseName()
-        {
+        public String getDatabaseName() {
             return this.databaseName;
         }
         
@@ -117,8 +108,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * imported.
         * @param databaseNameValue The DatabaseName value.
         */
-        public void setDatabaseName(final String databaseNameValue)
-        {
+        public void setDatabaseName(final String databaseNameValue) {
             this.databaseName = databaseNameValue;
         }
         
@@ -129,8 +119,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * in some way.
         * @return The ErrorMessage value.
         */
-        public String getErrorMessage()
-        {
+        public String getErrorMessage() {
             return this.errorMessage;
         }
         
@@ -139,8 +128,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * in some way.
         * @param errorMessageValue The ErrorMessage value.
         */
-        public void setErrorMessage(final String errorMessageValue)
-        {
+        public void setErrorMessage(final String errorMessageValue) {
             this.errorMessage = errorMessageValue;
         }
         
@@ -150,8 +138,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the last time the status changed.
         * @return The LastModifiedTime value.
         */
-        public Calendar getLastModifiedTime()
-        {
+        public Calendar getLastModifiedTime() {
             return this.lastModifiedTime;
         }
         
@@ -159,8 +146,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the last time the status changed.
         * @param lastModifiedTimeValue The LastModifiedTime value.
         */
-        public void setLastModifiedTime(final Calendar lastModifiedTimeValue)
-        {
+        public void setLastModifiedTime(final Calendar lastModifiedTimeValue) {
             this.lastModifiedTime = lastModifiedTimeValue;
         }
         
@@ -171,8 +157,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * and the process initiated.
         * @return The QueuedTime value.
         */
-        public Calendar getQueuedTime()
-        {
+        public Calendar getQueuedTime() {
             return this.queuedTime;
         }
         
@@ -181,8 +166,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * and the process initiated.
         * @param queuedTimeValue The QueuedTime value.
         */
-        public void setQueuedTime(final Calendar queuedTimeValue)
-        {
+        public void setQueuedTime(final Calendar queuedTimeValue) {
             this.queuedTime = queuedTimeValue;
         }
         
@@ -193,8 +177,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * can be tracked with future calls to GetStatus.
         * @return The RequestId value.
         */
-        public String getRequestId()
-        {
+        public String getRequestId() {
             return this.requestId;
         }
         
@@ -203,8 +186,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * can be tracked with future calls to GetStatus.
         * @param requestIdValue The RequestId value.
         */
-        public void setRequestId(final String requestIdValue)
-        {
+        public void setRequestId(final String requestIdValue) {
             this.requestId = requestIdValue;
         }
         
@@ -214,8 +196,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the type (Import/Export) of this request.
         * @return The RequestType value.
         */
-        public String getRequestType()
-        {
+        public String getRequestType() {
             return this.requestType;
         }
         
@@ -223,8 +204,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the type (Import/Export) of this request.
         * @param requestTypeValue The RequestType value.
         */
-        public void setRequestType(final String requestTypeValue)
-        {
+        public void setRequestType(final String requestTypeValue) {
             this.requestType = requestTypeValue;
         }
         
@@ -235,8 +215,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * will be imported or from which it will be exported.
         * @return The ServerName value.
         */
-        public String getServerName()
-        {
+        public String getServerName() {
             return this.serverName;
         }
         
@@ -245,8 +224,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * will be imported or from which it will be exported.
         * @param serverNameValue The ServerName value.
         */
-        public void setServerName(final String serverNameValue)
-        {
+        public void setServerName(final String serverNameValue) {
             this.serverName = serverNameValue;
         }
         
@@ -256,8 +234,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the status of the import/export request.
         * @return The Status value.
         */
-        public String getStatus()
-        {
+        public String getStatus() {
             return this.status;
         }
         
@@ -265,8 +242,7 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
         * Gets or sets the status of the import/export request.
         * @param statusValue The Status value.
         */
-        public void setStatus(final String statusValue)
-        {
+        public void setStatus(final String statusValue) {
             this.status = statusValue;
         }
     }

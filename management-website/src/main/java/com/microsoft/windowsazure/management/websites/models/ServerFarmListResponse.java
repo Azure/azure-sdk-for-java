@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The List Server Farm operation response.
 */
-public class ServerFarmListResponse extends OperationResponse implements Iterable<ServerFarmListResponse.ServerFarm>
-{
+public class ServerFarmListResponse extends OperationResponse implements Iterable<ServerFarmListResponse.ServerFarm> {
     private ArrayList<ServerFarmListResponse.ServerFarm> serverFarms;
     
     /**
     * The server farms associated with the specified subscription.
     * @return The ServerFarms value.
     */
-    public ArrayList<ServerFarmListResponse.ServerFarm> getServerFarms()
-    {
+    public ArrayList<ServerFarmListResponse.ServerFarm> getServerFarms() {
         return this.serverFarms;
     }
     
@@ -47,8 +45,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
     * The server farms associated with the specified subscription.
     * @param serverFarmsValue The ServerFarms value.
     */
-    public void setServerFarms(final ArrayList<ServerFarmListResponse.ServerFarm> serverFarmsValue)
-    {
+    public void setServerFarms(final ArrayList<ServerFarmListResponse.ServerFarm> serverFarmsValue) {
         this.serverFarms = serverFarmsValue;
     }
     
@@ -56,8 +53,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
     * Initializes a new instance of the ServerFarmListResponse class.
     *
     */
-    public ServerFarmListResponse()
-    {
+    public ServerFarmListResponse() {
         super();
         this.serverFarms = new ArrayList<ServerFarmListResponse.ServerFarm>();
     }
@@ -66,24 +62,21 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
     * Gets the sequence of ServerFarms.
     *
     */
-    public Iterator<ServerFarmListResponse.ServerFarm> iterator()
-    {
+    public Iterator<ServerFarmListResponse.ServerFarm> iterator() {
         return this.getServerFarms().iterator();
     }
     
     /**
     * A server farm associated with the specified subscription.
     */
-    public static class ServerFarm
-    {
+    public static class ServerFarm {
         private int currentNumberOfWorkers;
         
         /**
         * The current number of Virtual Machines (VMs) in the server farm.
         * @return The CurrentNumberOfWorkers value.
         */
-        public int getCurrentNumberOfWorkers()
-        {
+        public int getCurrentNumberOfWorkers() {
             return this.currentNumberOfWorkers;
         }
         
@@ -91,8 +84,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The current number of Virtual Machines (VMs) in the server farm.
         * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
         */
-        public void setCurrentNumberOfWorkers(final int currentNumberOfWorkersValue)
-        {
+        public void setCurrentNumberOfWorkers(final int currentNumberOfWorkersValue) {
             this.currentNumberOfWorkers = currentNumberOfWorkersValue;
         }
         
@@ -102,8 +94,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The current worker size Possible values are Small, Medium, or Large.
         * @return The CurrentWorkerSize value.
         */
-        public ServerFarmWorkerSize getCurrentWorkerSize()
-        {
+        public ServerFarmWorkerSize getCurrentWorkerSize() {
             return this.currentWorkerSize;
         }
         
@@ -111,8 +102,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The current worker size Possible values are Small, Medium, or Large.
         * @param currentWorkerSizeValue The CurrentWorkerSize value.
         */
-        public void setCurrentWorkerSize(final ServerFarmWorkerSize currentWorkerSizeValue)
-        {
+        public void setCurrentWorkerSize(final ServerFarmWorkerSize currentWorkerSizeValue) {
             this.currentWorkerSize = currentWorkerSizeValue;
         }
         
@@ -122,8 +112,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The name of the server farm.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -131,8 +120,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The name of the server farm.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -143,8 +131,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * to the farm. Supported values are 1-10.
         * @return The NumberOfWorkers value.
         */
-        public int getNumberOfWorkers()
-        {
+        public int getNumberOfWorkers() {
             return this.numberOfWorkers;
         }
         
@@ -153,8 +140,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * to the farm. Supported values are 1-10.
         * @param numberOfWorkersValue The NumberOfWorkers value.
         */
-        public void setNumberOfWorkers(final int numberOfWorkersValue)
-        {
+        public void setNumberOfWorkers(final int numberOfWorkersValue) {
             this.numberOfWorkers = numberOfWorkersValue;
         }
         
@@ -164,8 +150,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * Server farm status. Possible values are Ready or Pending.
         * @return The Status value.
         */
-        public ServerFarmStatus getStatus()
-        {
+        public ServerFarmStatus getStatus() {
             return this.status;
         }
         
@@ -173,8 +158,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * Server farm status. Possible values are Ready or Pending.
         * @param statusValue The Status value.
         */
-        public void setStatus(final ServerFarmStatus statusValue)
-        {
+        public void setStatus(final ServerFarmStatus statusValue) {
             this.status = statusValue;
         }
         
@@ -184,8 +168,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The instance size. Possible values are Small, Medium, or Large.
         * @return The WorkerSize value.
         */
-        public ServerFarmWorkerSize getWorkerSize()
-        {
+        public ServerFarmWorkerSize getWorkerSize() {
             return this.workerSize;
         }
         
@@ -193,8 +176,7 @@ public class ServerFarmListResponse extends OperationResponse implements Iterabl
         * The instance size. Possible values are Small, Medium, or Large.
         * @param workerSizeValue The WorkerSize value.
         */
-        public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue)
-        {
+        public void setWorkerSize(final ServerFarmWorkerSize workerSizeValue) {
             this.workerSize = workerSizeValue;
         }
     }

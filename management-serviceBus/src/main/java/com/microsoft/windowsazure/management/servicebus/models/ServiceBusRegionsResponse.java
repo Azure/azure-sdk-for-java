@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * A response to a request for a list of regions.
 */
-public class ServiceBusRegionsResponse extends OperationResponse implements Iterable<ServiceBusLocation>
-{
+public class ServiceBusRegionsResponse extends OperationResponse implements Iterable<ServiceBusLocation> {
     private ArrayList<ServiceBusLocation> regions;
     
     /**
     * The available regions.
     * @return The Regions value.
     */
-    public ArrayList<ServiceBusLocation> getRegions()
-    {
+    public ArrayList<ServiceBusLocation> getRegions() {
         return this.regions;
     }
     
@@ -47,8 +45,7 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     * The available regions.
     * @param regionsValue The Regions value.
     */
-    public void setRegions(final ArrayList<ServiceBusLocation> regionsValue)
-    {
+    public void setRegions(final ArrayList<ServiceBusLocation> regionsValue) {
         this.regions = regionsValue;
     }
     
@@ -56,8 +53,7 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     * Initializes a new instance of the ServiceBusRegionsResponse class.
     *
     */
-    public ServiceBusRegionsResponse()
-    {
+    public ServiceBusRegionsResponse() {
         super();
         this.regions = new ArrayList<ServiceBusLocation>();
     }
@@ -66,8 +62,7 @@ public class ServiceBusRegionsResponse extends OperationResponse implements Iter
     * Gets the sequence of Regions.
     *
     */
-    public Iterator<ServiceBusLocation> iterator()
-    {
+    public Iterator<ServiceBusLocation> iterator() {
         return this.getRegions().iterator();
     }
 }

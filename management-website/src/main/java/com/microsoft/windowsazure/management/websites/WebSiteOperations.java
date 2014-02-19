@@ -41,7 +41,6 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteIsHostnameAv
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
-import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -53,8 +52,7 @@ import org.xml.sax.SAXException;
 /**
 * Operations for managing the web sites in a web space.
 */
-public interface WebSiteOperations
-{
+public interface WebSiteOperations {
     /**
     * You can swap a web site from one slot to the production slot.
     *

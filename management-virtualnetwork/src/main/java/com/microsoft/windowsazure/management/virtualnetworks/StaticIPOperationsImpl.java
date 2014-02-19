@@ -46,15 +46,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, StaticIPOperations
-{
+public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkManagementClientImpl>, StaticIPOperations {
     /**
     * Initializes a new instance of the StaticIPOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    StaticIPOperationsImpl(VirtualNetworkManagementClientImpl client)
-    {
+    StaticIPOperationsImpl(VirtualNetworkManagementClientImpl client) {
         this.client = client;
     }
     
@@ -65,8 +63,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
     * microsoft.windowsazure.management.virtualnetworks.VirtualNetworkManagementClientImpl.
     * @return The Client value.
     */
-    public VirtualNetworkManagementClientImpl getClient()
-    {
+    public VirtualNetworkManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -80,12 +77,10 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
     * address, and if not, provide a list of suggestions.
     */
     @Override
-    public Future<NetworkStaticIPAvailabilityResponse> checkAsync(final String virtualNetworkName, final InetAddress ipAddress)
-    {
+    public Future<NetworkStaticIPAvailabilityResponse> checkAsync(final String virtualNetworkName, final InetAddress ipAddress) {
         return this.getClient().getExecutorService().submit(new Callable<NetworkStaticIPAvailabilityResponse>() { 
             @Override
-            public NetworkStaticIPAvailabilityResponse call() throws Exception
-            {
+            public NetworkStaticIPAvailabilityResponse call() throws Exception {
                 return check(virtualNetworkName, ipAddress);
             }
          });
@@ -109,23 +104,19 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
     * address, and if not, provide a list of suggestions.
     */
     @Override
-    public NetworkStaticIPAvailabilityResponse check(String virtualNetworkName, InetAddress ipAddress) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public NetworkStaticIPAvailabilityResponse check(String virtualNetworkName, InetAddress ipAddress) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (virtualNetworkName == null)
-        {
+        if (virtualNetworkName == null) {
             throw new NullPointerException("virtualNetworkName");
         }
-        if (ipAddress == null)
-        {
+        if (ipAddress == null) {
             throw new NullPointerException("ipAddress");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("virtualNetworkName", virtualNetworkName);
@@ -136,7 +127,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
         // Construct URL
         String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + virtualNetworkName + "?";
         url = url + "op=checkavailability";
-        url = url + "&" + "address=" + URLEncoder.encode(ipAddress.toString(), "UTF-8");
+        url = url + "&" + "address=" + URLEncoder.encode(ipAddress.getHostAddress(), "UTF-8");
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -146,23 +137,18 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -180,12 +166,10 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
             
             NodeList elements = responseDoc.getElementsByTagName("AddressAvailabilityResponse");
             Element addressAvailabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (addressAvailabilityResponseElement != null)
-            {
+            if (addressAvailabilityResponseElement != null) {
                 NodeList elements2 = addressAvailabilityResponseElement.getElementsByTagName("IsAvailable");
                 Element isAvailableElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (isAvailableElement != null)
-                {
+                if (isAvailableElement != null) {
                     boolean isAvailableInstance;
                     isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
                     result.setIsAvailable(isAvailableInstance);
@@ -193,10 +177,8 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
                 
                 NodeList elements3 = addressAvailabilityResponseElement.getElementsByTagName("AvailableAddresses");
                 Element availableAddressesSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (availableAddressesSequenceElement != null)
-                {
-                    for (int i1 = 0; i1 < availableAddressesSequenceElement.getElementsByTagName("AvailableAddress").getLength(); i1 = i1 + 1)
-                    {
+                if (availableAddressesSequenceElement != null) {
+                    for (int i1 = 0; i1 < availableAddressesSequenceElement.getElementsByTagName("AvailableAddress").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element availableAddressesElement = ((org.w3c.dom.Element) availableAddressesSequenceElement.getElementsByTagName("AvailableAddress").item(i1));
                         result.getAvailableAddresses().add(InetAddress.getByName(availableAddressesElement.getTextContent()));
                     }
@@ -204,21 +186,16 @@ public class StaticIPOperationsImpl implements ServiceOperations<VirtualNetworkM
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

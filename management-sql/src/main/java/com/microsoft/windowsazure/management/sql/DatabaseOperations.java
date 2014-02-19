@@ -41,8 +41,7 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for managing SQL
 * Databases for a subscription.
 */
-public interface DatabaseOperations
-{
+public interface DatabaseOperations {
     /**
     * Creates a database in a SQL Server database server.
     *

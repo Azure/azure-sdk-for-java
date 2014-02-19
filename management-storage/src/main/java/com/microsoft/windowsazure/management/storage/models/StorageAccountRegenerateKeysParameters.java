@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.storage.models;
 /**
 * Parameters supplied to the Regenerate Keys operation.
 */
-public class StorageAccountRegenerateKeysParameters
-{
+public class StorageAccountRegenerateKeysParameters {
     private StorageKeyType keyType;
     
     /**
     * Specifies which key to regenerate.
     * @return The KeyType value.
     */
-    public StorageKeyType getKeyType()
-    {
+    public StorageKeyType getKeyType() {
         return this.keyType;
     }
     
@@ -43,28 +41,25 @@ public class StorageAccountRegenerateKeysParameters
     * Specifies which key to regenerate.
     * @param keyTypeValue The KeyType value.
     */
-    public void setKeyType(final StorageKeyType keyTypeValue)
-    {
+    public void setKeyType(final StorageKeyType keyTypeValue) {
         this.keyType = keyTypeValue;
     }
     
-    private String serviceName;
+    private String name;
     
     /**
     * The name of the desired storage account.
-    * @return The ServiceName value.
+    * @return The Name value.
     */
-    public String getServiceName()
-    {
-        return this.serviceName;
+    public String getName() {
+        return this.name;
     }
     
     /**
     * The name of the desired storage account.
-    * @param serviceNameValue The ServiceName value.
+    * @param nameValue The Name value.
     */
-    public void setServiceName(final String serviceNameValue)
-    {
-        this.serviceName = serviceNameValue;
+    public void setName(final String nameValue) {
+        this.name = nameValue;
     }
 }

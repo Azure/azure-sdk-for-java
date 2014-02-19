@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 /**
 * Parameters supplied to the Create Database operation.
 */
-public class DatabaseUpdateParameters
-{
+public class DatabaseUpdateParameters {
     private String collationName;
     
     /**
     * Gets or sets the collation name for the new database.
     * @return The CollationName value.
     */
-    public String getCollationName()
-    {
+    public String getCollationName() {
         return this.collationName;
     }
     
@@ -43,8 +41,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the collation name for the new database.
     * @param collationNameValue The CollationName value.
     */
-    public void setCollationName(final String collationNameValue)
-    {
+    public void setCollationName(final String collationNameValue) {
         this.collationName = collationNameValue;
     }
     
@@ -54,8 +51,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the edition for the new database.
     * @return The Edition value.
     */
-    public String getEdition()
-    {
+    public String getEdition() {
         return this.edition;
     }
     
@@ -63,8 +59,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the edition for the new database.
     * @param editionValue The Edition value.
     */
-    public void setEdition(final String editionValue)
-    {
+    public void setEdition(final String editionValue) {
         this.edition = editionValue;
     }
     
@@ -74,8 +69,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the id of the database.
     * @return The Id value.
     */
-    public int getId()
-    {
+    public int getId() {
         return this.id;
     }
     
@@ -83,8 +77,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the id of the database.
     * @param idValue The Id value.
     */
-    public void setId(final int idValue)
-    {
+    public void setId(final int idValue) {
         this.id = idValue;
     }
     
@@ -94,8 +87,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the maximum size of this database, in Gigabytes.
     * @return The MaximumDatabaseSizeInGB value.
     */
-    public long getMaximumDatabaseSizeInGB()
-    {
+    public long getMaximumDatabaseSizeInGB() {
         return this.maximumDatabaseSizeInGB;
     }
     
@@ -103,8 +95,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the maximum size of this database, in Gigabytes.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
-    {
+    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue) {
         this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
@@ -114,8 +105,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the name of the database.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -123,8 +113,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the name of the database.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -134,8 +123,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the id of this service objective.
     * @return The ServiceObjectiveId value.
     */
-    public String getServiceObjectiveId()
-    {
+    public String getServiceObjectiveId() {
         return this.serviceObjectiveId;
     }
     
@@ -143,8 +131,7 @@ public class DatabaseUpdateParameters
     * Gets or sets the id of this service objective.
     * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
-    public void setServiceObjectiveId(final String serviceObjectiveIdValue)
-    {
+    public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
         this.serviceObjectiveId = serviceObjectiveIdValue;
     }
 }

@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The List Management Certificates operation response.
 */
-public class ManagementCertificateListResponse extends OperationResponse implements Iterable<ManagementCertificateListResponse.SubscriptionCertificate>
-{
+public class ManagementCertificateListResponse extends OperationResponse implements Iterable<ManagementCertificateListResponse.SubscriptionCertificate> {
     private ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates;
     
     /**
     * The management certificates that are valid for your subscription.
     * @return The SubscriptionCertificates value.
     */
-    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates()
-    {
+    public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates() {
         return this.subscriptionCertificates;
     }
     
@@ -48,8 +46,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     * The management certificates that are valid for your subscription.
     * @param subscriptionCertificatesValue The SubscriptionCertificates value.
     */
-    public void setSubscriptionCertificates(final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue)
-    {
+    public void setSubscriptionCertificates(final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue) {
         this.subscriptionCertificates = subscriptionCertificatesValue;
     }
     
@@ -57,8 +54,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     * Initializes a new instance of the ManagementCertificateListResponse class.
     *
     */
-    public ManagementCertificateListResponse()
-    {
+    public ManagementCertificateListResponse() {
         super();
         this.subscriptionCertificates = new ArrayList<ManagementCertificateListResponse.SubscriptionCertificate>();
     }
@@ -67,24 +63,21 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     * Gets the sequence of SubscriptionCertificates.
     *
     */
-    public Iterator<ManagementCertificateListResponse.SubscriptionCertificate> iterator()
-    {
+    public Iterator<ManagementCertificateListResponse.SubscriptionCertificate> iterator() {
         return this.getSubscriptionCertificates().iterator();
     }
     
     /**
     * A management certificate that is valid for your subscription.
     */
-    public static class SubscriptionCertificate
-    {
+    public static class SubscriptionCertificate {
         private Calendar created;
         
         /**
         * The time that the management certificate was created, in UTC.
         * @return The Created value.
         */
-        public Calendar getCreated()
-        {
+        public Calendar getCreated() {
             return this.created;
         }
         
@@ -92,8 +85,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * The time that the management certificate was created, in UTC.
         * @param createdValue The Created value.
         */
-        public void setCreated(final Calendar createdValue)
-        {
+        public void setCreated(final Calendar createdValue) {
             this.created = createdValue;
         }
         
@@ -104,8 +96,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * certificate, in .cer format.
         * @return The Data value.
         */
-        public byte[] getData()
-        {
+        public byte[] getData() {
             return this.data;
         }
         
@@ -114,8 +105,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * certificate, in .cer format.
         * @param dataValue The Data value.
         */
-        public void setData(final byte[] dataValue)
-        {
+        public void setData(final byte[] dataValue) {
             this.data = dataValue;
         }
         
@@ -125,8 +115,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * A base64 representation of the management certificate public key.
         * @return The PublicKey value.
         */
-        public byte[] getPublicKey()
-        {
+        public byte[] getPublicKey() {
             return this.publicKey;
         }
         
@@ -134,8 +123,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * A base64 representation of the management certificate public key.
         * @param publicKeyValue The PublicKey value.
         */
-        public void setPublicKey(final byte[] publicKeyValue)
-        {
+        public void setPublicKey(final byte[] publicKeyValue) {
             this.publicKey = publicKeyValue;
         }
         
@@ -146,8 +134,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * certificate. This thumb print uniquely identifies the certificate.
         * @return The Thumbprint value.
         */
-        public String getThumbprint()
-        {
+        public String getThumbprint() {
             return this.thumbprint;
         }
         
@@ -156,8 +143,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         * certificate. This thumb print uniquely identifies the certificate.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue)
-        {
+        public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
     }

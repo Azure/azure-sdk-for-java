@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.sql.models;
 /**
 * Parameters supplied to the Create Server operation.
 */
-public class ServerCreateParameters
-{
+public class ServerCreateParameters {
     private String administratorPassword;
     
     /**
     * Gets or sets the administrator password.
     * @return The AdministratorPassword value.
     */
-    public String getAdministratorPassword()
-    {
+    public String getAdministratorPassword() {
         return this.administratorPassword;
     }
     
@@ -43,8 +41,7 @@ public class ServerCreateParameters
     * Gets or sets the administrator password.
     * @param administratorPasswordValue The AdministratorPassword value.
     */
-    public void setAdministratorPassword(final String administratorPasswordValue)
-    {
+    public void setAdministratorPassword(final String administratorPasswordValue) {
         this.administratorPassword = administratorPasswordValue;
     }
     
@@ -54,8 +51,7 @@ public class ServerCreateParameters
     * Gets or sets the administrator username.
     * @return The AdministratorUserName value.
     */
-    public String getAdministratorUserName()
-    {
+    public String getAdministratorUserName() {
         return this.administratorUserName;
     }
     
@@ -63,8 +59,7 @@ public class ServerCreateParameters
     * Gets or sets the administrator username.
     * @param administratorUserNameValue The AdministratorUserName value.
     */
-    public void setAdministratorUserName(final String administratorUserNameValue)
-    {
+    public void setAdministratorUserName(final String administratorUserNameValue) {
         this.administratorUserName = administratorUserNameValue;
     }
     
@@ -74,8 +69,7 @@ public class ServerCreateParameters
     * Gets or sets the region in which this server will be created.
     * @return The Location value.
     */
-    public String getLocation()
-    {
+    public String getLocation() {
         return this.location;
     }
     
@@ -83,8 +77,7 @@ public class ServerCreateParameters
     * Gets or sets the region in which this server will be created.
     * @param locationValue The Location value.
     */
-    public void setLocation(final String locationValue)
-    {
+    public void setLocation(final String locationValue) {
         this.location = locationValue;
     }
 }

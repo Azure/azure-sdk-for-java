@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.scheduler.models;
 /**
 * Parameters supplied to intrinsic settings for a job.
 */
-public class JobCollectionIntrinsicSettings
-{
+public class JobCollectionIntrinsicSettings {
     private JobCollectionPlan plan;
     
     /**
     * The plan of the resource.
     * @return The Plan value.
     */
-    public JobCollectionPlan getPlan()
-    {
+    public JobCollectionPlan getPlan() {
         return this.plan;
     }
     
@@ -43,8 +41,7 @@ public class JobCollectionIntrinsicSettings
     * The plan of the resource.
     * @param planValue The Plan value.
     */
-    public void setPlan(final JobCollectionPlan planValue)
-    {
+    public void setPlan(final JobCollectionPlan planValue) {
         this.plan = planValue;
     }
     
@@ -54,8 +51,7 @@ public class JobCollectionIntrinsicSettings
     * Quota settings for the job collection.
     * @return The Quota value.
     */
-    public JobCollectionQuota getQuota()
-    {
+    public JobCollectionQuota getQuota() {
         return this.quota;
     }
     
@@ -63,8 +59,7 @@ public class JobCollectionIntrinsicSettings
     * Quota settings for the job collection.
     * @param quotaValue The Quota value.
     */
-    public void setQuota(final JobCollectionQuota quotaValue)
-    {
+    public void setQuota(final JobCollectionQuota quotaValue) {
         this.quota = quotaValue;
     }
 }

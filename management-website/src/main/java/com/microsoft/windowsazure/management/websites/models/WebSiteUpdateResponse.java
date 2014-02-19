@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Update Web Site operation response.
 */
-public class WebSiteUpdateResponse extends OperationResponse
-{
+public class WebSiteUpdateResponse extends OperationResponse {
     private WebSite webSite;
     
     /**
     * Details of the updated website.
     * @return The WebSite value.
     */
-    public WebSite getWebSite()
-    {
+    public WebSite getWebSite() {
         return this.webSite;
     }
     
@@ -45,8 +43,7 @@ public class WebSiteUpdateResponse extends OperationResponse
     * Details of the updated website.
     * @param webSiteValue The WebSite value.
     */
-    public void setWebSite(final WebSite webSiteValue)
-    {
+    public void setWebSite(final WebSite webSiteValue) {
         this.webSite = webSiteValue;
     }
 }

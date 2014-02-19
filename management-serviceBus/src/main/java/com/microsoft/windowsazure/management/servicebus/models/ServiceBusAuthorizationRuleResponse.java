@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * A response to a request for a particular authorization rule.
 */
-public class ServiceBusAuthorizationRuleResponse extends OperationResponse
-{
+public class ServiceBusAuthorizationRuleResponse extends OperationResponse {
     private ServiceBusSharedAccessAuthorizationRule authorizationRule;
     
     /**
     * The requested authorization rule.
     * @return The AuthorizationRule value.
     */
-    public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule()
-    {
+    public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule() {
         return this.authorizationRule;
     }
     
@@ -45,8 +43,7 @@ public class ServiceBusAuthorizationRuleResponse extends OperationResponse
     * The requested authorization rule.
     * @param authorizationRuleValue The AuthorizationRule value.
     */
-    public void setAuthorizationRule(final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue)
-    {
+    public void setAuthorizationRule(final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue) {
         this.authorizationRule = authorizationRuleValue;
     }
 }

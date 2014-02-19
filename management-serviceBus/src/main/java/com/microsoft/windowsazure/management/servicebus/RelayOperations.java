@@ -34,8 +34,7 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * relays.
 */
-public interface RelayOperations
-{
+public interface RelayOperations {
     /**
     * Gets the set of connection strings for a relay.
     *

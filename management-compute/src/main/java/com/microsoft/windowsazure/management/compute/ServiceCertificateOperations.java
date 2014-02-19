@@ -44,8 +44,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee795178.aspx for more
 * information)
 */
-public interface ServiceCertificateOperations
-{
+public interface ServiceCertificateOperations {
     /**
     * The Add Service Certificate operation adds a certificate to a hosted
     * service.  The Add Service Certificate operation is an asynchronous

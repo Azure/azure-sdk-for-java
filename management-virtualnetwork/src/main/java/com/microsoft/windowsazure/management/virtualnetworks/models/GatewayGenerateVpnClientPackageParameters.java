@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.virtualnetworks.models;
 /**
 * The parameters to the Generate VPN Client Package request.
 */
-public class GatewayGenerateVpnClientPackageParameters
-{
+public class GatewayGenerateVpnClientPackageParameters {
     private GatewayProcessorArchitecture processorArchitecture;
     
     /**
     * The client processor architecture.
     * @return The ProcessorArchitecture value.
     */
-    public GatewayProcessorArchitecture getProcessorArchitecture()
-    {
+    public GatewayProcessorArchitecture getProcessorArchitecture() {
         return this.processorArchitecture;
     }
     
@@ -43,8 +41,7 @@ public class GatewayGenerateVpnClientPackageParameters
     * The client processor architecture.
     * @param processorArchitectureValue The ProcessorArchitecture value.
     */
-    public void setProcessorArchitecture(final GatewayProcessorArchitecture processorArchitectureValue)
-    {
+    public void setProcessorArchitecture(final GatewayProcessorArchitecture processorArchitectureValue) {
         this.processorArchitecture = processorArchitectureValue;
     }
 }

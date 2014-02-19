@@ -50,8 +50,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for more
 * information)
 */
-public interface VirtualMachineOperations
-{
+public interface VirtualMachineOperations {
     /**
     * The Capture Role operation creates a copy of the operating system virtual
     * hard disk (VHD) that is deployed in the virtual machine, saves the VHD

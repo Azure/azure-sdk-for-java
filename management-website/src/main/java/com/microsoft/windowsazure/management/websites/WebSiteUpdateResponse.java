@@ -21,30 +21,30 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.storage.models;
+package com.microsoft.windowsazure.management.websites;
+
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSite;
 
 /**
-* The status of the storage account at the time the operation was called.
+* The Update Web Site operation response.
 */
-public enum StorageServiceStatus
-{
-    /**
-    * The Storage Account had been created.
-    */
-    Created,
+public class WebSiteUpdateResponse extends OperationResponse {
+    private WebSite webSite;
     
     /**
-    * The Storage Account is being created.
+    * Details of the updated website.
+    * @return The WebSite value.
     */
-    Creating,
+    public WebSite getWebSite() {
+        return this.webSite;
+    }
     
     /**
-    * The DNS name for the storage account is being propagated.
+    * Details of the updated website.
+    * @param webSiteValue The WebSite value.
     */
-    ResolvingDns,
-    
-    /**
-    * The Storage Account is being deleted.
-    */
-    Deleting,
+    public void setWebSite(final WebSite webSiteValue) {
+        this.webSite = webSiteValue;
+    }
 }

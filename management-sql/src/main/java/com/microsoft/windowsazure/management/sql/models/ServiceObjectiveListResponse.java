@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * Response containing the list of service objective for a given server.
 */
-public class ServiceObjectiveListResponse extends OperationResponse implements Iterable<ServiceObjectiveListResponse.ServiceObjective>
-{
+public class ServiceObjectiveListResponse extends OperationResponse implements Iterable<ServiceObjectiveListResponse.ServiceObjective> {
     private ArrayList<ServiceObjectiveListResponse.ServiceObjective> serviceObjectives;
     
     /**
     * Gets or sets the list of Service Objectives that are existing in a server.
     * @return The ServiceObjectives value.
     */
-    public ArrayList<ServiceObjectiveListResponse.ServiceObjective> getServiceObjectives()
-    {
+    public ArrayList<ServiceObjectiveListResponse.ServiceObjective> getServiceObjectives() {
         return this.serviceObjectives;
     }
     
@@ -47,8 +45,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     * Gets or sets the list of Service Objectives that are existing in a server.
     * @param serviceObjectivesValue The ServiceObjectives value.
     */
-    public void setServiceObjectives(final ArrayList<ServiceObjectiveListResponse.ServiceObjective> serviceObjectivesValue)
-    {
+    public void setServiceObjectives(final ArrayList<ServiceObjectiveListResponse.ServiceObjective> serviceObjectivesValue) {
         this.serviceObjectives = serviceObjectivesValue;
     }
     
@@ -56,8 +53,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     * Initializes a new instance of the ServiceObjectiveListResponse class.
     *
     */
-    public ServiceObjectiveListResponse()
-    {
+    public ServiceObjectiveListResponse() {
         super();
         this.serviceObjectives = new ArrayList<ServiceObjectiveListResponse.ServiceObjective>();
     }
@@ -66,24 +62,21 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     * Gets the sequence of ServiceObjectives.
     *
     */
-    public Iterator<ServiceObjectiveListResponse.ServiceObjective> iterator()
-    {
+    public Iterator<ServiceObjectiveListResponse.ServiceObjective> iterator() {
         return this.getServiceObjectives().iterator();
     }
     
     /**
     * Service objective.
     */
-    public static class ServiceObjective
-    {
+    public static class ServiceObjective {
         private String description;
         
         /**
         * Gets or sets the service objective description.
         * @return The Description value.
         */
-        public String getDescription()
-        {
+        public String getDescription() {
             return this.description;
         }
         
@@ -91,8 +84,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the service objective description.
         * @param descriptionValue The Description value.
         */
-        public void setDescription(final String descriptionValue)
-        {
+        public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
         
@@ -102,8 +94,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the service objective dimension settings.
         * @return The DimensionSettings value.
         */
-        public ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> getDimensionSettings()
-        {
+        public ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> getDimensionSettings() {
             return this.dimensionSettings;
         }
         
@@ -111,8 +102,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the service objective dimension settings.
         * @param dimensionSettingsValue The DimensionSettings value.
         */
-        public void setDimensionSettings(final ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> dimensionSettingsValue)
-        {
+        public void setDimensionSettings(final ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse> dimensionSettingsValue) {
             this.dimensionSettings = dimensionSettingsValue;
         }
         
@@ -123,8 +113,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * enabled.
         * @return The Enabled value.
         */
-        public boolean isEnabled()
-        {
+        public boolean isEnabled() {
             return this.enabled;
         }
         
@@ -133,8 +122,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * enabled.
         * @param enabledValue The Enabled value.
         */
-        public void setEnabled(final boolean enabledValue)
-        {
+        public void setEnabled(final boolean enabledValue) {
             this.enabled = enabledValue;
         }
         
@@ -144,8 +132,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the service objective id.
         * @return The Id value.
         */
-        public String getId()
-        {
+        public String getId() {
             return this.id;
         }
         
@@ -153,8 +140,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the service objective id.
         * @param idValue The Id value.
         */
-        public void setId(final String idValue)
-        {
+        public void setId(final String idValue) {
             this.id = idValue;
         }
         
@@ -165,8 +151,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * default objective.
         * @return The IsDefault value.
         */
-        public boolean isDefault()
-        {
+        public boolean isDefault() {
             return this.isDefault;
         }
         
@@ -175,8 +160,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * default objective.
         * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(final boolean isDefaultValue)
-        {
+        public void setIsDefault(final boolean isDefaultValue) {
             this.isDefault = isDefaultValue;
         }
         
@@ -187,8 +171,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * system objective.
         * @return The IsSystem value.
         */
-        public boolean isSystem()
-        {
+        public boolean isSystem() {
             return this.isSystem;
         }
         
@@ -197,8 +180,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * system objective.
         * @param isSystemValue The IsSystem value.
         */
-        public void setIsSystem(final boolean isSystemValue)
-        {
+        public void setIsSystem(final boolean isSystemValue) {
             this.isSystem = isSystemValue;
         }
         
@@ -208,8 +190,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the name of the service objective.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -217,8 +198,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the name of the service objective.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -228,8 +208,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the ParentLink of the service objective.
         * @return The ParentLink value.
         */
-        public String getParentLink()
-        {
+        public String getParentLink() {
             return this.parentLink;
         }
         
@@ -237,8 +216,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the ParentLink of the service objective.
         * @param parentLinkValue The ParentLink value.
         */
-        public void setParentLink(final String parentLinkValue)
-        {
+        public void setParentLink(final String parentLinkValue) {
             this.parentLink = parentLinkValue;
         }
         
@@ -248,8 +226,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the SelfLink of the service objective.
         * @return The SelfLink value.
         */
-        public String getSelfLink()
-        {
+        public String getSelfLink() {
             return this.selfLink;
         }
         
@@ -257,8 +234,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the SelfLink of the service objective.
         * @param selfLinkValue The SelfLink value.
         */
-        public void setSelfLink(final String selfLinkValue)
-        {
+        public void setSelfLink(final String selfLinkValue) {
             this.selfLink = selfLinkValue;
         }
         
@@ -268,8 +244,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the state of the service objective.
         * @return The State value.
         */
-        public String getState()
-        {
+        public String getState() {
             return this.state;
         }
         
@@ -277,8 +252,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the state of the service objective.
         * @param stateValue The State value.
         */
-        public void setState(final String stateValue)
-        {
+        public void setState(final String stateValue) {
             this.state = stateValue;
         }
         
@@ -288,8 +262,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the type of resource.
         * @return The Type value.
         */
-        public String getType()
-        {
+        public String getType() {
             return this.type;
         }
         
@@ -297,8 +270,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Gets or sets the type of resource.
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue)
-        {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
         
@@ -306,24 +278,21 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
         * Initializes a new instance of the ServiceObjective class.
         *
         */
-        public ServiceObjective()
-        {
+        public ServiceObjective() {
             this.dimensionSettings = new ArrayList<ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse>();
         }
         
         /**
         * Dimension setting.
         */
-        public static class DimensionSettingResponse
-        {
+        public static class DimensionSettingResponse {
             private String description;
             
             /**
             * Gets or sets the dimension setting description.
             * @return The Description value.
             */
-            public String getDescription()
-            {
+            public String getDescription() {
                 return this.description;
             }
             
@@ -331,8 +300,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the dimension setting description.
             * @param descriptionValue The Description value.
             */
-            public void setDescription(final String descriptionValue)
-            {
+            public void setDescription(final String descriptionValue) {
                 this.description = descriptionValue;
             }
             
@@ -342,8 +310,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the dimension setting id.
             * @return The Id value.
             */
-            public String getId()
-            {
+            public String getId() {
                 return this.id;
             }
             
@@ -351,8 +318,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the dimension setting id.
             * @param idValue The Id value.
             */
-            public void setId(final String idValue)
-            {
+            public void setId(final String idValue) {
                 this.id = idValue;
             }
             
@@ -363,8 +329,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * the default setting.
             * @return The IsDefault value.
             */
-            public boolean isDefault()
-            {
+            public boolean isDefault() {
                 return this.isDefault;
             }
             
@@ -373,8 +338,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * the default setting.
             * @param isDefaultValue The IsDefault value.
             */
-            public void setIsDefault(final boolean isDefaultValue)
-            {
+            public void setIsDefault(final boolean isDefaultValue) {
                 this.isDefault = isDefaultValue;
             }
             
@@ -384,8 +348,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the name of the dimension setting.
             * @return The Name value.
             */
-            public String getName()
-            {
+            public String getName() {
                 return this.name;
             }
             
@@ -393,8 +356,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the name of the dimension setting.
             * @param nameValue The Name value.
             */
-            public void setName(final String nameValue)
-            {
+            public void setName(final String nameValue) {
                 this.name = nameValue;
             }
             
@@ -404,8 +366,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the dimension setting ordinal position.
             * @return The Ordinal value.
             */
-            public byte getOrdinal()
-            {
+            public byte getOrdinal() {
                 return this.ordinal;
             }
             
@@ -413,8 +374,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the dimension setting ordinal position.
             * @param ordinalValue The Ordinal value.
             */
-            public void setOrdinal(final byte ordinalValue)
-            {
+            public void setOrdinal(final byte ordinalValue) {
                 this.ordinal = ordinalValue;
             }
             
@@ -424,8 +384,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the ParentLink of the dimension setting.
             * @return The ParentLink value.
             */
-            public String getParentLink()
-            {
+            public String getParentLink() {
                 return this.parentLink;
             }
             
@@ -433,8 +392,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the ParentLink of the dimension setting.
             * @param parentLinkValue The ParentLink value.
             */
-            public void setParentLink(final String parentLinkValue)
-            {
+            public void setParentLink(final String parentLinkValue) {
                 this.parentLink = parentLinkValue;
             }
             
@@ -444,8 +402,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the SelfLink of the dimension setting.
             * @return The SelfLink value.
             */
-            public String getSelfLink()
-            {
+            public String getSelfLink() {
                 return this.selfLink;
             }
             
@@ -453,8 +410,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the SelfLink of the dimension setting.
             * @param selfLinkValue The SelfLink value.
             */
-            public void setSelfLink(final String selfLinkValue)
-            {
+            public void setSelfLink(final String selfLinkValue) {
                 this.selfLink = selfLinkValue;
             }
             
@@ -464,8 +420,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the state of the dimension setting.
             * @return The State value.
             */
-            public String getState()
-            {
+            public String getState() {
                 return this.state;
             }
             
@@ -473,8 +428,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the state of the dimension setting.
             * @param stateValue The State value.
             */
-            public void setState(final String stateValue)
-            {
+            public void setState(final String stateValue) {
                 this.state = stateValue;
             }
             
@@ -484,8 +438,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the type of resource.
             * @return The Type value.
             */
-            public String getType()
-            {
+            public String getType() {
                 return this.type;
             }
             
@@ -493,8 +446,7 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
             * Gets or sets the type of resource.
             * @param typeValue The Type value.
             */
-            public void setType(final String typeValue)
-            {
+            public void setType(final String typeValue) {
                 this.type = typeValue;
             }
         }

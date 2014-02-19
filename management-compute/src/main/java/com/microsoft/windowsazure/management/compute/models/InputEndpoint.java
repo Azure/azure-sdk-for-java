@@ -28,16 +28,14 @@ import java.net.InetAddress;
 /**
 * Objects that provide input endpoint details.
 */
-public class InputEndpoint
-{
+public class InputEndpoint {
     private Boolean enableDirectServerReturn;
     
     /**
     * Specifies whether direct server return is enabled for the endpoint.
     * @return The EnableDirectServerReturn value.
     */
-    public Boolean isEnableDirectServerReturn()
-    {
+    public Boolean isEnableDirectServerReturn() {
         return this.enableDirectServerReturn;
     }
     
@@ -45,8 +43,7 @@ public class InputEndpoint
     * Specifies whether direct server return is enabled for the endpoint.
     * @param enableDirectServerReturnValue The EnableDirectServerReturn value.
     */
-    public void setEnableDirectServerReturn(final Boolean enableDirectServerReturnValue)
-    {
+    public void setEnableDirectServerReturn(final Boolean enableDirectServerReturnValue) {
         this.enableDirectServerReturn = enableDirectServerReturnValue;
     }
     
@@ -56,8 +53,7 @@ public class InputEndpoint
     * Specifies the list of access control rules for the endpoint.
     * @return The EndpointAcl value.
     */
-    public EndpointAcl getEndpointAcl()
-    {
+    public EndpointAcl getEndpointAcl() {
         return this.endpointAcl;
     }
     
@@ -65,8 +61,7 @@ public class InputEndpoint
     * Specifies the list of access control rules for the endpoint.
     * @param endpointAclValue The EndpointAcl value.
     */
-    public void setEndpointAcl(final EndpointAcl endpointAclValue)
-    {
+    public void setEndpointAcl(final EndpointAcl endpointAclValue) {
         this.endpointAcl = endpointAclValue;
     }
     
@@ -78,8 +73,7 @@ public class InputEndpoint
     * only listed for Virtual Machine deployments.
     * @return The LoadBalancedEndpointSetName value.
     */
-    public String getLoadBalancedEndpointSetName()
-    {
+    public String getLoadBalancedEndpointSetName() {
         return this.loadBalancedEndpointSetName;
     }
     
@@ -90,8 +84,7 @@ public class InputEndpoint
     * @param loadBalancedEndpointSetNameValue The LoadBalancedEndpointSetName
     * value.
     */
-    public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue)
-    {
+    public void setLoadBalancedEndpointSetName(final String loadBalancedEndpointSetNameValue) {
         this.loadBalancedEndpointSetName = loadBalancedEndpointSetNameValue;
     }
     
@@ -103,8 +96,7 @@ public class InputEndpoint
     * machine before forwarding traffic to the endpoint.
     * @return The LoadBalancerProbe value.
     */
-    public LoadBalancerProbe getLoadBalancerProbe()
-    {
+    public LoadBalancerProbe getLoadBalancerProbe() {
         return this.loadBalancerProbe;
     }
     
@@ -114,8 +106,7 @@ public class InputEndpoint
     * machine before forwarding traffic to the endpoint.
     * @param loadBalancerProbeValue The LoadBalancerProbe value.
     */
-    public void setLoadBalancerProbe(final LoadBalancerProbe loadBalancerProbeValue)
-    {
+    public void setLoadBalancerProbe(final LoadBalancerProbe loadBalancerProbeValue) {
         this.loadBalancerProbe = loadBalancerProbeValue;
     }
     
@@ -127,8 +118,7 @@ public class InputEndpoint
     * deployments.
     * @return The LocalPort value.
     */
-    public Integer getLocalPort()
-    {
+    public Integer getLocalPort() {
         return this.localPort;
     }
     
@@ -138,8 +128,7 @@ public class InputEndpoint
     * deployments.
     * @param localPortValue The LocalPort value.
     */
-    public void setLocalPort(final Integer localPortValue)
-    {
+    public void setLocalPort(final Integer localPortValue) {
         this.localPort = localPortValue;
     }
     
@@ -150,8 +139,7 @@ public class InputEndpoint
     * for Virtual Machine deployments.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -160,8 +148,7 @@ public class InputEndpoint
     * for Virtual Machine deployments.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -171,8 +158,7 @@ public class InputEndpoint
     * The size of the role instance.
     * @return The Port value.
     */
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return this.port;
     }
     
@@ -180,8 +166,7 @@ public class InputEndpoint
     * The size of the role instance.
     * @param portValue The Port value.
     */
-    public void setPort(final Integer portValue)
-    {
+    public void setPort(final Integer portValue) {
         this.port = portValue;
     }
     
@@ -191,8 +176,7 @@ public class InputEndpoint
     * Specifies the transport protocol for the endpoint.
     * @return The Protocol value.
     */
-    public String getProtocol()
-    {
+    public String getProtocol() {
         return this.protocol;
     }
     
@@ -200,8 +184,7 @@ public class InputEndpoint
     * Specifies the transport protocol for the endpoint.
     * @param protocolValue The Protocol value.
     */
-    public void setProtocol(final String protocolValue)
-    {
+    public void setProtocol(final String protocolValue) {
         this.protocol = protocolValue;
     }
     
@@ -211,8 +194,7 @@ public class InputEndpoint
     * The ip of the role instance.
     * @return The VirtualIPAddress value.
     */
-    public InetAddress getVirtualIPAddress()
-    {
+    public InetAddress getVirtualIPAddress() {
         return this.virtualIPAddress;
     }
     
@@ -220,8 +202,7 @@ public class InputEndpoint
     * The ip of the role instance.
     * @param virtualIPAddressValue The VirtualIPAddress value.
     */
-    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue)
-    {
+    public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {
         this.virtualIPAddress = virtualIPAddressValue;
     }
 }

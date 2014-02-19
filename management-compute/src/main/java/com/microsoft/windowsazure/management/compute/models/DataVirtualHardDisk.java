@@ -28,8 +28,7 @@ import java.net.URI;
 /**
 * Objects that are used to create a data disk for a virtual machine.
 */
-public class DataVirtualHardDisk
-{
+public class DataVirtualHardDisk {
     private String diskLabel;
     
     /**
@@ -37,8 +36,7 @@ public class DataVirtualHardDisk
     * the virtual machine.
     * @return The DiskLabel value.
     */
-    public String getDiskLabel()
-    {
+    public String getDiskLabel() {
         return this.diskLabel;
     }
     
@@ -47,8 +45,7 @@ public class DataVirtualHardDisk
     * the virtual machine.
     * @param diskLabelValue The DiskLabel value.
     */
-    public void setDiskLabel(final String diskLabelValue)
-    {
+    public void setDiskLabel(final String diskLabelValue) {
         this.diskLabel = diskLabelValue;
     }
     
@@ -59,8 +56,7 @@ public class DataVirtualHardDisk
     * virtual machine.
     * @return The DiskName value.
     */
-    public String getDiskName()
-    {
+    public String getDiskName() {
         return this.diskName;
     }
     
@@ -69,8 +65,7 @@ public class DataVirtualHardDisk
     * virtual machine.
     * @param diskNameValue The DiskName value.
     */
-    public void setDiskName(final String diskNameValue)
-    {
+    public void setDiskName(final String diskNameValue) {
         this.diskName = diskNameValue;
     }
     
@@ -81,8 +76,7 @@ public class DataVirtualHardDisk
     * read/write efficiency. The default vault is ReadOnly.
     * @return The HostCaching value.
     */
-    public VirtualHardDiskHostCaching getHostCaching()
-    {
+    public VirtualHardDiskHostCaching getHostCaching() {
         return this.hostCaching;
     }
     
@@ -91,8 +85,7 @@ public class DataVirtualHardDisk
     * read/write efficiency. The default vault is ReadOnly.
     * @param hostCachingValue The HostCaching value.
     */
-    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue)
-    {
+    public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     
@@ -106,8 +99,7 @@ public class DataVirtualHardDisk
     * created VHD to the virtual machine.
     * @return The LogicalDiskSizeInGB value.
     */
-    public int getLogicalDiskSizeInGB()
-    {
+    public int getLogicalDiskSizeInGB() {
         return this.logicalDiskSizeInGB;
     }
     
@@ -119,8 +111,7 @@ public class DataVirtualHardDisk
     * created VHD to the virtual machine.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue)
-    {
+    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
     
@@ -133,8 +124,7 @@ public class DataVirtualHardDisk
     * one data disk is attached to a virtual machine.
     * @return The LogicalUnitNumber value.
     */
-    public Integer getLogicalUnitNumber()
-    {
+    public Integer getLogicalUnitNumber() {
         return this.logicalUnitNumber;
     }
     
@@ -145,8 +135,7 @@ public class DataVirtualHardDisk
     * one data disk is attached to a virtual machine.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
-    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue)
-    {
+    public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
         this.logicalUnitNumber = logicalUnitNumberValue;
     }
     
@@ -156,8 +145,7 @@ public class DataVirtualHardDisk
     * Specifies the location of the disk in Windows Azure storage.
     * @return The MediaLink value.
     */
-    public URI getMediaLink()
-    {
+    public URI getMediaLink() {
         return this.mediaLink;
     }
     
@@ -165,8 +153,7 @@ public class DataVirtualHardDisk
     * Specifies the location of the disk in Windows Azure storage.
     * @param mediaLinkValue The MediaLink value.
     */
-    public void setMediaLink(final URI mediaLinkValue)
-    {
+    public void setMediaLink(final URI mediaLinkValue) {
         this.mediaLink = mediaLinkValue;
     }
 }

@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * A response to a request for a list of authorization rules.
 */
-public class ServiceBusAuthorizationRulesResponse extends OperationResponse implements Iterable<ServiceBusSharedAccessAuthorizationRule>
-{
+public class ServiceBusAuthorizationRulesResponse extends OperationResponse implements Iterable<ServiceBusSharedAccessAuthorizationRule> {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**
     * The list of authorization rules.
     * @return The AuthorizationRules value.
     */
-    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules()
-    {
+    public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
         return this.authorizationRules;
     }
     
@@ -47,8 +45,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     * The list of authorization rules.
     * @param authorizationRulesValue The AuthorizationRules value.
     */
-    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue)
-    {
+    public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {
         this.authorizationRules = authorizationRulesValue;
     }
     
@@ -57,8 +54,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     * class.
     *
     */
-    public ServiceBusAuthorizationRulesResponse()
-    {
+    public ServiceBusAuthorizationRulesResponse() {
         super();
         this.authorizationRules = new ArrayList<ServiceBusSharedAccessAuthorizationRule>();
     }
@@ -67,8 +63,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     * Gets the sequence of AuthorizationRules.
     *
     */
-    public Iterator<ServiceBusSharedAccessAuthorizationRule> iterator()
-    {
+    public Iterator<ServiceBusSharedAccessAuthorizationRule> iterator() {
         return this.getAuthorizationRules().iterator();
     }
 }

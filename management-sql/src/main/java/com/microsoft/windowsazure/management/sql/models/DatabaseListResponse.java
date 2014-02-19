@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * Response containing the list of databases for a given server.
 */
-public class DatabaseListResponse extends OperationResponse implements Iterable<DatabaseListResponse.Database>
-{
+public class DatabaseListResponse extends OperationResponse implements Iterable<DatabaseListResponse.Database> {
     private ArrayList<DatabaseListResponse.Database> databases;
     
     /**
     * Gets or sets the SQL Server databases that are housed in a server.
     * @return The Databases value.
     */
-    public ArrayList<DatabaseListResponse.Database> getDatabases()
-    {
+    public ArrayList<DatabaseListResponse.Database> getDatabases() {
         return this.databases;
     }
     
@@ -48,8 +46,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     * Gets or sets the SQL Server databases that are housed in a server.
     * @param databasesValue The Databases value.
     */
-    public void setDatabases(final ArrayList<DatabaseListResponse.Database> databasesValue)
-    {
+    public void setDatabases(final ArrayList<DatabaseListResponse.Database> databasesValue) {
         this.databases = databasesValue;
     }
     
@@ -57,8 +54,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     * Initializes a new instance of the DatabaseListResponse class.
     *
     */
-    public DatabaseListResponse()
-    {
+    public DatabaseListResponse() {
         super();
         this.databases = new ArrayList<DatabaseListResponse.Database>();
     }
@@ -67,24 +63,21 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     * Gets the sequence of Databases.
     *
     */
-    public Iterator<DatabaseListResponse.Database> iterator()
-    {
+    public Iterator<DatabaseListResponse.Database> iterator() {
         return this.getDatabases().iterator();
     }
     
     /**
     * SQL Server database.
     */
-    public static class Database
-    {
+    public static class Database {
         private String collationName;
         
         /**
         * Gets or sets the database resource's collation name.
         * @return The CollationName value.
         */
-        public String getCollationName()
-        {
+        public String getCollationName() {
             return this.collationName;
         }
         
@@ -92,8 +85,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the database resource's collation name.
         * @param collationNameValue The CollationName value.
         */
-        public void setCollationName(final String collationNameValue)
-        {
+        public void setCollationName(final String collationNameValue) {
             this.collationName = collationNameValue;
         }
         
@@ -103,8 +95,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the date this database was created.
         * @return The CreationDate value.
         */
-        public Calendar getCreationDate()
-        {
+        public Calendar getCreationDate() {
             return this.creationDate;
         }
         
@@ -112,8 +103,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the date this database was created.
         * @param creationDateValue The CreationDate value.
         */
-        public void setCreationDate(final Calendar creationDateValue)
-        {
+        public void setCreationDate(final Calendar creationDateValue) {
             this.creationDate = creationDateValue;
         }
         
@@ -123,8 +113,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the database resource's edition.
         * @return The Edition value.
         */
-        public String getEdition()
-        {
+        public String getEdition() {
             return this.edition;
         }
         
@@ -132,8 +121,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the database resource's edition.
         * @param editionValue The Edition value.
         */
-        public void setEdition(final String editionValue)
-        {
+        public void setEdition(final String editionValue) {
             this.edition = editionValue;
         }
         
@@ -143,8 +131,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the id of the database.
         * @return The Id value.
         */
-        public int getId()
-        {
+        public int getId() {
             return this.id;
         }
         
@@ -152,8 +139,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the id of the database.
         * @param idValue The Id value.
         */
-        public void setId(final int idValue)
-        {
+        public void setId(final int idValue) {
             this.id = idValue;
         }
         
@@ -164,8 +150,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * root.
         * @return The IsFederationRoot value.
         */
-        public boolean isFederationRoot()
-        {
+        public boolean isFederationRoot() {
             return this.isFederationRoot;
         }
         
@@ -174,8 +159,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * root.
         * @param isFederationRootValue The IsFederationRoot value.
         */
-        public void setIsFederationRoot(final boolean isFederationRootValue)
-        {
+        public void setIsFederationRoot(final boolean isFederationRootValue) {
             this.isFederationRoot = isFederationRootValue;
         }
         
@@ -186,8 +170,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * object.
         * @return The IsSystemObject value.
         */
-        public boolean isSystemObject()
-        {
+        public boolean isSystemObject() {
             return this.isSystemObject;
         }
         
@@ -196,8 +179,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * object.
         * @param isSystemObjectValue The IsSystemObject value.
         */
-        public void setIsSystemObject(final boolean isSystemObjectValue)
-        {
+        public void setIsSystemObject(final boolean isSystemObjectValue) {
             this.isSystemObject = isSystemObjectValue;
         }
         
@@ -207,8 +189,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the maximum size of this database, in Gigabytes.
         * @return The MaximumDatabaseSizeInGB value.
         */
-        public long getMaximumDatabaseSizeInGB()
-        {
+        public long getMaximumDatabaseSizeInGB() {
             return this.maximumDatabaseSizeInGB;
         }
         
@@ -216,8 +197,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the maximum size of this database, in Gigabytes.
         * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
         */
-        public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue)
-        {
+        public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue) {
             this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
         }
         
@@ -227,8 +207,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the name of the database.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -236,8 +215,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the name of the database.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -247,8 +225,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the error code for this service objective.
         * @return The ServiceObjectiveAssignmentErrorCode value.
         */
-        public String getServiceObjectiveAssignmentErrorCode()
-        {
+        public String getServiceObjectiveAssignmentErrorCode() {
             return this.serviceObjectiveAssignmentErrorCode;
         }
         
@@ -257,8 +234,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * @param serviceObjectiveAssignmentErrorCodeValue The
         * ServiceObjectiveAssignmentErrorCode value.
         */
-        public void setServiceObjectiveAssignmentErrorCode(final String serviceObjectiveAssignmentErrorCodeValue)
-        {
+        public void setServiceObjectiveAssignmentErrorCode(final String serviceObjectiveAssignmentErrorCodeValue) {
             this.serviceObjectiveAssignmentErrorCode = serviceObjectiveAssignmentErrorCodeValue;
         }
         
@@ -268,8 +244,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the error description, if any.
         * @return The ServiceObjectiveAssignmentErrorDescription value.
         */
-        public String getServiceObjectiveAssignmentErrorDescription()
-        {
+        public String getServiceObjectiveAssignmentErrorDescription() {
             return this.serviceObjectiveAssignmentErrorDescription;
         }
         
@@ -278,8 +253,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * @param serviceObjectiveAssignmentErrorDescriptionValue The
         * ServiceObjectiveAssignmentErrorDescription value.
         */
-        public void setServiceObjectiveAssignmentErrorDescription(final String serviceObjectiveAssignmentErrorDescriptionValue)
-        {
+        public void setServiceObjectiveAssignmentErrorDescription(final String serviceObjectiveAssignmentErrorDescriptionValue) {
             this.serviceObjectiveAssignmentErrorDescription = serviceObjectiveAssignmentErrorDescriptionValue;
         }
         
@@ -289,8 +263,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the state of the current assignment.
         * @return The ServiceObjectiveAssignmentState value.
         */
-        public String getServiceObjectiveAssignmentState()
-        {
+        public String getServiceObjectiveAssignmentState() {
             return this.serviceObjectiveAssignmentState;
         }
         
@@ -299,8 +272,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * @param serviceObjectiveAssignmentStateValue The
         * ServiceObjectiveAssignmentState value.
         */
-        public void setServiceObjectiveAssignmentState(final String serviceObjectiveAssignmentStateValue)
-        {
+        public void setServiceObjectiveAssignmentState(final String serviceObjectiveAssignmentStateValue) {
             this.serviceObjectiveAssignmentState = serviceObjectiveAssignmentStateValue;
         }
         
@@ -310,8 +282,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the state description.
         * @return The ServiceObjectiveAssignmentStateDescription value.
         */
-        public String getServiceObjectiveAssignmentStateDescription()
-        {
+        public String getServiceObjectiveAssignmentStateDescription() {
             return this.serviceObjectiveAssignmentStateDescription;
         }
         
@@ -320,8 +291,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * @param serviceObjectiveAssignmentStateDescriptionValue The
         * ServiceObjectiveAssignmentStateDescription value.
         */
-        public void setServiceObjectiveAssignmentStateDescription(final String serviceObjectiveAssignmentStateDescriptionValue)
-        {
+        public void setServiceObjectiveAssignmentStateDescription(final String serviceObjectiveAssignmentStateDescriptionValue) {
             this.serviceObjectiveAssignmentStateDescription = serviceObjectiveAssignmentStateDescriptionValue;
         }
         
@@ -331,8 +301,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the date the service's assignment succeeded.
         * @return The ServiceObjectiveAssignmentSuccessDate value.
         */
-        public String getServiceObjectiveAssignmentSuccessDate()
-        {
+        public String getServiceObjectiveAssignmentSuccessDate() {
             return this.serviceObjectiveAssignmentSuccessDate;
         }
         
@@ -341,8 +310,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * @param serviceObjectiveAssignmentSuccessDateValue The
         * ServiceObjectiveAssignmentSuccessDate value.
         */
-        public void setServiceObjectiveAssignmentSuccessDate(final String serviceObjectiveAssignmentSuccessDateValue)
-        {
+        public void setServiceObjectiveAssignmentSuccessDate(final String serviceObjectiveAssignmentSuccessDateValue) {
             this.serviceObjectiveAssignmentSuccessDate = serviceObjectiveAssignmentSuccessDateValue;
         }
         
@@ -352,8 +320,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the id of this service objective.
         * @return The ServiceObjectiveId value.
         */
-        public String getServiceObjectiveId()
-        {
+        public String getServiceObjectiveId() {
             return this.serviceObjectiveId;
         }
         
@@ -361,8 +328,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the id of this service objective.
         * @param serviceObjectiveIdValue The ServiceObjectiveId value.
         */
-        public void setServiceObjectiveId(final String serviceObjectiveIdValue)
-        {
+        public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
             this.serviceObjectiveId = serviceObjectiveIdValue;
         }
         
@@ -372,8 +338,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the size of this database in megabytes (MB).
         * @return The SizeMB value.
         */
-        public String getSizeMB()
-        {
+        public String getSizeMB() {
             return this.sizeMB;
         }
         
@@ -381,8 +346,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the size of this database in megabytes (MB).
         * @param sizeMBValue The SizeMB value.
         */
-        public void setSizeMB(final String sizeMBValue)
-        {
+        public void setSizeMB(final String sizeMBValue) {
             this.sizeMB = sizeMBValue;
         }
         
@@ -392,8 +356,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the state of the database.
         * @return The State value.
         */
-        public String getState()
-        {
+        public String getState() {
             return this.state;
         }
         
@@ -401,8 +364,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the state of the database.
         * @param stateValue The State value.
         */
-        public void setState(final String stateValue)
-        {
+        public void setState(final String stateValue) {
             this.state = stateValue;
         }
         
@@ -412,8 +374,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the type of resource.
         * @return The Type value.
         */
-        public String getType()
-        {
+        public String getType() {
             return this.type;
         }
         
@@ -421,8 +382,7 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
         * Gets or sets the type of resource.
         * @param typeValue The Type value.
         */
-        public void setType(final String typeValue)
-        {
+        public void setType(final String typeValue) {
             this.type = typeValue;
         }
     }

@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Create Web Space operation response.
 */
-public class WebSiteCreateResponse extends OperationResponse
-{
+public class WebSiteCreateResponse extends OperationResponse {
     private WebSite webSite;
     
     /**
     * Details of the created website.
     * @return The WebSite value.
     */
-    public WebSite getWebSite()
-    {
+    public WebSite getWebSite() {
         return this.webSite;
     }
     
@@ -45,8 +43,7 @@ public class WebSiteCreateResponse extends OperationResponse
     * Details of the created website.
     * @param webSiteValue The WebSite value.
     */
-    public void setWebSite(final WebSite webSiteValue)
-    {
+    public void setWebSite(final WebSite webSiteValue) {
         this.webSite = webSiteValue;
     }
 }

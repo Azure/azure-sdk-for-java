@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * Response for an DAC Import/Export request.
 */
-public class DacImportExportResponse extends OperationResponse
-{
+public class DacImportExportResponse extends OperationResponse {
     private String guid;
     
     /**
     * Gets or sets the operation's identifier.
     * @return The Guid value.
     */
-    public String getGuid()
-    {
+    public String getGuid() {
         return this.guid;
     }
     
@@ -45,8 +43,7 @@ public class DacImportExportResponse extends OperationResponse
     * Gets or sets the operation's identifier.
     * @param guidValue The Guid value.
     */
-    public void setGuid(final String guidValue)
-    {
+    public void setGuid(final String guidValue) {
         this.guid = guidValue;
     }
 }

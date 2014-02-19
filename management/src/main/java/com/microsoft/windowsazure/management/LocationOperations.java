@@ -36,8 +36,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg441299.aspx for more
 * information)
 */
-public interface LocationOperations
-{
+public interface LocationOperations {
     /**
     * The List Locations operation lists all of the data center locations that
     * are valid for your subscription.  (see

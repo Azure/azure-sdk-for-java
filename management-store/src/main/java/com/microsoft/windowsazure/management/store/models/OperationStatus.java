@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.store.models;
 /**
 * The status of the asynchronous request.
 */
-public enum OperationStatus
-{
+public enum OperationStatus {
     /**
     * The asynchronous request is in progress.
     */

@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get Extension operation response.
 */
-public class HostedServiceGetExtensionResponse extends OperationResponse
-{
+public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String id;
     
     /**
     * The identifier of the extension.
     * @return The Id value.
     */
-    public String getId()
-    {
+    public String getId() {
         return this.id;
     }
     
@@ -45,8 +43,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The identifier of the extension.
     * @param idValue The Id value.
     */
-    public void setId(final String idValue)
-    {
+    public void setId(final String idValue) {
         this.id = idValue;
     }
     
@@ -57,8 +54,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @return The ProviderNamespace value.
     */
-    public String getProviderNamespace()
-    {
+    public String getProviderNamespace() {
         return this.providerNamespace;
     }
     
@@ -67,8 +63,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @param providerNamespaceValue The ProviderNamespace value.
     */
-    public void setProviderNamespace(final String providerNamespaceValue)
-    {
+    public void setProviderNamespace(final String providerNamespaceValue) {
         this.providerNamespace = providerNamespaceValue;
     }
     
@@ -79,8 +74,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * List Available Extensions operation.
     * @return The PublicConfiguration value.
     */
-    public String getPublicConfiguration()
-    {
+    public String getPublicConfiguration() {
         return this.publicConfiguration;
     }
     
@@ -89,8 +83,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * List Available Extensions operation.
     * @param publicConfigurationValue The PublicConfiguration value.
     */
-    public void setPublicConfiguration(final String publicConfigurationValue)
-    {
+    public void setPublicConfiguration(final String publicConfigurationValue) {
         this.publicConfiguration = publicConfigurationValue;
     }
     
@@ -103,8 +96,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * cloud service.
     * @return The Thumbprint value.
     */
-    public String getThumbprint()
-    {
+    public String getThumbprint() {
         return this.thumbprint;
     }
     
@@ -115,8 +107,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * cloud service.
     * @param thumbprintValue The Thumbprint value.
     */
-    public void setThumbprint(final String thumbprintValue)
-    {
+    public void setThumbprint(final String thumbprintValue) {
         this.thumbprint = thumbprintValue;
     }
     
@@ -127,8 +118,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * configuration specified in PrivateConfiguration.
     * @return The ThumbprintAlgorithm value.
     */
-    public String getThumbprintAlgorithm()
-    {
+    public String getThumbprintAlgorithm() {
         return this.thumbprintAlgorithm;
     }
     
@@ -137,8 +127,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * configuration specified in PrivateConfiguration.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
-    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue)
-    {
+    public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
         this.thumbprintAlgorithm = thumbprintAlgorithmValue;
     }
     
@@ -148,8 +137,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * Required. The type of the extension.
     * @return The Type value.
     */
-    public String getType()
-    {
+    public String getType() {
         return this.type;
     }
     
@@ -157,8 +145,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * Required. The type of the extension.
     * @param typeValue The Type value.
     */
-    public void setType(final String typeValue)
-    {
+    public void setType(final String typeValue) {
         this.type = typeValue;
     }
     
@@ -168,8 +155,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The version of the extension.
     * @return The Version value.
     */
-    public String getVersion()
-    {
+    public String getVersion() {
         return this.version;
     }
     
@@ -177,8 +163,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse
     * The version of the extension.
     * @param versionValue The Version value.
     */
-    public void setVersion(final String versionValue)
-    {
+    public void setVersion(final String versionValue) {
         this.version = versionValue;
     }
 }

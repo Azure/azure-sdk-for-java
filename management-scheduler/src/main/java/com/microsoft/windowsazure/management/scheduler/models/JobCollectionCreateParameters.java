@@ -26,16 +26,14 @@ package com.microsoft.windowsazure.management.scheduler.models;
 /**
 * Parameters supplied to the Create Job Collection operation.
 */
-public class JobCollectionCreateParameters
-{
+public class JobCollectionCreateParameters {
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
     * Intrinsic settings for the scheduler job collections.
     * @return The IntrinsicSettings value.
     */
-    public JobCollectionIntrinsicSettings getIntrinsicSettings()
-    {
+    public JobCollectionIntrinsicSettings getIntrinsicSettings() {
         return this.intrinsicSettings;
     }
     
@@ -43,8 +41,7 @@ public class JobCollectionCreateParameters
     * Intrinsic settings for the scheduler job collections.
     * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
-    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue)
-    {
+    public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
         this.intrinsicSettings = intrinsicSettingsValue;
     }
     
@@ -54,8 +51,7 @@ public class JobCollectionCreateParameters
     * Label for the resource.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -63,8 +59,7 @@ public class JobCollectionCreateParameters
     * Label for the resource.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -76,8 +71,7 @@ public class JobCollectionCreateParameters
     * registered as default.
     * @return The SchemaVersion value.
     */
-    public String getSchemaVersion()
-    {
+    public String getSchemaVersion() {
         return this.schemaVersion;
     }
     
@@ -87,8 +81,7 @@ public class JobCollectionCreateParameters
     * registered as default.
     * @param schemaVersionValue The SchemaVersion value.
     */
-    public void setSchemaVersion(final String schemaVersionValue)
-    {
+    public void setSchemaVersion(final String schemaVersionValue) {
         this.schemaVersion = schemaVersionValue;
     }
 }

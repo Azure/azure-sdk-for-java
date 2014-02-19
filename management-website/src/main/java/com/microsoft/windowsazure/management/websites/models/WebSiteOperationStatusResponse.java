@@ -35,16 +35,14 @@ import java.util.Calendar;
 * long-running operation failed, the response body includes error information
 * regarding the failure.
 */
-public class WebSiteOperationStatusResponse extends OperationResponse
-{
+public class WebSiteOperationStatusResponse extends OperationResponse {
     private Calendar createdTime;
     
     /**
     * The time when the operation was created.
     * @return The CreatedTime value.
     */
-    public Calendar getCreatedTime()
-    {
+    public Calendar getCreatedTime() {
         return this.createdTime;
     }
     
@@ -52,8 +50,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The time when the operation was created.
     * @param createdTimeValue The CreatedTime value.
     */
-    public void setCreatedTime(final Calendar createdTimeValue)
-    {
+    public void setCreatedTime(final Calendar createdTimeValue) {
         this.createdTime = createdTimeValue;
     }
     
@@ -63,8 +60,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The list of errors that occurred during the operation.
     * @return The Errors value.
     */
-    public ArrayList<WebSiteOperationStatusResponse.Error> getErrors()
-    {
+    public ArrayList<WebSiteOperationStatusResponse.Error> getErrors() {
         return this.errors;
     }
     
@@ -72,8 +68,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The list of errors that occurred during the operation.
     * @param errorsValue The Errors value.
     */
-    public void setErrors(final ArrayList<WebSiteOperationStatusResponse.Error> errorsValue)
-    {
+    public void setErrors(final ArrayList<WebSiteOperationStatusResponse.Error> errorsValue) {
         this.errors = errorsValue;
     }
     
@@ -83,8 +78,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The time when the operation will time out.
     * @return The ExpirationTime value.
     */
-    public Calendar getExpirationTime()
-    {
+    public Calendar getExpirationTime() {
         return this.expirationTime;
     }
     
@@ -92,8 +86,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The time when the operation will time out.
     * @param expirationTimeValue The ExpirationTime value.
     */
-    public void setExpirationTime(final Calendar expirationTimeValue)
-    {
+    public void setExpirationTime(final Calendar expirationTimeValue) {
         this.expirationTime = expirationTimeValue;
     }
     
@@ -103,8 +96,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The GeoMaster Operation Id for this operation, if any.
     * @return The GeoMasterOperationId value.
     */
-    public String getGeoMasterOperationId()
-    {
+    public String getGeoMasterOperationId() {
         return this.geoMasterOperationId;
     }
     
@@ -112,8 +104,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The GeoMaster Operation Id for this operation, if any.
     * @param geoMasterOperationIdValue The GeoMasterOperationId value.
     */
-    public void setGeoMasterOperationId(final String geoMasterOperationIdValue)
-    {
+    public void setGeoMasterOperationId(final String geoMasterOperationIdValue) {
         this.geoMasterOperationId = geoMasterOperationIdValue;
     }
     
@@ -123,8 +114,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The time when the operation was last modified.
     * @return The ModifiedTime value.
     */
-    public Calendar getModifiedTime()
-    {
+    public Calendar getModifiedTime() {
         return this.modifiedTime;
     }
     
@@ -132,8 +122,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The time when the operation was last modified.
     * @param modifiedTimeValue The ModifiedTime value.
     */
-    public void setModifiedTime(final Calendar modifiedTimeValue)
-    {
+    public void setModifiedTime(final Calendar modifiedTimeValue) {
         this.modifiedTime = modifiedTimeValue;
     }
     
@@ -143,8 +132,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The name of the operation.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -152,8 +140,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The name of the operation.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -163,8 +150,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The operation Id for this operation.  Used to poll for operation status.
     * @return The OperationId value.
     */
-    public String getOperationId()
-    {
+    public String getOperationId() {
         return this.operationId;
     }
     
@@ -172,8 +158,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The operation Id for this operation.  Used to poll for operation status.
     * @param operationIdValue The OperationId value.
     */
-    public void setOperationId(final String operationIdValue)
-    {
+    public void setOperationId(final String operationIdValue) {
         this.operationId = operationIdValue;
     }
     
@@ -183,8 +168,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The status of the asynchronous operation.
     * @return The Status value.
     */
-    public WebSiteOperationStatus getStatus()
-    {
+    public WebSiteOperationStatus getStatus() {
         return this.status;
     }
     
@@ -192,8 +176,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * The status of the asynchronous operation.
     * @param statusValue The Status value.
     */
-    public void setStatus(final WebSiteOperationStatus statusValue)
-    {
+    public void setStatus(final WebSiteOperationStatus statusValue) {
         this.status = statusValue;
     }
     
@@ -201,8 +184,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     * Initializes a new instance of the WebSiteOperationStatusResponse class.
     *
     */
-    public WebSiteOperationStatusResponse()
-    {
+    public WebSiteOperationStatusResponse() {
         super();
         this.errors = new ArrayList<WebSiteOperationStatusResponse.Error>();
     }
@@ -210,16 +192,14 @@ public class WebSiteOperationStatusResponse extends OperationResponse
     /**
     * Information about an error that occured suring the operation.
     */
-    public static class Error
-    {
+    public static class Error {
         private String code;
         
         /**
         * The error code.
         * @return The Code value.
         */
-        public String getCode()
-        {
+        public String getCode() {
             return this.code;
         }
         
@@ -227,8 +207,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The error code.
         * @param codeValue The Code value.
         */
-        public void setCode(final String codeValue)
-        {
+        public void setCode(final String codeValue) {
             this.code = codeValue;
         }
         
@@ -238,8 +217,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The error extended code.
         * @return The ExtendedCode value.
         */
-        public String getExtendedCode()
-        {
+        public String getExtendedCode() {
             return this.extendedCode;
         }
         
@@ -247,8 +225,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The error extended code.
         * @param extendedCodeValue The ExtendedCode value.
         */
-        public void setExtendedCode(final String extendedCodeValue)
-        {
+        public void setExtendedCode(final String extendedCodeValue) {
             this.extendedCode = extendedCodeValue;
         }
         
@@ -258,8 +235,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The inner errors for this operation.
         * @return The InnerErrors value.
         */
-        public String getInnerErrors()
-        {
+        public String getInnerErrors() {
             return this.innerErrors;
         }
         
@@ -267,8 +243,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The inner errors for this operation.
         * @param innerErrorsValue The InnerErrors value.
         */
-        public void setInnerErrors(final String innerErrorsValue)
-        {
+        public void setInnerErrors(final String innerErrorsValue) {
             this.innerErrors = innerErrorsValue;
         }
         
@@ -278,8 +253,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The error message.
         * @return The Message value.
         */
-        public String getMessage()
-        {
+        public String getMessage() {
             return this.message;
         }
         
@@ -287,8 +261,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The error message.
         * @param messageValue The Message value.
         */
-        public void setMessage(final String messageValue)
-        {
+        public void setMessage(final String messageValue) {
             this.message = messageValue;
         }
         
@@ -298,8 +271,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The message template.
         * @return The MessageTemplate value.
         */
-        public String getMessageTemplate()
-        {
+        public String getMessageTemplate() {
             return this.messageTemplate;
         }
         
@@ -307,8 +279,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The message template.
         * @param messageTemplateValue The MessageTemplate value.
         */
-        public void setMessageTemplate(final String messageTemplateValue)
-        {
+        public void setMessageTemplate(final String messageTemplateValue) {
             this.messageTemplate = messageTemplateValue;
         }
         
@@ -318,8 +289,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The parameters for the message template.
         * @return The Parameters value.
         */
-        public ArrayList<String> getParameters()
-        {
+        public ArrayList<String> getParameters() {
             return this.parameters;
         }
         
@@ -327,8 +297,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * The parameters for the message template.
         * @param parametersValue The Parameters value.
         */
-        public void setParameters(final ArrayList<String> parametersValue)
-        {
+        public void setParameters(final ArrayList<String> parametersValue) {
             this.parameters = parametersValue;
         }
         
@@ -336,8 +305,7 @@ public class WebSiteOperationStatusResponse extends OperationResponse
         * Initializes a new instance of the Error class.
         *
         */
-        public Error()
-        {
+        public Error() {
             this.parameters = new ArrayList<String>();
         }
     }

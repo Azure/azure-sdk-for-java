@@ -41,8 +41,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/gg715271.aspx for more
 * information)
 */
-public interface ServerOperations
-{
+public interface ServerOperations {
     /**
     * Sets the administrative password of a SQL Database server for a
     * subscription.  (see

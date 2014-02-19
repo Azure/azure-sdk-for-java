@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-public enum RollbackUpdateOrUpgradeMode
-{
+public enum RollbackUpdateOrUpgradeMode {
     /**
     * The rollback proceeds without further user input.
     */

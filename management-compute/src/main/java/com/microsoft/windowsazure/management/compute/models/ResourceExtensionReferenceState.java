@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Optional. Specifies the state of the resource extension.
 */
-public enum ResourceExtensionReferenceState
-{
+public enum ResourceExtensionReferenceState {
     Enable,
     
     Disable,

@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The List Operating Systems operation response.
 */
-public class OperatingSystemListResponse extends OperationResponse implements Iterable<OperatingSystemListResponse.OperatingSystem>
-{
+public class OperatingSystemListResponse extends OperationResponse implements Iterable<OperatingSystemListResponse.OperatingSystem> {
     private ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystems;
     
     /**
     * The operating systems that are valid for your subscription.
     * @return The OperatingSystems value.
     */
-    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems()
-    {
+    public ArrayList<OperatingSystemListResponse.OperatingSystem> getOperatingSystems() {
         return this.operatingSystems;
     }
     
@@ -47,8 +45,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     * The operating systems that are valid for your subscription.
     * @param operatingSystemsValue The OperatingSystems value.
     */
-    public void setOperatingSystems(final ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemsValue)
-    {
+    public void setOperatingSystems(final ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemsValue) {
         this.operatingSystems = operatingSystemsValue;
     }
     
@@ -56,8 +53,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     * Initializes a new instance of the OperatingSystemListResponse class.
     *
     */
-    public OperatingSystemListResponse()
-    {
+    public OperatingSystemListResponse() {
         super();
         this.operatingSystems = new ArrayList<OperatingSystemListResponse.OperatingSystem>();
     }
@@ -66,16 +62,14 @@ public class OperatingSystemListResponse extends OperationResponse implements It
     * Gets the sequence of OperatingSystems.
     *
     */
-    public Iterator<OperatingSystemListResponse.OperatingSystem> iterator()
-    {
+    public Iterator<OperatingSystemListResponse.OperatingSystem> iterator() {
         return this.getOperatingSystems().iterator();
     }
     
     /**
     * An operating system that is valid for your subscription.
     */
-    public static class OperatingSystem
-    {
+    public static class OperatingSystem {
         private int family;
         
         /**
@@ -86,8 +80,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * that is substantially compatible with Windows Server 2008 R2.
         * @return The Family value.
         */
-        public int getFamily()
-        {
+        public int getFamily() {
             return this.family;
         }
         
@@ -99,8 +92,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * that is substantially compatible with Windows Server 2008 R2.
         * @param familyValue The Family value.
         */
-        public void setFamily(final int familyValue)
-        {
+        public void setFamily(final int familyValue) {
             this.family = familyValue;
         }
         
@@ -110,8 +102,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * The label of the operating system family.
         * @return The FamilyLabel value.
         */
-        public String getFamilyLabel()
-        {
+        public String getFamilyLabel() {
             return this.familyLabel;
         }
         
@@ -119,8 +110,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * The label of the operating system family.
         * @param familyLabelValue The FamilyLabel value.
         */
-        public void setFamilyLabel(final String familyLabelValue)
-        {
+        public void setFamilyLabel(final String familyLabelValue) {
             this.familyLabel = familyLabelValue;
         }
         
@@ -142,8 +132,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * use auto-upgrade to manage operating system upgrades.
         * @return The IsActive value.
         */
-        public boolean isActive()
-        {
+        public boolean isActive() {
             return this.isActive;
         }
         
@@ -163,8 +152,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * use auto-upgrade to manage operating system upgrades.
         * @param isActiveValue The IsActive value.
         */
-        public void setIsActive(final boolean isActiveValue)
-        {
+        public void setIsActive(final boolean isActiveValue) {
             this.isActive = isActiveValue;
         }
         
@@ -180,8 +168,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * IsDefault is set to false.
         * @return The IsDefault value.
         */
-        public boolean isDefault()
-        {
+        public boolean isDefault() {
             return this.isDefault;
         }
         
@@ -195,8 +182,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * IsDefault is set to false.
         * @param isDefaultValue The IsDefault value.
         */
-        public void setIsDefault(final boolean isDefaultValue)
-        {
+        public void setIsDefault(final boolean isDefaultValue) {
             this.isDefault = isDefaultValue;
         }
         
@@ -206,8 +192,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * The label of the operating system version.
         * @return The Label value.
         */
-        public String getLabel()
-        {
+        public String getLabel() {
             return this.label;
         }
         
@@ -215,8 +200,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * The label of the operating system version.
         * @param labelValue The Label value.
         */
-        public void setLabel(final String labelValue)
-        {
+        public void setLabel(final String labelValue) {
             this.label = labelValue;
         }
         
@@ -230,8 +214,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * details.
         * @return The Version value.
         */
-        public String getVersion()
-        {
+        public String getVersion() {
             return this.version;
         }
         
@@ -243,8 +226,7 @@ public class OperatingSystemListResponse extends OperationResponse implements It
         * details.
         * @param versionValue The Version value.
         */
-        public void setVersion(final String versionValue)
-        {
+        public void setVersion(final String versionValue) {
             this.version = versionValue;
         }
     }

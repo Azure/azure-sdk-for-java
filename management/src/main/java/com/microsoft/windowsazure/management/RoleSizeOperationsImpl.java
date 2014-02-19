@@ -48,15 +48,13 @@ import org.xml.sax.SAXException;
 * The Service Management API includes operations for listing the available role
 * sizes for VMs in your subscription.
 */
-public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClientImpl>, RoleSizeOperations
-{
+public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClientImpl>, RoleSizeOperations {
     /**
     * Initializes a new instance of the RoleSizeOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    RoleSizeOperationsImpl(ManagementClientImpl client)
-    {
+    RoleSizeOperationsImpl(ManagementClientImpl client) {
         this.client = client;
     }
     
@@ -67,8 +65,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
     * microsoft.windowsazure.management.ManagementClientImpl.
     * @return The Client value.
     */
-    public ManagementClientImpl getClient()
-    {
+    public ManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -79,12 +76,10 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
     * @return The List Role Sizes operation response.
     */
     @Override
-    public Future<RoleSizeListResponse> listAsync()
-    {
+    public Future<RoleSizeListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<RoleSizeListResponse>() { 
             @Override
-            public RoleSizeListResponse call() throws Exception
-            {
+            public RoleSizeListResponse call() throws Exception {
                 return list();
             }
          });
@@ -105,15 +100,13 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
     * @return The List Role Sizes operation response.
     */
     @Override
-    public RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public RoleSizeListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -130,23 +123,18 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -164,18 +152,15 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             
             NodeList elements = responseDoc.getElementsByTagName("RoleSizes");
             Element roleSizesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (roleSizesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < roleSizesSequenceElement.getElementsByTagName("RoleSize").getLength(); i1 = i1 + 1)
-                {
+            if (roleSizesSequenceElement != null) {
+                for (int i1 = 0; i1 < roleSizesSequenceElement.getElementsByTagName("RoleSize").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element roleSizesElement = ((org.w3c.dom.Element) roleSizesSequenceElement.getElementsByTagName("RoleSize").item(i1));
                     RoleSizeListResponse.RoleSize roleSizeInstance = new RoleSizeListResponse.RoleSize();
                     result.getRoleSizes().add(roleSizeInstance);
                     
                     NodeList elements2 = roleSizesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         roleSizeInstance.setName(nameInstance);
@@ -183,8 +168,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     
                     NodeList elements3 = roleSizesElement.getElementsByTagName("Label");
                     Element labelElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         roleSizeInstance.setLabel(labelInstance);
@@ -192,8 +176,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     
                     NodeList elements4 = roleSizesElement.getElementsByTagName("Cores");
                     Element coresElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (coresElement != null)
-                    {
+                    if (coresElement != null) {
                         int coresInstance;
                         coresInstance = DatatypeConverter.parseInt(coresElement.getTextContent());
                         roleSizeInstance.setCores(coresInstance);
@@ -201,8 +184,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     
                     NodeList elements5 = roleSizesElement.getElementsByTagName("MemoryInMb");
                     Element memoryInMbElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (memoryInMbElement != null)
-                    {
+                    if (memoryInMbElement != null) {
                         int memoryInMbInstance;
                         memoryInMbInstance = DatatypeConverter.parseInt(memoryInMbElement.getTextContent());
                         roleSizeInstance.setMemoryInMb(memoryInMbInstance);
@@ -210,8 +192,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     
                     NodeList elements6 = roleSizesElement.getElementsByTagName("SupportedByWebWorkerRoles");
                     Element supportedByWebWorkerRolesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (supportedByWebWorkerRolesElement != null)
-                    {
+                    if (supportedByWebWorkerRolesElement != null) {
                         boolean supportedByWebWorkerRolesInstance;
                         supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
                         roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
@@ -219,8 +200,7 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     
                     NodeList elements7 = roleSizesElement.getElementsByTagName("SupportedByVirtualMachines");
                     Element supportedByVirtualMachinesElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (supportedByVirtualMachinesElement != null)
-                    {
+                    if (supportedByVirtualMachinesElement != null) {
                         boolean supportedByVirtualMachinesInstance;
                         supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
                         roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
@@ -229,21 +209,16 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

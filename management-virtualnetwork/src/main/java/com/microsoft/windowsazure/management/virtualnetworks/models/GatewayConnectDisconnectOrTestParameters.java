@@ -28,8 +28,7 @@ import java.net.InetAddress;
 /**
 * The parameters for the Connect, Disconnect, or Test request
 */
-public class GatewayConnectDisconnectOrTestParameters
-{
+public class GatewayConnectDisconnectOrTestParameters {
     private InetAddress iPAddress;
     
     /**
@@ -38,8 +37,7 @@ public class GatewayConnectDisconnectOrTestParameters
     * test connectivity.
     * @return The IPAddress value.
     */
-    public InetAddress getIPAddress()
-    {
+    public InetAddress getIPAddress() {
         return this.iPAddress;
     }
     
@@ -49,8 +47,7 @@ public class GatewayConnectDisconnectOrTestParameters
     * test connectivity.
     * @param iPAddressValue The IPAddress value.
     */
-    public void setIPAddress(final InetAddress iPAddressValue)
-    {
+    public void setIPAddress(final InetAddress iPAddressValue) {
         this.iPAddress = iPAddressValue;
     }
     
@@ -63,8 +60,7 @@ public class GatewayConnectDisconnectOrTestParameters
     * local network site.
     * @return The Operation value.
     */
-    public GatewayConnectionUpdateOperation getOperation()
-    {
+    public GatewayConnectionUpdateOperation getOperation() {
         return this.operation;
     }
     
@@ -75,8 +71,7 @@ public class GatewayConnectDisconnectOrTestParameters
     * local network site.
     * @param operationValue The Operation value.
     */
-    public void setOperation(final GatewayConnectionUpdateOperation operationValue)
-    {
+    public void setOperation(final GatewayConnectionUpdateOperation operationValue) {
         this.operation = operationValue;
     }
 }

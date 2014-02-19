@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Check Name Availability operation response.
 */
-public class JobCollectionCheckNameAvailabilityResponse extends OperationResponse
-{
+public class JobCollectionCheckNameAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
     
     /**
     * Whether the name is available.
     * @return The IsAvailable value.
     */
-    public boolean isAvailable()
-    {
+    public boolean isAvailable() {
         return this.isAvailable;
     }
     
@@ -45,8 +43,7 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     * Whether the name is available.
     * @param isAvailableValue The IsAvailable value.
     */
-    public void setIsAvailable(final boolean isAvailableValue)
-    {
+    public void setIsAvailable(final boolean isAvailableValue) {
         this.isAvailable = isAvailableValue;
     }
 }

@@ -49,15 +49,13 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for getting Service
 * Objective for a subscription.
 */
-public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, ServiceObjectiveOperations
-{
+public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlManagementClientImpl>, ServiceObjectiveOperations {
     /**
     * Initializes a new instance of the ServiceObjectiveOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    ServiceObjectiveOperationsImpl(SqlManagementClientImpl client)
-    {
+    ServiceObjectiveOperationsImpl(SqlManagementClientImpl client) {
         this.client = client;
     }
     
@@ -68,8 +66,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * microsoft.windowsazure.management.sql.SqlManagementClientImpl.
     * @return The Client value.
     */
-    public SqlManagementClientImpl getClient()
-    {
+    public SqlManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -82,12 +79,10 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * service objective Id.
     */
     @Override
-    public Future<ServiceObjectiveGetResponse> getAsync(final String serverName, final String serviceObjectiveId)
-    {
+    public Future<ServiceObjectiveGetResponse> getAsync(final String serverName, final String serviceObjectiveId) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveGetResponse>() { 
             @Override
-            public ServiceObjectiveGetResponse call() throws Exception
-            {
+            public ServiceObjectiveGetResponse call() throws Exception {
                 return get(serverName, serviceObjectiveId);
             }
          });
@@ -110,23 +105,19 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * service objective Id.
     */
     @Override
-    public ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServiceObjectiveGetResponse get(String serverName, String serviceObjectiveId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serverName == null)
-        {
+        if (serverName == null) {
             throw new NullPointerException("serverName");
         }
-        if (serviceObjectiveId == null)
-        {
+        if (serviceObjectiveId == null) {
             throw new NullPointerException("serviceObjectiveId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -145,23 +136,18 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -179,12 +165,10 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResource");
             Element serviceResourceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourceElement != null)
-            {
+            if (serviceResourceElement != null) {
                 NodeList elements2 = serviceResourceElement.getElementsByTagName("Name");
                 Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (nameElement != null)
-                {
+                if (nameElement != null) {
                     String nameInstance;
                     nameInstance = nameElement.getTextContent();
                     result.setName(nameInstance);
@@ -192,8 +176,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements3 = serviceResourceElement.getElementsByTagName("Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
-                {
+                if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -201,8 +184,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements4 = serviceResourceElement.getElementsByTagName("State");
                 Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (stateElement != null)
-                {
+                if (stateElement != null) {
                     String stateInstance;
                     stateInstance = stateElement.getTextContent();
                     result.setState(stateInstance);
@@ -210,8 +192,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements5 = serviceResourceElement.getElementsByTagName("SelfLink");
                 Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (selfLinkElement != null)
-                {
+                if (selfLinkElement != null) {
                     String selfLinkInstance;
                     selfLinkInstance = selfLinkElement.getTextContent();
                     result.setSelfLink(selfLinkInstance);
@@ -219,8 +200,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements6 = serviceResourceElement.getElementsByTagName("ParentLink");
                 Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (parentLinkElement != null)
-                {
+                if (parentLinkElement != null) {
                     String parentLinkInstance;
                     parentLinkInstance = parentLinkElement.getTextContent();
                     result.setParentLink(parentLinkInstance);
@@ -228,8 +208,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements7 = serviceResourceElement.getElementsByTagName("Id");
                 Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -237,8 +216,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements8 = serviceResourceElement.getElementsByTagName("IsDefault");
                 Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (isDefaultElement != null)
-                {
+                if (isDefaultElement != null) {
                     boolean isDefaultInstance;
                     isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                     result.setIsDefault(isDefaultInstance);
@@ -246,8 +224,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements9 = serviceResourceElement.getElementsByTagName("IsSystem");
                 Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                if (isSystemElement != null)
-                {
+                if (isSystemElement != null) {
                     boolean isSystemInstance;
                     isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
                     result.setIsSystem(isSystemInstance);
@@ -255,8 +232,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements10 = serviceResourceElement.getElementsByTagName("Description");
                 Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (descriptionElement != null)
-                {
+                if (descriptionElement != null) {
                     String descriptionInstance;
                     descriptionInstance = descriptionElement.getTextContent();
                     result.setDescription(descriptionInstance);
@@ -264,8 +240,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements11 = serviceResourceElement.getElementsByTagName("Enabled");
                 Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (enabledElement != null)
-                {
+                if (enabledElement != null) {
                     boolean enabledInstance;
                     enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                     result.setEnabled(enabledInstance);
@@ -273,18 +248,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 
                 NodeList elements12 = serviceResourceElement.getElementsByTagName("DimensionSettings");
                 Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (dimensionSettingsSequenceElement != null)
-                {
-                    for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
-                    {
+                if (dimensionSettingsSequenceElement != null) {
+                    for (int i1 = 0; i1 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                         ServiceObjectiveGetResponse.DimensionSettingResponse serviceResourceInstance = new ServiceObjectiveGetResponse.DimensionSettingResponse();
                         result.getDimensionSettings().add(serviceResourceInstance);
                         
                         NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
                         Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (nameElement2 != null)
-                        {
+                        if (nameElement2 != null) {
                             String nameInstance2;
                             nameInstance2 = nameElement2.getTextContent();
                             serviceResourceInstance.setName(nameInstance2);
@@ -292,8 +264,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
                         Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                        if (typeElement2 != null)
-                        {
+                        if (typeElement2 != null) {
                             String typeInstance2;
                             typeInstance2 = typeElement2.getTextContent();
                             serviceResourceInstance.setType(typeInstance2);
@@ -301,8 +272,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
                         Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                        if (stateElement2 != null)
-                        {
+                        if (stateElement2 != null) {
                             String stateInstance2;
                             stateInstance2 = stateElement2.getTextContent();
                             serviceResourceInstance.setState(stateInstance2);
@@ -310,8 +280,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
                         Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                        if (selfLinkElement2 != null)
-                        {
+                        if (selfLinkElement2 != null) {
                             String selfLinkInstance2;
                             selfLinkInstance2 = selfLinkElement2.getTextContent();
                             serviceResourceInstance.setSelfLink(selfLinkInstance2);
@@ -319,8 +288,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
                         Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                        if (parentLinkElement2 != null)
-                        {
+                        if (parentLinkElement2 != null) {
                             String parentLinkInstance2;
                             parentLinkInstance2 = parentLinkElement2.getTextContent();
                             serviceResourceInstance.setParentLink(parentLinkInstance2);
@@ -328,8 +296,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
                         Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                        if (idElement2 != null)
-                        {
+                        if (idElement2 != null) {
                             String idInstance2;
                             idInstance2 = idElement2.getTextContent();
                             serviceResourceInstance.setId(idInstance2);
@@ -337,8 +304,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
                         Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                        if (descriptionElement2 != null)
-                        {
+                        if (descriptionElement2 != null) {
                             String descriptionInstance2;
                             descriptionInstance2 = descriptionElement2.getTextContent();
                             serviceResourceInstance.setDescription(descriptionInstance2);
@@ -346,8 +312,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
                         Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                        if (ordinalElement != null)
-                        {
+                        if (ordinalElement != null) {
                             byte ordinalInstance;
                             ordinalInstance = DatatypeConverter.parseByte(ordinalElement.getTextContent());
                             serviceResourceInstance.setOrdinal(ordinalInstance);
@@ -355,8 +320,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         
                         NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
                         Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                        if (isDefaultElement2 != null)
-                        {
+                        if (isDefaultElement2 != null) {
                             boolean isDefaultInstance2;
                             isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
                             serviceResourceInstance.setIsDefault(isDefaultInstance2);
@@ -366,21 +330,16 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -394,12 +353,10 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * server.
     */
     @Override
-    public Future<ServiceObjectiveListResponse> listAsync(final String serverName)
-    {
+    public Future<ServiceObjectiveListResponse> listAsync(final String serverName) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceObjectiveListResponse>() { 
             @Override
-            public ServiceObjectiveListResponse call() throws Exception
-            {
+            public ServiceObjectiveListResponse call() throws Exception {
                 return list(serverName);
             }
          });
@@ -421,19 +378,16 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     * server.
     */
     @Override
-    public ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServiceObjectiveListResponse list(String serverName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serverName == null)
-        {
+        if (serverName == null) {
             throw new NullPointerException("serverName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serverName", serverName);
@@ -451,23 +405,18 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -485,18 +434,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             
             NodeList elements = responseDoc.getElementsByTagName("ServiceResources");
             Element serviceResourcesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (serviceResourcesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1)
-                {
+            if (serviceResourcesSequenceElement != null) {
+                for (int i1 = 0; i1 < serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element serviceResourcesElement = ((org.w3c.dom.Element) serviceResourcesSequenceElement.getElementsByTagName("ServiceResource").item(i1));
                     ServiceObjectiveListResponse.ServiceObjective serviceResourceInstance = new ServiceObjectiveListResponse.ServiceObjective();
                     result.getServiceObjectives().add(serviceResourceInstance);
                     
                     NodeList elements2 = serviceResourcesElement.getElementsByTagName("Name");
                     Element nameElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (nameElement != null)
-                    {
+                    if (nameElement != null) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         serviceResourceInstance.setName(nameInstance);
@@ -504,8 +450,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements3 = serviceResourcesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null)
-                    {
+                    if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         serviceResourceInstance.setType(typeInstance);
@@ -513,8 +458,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements4 = serviceResourcesElement.getElementsByTagName("State");
                     Element stateElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (stateElement != null)
-                    {
+                    if (stateElement != null) {
                         String stateInstance;
                         stateInstance = stateElement.getTextContent();
                         serviceResourceInstance.setState(stateInstance);
@@ -522,8 +466,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements5 = serviceResourcesElement.getElementsByTagName("SelfLink");
                     Element selfLinkElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (selfLinkElement != null)
-                    {
+                    if (selfLinkElement != null) {
                         String selfLinkInstance;
                         selfLinkInstance = selfLinkElement.getTextContent();
                         serviceResourceInstance.setSelfLink(selfLinkInstance);
@@ -531,8 +474,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements6 = serviceResourcesElement.getElementsByTagName("ParentLink");
                     Element parentLinkElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (parentLinkElement != null)
-                    {
+                    if (parentLinkElement != null) {
                         String parentLinkInstance;
                         parentLinkInstance = parentLinkElement.getTextContent();
                         serviceResourceInstance.setParentLink(parentLinkInstance);
@@ -540,8 +482,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements7 = serviceResourcesElement.getElementsByTagName("Id");
                     Element idElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (idElement != null)
-                    {
+                    if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         serviceResourceInstance.setId(idInstance);
@@ -549,8 +490,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements8 = serviceResourcesElement.getElementsByTagName("IsDefault");
                     Element isDefaultElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (isDefaultElement != null)
-                    {
+                    if (isDefaultElement != null) {
                         boolean isDefaultInstance;
                         isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
                         serviceResourceInstance.setIsDefault(isDefaultInstance);
@@ -558,8 +498,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements9 = serviceResourcesElement.getElementsByTagName("IsSystem");
                     Element isSystemElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (isSystemElement != null)
-                    {
+                    if (isSystemElement != null) {
                         boolean isSystemInstance;
                         isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
                         serviceResourceInstance.setIsSystem(isSystemInstance);
@@ -567,8 +506,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements10 = serviceResourcesElement.getElementsByTagName("Description");
                     Element descriptionElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         serviceResourceInstance.setDescription(descriptionInstance);
@@ -576,8 +514,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements11 = serviceResourcesElement.getElementsByTagName("Enabled");
                     Element enabledElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (enabledElement != null)
-                    {
+                    if (enabledElement != null) {
                         boolean enabledInstance;
                         enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
                         serviceResourceInstance.setEnabled(enabledInstance);
@@ -585,18 +522,15 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     
                     NodeList elements12 = serviceResourcesElement.getElementsByTagName("DimensionSettings");
                     Element dimensionSettingsSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (dimensionSettingsSequenceElement != null)
-                    {
-                        for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i2 = i2 + 1)
-                        {
+                    if (dimensionSettingsSequenceElement != null) {
+                        for (int i2 = 0; i2 < dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").getLength(); i2 = i2 + 1) {
                             org.w3c.dom.Element dimensionSettingsElement = ((org.w3c.dom.Element) dimensionSettingsSequenceElement.getElementsByTagName("ServiceResource").item(i2));
                             ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse serviceResourceInstance2 = new ServiceObjectiveListResponse.ServiceObjective.DimensionSettingResponse();
                             serviceResourceInstance.getDimensionSettings().add(serviceResourceInstance2);
                             
                             NodeList elements13 = dimensionSettingsElement.getElementsByTagName("Name");
                             Element nameElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                            if (nameElement2 != null)
-                            {
+                            if (nameElement2 != null) {
                                 String nameInstance2;
                                 nameInstance2 = nameElement2.getTextContent();
                                 serviceResourceInstance2.setName(nameInstance2);
@@ -604,8 +538,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements14 = dimensionSettingsElement.getElementsByTagName("Type");
                             Element typeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                            if (typeElement2 != null)
-                            {
+                            if (typeElement2 != null) {
                                 String typeInstance2;
                                 typeInstance2 = typeElement2.getTextContent();
                                 serviceResourceInstance2.setType(typeInstance2);
@@ -613,8 +546,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements15 = dimensionSettingsElement.getElementsByTagName("State");
                             Element stateElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                            if (stateElement2 != null)
-                            {
+                            if (stateElement2 != null) {
                                 String stateInstance2;
                                 stateInstance2 = stateElement2.getTextContent();
                                 serviceResourceInstance2.setState(stateInstance2);
@@ -622,8 +554,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements16 = dimensionSettingsElement.getElementsByTagName("SelfLink");
                             Element selfLinkElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                            if (selfLinkElement2 != null)
-                            {
+                            if (selfLinkElement2 != null) {
                                 String selfLinkInstance2;
                                 selfLinkInstance2 = selfLinkElement2.getTextContent();
                                 serviceResourceInstance2.setSelfLink(selfLinkInstance2);
@@ -631,8 +562,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements17 = dimensionSettingsElement.getElementsByTagName("ParentLink");
                             Element parentLinkElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                            if (parentLinkElement2 != null)
-                            {
+                            if (parentLinkElement2 != null) {
                                 String parentLinkInstance2;
                                 parentLinkInstance2 = parentLinkElement2.getTextContent();
                                 serviceResourceInstance2.setParentLink(parentLinkInstance2);
@@ -640,8 +570,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements18 = dimensionSettingsElement.getElementsByTagName("Id");
                             Element idElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                            if (idElement2 != null)
-                            {
+                            if (idElement2 != null) {
                                 String idInstance2;
                                 idInstance2 = idElement2.getTextContent();
                                 serviceResourceInstance2.setId(idInstance2);
@@ -649,8 +578,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements19 = dimensionSettingsElement.getElementsByTagName("Description");
                             Element descriptionElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                            if (descriptionElement2 != null)
-                            {
+                            if (descriptionElement2 != null) {
                                 String descriptionInstance2;
                                 descriptionInstance2 = descriptionElement2.getTextContent();
                                 serviceResourceInstance2.setDescription(descriptionInstance2);
@@ -658,8 +586,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements20 = dimensionSettingsElement.getElementsByTagName("Ordinal");
                             Element ordinalElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                            if (ordinalElement != null)
-                            {
+                            if (ordinalElement != null) {
                                 byte ordinalInstance;
                                 ordinalInstance = DatatypeConverter.parseByte(ordinalElement.getTextContent());
                                 serviceResourceInstance2.setOrdinal(ordinalInstance);
@@ -667,8 +594,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             
                             NodeList elements21 = dimensionSettingsElement.getElementsByTagName("IsDefault");
                             Element isDefaultElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                            if (isDefaultElement2 != null)
-                            {
+                            if (isDefaultElement2 != null) {
                                 boolean isDefaultInstance2;
                                 isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
                                 serviceResourceInstance2.setIsDefault(isDefaultInstance2);
@@ -679,21 +605,16 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

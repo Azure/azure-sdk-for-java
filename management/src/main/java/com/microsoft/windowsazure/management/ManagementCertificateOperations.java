@@ -36,180 +36,156 @@ import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
 /**
- * You can use management certificates, which are also known as subscription
- * certificates, to authenticate clients attempting to connect to resources
- * associated with your Windows Azure subscription. (see
- * http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
- * information)
- */
+* You can use management certificates, which are also known as subscription
+* certificates, to authenticate clients attempting to connect to resources
+* associated with your Windows Azure subscription.  (see
+* http://msdn.microsoft.com/en-us/library/windowsazure/jj154124.aspx for more
+* information)
+*/
 public interface ManagementCertificateOperations {
     /**
-     * The Add Management Certificate operation adds a certificate to the list
-     * of management certificates. Management certificates, which are also known
-     * as subscription certificates, authenticate clients attempting to connect
-     * to resources associated with your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Management Certificate
-     *            operation.
-     * @throws ParserConfigurationException
-     *             Thrown if there was an error configuring the parser for the
-     *             response body.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the response body.
-     * @throws TransformerException
-     *             Thrown if there was an error creating the DOM transformer.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse create(ManagementCertificateCreateParameters parameters)
-            throws ParserConfigurationException, SAXException,
-            TransformerException, IOException, ServiceException;
-
+    * The Add Management Certificate operation adds a certificate to the list
+    * of management certificates. Management certificates, which are also
+    * known as subscription certificates, authenticate clients attempting to
+    * connect to resources associated with your Windows Azure subscription.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
+    * for more information)
+    *
+    * @param parameters Parameters supplied to the Create Management
+    * Certificate operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse create(ManagementCertificateCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
     /**
-     * The Add Management Certificate operation adds a certificate to the list
-     * of management certificates. Management certificates, which are also known
-     * as subscription certificates, authenticate clients attempting to connect
-     * to resources associated with your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx for
-     * more information)
-     * 
-     * @param parameters
-     *            Parameters supplied to the Create Management Certificate
-     *            operation.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    Future<OperationResponse> createAsync(
-            ManagementCertificateCreateParameters parameters);
-
+    * The Add Management Certificate operation adds a certificate to the list
+    * of management certificates. Management certificates, which are also
+    * known as subscription certificates, authenticate clients attempting to
+    * connect to resources associated with your Windows Azure subscription.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
+    * for more information)
+    *
+    * @param parameters Parameters supplied to the Create Management
+    * Certificate operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> createAsync(ManagementCertificateCreateParameters parameters);
+    
     /**
-     * The Delete Management Certificate operation deletes a certificate from
-     * the list of management certificates. Management certificates, which are
-     * also known as subscription certificates, authenticate clients attempting
-     * to connect to resources associated with your Windows Azure subscription.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-     * for more information)
-     * 
-     * @param thumbprint
-     *            the thumbprint value of the certificate to delete.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
-    OperationResponse delete(String thumbprint) throws IOException,
-            ServiceException;
-
+    * The Delete Management Certificate operation deletes a certificate from
+    * the list of management certificates. Management certificates, which are
+    * also known as subscription certificates, authenticate clients attempting
+    * to connect to resources associated with your Windows Azure subscription.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
+    * for more information)
+    *
+    * @param thumbprint the thumbprint value of the certificate to delete.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse delete(String thumbprint) throws IOException, ServiceException;
+    
     /**
-     * The Delete Management Certificate operation deletes a certificate from
-     * the list of management certificates. Management certificates, which are
-     * also known as subscription certificates, authenticate clients attempting
-     * to connect to resources associated with your Windows Azure subscription.
-     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
-     * for more information)
-     * 
-     * @param thumbprint
-     *            the thumbprint value of the certificate to delete.
-     * @return A standard service response including an HTTP status code and
-     *         request ID.
-     */
+    * The Delete Management Certificate operation deletes a certificate from
+    * the list of management certificates. Management certificates, which are
+    * also known as subscription certificates, authenticate clients attempting
+    * to connect to resources associated with your Windows Azure subscription.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
+    * for more information)
+    *
+    * @param thumbprint the thumbprint value of the certificate to delete.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
     Future<OperationResponse> deleteAsync(String thumbprint);
-
+    
     /**
-     * The Get Management Certificate operation retrieves information about the
-     * management certificate with the specified thumbprint. Management
-     * certificates, which are also known as subscription certificates,
-     * authenticate clients attempting to connect to resources associated with
-     * your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
-     * more information)
-     * 
-     * @param thumbprint
-     *            The thumbprint value of the certificate to retrieve
-     *            information about.
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @throws URISyntaxException
-     *             Thrown if there was an error parsing a URI in the response.
-     * @return The Get Management Certificate operation response.
-     */
-    ManagementCertificateGetResponse get(String thumbprint) throws IOException,
-            ServiceException, ParserConfigurationException, SAXException,
-            URISyntaxException;
-
+    * The Get Management Certificate operation retrieves information about the
+    * management certificate with the specified thumbprint. Management
+    * certificates, which are also known as subscription certificates,
+    * authenticate clients attempting to connect to resources associated with
+    * your Windows Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
+    * more information)
+    *
+    * @param thumbprint The thumbprint value of the certificate to retrieve
+    * information about.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
+    * @return The Get Management Certificate operation response.
+    */
+    ManagementCertificateGetResponse get(String thumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    
     /**
-     * The Get Management Certificate operation retrieves information about the
-     * management certificate with the specified thumbprint. Management
-     * certificates, which are also known as subscription certificates,
-     * authenticate clients attempting to connect to resources associated with
-     * your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
-     * more information)
-     * 
-     * @param thumbprint
-     *            The thumbprint value of the certificate to retrieve
-     *            information about.
-     * @return The Get Management Certificate operation response.
-     */
+    * The Get Management Certificate operation retrieves information about the
+    * management certificate with the specified thumbprint. Management
+    * certificates, which are also known as subscription certificates,
+    * authenticate clients attempting to connect to resources associated with
+    * your Windows Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
+    * more information)
+    *
+    * @param thumbprint The thumbprint value of the certificate to retrieve
+    * information about.
+    * @return The Get Management Certificate operation response.
+    */
     Future<ManagementCertificateGetResponse> getAsync(String thumbprint);
-
+    
     /**
-     * The List Management Certificates operation lists and returns basic
-     * information about all of the management certificates associated with the
-     * specified subscription. Management certificates, which are also known as
-     * subscription certificates, authenticate clients attempting to connect to
-     * resources associated with your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-     * more information)
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception of some sort has occurred. This
-     *             class is the general class of exceptions produced by failed
-     *             or interrupted I/O operations.
-     * @throws ServiceException
-     *             Thrown if an unexpected response is found.
-     * @throws ParserConfigurationException
-     *             Thrown if there was a serious configuration error with the
-     *             document parser.
-     * @throws SAXException
-     *             Thrown if there was an error parsing the XML response.
-     * @return The List Management Certificates operation response.
-     */
-    ManagementCertificateListResponse list() throws IOException,
-            ServiceException, ParserConfigurationException, SAXException;
-
+    * The List Management Certificates operation lists and returns basic
+    * information about all of the management certificates associated with the
+    * specified subscription. Management certificates, which are also known as
+    * subscription certificates, authenticate clients attempting to connect to
+    * resources associated with your Windows Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+    * more information)
+    *
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return The List Management Certificates operation response.
+    */
+    ManagementCertificateListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
     /**
-     * The List Management Certificates operation lists and returns basic
-     * information about all of the management certificates associated with the
-     * specified subscription. Management certificates, which are also known as
-     * subscription certificates, authenticate clients attempting to connect to
-     * resources associated with your Windows Azure subscription. (see
-     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
-     * more information)
-     * 
-     * @return The List Management Certificates operation response.
-     */
+    * The List Management Certificates operation lists and returns basic
+    * information about all of the management certificates associated with the
+    * specified subscription. Management certificates, which are also known as
+    * subscription certificates, authenticate clients attempting to connect to
+    * resources associated with your Windows Azure subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
+    * more information)
+    *
+    * @return The List Management Certificates operation response.
+    */
     Future<ManagementCertificateListResponse> listAsync();
 }

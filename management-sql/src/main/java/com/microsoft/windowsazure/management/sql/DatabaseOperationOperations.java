@@ -35,8 +35,7 @@ import org.xml.sax.SAXException;
 * The SQL Database Management API includes operations for get/stop SQL
 * Databases' operations for a subscription.
 */
-public interface DatabaseOperationOperations
-{
+public interface DatabaseOperationOperations {
     /**
     * Returns information about one operation on a given operation Guid.
     *

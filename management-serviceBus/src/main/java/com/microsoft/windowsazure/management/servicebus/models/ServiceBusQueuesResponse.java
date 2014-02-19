@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * A response to a request for a list of queues.
 */
-public class ServiceBusQueuesResponse extends OperationResponse implements Iterable<ServiceBusQueue>
-{
+public class ServiceBusQueuesResponse extends OperationResponse implements Iterable<ServiceBusQueue> {
     private ArrayList<ServiceBusQueue> queues;
     
     /**
     * The listing of queues.
     * @return The Queues value.
     */
-    public ArrayList<ServiceBusQueue> getQueues()
-    {
+    public ArrayList<ServiceBusQueue> getQueues() {
         return this.queues;
     }
     
@@ -47,8 +45,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     * The listing of queues.
     * @param queuesValue The Queues value.
     */
-    public void setQueues(final ArrayList<ServiceBusQueue> queuesValue)
-    {
+    public void setQueues(final ArrayList<ServiceBusQueue> queuesValue) {
         this.queues = queuesValue;
     }
     
@@ -56,8 +53,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     * Initializes a new instance of the ServiceBusQueuesResponse class.
     *
     */
-    public ServiceBusQueuesResponse()
-    {
+    public ServiceBusQueuesResponse() {
         super();
         this.queues = new ArrayList<ServiceBusQueue>();
     }
@@ -66,8 +62,7 @@ public class ServiceBusQueuesResponse extends OperationResponse implements Itera
     * Gets the sequence of Queues.
     *
     */
-    public Iterator<ServiceBusQueue> iterator()
-    {
+    public Iterator<ServiceBusQueue> iterator() {
         return this.getQueues().iterator();
     }
 }

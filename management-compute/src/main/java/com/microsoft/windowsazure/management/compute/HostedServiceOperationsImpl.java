@@ -119,15 +119,13 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460812.aspx for more
 * information)
 */
-public class HostedServiceOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, HostedServiceOperations
-{
+public class HostedServiceOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, HostedServiceOperations {
     /**
     * Initializes a new instance of the HostedServiceOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    HostedServiceOperationsImpl(ComputeManagementClientImpl client)
-    {
+    HostedServiceOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
     
@@ -138,8 +136,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * microsoft.windowsazure.management.compute.ComputeManagementClientImpl.
     * @return The Client value.
     */
-    public ComputeManagementClientImpl getClient()
-    {
+    public ComputeManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -166,12 +163,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> addExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters)
-    {
+    public Future<ComputeOperationStatusResponse> addExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return addExtension(serviceName, parameters);
             }
          });
@@ -212,59 +207,47 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "addExtensionAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginAddingExtensionAsync(serviceName, parameters).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -272,11 +255,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -298,12 +278,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginAddingExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters)
-    {
+    public Future<OperationResponse> beginAddingExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginAddingExtension(serviceName, parameters);
             }
          });
@@ -335,32 +313,26 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse beginAddingExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public OperationResponse beginAddingExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getId() == null)
-        {
+        if (parameters.getId() == null) {
             throw new NullPointerException("parameters.Id");
         }
-        if (parameters.getType() == null)
-        {
+        if (parameters.getType() == null) {
             throw new NullPointerException("parameters.Type");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -387,8 +359,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         Element extensionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Extension");
         requestDoc.appendChild(extensionElement);
         
-        if (parameters.getProviderNamespace() != null)
-        {
+        if (parameters.getProviderNamespace() != null) {
             Element providerNameSpaceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ProviderNameSpace");
             providerNameSpaceElement.appendChild(requestDoc.createTextNode(parameters.getProviderNamespace()));
             extensionElement.appendChild(providerNameSpaceElement);
@@ -402,36 +373,31 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         idElement.appendChild(requestDoc.createTextNode(parameters.getId()));
         extensionElement.appendChild(idElement);
         
-        if (parameters.getThumbprint() != null)
-        {
+        if (parameters.getThumbprint() != null) {
             Element thumbprintElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Thumbprint");
             thumbprintElement.appendChild(requestDoc.createTextNode(parameters.getThumbprint()));
             extensionElement.appendChild(thumbprintElement);
         }
         
-        if (parameters.getThumbprintAlgorithm() != null)
-        {
+        if (parameters.getThumbprintAlgorithm() != null) {
             Element thumbprintAlgorithmElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ThumbprintAlgorithm");
             thumbprintAlgorithmElement.appendChild(requestDoc.createTextNode(parameters.getThumbprintAlgorithm()));
             extensionElement.appendChild(thumbprintAlgorithmElement);
         }
         
-        if (parameters.getPublicConfiguration() != null)
-        {
+        if (parameters.getPublicConfiguration() != null) {
             Element publicConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicConfiguration");
             publicConfigurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPublicConfiguration().getBytes()))));
             extensionElement.appendChild(publicConfigurationElement);
         }
         
-        if (parameters.getPrivateConfiguration() != null)
-        {
+        if (parameters.getPrivateConfiguration() != null) {
             Element privateConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PrivateConfiguration");
             privateConfigurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPrivateConfiguration().getBytes()))));
             extensionElement.appendChild(privateConfigurationElement);
         }
         
-        if (parameters.getVersion() != null)
-        {
+        if (parameters.getVersion() != null) {
             Element versionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Version");
             versionElement.appendChild(requestDoc.createTextNode(parameters.getVersion()));
             extensionElement.appendChild(versionElement);
@@ -450,23 +416,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -476,21 +437,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -507,12 +463,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingAllAsync(final String serviceName)
-    {
+    public Future<OperationResponse> beginDeletingAllAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginDeletingAll(serviceName);
             }
          });
@@ -533,19 +487,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeletingAll(String serviceName) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -563,23 +514,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -589,21 +535,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -622,12 +563,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginDeletingExtensionAsync(final String serviceName, final String extensionId)
-    {
+    public Future<OperationResponse> beginDeletingExtensionAsync(final String serviceName, final String extensionId) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return beginDeletingExtension(serviceName, extensionId);
             }
          });
@@ -650,24 +589,20 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse beginDeletingExtension(String serviceName, String extensionId) throws IOException, ServiceException
-    {
+    public OperationResponse beginDeletingExtension(String serviceName, String extensionId) throws IOException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (extensionId == null)
-        {
+        if (extensionId == null) {
             throw new NullPointerException("extensionId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -686,23 +621,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -712,21 +642,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -742,12 +667,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Check Hosted Service Name Availability operation response.
     */
     @Override
-    public Future<HostedServiceCheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String serviceName)
-    {
+    public Future<HostedServiceCheckNameAvailabilityResponse> checkNameAvailabilityAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceCheckNameAvailabilityResponse>() { 
             @Override
-            public HostedServiceCheckNameAvailabilityResponse call() throws Exception
-            {
+            public HostedServiceCheckNameAvailabilityResponse call() throws Exception {
                 return checkNameAvailability(serviceName);
             }
          });
@@ -771,11 +694,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Check Hosted Service Name Availability operation response.
     */
     @Override
-    public HostedServiceCheckNameAvailabilityResponse checkNameAvailability(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public HostedServiceCheckNameAvailabilityResponse checkNameAvailability(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
@@ -783,8 +704,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -802,23 +722,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -836,12 +751,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("AvailabilityResponse");
             Element availabilityResponseElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (availabilityResponseElement != null)
-            {
+            if (availabilityResponseElement != null) {
                 NodeList elements2 = availabilityResponseElement.getElementsByTagName("Result");
                 Element resultElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (resultElement != null)
-                {
+                if (resultElement != null) {
                     boolean resultInstance;
                     resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
                     result.setIsAvailable(resultInstance);
@@ -849,8 +762,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements3 = availabilityResponseElement.getElementsByTagName("Reason");
                 Element reasonElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (reasonElement != null)
-                {
+                if (reasonElement != null) {
                     String reasonInstance;
                     reasonInstance = reasonElement.getTextContent();
                     result.setReason(reasonInstance);
@@ -858,21 +770,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -890,12 +797,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> createAsync(final HostedServiceCreateParameters parameters)
-    {
+    public Future<OperationResponse> createAsync(final HostedServiceCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -934,37 +839,30 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException
-    {
+    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024)
-        {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
-        if (parameters.getLabel() == null)
-        {
+        if (parameters.getLabel() == null) {
             throw new NullPointerException("parameters.Label");
         }
-        if (parameters.getServiceName() == null)
-        {
+        if (parameters.getServiceName() == null) {
             throw new NullPointerException("parameters.ServiceName");
         }
         // TODO: Validate parameters.ServiceName is a valid DNS name.
         int locationCount = (parameters.getAffinityGroup() != null ? 1 : 0) + (parameters.getLocation() != null ? 1 : 0);
-        if (locationCount != 1)
-        {
+        if (locationCount != 1) {
             throw new IllegalArgumentException("Only one of parameters.AffinityGroup, parameters.Location may be provided.");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
@@ -998,32 +896,27 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
         createHostedServiceElement.appendChild(labelElement);
         
-        if (parameters.getDescription() != null)
-        {
+        if (parameters.getDescription() != null) {
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             createHostedServiceElement.appendChild(descriptionElement);
         }
         
-        if (parameters.getLocation() != null)
-        {
+        if (parameters.getLocation() != null) {
             Element locationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Location");
             locationElement.appendChild(requestDoc.createTextNode(parameters.getLocation()));
             createHostedServiceElement.appendChild(locationElement);
         }
         
-        if (parameters.getAffinityGroup() != null)
-        {
+        if (parameters.getAffinityGroup() != null) {
             Element affinityGroupElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AffinityGroup");
             affinityGroupElement.appendChild(requestDoc.createTextNode(parameters.getAffinityGroup()));
             createHostedServiceElement.appendChild(affinityGroupElement);
         }
         
-        if (parameters.getExtendedProperties() != null)
-        {
+        if (parameters.getExtendedProperties() != null) {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
-            {
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
                 Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
@@ -1053,23 +946,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
+            if (statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1079,21 +967,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1110,12 +993,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String serviceName)
-    {
+    public Future<OperationResponse> deleteAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return delete(serviceName);
             }
          });
@@ -1146,19 +1027,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException
-    {
+    public OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1176,23 +1054,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1202,21 +1075,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1240,12 +1108,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAllAsync(final String serviceName)
-    {
+    public Future<ComputeOperationStatusResponse> deleteAllAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return deleteAll(serviceName);
             }
          });
@@ -1281,58 +1147,46 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             CloudTracing.enter(invocationId, this, "deleteAllAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginDeletingAllAsync(serviceName).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1340,11 +1194,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1370,12 +1221,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteExtensionAsync(final String serviceName, final String extensionId)
-    {
+    public Future<ComputeOperationStatusResponse> deleteExtensionAsync(final String serviceName, final String extensionId) {
         return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception
-            {
+            public ComputeOperationStatusResponse call() throws Exception {
                 return deleteExtension(serviceName, extensionId);
             }
          });
@@ -1413,59 +1262,47 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException
-    {
+    public ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
             tracingParameters.put("extensionId", extensionId);
             CloudTracing.enter(invocationId, this, "deleteExtensionAsync", tracingParameters);
         }
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginDeletingExtensionAsync(serviceName, extensionId).get();
             ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
-            while ((result.getStatus() != OperationStatus.InProgress) == false)
-            {
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
                 result = client2.getOperationStatusAsync(response.getRequestId()).get();
                 delayInSeconds = 30;
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             
-            if (result.getStatus() != OperationStatus.Succeeded)
-            {
-                if (result.getError() != null)
-                {
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
                     ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
                     ex.setErrorCode(result.getError().getCode());
                     ex.setErrorMessage(result.getError().getMessage());
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
-                }
-                else
-                {
+                } else {
                     ServiceException ex = new ServiceException("");
-                    if (shouldTrace)
-                    {
+                    if (shouldTrace) {
                         CloudTracing.error(invocationId, ex);
                     }
                     throw ex;
@@ -1473,11 +1310,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             return result;
-        }
-        finally
-        {
-            if (this.getClient() != null && shouldTrace)
-            {
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
                 this.getClient().close();
             }
         }
@@ -1495,12 +1329,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public Future<HostedServiceGetResponse> getAsync(final String serviceName)
-    {
+    public Future<HostedServiceGetResponse> getAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceGetResponse>() { 
             @Override
-            public HostedServiceGetResponse call() throws Exception
-            {
+            public HostedServiceGetResponse call() throws Exception {
                 return get(serviceName);
             }
          });
@@ -1528,19 +1360,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public HostedServiceGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1558,23 +1387,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1592,12 +1416,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("HostedService");
             Element hostedServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (hostedServiceElement != null)
-            {
+            if (hostedServiceElement != null) {
                 NodeList elements2 = hostedServiceElement.getElementsByTagName("Url");
                 Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (urlElement != null)
-                {
+                if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
                     result.setUri(urlInstance);
@@ -1605,8 +1427,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements3 = hostedServiceElement.getElementsByTagName("ServiceName");
                 Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (serviceNameElement != null)
-                {
+                if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setServiceName(serviceNameInstance);
@@ -1614,15 +1435,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements4 = hostedServiceElement.getElementsByTagName("HostedServiceProperties");
                 Element hostedServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (hostedServicePropertiesElement != null)
-                {
+                if (hostedServicePropertiesElement != null) {
                     HostedServiceProperties hostedServicePropertiesInstance = new HostedServiceProperties();
                     result.setProperties(hostedServicePropertiesInstance);
                     
                     NodeList elements5 = hostedServicePropertiesElement.getElementsByTagName("Description");
                     Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         hostedServicePropertiesInstance.setDescription(descriptionInstance);
@@ -1630,8 +1449,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements6 = hostedServicePropertiesElement.getElementsByTagName("AffinityGroup");
                     Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (affinityGroupElement != null)
-                    {
+                    if (affinityGroupElement != null) {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         hostedServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
@@ -1639,8 +1457,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements7 = hostedServicePropertiesElement.getElementsByTagName("Location");
                     Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (locationElement != null)
-                    {
+                    if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         hostedServicePropertiesInstance.setLocation(locationInstance);
@@ -1648,8 +1465,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements8 = hostedServicePropertiesElement.getElementsByTagName("Label");
                     Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                         hostedServicePropertiesInstance.setLabel(labelInstance);
@@ -1657,8 +1473,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements9 = hostedServicePropertiesElement.getElementsByTagName("Status");
                     Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (statusElement != null)
-                    {
+                    if (statusElement != null) {
                         HostedServiceStatus statusInstance;
                         statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent());
                         hostedServicePropertiesInstance.setStatus(statusInstance);
@@ -1666,8 +1481,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements10 = hostedServicePropertiesElement.getElementsByTagName("DateCreated");
                     Element dateCreatedElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (dateCreatedElement != null)
-                    {
+                    if (dateCreatedElement != null) {
                         Calendar dateCreatedInstance;
                         dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
@@ -1675,8 +1489,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements11 = hostedServicePropertiesElement.getElementsByTagName("DateLastModified");
                     Element dateLastModifiedElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                    if (dateLastModifiedElement != null)
-                    {
+                    if (dateLastModifiedElement != null) {
                         Calendar dateLastModifiedInstance;
                         dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
@@ -1684,10 +1497,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements12 = hostedServicePropertiesElement.getElementsByTagName("ExtendedProperties");
                     Element extendedPropertiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                    if (extendedPropertiesSequenceElement != null)
-                    {
-                        for (int i1 = 0; i1 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i1 = i1 + 1)
-                        {
+                    if (extendedPropertiesSequenceElement != null) {
+                        for (int i1 = 0; i1 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i1 = i1 + 1) {
                             org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i1));
                             NodeList elements13 = extendedPropertiesElement.getElementsByTagName("Name");
                             String extendedPropertiesKey = elements13.getLength() > 0 ? ((org.w3c.dom.Element) elements13.item(0)).getTextContent() : null;
@@ -1700,21 +1511,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1733,12 +1539,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The detailed Get Hosted Service operation response.
     */
     @Override
-    public Future<HostedServiceGetDetailedResponse> getDetailedAsync(final String serviceName)
-    {
+    public Future<HostedServiceGetDetailedResponse> getDetailedAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceGetDetailedResponse>() { 
             @Override
-            public HostedServiceGetDetailedResponse call() throws Exception
-            {
+            public HostedServiceGetDetailedResponse call() throws Exception {
                 return getDetailed(serviceName);
             }
          });
@@ -1767,19 +1571,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The detailed Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public HostedServiceGetDetailedResponse getDetailed(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -1797,23 +1598,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1831,22 +1627,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("HostedService");
             Element hostedServiceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (hostedServiceElement != null)
-            {
+            if (hostedServiceElement != null) {
                 NodeList elements2 = hostedServiceElement.getElementsByTagName("Deployments");
                 Element deploymentsSequenceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (deploymentsSequenceElement != null)
-                {
-                    for (int i1 = 0; i1 < deploymentsSequenceElement.getElementsByTagName("Deployment").getLength(); i1 = i1 + 1)
-                    {
+                if (deploymentsSequenceElement != null) {
+                    for (int i1 = 0; i1 < deploymentsSequenceElement.getElementsByTagName("Deployment").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element deploymentsElement = ((org.w3c.dom.Element) deploymentsSequenceElement.getElementsByTagName("Deployment").item(i1));
                         HostedServiceGetDetailedResponse.Deployment deploymentInstance = new HostedServiceGetDetailedResponse.Deployment();
                         result.getDeployments().add(deploymentInstance);
                         
                         NodeList elements3 = deploymentsElement.getElementsByTagName("Name");
                         Element nameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                        if (nameElement != null)
-                        {
+                        if (nameElement != null) {
                             String nameInstance;
                             nameInstance = nameElement.getTextContent();
                             deploymentInstance.setName(nameInstance);
@@ -1854,8 +1646,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements4 = deploymentsElement.getElementsByTagName("DeploymentSlot");
                         Element deploymentSlotElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                        if (deploymentSlotElement != null)
-                        {
+                        if (deploymentSlotElement != null) {
                             DeploymentSlot deploymentSlotInstance;
                             deploymentSlotInstance = DeploymentSlot.valueOf(deploymentSlotElement.getTextContent());
                             deploymentInstance.setDeploymentSlot(deploymentSlotInstance);
@@ -1863,8 +1654,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements5 = deploymentsElement.getElementsByTagName("PrivateID");
                         Element privateIDElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (privateIDElement != null)
-                        {
+                        if (privateIDElement != null) {
                             String privateIDInstance;
                             privateIDInstance = privateIDElement.getTextContent();
                             deploymentInstance.setPrivateId(privateIDInstance);
@@ -1872,8 +1662,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements6 = deploymentsElement.getElementsByTagName("Status");
                         Element statusElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (statusElement != null)
-                        {
+                        if (statusElement != null) {
                             DeploymentStatus statusInstance;
                             statusInstance = DeploymentStatus.valueOf(statusElement.getTextContent());
                             deploymentInstance.setStatus(statusInstance);
@@ -1881,8 +1670,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements7 = deploymentsElement.getElementsByTagName("Label");
                         Element labelElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (labelElement != null)
-                        {
+                        if (labelElement != null) {
                             String labelInstance;
                             labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                             deploymentInstance.setLabel(labelInstance);
@@ -1890,8 +1678,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements8 = deploymentsElement.getElementsByTagName("Url");
                         Element urlElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (urlElement != null)
-                        {
+                        if (urlElement != null) {
                             URI urlInstance;
                             urlInstance = new URI(urlElement.getTextContent());
                             deploymentInstance.setUri(urlInstance);
@@ -1899,8 +1686,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements9 = deploymentsElement.getElementsByTagName("Configuration");
                         Element configurationElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (configurationElement != null)
-                        {
+                        if (configurationElement != null) {
                             String configurationInstance;
                             configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
                             deploymentInstance.setConfiguration(configurationInstance);
@@ -1908,18 +1694,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements10 = deploymentsElement.getElementsByTagName("RoleInstanceList");
                         Element roleInstanceListSequenceElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (roleInstanceListSequenceElement != null)
-                        {
-                            for (int i2 = 0; i2 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i2 = i2 + 1)
-                            {
+                        if (roleInstanceListSequenceElement != null) {
+                            for (int i2 = 0; i2 < roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").getLength(); i2 = i2 + 1) {
                                 org.w3c.dom.Element roleInstanceListElement = ((org.w3c.dom.Element) roleInstanceListSequenceElement.getElementsByTagName("RoleInstance").item(i2));
                                 RoleInstance roleInstanceInstance = new RoleInstance();
                                 deploymentInstance.getRoleInstances().add(roleInstanceInstance);
                                 
                                 NodeList elements11 = roleInstanceListElement.getElementsByTagName("RoleName");
                                 Element roleNameElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (roleNameElement != null)
-                                {
+                                if (roleNameElement != null) {
                                     String roleNameInstance;
                                     roleNameInstance = roleNameElement.getTextContent();
                                     roleInstanceInstance.setRoleName(roleNameInstance);
@@ -1927,8 +1710,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements12 = roleInstanceListElement.getElementsByTagName("InstanceName");
                                 Element instanceNameElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (instanceNameElement != null)
-                                {
+                                if (instanceNameElement != null) {
                                     String instanceNameInstance;
                                     instanceNameInstance = instanceNameElement.getTextContent();
                                     roleInstanceInstance.setInstanceName(instanceNameInstance);
@@ -1936,8 +1718,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements13 = roleInstanceListElement.getElementsByTagName("InstanceStatus");
                                 Element instanceStatusElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                if (instanceStatusElement != null)
-                                {
+                                if (instanceStatusElement != null) {
                                     String instanceStatusInstance;
                                     instanceStatusInstance = instanceStatusElement.getTextContent();
                                     roleInstanceInstance.setInstanceStatus(instanceStatusInstance);
@@ -1945,8 +1726,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements14 = roleInstanceListElement.getElementsByTagName("InstanceUpgradeDomain");
                                 Element instanceUpgradeDomainElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (instanceUpgradeDomainElement != null && (instanceUpgradeDomainElement.getTextContent() == null || instanceUpgradeDomainElement.getTextContent().isEmpty() == true) == false) {
                                     int instanceUpgradeDomainInstance;
                                     instanceUpgradeDomainInstance = DatatypeConverter.parseInt(instanceUpgradeDomainElement.getTextContent());
                                     roleInstanceInstance.setInstanceUpgradeDomain(instanceUpgradeDomainInstance);
@@ -1954,8 +1734,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements15 = roleInstanceListElement.getElementsByTagName("InstanceFaultDomain");
                                 Element instanceFaultDomainElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (instanceFaultDomainElement != null && (instanceFaultDomainElement.getTextContent() == null || instanceFaultDomainElement.getTextContent().isEmpty() == true) == false) {
                                     int instanceFaultDomainInstance;
                                     instanceFaultDomainInstance = DatatypeConverter.parseInt(instanceFaultDomainElement.getTextContent());
                                     roleInstanceInstance.setInstanceFaultDomain(instanceFaultDomainInstance);
@@ -1963,8 +1742,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements16 = roleInstanceListElement.getElementsByTagName("InstanceSize");
                                 Element instanceSizeElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (instanceSizeElement != null)
-                                {
+                                if (instanceSizeElement != null) {
                                     String instanceSizeInstance;
                                     instanceSizeInstance = instanceSizeElement.getTextContent();
                                     roleInstanceInstance.setInstanceSize(instanceSizeInstance);
@@ -1972,8 +1750,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements17 = roleInstanceListElement.getElementsByTagName("InstanceStateDetails");
                                 Element instanceStateDetailsElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                if (instanceStateDetailsElement != null)
-                                {
+                                if (instanceStateDetailsElement != null) {
                                     String instanceStateDetailsInstance;
                                     instanceStateDetailsInstance = instanceStateDetailsElement.getTextContent();
                                     roleInstanceInstance.setInstanceStateDetails(instanceStateDetailsInstance);
@@ -1981,8 +1758,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements18 = roleInstanceListElement.getElementsByTagName("InstanceErrorCode");
                                 Element instanceErrorCodeElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                if (instanceErrorCodeElement != null)
-                                {
+                                if (instanceErrorCodeElement != null) {
                                     String instanceErrorCodeInstance;
                                     instanceErrorCodeInstance = instanceErrorCodeElement.getTextContent();
                                     roleInstanceInstance.setInstanceErrorCode(instanceErrorCodeInstance);
@@ -1990,8 +1766,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements19 = roleInstanceListElement.getElementsByTagName("IpAddress");
                                 Element ipAddressElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                if (ipAddressElement != null)
-                                {
+                                if (ipAddressElement != null) {
                                     InetAddress ipAddressInstance;
                                     ipAddressInstance = InetAddress.getByName(ipAddressElement.getTextContent());
                                     roleInstanceInstance.setIPAddress(ipAddressInstance);
@@ -1999,18 +1774,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements20 = roleInstanceListElement.getElementsByTagName("InstanceEndpoints");
                                 Element instanceEndpointsSequenceElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                if (instanceEndpointsSequenceElement != null)
-                                {
-                                    for (int i3 = 0; i3 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i3 = i3 + 1)
-                                    {
+                                if (instanceEndpointsSequenceElement != null) {
+                                    for (int i3 = 0; i3 < instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").getLength(); i3 = i3 + 1) {
                                         org.w3c.dom.Element instanceEndpointsElement = ((org.w3c.dom.Element) instanceEndpointsSequenceElement.getElementsByTagName("InstanceEndpoint").item(i3));
                                         InstanceEndpoint instanceEndpointInstance = new InstanceEndpoint();
                                         roleInstanceInstance.getInstanceEndpoints().add(instanceEndpointInstance);
                                         
                                         NodeList elements21 = instanceEndpointsElement.getElementsByTagName("LocalPort");
                                         Element localPortElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                        if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (localPortElement != null && (localPortElement.getTextContent() == null || localPortElement.getTextContent().isEmpty() == true) == false) {
                                             int localPortInstance;
                                             localPortInstance = DatatypeConverter.parseInt(localPortElement.getTextContent());
                                             instanceEndpointInstance.setLocalPort(localPortInstance);
@@ -2018,8 +1790,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements22 = instanceEndpointsElement.getElementsByTagName("Name");
                                         Element nameElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                                        if (nameElement2 != null)
-                                        {
+                                        if (nameElement2 != null) {
                                             String nameInstance2;
                                             nameInstance2 = nameElement2.getTextContent();
                                             instanceEndpointInstance.setName(nameInstance2);
@@ -2027,8 +1798,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements23 = instanceEndpointsElement.getElementsByTagName("PublicPort");
                                         Element publicPortElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                        if (publicPortElement != null)
-                                        {
+                                        if (publicPortElement != null) {
                                             int publicPortInstance;
                                             publicPortInstance = DatatypeConverter.parseInt(publicPortElement.getTextContent());
                                             instanceEndpointInstance.setPort(publicPortInstance);
@@ -2036,8 +1806,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements24 = instanceEndpointsElement.getElementsByTagName("Protocol");
                                         Element protocolElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                        if (protocolElement != null)
-                                        {
+                                        if (protocolElement != null) {
                                             String protocolInstance;
                                             protocolInstance = protocolElement.getTextContent();
                                             instanceEndpointInstance.setProtocol(protocolInstance);
@@ -2045,8 +1814,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements25 = instanceEndpointsElement.getElementsByTagName("Vip");
                                         Element vipElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                                        if (vipElement != null)
-                                        {
+                                        if (vipElement != null) {
                                             InetAddress vipInstance;
                                             vipInstance = InetAddress.getByName(vipElement.getTextContent());
                                             instanceEndpointInstance.setVirtualIPAddress(vipInstance);
@@ -2056,8 +1824,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements26 = roleInstanceListElement.getElementsByTagName("PowerState");
                                 Element powerStateElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                                if (powerStateElement != null)
-                                {
+                                if (powerStateElement != null) {
                                     RoleInstancePowerState powerStateInstance;
                                     powerStateInstance = RoleInstancePowerState.valueOf(powerStateElement.getTextContent());
                                     roleInstanceInstance.setPowerState(powerStateInstance);
@@ -2065,8 +1832,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements27 = roleInstanceListElement.getElementsByTagName("HostName");
                                 Element hostNameElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                                if (hostNameElement != null)
-                                {
+                                if (hostNameElement != null) {
                                     String hostNameInstance;
                                     hostNameInstance = hostNameElement.getTextContent();
                                     roleInstanceInstance.setHostName(hostNameInstance);
@@ -2074,8 +1840,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements28 = roleInstanceListElement.getElementsByTagName("RemoteAccessCertificateThumbprint");
                                 Element remoteAccessCertificateThumbprintElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                                if (remoteAccessCertificateThumbprintElement != null)
-                                {
+                                if (remoteAccessCertificateThumbprintElement != null) {
                                     String remoteAccessCertificateThumbprintInstance;
                                     remoteAccessCertificateThumbprintInstance = remoteAccessCertificateThumbprintElement.getTextContent();
                                     roleInstanceInstance.setRemoteAccessCertificateThumbprint(remoteAccessCertificateThumbprintInstance);
@@ -2085,15 +1850,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements29 = deploymentsElement.getElementsByTagName("UpgradeStatus");
                         Element upgradeStatusElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (upgradeStatusElement != null)
-                        {
+                        if (upgradeStatusElement != null) {
                             UpgradeStatus upgradeStatusInstance = new UpgradeStatus();
                             deploymentInstance.setUpgradeStatus(upgradeStatusInstance);
                             
                             NodeList elements30 = upgradeStatusElement.getElementsByTagName("UpgradeType");
                             Element upgradeTypeElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                            if (upgradeTypeElement != null)
-                            {
+                            if (upgradeTypeElement != null) {
                                 DeploymentUpgradeType upgradeTypeInstance;
                                 upgradeTypeInstance = DeploymentUpgradeType.valueOf(upgradeTypeElement.getTextContent());
                                 upgradeStatusInstance.setUpgradeType(upgradeTypeInstance);
@@ -2101,8 +1864,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             
                             NodeList elements31 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomainState");
                             Element currentUpgradeDomainStateElement = elements31.getLength() > 0 ? ((Element) elements31.item(0)) : null;
-                            if (currentUpgradeDomainStateElement != null)
-                            {
+                            if (currentUpgradeDomainStateElement != null) {
                                 UpgradeDomainState currentUpgradeDomainStateInstance;
                                 currentUpgradeDomainStateInstance = UpgradeDomainState.valueOf(currentUpgradeDomainStateElement.getTextContent());
                                 upgradeStatusInstance.setCurrentUpgradeDomainState(currentUpgradeDomainStateInstance);
@@ -2110,8 +1872,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             
                             NodeList elements32 = upgradeStatusElement.getElementsByTagName("CurrentUpgradeDomain");
                             Element currentUpgradeDomainElement = elements32.getLength() > 0 ? ((Element) elements32.item(0)) : null;
-                            if (currentUpgradeDomainElement != null)
-                            {
+                            if (currentUpgradeDomainElement != null) {
                                 int currentUpgradeDomainInstance;
                                 currentUpgradeDomainInstance = DatatypeConverter.parseInt(currentUpgradeDomainElement.getTextContent());
                                 upgradeStatusInstance.setCurrentUpgradeDomain(currentUpgradeDomainInstance);
@@ -2120,8 +1881,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements33 = deploymentsElement.getElementsByTagName("UpgradeDomainCount");
                         Element upgradeDomainCountElement = elements33.getLength() > 0 ? ((Element) elements33.item(0)) : null;
-                        if (upgradeDomainCountElement != null)
-                        {
+                        if (upgradeDomainCountElement != null) {
                             int upgradeDomainCountInstance;
                             upgradeDomainCountInstance = DatatypeConverter.parseInt(upgradeDomainCountElement.getTextContent());
                             deploymentInstance.setUpgradeDomainCount(upgradeDomainCountInstance);
@@ -2129,18 +1889,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements34 = deploymentsElement.getElementsByTagName("RoleList");
                         Element roleListSequenceElement = elements34.getLength() > 0 ? ((Element) elements34.item(0)) : null;
-                        if (roleListSequenceElement != null)
-                        {
-                            for (int i4 = 0; i4 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i4 = i4 + 1)
-                            {
+                        if (roleListSequenceElement != null) {
+                            for (int i4 = 0; i4 < roleListSequenceElement.getElementsByTagName("Role").getLength(); i4 = i4 + 1) {
                                 org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) roleListSequenceElement.getElementsByTagName("Role").item(i4));
                                 Role roleInstance = new Role();
                                 deploymentInstance.getRoles().add(roleInstance);
                                 
                                 NodeList elements35 = roleListElement.getElementsByTagName("RoleName");
                                 Element roleNameElement2 = elements35.getLength() > 0 ? ((Element) elements35.item(0)) : null;
-                                if (roleNameElement2 != null)
-                                {
+                                if (roleNameElement2 != null) {
                                     String roleNameInstance2;
                                     roleNameInstance2 = roleNameElement2.getTextContent();
                                     roleInstance.setRoleName(roleNameInstance2);
@@ -2148,8 +1905,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements36 = roleListElement.getElementsByTagName("OsVersion");
                                 Element osVersionElement = elements36.getLength() > 0 ? ((Element) elements36.item(0)) : null;
-                                if (osVersionElement != null)
-                                {
+                                if (osVersionElement != null) {
                                     String osVersionInstance;
                                     osVersionInstance = osVersionElement.getTextContent();
                                     roleInstance.setOSVersion(osVersionInstance);
@@ -2157,8 +1913,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements37 = roleListElement.getElementsByTagName("RoleType");
                                 Element roleTypeElement = elements37.getLength() > 0 ? ((Element) elements37.item(0)) : null;
-                                if (roleTypeElement != null)
-                                {
+                                if (roleTypeElement != null) {
                                     String roleTypeInstance;
                                     roleTypeInstance = roleTypeElement.getTextContent();
                                     roleInstance.setRoleType(roleTypeInstance);
@@ -2166,18 +1921,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements38 = roleListElement.getElementsByTagName("ConfigurationSets");
                                 Element configurationSetsSequenceElement = elements38.getLength() > 0 ? ((Element) elements38.item(0)) : null;
-                                if (configurationSetsSequenceElement != null)
-                                {
-                                    for (int i5 = 0; i5 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i5 = i5 + 1)
-                                    {
+                                if (configurationSetsSequenceElement != null) {
+                                    for (int i5 = 0; i5 < configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").getLength(); i5 = i5 + 1) {
                                         org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) configurationSetsSequenceElement.getElementsByTagName("ConfigurationSet").item(i5));
                                         ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                         roleInstance.getConfigurationSets().add(configurationSetInstance);
                                         
                                         NodeList elements39 = configurationSetsElement.getElementsByTagName("ConfigurationSetType");
                                         Element configurationSetTypeElement = elements39.getLength() > 0 ? ((Element) elements39.item(0)) : null;
-                                        if (configurationSetTypeElement != null)
-                                        {
+                                        if (configurationSetTypeElement != null) {
                                             String configurationSetTypeInstance;
                                             configurationSetTypeInstance = configurationSetTypeElement.getTextContent();
                                             configurationSetInstance.setConfigurationSetType(configurationSetTypeInstance);
@@ -2185,18 +1937,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements40 = configurationSetsElement.getElementsByTagName("InputEndpoints");
                                         Element inputEndpointsSequenceElement = elements40.getLength() > 0 ? ((Element) elements40.item(0)) : null;
-                                        if (inputEndpointsSequenceElement != null)
-                                        {
-                                            for (int i6 = 0; i6 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i6 = i6 + 1)
-                                            {
+                                        if (inputEndpointsSequenceElement != null) {
+                                            for (int i6 = 0; i6 < inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").getLength(); i6 = i6 + 1) {
                                                 org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) inputEndpointsSequenceElement.getElementsByTagName("InputEndpoint").item(i6));
                                                 InputEndpoint inputEndpointInstance = new InputEndpoint();
                                                 configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                                 
                                                 NodeList elements41 = inputEndpointsElement.getElementsByTagName("LoadBalancedEndpointSetName");
                                                 Element loadBalancedEndpointSetNameElement = elements41.getLength() > 0 ? ((Element) elements41.item(0)) : null;
-                                                if (loadBalancedEndpointSetNameElement != null)
-                                                {
+                                                if (loadBalancedEndpointSetNameElement != null) {
                                                     String loadBalancedEndpointSetNameInstance;
                                                     loadBalancedEndpointSetNameInstance = loadBalancedEndpointSetNameElement.getTextContent();
                                                     inputEndpointInstance.setLoadBalancedEndpointSetName(loadBalancedEndpointSetNameInstance);
@@ -2204,8 +1953,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements42 = inputEndpointsElement.getElementsByTagName("LocalPort");
                                                 Element localPortElement2 = elements42.getLength() > 0 ? ((Element) elements42.item(0)) : null;
-                                                if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false)
-                                                {
+                                                if (localPortElement2 != null && (localPortElement2.getTextContent() == null || localPortElement2.getTextContent().isEmpty() == true) == false) {
                                                     int localPortInstance2;
                                                     localPortInstance2 = DatatypeConverter.parseInt(localPortElement2.getTextContent());
                                                     inputEndpointInstance.setLocalPort(localPortInstance2);
@@ -2213,8 +1961,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements43 = inputEndpointsElement.getElementsByTagName("Name");
                                                 Element nameElement3 = elements43.getLength() > 0 ? ((Element) elements43.item(0)) : null;
-                                                if (nameElement3 != null)
-                                                {
+                                                if (nameElement3 != null) {
                                                     String nameInstance3;
                                                     nameInstance3 = nameElement3.getTextContent();
                                                     inputEndpointInstance.setName(nameInstance3);
@@ -2222,8 +1969,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements44 = inputEndpointsElement.getElementsByTagName("Port");
                                                 Element portElement = elements44.getLength() > 0 ? ((Element) elements44.item(0)) : null;
-                                                if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false)
-                                                {
+                                                if (portElement != null && (portElement.getTextContent() == null || portElement.getTextContent().isEmpty() == true) == false) {
                                                     int portInstance;
                                                     portInstance = DatatypeConverter.parseInt(portElement.getTextContent());
                                                     inputEndpointInstance.setPort(portInstance);
@@ -2231,15 +1977,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements45 = inputEndpointsElement.getElementsByTagName("LoadBalancerProbe");
                                                 Element loadBalancerProbeElement = elements45.getLength() > 0 ? ((Element) elements45.item(0)) : null;
-                                                if (loadBalancerProbeElement != null)
-                                                {
+                                                if (loadBalancerProbeElement != null) {
                                                     LoadBalancerProbe loadBalancerProbeInstance = new LoadBalancerProbe();
                                                     inputEndpointInstance.setLoadBalancerProbe(loadBalancerProbeInstance);
                                                     
                                                     NodeList elements46 = loadBalancerProbeElement.getElementsByTagName("Path");
                                                     Element pathElement = elements46.getLength() > 0 ? ((Element) elements46.item(0)) : null;
-                                                    if (pathElement != null)
-                                                    {
+                                                    if (pathElement != null) {
                                                         String pathInstance;
                                                         pathInstance = pathElement.getTextContent();
                                                         loadBalancerProbeInstance.setPath(pathInstance);
@@ -2247,8 +1991,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements47 = loadBalancerProbeElement.getElementsByTagName("Port");
                                                     Element portElement2 = elements47.getLength() > 0 ? ((Element) elements47.item(0)) : null;
-                                                    if (portElement2 != null)
-                                                    {
+                                                    if (portElement2 != null) {
                                                         int portInstance2;
                                                         portInstance2 = DatatypeConverter.parseInt(portElement2.getTextContent());
                                                         loadBalancerProbeInstance.setPort(portInstance2);
@@ -2256,8 +1999,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements48 = loadBalancerProbeElement.getElementsByTagName("Protocol");
                                                     Element protocolElement2 = elements48.getLength() > 0 ? ((Element) elements48.item(0)) : null;
-                                                    if (protocolElement2 != null)
-                                                    {
+                                                    if (protocolElement2 != null) {
                                                         LoadBalancerProbeTransportProtocol protocolInstance2;
                                                         protocolInstance2 = com.microsoft.windowsazure.management.compute.ComputeManagementClientImpl.parseLoadBalancerProbeTransportProtocol(protocolElement2.getTextContent());
                                                         loadBalancerProbeInstance.setProtocol(protocolInstance2);
@@ -2265,8 +2007,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements49 = loadBalancerProbeElement.getElementsByTagName("IntervalInSeconds");
                                                     Element intervalInSecondsElement = elements49.getLength() > 0 ? ((Element) elements49.item(0)) : null;
-                                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false)
-                                                    {
+                                                    if (intervalInSecondsElement != null && (intervalInSecondsElement.getTextContent() == null || intervalInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                         int intervalInSecondsInstance;
                                                         intervalInSecondsInstance = DatatypeConverter.parseInt(intervalInSecondsElement.getTextContent());
                                                         loadBalancerProbeInstance.setIntervalInSeconds(intervalInSecondsInstance);
@@ -2274,8 +2015,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements50 = loadBalancerProbeElement.getElementsByTagName("TimeoutInSeconds");
                                                     Element timeoutInSecondsElement = elements50.getLength() > 0 ? ((Element) elements50.item(0)) : null;
-                                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false)
-                                                    {
+                                                    if (timeoutInSecondsElement != null && (timeoutInSecondsElement.getTextContent() == null || timeoutInSecondsElement.getTextContent().isEmpty() == true) == false) {
                                                         int timeoutInSecondsInstance;
                                                         timeoutInSecondsInstance = DatatypeConverter.parseInt(timeoutInSecondsElement.getTextContent());
                                                         loadBalancerProbeInstance.setTimeoutInSeconds(timeoutInSecondsInstance);
@@ -2284,8 +2024,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements51 = inputEndpointsElement.getElementsByTagName("Protocol");
                                                 Element protocolElement3 = elements51.getLength() > 0 ? ((Element) elements51.item(0)) : null;
-                                                if (protocolElement3 != null)
-                                                {
+                                                if (protocolElement3 != null) {
                                                     String protocolInstance3;
                                                     protocolInstance3 = protocolElement3.getTextContent();
                                                     inputEndpointInstance.setProtocol(protocolInstance3);
@@ -2293,8 +2032,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements52 = inputEndpointsElement.getElementsByTagName("Vip");
                                                 Element vipElement2 = elements52.getLength() > 0 ? ((Element) elements52.item(0)) : null;
-                                                if (vipElement2 != null)
-                                                {
+                                                if (vipElement2 != null) {
                                                     InetAddress vipInstance2;
                                                     vipInstance2 = InetAddress.getByName(vipElement2.getTextContent());
                                                     inputEndpointInstance.setVirtualIPAddress(vipInstance2);
@@ -2302,8 +2040,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements53 = inputEndpointsElement.getElementsByTagName("EnableDirectServerReturn");
                                                 Element enableDirectServerReturnElement = elements53.getLength() > 0 ? ((Element) elements53.item(0)) : null;
-                                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false)
-                                                {
+                                                if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                                     boolean enableDirectServerReturnInstance;
                                                     enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
                                                     inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
@@ -2311,25 +2048,21 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements54 = inputEndpointsElement.getElementsByTagName("EndpointAcl");
                                                 Element endpointAclElement = elements54.getLength() > 0 ? ((Element) elements54.item(0)) : null;
-                                                if (endpointAclElement != null)
-                                                {
+                                                if (endpointAclElement != null) {
                                                     EndpointAcl endpointAclInstance = new EndpointAcl();
                                                     inputEndpointInstance.setEndpointAcl(endpointAclInstance);
                                                     
                                                     NodeList elements55 = endpointAclElement.getElementsByTagName("Rules");
                                                     Element rulesSequenceElement = elements55.getLength() > 0 ? ((Element) elements55.item(0)) : null;
-                                                    if (rulesSequenceElement != null)
-                                                    {
-                                                        for (int i7 = 0; i7 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i7 = i7 + 1)
-                                                        {
+                                                    if (rulesSequenceElement != null) {
+                                                        for (int i7 = 0; i7 < rulesSequenceElement.getElementsByTagName("Rule").getLength(); i7 = i7 + 1) {
                                                             org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) rulesSequenceElement.getElementsByTagName("Rule").item(i7));
                                                             AccessControlListRule ruleInstance = new AccessControlListRule();
                                                             endpointAclInstance.getRules().add(ruleInstance);
                                                             
                                                             NodeList elements56 = rulesElement.getElementsByTagName("Order");
                                                             Element orderElement = elements56.getLength() > 0 ? ((Element) elements56.item(0)) : null;
-                                                            if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false)
-                                                            {
+                                                            if (orderElement != null && (orderElement.getTextContent() == null || orderElement.getTextContent().isEmpty() == true) == false) {
                                                                 int orderInstance;
                                                                 orderInstance = DatatypeConverter.parseInt(orderElement.getTextContent());
                                                                 ruleInstance.setOrder(orderInstance);
@@ -2337,8 +2070,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                             
                                                             NodeList elements57 = rulesElement.getElementsByTagName("Action");
                                                             Element actionElement = elements57.getLength() > 0 ? ((Element) elements57.item(0)) : null;
-                                                            if (actionElement != null)
-                                                            {
+                                                            if (actionElement != null) {
                                                                 String actionInstance;
                                                                 actionInstance = actionElement.getTextContent();
                                                                 ruleInstance.setAction(actionInstance);
@@ -2346,8 +2078,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                             
                                                             NodeList elements58 = rulesElement.getElementsByTagName("RemoteSubnet");
                                                             Element remoteSubnetElement = elements58.getLength() > 0 ? ((Element) elements58.item(0)) : null;
-                                                            if (remoteSubnetElement != null)
-                                                            {
+                                                            if (remoteSubnetElement != null) {
                                                                 String remoteSubnetInstance;
                                                                 remoteSubnetInstance = remoteSubnetElement.getTextContent();
                                                                 ruleInstance.setRemoteSubnet(remoteSubnetInstance);
@@ -2355,8 +2086,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                             
                                                             NodeList elements59 = rulesElement.getElementsByTagName("Description");
                                                             Element descriptionElement = elements59.getLength() > 0 ? ((Element) elements59.item(0)) : null;
-                                                            if (descriptionElement != null)
-                                                            {
+                                                            if (descriptionElement != null) {
                                                                 String descriptionInstance;
                                                                 descriptionInstance = descriptionElement.getTextContent();
                                                                 ruleInstance.setDescription(descriptionInstance);
@@ -2369,10 +2099,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements60 = configurationSetsElement.getElementsByTagName("SubnetNames");
                                         Element subnetNamesSequenceElement = elements60.getLength() > 0 ? ((Element) elements60.item(0)) : null;
-                                        if (subnetNamesSequenceElement != null)
-                                        {
-                                            for (int i8 = 0; i8 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i8 = i8 + 1)
-                                            {
+                                        if (subnetNamesSequenceElement != null) {
+                                            for (int i8 = 0; i8 < subnetNamesSequenceElement.getElementsByTagName("SubnetName").getLength(); i8 = i8 + 1) {
                                                 org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) subnetNamesSequenceElement.getElementsByTagName("SubnetName").item(i8));
                                                 configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                             }
@@ -2380,8 +2108,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements61 = configurationSetsElement.getElementsByTagName("StaticVirtualNetworkIPAddress");
                                         Element staticVirtualNetworkIPAddressElement = elements61.getLength() > 0 ? ((Element) elements61.item(0)) : null;
-                                        if (staticVirtualNetworkIPAddressElement != null)
-                                        {
+                                        if (staticVirtualNetworkIPAddressElement != null) {
                                             String staticVirtualNetworkIPAddressInstance;
                                             staticVirtualNetworkIPAddressInstance = staticVirtualNetworkIPAddressElement.getTextContent();
                                             configurationSetInstance.setStaticVirtualNetworkIPAddress(staticVirtualNetworkIPAddressInstance);
@@ -2389,8 +2116,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements62 = configurationSetsElement.getElementsByTagName("ComputerName");
                                         Element computerNameElement = elements62.getLength() > 0 ? ((Element) elements62.item(0)) : null;
-                                        if (computerNameElement != null)
-                                        {
+                                        if (computerNameElement != null) {
                                             String computerNameInstance;
                                             computerNameInstance = computerNameElement.getTextContent();
                                             configurationSetInstance.setComputerName(computerNameInstance);
@@ -2398,8 +2124,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements63 = configurationSetsElement.getElementsByTagName("AdminPassword");
                                         Element adminPasswordElement = elements63.getLength() > 0 ? ((Element) elements63.item(0)) : null;
-                                        if (adminPasswordElement != null)
-                                        {
+                                        if (adminPasswordElement != null) {
                                             String adminPasswordInstance;
                                             adminPasswordInstance = adminPasswordElement.getTextContent();
                                             configurationSetInstance.setAdminPassword(adminPasswordInstance);
@@ -2407,8 +2132,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements64 = configurationSetsElement.getElementsByTagName("ResetPasswordOnFirstLogon");
                                         Element resetPasswordOnFirstLogonElement = elements64.getLength() > 0 ? ((Element) elements64.item(0)) : null;
-                                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                             boolean resetPasswordOnFirstLogonInstance;
                                             resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
                                             configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
@@ -2416,8 +2140,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements65 = configurationSetsElement.getElementsByTagName("EnableAutomaticUpdates");
                                         Element enableAutomaticUpdatesElement = elements65.getLength() > 0 ? ((Element) elements65.item(0)) : null;
-                                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableAutomaticUpdatesInstance;
                                             enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
                                             configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
@@ -2425,8 +2148,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements66 = configurationSetsElement.getElementsByTagName("TimeZone");
                                         Element timeZoneElement = elements66.getLength() > 0 ? ((Element) elements66.item(0)) : null;
-                                        if (timeZoneElement != null)
-                                        {
+                                        if (timeZoneElement != null) {
                                             String timeZoneInstance;
                                             timeZoneInstance = timeZoneElement.getTextContent();
                                             configurationSetInstance.setTimeZone(timeZoneInstance);
@@ -2434,22 +2156,19 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements67 = configurationSetsElement.getElementsByTagName("DomainJoin");
                                         Element domainJoinElement = elements67.getLength() > 0 ? ((Element) elements67.item(0)) : null;
-                                        if (domainJoinElement != null)
-                                        {
+                                        if (domainJoinElement != null) {
                                             DomainJoinSettings domainJoinInstance = new DomainJoinSettings();
                                             configurationSetInstance.setDomainJoin(domainJoinInstance);
                                             
                                             NodeList elements68 = domainJoinElement.getElementsByTagName("Credentials");
                                             Element credentialsElement = elements68.getLength() > 0 ? ((Element) elements68.item(0)) : null;
-                                            if (credentialsElement != null)
-                                            {
+                                            if (credentialsElement != null) {
                                                 DomainJoinCredentials credentialsInstance = new DomainJoinCredentials();
                                                 domainJoinInstance.setCredentials(credentialsInstance);
                                                 
                                                 NodeList elements69 = credentialsElement.getElementsByTagName("Domain");
                                                 Element domainElement = elements69.getLength() > 0 ? ((Element) elements69.item(0)) : null;
-                                                if (domainElement != null)
-                                                {
+                                                if (domainElement != null) {
                                                     String domainInstance;
                                                     domainInstance = domainElement.getTextContent();
                                                     credentialsInstance.setDomain(domainInstance);
@@ -2457,8 +2176,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements70 = credentialsElement.getElementsByTagName("Username");
                                                 Element usernameElement = elements70.getLength() > 0 ? ((Element) elements70.item(0)) : null;
-                                                if (usernameElement != null)
-                                                {
+                                                if (usernameElement != null) {
                                                     String usernameInstance;
                                                     usernameInstance = usernameElement.getTextContent();
                                                     credentialsInstance.setUserName(usernameInstance);
@@ -2466,8 +2184,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements71 = credentialsElement.getElementsByTagName("Password");
                                                 Element passwordElement = elements71.getLength() > 0 ? ((Element) elements71.item(0)) : null;
-                                                if (passwordElement != null)
-                                                {
+                                                if (passwordElement != null) {
                                                     String passwordInstance;
                                                     passwordInstance = passwordElement.getTextContent();
                                                     credentialsInstance.setPassword(passwordInstance);
@@ -2476,8 +2193,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             
                                             NodeList elements72 = domainJoinElement.getElementsByTagName("JoinDomain");
                                             Element joinDomainElement = elements72.getLength() > 0 ? ((Element) elements72.item(0)) : null;
-                                            if (joinDomainElement != null)
-                                            {
+                                            if (joinDomainElement != null) {
                                                 String joinDomainInstance;
                                                 joinDomainInstance = joinDomainElement.getTextContent();
                                                 domainJoinInstance.setDomainToJoin(joinDomainInstance);
@@ -2485,8 +2201,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             
                                             NodeList elements73 = domainJoinElement.getElementsByTagName("MachineObjectOU");
                                             Element machineObjectOUElement = elements73.getLength() > 0 ? ((Element) elements73.item(0)) : null;
-                                            if (machineObjectOUElement != null)
-                                            {
+                                            if (machineObjectOUElement != null) {
                                                 String machineObjectOUInstance;
                                                 machineObjectOUInstance = machineObjectOUElement.getTextContent();
                                                 domainJoinInstance.setLdapMachineObjectOU(machineObjectOUInstance);
@@ -2494,15 +2209,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             
                                             NodeList elements74 = domainJoinElement.getElementsByTagName("Provisioning");
                                             Element provisioningElement = elements74.getLength() > 0 ? ((Element) elements74.item(0)) : null;
-                                            if (provisioningElement != null)
-                                            {
+                                            if (provisioningElement != null) {
                                                 DomainJoinProvisioning provisioningInstance = new DomainJoinProvisioning();
                                                 domainJoinInstance.setProvisioning(provisioningInstance);
                                                 
                                                 NodeList elements75 = provisioningElement.getElementsByTagName("AccountData");
                                                 Element accountDataElement = elements75.getLength() > 0 ? ((Element) elements75.item(0)) : null;
-                                                if (accountDataElement != null)
-                                                {
+                                                if (accountDataElement != null) {
                                                     String accountDataInstance;
                                                     accountDataInstance = accountDataElement.getTextContent();
                                                     provisioningInstance.setAccountData(accountDataInstance);
@@ -2512,24 +2225,20 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements76 = configurationSetsElement.getElementsByTagName("StoredCertificateSettings");
                                         Element storedCertificateSettingsSequenceElement = elements76.getLength() > 0 ? ((Element) elements76.item(0)) : null;
-                                        if (storedCertificateSettingsSequenceElement != null)
-                                        {
-                                            for (int i9 = 0; i9 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i9 = i9 + 1)
-                                            {
+                                        if (storedCertificateSettingsSequenceElement != null) {
+                                            for (int i9 = 0; i9 < storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").getLength(); i9 = i9 + 1) {
                                                 org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) storedCertificateSettingsSequenceElement.getElementsByTagName("CertificateSetting").item(i9));
                                                 StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                                 configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                                 
                                                 NodeList elements77 = storedCertificateSettingsElement.getElementsByTagName("StoreLocation");
                                                 Element storeLocationElement = elements77.getLength() > 0 ? ((Element) elements77.item(0)) : null;
-                                                if (storeLocationElement != null)
-                                                {
+                                                if (storeLocationElement != null) {
                                                 }
                                                 
                                                 NodeList elements78 = storedCertificateSettingsElement.getElementsByTagName("StoreName");
                                                 Element storeNameElement = elements78.getLength() > 0 ? ((Element) elements78.item(0)) : null;
-                                                if (storeNameElement != null)
-                                                {
+                                                if (storeNameElement != null) {
                                                     String storeNameInstance;
                                                     storeNameInstance = storeNameElement.getTextContent();
                                                     certificateSettingInstance.setStoreName(storeNameInstance);
@@ -2537,8 +2246,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements79 = storedCertificateSettingsElement.getElementsByTagName("Thumbprint");
                                                 Element thumbprintElement = elements79.getLength() > 0 ? ((Element) elements79.item(0)) : null;
-                                                if (thumbprintElement != null)
-                                                {
+                                                if (thumbprintElement != null) {
                                                     String thumbprintInstance;
                                                     thumbprintInstance = thumbprintElement.getTextContent();
                                                     certificateSettingInstance.setThumbprint(thumbprintInstance);
@@ -2548,25 +2256,21 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements80 = configurationSetsElement.getElementsByTagName("WinRM");
                                         Element winRMElement = elements80.getLength() > 0 ? ((Element) elements80.item(0)) : null;
-                                        if (winRMElement != null)
-                                        {
+                                        if (winRMElement != null) {
                                             WindowsRemoteManagementSettings winRMInstance = new WindowsRemoteManagementSettings();
                                             configurationSetInstance.setWindowsRemoteManagement(winRMInstance);
                                             
                                             NodeList elements81 = winRMElement.getElementsByTagName("Listeners");
                                             Element listenersSequenceElement = elements81.getLength() > 0 ? ((Element) elements81.item(0)) : null;
-                                            if (listenersSequenceElement != null)
-                                            {
-                                                for (int i10 = 0; i10 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i10 = i10 + 1)
-                                                {
+                                            if (listenersSequenceElement != null) {
+                                                for (int i10 = 0; i10 < listenersSequenceElement.getElementsByTagName("Listener").getLength(); i10 = i10 + 1) {
                                                     org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) listenersSequenceElement.getElementsByTagName("Listener").item(i10));
                                                     WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                                     winRMInstance.getListeners().add(listenerInstance);
                                                     
                                                     NodeList elements82 = listenersElement.getElementsByTagName("Protocol");
                                                     Element protocolElement4 = elements82.getLength() > 0 ? ((Element) elements82.item(0)) : null;
-                                                    if (protocolElement4 != null)
-                                                    {
+                                                    if (protocolElement4 != null) {
                                                         VirtualMachineWindowsRemoteManagementListenerType protocolInstance4;
                                                         protocolInstance4 = VirtualMachineWindowsRemoteManagementListenerType.valueOf(protocolElement4.getTextContent());
                                                         listenerInstance.setListenerType(protocolInstance4);
@@ -2574,8 +2278,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements83 = listenersElement.getElementsByTagName("CertificateThumbprint");
                                                     Element certificateThumbprintElement = elements83.getLength() > 0 ? ((Element) elements83.item(0)) : null;
-                                                    if (certificateThumbprintElement != null)
-                                                    {
+                                                    if (certificateThumbprintElement != null) {
                                                         String certificateThumbprintInstance;
                                                         certificateThumbprintInstance = certificateThumbprintElement.getTextContent();
                                                         listenerInstance.setCertificateThumbprint(certificateThumbprintInstance);
@@ -2586,8 +2289,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements84 = configurationSetsElement.getElementsByTagName("AdminUsername");
                                         Element adminUsernameElement = elements84.getLength() > 0 ? ((Element) elements84.item(0)) : null;
-                                        if (adminUsernameElement != null)
-                                        {
+                                        if (adminUsernameElement != null) {
                                             String adminUsernameInstance;
                                             adminUsernameInstance = adminUsernameElement.getTextContent();
                                             configurationSetInstance.setAdminUserName(adminUsernameInstance);
@@ -2595,8 +2297,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements85 = configurationSetsElement.getElementsByTagName("HostName");
                                         Element hostNameElement2 = elements85.getLength() > 0 ? ((Element) elements85.item(0)) : null;
-                                        if (hostNameElement2 != null)
-                                        {
+                                        if (hostNameElement2 != null) {
                                             String hostNameInstance2;
                                             hostNameInstance2 = hostNameElement2.getTextContent();
                                             configurationSetInstance.setHostName(hostNameInstance2);
@@ -2604,8 +2305,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements86 = configurationSetsElement.getElementsByTagName("UserName");
                                         Element userNameElement = elements86.getLength() > 0 ? ((Element) elements86.item(0)) : null;
-                                        if (userNameElement != null)
-                                        {
+                                        if (userNameElement != null) {
                                             String userNameInstance;
                                             userNameInstance = userNameElement.getTextContent();
                                             configurationSetInstance.setUserName(userNameInstance);
@@ -2613,8 +2313,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements87 = configurationSetsElement.getElementsByTagName("UserPassword");
                                         Element userPasswordElement = elements87.getLength() > 0 ? ((Element) elements87.item(0)) : null;
-                                        if (userPasswordElement != null)
-                                        {
+                                        if (userPasswordElement != null) {
                                             String userPasswordInstance;
                                             userPasswordInstance = userPasswordElement.getTextContent();
                                             configurationSetInstance.setUserPassword(userPasswordInstance);
@@ -2622,8 +2321,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements88 = configurationSetsElement.getElementsByTagName("DisableSshPasswordAuthentication");
                                         Element disableSshPasswordAuthenticationElement = elements88.getLength() > 0 ? ((Element) elements88.item(0)) : null;
-                                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                             boolean disableSshPasswordAuthenticationInstance;
                                             disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
                                             configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
@@ -2631,25 +2329,21 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements89 = configurationSetsElement.getElementsByTagName("SSH");
                                         Element sSHElement = elements89.getLength() > 0 ? ((Element) elements89.item(0)) : null;
-                                        if (sSHElement != null)
-                                        {
+                                        if (sSHElement != null) {
                                             SshSettings sSHInstance = new SshSettings();
                                             configurationSetInstance.setSshSettings(sSHInstance);
                                             
                                             NodeList elements90 = sSHElement.getElementsByTagName("PublicKeys");
                                             Element publicKeysSequenceElement = elements90.getLength() > 0 ? ((Element) elements90.item(0)) : null;
-                                            if (publicKeysSequenceElement != null)
-                                            {
-                                                for (int i11 = 0; i11 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i11 = i11 + 1)
-                                                {
+                                            if (publicKeysSequenceElement != null) {
+                                                for (int i11 = 0; i11 < publicKeysSequenceElement.getElementsByTagName("PublicKey").getLength(); i11 = i11 + 1) {
                                                     org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) publicKeysSequenceElement.getElementsByTagName("PublicKey").item(i11));
                                                     SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                                     sSHInstance.getPublicKeys().add(publicKeyInstance);
                                                     
                                                     NodeList elements91 = publicKeysElement.getElementsByTagName("Fingerprint");
                                                     Element fingerprintElement = elements91.getLength() > 0 ? ((Element) elements91.item(0)) : null;
-                                                    if (fingerprintElement != null)
-                                                    {
+                                                    if (fingerprintElement != null) {
                                                         String fingerprintInstance;
                                                         fingerprintInstance = fingerprintElement.getTextContent();
                                                         publicKeyInstance.setFingerprint(fingerprintInstance);
@@ -2657,8 +2351,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements92 = publicKeysElement.getElementsByTagName("Path");
                                                     Element pathElement2 = elements92.getLength() > 0 ? ((Element) elements92.item(0)) : null;
-                                                    if (pathElement2 != null)
-                                                    {
+                                                    if (pathElement2 != null) {
                                                         String pathInstance2;
                                                         pathInstance2 = pathElement2.getTextContent();
                                                         publicKeyInstance.setPath(pathInstance2);
@@ -2668,18 +2361,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                             
                                             NodeList elements93 = sSHElement.getElementsByTagName("KeyPairs");
                                             Element keyPairsSequenceElement = elements93.getLength() > 0 ? ((Element) elements93.item(0)) : null;
-                                            if (keyPairsSequenceElement != null)
-                                            {
-                                                for (int i12 = 0; i12 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i12 = i12 + 1)
-                                                {
+                                            if (keyPairsSequenceElement != null) {
+                                                for (int i12 = 0; i12 < keyPairsSequenceElement.getElementsByTagName("KeyPair").getLength(); i12 = i12 + 1) {
                                                     org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) keyPairsSequenceElement.getElementsByTagName("KeyPair").item(i12));
                                                     SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                                     sSHInstance.getKeyPairs().add(keyPairInstance);
                                                     
                                                     NodeList elements94 = keyPairsElement.getElementsByTagName("Fingerprint");
                                                     Element fingerprintElement2 = elements94.getLength() > 0 ? ((Element) elements94.item(0)) : null;
-                                                    if (fingerprintElement2 != null)
-                                                    {
+                                                    if (fingerprintElement2 != null) {
                                                         String fingerprintInstance2;
                                                         fingerprintInstance2 = fingerprintElement2.getTextContent();
                                                         keyPairInstance.setFingerprint(fingerprintInstance2);
@@ -2687,8 +2377,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                     
                                                     NodeList elements95 = keyPairsElement.getElementsByTagName("Path");
                                                     Element pathElement3 = elements95.getLength() > 0 ? ((Element) elements95.item(0)) : null;
-                                                    if (pathElement3 != null)
-                                                    {
+                                                    if (pathElement3 != null) {
                                                         String pathInstance3;
                                                         pathInstance3 = pathElement3.getTextContent();
                                                         keyPairInstance.setPath(pathInstance3);
@@ -2701,18 +2390,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements96 = roleListElement.getElementsByTagName("ResourceExtensionReferences");
                                 Element resourceExtensionReferencesSequenceElement = elements96.getLength() > 0 ? ((Element) elements96.item(0)) : null;
-                                if (resourceExtensionReferencesSequenceElement != null)
-                                {
-                                    for (int i13 = 0; i13 < resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").getLength(); i13 = i13 + 1)
-                                    {
+                                if (resourceExtensionReferencesSequenceElement != null) {
+                                    for (int i13 = 0; i13 < resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").getLength(); i13 = i13 + 1) {
                                         org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) resourceExtensionReferencesSequenceElement.getElementsByTagName("ResourceExtensionReference").item(i13));
                                         ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                         roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                         
                                         NodeList elements97 = resourceExtensionReferencesElement.getElementsByTagName("ReferenceName");
                                         Element referenceNameElement = elements97.getLength() > 0 ? ((Element) elements97.item(0)) : null;
-                                        if (referenceNameElement != null)
-                                        {
+                                        if (referenceNameElement != null) {
                                             String referenceNameInstance;
                                             referenceNameInstance = referenceNameElement.getTextContent();
                                             resourceExtensionReferenceInstance.setReferenceName(referenceNameInstance);
@@ -2720,8 +2406,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements98 = resourceExtensionReferencesElement.getElementsByTagName("Publisher");
                                         Element publisherElement = elements98.getLength() > 0 ? ((Element) elements98.item(0)) : null;
-                                        if (publisherElement != null)
-                                        {
+                                        if (publisherElement != null) {
                                             String publisherInstance;
                                             publisherInstance = publisherElement.getTextContent();
                                             resourceExtensionReferenceInstance.setPublisher(publisherInstance);
@@ -2729,8 +2414,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements99 = resourceExtensionReferencesElement.getElementsByTagName("Name");
                                         Element nameElement4 = elements99.getLength() > 0 ? ((Element) elements99.item(0)) : null;
-                                        if (nameElement4 != null)
-                                        {
+                                        if (nameElement4 != null) {
                                             String nameInstance4;
                                             nameInstance4 = nameElement4.getTextContent();
                                             resourceExtensionReferenceInstance.setName(nameInstance4);
@@ -2738,8 +2422,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements100 = resourceExtensionReferencesElement.getElementsByTagName("Version");
                                         Element versionElement = elements100.getLength() > 0 ? ((Element) elements100.item(0)) : null;
-                                        if (versionElement != null)
-                                        {
+                                        if (versionElement != null) {
                                             String versionInstance;
                                             versionInstance = versionElement.getTextContent();
                                             resourceExtensionReferenceInstance.setVersion(versionInstance);
@@ -2747,18 +2430,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements101 = resourceExtensionReferencesElement.getElementsByTagName("ResourceExtensionParameterValues");
                                         Element resourceExtensionParameterValuesSequenceElement = elements101.getLength() > 0 ? ((Element) elements101.item(0)) : null;
-                                        if (resourceExtensionParameterValuesSequenceElement != null)
-                                        {
-                                            for (int i14 = 0; i14 < resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").getLength(); i14 = i14 + 1)
-                                            {
+                                        if (resourceExtensionParameterValuesSequenceElement != null) {
+                                            for (int i14 = 0; i14 < resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").getLength(); i14 = i14 + 1) {
                                                 org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) resourceExtensionParameterValuesSequenceElement.getElementsByTagName("ResourceExtensionParameterValue").item(i14));
                                                 ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                                 resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                                 
                                                 NodeList elements102 = resourceExtensionParameterValuesElement.getElementsByTagName("Key");
                                                 Element keyElement = elements102.getLength() > 0 ? ((Element) elements102.item(0)) : null;
-                                                if (keyElement != null)
-                                                {
+                                                if (keyElement != null) {
                                                     String keyInstance;
                                                     keyInstance = keyElement.getTextContent();
                                                     resourceExtensionParameterValueInstance.setKey(keyInstance);
@@ -2766,8 +2446,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements103 = resourceExtensionParameterValuesElement.getElementsByTagName("Value");
                                                 Element valueElement = elements103.getLength() > 0 ? ((Element) elements103.item(0)) : null;
-                                                if (valueElement != null)
-                                                {
+                                                if (valueElement != null) {
                                                     String valueInstance;
                                                     valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
                                                     resourceExtensionParameterValueInstance.setValue(valueInstance);
@@ -2775,8 +2454,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 
                                                 NodeList elements104 = resourceExtensionParameterValuesElement.getElementsByTagName("Type");
                                                 Element typeElement = elements104.getLength() > 0 ? ((Element) elements104.item(0)) : null;
-                                                if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false)
-                                                {
+                                                if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
                                                     ResourceExtensionParameterValueType typeInstance;
                                                     typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
                                                     resourceExtensionParameterValueInstance.setType(typeInstance);
@@ -2786,8 +2464,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements105 = resourceExtensionReferencesElement.getElementsByTagName("State");
                                         Element stateElement = elements105.getLength() > 0 ? ((Element) elements105.item(0)) : null;
-                                        if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
                                             ResourceExtensionReferenceState stateInstance;
                                             stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
                                             resourceExtensionReferenceInstance.setState(stateInstance);
@@ -2797,8 +2474,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements106 = roleListElement.getElementsByTagName("AvailabilitySetName");
                                 Element availabilitySetNameElement = elements106.getLength() > 0 ? ((Element) elements106.item(0)) : null;
-                                if (availabilitySetNameElement != null)
-                                {
+                                if (availabilitySetNameElement != null) {
                                     String availabilitySetNameInstance;
                                     availabilitySetNameInstance = availabilitySetNameElement.getTextContent();
                                     roleInstance.setAvailabilitySetName(availabilitySetNameInstance);
@@ -2806,18 +2482,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements107 = roleListElement.getElementsByTagName("DataVirtualHardDisks");
                                 Element dataVirtualHardDisksSequenceElement = elements107.getLength() > 0 ? ((Element) elements107.item(0)) : null;
-                                if (dataVirtualHardDisksSequenceElement != null)
-                                {
-                                    for (int i15 = 0; i15 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i15 = i15 + 1)
-                                    {
+                                if (dataVirtualHardDisksSequenceElement != null) {
+                                    for (int i15 = 0; i15 < dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").getLength(); i15 = i15 + 1) {
                                         org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) dataVirtualHardDisksSequenceElement.getElementsByTagName("DataVirtualHardDisk").item(i15));
                                         DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                         roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                         
                                         NodeList elements108 = dataVirtualHardDisksElement.getElementsByTagName("HostCaching");
                                         Element hostCachingElement = elements108.getLength() > 0 ? ((Element) elements108.item(0)) : null;
-                                        if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (hostCachingElement != null && (hostCachingElement.getTextContent() == null || hostCachingElement.getTextContent().isEmpty() == true) == false) {
                                             VirtualHardDiskHostCaching hostCachingInstance;
                                             hostCachingInstance = VirtualHardDiskHostCaching.valueOf(hostCachingElement.getTextContent());
                                             dataVirtualHardDiskInstance.setHostCaching(hostCachingInstance);
@@ -2825,8 +2498,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements109 = dataVirtualHardDisksElement.getElementsByTagName("DiskLabel");
                                         Element diskLabelElement = elements109.getLength() > 0 ? ((Element) elements109.item(0)) : null;
-                                        if (diskLabelElement != null)
-                                        {
+                                        if (diskLabelElement != null) {
                                             String diskLabelInstance;
                                             diskLabelInstance = diskLabelElement.getTextContent();
                                             dataVirtualHardDiskInstance.setDiskLabel(diskLabelInstance);
@@ -2834,8 +2506,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements110 = dataVirtualHardDisksElement.getElementsByTagName("DiskName");
                                         Element diskNameElement = elements110.getLength() > 0 ? ((Element) elements110.item(0)) : null;
-                                        if (diskNameElement != null)
-                                        {
+                                        if (diskNameElement != null) {
                                             String diskNameInstance;
                                             diskNameInstance = diskNameElement.getTextContent();
                                             dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
@@ -2843,8 +2514,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements111 = dataVirtualHardDisksElement.getElementsByTagName("Lun");
                                         Element lunElement = elements111.getLength() > 0 ? ((Element) elements111.item(0)) : null;
-                                        if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false)
-                                        {
+                                        if (lunElement != null && (lunElement.getTextContent() == null || lunElement.getTextContent().isEmpty() == true) == false) {
                                             int lunInstance;
                                             lunInstance = DatatypeConverter.parseInt(lunElement.getTextContent());
                                             dataVirtualHardDiskInstance.setLogicalUnitNumber(lunInstance);
@@ -2852,8 +2522,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements112 = dataVirtualHardDisksElement.getElementsByTagName("LogicalDiskSizeInGB");
                                         Element logicalDiskSizeInGBElement = elements112.getLength() > 0 ? ((Element) elements112.item(0)) : null;
-                                        if (logicalDiskSizeInGBElement != null)
-                                        {
+                                        if (logicalDiskSizeInGBElement != null) {
                                             int logicalDiskSizeInGBInstance;
                                             logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -2861,8 +2530,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         
                                         NodeList elements113 = dataVirtualHardDisksElement.getElementsByTagName("MediaLink");
                                         Element mediaLinkElement = elements113.getLength() > 0 ? ((Element) elements113.item(0)) : null;
-                                        if (mediaLinkElement != null)
-                                        {
+                                        if (mediaLinkElement != null) {
                                             URI mediaLinkInstance;
                                             mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                                             dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
@@ -2872,8 +2540,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements114 = roleListElement.getElementsByTagName("Label");
                                 Element labelElement2 = elements114.getLength() > 0 ? ((Element) elements114.item(0)) : null;
-                                if (labelElement2 != null)
-                                {
+                                if (labelElement2 != null) {
                                     String labelInstance2;
                                     labelInstance2 = labelElement2.getTextContent();
                                     roleInstance.setLabel(labelInstance2);
@@ -2881,15 +2548,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements115 = roleListElement.getElementsByTagName("OSVirtualHardDisk");
                                 Element oSVirtualHardDiskElement = elements115.getLength() > 0 ? ((Element) elements115.item(0)) : null;
-                                if (oSVirtualHardDiskElement != null)
-                                {
+                                if (oSVirtualHardDiskElement != null) {
                                     OSVirtualHardDisk oSVirtualHardDiskInstance = new OSVirtualHardDisk();
                                     roleInstance.setOSVirtualHardDisk(oSVirtualHardDiskInstance);
                                     
                                     NodeList elements116 = oSVirtualHardDiskElement.getElementsByTagName("HostCaching");
                                     Element hostCachingElement2 = elements116.getLength() > 0 ? ((Element) elements116.item(0)) : null;
-                                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false)
-                                    {
+                                    if (hostCachingElement2 != null && (hostCachingElement2.getTextContent() == null || hostCachingElement2.getTextContent().isEmpty() == true) == false) {
                                         VirtualHardDiskHostCaching hostCachingInstance2;
                                         hostCachingInstance2 = VirtualHardDiskHostCaching.valueOf(hostCachingElement2.getTextContent());
                                         oSVirtualHardDiskInstance.setHostCaching(hostCachingInstance2);
@@ -2897,8 +2562,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements117 = oSVirtualHardDiskElement.getElementsByTagName("DiskLabel");
                                     Element diskLabelElement2 = elements117.getLength() > 0 ? ((Element) elements117.item(0)) : null;
-                                    if (diskLabelElement2 != null)
-                                    {
+                                    if (diskLabelElement2 != null) {
                                         String diskLabelInstance2;
                                         diskLabelInstance2 = diskLabelElement2.getTextContent();
                                         oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
@@ -2906,8 +2570,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements118 = oSVirtualHardDiskElement.getElementsByTagName("DiskName");
                                     Element diskNameElement2 = elements118.getLength() > 0 ? ((Element) elements118.item(0)) : null;
-                                    if (diskNameElement2 != null)
-                                    {
+                                    if (diskNameElement2 != null) {
                                         String diskNameInstance2;
                                         diskNameInstance2 = diskNameElement2.getTextContent();
                                         oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
@@ -2915,8 +2578,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements119 = oSVirtualHardDiskElement.getElementsByTagName("MediaLink");
                                     Element mediaLinkElement2 = elements119.getLength() > 0 ? ((Element) elements119.item(0)) : null;
-                                    if (mediaLinkElement2 != null)
-                                    {
+                                    if (mediaLinkElement2 != null) {
                                         URI mediaLinkInstance2;
                                         mediaLinkInstance2 = new URI(mediaLinkElement2.getTextContent());
                                         oSVirtualHardDiskInstance.setMediaLink(mediaLinkInstance2);
@@ -2924,8 +2586,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements120 = oSVirtualHardDiskElement.getElementsByTagName("SourceImageName");
                                     Element sourceImageNameElement = elements120.getLength() > 0 ? ((Element) elements120.item(0)) : null;
-                                    if (sourceImageNameElement != null)
-                                    {
+                                    if (sourceImageNameElement != null) {
                                         String sourceImageNameInstance;
                                         sourceImageNameInstance = sourceImageNameElement.getTextContent();
                                         oSVirtualHardDiskInstance.setSourceImageName(sourceImageNameInstance);
@@ -2933,8 +2594,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements121 = oSVirtualHardDiskElement.getElementsByTagName("OS");
                                     Element osElement = elements121.getLength() > 0 ? ((Element) elements121.item(0)) : null;
-                                    if (osElement != null)
-                                    {
+                                    if (osElement != null) {
                                         String osInstance;
                                         osInstance = osElement.getTextContent();
                                         oSVirtualHardDiskInstance.setOperatingSystem(osInstance);
@@ -2943,8 +2603,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements122 = roleListElement.getElementsByTagName("RoleSize");
                                 Element roleSizeElement = elements122.getLength() > 0 ? ((Element) elements122.item(0)) : null;
-                                if (roleSizeElement != null)
-                                {
+                                if (roleSizeElement != null) {
                                     String roleSizeInstance;
                                     roleSizeInstance = roleSizeElement.getTextContent();
                                     roleInstance.setRoleSize(roleSizeInstance);
@@ -2952,8 +2611,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements123 = roleListElement.getElementsByTagName("ProvisionGuestAgent");
                                 Element provisionGuestAgentElement = elements123.getLength() > 0 ? ((Element) elements123.item(0)) : null;
-                                if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                                     boolean provisionGuestAgentInstance;
                                     provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
                                     roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
@@ -2961,8 +2619,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements124 = roleListElement.getElementsByTagName("DefaultWinRmCertificateThumbprint");
                                 Element defaultWinRmCertificateThumbprintElement = elements124.getLength() > 0 ? ((Element) elements124.item(0)) : null;
-                                if (defaultWinRmCertificateThumbprintElement != null)
-                                {
+                                if (defaultWinRmCertificateThumbprintElement != null) {
                                     String defaultWinRmCertificateThumbprintInstance;
                                     defaultWinRmCertificateThumbprintInstance = defaultWinRmCertificateThumbprintElement.getTextContent();
                                     roleInstance.setDefaultWinRmCertificateThumbprint(defaultWinRmCertificateThumbprintInstance);
@@ -2972,8 +2629,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements125 = deploymentsElement.getElementsByTagName("SdkVersion");
                         Element sdkVersionElement = elements125.getLength() > 0 ? ((Element) elements125.item(0)) : null;
-                        if (sdkVersionElement != null)
-                        {
+                        if (sdkVersionElement != null) {
                             String sdkVersionInstance;
                             sdkVersionInstance = sdkVersionElement.getTextContent();
                             deploymentInstance.setSdkVersion(sdkVersionInstance);
@@ -2981,8 +2637,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements126 = deploymentsElement.getElementsByTagName("Locked");
                         Element lockedElement = elements126.getLength() > 0 ? ((Element) elements126.item(0)) : null;
-                        if (lockedElement != null)
-                        {
+                        if (lockedElement != null) {
                             boolean lockedInstance;
                             lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
                             deploymentInstance.setLocked(lockedInstance);
@@ -2990,8 +2645,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements127 = deploymentsElement.getElementsByTagName("RollbackAllowed");
                         Element rollbackAllowedElement = elements127.getLength() > 0 ? ((Element) elements127.item(0)) : null;
-                        if (rollbackAllowedElement != null)
-                        {
+                        if (rollbackAllowedElement != null) {
                             boolean rollbackAllowedInstance;
                             rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
                             deploymentInstance.setRollbackAllowed(rollbackAllowedInstance);
@@ -2999,8 +2653,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements128 = deploymentsElement.getElementsByTagName("CreatedTime");
                         Element createdTimeElement = elements128.getLength() > 0 ? ((Element) elements128.item(0)) : null;
-                        if (createdTimeElement != null)
-                        {
+                        if (createdTimeElement != null) {
                             Calendar createdTimeInstance;
                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                             deploymentInstance.setCreatedTime(createdTimeInstance);
@@ -3008,8 +2661,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements129 = deploymentsElement.getElementsByTagName("LastModifiedTime");
                         Element lastModifiedTimeElement = elements129.getLength() > 0 ? ((Element) elements129.item(0)) : null;
-                        if (lastModifiedTimeElement != null)
-                        {
+                        if (lastModifiedTimeElement != null) {
                             String lastModifiedTimeInstance;
                             lastModifiedTimeInstance = lastModifiedTimeElement.getTextContent();
                             deploymentInstance.setLastModifiedTime(lastModifiedTimeInstance);
@@ -3017,8 +2669,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements130 = deploymentsElement.getElementsByTagName("VirtualNetworkName");
                         Element virtualNetworkNameElement = elements130.getLength() > 0 ? ((Element) elements130.item(0)) : null;
-                        if (virtualNetworkNameElement != null)
-                        {
+                        if (virtualNetworkNameElement != null) {
                             String virtualNetworkNameInstance;
                             virtualNetworkNameInstance = virtualNetworkNameElement.getTextContent();
                             deploymentInstance.setVirtualNetworkName(virtualNetworkNameInstance);
@@ -3026,10 +2677,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements131 = deploymentsElement.getElementsByTagName("ExtendedProperties");
                         Element extendedPropertiesSequenceElement = elements131.getLength() > 0 ? ((Element) elements131.item(0)) : null;
-                        if (extendedPropertiesSequenceElement != null)
-                        {
-                            for (int i16 = 0; i16 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i16 = i16 + 1)
-                            {
+                        if (extendedPropertiesSequenceElement != null) {
+                            for (int i16 = 0; i16 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i16 = i16 + 1) {
                                 org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i16));
                                 NodeList elements132 = extendedPropertiesElement.getElementsByTagName("Name");
                                 String extendedPropertiesKey = elements132.getLength() > 0 ? ((org.w3c.dom.Element) elements132.item(0)).getTextContent() : null;
@@ -3041,15 +2690,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements134 = deploymentsElement.getElementsByTagName("PersistentVMDowntime");
                         Element persistentVMDowntimeElement = elements134.getLength() > 0 ? ((Element) elements134.item(0)) : null;
-                        if (persistentVMDowntimeElement != null)
-                        {
+                        if (persistentVMDowntimeElement != null) {
                             PersistentVMDowntime persistentVMDowntimeInstance = new PersistentVMDowntime();
                             deploymentInstance.setPersistentVMDowntime(persistentVMDowntimeInstance);
                             
                             NodeList elements135 = persistentVMDowntimeElement.getElementsByTagName("StartTime");
                             Element startTimeElement = elements135.getLength() > 0 ? ((Element) elements135.item(0)) : null;
-                            if (startTimeElement != null)
-                            {
+                            if (startTimeElement != null) {
                                 Calendar startTimeInstance;
                                 startTimeInstance = DatatypeConverter.parseDateTime(startTimeElement.getTextContent());
                                 persistentVMDowntimeInstance.setStartTime(startTimeInstance);
@@ -3057,8 +2704,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             
                             NodeList elements136 = persistentVMDowntimeElement.getElementsByTagName("EndTime");
                             Element endTimeElement = elements136.getLength() > 0 ? ((Element) elements136.item(0)) : null;
-                            if (endTimeElement != null)
-                            {
+                            if (endTimeElement != null) {
                                 Calendar endTimeInstance;
                                 endTimeInstance = DatatypeConverter.parseDateTime(endTimeElement.getTextContent());
                                 persistentVMDowntimeInstance.setEndTime(endTimeInstance);
@@ -3066,8 +2712,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                             
                             NodeList elements137 = persistentVMDowntimeElement.getElementsByTagName("Status");
                             Element statusElement2 = elements137.getLength() > 0 ? ((Element) elements137.item(0)) : null;
-                            if (statusElement2 != null)
-                            {
+                            if (statusElement2 != null) {
                                 String statusInstance2;
                                 statusInstance2 = statusElement2.getTextContent();
                                 persistentVMDowntimeInstance.setStatus(statusInstance2);
@@ -3076,18 +2721,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements138 = deploymentsElement.getElementsByTagName("VirtualIPs");
                         Element virtualIPsSequenceElement = elements138.getLength() > 0 ? ((Element) elements138.item(0)) : null;
-                        if (virtualIPsSequenceElement != null)
-                        {
-                            for (int i17 = 0; i17 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i17 = i17 + 1)
-                            {
+                        if (virtualIPsSequenceElement != null) {
+                            for (int i17 = 0; i17 < virtualIPsSequenceElement.getElementsByTagName("VirtualIP").getLength(); i17 = i17 + 1) {
                                 org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) virtualIPsSequenceElement.getElementsByTagName("VirtualIP").item(i17));
                                 VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                                 deploymentInstance.getVirtualIPAddresses().add(virtualIPInstance);
                                 
                                 NodeList elements139 = virtualIPsElement.getElementsByTagName("Address");
                                 Element addressElement = elements139.getLength() > 0 ? ((Element) elements139.item(0)) : null;
-                                if (addressElement != null)
-                                {
+                                if (addressElement != null) {
                                     InetAddress addressInstance;
                                     addressInstance = InetAddress.getByName(addressElement.getTextContent());
                                     virtualIPInstance.setAddress(addressInstance);
@@ -3095,8 +2737,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements140 = virtualIPsElement.getElementsByTagName("Name");
                                 Element nameElement5 = elements140.getLength() > 0 ? ((Element) elements140.item(0)) : null;
-                                if (nameElement5 != null)
-                                {
+                                if (nameElement5 != null) {
                                     String nameInstance5;
                                     nameInstance5 = nameElement5.getTextContent();
                                     virtualIPInstance.setName(nameInstance5);
@@ -3104,8 +2745,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                 
                                 NodeList elements141 = virtualIPsElement.getElementsByTagName("IsDnsProgrammed");
                                 Element isDnsProgrammedElement = elements141.getLength() > 0 ? ((Element) elements141.item(0)) : null;
-                                if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false)
-                                {
+                                if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                                     boolean isDnsProgrammedInstance;
                                     isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
                                     virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
@@ -3115,25 +2755,21 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements142 = deploymentsElement.getElementsByTagName("Dns");
                         Element dnsElement = elements142.getLength() > 0 ? ((Element) elements142.item(0)) : null;
-                        if (dnsElement != null)
-                        {
+                        if (dnsElement != null) {
                             DnsSettings dnsInstance = new DnsSettings();
                             deploymentInstance.setDnsSettings(dnsInstance);
                             
                             NodeList elements143 = dnsElement.getElementsByTagName("DnsServers");
                             Element dnsServersSequenceElement = elements143.getLength() > 0 ? ((Element) elements143.item(0)) : null;
-                            if (dnsServersSequenceElement != null)
-                            {
-                                for (int i18 = 0; i18 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i18 = i18 + 1)
-                                {
+                            if (dnsServersSequenceElement != null) {
+                                for (int i18 = 0; i18 < dnsServersSequenceElement.getElementsByTagName("DnsServer").getLength(); i18 = i18 + 1) {
                                     org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) dnsServersSequenceElement.getElementsByTagName("DnsServer").item(i18));
                                     DnsServer dnsServerInstance = new DnsServer();
                                     dnsInstance.getDnsServers().add(dnsServerInstance);
                                     
                                     NodeList elements144 = dnsServersElement.getElementsByTagName("Name");
                                     Element nameElement6 = elements144.getLength() > 0 ? ((Element) elements144.item(0)) : null;
-                                    if (nameElement6 != null)
-                                    {
+                                    if (nameElement6 != null) {
                                         String nameInstance6;
                                         nameInstance6 = nameElement6.getTextContent();
                                         dnsServerInstance.setName(nameInstance6);
@@ -3141,8 +2777,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     
                                     NodeList elements145 = dnsServersElement.getElementsByTagName("Address");
                                     Element addressElement2 = elements145.getLength() > 0 ? ((Element) elements145.item(0)) : null;
-                                    if (addressElement2 != null)
-                                    {
+                                    if (addressElement2 != null) {
                                         InetAddress addressInstance2;
                                         addressInstance2 = InetAddress.getByName(addressElement2.getTextContent());
                                         dnsServerInstance.setAddress(addressInstance2);
@@ -3155,8 +2790,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements146 = hostedServiceElement.getElementsByTagName("Url");
                 Element urlElement2 = elements146.getLength() > 0 ? ((Element) elements146.item(0)) : null;
-                if (urlElement2 != null)
-                {
+                if (urlElement2 != null) {
                     URI urlInstance2;
                     urlInstance2 = new URI(urlElement2.getTextContent());
                     result.setUri(urlInstance2);
@@ -3164,8 +2798,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements147 = hostedServiceElement.getElementsByTagName("ServiceName");
                 Element serviceNameElement = elements147.getLength() > 0 ? ((Element) elements147.item(0)) : null;
-                if (serviceNameElement != null)
-                {
+                if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
                     result.setServiceName(serviceNameInstance);
@@ -3173,15 +2806,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements148 = hostedServiceElement.getElementsByTagName("HostedServiceProperties");
                 Element hostedServicePropertiesElement = elements148.getLength() > 0 ? ((Element) elements148.item(0)) : null;
-                if (hostedServicePropertiesElement != null)
-                {
+                if (hostedServicePropertiesElement != null) {
                     HostedServiceProperties hostedServicePropertiesInstance = new HostedServiceProperties();
                     result.setProperties(hostedServicePropertiesInstance);
                     
                     NodeList elements149 = hostedServicePropertiesElement.getElementsByTagName("Description");
                     Element descriptionElement2 = elements149.getLength() > 0 ? ((Element) elements149.item(0)) : null;
-                    if (descriptionElement2 != null)
-                    {
+                    if (descriptionElement2 != null) {
                         String descriptionInstance2;
                         descriptionInstance2 = descriptionElement2.getTextContent();
                         hostedServicePropertiesInstance.setDescription(descriptionInstance2);
@@ -3189,8 +2820,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements150 = hostedServicePropertiesElement.getElementsByTagName("AffinityGroup");
                     Element affinityGroupElement = elements150.getLength() > 0 ? ((Element) elements150.item(0)) : null;
-                    if (affinityGroupElement != null)
-                    {
+                    if (affinityGroupElement != null) {
                         String affinityGroupInstance;
                         affinityGroupInstance = affinityGroupElement.getTextContent();
                         hostedServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
@@ -3198,8 +2828,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements151 = hostedServicePropertiesElement.getElementsByTagName("Location");
                     Element locationElement = elements151.getLength() > 0 ? ((Element) elements151.item(0)) : null;
-                    if (locationElement != null)
-                    {
+                    if (locationElement != null) {
                         String locationInstance;
                         locationInstance = locationElement.getTextContent();
                         hostedServicePropertiesInstance.setLocation(locationInstance);
@@ -3207,8 +2836,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements152 = hostedServicePropertiesElement.getElementsByTagName("Label");
                     Element labelElement3 = elements152.getLength() > 0 ? ((Element) elements152.item(0)) : null;
-                    if (labelElement3 != null)
-                    {
+                    if (labelElement3 != null) {
                         String labelInstance3;
                         labelInstance3 = labelElement3.getTextContent() != null ? new String(Base64.decodeBase64(labelElement3.getTextContent().getBytes())) : null;
                         hostedServicePropertiesInstance.setLabel(labelInstance3);
@@ -3216,8 +2844,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements153 = hostedServicePropertiesElement.getElementsByTagName("Status");
                     Element statusElement3 = elements153.getLength() > 0 ? ((Element) elements153.item(0)) : null;
-                    if (statusElement3 != null)
-                    {
+                    if (statusElement3 != null) {
                         HostedServiceStatus statusInstance3;
                         statusInstance3 = HostedServiceStatus.valueOf(statusElement3.getTextContent());
                         hostedServicePropertiesInstance.setStatus(statusInstance3);
@@ -3225,8 +2852,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements154 = hostedServicePropertiesElement.getElementsByTagName("DateCreated");
                     Element dateCreatedElement = elements154.getLength() > 0 ? ((Element) elements154.item(0)) : null;
-                    if (dateCreatedElement != null)
-                    {
+                    if (dateCreatedElement != null) {
                         Calendar dateCreatedInstance;
                         dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
@@ -3234,8 +2860,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements155 = hostedServicePropertiesElement.getElementsByTagName("DateLastModified");
                     Element dateLastModifiedElement = elements155.getLength() > 0 ? ((Element) elements155.item(0)) : null;
-                    if (dateLastModifiedElement != null)
-                    {
+                    if (dateLastModifiedElement != null) {
                         Calendar dateLastModifiedInstance;
                         dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                         hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
@@ -3243,10 +2868,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements156 = hostedServicePropertiesElement.getElementsByTagName("ExtendedProperties");
                     Element extendedPropertiesSequenceElement2 = elements156.getLength() > 0 ? ((Element) elements156.item(0)) : null;
-                    if (extendedPropertiesSequenceElement2 != null)
-                    {
-                        for (int i19 = 0; i19 < extendedPropertiesSequenceElement2.getElementsByTagName("ExtendedProperty").getLength(); i19 = i19 + 1)
-                        {
+                    if (extendedPropertiesSequenceElement2 != null) {
+                        for (int i19 = 0; i19 < extendedPropertiesSequenceElement2.getElementsByTagName("ExtendedProperty").getLength(); i19 = i19 + 1) {
                             org.w3c.dom.Element extendedPropertiesElement2 = ((org.w3c.dom.Element) extendedPropertiesSequenceElement2.getElementsByTagName("ExtendedProperty").item(i19));
                             NodeList elements157 = extendedPropertiesElement2.getElementsByTagName("Name");
                             String extendedPropertiesKey2 = elements157.getLength() > 0 ? ((org.w3c.dom.Element) elements157.item(0)).getTextContent() : null;
@@ -3259,21 +2882,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3291,12 +2909,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Extension operation response.
     */
     @Override
-    public Future<HostedServiceGetExtensionResponse> getExtensionAsync(final String serviceName, final String extensionId)
-    {
+    public Future<HostedServiceGetExtensionResponse> getExtensionAsync(final String serviceName, final String extensionId) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceGetExtensionResponse>() { 
             @Override
-            public HostedServiceGetExtensionResponse call() throws Exception
-            {
+            public HostedServiceGetExtensionResponse call() throws Exception {
                 return getExtension(serviceName, extensionId);
             }
          });
@@ -3322,24 +2938,20 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Extension operation response.
     */
     @Override
-    public HostedServiceGetExtensionResponse getExtension(String serviceName, String extensionId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public HostedServiceGetExtensionResponse getExtension(String serviceName, String extensionId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (extensionId == null)
-        {
+        if (extensionId == null) {
             throw new NullPointerException("extensionId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3358,23 +2970,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3392,12 +2999,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("Extension");
             Element extensionElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (extensionElement != null)
-            {
+            if (extensionElement != null) {
                 NodeList elements2 = extensionElement.getElementsByTagName("ProviderNameSpace");
                 Element providerNameSpaceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (providerNameSpaceElement != null)
-                {
+                if (providerNameSpaceElement != null) {
                     String providerNameSpaceInstance;
                     providerNameSpaceInstance = providerNameSpaceElement.getTextContent();
                     result.setProviderNamespace(providerNameSpaceInstance);
@@ -3405,8 +3010,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements3 = extensionElement.getElementsByTagName("Type");
                 Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (typeElement != null)
-                {
+                if (typeElement != null) {
                     String typeInstance;
                     typeInstance = typeElement.getTextContent();
                     result.setType(typeInstance);
@@ -3414,8 +3018,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements4 = extensionElement.getElementsByTagName("Id");
                 Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -3423,8 +3026,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements5 = extensionElement.getElementsByTagName("Version");
                 Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (versionElement != null)
-                {
+                if (versionElement != null) {
                     String versionInstance;
                     versionInstance = versionElement.getTextContent();
                     result.setVersion(versionInstance);
@@ -3432,8 +3034,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements6 = extensionElement.getElementsByTagName("Thumbprint");
                 Element thumbprintElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                if (thumbprintElement != null)
-                {
+                if (thumbprintElement != null) {
                     String thumbprintInstance;
                     thumbprintInstance = thumbprintElement.getTextContent();
                     result.setThumbprint(thumbprintInstance);
@@ -3441,8 +3042,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements7 = extensionElement.getElementsByTagName("ThumbprintAlgorithm");
                 Element thumbprintAlgorithmElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                if (thumbprintAlgorithmElement != null)
-                {
+                if (thumbprintAlgorithmElement != null) {
                     String thumbprintAlgorithmInstance;
                     thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                     result.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
@@ -3450,8 +3050,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 
                 NodeList elements8 = extensionElement.getElementsByTagName("PublicConfiguration");
                 Element publicConfigurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                if (publicConfigurationElement != null)
-                {
+                if (publicConfigurationElement != null) {
                     String publicConfigurationInstance;
                     publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationElement.getTextContent().getBytes())) : null;
                     result.setPublicConfiguration(publicConfigurationInstance);
@@ -3459,21 +3058,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3488,12 +3082,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public Future<HostedServiceListResponse> listAsync()
-    {
+    public Future<HostedServiceListResponse> listAsync() {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceListResponse>() { 
             @Override
-            public HostedServiceListResponse call() throws Exception
-            {
+            public HostedServiceListResponse call() throws Exception {
                 return list();
             }
          });
@@ -3518,15 +3110,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The Get Hosted Service operation response.
     */
     @Override
-    public HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public HostedServiceListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
@@ -3543,23 +3133,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3577,18 +3162,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("HostedServices");
             Element hostedServicesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (hostedServicesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < hostedServicesSequenceElement.getElementsByTagName("HostedService").getLength(); i1 = i1 + 1)
-                {
+            if (hostedServicesSequenceElement != null) {
+                for (int i1 = 0; i1 < hostedServicesSequenceElement.getElementsByTagName("HostedService").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element hostedServicesElement = ((org.w3c.dom.Element) hostedServicesSequenceElement.getElementsByTagName("HostedService").item(i1));
                     HostedServiceListResponse.HostedService hostedServiceInstance = new HostedServiceListResponse.HostedService();
                     result.getHostedServices().add(hostedServiceInstance);
                     
                     NodeList elements2 = hostedServicesElement.getElementsByTagName("Url");
                     Element urlElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (urlElement != null)
-                    {
+                    if (urlElement != null) {
                         URI urlInstance;
                         urlInstance = new URI(urlElement.getTextContent());
                         hostedServiceInstance.setUri(urlInstance);
@@ -3596,8 +3178,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements3 = hostedServicesElement.getElementsByTagName("ServiceName");
                     Element serviceNameElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (serviceNameElement != null)
-                    {
+                    if (serviceNameElement != null) {
                         String serviceNameInstance;
                         serviceNameInstance = serviceNameElement.getTextContent();
                         hostedServiceInstance.setServiceName(serviceNameInstance);
@@ -3605,15 +3186,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements4 = hostedServicesElement.getElementsByTagName("HostedServiceProperties");
                     Element hostedServicePropertiesElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (hostedServicePropertiesElement != null)
-                    {
+                    if (hostedServicePropertiesElement != null) {
                         HostedServiceProperties hostedServicePropertiesInstance = new HostedServiceProperties();
                         hostedServiceInstance.setProperties(hostedServicePropertiesInstance);
                         
                         NodeList elements5 = hostedServicePropertiesElement.getElementsByTagName("Description");
                         Element descriptionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (descriptionElement != null)
-                        {
+                        if (descriptionElement != null) {
                             String descriptionInstance;
                             descriptionInstance = descriptionElement.getTextContent();
                             hostedServicePropertiesInstance.setDescription(descriptionInstance);
@@ -3621,8 +3200,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements6 = hostedServicePropertiesElement.getElementsByTagName("AffinityGroup");
                         Element affinityGroupElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (affinityGroupElement != null)
-                        {
+                        if (affinityGroupElement != null) {
                             String affinityGroupInstance;
                             affinityGroupInstance = affinityGroupElement.getTextContent();
                             hostedServicePropertiesInstance.setAffinityGroup(affinityGroupInstance);
@@ -3630,8 +3208,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements7 = hostedServicePropertiesElement.getElementsByTagName("Location");
                         Element locationElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (locationElement != null)
-                        {
+                        if (locationElement != null) {
                             String locationInstance;
                             locationInstance = locationElement.getTextContent();
                             hostedServicePropertiesInstance.setLocation(locationInstance);
@@ -3639,8 +3216,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements8 = hostedServicePropertiesElement.getElementsByTagName("Label");
                         Element labelElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (labelElement != null)
-                        {
+                        if (labelElement != null) {
                             String labelInstance;
                             labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
                             hostedServicePropertiesInstance.setLabel(labelInstance);
@@ -3648,8 +3224,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements9 = hostedServicePropertiesElement.getElementsByTagName("Status");
                         Element statusElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (statusElement != null)
-                        {
+                        if (statusElement != null) {
                             HostedServiceStatus statusInstance;
                             statusInstance = HostedServiceStatus.valueOf(statusElement.getTextContent());
                             hostedServicePropertiesInstance.setStatus(statusInstance);
@@ -3657,8 +3232,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements10 = hostedServicePropertiesElement.getElementsByTagName("DateCreated");
                         Element dateCreatedElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (dateCreatedElement != null)
-                        {
+                        if (dateCreatedElement != null) {
                             Calendar dateCreatedInstance;
                             dateCreatedInstance = DatatypeConverter.parseDateTime(dateCreatedElement.getTextContent());
                             hostedServicePropertiesInstance.setDateCreated(dateCreatedInstance);
@@ -3666,8 +3240,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements11 = hostedServicePropertiesElement.getElementsByTagName("DateLastModified");
                         Element dateLastModifiedElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (dateLastModifiedElement != null)
-                        {
+                        if (dateLastModifiedElement != null) {
                             Calendar dateLastModifiedInstance;
                             dateLastModifiedInstance = DatatypeConverter.parseDateTime(dateLastModifiedElement.getTextContent());
                             hostedServicePropertiesInstance.setDateLastModified(dateLastModifiedInstance);
@@ -3675,10 +3248,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         
                         NodeList elements12 = hostedServicePropertiesElement.getElementsByTagName("ExtendedProperties");
                         Element extendedPropertiesSequenceElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (extendedPropertiesSequenceElement != null)
-                        {
-                            for (int i2 = 0; i2 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i2 = i2 + 1)
-                            {
+                        if (extendedPropertiesSequenceElement != null) {
+                            for (int i2 = 0; i2 < extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").getLength(); i2 = i2 + 1) {
                                 org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) extendedPropertiesSequenceElement.getElementsByTagName("ExtendedProperty").item(i2));
                                 NodeList elements13 = extendedPropertiesElement.getElementsByTagName("Name");
                                 String extendedPropertiesKey = elements13.getLength() > 0 ? ((org.w3c.dom.Element) elements13.item(0)).getTextContent() : null;
@@ -3692,21 +3263,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3724,12 +3290,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Available Extensions operation response.
     */
     @Override
-    public Future<HostedServiceListAvailableExtensionsResponse> listAvailableExtensionsAsync()
-    {
+    public Future<HostedServiceListAvailableExtensionsResponse> listAvailableExtensionsAsync() {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceListAvailableExtensionsResponse>() { 
             @Override
-            public HostedServiceListAvailableExtensionsResponse call() throws Exception
-            {
+            public HostedServiceListAvailableExtensionsResponse call() throws Exception {
                 return listAvailableExtensions();
             }
          });
@@ -3755,15 +3319,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Available Extensions operation response.
     */
     @Override
-    public HostedServiceListAvailableExtensionsResponse listAvailableExtensions() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public HostedServiceListAvailableExtensionsResponse listAvailableExtensions() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "listAvailableExtensionsAsync", tracingParameters);
@@ -3780,23 +3342,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -3814,18 +3371,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("ExtensionImages");
             Element extensionImagesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (extensionImagesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").getLength(); i1 = i1 + 1)
-                {
+            if (extensionImagesSequenceElement != null) {
+                for (int i1 = 0; i1 < extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element extensionImagesElement = ((org.w3c.dom.Element) extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").item(i1));
                     HostedServiceListAvailableExtensionsResponse.ExtensionImage extensionImageInstance = new HostedServiceListAvailableExtensionsResponse.ExtensionImage();
                     result.getExtensionImages().add(extensionImageInstance);
                     
                     NodeList elements2 = extensionImagesElement.getElementsByTagName("ProviderNameSpace");
                     Element providerNameSpaceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (providerNameSpaceElement != null)
-                    {
+                    if (providerNameSpaceElement != null) {
                         String providerNameSpaceInstance;
                         providerNameSpaceInstance = providerNameSpaceElement.getTextContent();
                         extensionImageInstance.setProviderNamespace(providerNameSpaceInstance);
@@ -3833,8 +3387,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements3 = extensionImagesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null)
-                    {
+                    if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         extensionImageInstance.setType(typeInstance);
@@ -3842,8 +3395,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements4 = extensionImagesElement.getElementsByTagName("Label");
                     Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         extensionImageInstance.setLabel(labelInstance);
@@ -3851,8 +3403,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements5 = extensionImagesElement.getElementsByTagName("Version");
                     Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (versionElement != null)
-                    {
+                    if (versionElement != null) {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         extensionImageInstance.setVersion(versionInstance);
@@ -3860,8 +3411,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements6 = extensionImagesElement.getElementsByTagName("Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         extensionImageInstance.setDescription(descriptionInstance);
@@ -3869,8 +3419,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements7 = extensionImagesElement.getElementsByTagName("ThumbprintAlgorithm");
                     Element thumbprintAlgorithmElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null)
-                    {
+                    if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
                         thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                         extensionImageInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
@@ -3878,8 +3427,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements8 = extensionImagesElement.getElementsByTagName("HostingResources");
                     Element hostingResourcesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (hostingResourcesElement != null)
-                    {
+                    if (hostingResourcesElement != null) {
                         HostingResources hostingResourcesInstance;
                         hostingResourcesInstance = ComputeManagementClientImpl.parseHostingResources(hostingResourcesElement.getTextContent());
                         extensionImageInstance.setHostingResources(hostingResourcesInstance);
@@ -3887,8 +3435,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements9 = extensionImagesElement.getElementsByTagName("PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (publicConfigurationSchemaElement != null)
-                    {
+                    if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
                         publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         extensionImageInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
@@ -3896,8 +3443,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements10 = extensionImagesElement.getElementsByTagName("PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (privateConfigurationSchemaElement != null)
-                    {
+                    if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
                         privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         extensionImageInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
@@ -3906,21 +3452,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -3936,12 +3477,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Extensions operation response.
     */
     @Override
-    public Future<HostedServiceListExtensionsResponse> listExtensionsAsync(final String serviceName)
-    {
+    public Future<HostedServiceListExtensionsResponse> listExtensionsAsync(final String serviceName) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceListExtensionsResponse>() { 
             @Override
-            public HostedServiceListExtensionsResponse call() throws Exception
-            {
+            public HostedServiceListExtensionsResponse call() throws Exception {
                 return listExtensions(serviceName);
             }
          });
@@ -3965,11 +3504,9 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Extensions operation response.
     */
     @Override
-    public HostedServiceListExtensionsResponse listExtensions(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public HostedServiceListExtensionsResponse listExtensions(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
@@ -3977,8 +3514,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -3996,23 +3532,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -4030,18 +3561,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("Extensions");
             Element extensionsSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (extensionsSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i1 = i1 + 1)
-                {
+            if (extensionsSequenceElement != null) {
+                for (int i1 = 0; i1 < extensionsSequenceElement.getElementsByTagName("Extension").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) extensionsSequenceElement.getElementsByTagName("Extension").item(i1));
                     HostedServiceListExtensionsResponse.Extension extensionInstance = new HostedServiceListExtensionsResponse.Extension();
                     result.getExtensions().add(extensionInstance);
                     
                     NodeList elements2 = extensionsElement.getElementsByTagName("ProviderNameSpace");
                     Element providerNameSpaceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (providerNameSpaceElement != null)
-                    {
+                    if (providerNameSpaceElement != null) {
                         String providerNameSpaceInstance;
                         providerNameSpaceInstance = providerNameSpaceElement.getTextContent();
                         extensionInstance.setProviderNamespace(providerNameSpaceInstance);
@@ -4049,8 +3577,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements3 = extensionsElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null)
-                    {
+                    if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         extensionInstance.setType(typeInstance);
@@ -4058,8 +3585,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements4 = extensionsElement.getElementsByTagName("Id");
                     Element idElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (idElement != null)
-                    {
+                    if (idElement != null) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         extensionInstance.setId(idInstance);
@@ -4067,8 +3593,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements5 = extensionsElement.getElementsByTagName("Version");
                     Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (versionElement != null)
-                    {
+                    if (versionElement != null) {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         extensionInstance.setVersion(versionInstance);
@@ -4076,8 +3601,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements6 = extensionsElement.getElementsByTagName("Thumbprint");
                     Element thumbprintElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (thumbprintElement != null)
-                    {
+                    if (thumbprintElement != null) {
                         String thumbprintInstance;
                         thumbprintInstance = thumbprintElement.getTextContent();
                         extensionInstance.setThumbprint(thumbprintInstance);
@@ -4085,8 +3609,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements7 = extensionsElement.getElementsByTagName("ThumbprintAlgorithm");
                     Element thumbprintAlgorithmElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null)
-                    {
+                    if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
                         thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                         extensionInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
@@ -4094,8 +3617,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements8 = extensionsElement.getElementsByTagName("PublicConfiguration");
                     Element publicConfigurationElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (publicConfigurationElement != null)
-                    {
+                    if (publicConfigurationElement != null) {
                         String publicConfigurationInstance;
                         publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationElement.getTextContent().getBytes())) : null;
                         extensionInstance.setPublicConfiguration(publicConfigurationInstance);
@@ -4104,21 +3626,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -4138,12 +3655,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Available Extensions operation response.
     */
     @Override
-    public Future<HostedServiceListAvailableExtensionsResponse> listExtensionVersionsAsync(final String providerNamespace, final String extensionType)
-    {
+    public Future<HostedServiceListAvailableExtensionsResponse> listExtensionVersionsAsync(final String providerNamespace, final String extensionType) {
         return this.getClient().getExecutorService().submit(new Callable<HostedServiceListAvailableExtensionsResponse>() { 
             @Override
-            public HostedServiceListAvailableExtensionsResponse call() throws Exception
-            {
+            public HostedServiceListAvailableExtensionsResponse call() throws Exception {
                 return listExtensionVersions(providerNamespace, extensionType);
             }
          });
@@ -4171,23 +3686,19 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * @return The List Available Extensions operation response.
     */
     @Override
-    public HostedServiceListAvailableExtensionsResponse listExtensionVersions(String providerNamespace, String extensionType) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public HostedServiceListAvailableExtensionsResponse listExtensionVersions(String providerNamespace, String extensionType) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (providerNamespace == null)
-        {
+        if (providerNamespace == null) {
             throw new NullPointerException("providerNamespace");
         }
-        if (extensionType == null)
-        {
+        if (extensionType == null) {
             throw new NullPointerException("extensionType");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("providerNamespace", providerNamespace);
@@ -4206,23 +3717,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -4240,18 +3746,15 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             NodeList elements = responseDoc.getElementsByTagName("ExtensionImages");
             Element extensionImagesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (extensionImagesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").getLength(); i1 = i1 + 1)
-                {
+            if (extensionImagesSequenceElement != null) {
+                for (int i1 = 0; i1 < extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element extensionImagesElement = ((org.w3c.dom.Element) extensionImagesSequenceElement.getElementsByTagName("ExtensionImage").item(i1));
                     HostedServiceListAvailableExtensionsResponse.ExtensionImage extensionImageInstance = new HostedServiceListAvailableExtensionsResponse.ExtensionImage();
                     result.getExtensionImages().add(extensionImageInstance);
                     
                     NodeList elements2 = extensionImagesElement.getElementsByTagName("ProviderNameSpace");
                     Element providerNameSpaceElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                    if (providerNameSpaceElement != null)
-                    {
+                    if (providerNameSpaceElement != null) {
                         String providerNameSpaceInstance;
                         providerNameSpaceInstance = providerNameSpaceElement.getTextContent();
                         extensionImageInstance.setProviderNamespace(providerNameSpaceInstance);
@@ -4259,8 +3762,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements3 = extensionImagesElement.getElementsByTagName("Type");
                     Element typeElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                    if (typeElement != null)
-                    {
+                    if (typeElement != null) {
                         String typeInstance;
                         typeInstance = typeElement.getTextContent();
                         extensionImageInstance.setType(typeInstance);
@@ -4268,8 +3770,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements4 = extensionImagesElement.getElementsByTagName("Label");
                     Element labelElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (labelElement != null)
-                    {
+                    if (labelElement != null) {
                         String labelInstance;
                         labelInstance = labelElement.getTextContent();
                         extensionImageInstance.setLabel(labelInstance);
@@ -4277,8 +3778,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements5 = extensionImagesElement.getElementsByTagName("Version");
                     Element versionElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                    if (versionElement != null)
-                    {
+                    if (versionElement != null) {
                         String versionInstance;
                         versionInstance = versionElement.getTextContent();
                         extensionImageInstance.setVersion(versionInstance);
@@ -4286,8 +3786,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements6 = extensionImagesElement.getElementsByTagName("Description");
                     Element descriptionElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (descriptionElement != null)
-                    {
+                    if (descriptionElement != null) {
                         String descriptionInstance;
                         descriptionInstance = descriptionElement.getTextContent();
                         extensionImageInstance.setDescription(descriptionInstance);
@@ -4295,8 +3794,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements7 = extensionImagesElement.getElementsByTagName("ThumbprintAlgorithm");
                     Element thumbprintAlgorithmElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (thumbprintAlgorithmElement != null)
-                    {
+                    if (thumbprintAlgorithmElement != null) {
                         String thumbprintAlgorithmInstance;
                         thumbprintAlgorithmInstance = thumbprintAlgorithmElement.getTextContent();
                         extensionImageInstance.setThumbprintAlgorithm(thumbprintAlgorithmInstance);
@@ -4304,8 +3802,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements8 = extensionImagesElement.getElementsByTagName("HostingResources");
                     Element hostingResourcesElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                    if (hostingResourcesElement != null)
-                    {
+                    if (hostingResourcesElement != null) {
                         HostingResources hostingResourcesInstance;
                         hostingResourcesInstance = ComputeManagementClientImpl.parseHostingResources(hostingResourcesElement.getTextContent());
                         extensionImageInstance.setHostingResources(hostingResourcesInstance);
@@ -4313,8 +3810,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements9 = extensionImagesElement.getElementsByTagName("PublicConfigurationSchema");
                     Element publicConfigurationSchemaElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                    if (publicConfigurationSchemaElement != null)
-                    {
+                    if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
                         publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         extensionImageInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
@@ -4322,8 +3818,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     
                     NodeList elements10 = extensionImagesElement.getElementsByTagName("PrivateConfigurationSchema");
                     Element privateConfigurationSchemaElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                    if (privateConfigurationSchemaElement != null)
-                    {
+                    if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
                         privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
                         extensionImageInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
@@ -4332,21 +3827,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -4365,12 +3855,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public Future<OperationResponse> updateAsync(final String serviceName, final HostedServiceUpdateParameters parameters)
-    {
+    public Future<OperationResponse> updateAsync(final String serviceName, final HostedServiceUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return update(serviceName, parameters);
             }
          });
@@ -4411,33 +3899,27 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException
-    {
+    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
         // Validate
-        if (serviceName == null)
-        {
+        if (serviceName == null) {
             throw new NullPointerException("serviceName");
         }
         // TODO: Validate serviceName is a valid DNS name.
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024)
-        {
+        if (parameters.getDescription() != null && parameters.getDescription().length() > 1024) {
             throw new IllegalArgumentException("parameters.Description");
         }
         int labelCount = (parameters.getDescription() != null ? 1 : 0) + (parameters.getLabel() != null ? 1 : 0);
-        if (labelCount < 1)
-        {
+        if (labelCount < 1) {
             throw new IllegalArgumentException("Expected at least one of parameters.Description, parameters.Label to be provided.");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("serviceName", serviceName);
@@ -4464,25 +3946,21 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         Element updateHostedServiceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "UpdateHostedService");
         requestDoc.appendChild(updateHostedServiceElement);
         
-        if (parameters.getLabel() != null)
-        {
+        if (parameters.getLabel() != null) {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
             labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
             updateHostedServiceElement.appendChild(labelElement);
         }
         
-        if (parameters.getDescription() != null)
-        {
+        if (parameters.getDescription() != null) {
             Element descriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Description");
             descriptionElement.appendChild(requestDoc.createTextNode(parameters.getDescription()));
             updateHostedServiceElement.appendChild(descriptionElement);
         }
         
-        if (parameters.getExtendedProperties() != null)
-        {
+        if (parameters.getExtendedProperties() != null) {
             Element extendedPropertiesDictionaryElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
-            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet())
-            {
+            for (Map.Entry<String, String> entry : parameters.getExtendedProperties().entrySet()) {
                 String extendedPropertiesKey = entry.getKey();
                 String extendedPropertiesValue = entry.getValue();
                 Element extendedPropertiesElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ExtendedProperty");
@@ -4512,23 +3990,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -4538,21 +4011,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

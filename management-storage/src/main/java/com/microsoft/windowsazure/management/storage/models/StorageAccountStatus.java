@@ -21,17 +21,29 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.virtualnetworks.models;
+package com.microsoft.windowsazure.management.storage.models;
 
 /**
-* Specifies the operation to perform on the connection. Can be set to Connect,
-* Disconnect or Test to connect to a local network, disconnect from a local
-* network, or test the gateway’s connection to a local network site.
+* The status of the storage account at the time the operation was called.
 */
-public enum GatewayConnectionUpdateOperation {
-    Connect,
+public enum StorageAccountStatus {
+    /**
+    * The Storage Account had been created.
+    */
+    Created,
     
-    Disconnect,
+    /**
+    * The Storage Account is being created.
+    */
+    Creating,
     
-    Test,
+    /**
+    * The DNS name for the storage account is being propagated.
+    */
+    ResolvingDns,
+    
+    /**
+    * The Storage Account is being deleted.
+    */
+    Deleting,
 }

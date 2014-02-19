@@ -43,8 +43,7 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * namespaces.
 */
-public interface NamespaceOperations
-{
+public interface NamespaceOperations {
     /**
     * Checks the availability of the given service namespace across all Windows
     * Azure subscriptions. This is useful because the domain name is created

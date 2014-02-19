@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * The List Web Spaces operation response.
 */
-public class WebSpacesListResponse extends OperationResponse implements Iterable<WebSpacesListResponse.WebSpace>
-{
+public class WebSpacesListResponse extends OperationResponse implements Iterable<WebSpacesListResponse.WebSpace> {
     private ArrayList<WebSpacesListResponse.WebSpace> webSpaces;
     
     /**
     * The web spaces associated with the specified subscription.
     * @return The WebSpaces value.
     */
-    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces()
-    {
+    public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces() {
         return this.webSpaces;
     }
     
@@ -47,8 +45,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     * The web spaces associated with the specified subscription.
     * @param webSpacesValue The WebSpaces value.
     */
-    public void setWebSpaces(final ArrayList<WebSpacesListResponse.WebSpace> webSpacesValue)
-    {
+    public void setWebSpaces(final ArrayList<WebSpacesListResponse.WebSpace> webSpacesValue) {
         this.webSpaces = webSpacesValue;
     }
     
@@ -56,8 +53,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     * Initializes a new instance of the WebSpacesListResponse class.
     *
     */
-    public WebSpacesListResponse()
-    {
+    public WebSpacesListResponse() {
         super();
         this.webSpaces = new ArrayList<WebSpacesListResponse.WebSpace>();
     }
@@ -66,24 +62,21 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     * Gets the sequence of WebSpaces.
     *
     */
-    public Iterator<WebSpacesListResponse.WebSpace> iterator()
-    {
+    public Iterator<WebSpacesListResponse.WebSpace> iterator() {
         return this.getWebSpaces().iterator();
     }
     
     /**
     * A web space associated with the specified subscription.
     */
-    public static class WebSpace
-    {
+    public static class WebSpace {
         private WebSpaceAvailabilityState availabilityState;
         
         /**
         * Possible values are Normal or Limited.
         * @return The AvailabilityState value.
         */
-        public WebSpaceAvailabilityState getAvailabilityState()
-        {
+        public WebSpaceAvailabilityState getAvailabilityState() {
             return this.availabilityState;
         }
         
@@ -91,8 +84,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * Possible values are Normal or Limited.
         * @param availabilityStateValue The AvailabilityState value.
         */
-        public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue)
-        {
+        public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
             this.availabilityState = availabilityStateValue;
         }
         
@@ -102,8 +94,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The current number of workers.
         * @return The CurrentNumberOfWorkers value.
         */
-        public Integer getCurrentNumberOfWorkers()
-        {
+        public Integer getCurrentNumberOfWorkers() {
             return this.currentNumberOfWorkers;
         }
         
@@ -111,8 +102,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The current number of workers.
         * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
         */
-        public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue)
-        {
+        public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue) {
             this.currentNumberOfWorkers = currentNumberOfWorkersValue;
         }
         
@@ -122,8 +112,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The current worker size. Possible values are Small, Medium, or Large.
         * @return The CurrentWorkerSize value.
         */
-        public WebSpaceWorkerSize getCurrentWorkerSize()
-        {
+        public WebSpaceWorkerSize getCurrentWorkerSize() {
             return this.currentWorkerSize;
         }
         
@@ -131,8 +120,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The current worker size. Possible values are Small, Medium, or Large.
         * @param currentWorkerSizeValue The CurrentWorkerSize value.
         */
-        public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue)
-        {
+        public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue) {
             this.currentWorkerSize = currentWorkerSizeValue;
         }
         
@@ -142,8 +130,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The location of the datacenter for the web space.
         * @return The GeoLocation value.
         */
-        public String getGeoLocation()
-        {
+        public String getGeoLocation() {
             return this.geoLocation;
         }
         
@@ -151,8 +138,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The location of the datacenter for the web space.
         * @param geoLocationValue The GeoLocation value.
         */
-        public void setGeoLocation(final String geoLocationValue)
-        {
+        public void setGeoLocation(final String geoLocationValue) {
             this.geoLocation = geoLocationValue;
         }
         
@@ -162,8 +148,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The geographical region where the webspace is located.
         * @return The GeoRegion value.
         */
-        public String getGeoRegion()
-        {
+        public String getGeoRegion() {
             return this.geoRegion;
         }
         
@@ -171,8 +156,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The geographical region where the webspace is located.
         * @param geoRegionValue The GeoRegion value.
         */
-        public void setGeoRegion(final String geoRegionValue)
-        {
+        public void setGeoRegion(final String geoRegionValue) {
             this.geoRegion = geoRegionValue;
         }
         
@@ -182,8 +166,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The name of the webspace.
         * @return The Name value.
         */
-        public String getName()
-        {
+        public String getName() {
             return this.name;
         }
         
@@ -191,8 +174,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The name of the webspace.
         * @param nameValue The Name value.
         */
-        public void setName(final String nameValue)
-        {
+        public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
@@ -202,8 +184,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The name of the webspace.
         * @return The Plan value.
         */
-        public String getPlan()
-        {
+        public String getPlan() {
             return this.plan;
         }
         
@@ -211,8 +192,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The name of the webspace.
         * @param planValue The Plan value.
         */
-        public void setPlan(final String planValue)
-        {
+        public void setPlan(final String planValue) {
             this.plan = planValue;
         }
         
@@ -224,8 +204,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * encountering an operational issue.
         * @return The Status value.
         */
-        public WebSpaceStatus getStatus()
-        {
+        public WebSpaceStatus getStatus() {
             return this.status;
         }
         
@@ -235,8 +214,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * encountering an operational issue.
         * @param statusValue The Status value.
         */
-        public void setStatus(final WebSpaceStatus statusValue)
-        {
+        public void setStatus(final WebSpaceStatus statusValue) {
             this.status = statusValue;
         }
         
@@ -246,8 +224,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The subscription ID.
         * @return The Subscription value.
         */
-        public String getSubscription()
-        {
+        public String getSubscription() {
             return this.subscription;
         }
         
@@ -255,8 +232,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * The subscription ID.
         * @param subscriptionValue The Subscription value.
         */
-        public void setSubscription(final String subscriptionValue)
-        {
+        public void setSubscription(final String subscriptionValue) {
             this.subscription = subscriptionValue;
         }
         
@@ -267,8 +243,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
         * @return The WorkerSize value.
         */
-        public WebSpaceWorkerSize getWorkerSize()
-        {
+        public WebSpaceWorkerSize getWorkerSize() {
             return this.workerSize;
         }
         
@@ -277,8 +252,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
         * @param workerSizeValue The WorkerSize value.
         */
-        public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue)
-        {
+        public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {
             this.workerSize = workerSizeValue;
         }
     }

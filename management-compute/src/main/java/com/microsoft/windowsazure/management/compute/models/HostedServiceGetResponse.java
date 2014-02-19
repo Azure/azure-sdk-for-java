@@ -29,16 +29,14 @@ import java.net.URI;
 /**
 * The Get Hosted Service operation response.
 */
-public class HostedServiceGetResponse extends OperationResponse
-{
+public class HostedServiceGetResponse extends OperationResponse {
     private HostedServiceProperties properties;
     
     /**
     * The properties that are assigned to the cloud service.
     * @return The Properties value.
     */
-    public HostedServiceProperties getProperties()
-    {
+    public HostedServiceProperties getProperties() {
         return this.properties;
     }
     
@@ -46,8 +44,7 @@ public class HostedServiceGetResponse extends OperationResponse
     * The properties that are assigned to the cloud service.
     * @param propertiesValue The Properties value.
     */
-    public void setProperties(final HostedServiceProperties propertiesValue)
-    {
+    public void setProperties(final HostedServiceProperties propertiesValue) {
         this.properties = propertiesValue;
     }
     
@@ -60,8 +57,7 @@ public class HostedServiceGetResponse extends OperationResponse
     * calling: http://MyService.cloudapp.net
     * @return The ServiceName value.
     */
-    public String getServiceName()
-    {
+    public String getServiceName() {
         return this.serviceName;
     }
     
@@ -72,8 +68,7 @@ public class HostedServiceGetResponse extends OperationResponse
     * calling: http://MyService.cloudapp.net
     * @param serviceNameValue The ServiceName value.
     */
-    public void setServiceName(final String serviceNameValue)
-    {
+    public void setServiceName(final String serviceNameValue) {
         this.serviceName = serviceNameValue;
     }
     
@@ -84,8 +79,7 @@ public class HostedServiceGetResponse extends OperationResponse
     * Properties requests against the cloud service.
     * @return The Uri value.
     */
-    public URI getUri()
-    {
+    public URI getUri() {
         return this.uri;
     }
     
@@ -94,8 +88,7 @@ public class HostedServiceGetResponse extends OperationResponse
     * Properties requests against the cloud service.
     * @param uriValue The Uri value.
     */
-    public void setUri(final URI uriValue)
-    {
+    public void setUri(final URI uriValue) {
         this.uri = uriValue;
     }
 }

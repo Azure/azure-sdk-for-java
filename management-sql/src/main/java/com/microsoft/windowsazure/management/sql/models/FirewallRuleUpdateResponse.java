@@ -29,16 +29,14 @@ import java.net.InetAddress;
 /**
 * A standard service response including an HTTP status code and request ID.
 */
-public class FirewallRuleUpdateResponse extends OperationResponse
-{
+public class FirewallRuleUpdateResponse extends OperationResponse {
     private InetAddress endIPAddress;
     
     /**
     * Gets or sets the ending IP address applied to this rule.
     * @return The EndIPAddress value.
     */
-    public InetAddress getEndIPAddress()
-    {
+    public InetAddress getEndIPAddress() {
         return this.endIPAddress;
     }
     
@@ -46,8 +44,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the ending IP address applied to this rule.
     * @param endIPAddressValue The EndIPAddress value.
     */
-    public void setEndIPAddress(final InetAddress endIPAddressValue)
-    {
+    public void setEndIPAddress(final InetAddress endIPAddressValue) {
         this.endIPAddress = endIPAddressValue;
     }
     
@@ -57,8 +54,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the name of the Firewall Rule.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -66,8 +62,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the name of the Firewall Rule.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -77,8 +72,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the beginning IP address applied to this rule.
     * @return The StartIPAddress value.
     */
-    public InetAddress getStartIPAddress()
-    {
+    public InetAddress getStartIPAddress() {
         return this.startIPAddress;
     }
     
@@ -86,8 +80,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the beginning IP address applied to this rule.
     * @param startIPAddressValue The StartIPAddress value.
     */
-    public void setStartIPAddress(final InetAddress startIPAddressValue)
-    {
+    public void setStartIPAddress(final InetAddress startIPAddressValue) {
         this.startIPAddress = startIPAddressValue;
     }
     
@@ -97,8 +90,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the state of the rule.
     * @return The State value.
     */
-    public String getState()
-    {
+    public String getState() {
         return this.state;
     }
     
@@ -106,8 +98,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the state of the rule.
     * @param stateValue The State value.
     */
-    public void setState(final String stateValue)
-    {
+    public void setState(final String stateValue) {
         this.state = stateValue;
     }
     
@@ -117,8 +108,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the type of resource.
     * @return The Type value.
     */
-    public String getType()
-    {
+    public String getType() {
         return this.type;
     }
     
@@ -126,8 +116,7 @@ public class FirewallRuleUpdateResponse extends OperationResponse
     * Gets or sets the type of resource.
     * @param typeValue The Type value.
     */
-    public void setType(final String typeValue)
-    {
+    public void setType(final String typeValue) {
         this.type = typeValue;
     }
 }

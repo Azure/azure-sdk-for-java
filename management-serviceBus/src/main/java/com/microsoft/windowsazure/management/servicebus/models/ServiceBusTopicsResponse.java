@@ -30,16 +30,14 @@ import java.util.Iterator;
 /**
 * A response to a request for a list of topics.
 */
-public class ServiceBusTopicsResponse extends OperationResponse implements Iterable<ServiceBusTopic>
-{
+public class ServiceBusTopicsResponse extends OperationResponse implements Iterable<ServiceBusTopic> {
     private ArrayList<ServiceBusTopic> topics;
     
     /**
     * The list of topics.
     * @return The Topics value.
     */
-    public ArrayList<ServiceBusTopic> getTopics()
-    {
+    public ArrayList<ServiceBusTopic> getTopics() {
         return this.topics;
     }
     
@@ -47,8 +45,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     * The list of topics.
     * @param topicsValue The Topics value.
     */
-    public void setTopics(final ArrayList<ServiceBusTopic> topicsValue)
-    {
+    public void setTopics(final ArrayList<ServiceBusTopic> topicsValue) {
         this.topics = topicsValue;
     }
     
@@ -56,8 +53,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     * Initializes a new instance of the ServiceBusTopicsResponse class.
     *
     */
-    public ServiceBusTopicsResponse()
-    {
+    public ServiceBusTopicsResponse() {
         super();
         this.topics = new ArrayList<ServiceBusTopic>();
     }
@@ -66,8 +62,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     * Gets the sequence of Topics.
     *
     */
-    public Iterator<ServiceBusTopic> iterator()
-    {
+    public Iterator<ServiceBusTopic> iterator() {
         return this.getTopics().iterator();
     }
 }

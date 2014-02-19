@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.scheduler.models.ResourceProviderGetPropertiesResponse;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatus;
 import com.microsoft.windowsazure.management.scheduler.models.SchedulerOperationStatusResponse;
@@ -54,15 +54,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManagementClient> implements SchedulerManagementClient
-{
+public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManagementClient> implements SchedulerManagementClient {
     private URI baseUri;
     
     /**
     * @return The BaseUri value.
     */
-    public URI getBaseUri()
-    {
+    public URI getBaseUri() {
         return this.baseUri;
     }
     
@@ -71,8 +69,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     /**
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials()
-    {
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
@@ -81,8 +78,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     /**
     * @return The JobCollectionsOperations value.
     */
-    public JobCollectionOperations getJobCollectionsOperations()
-    {
+    public JobCollectionOperations getJobCollectionsOperations() {
         return this.jobCollections;
     }
     
@@ -92,8 +88,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    private SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.jobCollections = new JobCollectionOperationsImpl(this);
     }
@@ -104,15 +99,12 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
-    {
+    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -129,11 +121,9 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * the response.
     */
     @Inject
-    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
-    {
+    public SchedulerManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -145,8 +135,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected SchedulerManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    protected SchedulerManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new SchedulerManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -172,12 +161,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * failure.
     */
     @Override
-    public Future<SchedulerOperationStatusResponse> getOperationStatusAsync(final String requestId)
-    {
+    public Future<SchedulerOperationStatusResponse> getOperationStatusAsync(final String requestId) {
         return this.getExecutorService().submit(new Callable<SchedulerOperationStatusResponse>() { 
             @Override
-            public SchedulerOperationStatusResponse call() throws Exception
-            {
+            public SchedulerOperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -213,19 +200,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * failure.
     */
     @Override
-    public SchedulerOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public SchedulerOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (requestId == null)
-        {
+        if (requestId == null) {
             throw new NullPointerException("requestId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("requestId", requestId);
@@ -243,23 +227,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -277,12 +256,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null)
-            {
+            if (operationElement != null) {
                 NodeList elements2 = operationElement.getElementsByTagName("ID");
                 Element idElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     String idInstance;
                     idInstance = idElement.getTextContent();
                     result.setId(idInstance);
@@ -290,8 +267,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     SchedulerOperationStatus statusInstance;
                     statusInstance = SchedulerOperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -299,8 +275,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
                 
                 NodeList elements4 = operationElement.getElementsByTagName("HttpStatusCode");
                 Element httpStatusCodeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                if (httpStatusCodeElement != null)
-                {
+                if (httpStatusCodeElement != null) {
                     Integer httpStatusCodeInstance;
                     httpStatusCodeInstance = Integer.valueOf(httpStatusCodeElement.getTextContent());
                     result.setHttpStatusCode(httpStatusCodeInstance);
@@ -308,15 +283,13 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
                 
                 NodeList elements5 = operationElement.getElementsByTagName("Error");
                 Element errorElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                if (errorElement != null)
-                {
+                if (errorElement != null) {
                     SchedulerOperationStatusResponse.ErrorDetails errorInstance = new SchedulerOperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     NodeList elements6 = errorElement.getElementsByTagName("Code");
                     Element codeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                    if (codeElement != null)
-                    {
+                    if (codeElement != null) {
                         String codeInstance;
                         codeInstance = codeElement.getTextContent();
                         errorInstance.setCode(codeInstance);
@@ -324,8 +297,7 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
                     
                     NodeList elements7 = errorElement.getElementsByTagName("Message");
                     Element messageElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                    if (messageElement != null)
-                    {
+                    if (messageElement != null) {
                         String messageInstance;
                         messageInstance = messageElement.getTextContent();
                         errorInstance.setMessage(messageInstance);
@@ -334,21 +306,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -361,12 +328,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * @return The Resource Provider Get Properties operation response.
     */
     @Override
-    public Future<ResourceProviderGetPropertiesResponse> getResourceProviderPropertiesAsync()
-    {
+    public Future<ResourceProviderGetPropertiesResponse> getResourceProviderPropertiesAsync() {
         return this.getExecutorService().submit(new Callable<ResourceProviderGetPropertiesResponse>() { 
             @Override
-            public ResourceProviderGetPropertiesResponse call() throws Exception
-            {
+            public ResourceProviderGetPropertiesResponse call() throws Exception {
                 return getResourceProviderProperties();
             }
          });
@@ -387,15 +352,13 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * @return The Resource Provider Get Properties operation response.
     */
     @Override
-    public ResourceProviderGetPropertiesResponse getResourceProviderProperties() throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ResourceProviderGetPropertiesResponse getResourceProviderProperties() throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "getResourceProviderPropertiesAsync", tracingParameters);
@@ -413,23 +376,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -447,10 +405,8 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             
             NodeList elements = responseDoc.getElementsByTagName("ResourceProviderProperties");
             Element resourceProviderPropertiesSequenceElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (resourceProviderPropertiesSequenceElement != null)
-            {
-                for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").getLength(); i1 = i1 + 1)
-                {
+            if (resourceProviderPropertiesSequenceElement != null) {
+                for (int i1 = 0; i1 < resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").getLength(); i1 = i1 + 1) {
                     org.w3c.dom.Element resourceProviderPropertiesElement = ((org.w3c.dom.Element) resourceProviderPropertiesSequenceElement.getElementsByTagName("ResourceProviderProperty").item(i1));
                     NodeList elements2 = resourceProviderPropertiesElement.getElementsByTagName("Key");
                     String resourceProviderPropertiesKey = elements2.getLength() > 0 ? ((org.w3c.dom.Element) elements2.item(0)).getTextContent() : null;
@@ -461,21 +417,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -488,12 +439,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public Future<OperationResponse> registerResourceProviderAsync()
-    {
+    public Future<OperationResponse> registerResourceProviderAsync() {
         return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return registerResourceProvider();
             }
          });
@@ -510,15 +459,13 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public OperationResponse registerResourceProvider() throws IOException, ServiceException
-    {
+    public OperationResponse registerResourceProvider() throws IOException, ServiceException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "registerResourceProviderAsync", tracingParameters);
@@ -536,23 +483,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -562,21 +504,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -589,12 +526,10 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public Future<OperationResponse> unregisterResourceProviderAsync()
-    {
+    public Future<OperationResponse> unregisterResourceProviderAsync() {
         return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return unregisterResourceProvider();
             }
          });
@@ -611,15 +546,13 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
     * request ID.
     */
     @Override
-    public OperationResponse unregisterResourceProvider() throws IOException, ServiceException
-    {
+    public OperationResponse unregisterResourceProvider() throws IOException, ServiceException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "unregisterResourceProviderAsync", tracingParameters);
@@ -637,23 +570,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -663,21 +591,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

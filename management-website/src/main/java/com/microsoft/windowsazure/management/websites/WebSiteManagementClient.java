@@ -42,13 +42,12 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
 * information)
 */
-public interface WebSiteManagementClient extends FilterableService<WebSiteManagementClient>
-{
+public interface WebSiteManagementClient extends FilterableService<WebSiteManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    URI getBaseUri(); 
+    URI getBaseUri();
     
     /**
     * When you create a Windows Azure subscription, it is uniquely identified
@@ -59,7 +58,7 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    SubscriptionCloudCredentials getCredentials(); 
+    SubscriptionCloudCredentials getCredentials();
     
     /**
     * Operations for managing the server farm in a web space.  (see
@@ -67,19 +66,19 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * more information)
     * @return The ServerFarmsOperations value.
     */
-    ServerFarmOperations getServerFarmsOperations(); 
+    ServerFarmOperations getServerFarmsOperations();
     
     /**
     * Operations for managing the web sites in a web space.
     * @return The WebSitesOperations value.
     */
-    WebSiteOperations getWebSitesOperations(); 
+    WebSiteOperations getWebSitesOperations();
     
     /**
     * Operations for managing web spaces beneath your subscription.
     * @return The WebSpacesOperations value.
     */
-    WebSpaceOperations getWebSpacesOperations(); 
+    WebSpaceOperations getWebSpacesOperations();
     
     /**
     * The Get Operation Status operation returns the status of thespecified

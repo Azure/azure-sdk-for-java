@@ -28,8 +28,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The Get Service Certificate operation response.
 */
-public class ServiceCertificateGetResponse extends OperationResponse
-{
+public class ServiceCertificateGetResponse extends OperationResponse {
     private byte[] data;
     
     /**
@@ -37,8 +36,7 @@ public class ServiceCertificateGetResponse extends OperationResponse
     * file.
     * @return The Data value.
     */
-    public byte[] getData()
-    {
+    public byte[] getData() {
         return this.data;
     }
     
@@ -47,8 +45,7 @@ public class ServiceCertificateGetResponse extends OperationResponse
     * file.
     * @param dataValue The Data value.
     */
-    public void setData(final byte[] dataValue)
-    {
+    public void setData(final byte[] dataValue) {
         this.data = dataValue;
     }
 }

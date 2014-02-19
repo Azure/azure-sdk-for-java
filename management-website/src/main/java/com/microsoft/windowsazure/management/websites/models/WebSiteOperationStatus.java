@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * The status of the asynchronous operation.
 */
-public enum WebSiteOperationStatus
-{
+public enum WebSiteOperationStatus {
     /**
     * The asynchronous request is in progress.
     */

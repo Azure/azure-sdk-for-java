@@ -27,7 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.ManagementConfiguration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatus;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -64,16 +64,14 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
 * information)
 */
-public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagementClient> implements WebSiteManagementClient
-{
+public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagementClient> implements WebSiteManagementClient {
     private URI baseUri;
     
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.
     */
-    public URI getBaseUri()
-    {
+    public URI getBaseUri() {
         return this.baseUri;
     }
     
@@ -88,8 +86,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * secure.  No anonymous requests are allowed.
     * @return The Credentials value.
     */
-    public SubscriptionCloudCredentials getCredentials()
-    {
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
     
@@ -101,8 +98,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * more information)
     * @return The ServerFarmsOperations value.
     */
-    public ServerFarmOperations getServerFarmsOperations()
-    {
+    public ServerFarmOperations getServerFarmsOperations() {
         return this.serverFarms;
     }
     
@@ -112,8 +108,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * Operations for managing the web sites in a web space.
     * @return The WebSitesOperations value.
     */
-    public WebSiteOperations getWebSitesOperations()
-    {
+    public WebSiteOperations getWebSitesOperations() {
         return this.webSites;
     }
     
@@ -123,8 +118,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * Operations for managing web spaces beneath your subscription.
     * @return The WebSpacesOperations value.
     */
-    public WebSpaceOperations getWebSpacesOperations()
-    {
+    public WebSpaceOperations getWebSpacesOperations() {
         return this.webSpaces;
     }
     
@@ -134,8 +128,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    private WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.serverFarms = new ServerFarmOperationsImpl(this);
         this.webSites = new WebSiteOperationsImpl(this);
@@ -156,15 +149,12 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param baseUri The URI used as the base for all Service Management
     * requests.
     */
-    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri)
-    {
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -187,11 +177,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * the response.
     */
     @Inject
-    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException
-    {
+    public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials) throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
         this.credentials = credentials;
@@ -203,8 +191,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
     */
-    protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+    protected WebSiteManagementClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService) {
         return new WebSiteManagementClientImpl(httpBuilder, executorService, this.getCredentials(), this.getBaseUri());
     }
     
@@ -230,12 +217,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * body includes error information regarding the failure.
     */
     @Override
-    public Future<WebSiteOperationStatusResponse> getOperationStatusAsync(final String webSpaceName, final String siteName, final String operationId)
-    {
+    public Future<WebSiteOperationStatusResponse> getOperationStatusAsync(final String webSpaceName, final String siteName, final String operationId) {
         return this.getExecutorService().submit(new Callable<WebSiteOperationStatusResponse>() { 
             @Override
-            public WebSiteOperationStatusResponse call() throws Exception
-            {
+            public WebSiteOperationStatusResponse call() throws Exception {
                 return getOperationStatus(webSpaceName, siteName, operationId);
             }
          });
@@ -271,27 +256,22 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * body includes error information regarding the failure.
     */
     @Override
-    public WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public WebSiteOperationStatusResponse getOperationStatus(String webSpaceName, String siteName, String operationId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (webSpaceName == null)
-        {
+        if (webSpaceName == null) {
             throw new NullPointerException("webSpaceName");
         }
-        if (siteName == null)
-        {
+        if (siteName == null) {
             throw new NullPointerException("siteName");
         }
-        if (operationId == null)
-        {
+        if (operationId == null) {
             throw new NullPointerException("operationId");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("webSpaceName", webSpaceName);
@@ -311,23 +291,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -345,12 +320,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             
             NodeList elements = responseDoc.getElementsByTagName("Operation");
             Element operationElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (operationElement != null)
-            {
+            if (operationElement != null) {
                 NodeList elements2 = operationElement.getElementsByTagName("CreatedTime");
                 Element createdTimeElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (createdTimeElement != null)
-                {
+                if (createdTimeElement != null) {
                     Calendar createdTimeInstance;
                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                     result.setCreatedTime(createdTimeInstance);
@@ -358,34 +331,27 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements3 = operationElement.getElementsByTagName("Errors");
                 Element errorsSequenceElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (errorsSequenceElement != null)
-                {
+                if (errorsSequenceElement != null) {
                     boolean isNil = false;
                     Attr nilAttribute = errorsSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute != null)
-                    {
+                    if (nilAttribute != null) {
                         isNil = "true".equals(nilAttribute.getValue());
                     }
-                    if (isNil == false)
-                    {
-                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagName("Error").getLength(); i1 = i1 + 1)
-                        {
+                    if (isNil == false) {
+                        for (int i1 = 0; i1 < errorsSequenceElement.getElementsByTagName("Error").getLength(); i1 = i1 + 1) {
                             org.w3c.dom.Element errorsElement = ((org.w3c.dom.Element) errorsSequenceElement.getElementsByTagName("Error").item(i1));
                             WebSiteOperationStatusResponse.Error errorInstance = new WebSiteOperationStatusResponse.Error();
                             result.getErrors().add(errorInstance);
                             
                             NodeList elements4 = errorsElement.getElementsByTagName("Code");
                             Element codeElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                            if (codeElement != null)
-                            {
+                            if (codeElement != null) {
                                 boolean isNil2 = false;
                                 Attr nilAttribute2 = codeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute2 != null)
-                                {
+                                if (nilAttribute2 != null) {
                                     isNil2 = "true".equals(nilAttribute2.getValue());
                                 }
-                                if (isNil2 == false)
-                                {
+                                if (isNil2 == false) {
                                     String codeInstance;
                                     codeInstance = codeElement.getTextContent();
                                     errorInstance.setCode(codeInstance);
@@ -394,16 +360,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                             
                             NodeList elements5 = errorsElement.getElementsByTagName("Message");
                             Element messageElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                            if (messageElement != null)
-                            {
+                            if (messageElement != null) {
                                 boolean isNil3 = false;
                                 Attr nilAttribute3 = messageElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute3 != null)
-                                {
+                                if (nilAttribute3 != null) {
                                     isNil3 = "true".equals(nilAttribute3.getValue());
                                 }
-                                if (isNil3 == false)
-                                {
+                                if (isNil3 == false) {
                                     String messageInstance;
                                     messageInstance = messageElement.getTextContent();
                                     errorInstance.setMessage(messageInstance);
@@ -412,16 +375,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                             
                             NodeList elements6 = errorsElement.getElementsByTagName("ExtendedCode");
                             Element extendedCodeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                            if (extendedCodeElement != null)
-                            {
+                            if (extendedCodeElement != null) {
                                 boolean isNil4 = false;
                                 Attr nilAttribute4 = extendedCodeElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute4 != null)
-                                {
+                                if (nilAttribute4 != null) {
                                     isNil4 = "true".equals(nilAttribute4.getValue());
                                 }
-                                if (isNil4 == false)
-                                {
+                                if (isNil4 == false) {
                                     String extendedCodeInstance;
                                     extendedCodeInstance = extendedCodeElement.getTextContent();
                                     errorInstance.setExtendedCode(extendedCodeInstance);
@@ -430,16 +390,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                             
                             NodeList elements7 = errorsElement.getElementsByTagName("MessageTemplate");
                             Element messageTemplateElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                            if (messageTemplateElement != null)
-                            {
+                            if (messageTemplateElement != null) {
                                 boolean isNil5 = false;
                                 Attr nilAttribute5 = messageTemplateElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute5 != null)
-                                {
+                                if (nilAttribute5 != null) {
                                     isNil5 = "true".equals(nilAttribute5.getValue());
                                 }
-                                if (isNil5 == false)
-                                {
+                                if (isNil5 == false) {
                                     String messageTemplateInstance;
                                     messageTemplateInstance = messageTemplateElement.getTextContent();
                                     errorInstance.setMessageTemplate(messageTemplateInstance);
@@ -448,18 +405,14 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                             
                             NodeList elements8 = errorsElement.getElementsByTagName("Parameters");
                             Element parametersSequenceElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                            if (parametersSequenceElement != null)
-                            {
+                            if (parametersSequenceElement != null) {
                                 boolean isNil6 = false;
                                 Attr nilAttribute6 = parametersSequenceElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute6 != null)
-                                {
+                                if (nilAttribute6 != null) {
                                     isNil6 = "true".equals(nilAttribute6.getValue());
                                 }
-                                if (isNil6 == false)
-                                {
-                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1)
-                                    {
+                                if (isNil6 == false) {
+                                    for (int i2 = 0; i2 < parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element parametersElement = ((org.w3c.dom.Element) parametersSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/2003/10/Serialization/Arrays", "string").item(i2));
                                         errorInstance.getParameters().add(parametersElement.getTextContent());
                                     }
@@ -468,16 +421,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                             
                             NodeList elements9 = errorsElement.getElementsByTagName("InnerErrors");
                             Element innerErrorsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                            if (innerErrorsElement != null)
-                            {
+                            if (innerErrorsElement != null) {
                                 boolean isNil7 = false;
                                 Attr nilAttribute7 = innerErrorsElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                                if (nilAttribute7 != null)
-                                {
+                                if (nilAttribute7 != null) {
                                     isNil7 = "true".equals(nilAttribute7.getValue());
                                 }
-                                if (isNil7 == false)
-                                {
+                                if (isNil7 == false) {
                                     String innerErrorsInstance;
                                     innerErrorsInstance = innerErrorsElement.getTextContent();
                                     errorInstance.setInnerErrors(innerErrorsInstance);
@@ -489,8 +439,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements10 = operationElement.getElementsByTagName("ExpirationTime");
                 Element expirationTimeElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                if (expirationTimeElement != null)
-                {
+                if (expirationTimeElement != null) {
                     Calendar expirationTimeInstance;
                     expirationTimeInstance = DatatypeConverter.parseDateTime(expirationTimeElement.getTextContent());
                     result.setExpirationTime(expirationTimeInstance);
@@ -498,16 +447,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements11 = operationElement.getElementsByTagName("GeoMasterOperationId");
                 Element geoMasterOperationIdElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                if (geoMasterOperationIdElement != null)
-                {
+                if (geoMasterOperationIdElement != null) {
                     boolean isNil8 = false;
                     Attr nilAttribute8 = geoMasterOperationIdElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute8 != null)
-                    {
+                    if (nilAttribute8 != null) {
                         isNil8 = "true".equals(nilAttribute8.getValue());
                     }
-                    if (isNil8 == false)
-                    {
+                    if (isNil8 == false) {
                         String geoMasterOperationIdInstance;
                         geoMasterOperationIdInstance = geoMasterOperationIdElement.getTextContent();
                         result.setGeoMasterOperationId(geoMasterOperationIdInstance);
@@ -516,16 +462,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements12 = operationElement.getElementsByTagName("Id");
                 Element idElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                if (idElement != null)
-                {
+                if (idElement != null) {
                     boolean isNil9 = false;
                     Attr nilAttribute9 = idElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute9 != null)
-                    {
+                    if (nilAttribute9 != null) {
                         isNil9 = "true".equals(nilAttribute9.getValue());
                     }
-                    if (isNil9 == false)
-                    {
+                    if (isNil9 == false) {
                         String idInstance;
                         idInstance = idElement.getTextContent();
                         result.setOperationId(idInstance);
@@ -534,8 +477,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements13 = operationElement.getElementsByTagName("ModifiedTime");
                 Element modifiedTimeElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                if (modifiedTimeElement != null)
-                {
+                if (modifiedTimeElement != null) {
                     Calendar modifiedTimeInstance;
                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                     result.setModifiedTime(modifiedTimeInstance);
@@ -543,16 +485,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements14 = operationElement.getElementsByTagName("Name");
                 Element nameElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                if (nameElement != null)
-                {
+                if (nameElement != null) {
                     boolean isNil10 = false;
                     Attr nilAttribute10 = nameElement.getAttributeNodeNS("http://www.w3.org/2001/XMLSchema-instance", "nil");
-                    if (nilAttribute10 != null)
-                    {
+                    if (nilAttribute10 != null) {
                         isNil10 = "true".equals(nilAttribute10.getValue());
                     }
-                    if (isNil10 == false)
-                    {
+                    if (isNil10 == false) {
                         String nameInstance;
                         nameInstance = nameElement.getTextContent();
                         result.setName(nameInstance);
@@ -561,8 +500,7 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
                 
                 NodeList elements15 = operationElement.getElementsByTagName("Status");
                 Element statusElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                if (statusElement != null)
-                {
+                if (statusElement != null) {
                     WebSiteOperationStatus statusInstance;
                     statusInstance = WebSiteOperationStatus.valueOf(statusElement.getTextContent());
                     result.setStatus(statusInstance);
@@ -570,21 +508,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -597,12 +530,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public Future<OperationResponse> registerSubscriptionAsync()
-    {
+    public Future<OperationResponse> registerSubscriptionAsync() {
         return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return registerSubscription();
             }
          });
@@ -619,15 +550,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public OperationResponse registerSubscription() throws IOException, ServiceException
-    {
+    public OperationResponse registerSubscription() throws IOException, ServiceException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "registerSubscriptionAsync", tracingParameters);
@@ -646,23 +575,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -672,21 +596,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -699,12 +618,10 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public Future<OperationResponse> unregisterSubscriptionAsync()
-    {
+    public Future<OperationResponse> unregisterSubscriptionAsync() {
         return this.getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
-            public OperationResponse call() throws Exception
-            {
+            public OperationResponse call() throws Exception {
                 return unregisterSubscription();
             }
          });
@@ -721,15 +638,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * request ID.
     */
     @Override
-    public OperationResponse unregisterSubscription() throws IOException, ServiceException
-    {
+    public OperationResponse unregisterSubscription() throws IOException, ServiceException {
         // Validate
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             CloudTracing.enter(invocationId, this, "unregisterSubscriptionAsync", tracingParameters);
@@ -748,23 +663,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_ACCEPTED)
-            {
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -774,21 +684,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

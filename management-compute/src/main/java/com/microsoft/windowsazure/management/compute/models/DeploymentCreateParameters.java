@@ -29,16 +29,14 @@ import java.util.HashMap;
 /**
 * Parameters supplied to the Create Deployment operation.
 */
-public class DeploymentCreateParameters
-{
+public class DeploymentCreateParameters {
     private String configuration;
     
     /**
     * Required. The service configuration file for the deployment.
     * @return The Configuration value.
     */
-    public String getConfiguration()
-    {
+    public String getConfiguration() {
         return this.configuration;
     }
     
@@ -46,8 +44,7 @@ public class DeploymentCreateParameters
     * Required. The service configuration file for the deployment.
     * @param configurationValue The Configuration value.
     */
-    public void setConfiguration(final String configurationValue)
-    {
+    public void setConfiguration(final String configurationValue) {
         this.configuration = configurationValue;
     }
     
@@ -65,8 +62,7 @@ public class DeploymentCreateParameters
     * in a status code 400 (Bad Request) error.
     * @return The ExtendedProperties value.
     */
-    public HashMap<String, String> getExtendedProperties()
-    {
+    public HashMap<String, String> getExtendedProperties() {
         return this.extendedProperties;
     }
     
@@ -82,8 +78,7 @@ public class DeploymentCreateParameters
     * in a status code 400 (Bad Request) error.
     * @param extendedPropertiesValue The ExtendedProperties value.
     */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue)
-    {
+    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
         this.extendedProperties = extendedPropertiesValue;
     }
     
@@ -98,8 +93,7 @@ public class DeploymentCreateParameters
     * deployment.
     * @return The ExtensionConfiguration value.
     */
-    public ExtensionConfiguration getExtensionConfiguration()
-    {
+    public ExtensionConfiguration getExtensionConfiguration() {
         return this.extensionConfiguration;
     }
     
@@ -112,8 +106,7 @@ public class DeploymentCreateParameters
     * deployment.
     * @param extensionConfigurationValue The ExtensionConfiguration value.
     */
-    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue)
-    {
+    public void setExtensionConfiguration(final ExtensionConfiguration extensionConfigurationValue) {
         this.extensionConfiguration = extensionConfigurationValue;
     }
     
@@ -126,8 +119,7 @@ public class DeploymentCreateParameters
     * your tracking purposes.
     * @return The Label value.
     */
-    public String getLabel()
-    {
+    public String getLabel() {
         return this.label;
     }
     
@@ -138,8 +130,7 @@ public class DeploymentCreateParameters
     * your tracking purposes.
     * @param labelValue The Label value.
     */
-    public void setLabel(final String labelValue)
-    {
+    public void setLabel(final String labelValue) {
         this.label = labelValue;
     }
     
@@ -150,8 +141,7 @@ public class DeploymentCreateParameters
     * among other deployments for the cloud service.
     * @return The Name value.
     */
-    public String getName()
-    {
+    public String getName() {
         return this.name;
     }
     
@@ -160,8 +150,7 @@ public class DeploymentCreateParameters
     * among other deployments for the cloud service.
     * @param nameValue The Name value.
     */
-    public void setName(final String nameValue)
-    {
+    public void setName(final String nameValue) {
         this.name = nameValue;
     }
     
@@ -177,8 +166,7 @@ public class DeploymentCreateParameters
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     * @return The PackageUri value.
     */
-    public URI getPackageUri()
-    {
+    public URI getPackageUri() {
         return this.packageUri;
     }
     
@@ -192,8 +180,7 @@ public class DeploymentCreateParameters
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee395415.aspx.
     * @param packageUriValue The PackageUri value.
     */
-    public void setPackageUri(final URI packageUriValue)
-    {
+    public void setPackageUri(final URI packageUriValue) {
         this.packageUri = packageUriValue;
     }
     
@@ -209,8 +196,7 @@ public class DeploymentCreateParameters
     * if it is suspended.
     * @return The StartDeployment value.
     */
-    public Boolean isStartDeployment()
-    {
+    public Boolean isStartDeployment() {
         return this.startDeployment;
     }
     
@@ -224,8 +210,7 @@ public class DeploymentCreateParameters
     * if it is suspended.
     * @param startDeploymentValue The StartDeployment value.
     */
-    public void setStartDeployment(final Boolean startDeploymentValue)
-    {
+    public void setStartDeployment(final Boolean startDeploymentValue) {
         this.startDeployment = startDeploymentValue;
     }
     
@@ -238,8 +223,7 @@ public class DeploymentCreateParameters
     * service package.
     * @return The TreatWarningsAsError value.
     */
-    public Boolean isTreatWarningsAsError()
-    {
+    public Boolean isTreatWarningsAsError() {
         return this.treatWarningsAsError;
     }
     
@@ -250,8 +234,7 @@ public class DeploymentCreateParameters
     * service package.
     * @param treatWarningsAsErrorValue The TreatWarningsAsError value.
     */
-    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue)
-    {
+    public void setTreatWarningsAsError(final Boolean treatWarningsAsErrorValue) {
         this.treatWarningsAsError = treatWarningsAsErrorValue;
     }
     
@@ -259,8 +242,7 @@ public class DeploymentCreateParameters
     * Initializes a new instance of the DeploymentCreateParameters class.
     *
     */
-    public DeploymentCreateParameters()
-    {
+    public DeploymentCreateParameters() {
         this.extendedProperties = new HashMap<String, String>();
     }
 }

@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Walk Upgrade Domain operation.
 */
-public class DeploymentWalkUpgradeDomainParameters
-{
+public class DeploymentWalkUpgradeDomainParameters {
     private int upgradeDomain;
     
     /**
@@ -36,8 +35,7 @@ public class DeploymentWalkUpgradeDomainParameters
     * domain has an ID of 0, the second has an ID of 1, and so on.
     * @return The UpgradeDomain value.
     */
-    public int getUpgradeDomain()
-    {
+    public int getUpgradeDomain() {
         return this.upgradeDomain;
     }
     
@@ -47,8 +45,7 @@ public class DeploymentWalkUpgradeDomainParameters
     * domain has an ID of 0, the second has an ID of 1, and so on.
     * @param upgradeDomainValue The UpgradeDomain value.
     */
-    public void setUpgradeDomain(final int upgradeDomainValue)
-    {
+    public void setUpgradeDomain(final int upgradeDomainValue) {
         this.upgradeDomain = upgradeDomainValue;
     }
 }

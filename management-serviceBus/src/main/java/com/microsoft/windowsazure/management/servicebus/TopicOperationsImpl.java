@@ -68,15 +68,13 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * topics for a namespace.
 */
-public class TopicOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, TopicOperations
-{
+public class TopicOperationsImpl implements ServiceOperations<ServiceBusManagementClientImpl>, TopicOperations {
     /**
     * Initializes a new instance of the TopicOperationsImpl class.
     *
     * @param client Reference to the service client.
     */
-    TopicOperationsImpl(ServiceBusManagementClientImpl client)
-    {
+    TopicOperationsImpl(ServiceBusManagementClientImpl client) {
         this.client = client;
     }
     
@@ -87,8 +85,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * microsoft.windowsazure.management.servicebus.ServiceBusManagementClientImpl.
     * @return The Client value.
     */
-    public ServiceBusManagementClientImpl getClient()
-    {
+    public ServiceBusManagementClientImpl getClient() {
         return this.client;
     }
     
@@ -105,12 +102,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public Future<ServiceBusTopicResponse> createAsync(final String namespaceName, final ServiceBusTopic topic)
-    {
+    public Future<ServiceBusTopicResponse> createAsync(final String namespaceName, final ServiceBusTopic topic) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
             @Override
-            public ServiceBusTopicResponse call() throws Exception
-            {
+            public ServiceBusTopicResponse call() throws Exception {
                 return create(namespaceName, topic);
             }
          });
@@ -141,23 +136,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException
-    {
+    public ServiceBusTopicResponse create(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
         // Validate
-        if (namespaceName == null)
-        {
+        if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
-        if (topic == null)
-        {
+        if (topic == null) {
             throw new NullPointerException("topic");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -196,8 +187,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
         contentElement.appendChild(topicDescriptionElement);
         
-        if (topic.getDefaultMessageTimeToLive() != null)
-        {
+        if (topic.getDefaultMessageTimeToLive() != null) {
             Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
             defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
             topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
@@ -211,8 +201,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
         topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
         
-        if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
-        {
+        if (topic.getDuplicateDetectionHistoryTimeWindow() != null) {
             Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
             duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
             topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
@@ -234,11 +223,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
         topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
         
-        if (topic.getAuthorizationRules() != null)
-        {
+        if (topic.getAuthorizationRules() != null) {
             Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
-            {
+            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules()) {
                 Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
                 authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
                 
@@ -246,25 +233,21 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 typeAttribute2.setValue("SharedAccessAuthorizationRule");
                 authorizationRuleElement.setAttributeNode(typeAttribute2);
                 
-                if (authorizationRulesItem.getClaimType() != null)
-                {
+                if (authorizationRulesItem.getClaimType() != null) {
                     Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                     claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
                     authorizationRuleElement.appendChild(claimTypeElement);
                 }
                 
-                if (authorizationRulesItem.getClaimValue() != null)
-                {
+                if (authorizationRulesItem.getClaimValue() != null) {
                     Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                     claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
                     authorizationRuleElement.appendChild(claimValueElement);
                 }
                 
-                if (authorizationRulesItem.getRights() != null)
-                {
+                if (authorizationRulesItem.getRights() != null) {
                     Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights())
-                    {
+                    for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
                         Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
                         rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
                         rightsSequenceElement.appendChild(rightsItemElement);
@@ -278,8 +261,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
                 
-                if (authorizationRulesItem.getKeyName() != null)
-                {
+                if (authorizationRulesItem.getKeyName() != null) {
                     Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                     keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
                     authorizationRuleElement.appendChild(keyNameElement);
@@ -291,15 +273,13 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
                 
-                if (authorizationRulesItem.getPrimaryKey() != null)
-                {
+                if (authorizationRulesItem.getPrimaryKey() != null) {
                     Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                     primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
                     authorizationRuleElement.appendChild(primaryKeyElement);
                 }
                 
-                if (authorizationRulesItem.getSecondaryKey() != null)
-                {
+                if (authorizationRulesItem.getSecondaryKey() != null) {
                     Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                     secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
                     authorizationRuleElement.appendChild(secondaryKeyElement);
@@ -308,8 +288,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
         }
         
-        if (topic.getStatus() != null)
-        {
+        if (topic.getStatus() != null) {
             Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
             statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
             topicDescriptionElement.appendChild(statusElement);
@@ -337,8 +316,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
         topicDescriptionElement.appendChild(supportOrderingElement);
         
-        if (topic.getCountDetails() != null)
-        {
+        if (topic.getCountDetails() != null) {
             Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
             topicDescriptionElement.appendChild(countDetailsElement);
             
@@ -367,15 +345,13 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
         topicDescriptionElement.appendChild(subscriptionCountElement);
         
-        if (topic.getAutoDeleteOnIdle() != null)
-        {
+        if (topic.getAutoDeleteOnIdle() != null) {
             Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
             autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
             topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
         }
         
-        if (topic.getEntityAvailabilityStatus() != null)
-        {
+        if (topic.getEntityAvailabilityStatus() != null) {
             Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
             entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
             topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
@@ -394,23 +370,18 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_CREATED)
-            {
+            if (statusCode != HttpStatus.SC_CREATED) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -428,29 +399,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement2 != null)
-            {
+            if (entryElement2 != null) {
                 NodeList elements2 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                 Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (titleElement != null)
-                {
+                if (titleElement != null) {
                 }
                 
                 NodeList elements3 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (contentElement2 != null)
-                {
+                if (contentElement2 != null) {
                     NodeList elements4 = contentElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
                     Element topicDescriptionElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (topicDescriptionElement2 != null)
-                    {
+                    if (topicDescriptionElement2 != null) {
                         ServiceBusTopic topicDescriptionInstance = new ServiceBusTopic();
                         result.setTopic(topicDescriptionInstance);
                         
                         NodeList elements5 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
                         Element defaultMessageTimeToLiveElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (defaultMessageTimeToLiveElement2 != null)
-                        {
+                        if (defaultMessageTimeToLiveElement2 != null) {
                             String defaultMessageTimeToLiveInstance;
                             defaultMessageTimeToLiveInstance = defaultMessageTimeToLiveElement2.getTextContent();
                             topicDescriptionInstance.setDefaultMessageTimeToLive(defaultMessageTimeToLiveInstance);
@@ -458,8 +424,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements6 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
                         Element maxSizeInMegabytesElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (maxSizeInMegabytesElement2 != null)
-                        {
+                        if (maxSizeInMegabytesElement2 != null) {
                             int maxSizeInMegabytesInstance;
                             maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
@@ -467,8 +432,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements7 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         Element requiresDuplicateDetectionElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (requiresDuplicateDetectionElement2 != null)
-                        {
+                        if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
                             requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
@@ -476,8 +440,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements8 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
                         Element duplicateDetectionHistoryTimeWindowElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (duplicateDetectionHistoryTimeWindowElement2 != null)
-                        {
+                        if (duplicateDetectionHistoryTimeWindowElement2 != null) {
                             String duplicateDetectionHistoryTimeWindowInstance;
                             duplicateDetectionHistoryTimeWindowInstance = duplicateDetectionHistoryTimeWindowElement2.getTextContent();
                             topicDescriptionInstance.setDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindowInstance);
@@ -485,8 +448,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements9 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         Element enableBatchedOperationsElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (enableBatchedOperationsElement2 != null)
-                        {
+                        if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
                             enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
@@ -494,8 +456,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements10 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
                         Element sizeInBytesElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (sizeInBytesElement2 != null)
-                        {
+                        if (sizeInBytesElement2 != null) {
                             int sizeInBytesInstance;
                             sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
@@ -503,8 +464,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements11 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         Element filteringMessagesBeforePublishingElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (filteringMessagesBeforePublishingElement2 != null)
-                        {
+                        if (filteringMessagesBeforePublishingElement2 != null) {
                             boolean filteringMessagesBeforePublishingInstance;
                             filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
@@ -512,8 +472,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements12 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         Element isAnonymousAccessibleElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (isAnonymousAccessibleElement2 != null)
-                        {
+                        if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
                             isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
@@ -521,18 +480,15 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements13 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                         Element authorizationRulesSequenceElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (authorizationRulesSequenceElement2 != null)
-                        {
-                            for (int i1 = 0; i1 < authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1)
-                            {
+                        if (authorizationRulesSequenceElement2 != null) {
+                            for (int i1 = 0; i1 < authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1) {
                                 org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i1));
                                 ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                 topicDescriptionInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                 
                                 NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 Element claimTypeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (claimTypeElement2 != null)
-                                {
+                                if (claimTypeElement2 != null) {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement2.getTextContent();
                                     authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -540,8 +496,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements15 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 Element claimValueElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (claimValueElement2 != null)
-                                {
+                                if (claimValueElement2 != null) {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement2.getTextContent();
                                     authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -549,10 +504,8 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements16 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (rightsSequenceElement2 != null)
-                                {
-                                    for (int i2 = 0; i2 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
-                                    {
+                                if (rightsSequenceElement2 != null) {
+                                    for (int i2 = 0; i2 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -560,8 +513,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements17 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 Element createdTimeElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                if (createdTimeElement2 != null)
-                                {
+                                if (createdTimeElement2 != null) {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -569,8 +521,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements18 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                if (keyNameElement2 != null)
-                                {
+                                if (keyNameElement2 != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement2.getTextContent();
                                     authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -578,8 +529,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements19 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 Element modifiedTimeElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                if (modifiedTimeElement2 != null)
-                                {
+                                if (modifiedTimeElement2 != null) {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -587,8 +537,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements20 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 Element primaryKeyElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                if (primaryKeyElement2 != null)
-                                {
+                                if (primaryKeyElement2 != null) {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement2.getTextContent();
                                     authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -596,8 +545,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements21 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 Element secondaryKeyElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                if (secondaryKeyElement2 != null)
-                                {
+                                if (secondaryKeyElement2 != null) {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement2.getTextContent();
                                     authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -607,8 +555,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements22 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                         Element statusElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                        if (statusElement2 != null)
-                        {
+                        if (statusElement2 != null) {
                             String statusInstance;
                             statusInstance = statusElement2.getTextContent();
                             topicDescriptionInstance.setStatus(statusInstance);
@@ -616,8 +563,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements23 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                         Element createdAtElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                        if (createdAtElement2 != null)
-                        {
+                        if (createdAtElement2 != null) {
                             Calendar createdAtInstance;
                             createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
@@ -625,8 +571,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements24 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
                         Element updatedAtElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                        if (updatedAtElement2 != null)
-                        {
+                        if (updatedAtElement2 != null) {
                             Calendar updatedAtInstance;
                             updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
@@ -634,8 +579,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements25 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
                         Element accessedAtElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                        if (accessedAtElement2 != null)
-                        {
+                        if (accessedAtElement2 != null) {
                             Calendar accessedAtInstance;
                             accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
@@ -643,8 +587,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements26 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         Element supportOrderingElement2 = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                        if (supportOrderingElement2 != null)
-                        {
+                        if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
                             supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
@@ -652,16 +595,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements27 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
                         Element countDetailsElement2 = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                        if (countDetailsElement2 != null)
-                        {
+                        if (countDetailsElement2 != null) {
                             CountDetails countDetailsInstance = new CountDetails();
                             topicDescriptionInstance.setCountDetails(countDetailsInstance);
                         }
                         
                         NodeList elements28 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
                         Element subscriptionCountElement2 = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                        if (subscriptionCountElement2 != null)
-                        {
+                        if (subscriptionCountElement2 != null) {
                             int subscriptionCountInstance;
                             subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement2.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
@@ -669,8 +610,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements29 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
                         Element autoDeleteOnIdleElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (autoDeleteOnIdleElement2 != null)
-                        {
+                        if (autoDeleteOnIdleElement2 != null) {
                             String autoDeleteOnIdleInstance;
                             autoDeleteOnIdleInstance = autoDeleteOnIdleElement2.getTextContent();
                             topicDescriptionInstance.setAutoDeleteOnIdle(autoDeleteOnIdleInstance);
@@ -678,8 +618,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements30 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
                         Element entityAvailabilityStatusElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                        if (entityAvailabilityStatusElement2 != null)
-                        {
+                        if (entityAvailabilityStatusElement2 != null) {
                             String entityAvailabilityStatusInstance;
                             entityAvailabilityStatusInstance = entityAvailabilityStatusElement2.getTextContent();
                             topicDescriptionInstance.setEntityAvailabilityStatus(entityAvailabilityStatusInstance);
@@ -689,21 +628,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -722,12 +656,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public Future<ServiceBusTopicResponse> getAsync(final String namespaceName, final String topicName)
-    {
+    public Future<ServiceBusTopicResponse> getAsync(final String namespaceName, final String topicName) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
             @Override
-            public ServiceBusTopicResponse call() throws Exception
-            {
+            public ServiceBusTopicResponse call() throws Exception {
                 return get(namespaceName, topicName);
             }
          });
@@ -756,23 +688,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ServiceBusTopicResponse get(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (namespaceName == null)
-        {
+        if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
-        if (topicName == null)
-        {
+        if (topicName == null) {
             throw new NullPointerException("topicName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -792,23 +720,18 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -826,29 +749,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement != null)
-            {
+            if (entryElement != null) {
                 NodeList elements2 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                 Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (titleElement != null)
-                {
+                if (titleElement != null) {
                 }
                 
                 NodeList elements3 = entryElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (contentElement != null)
-                {
+                if (contentElement != null) {
                     NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
                     Element topicDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (topicDescriptionElement != null)
-                    {
+                    if (topicDescriptionElement != null) {
                         ServiceBusTopic topicDescriptionInstance = new ServiceBusTopic();
                         result.setTopic(topicDescriptionInstance);
                         
                         NodeList elements5 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
                         Element defaultMessageTimeToLiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (defaultMessageTimeToLiveElement != null)
-                        {
+                        if (defaultMessageTimeToLiveElement != null) {
                             String defaultMessageTimeToLiveInstance;
                             defaultMessageTimeToLiveInstance = defaultMessageTimeToLiveElement.getTextContent();
                             topicDescriptionInstance.setDefaultMessageTimeToLive(defaultMessageTimeToLiveInstance);
@@ -856,8 +774,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements6 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
                         Element maxSizeInMegabytesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (maxSizeInMegabytesElement != null)
-                        {
+                        if (maxSizeInMegabytesElement != null) {
                             int maxSizeInMegabytesInstance;
                             maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
@@ -865,8 +782,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements7 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         Element requiresDuplicateDetectionElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (requiresDuplicateDetectionElement != null)
-                        {
+                        if (requiresDuplicateDetectionElement != null) {
                             boolean requiresDuplicateDetectionInstance;
                             requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
@@ -874,8 +790,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements8 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
                         Element duplicateDetectionHistoryTimeWindowElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (duplicateDetectionHistoryTimeWindowElement != null)
-                        {
+                        if (duplicateDetectionHistoryTimeWindowElement != null) {
                             String duplicateDetectionHistoryTimeWindowInstance;
                             duplicateDetectionHistoryTimeWindowInstance = duplicateDetectionHistoryTimeWindowElement.getTextContent();
                             topicDescriptionInstance.setDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindowInstance);
@@ -883,8 +798,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements9 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         Element enableBatchedOperationsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (enableBatchedOperationsElement != null)
-                        {
+                        if (enableBatchedOperationsElement != null) {
                             boolean enableBatchedOperationsInstance;
                             enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
@@ -892,8 +806,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements10 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
                         Element sizeInBytesElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (sizeInBytesElement != null)
-                        {
+                        if (sizeInBytesElement != null) {
                             int sizeInBytesInstance;
                             sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
@@ -901,8 +814,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements11 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         Element filteringMessagesBeforePublishingElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (filteringMessagesBeforePublishingElement != null)
-                        {
+                        if (filteringMessagesBeforePublishingElement != null) {
                             boolean filteringMessagesBeforePublishingInstance;
                             filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
@@ -910,8 +822,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements12 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         Element isAnonymousAccessibleElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (isAnonymousAccessibleElement != null)
-                        {
+                        if (isAnonymousAccessibleElement != null) {
                             boolean isAnonymousAccessibleInstance;
                             isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
@@ -919,18 +830,15 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements13 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                         Element authorizationRulesSequenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (authorizationRulesSequenceElement != null)
-                        {
-                            for (int i1 = 0; i1 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1)
-                            {
+                        if (authorizationRulesSequenceElement != null) {
+                            for (int i1 = 0; i1 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1) {
                                 org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i1));
                                 ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                 topicDescriptionInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                 
                                 NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 Element claimTypeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (claimTypeElement != null)
-                                {
+                                if (claimTypeElement != null) {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement.getTextContent();
                                     authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -938,8 +846,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements15 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 Element claimValueElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (claimValueElement != null)
-                                {
+                                if (claimValueElement != null) {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement.getTextContent();
                                     authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -947,10 +854,8 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements16 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (rightsSequenceElement != null)
-                                {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
-                                    {
+                                if (rightsSequenceElement != null) {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -958,8 +863,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements17 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 Element createdTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                if (createdTimeElement != null)
-                                {
+                                if (createdTimeElement != null) {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -967,8 +871,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements18 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                if (keyNameElement != null)
-                                {
+                                if (keyNameElement != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -976,8 +879,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements19 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 Element modifiedTimeElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                if (modifiedTimeElement != null)
-                                {
+                                if (modifiedTimeElement != null) {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -985,8 +887,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements20 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 Element primaryKeyElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                if (primaryKeyElement != null)
-                                {
+                                if (primaryKeyElement != null) {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement.getTextContent();
                                     authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -994,8 +895,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements21 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 Element secondaryKeyElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                if (secondaryKeyElement != null)
-                                {
+                                if (secondaryKeyElement != null) {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement.getTextContent();
                                     authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -1005,8 +905,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements22 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                         Element statusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                        if (statusElement != null)
-                        {
+                        if (statusElement != null) {
                             String statusInstance;
                             statusInstance = statusElement.getTextContent();
                             topicDescriptionInstance.setStatus(statusInstance);
@@ -1014,8 +913,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements23 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                         Element createdAtElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                        if (createdAtElement != null)
-                        {
+                        if (createdAtElement != null) {
                             Calendar createdAtInstance;
                             createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
@@ -1023,8 +921,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements24 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
                         Element updatedAtElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                        if (updatedAtElement != null)
-                        {
+                        if (updatedAtElement != null) {
                             Calendar updatedAtInstance;
                             updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
@@ -1032,8 +929,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements25 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
                         Element accessedAtElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                        if (accessedAtElement != null)
-                        {
+                        if (accessedAtElement != null) {
                             Calendar accessedAtInstance;
                             accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
@@ -1041,8 +937,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements26 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         Element supportOrderingElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                        if (supportOrderingElement != null)
-                        {
+                        if (supportOrderingElement != null) {
                             boolean supportOrderingInstance;
                             supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
@@ -1050,16 +945,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements27 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
                         Element countDetailsElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                        if (countDetailsElement != null)
-                        {
+                        if (countDetailsElement != null) {
                             CountDetails countDetailsInstance = new CountDetails();
                             topicDescriptionInstance.setCountDetails(countDetailsInstance);
                         }
                         
                         NodeList elements28 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
                         Element subscriptionCountElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                        if (subscriptionCountElement != null)
-                        {
+                        if (subscriptionCountElement != null) {
                             int subscriptionCountInstance;
                             subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
@@ -1067,8 +960,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements29 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
                         Element autoDeleteOnIdleElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (autoDeleteOnIdleElement != null)
-                        {
+                        if (autoDeleteOnIdleElement != null) {
                             String autoDeleteOnIdleInstance;
                             autoDeleteOnIdleInstance = autoDeleteOnIdleElement.getTextContent();
                             topicDescriptionInstance.setAutoDeleteOnIdle(autoDeleteOnIdleInstance);
@@ -1076,8 +968,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements30 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
                         Element entityAvailabilityStatusElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                        if (entityAvailabilityStatusElement != null)
-                        {
+                        if (entityAvailabilityStatusElement != null) {
                             String entityAvailabilityStatusInstance;
                             entityAvailabilityStatusInstance = entityAvailabilityStatusElement.getTextContent();
                             topicDescriptionInstance.setEntityAvailabilityStatus(entityAvailabilityStatusInstance);
@@ -1087,21 +978,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1115,12 +1001,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String topicName)
-    {
+    public Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(final String namespaceName, final String topicName) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusConnectionDetailsResponse>() { 
             @Override
-            public ServiceBusConnectionDetailsResponse call() throws Exception
-            {
+            public ServiceBusConnectionDetailsResponse call() throws Exception {
                 return getConnectionDetails(namespaceName, topicName);
             }
          });
@@ -1142,23 +1026,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return The set of connection details for a service bus entity.
     */
     @Override
-    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException
-    {
+    public ServiceBusConnectionDetailsResponse getConnectionDetails(String namespaceName, String topicName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
-        if (namespaceName == null)
-        {
+        if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
-        if (topicName == null)
-        {
+        if (topicName == null) {
             throw new NullPointerException("topicName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1178,23 +1058,18 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1212,28 +1087,22 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null)
-            {
-                if (feedElement != null)
-                {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
-                    {
+            if (feedElement != null) {
+                if (feedElement != null) {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusConnectionDetail entryInstance = new ServiceBusConnectionDetail();
                         result.getConnectionDetails().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (contentElement != null)
-                        {
+                        if (contentElement != null) {
                             NodeList elements3 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionDetail");
                             Element connectionDetailElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                            if (connectionDetailElement != null)
-                            {
+                            if (connectionDetailElement != null) {
                                 NodeList elements4 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                                if (keyNameElement != null)
-                                {
+                                if (keyNameElement != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement.getTextContent();
                                     entryInstance.setKeyName(keyNameInstance);
@@ -1241,8 +1110,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements5 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ConnectionString");
                                 Element connectionStringElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (connectionStringElement != null)
-                                {
+                                if (connectionStringElement != null) {
                                     String connectionStringInstance;
                                     connectionStringInstance = connectionStringElement.getTextContent();
                                     entryInstance.setConnectionString(connectionStringInstance);
@@ -1250,8 +1118,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements6 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationType");
                                 Element authorizationTypeElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (authorizationTypeElement != null)
-                                {
+                                if (authorizationTypeElement != null) {
                                     String authorizationTypeInstance;
                                     authorizationTypeInstance = authorizationTypeElement.getTextContent();
                                     entryInstance.setAuthorizationType(authorizationTypeInstance);
@@ -1259,10 +1126,8 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements7 = connectionDetailElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (rightsSequenceElement != null)
-                                {
-                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
-                                    {
+                                if (rightsSequenceElement != null) {
+                                    for (int i2 = 0; i2 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         entryInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -1274,21 +1139,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1304,12 +1164,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a list of topics.
     */
     @Override
-    public Future<ServiceBusTopicsResponse> listAsync(final String namespaceName)
-    {
+    public Future<ServiceBusTopicsResponse> listAsync(final String namespaceName) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicsResponse>() { 
             @Override
-            public ServiceBusTopicsResponse call() throws Exception
-            {
+            public ServiceBusTopicsResponse call() throws Exception {
                 return list(namespaceName);
             }
          });
@@ -1335,19 +1193,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a list of topics.
     */
     @Override
-    public ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException
-    {
+    public ServiceBusTopicsResponse list(String namespaceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (namespaceName == null)
-        {
+        if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1366,23 +1221,18 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -1400,20 +1250,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "feed");
             Element feedElement = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (feedElement != null)
-            {
-                if (feedElement != null)
-                {
-                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1)
-                    {
+            if (feedElement != null) {
+                if (feedElement != null) {
+                    for (int i1 = 0; i1 < feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").getLength(); i1 = i1 + 1) {
                         org.w3c.dom.Element entriesElement = ((org.w3c.dom.Element) feedElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry").item(i1));
                         ServiceBusTopic entryInstance = new ServiceBusTopic();
                         result.getTopics().add(entryInstance);
                         
                         NodeList elements2 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                         Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                        if (titleElement != null)
-                        {
+                        if (titleElement != null) {
                             String titleInstance;
                             titleInstance = titleElement.getTextContent();
                             entryInstance.setName(titleInstance);
@@ -1421,16 +1267,13 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements3 = entriesElement.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                         Element contentElement = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                        if (contentElement != null)
-                        {
+                        if (contentElement != null) {
                             NodeList elements4 = contentElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
                             Element topicDescriptionElement = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                            if (topicDescriptionElement != null)
-                            {
+                            if (topicDescriptionElement != null) {
                                 NodeList elements5 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
                                 Element defaultMessageTimeToLiveElement = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                                if (defaultMessageTimeToLiveElement != null)
-                                {
+                                if (defaultMessageTimeToLiveElement != null) {
                                     String defaultMessageTimeToLiveInstance;
                                     defaultMessageTimeToLiveInstance = defaultMessageTimeToLiveElement.getTextContent();
                                     entryInstance.setDefaultMessageTimeToLive(defaultMessageTimeToLiveInstance);
@@ -1438,8 +1281,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements6 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
                                 Element maxSizeInMegabytesElement = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                                if (maxSizeInMegabytesElement != null)
-                                {
+                                if (maxSizeInMegabytesElement != null) {
                                     int maxSizeInMegabytesInstance;
                                     maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement.getTextContent());
                                     entryInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
@@ -1447,8 +1289,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements7 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                                 Element requiresDuplicateDetectionElement = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                                if (requiresDuplicateDetectionElement != null)
-                                {
+                                if (requiresDuplicateDetectionElement != null) {
                                     boolean requiresDuplicateDetectionInstance;
                                     requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
                                     entryInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
@@ -1456,8 +1297,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements8 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
                                 Element duplicateDetectionHistoryTimeWindowElement = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                                if (duplicateDetectionHistoryTimeWindowElement != null)
-                                {
+                                if (duplicateDetectionHistoryTimeWindowElement != null) {
                                     String duplicateDetectionHistoryTimeWindowInstance;
                                     duplicateDetectionHistoryTimeWindowInstance = duplicateDetectionHistoryTimeWindowElement.getTextContent();
                                     entryInstance.setDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindowInstance);
@@ -1465,8 +1305,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements9 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                                 Element enableBatchedOperationsElement = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                                if (enableBatchedOperationsElement != null)
-                                {
+                                if (enableBatchedOperationsElement != null) {
                                     boolean enableBatchedOperationsInstance;
                                     enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
                                     entryInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
@@ -1474,8 +1313,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements10 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
                                 Element sizeInBytesElement = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                                if (sizeInBytesElement != null)
-                                {
+                                if (sizeInBytesElement != null) {
                                     int sizeInBytesInstance;
                                     sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement.getTextContent());
                                     entryInstance.setSizeInBytes(sizeInBytesInstance);
@@ -1483,8 +1321,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements11 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                                 Element filteringMessagesBeforePublishingElement = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                                if (filteringMessagesBeforePublishingElement != null)
-                                {
+                                if (filteringMessagesBeforePublishingElement != null) {
                                     boolean filteringMessagesBeforePublishingInstance;
                                     filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
                                     entryInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
@@ -1492,8 +1329,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements12 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                                 Element isAnonymousAccessibleElement = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                                if (isAnonymousAccessibleElement != null)
-                                {
+                                if (isAnonymousAccessibleElement != null) {
                                     boolean isAnonymousAccessibleInstance;
                                     isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
                                     entryInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
@@ -1501,18 +1337,15 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements13 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                                 Element authorizationRulesSequenceElement = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                                if (authorizationRulesSequenceElement != null)
-                                {
-                                    for (int i2 = 0; i2 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i2 = i2 + 1)
-                                    {
+                                if (authorizationRulesSequenceElement != null) {
+                                    for (int i2 = 0; i2 < authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i2));
                                         ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                         entryInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                         
                                         NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                         Element claimTypeElement = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                        if (claimTypeElement != null)
-                                        {
+                                        if (claimTypeElement != null) {
                                             String claimTypeInstance;
                                             claimTypeInstance = claimTypeElement.getTextContent();
                                             authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -1520,8 +1353,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements15 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                         Element claimValueElement = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                        if (claimValueElement != null)
-                                        {
+                                        if (claimValueElement != null) {
                                             String claimValueInstance;
                                             claimValueInstance = claimValueElement.getTextContent();
                                             authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -1529,10 +1361,8 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements16 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                         Element rightsSequenceElement = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                        if (rightsSequenceElement != null)
-                                        {
-                                            for (int i3 = 0; i3 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i3 = i3 + 1)
-                                            {
+                                        if (rightsSequenceElement != null) {
+                                            for (int i3 = 0; i3 < rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i3 = i3 + 1) {
                                                 org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i3));
                                                 authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                             }
@@ -1540,8 +1370,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements17 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                         Element createdTimeElement = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                        if (createdTimeElement != null)
-                                        {
+                                        if (createdTimeElement != null) {
                                             Calendar createdTimeInstance;
                                             createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement.getTextContent());
                                             authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -1549,8 +1378,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements18 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                         Element keyNameElement = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                        if (keyNameElement != null)
-                                        {
+                                        if (keyNameElement != null) {
                                             String keyNameInstance;
                                             keyNameInstance = keyNameElement.getTextContent();
                                             authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -1558,8 +1386,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements19 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                         Element modifiedTimeElement = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                        if (modifiedTimeElement != null)
-                                        {
+                                        if (modifiedTimeElement != null) {
                                             Calendar modifiedTimeInstance;
                                             modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement.getTextContent());
                                             authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -1567,8 +1394,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements20 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                         Element primaryKeyElement = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                        if (primaryKeyElement != null)
-                                        {
+                                        if (primaryKeyElement != null) {
                                             String primaryKeyInstance;
                                             primaryKeyInstance = primaryKeyElement.getTextContent();
                                             authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -1576,8 +1402,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                         
                                         NodeList elements21 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                         Element secondaryKeyElement = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                        if (secondaryKeyElement != null)
-                                        {
+                                        if (secondaryKeyElement != null) {
                                             String secondaryKeyInstance;
                                             secondaryKeyInstance = secondaryKeyElement.getTextContent();
                                             authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -1587,8 +1412,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements22 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                                 Element statusElement = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                                if (statusElement != null)
-                                {
+                                if (statusElement != null) {
                                     String statusInstance;
                                     statusInstance = statusElement.getTextContent();
                                     entryInstance.setStatus(statusInstance);
@@ -1596,8 +1420,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements23 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                                 Element createdAtElement = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                                if (createdAtElement != null)
-                                {
+                                if (createdAtElement != null) {
                                     Calendar createdAtInstance;
                                     createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement.getTextContent());
                                     entryInstance.setCreatedAt(createdAtInstance);
@@ -1605,8 +1428,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements24 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
                                 Element updatedAtElement = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                                if (updatedAtElement != null)
-                                {
+                                if (updatedAtElement != null) {
                                     Calendar updatedAtInstance;
                                     updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement.getTextContent());
                                     entryInstance.setUpdatedAt(updatedAtInstance);
@@ -1614,8 +1436,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements25 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
                                 Element accessedAtElement = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                                if (accessedAtElement != null)
-                                {
+                                if (accessedAtElement != null) {
                                     Calendar accessedAtInstance;
                                     accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement.getTextContent());
                                     entryInstance.setAccessedAt(accessedAtInstance);
@@ -1623,8 +1444,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements26 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                                 Element supportOrderingElement = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                                if (supportOrderingElement != null)
-                                {
+                                if (supportOrderingElement != null) {
                                     boolean supportOrderingInstance;
                                     supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
                                     entryInstance.setSupportOrdering(supportOrderingInstance);
@@ -1632,16 +1452,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements27 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
                                 Element countDetailsElement = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                                if (countDetailsElement != null)
-                                {
+                                if (countDetailsElement != null) {
                                     CountDetails countDetailsInstance = new CountDetails();
                                     entryInstance.setCountDetails(countDetailsInstance);
                                 }
                                 
                                 NodeList elements28 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
                                 Element subscriptionCountElement = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                                if (subscriptionCountElement != null)
-                                {
+                                if (subscriptionCountElement != null) {
                                     int subscriptionCountInstance;
                                     subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement.getTextContent());
                                     entryInstance.setSubscriptionCount(subscriptionCountInstance);
@@ -1649,8 +1467,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements29 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
                                 Element autoDeleteOnIdleElement = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                                if (autoDeleteOnIdleElement != null)
-                                {
+                                if (autoDeleteOnIdleElement != null) {
                                     String autoDeleteOnIdleInstance;
                                     autoDeleteOnIdleInstance = autoDeleteOnIdleElement.getTextContent();
                                     entryInstance.setAutoDeleteOnIdle(autoDeleteOnIdleInstance);
@@ -1658,8 +1475,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements30 = topicDescriptionElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
                                 Element entityAvailabilityStatusElement = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                                if (entityAvailabilityStatusElement != null)
-                                {
+                                if (entityAvailabilityStatusElement != null) {
                                     String entityAvailabilityStatusInstance;
                                     entityAvailabilityStatusInstance = entityAvailabilityStatusElement.getTextContent();
                                     entryInstance.setEntityAvailabilityStatus(entityAvailabilityStatusInstance);
@@ -1671,21 +1487,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
@@ -1701,12 +1512,10 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public Future<ServiceBusTopicResponse> updateAsync(final String namespaceName, final ServiceBusTopic topic)
-    {
+    public Future<ServiceBusTopicResponse> updateAsync(final String namespaceName, final ServiceBusTopic topic) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusTopicResponse>() { 
             @Override
-            public ServiceBusTopicResponse call() throws Exception
-            {
+            public ServiceBusTopicResponse call() throws Exception {
                 return update(namespaceName, topic);
             }
          });
@@ -1732,23 +1541,19 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular topic.
     */
     @Override
-    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
+    public ServiceBusTopicResponse update(String namespaceName, ServiceBusTopic topic) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
-        if (namespaceName == null)
-        {
+        if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
-        if (topic == null)
-        {
+        if (topic == null) {
             throw new NullPointerException("topic");
         }
         
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("namespaceName", namespaceName);
@@ -1788,8 +1593,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         Element topicDescriptionElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
         contentElement.appendChild(topicDescriptionElement);
         
-        if (topic.getDefaultMessageTimeToLive() != null)
-        {
+        if (topic.getDefaultMessageTimeToLive() != null) {
             Element defaultMessageTimeToLiveElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
             defaultMessageTimeToLiveElement.appendChild(requestDoc.createTextNode(topic.getDefaultMessageTimeToLive()));
             topicDescriptionElement.appendChild(defaultMessageTimeToLiveElement);
@@ -1803,8 +1607,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         requiresDuplicateDetectionElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isRequiresDuplicateDetection()).toLowerCase()));
         topicDescriptionElement.appendChild(requiresDuplicateDetectionElement);
         
-        if (topic.getDuplicateDetectionHistoryTimeWindow() != null)
-        {
+        if (topic.getDuplicateDetectionHistoryTimeWindow() != null) {
             Element duplicateDetectionHistoryTimeWindowElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
             duplicateDetectionHistoryTimeWindowElement.appendChild(requestDoc.createTextNode(topic.getDuplicateDetectionHistoryTimeWindow()));
             topicDescriptionElement.appendChild(duplicateDetectionHistoryTimeWindowElement);
@@ -1826,11 +1629,9 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         isAnonymousAccessibleElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isAnonymousAccessible()).toLowerCase()));
         topicDescriptionElement.appendChild(isAnonymousAccessibleElement);
         
-        if (topic.getAuthorizationRules() != null)
-        {
+        if (topic.getAuthorizationRules() != null) {
             Element authorizationRulesSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
-            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules())
-            {
+            for (ServiceBusSharedAccessAuthorizationRule authorizationRulesItem : topic.getAuthorizationRules()) {
                 Element authorizationRuleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule");
                 authorizationRulesSequenceElement.appendChild(authorizationRuleElement);
                 
@@ -1838,25 +1639,21 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 typeAttribute2.setValue("SharedAccessAuthorizationRule");
                 authorizationRuleElement.setAttributeNode(typeAttribute2);
                 
-                if (authorizationRulesItem.getClaimType() != null)
-                {
+                if (authorizationRulesItem.getClaimType() != null) {
                     Element claimTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                     claimTypeElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimType()));
                     authorizationRuleElement.appendChild(claimTypeElement);
                 }
                 
-                if (authorizationRulesItem.getClaimValue() != null)
-                {
+                if (authorizationRulesItem.getClaimValue() != null) {
                     Element claimValueElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                     claimValueElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getClaimValue()));
                     authorizationRuleElement.appendChild(claimValueElement);
                 }
                 
-                if (authorizationRulesItem.getRights() != null)
-                {
+                if (authorizationRulesItem.getRights() != null) {
                     Element rightsSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
-                    for (AccessRight rightsItem : authorizationRulesItem.getRights())
-                    {
+                    for (AccessRight rightsItem : authorizationRulesItem.getRights()) {
                         Element rightsItemElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights");
                         rightsItemElement.appendChild(requestDoc.createTextNode(rightsItem.toString()));
                         rightsSequenceElement.appendChild(rightsItemElement);
@@ -1870,8 +1667,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 createdTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat.format(authorizationRulesItem.getCreatedTime().getTime())));
                 authorizationRuleElement.appendChild(createdTimeElement);
                 
-                if (authorizationRulesItem.getKeyName() != null)
-                {
+                if (authorizationRulesItem.getKeyName() != null) {
                     Element keyNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                     keyNameElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getKeyName()));
                     authorizationRuleElement.appendChild(keyNameElement);
@@ -1883,15 +1679,13 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                 modifiedTimeElement.appendChild(requestDoc.createTextNode(simpleDateFormat2.format(authorizationRulesItem.getModifiedTime().getTime())));
                 authorizationRuleElement.appendChild(modifiedTimeElement);
                 
-                if (authorizationRulesItem.getPrimaryKey() != null)
-                {
+                if (authorizationRulesItem.getPrimaryKey() != null) {
                     Element primaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                     primaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getPrimaryKey()));
                     authorizationRuleElement.appendChild(primaryKeyElement);
                 }
                 
-                if (authorizationRulesItem.getSecondaryKey() != null)
-                {
+                if (authorizationRulesItem.getSecondaryKey() != null) {
                     Element secondaryKeyElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                     secondaryKeyElement.appendChild(requestDoc.createTextNode(authorizationRulesItem.getSecondaryKey()));
                     authorizationRuleElement.appendChild(secondaryKeyElement);
@@ -1900,8 +1694,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             topicDescriptionElement.appendChild(authorizationRulesSequenceElement);
         }
         
-        if (topic.getStatus() != null)
-        {
+        if (topic.getStatus() != null) {
             Element statusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
             statusElement.appendChild(requestDoc.createTextNode(topic.getStatus()));
             topicDescriptionElement.appendChild(statusElement);
@@ -1929,8 +1722,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         supportOrderingElement.appendChild(requestDoc.createTextNode(Boolean.toString(topic.isSupportOrdering()).toLowerCase()));
         topicDescriptionElement.appendChild(supportOrderingElement);
         
-        if (topic.getCountDetails() != null)
-        {
+        if (topic.getCountDetails() != null) {
             Element countDetailsElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
             topicDescriptionElement.appendChild(countDetailsElement);
             
@@ -1959,15 +1751,13 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         subscriptionCountElement.appendChild(requestDoc.createTextNode(Integer.toString(topic.getSubscriptionCount())));
         topicDescriptionElement.appendChild(subscriptionCountElement);
         
-        if (topic.getAutoDeleteOnIdle() != null)
-        {
+        if (topic.getAutoDeleteOnIdle() != null) {
             Element autoDeleteOnIdleElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
             autoDeleteOnIdleElement.appendChild(requestDoc.createTextNode(topic.getAutoDeleteOnIdle()));
             topicDescriptionElement.appendChild(autoDeleteOnIdleElement);
         }
         
-        if (topic.getEntityAvailabilityStatus() != null)
-        {
+        if (topic.getEntityAvailabilityStatus() != null) {
             Element entityAvailabilityStatusElement = requestDoc.createElementNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
             entityAvailabilityStatusElement.appendChild(requestDoc.createTextNode(topic.getEntityAvailabilityStatus()));
             topicDescriptionElement.appendChild(entityAvailabilityStatusElement);
@@ -1986,23 +1776,18 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
         
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
             httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
+            if (statusCode != HttpStatus.SC_OK) {
                 ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
@@ -2020,29 +1805,24 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             
             NodeList elements = responseDoc.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "entry");
             Element entryElement2 = elements.getLength() > 0 ? ((Element) elements.item(0)) : null;
-            if (entryElement2 != null)
-            {
+            if (entryElement2 != null) {
                 NodeList elements2 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "title");
                 Element titleElement = elements2.getLength() > 0 ? ((Element) elements2.item(0)) : null;
-                if (titleElement != null)
-                {
+                if (titleElement != null) {
                 }
                 
                 NodeList elements3 = entryElement2.getElementsByTagNameNS("http://www.w3.org/2005/Atom", "content");
                 Element contentElement2 = elements3.getLength() > 0 ? ((Element) elements3.item(0)) : null;
-                if (contentElement2 != null)
-                {
+                if (contentElement2 != null) {
                     NodeList elements4 = contentElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription");
                     Element topicDescriptionElement2 = elements4.getLength() > 0 ? ((Element) elements4.item(0)) : null;
-                    if (topicDescriptionElement2 != null)
-                    {
+                    if (topicDescriptionElement2 != null) {
                         ServiceBusTopic topicDescriptionInstance = new ServiceBusTopic();
                         result.setTopic(topicDescriptionInstance);
                         
                         NodeList elements5 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DefaultMessageTimeToLive");
                         Element defaultMessageTimeToLiveElement2 = elements5.getLength() > 0 ? ((Element) elements5.item(0)) : null;
-                        if (defaultMessageTimeToLiveElement2 != null)
-                        {
+                        if (defaultMessageTimeToLiveElement2 != null) {
                             String defaultMessageTimeToLiveInstance;
                             defaultMessageTimeToLiveInstance = defaultMessageTimeToLiveElement2.getTextContent();
                             topicDescriptionInstance.setDefaultMessageTimeToLive(defaultMessageTimeToLiveInstance);
@@ -2050,8 +1830,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements6 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "MaxSizeInMegabytes");
                         Element maxSizeInMegabytesElement2 = elements6.getLength() > 0 ? ((Element) elements6.item(0)) : null;
-                        if (maxSizeInMegabytesElement2 != null)
-                        {
+                        if (maxSizeInMegabytesElement2 != null) {
                             int maxSizeInMegabytesInstance;
                             maxSizeInMegabytesInstance = DatatypeConverter.parseInt(maxSizeInMegabytesElement2.getTextContent());
                             topicDescriptionInstance.setMaxSizeInMegabytes(maxSizeInMegabytesInstance);
@@ -2059,8 +1838,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements7 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         Element requiresDuplicateDetectionElement2 = elements7.getLength() > 0 ? ((Element) elements7.item(0)) : null;
-                        if (requiresDuplicateDetectionElement2 != null)
-                        {
+                        if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
                             requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
@@ -2068,8 +1846,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements8 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DuplicateDetectionHistoryTimeWindow");
                         Element duplicateDetectionHistoryTimeWindowElement2 = elements8.getLength() > 0 ? ((Element) elements8.item(0)) : null;
-                        if (duplicateDetectionHistoryTimeWindowElement2 != null)
-                        {
+                        if (duplicateDetectionHistoryTimeWindowElement2 != null) {
                             String duplicateDetectionHistoryTimeWindowInstance;
                             duplicateDetectionHistoryTimeWindowInstance = duplicateDetectionHistoryTimeWindowElement2.getTextContent();
                             topicDescriptionInstance.setDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindowInstance);
@@ -2077,8 +1854,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements9 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         Element enableBatchedOperationsElement2 = elements9.getLength() > 0 ? ((Element) elements9.item(0)) : null;
-                        if (enableBatchedOperationsElement2 != null)
-                        {
+                        if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
                             enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
@@ -2086,8 +1862,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements10 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes");
                         Element sizeInBytesElement2 = elements10.getLength() > 0 ? ((Element) elements10.item(0)) : null;
-                        if (sizeInBytesElement2 != null)
-                        {
+                        if (sizeInBytesElement2 != null) {
                             int sizeInBytesInstance;
                             sizeInBytesInstance = DatatypeConverter.parseInt(sizeInBytesElement2.getTextContent());
                             topicDescriptionInstance.setSizeInBytes(sizeInBytesInstance);
@@ -2095,8 +1870,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements11 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         Element filteringMessagesBeforePublishingElement2 = elements11.getLength() > 0 ? ((Element) elements11.item(0)) : null;
-                        if (filteringMessagesBeforePublishingElement2 != null)
-                        {
+                        if (filteringMessagesBeforePublishingElement2 != null) {
                             boolean filteringMessagesBeforePublishingInstance;
                             filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
@@ -2104,8 +1878,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements12 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         Element isAnonymousAccessibleElement2 = elements12.getLength() > 0 ? ((Element) elements12.item(0)) : null;
-                        if (isAnonymousAccessibleElement2 != null)
-                        {
+                        if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
                             isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
@@ -2113,18 +1886,15 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements13 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
                         Element authorizationRulesSequenceElement2 = elements13.getLength() > 0 ? ((Element) elements13.item(0)) : null;
-                        if (authorizationRulesSequenceElement2 != null)
-                        {
-                            for (int i1 = 0; i1 < authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1)
-                            {
+                        if (authorizationRulesSequenceElement2 != null) {
+                            for (int i1 = 0; i1 < authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").getLength(); i1 = i1 + 1) {
                                 org.w3c.dom.Element authorizationRulesElement = ((org.w3c.dom.Element) authorizationRulesSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRule").item(i1));
                                 ServiceBusSharedAccessAuthorizationRule authorizationRuleInstance = new ServiceBusSharedAccessAuthorizationRule();
                                 topicDescriptionInstance.getAuthorizationRules().add(authorizationRuleInstance);
                                 
                                 NodeList elements14 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType");
                                 Element claimTypeElement2 = elements14.getLength() > 0 ? ((Element) elements14.item(0)) : null;
-                                if (claimTypeElement2 != null)
-                                {
+                                if (claimTypeElement2 != null) {
                                     String claimTypeInstance;
                                     claimTypeInstance = claimTypeElement2.getTextContent();
                                     authorizationRuleInstance.setClaimType(claimTypeInstance);
@@ -2132,8 +1902,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements15 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue");
                                 Element claimValueElement2 = elements15.getLength() > 0 ? ((Element) elements15.item(0)) : null;
-                                if (claimValueElement2 != null)
-                                {
+                                if (claimValueElement2 != null) {
                                     String claimValueInstance;
                                     claimValueInstance = claimValueElement2.getTextContent();
                                     authorizationRuleInstance.setClaimValue(claimValueInstance);
@@ -2141,10 +1910,8 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements16 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
                                 Element rightsSequenceElement2 = elements16.getLength() > 0 ? ((Element) elements16.item(0)) : null;
-                                if (rightsSequenceElement2 != null)
-                                {
-                                    for (int i2 = 0; i2 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1)
-                                    {
+                                if (rightsSequenceElement2 != null) {
+                                    for (int i2 = 0; i2 < rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").getLength(); i2 = i2 + 1) {
                                         org.w3c.dom.Element rightsElement = ((org.w3c.dom.Element) rightsSequenceElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessRights").item(i2));
                                         authorizationRuleInstance.getRights().add(AccessRight.valueOf(rightsElement.getTextContent()));
                                     }
@@ -2152,8 +1919,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements17 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedTime");
                                 Element createdTimeElement2 = elements17.getLength() > 0 ? ((Element) elements17.item(0)) : null;
-                                if (createdTimeElement2 != null)
-                                {
+                                if (createdTimeElement2 != null) {
                                     Calendar createdTimeInstance;
                                     createdTimeInstance = DatatypeConverter.parseDateTime(createdTimeElement2.getTextContent());
                                     authorizationRuleInstance.setCreatedTime(createdTimeInstance);
@@ -2161,8 +1927,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements18 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName");
                                 Element keyNameElement2 = elements18.getLength() > 0 ? ((Element) elements18.item(0)) : null;
-                                if (keyNameElement2 != null)
-                                {
+                                if (keyNameElement2 != null) {
                                     String keyNameInstance;
                                     keyNameInstance = keyNameElement2.getTextContent();
                                     authorizationRuleInstance.setKeyName(keyNameInstance);
@@ -2170,8 +1935,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements19 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ModifiedTime");
                                 Element modifiedTimeElement2 = elements19.getLength() > 0 ? ((Element) elements19.item(0)) : null;
-                                if (modifiedTimeElement2 != null)
-                                {
+                                if (modifiedTimeElement2 != null) {
                                     Calendar modifiedTimeInstance;
                                     modifiedTimeInstance = DatatypeConverter.parseDateTime(modifiedTimeElement2.getTextContent());
                                     authorizationRuleInstance.setModifiedTime(modifiedTimeInstance);
@@ -2179,8 +1943,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements20 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey");
                                 Element primaryKeyElement2 = elements20.getLength() > 0 ? ((Element) elements20.item(0)) : null;
-                                if (primaryKeyElement2 != null)
-                                {
+                                if (primaryKeyElement2 != null) {
                                     String primaryKeyInstance;
                                     primaryKeyInstance = primaryKeyElement2.getTextContent();
                                     authorizationRuleInstance.setPrimaryKey(primaryKeyInstance);
@@ -2188,8 +1951,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 
                                 NodeList elements21 = authorizationRulesElement.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SecondaryKey");
                                 Element secondaryKeyElement2 = elements21.getLength() > 0 ? ((Element) elements21.item(0)) : null;
-                                if (secondaryKeyElement2 != null)
-                                {
+                                if (secondaryKeyElement2 != null) {
                                     String secondaryKeyInstance;
                                     secondaryKeyInstance = secondaryKeyElement2.getTextContent();
                                     authorizationRuleInstance.setSecondaryKey(secondaryKeyInstance);
@@ -2199,8 +1961,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements22 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Status");
                         Element statusElement2 = elements22.getLength() > 0 ? ((Element) elements22.item(0)) : null;
-                        if (statusElement2 != null)
-                        {
+                        if (statusElement2 != null) {
                             String statusInstance;
                             statusInstance = statusElement2.getTextContent();
                             topicDescriptionInstance.setStatus(statusInstance);
@@ -2208,8 +1969,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements23 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CreatedAt");
                         Element createdAtElement2 = elements23.getLength() > 0 ? ((Element) elements23.item(0)) : null;
-                        if (createdAtElement2 != null)
-                        {
+                        if (createdAtElement2 != null) {
                             Calendar createdAtInstance;
                             createdAtInstance = DatatypeConverter.parseDateTime(createdAtElement2.getTextContent());
                             topicDescriptionInstance.setCreatedAt(createdAtInstance);
@@ -2217,8 +1977,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements24 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "UpdatedAt");
                         Element updatedAtElement2 = elements24.getLength() > 0 ? ((Element) elements24.item(0)) : null;
-                        if (updatedAtElement2 != null)
-                        {
+                        if (updatedAtElement2 != null) {
                             Calendar updatedAtInstance;
                             updatedAtInstance = DatatypeConverter.parseDateTime(updatedAtElement2.getTextContent());
                             topicDescriptionInstance.setUpdatedAt(updatedAtInstance);
@@ -2226,8 +1985,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements25 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AccessedAt");
                         Element accessedAtElement2 = elements25.getLength() > 0 ? ((Element) elements25.item(0)) : null;
-                        if (accessedAtElement2 != null)
-                        {
+                        if (accessedAtElement2 != null) {
                             Calendar accessedAtInstance;
                             accessedAtInstance = DatatypeConverter.parseDateTime(accessedAtElement2.getTextContent());
                             topicDescriptionInstance.setAccessedAt(accessedAtInstance);
@@ -2235,8 +1993,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements26 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         Element supportOrderingElement2 = elements26.getLength() > 0 ? ((Element) elements26.item(0)) : null;
-                        if (supportOrderingElement2 != null)
-                        {
+                        if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
                             supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
@@ -2244,16 +2001,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements27 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "CountDetails");
                         Element countDetailsElement2 = elements27.getLength() > 0 ? ((Element) elements27.item(0)) : null;
-                        if (countDetailsElement2 != null)
-                        {
+                        if (countDetailsElement2 != null) {
                             CountDetails countDetailsInstance = new CountDetails();
                             topicDescriptionInstance.setCountDetails(countDetailsInstance);
                         }
                         
                         NodeList elements28 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionCount");
                         Element subscriptionCountElement2 = elements28.getLength() > 0 ? ((Element) elements28.item(0)) : null;
-                        if (subscriptionCountElement2 != null)
-                        {
+                        if (subscriptionCountElement2 != null) {
                             int subscriptionCountInstance;
                             subscriptionCountInstance = DatatypeConverter.parseInt(subscriptionCountElement2.getTextContent());
                             topicDescriptionInstance.setSubscriptionCount(subscriptionCountInstance);
@@ -2261,8 +2016,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements29 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AutoDeleteOnIdle");
                         Element autoDeleteOnIdleElement2 = elements29.getLength() > 0 ? ((Element) elements29.item(0)) : null;
-                        if (autoDeleteOnIdleElement2 != null)
-                        {
+                        if (autoDeleteOnIdleElement2 != null) {
                             String autoDeleteOnIdleInstance;
                             autoDeleteOnIdleInstance = autoDeleteOnIdleElement2.getTextContent();
                             topicDescriptionInstance.setAutoDeleteOnIdle(autoDeleteOnIdleInstance);
@@ -2270,8 +2024,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         
                         NodeList elements30 = topicDescriptionElement2.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EntityAvailabilityStatus");
                         Element entityAvailabilityStatusElement2 = elements30.getLength() > 0 ? ((Element) elements30.item(0)) : null;
-                        if (entityAvailabilityStatusElement2 != null)
-                        {
+                        if (entityAvailabilityStatusElement2 != null) {
                             String entityAvailabilityStatusInstance;
                             entityAvailabilityStatusInstance = entityAvailabilityStatusElement2.getTextContent();
                             topicDescriptionInstance.setEntityAvailabilityStatus(entityAvailabilityStatusInstance);
@@ -2281,21 +2034,16 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
             }
             
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
             }
             
-            if (shouldTrace)
-            {
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

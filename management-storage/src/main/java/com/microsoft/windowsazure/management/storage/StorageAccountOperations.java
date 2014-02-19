@@ -48,8 +48,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460790.aspx for more
 * information)
 */
-public interface StorageAccountOperations
-{
+public interface StorageAccountOperations {
     /**
     * The Create Storage Account operation creates a new storage account in
     * Windows Azure.  (see
@@ -92,7 +91,7 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param serviceName The desired storage account name to check for
+    * @param accountName The desired storage account name to check for
     * availability.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -104,7 +103,7 @@ public interface StorageAccountOperations
     * response.
     * @return The response to a storage account check name availability request.
     */
-    CheckNameAvailabilityResponse checkNameAvailability(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    CheckNameAvailabilityResponse checkNameAvailability(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Check Name Availability operation checks if a storage account name is
@@ -112,11 +111,11 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param serviceName The desired storage account name to check for
+    * @param accountName The desired storage account name to check for
     * availability.
     * @return The response to a storage account check name availability request.
     */
-    Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(String serviceName);
+    Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(String accountName);
     
     /**
     * The Create Storage Account operation creates a new storage account in
@@ -176,7 +175,7 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param serviceName The name of the storage account.
+    * @param accountName The name of the storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -184,7 +183,7 @@ public interface StorageAccountOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String serviceName) throws IOException, ServiceException;
+    OperationResponse delete(String accountName) throws IOException, ServiceException;
     
     /**
     * The Delete Storage Account operation deletes the specifiedstorage account
@@ -192,11 +191,11 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param serviceName The name of the storage account.
+    * @param accountName The name of the storage account.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteAsync(String serviceName);
+    Future<OperationResponse> deleteAsync(String accountName);
     
     /**
     * The Get Storage Account Properties operation returns system properties
@@ -204,7 +203,7 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to get.
+    * @param accountName Name of the storage account to get.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -217,7 +216,7 @@ public interface StorageAccountOperations
     * the response.
     * @return The Get Storage Account Properties operation response.
     */
-    StorageAccountGetResponse get(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    StorageAccountGetResponse get(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Storage Account Properties operation returns system properties
@@ -225,10 +224,10 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to get.
+    * @param accountName Name of the storage account to get.
     * @return The Get Storage Account Properties operation response.
     */
-    Future<StorageAccountGetResponse> getAsync(String serviceName);
+    Future<StorageAccountGetResponse> getAsync(String accountName);
     
     /**
     * The Get Storage Keys operation returns the primary and secondary access
@@ -236,7 +235,7 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param serviceName The name of the desired storage account.
+    * @param accountName The name of the desired storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -249,7 +248,7 @@ public interface StorageAccountOperations
     * the response.
     * @return The primary and secondary access keys for a storage account.
     */
-    StorageAccountGetKeysResponse getKeys(String serviceName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    StorageAccountGetKeysResponse getKeys(String accountName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Storage Keys operation returns the primary and secondary access
@@ -257,10 +256,10 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param serviceName The name of the desired storage account.
+    * @param accountName The name of the desired storage account.
     * @return The primary and secondary access keys for a storage account.
     */
-    Future<StorageAccountGetKeysResponse> getKeysAsync(String serviceName);
+    Future<StorageAccountGetKeysResponse> getKeysAsync(String accountName);
     
     /**
     * The List Storage Accounts operation lists the storage accounts available
@@ -333,7 +332,7 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to update.
+    * @param accountName Name of the storage account to update.
     * @param parameters Parameters supplied to the Update Storage Account
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -349,7 +348,7 @@ public interface StorageAccountOperations
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String serviceName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse update(String accountName, StorageAccountUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Storage Account operation updates the label, the description,
@@ -358,11 +357,11 @@ public interface StorageAccountOperations
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param serviceName Name of the storage account to update.
+    * @param accountName Name of the storage account to update.
     * @param parameters Parameters supplied to the Update Storage Account
     * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateAsync(String serviceName, StorageAccountUpdateParameters parameters);
+    Future<OperationResponse> updateAsync(String accountName, StorageAccountUpdateParameters parameters);
 }

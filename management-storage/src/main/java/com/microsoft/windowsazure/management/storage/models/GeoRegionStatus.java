@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.storage.models;
 /**
 * Indicates whether the storage region is available.
 */
-public enum GeoRegionStatus
-{
+public enum GeoRegionStatus {
     Available,
     
     Unavailable,

@@ -28,16 +28,14 @@ import com.microsoft.windowsazure.core.OperationResponse;
 /**
 * The response to a request for a particular namespace.
 */
-public class ServiceBusNamespaceResponse extends OperationResponse
-{
+public class ServiceBusNamespaceResponse extends OperationResponse {
     private ServiceBusNamespace namespace;
     
     /**
     * The namespace.
     * @return The Namespace value.
     */
-    public ServiceBusNamespace getNamespace()
-    {
+    public ServiceBusNamespace getNamespace() {
         return this.namespace;
     }
     
@@ -45,8 +43,7 @@ public class ServiceBusNamespaceResponse extends OperationResponse
     * The namespace.
     * @param namespaceValue The Namespace value.
     */
-    public void setNamespace(final ServiceBusNamespace namespaceValue)
-    {
+    public void setNamespace(final ServiceBusNamespace namespaceValue) {
         this.namespace = namespaceValue;
     }
 }

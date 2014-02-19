@@ -23,8 +23,7 @@
 
 package com.microsoft.windowsazure.management.virtualnetworks.models;
 
-public enum GatewayConnectivityState
-{
+public enum GatewayConnectivityState {
     Connected,
     
     Connecting,

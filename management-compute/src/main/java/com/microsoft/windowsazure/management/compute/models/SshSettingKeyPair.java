@@ -26,8 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Contains an SSH key pair to be installed on the virtual machine.
 */
-public class SshSettingKeyPair
-{
+public class SshSettingKeyPair {
     private String fingerprint;
     
     /**
@@ -35,8 +34,7 @@ public class SshSettingKeyPair
     * associated with the hosted service that includes the SSH keypair.
     * @return The Fingerprint value.
     */
-    public String getFingerprint()
-    {
+    public String getFingerprint() {
         return this.fingerprint;
     }
     
@@ -45,8 +43,7 @@ public class SshSettingKeyPair
     * associated with the hosted service that includes the SSH keypair.
     * @param fingerprintValue The Fingerprint value.
     */
-    public void setFingerprint(final String fingerprintValue)
-    {
+    public void setFingerprint(final String fingerprintValue) {
         this.fingerprint = fingerprintValue;
     }
     
@@ -60,8 +57,7 @@ public class SshSettingKeyPair
     * suffix.  Example: /home/user/.ssh/id_rsa
     * @return The Path value.
     */
-    public String getPath()
-    {
+    public String getPath() {
         return this.path;
     }
     
@@ -73,8 +69,7 @@ public class SshSettingKeyPair
     * suffix.  Example: /home/user/.ssh/id_rsa
     * @param pathValue The Path value.
     */
-    public void setPath(final String pathValue)
-    {
+    public void setPath(final String pathValue) {
         this.path = pathValue;
     }
 }

@@ -39,8 +39,7 @@ import org.xml.sax.SAXException;
 * The Service Bus Management API includes operations for managing Service Bus
 * queues.
 */
-public interface QueueOperations
-{
+public interface QueueOperations {
     /**
     * Creates a new queue. Once created, this queue’s resource manifest is
     * immutable. This operation is idempotent. Repeating the create call,

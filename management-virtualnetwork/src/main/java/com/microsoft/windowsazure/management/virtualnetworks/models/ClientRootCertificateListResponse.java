@@ -31,16 +31,14 @@ import java.util.Iterator;
 /**
 * The response to the list client root certificates request.
 */
-public class ClientRootCertificateListResponse extends OperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate>
-{
+public class ClientRootCertificateListResponse extends OperationResponse implements Iterable<ClientRootCertificateListResponse.ClientRootCertificate> {
     private ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates;
     
     /**
     * The list of client root certificates.
     * @return The ClientRootCertificates value.
     */
-    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates()
-    {
+    public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates() {
         return this.clientRootCertificates;
     }
     
@@ -48,8 +46,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     * The list of client root certificates.
     * @param clientRootCertificatesValue The ClientRootCertificates value.
     */
-    public void setClientRootCertificates(final ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatesValue)
-    {
+    public void setClientRootCertificates(final ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatesValue) {
         this.clientRootCertificates = clientRootCertificatesValue;
     }
     
@@ -57,8 +54,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     * Initializes a new instance of the ClientRootCertificateListResponse class.
     *
     */
-    public ClientRootCertificateListResponse()
-    {
+    public ClientRootCertificateListResponse() {
         super();
         this.clientRootCertificates = new ArrayList<ClientRootCertificateListResponse.ClientRootCertificate>();
     }
@@ -67,21 +63,18 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     * Gets the sequence of ClientRootCertificates.
     *
     */
-    public Iterator<ClientRootCertificateListResponse.ClientRootCertificate> iterator()
-    {
+    public Iterator<ClientRootCertificateListResponse.ClientRootCertificate> iterator() {
         return this.getClientRootCertificates().iterator();
     }
     
-    public static class ClientRootCertificate
-    {
+    public static class ClientRootCertificate {
         private Calendar expirationTime;
         
         /**
         * Specifies the time that the certificate will expire.
         * @return The ExpirationTime value.
         */
-        public Calendar getExpirationTime()
-        {
+        public Calendar getExpirationTime() {
             return this.expirationTime;
         }
         
@@ -89,8 +82,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         * Specifies the time that the certificate will expire.
         * @param expirationTimeValue The ExpirationTime value.
         */
-        public void setExpirationTime(final Calendar expirationTimeValue)
-        {
+        public void setExpirationTime(final Calendar expirationTimeValue) {
             this.expirationTime = expirationTimeValue;
         }
         
@@ -100,8 +92,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         * Specifies the distinguished name of the certificate issuer.
         * @return The Subject value.
         */
-        public String getSubject()
-        {
+        public String getSubject() {
             return this.subject;
         }
         
@@ -109,8 +100,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         * Specifies the distinguished name of the certificate issuer.
         * @param subjectValue The Subject value.
         */
-        public void setSubject(final String subjectValue)
-        {
+        public void setSubject(final String subjectValue) {
             this.subject = subjectValue;
         }
         
@@ -120,8 +110,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         * Specifies the thumbprint of the certificate.
         * @return The Thumbprint value.
         */
-        public String getThumbprint()
-        {
+        public String getThumbprint() {
             return this.thumbprint;
         }
         
@@ -129,8 +118,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         * Specifies the thumbprint of the certificate.
         * @param thumbprintValue The Thumbprint value.
         */
-        public void setThumbprint(final String thumbprintValue)
-        {
+        public void setThumbprint(final String thumbprintValue) {
             this.thumbprint = thumbprintValue;
         }
     }
