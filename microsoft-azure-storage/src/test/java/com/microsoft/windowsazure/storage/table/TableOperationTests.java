@@ -18,86 +18,220 @@ import static org.junit.Assert.*;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.table.TableRequestOptions.PropertyResolver;
 
 /**
  * Table Operation Tests
  */
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableOperationTests extends TableTestBase {
 
-    private final TableRequestOptions options;
-    private final boolean usePropertyResolver;
+    @Test
+    public void testPropertyCacheDisable() {
+        try {
+            TableServiceEntity.getReflectedEntityCache().put(this.getClass(), new HashMap<String, PropertyPair>());
 
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat,
-     * and if that format is JsonNoMetadata, whether or not to use a PropertyResolver
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub, false }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata, false }, // Json Full Metadata
-                { TablePayloadFormat.Json, false }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata, false }, // Json No Metadata without PropertyResolver 
-                { TablePayloadFormat.JsonNoMetadata, true } // Json No Metadata with PropertyResolver
-                });
-    }
+            TableServiceEntity.setReflectedEntityCacheDisabled(true);
+            assertEquals(true, TableServiceEntity.isReflectedEntityCacheDisabled());
+            assertTrue(TableServiceEntity.getReflectedEntityCache().isEmpty());
 
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     * @param usePropertyResolver
-     *            Whether or not to use a property resolver, applicable only for <code>JsonNoMetadata</code> format
-     */
-    public TableOperationTests(TablePayloadFormat format, boolean usePropertyResolver) {
-        this.options = TableRequestOptions.applyDefaults(null, TableTestBase.tClient);
-        this.options.setTablePayloadFormat(format);
-        this.usePropertyResolver = usePropertyResolver;
+            TableServiceEntity.setReflectedEntityCacheDisabled(false);
+            assertEquals(false, TableServiceEntity.isReflectedEntityCacheDisabled());
+        }
+        finally {
+
+            TableServiceEntity.setReflectedEntityCacheDisabled(false);
+        }
     }
 
     @Test
-    public void testDelete() throws StorageException {
+    public void testRetrieveWithNullResolver() throws StorageException {
+        try {
+            TableOperation.retrieve("foo", "blah", (EntityResolver<?>) null);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(),
+                    String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
+        }
+    }
+
+    @Test
+    public void testInsertEntityWithoutPartitionKeyRowKey() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertEntityWithoutPartitionKeyRowKey(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertEntityWithoutPartitionKeyRowKey(options);
+    }
+
+    private void testInsertEntityWithoutPartitionKeyRowKey(TableRequestOptions options) throws StorageException {
+        EmptyClass ref = new EmptyClass();
+        ref.setPartitionKey("jxscl_odata");
+
+        try {
+            table.execute(TableOperation.insert(ref), options, null);
+            fail("Inserts should not allow null row keys.");
+        }
+        catch (IllegalArgumentException e) {
+            // continue, this is appropriate
+        }
+        catch (Exception e) {
+            fail("Inserts with null row key should fail with an IllegalArgumentException thrown by assert not null.");
+        }
+
+        ref.setPartitionKey(null);
+        ref.setRowKey(UUID.randomUUID().toString());
+        try {
+            table.execute(TableOperation.insert(ref), options, null);
+            fail("Inserts should not allow null partition keys.");
+        }
+        catch (IllegalArgumentException e) {
+            // continue, this is appropriate
+        }
+        catch (Exception e) {
+            fail("Inserts with null partition key should fail with an IllegalArgumentException thrown by assert not null.");
+        }
+    }
+
+    @Test
+    public void testInsertEntityWithPropertyMoreThan255chars() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertEntityWithPropertyMoreThan255chars(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertEntityWithPropertyMoreThan255chars(options);
+    }
+
+    private void testInsertEntityWithPropertyMoreThan255chars(TableRequestOptions options) throws StorageException {
+        DynamicTableEntity ref = new DynamicTableEntity();
+
+        String propName = "";
+        for (int m = 0; m < 256; m++) {
+            propName = propName.concat("a");
+        }
+
+        ref.getProperties().put(propName, new EntityProperty("test"));
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+
+        try {
+            table.execute(TableOperation.insert(ref), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Bad Request");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The property name exceeds the maximum allowed length (255)."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameTooLong");
+        }
+    }
+
+    @Test
+    public void testInsertEntityOver1MB() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertEntityOver1MB(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertEntityOver1MB(options);
+    }
+
+    private void testInsertEntityOver1MB(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
         ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
+        // 1mb right here
+        ref.setD(new byte[1024 * 1024]);
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
+        try {
+            table.execute(TableOperation.insert(ref), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Bad Request");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The entity is larger than the maximum allowed size (1MB)."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "EntityTooLarge");
+        }
+    }
+
+    @Test
+    public void testInsertEntityWithNumericProperty() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertEntityWithNumericProperty(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertEntityWithNumericProperty(options);
+    }
+
+    private void testInsertEntityWithNumericProperty(TableRequestOptions options) throws StorageException {
+        DynamicTableEntity ref = new DynamicTableEntity();
+
+        String propName = "";
+        for (int m = 0; m < 255; m++) {
+            propName = propName.concat(Integer.toString(m % 9));
         }
 
-        TableOperation op = TableOperation.insert(ref);
+        ref.getProperties().put(propName, new EntityProperty("test"));
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
 
-        tClient.execute(testSuiteTableName, op, options, null);
-        tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
-
-        TableResult res2 = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
-
-        assertTrue(res2.getResult() == null);
+        try {
+            table.execute(TableOperation.insert(ref), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            // OData handles AtomPub and Json differently when properties start with a number. 
+            // Hence, a different error code is returned. This may be fixed later.
+            if (options.getTablePayloadFormat() == TablePayloadFormat.AtomPub) {
+                assertEquals(ex.getMessage(), "Bad Request");
+                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                        .startsWith("One of the request inputs is not valid."));
+                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
+            }
+            else {
+                assertEquals(ex.getMessage(), "Bad Request");
+                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                        .startsWith("The property name is invalid."));
+                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameInvalid");
+            }
+        }
     }
 
     @Test
     public void testDeleteFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testDeleteFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testDeleteFail(options);
+    }
+
+    private void testDeleteFail(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -106,21 +240,17 @@ public class TableOperationTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
         String oldEtag = ref.getEtag();
 
         // update entity
         ref.setA("updated");
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
+        table.execute(TableOperation.replace(ref), options, null);
 
         ref.setEtag(oldEtag);
 
         try {
-            tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
+            table.execute(TableOperation.delete(ref), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -130,16 +260,190 @@ public class TableOperationTests extends TableTestBase {
             assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
         }
 
-        TableResult res2 = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res2 = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         ref = res2.getResultAsType();
         // actually delete it
-        tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
+        table.execute(TableOperation.delete(ref), options, null);
 
         // now try to delete it and fail
         try {
-            tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
+            table.execute(TableOperation.delete(ref), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Not Found");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The specified resource does not exist."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ResourceNotFound");
+        }
+    }
+
+    @Test
+    public void testMergeFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testMergeFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testMergeFail(options);
+    }
+
+    private void testMergeFail(TableRequestOptions options) throws StorageException {
+        // Insert base entity
+        Class1 baseEntity = new Class1();
+        baseEntity.setA("foo_A");
+        baseEntity.setB("foo_B");
+        baseEntity.setC("foo_C");
+        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setPartitionKey("jxscl_odata");
+        baseEntity.setRowKey(UUID.randomUUID().toString());
+
+        table.execute(TableOperation.insert(baseEntity), options, null);
+
+        Class2 secondEntity = new Class2();
+        secondEntity.setL("foo_L");
+        secondEntity.setM("foo_M");
+        secondEntity.setN("foo_N");
+        secondEntity.setO("foo_O");
+        secondEntity.setPartitionKey(baseEntity.getPartitionKey());
+        secondEntity.setRowKey(baseEntity.getRowKey());
+        secondEntity.setEtag(baseEntity.getEtag());
+        String oldEtag = baseEntity.getEtag();
+
+        table.execute(TableOperation.merge(secondEntity), options, null);
+
+        secondEntity.setEtag(oldEtag);
+        secondEntity.setL("updated");
+        try {
+            table.execute(TableOperation.merge(secondEntity), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Precondition Failed");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
+        }
+
+        // retrieve entity
+        TableResult queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
+
+        DynamicTableEntity retrievedEntity = queryResult.getResultAsType();
+        table.execute(TableOperation.delete(retrievedEntity), options, null);
+
+        try {
+            table.execute(TableOperation.merge(secondEntity), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Not Found");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The specified resource does not exist."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ResourceNotFound");
+        }
+    }
+
+    @Test
+    public void testInsertFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertFail(options);
+    }
+
+    private void testInsertFail(TableRequestOptions options) throws StorageException {
+        Class1 ref = new Class1();
+        ref.setA("foo_A");
+        ref.setB("foo_B");
+        ref.setC("foo_C");
+        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+
+        TableOperation op = TableOperation.insert(ref);
+
+        table.execute(op, options, null);
+        try {
+            table.execute(op, options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Conflict");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The specified entity already exists"));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "EntityAlreadyExists");
+        }
+    }
+
+    @Test
+    public void testReplaceFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testReplaceFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testReplaceFail(options);
+    }
+
+    private void testReplaceFail(TableRequestOptions options) throws StorageException {
+        Class1 baseEntity = new Class1();
+        baseEntity.setA("foo_A");
+        baseEntity.setB("foo_B");
+        baseEntity.setC("foo_C");
+        baseEntity.setD(new byte[] { 0, 1, 2 });
+        baseEntity.setPartitionKey("jxscl_odata");
+        baseEntity.setRowKey(UUID.randomUUID().toString());
+
+        // Insert entity
+        table.execute(TableOperation.insert(baseEntity), options, null);
+
+        String oldEtag = baseEntity.getEtag();
+
+        TableResult queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
+
+        // Retrieve entity
+        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
+        assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
+
+        // Remove property and update
+        retrievedEntity.getProperties().remove("D");
+
+        table.execute(TableOperation.replace(retrievedEntity), options, null);
+
+        retrievedEntity.setEtag(oldEtag);
+
+        try {
+            table.execute(TableOperation.replace(retrievedEntity), options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Precondition Failed");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
+        }
+
+        // delete entity
+        queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
+
+        table.execute(TableOperation.delete((DynamicTableEntity) queryResult.getResultAsType()), options, null);
+
+        try {
+            table.execute(TableOperation.replace(retrievedEntity), options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -152,6 +456,16 @@ public class TableOperationTests extends TableTestBase {
 
     @Test
     public void testEmptyRetrieve() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testEmptyRetrieve(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testEmptyRetrieve(options);
+    }
+
+    private void testEmptyRetrieve(TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -160,19 +474,98 @@ public class TableOperationTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         assertNull(res.getResult());
         assertEquals(res.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @Test
+    public void testInsertEmptyEntity() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertEmptyEntity(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertEmptyEntity(options);
+    }
+
+    private void testInsertEmptyEntity(TableRequestOptions options) throws StorageException {
+        EmptyClass ref = new EmptyClass();
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey("echo_default" + UUID.randomUUID().toString());
+
+        TableResult res = table.execute(TableOperation.insert(ref), options, null);
+        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
+
+        EmptyClassDynamic refDynamic = new EmptyClassDynamic();
+        refDynamic.setPartitionKey("jxscl_odata");
+        refDynamic.setRowKey("echo_default" + UUID.randomUUID().toString());
+
+        res = table.execute(TableOperation.insert(refDynamic), options, null);
+        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
+    }
+
+    @Test
+    public void testDelete() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testDelete(options);
+    }
+
+    private void testDelete(TableRequestOptions options) throws StorageException {
+        Class1 ref = new Class1();
+        ref.setA("foo_A");
+        ref.setB("foo_B");
+        ref.setC("foo_C");
+        ref.setD(new byte[] { 0, 1, 2 });
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+
+        TableOperation op = TableOperation.insert(ref);
+
+        table.execute(op, options, null);
+        table.execute(TableOperation.delete(ref), options, null);
+
+        TableResult res2 = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
+
+        assertTrue(res2.getResult() == null);
+    }
+
+    @Test
     public void testInsertOrMerge() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertOrMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testInsertOrMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertOrMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testInsertOrMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testInsertOrMerge(options, true);
+    }
+
+    private void testInsertOrMerge(TableRequestOptions options, boolean usePropertyResolver) throws StorageException {
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
@@ -180,11 +573,6 @@ public class TableOperationTests extends TableTestBase {
         baseEntity.setD(new byte[] { 0, 1, 2 });
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
-
-        TableRequestOptions options1 = new TableRequestOptions(options);;
-        if (this.usePropertyResolver) {
-            options1.setPropertyResolver(baseEntity);
-        }
 
         Class2 secondEntity = new Class2();
         secondEntity.setL("foo_L");
@@ -195,26 +583,24 @@ public class TableOperationTests extends TableTestBase {
         secondEntity.setRowKey(baseEntity.getRowKey());
         secondEntity.setEtag(baseEntity.getEtag());
 
-        TableRequestOptions options2 = new TableRequestOptions(options);
-        if (this.usePropertyResolver) {
-            PropertyResolver resolver = new class1class2PropertyResolver();
-            options2.setPropertyResolver(resolver);
-        }
-
         // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
-        TableResult insertResult = tClient.execute(testSuiteTableName, TableOperation.insertOrMerge(baseEntity),
-                options1, null);
+        TableResult insertResult = table.execute(TableOperation.insertOrMerge(baseEntity), options, null);
 
         assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL MERGE
-        tClient.execute(testSuiteTableName, TableOperation.insertOrMerge(secondEntity), options2, null);
+        table.execute(TableOperation.insertOrMerge(secondEntity), options, null);
 
         // Retrieve entity
-        TableResult queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options2, null);
+        if (usePropertyResolver) {
+            PropertyResolver resolver = new class1class2PropertyResolver();
+            options.setPropertyResolver(resolver);
+        }
+
+        TableResult queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
 
         DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
 
@@ -246,6 +632,22 @@ public class TableOperationTests extends TableTestBase {
 
     @Test
     public void testInsertOrReplace() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testInsertOrReplace(options);
+    }
+
+    private void testInsertOrReplace(TableRequestOptions options) throws StorageException {
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
@@ -253,11 +655,6 @@ public class TableOperationTests extends TableTestBase {
         baseEntity.setD(new byte[] { 0, 1, 2 });
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
-
-        TableRequestOptions options1 = new TableRequestOptions(options);;
-        if (this.usePropertyResolver) {
-            options1.setPropertyResolver(baseEntity);
-        }
 
         Class2 secondEntity = new Class2();
         secondEntity.setL("foo_L");
@@ -268,25 +665,19 @@ public class TableOperationTests extends TableTestBase {
         secondEntity.setRowKey(baseEntity.getRowKey());
         secondEntity.setEtag(baseEntity.getEtag());
 
-        TableRequestOptions options2 = new TableRequestOptions(options);
-        if (this.usePropertyResolver) {
-            options2.setPropertyResolver(secondEntity);
-        }
-
         // Insert or replace Entity - ENTITY DOES NOT EXIST NOW.
-        TableResult insertResult = tClient.execute(testSuiteTableName, TableOperation.insertOrReplace(baseEntity),
-                options1, null);
+        TableResult insertResult = table.execute(TableOperation.insertOrReplace(baseEntity), options, null);
 
         assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(insertResult.getEtag());
 
         // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
-        tClient.execute(testSuiteTableName, TableOperation.insertOrReplace(secondEntity), options2, null);
+        table.execute(TableOperation.insertOrReplace(secondEntity), options, null);
 
         // Retrieve entity
-        TableResult queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options2, null);
+        TableResult queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
 
         DynamicTableEntity retrievedEntity = queryResult.getResultAsType();
 
@@ -312,6 +703,25 @@ public class TableOperationTests extends TableTestBase {
 
     @Test
     public void testMerge() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testMerge(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testMerge(options, true);
+    }
+
+    private void testMerge(TableRequestOptions options, boolean usePropertyResolver) throws StorageException {
         // Insert base entity
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
@@ -321,12 +731,7 @@ public class TableOperationTests extends TableTestBase {
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
-        TableRequestOptions options1 = new TableRequestOptions(options);;
-        if (this.usePropertyResolver) {
-            options1.setPropertyResolver(baseEntity);
-        }
-
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options1, null);
+        table.execute(TableOperation.insert(baseEntity), options, null);
 
         Class2 secondEntity = new Class2();
         secondEntity.setL("foo_L");
@@ -337,20 +742,19 @@ public class TableOperationTests extends TableTestBase {
         secondEntity.setRowKey(baseEntity.getRowKey());
         secondEntity.setEtag(baseEntity.getEtag());
 
-        TableRequestOptions options2 = new TableRequestOptions(options);
-        if (this.usePropertyResolver) {
-            PropertyResolver resolver = new class1class2PropertyResolver();
-            options2.setPropertyResolver(resolver);
-        }
-
-        TableResult mergeResult = tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity), options2,
-                null);
+        TableResult mergeResult = table.execute(TableOperation.merge(secondEntity), options, null);
 
         assertEquals(mergeResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         assertNotNull(mergeResult.getEtag());
 
-        TableResult res2 = tClient.execute(testSuiteTableName, TableOperation.retrieve(secondEntity.getPartitionKey(),
-                secondEntity.getRowKey(), DynamicTableEntity.class), options2, null);
+        // retrieve result
+        if (usePropertyResolver) {
+            PropertyResolver resolver = new class1class2PropertyResolver();
+            options.setPropertyResolver(resolver);
+        }
+
+        TableResult res2 = table.execute(TableOperation.retrieve(secondEntity.getPartitionKey(),
+                secondEntity.getRowKey(), DynamicTableEntity.class), options, null);
         DynamicTableEntity mergedEntity = (DynamicTableEntity) res2.getResult();
 
         assertNotNull("Property A", mergedEntity.getProperties().get("A"));
@@ -379,8 +783,23 @@ public class TableOperationTests extends TableTestBase {
     }
 
     @Test
-    public void testMergeFail() throws StorageException {
-        // Insert base entity
+    public void testReplace() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testReplace(options);
+    }
+
+    private void testReplace(TableRequestOptions options) throws StorageException {
         Class1 baseEntity = new Class1();
         baseEntity.setA("foo_A");
         baseEntity.setB("foo_B");
@@ -389,66 +808,106 @@ public class TableOperationTests extends TableTestBase {
         baseEntity.setPartitionKey("jxscl_odata");
         baseEntity.setRowKey(UUID.randomUUID().toString());
 
-        TableRequestOptions options1 = new TableRequestOptions(options);;
-        if (this.usePropertyResolver) {
-            options1.setPropertyResolver(baseEntity);
-        }
+        // Insert entity
+        table.execute(TableOperation.insert(baseEntity), options, null);
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options1, null);
+        TableResult queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
+        // Retrieve entity
+        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
+        assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
+        assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
 
-        Class2 secondEntity = new Class2();
-        secondEntity.setL("foo_L");
-        secondEntity.setM("foo_M");
-        secondEntity.setN("foo_N");
-        secondEntity.setO("foo_O");
-        secondEntity.setPartitionKey(baseEntity.getPartitionKey());
-        secondEntity.setRowKey(baseEntity.getRowKey());
-        secondEntity.setEtag(baseEntity.getEtag());
-        String oldEtag = baseEntity.getEtag();
+        // Remove property and update
+        retrievedEntity.getProperties().remove("D");
 
-        TableRequestOptions options2 = new TableRequestOptions(options);
-        if (this.usePropertyResolver) {
-            PropertyResolver resolver = new class1class2PropertyResolver();
-            options2.setPropertyResolver(resolver);
-        }
+        TableResult replaceResult = table.execute(TableOperation.replace(retrievedEntity), options, null);
 
-        tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity), options2, null);
+        assertEquals(replaceResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        assertNotNull(replaceResult.getEtag());
 
-        secondEntity.setEtag(oldEtag);
-        secondEntity.setL("updated");
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity), options2, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Precondition Failed");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The update condition specified in the request was not satisfied."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
-        }
+        // Retrieve Entity
+        queryResult = table
+                .execute(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(),
+                        DynamicTableEntity.class), options, null);
 
-        // retrieve entity
-        TableResult queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options2, null);
+        retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
 
-        DynamicTableEntity retrievedEntity = queryResult.getResultAsType();
-        tClient.execute(testSuiteTableName, TableOperation.delete(retrievedEntity), options2, null);
+        // Validate
+        assertNotNull("Property A", retrievedEntity.getProperties().get("A"));
+        assertEquals(baseEntity.getA(), retrievedEntity.getProperties().get("A").getValueAsString());
 
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.merge(secondEntity), options2, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Not Found");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The specified resource does not exist."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ResourceNotFound");
-        }
+        assertNotNull("Property B", retrievedEntity.getProperties().get("B"));
+        assertEquals(baseEntity.getB(), retrievedEntity.getProperties().get("B").getValueAsString());
+
+        assertNotNull("Property C", retrievedEntity.getProperties().get("C"));
+        assertEquals(baseEntity.getC(), retrievedEntity.getProperties().get("C").getValueAsString());
+
+        assertTrue(retrievedEntity.getProperties().get("D") == null);
     }
 
     @Test
-    public void testRetrieveWithoutResolver() throws StorageException {
+    public void testInsert() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testInsert(options);
+    }
+
+    private void testInsert(TableRequestOptions options) throws StorageException {
+        Class1 ref = new Class1();
+        ref.setA("foo_A");
+        ref.setB("foo_B");
+        ref.setC("foo_C");
+        // 1mb right here
+        ref.setD(new byte[1024]);
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey("echo_default" + UUID.randomUUID().toString());
+
+        TableResult res = table.execute(TableOperation.insert(ref), options, null);
+        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
+
+        ref.setRowKey("echo" + UUID.randomUUID().toString());
+        res = table.execute(TableOperation.insert(ref, true), options, null);
+        assertEquals(HttpURLConnection.HTTP_CREATED, res.getHttpStatusCode());
+
+        ref.setRowKey("echo_off" + UUID.randomUUID().toString());
+        res = table.execute(TableOperation.insert(ref, false), options, null);
+        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
+    }
+
+    @Test
+    public void testRetrieveWithoutEntityResolver() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testRetrieveWithoutEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testRetrieveWithoutEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testRetrieveWithoutEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testRetrieveWithoutEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testRetrieveWithoutEntityResolver(options, true);
+    }
+
+    private void testRetrieveWithoutEntityResolver(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -457,15 +916,15 @@ public class TableOperationTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(ref);
         }
 
         // with cache on
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         Class1 retrievedEnt = res.getResultAsType();
 
@@ -475,8 +934,8 @@ public class TableOperationTests extends TableTestBase {
         // with cache off
         TableServiceEntity.setReflectedEntityCacheDisabled(true);
         try {
-            res = tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
+                    null);
 
             retrievedEnt = res.getResultAsType();
 
@@ -484,13 +943,32 @@ public class TableOperationTests extends TableTestBase {
             assertTrue(Arrays.equals(ref.getD(), retrievedEnt.getD()));
         }
         finally {
-
             TableServiceEntity.setReflectedEntityCacheDisabled(false);
         }
     }
 
     @Test
-    public void testRetrieveWithResolver() throws StorageException {
+    public void testRetrieveWithEntityResolver() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testRetrieveWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testRetrieveWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testRetrieveWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testRetrieveWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testRetrieveWithEntityResolver(options, true);
+    }
+
+    private void testRetrieveWithEntityResolver(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         Class1 ref = new Class1();
         ref.setA("foo_A");
         ref.setB("foo_B");
@@ -499,16 +977,16 @@ public class TableOperationTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(ref);
         }
 
         // with cache on
         TableOperation op = TableOperation.insert(ref);
 
-        tClient.execute(testSuiteTableName, op, options, null);
+        table.execute(op, options, null);
 
-        TableResult res4 = tClient.execute(testSuiteTableName,
+        TableResult res4 = table.execute(
                 TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                     @Override
                     public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
@@ -527,7 +1005,7 @@ public class TableOperationTests extends TableTestBase {
         // with cache off
         TableServiceEntity.setReflectedEntityCacheDisabled(true);
         try {
-            res4 = tClient.execute(testSuiteTableName,
+            res4 = table.execute(
                     TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), new EntityResolver<Class1>() {
                         @Override
                         public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
@@ -544,358 +1022,6 @@ public class TableOperationTests extends TableTestBase {
             assertTrue(Arrays.equals(ref.getD(), retrievedEnt.getD()));
         }
         finally {
-
-            TableServiceEntity.setReflectedEntityCacheDisabled(false);
-        }
-    }
-
-    @Test
-    public void testRetrieveWithNullResolver() throws StorageException {
-        try {
-            TableOperation.retrieve("foo", "blah", (EntityResolver<?>) null);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
-        }
-    }
-
-    @Test
-    public void testInsertFail() throws StorageException {
-        Class1 ref = new Class1();
-        ref.setA("foo_A");
-        ref.setB("foo_B");
-        ref.setC("foo_C");
-        ref.setD(new byte[] { 0, 1, 2 });
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        TableOperation op = TableOperation.insert(ref);
-
-        tClient.execute(testSuiteTableName, op, options, null);
-        try {
-            tClient.execute(testSuiteTableName, op, options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Conflict");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The specified entity already exists"));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "EntityAlreadyExists");
-        }
-    }
-
-    @Test
-    public void testReplace() throws StorageException {
-        Class1 baseEntity = new Class1();
-        baseEntity.setA("foo_A");
-        baseEntity.setB("foo_B");
-        baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
-        baseEntity.setPartitionKey("jxscl_odata");
-        baseEntity.setRowKey(UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(baseEntity);
-        }
-
-        // Insert entity
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-
-        TableResult queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options, null);
-        // Retrieve entity
-        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
-        assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
-        assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
-
-        // Remove property and update
-        retrievedEntity.getProperties().remove("D");
-
-        TableResult replaceResult = tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity),
-                options, null);
-
-        assertEquals(replaceResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
-        assertNotNull(replaceResult.getEtag());
-
-        // Retrieve Entity
-        queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options, null);
-
-        retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
-
-        // Validate
-        assertNotNull("Property A", retrievedEntity.getProperties().get("A"));
-        assertEquals(baseEntity.getA(), retrievedEntity.getProperties().get("A").getValueAsString());
-
-        assertNotNull("Property B", retrievedEntity.getProperties().get("B"));
-        assertEquals(baseEntity.getB(), retrievedEntity.getProperties().get("B").getValueAsString());
-
-        assertNotNull("Property C", retrievedEntity.getProperties().get("C"));
-        assertEquals(baseEntity.getC(), retrievedEntity.getProperties().get("C").getValueAsString());
-
-        assertTrue(retrievedEntity.getProperties().get("D") == null);
-    }
-
-    @Test
-    public void testReplaceFail() throws StorageException {
-        Class1 baseEntity = new Class1();
-        baseEntity.setA("foo_A");
-        baseEntity.setB("foo_B");
-        baseEntity.setC("foo_C");
-        baseEntity.setD(new byte[] { 0, 1, 2 });
-        baseEntity.setPartitionKey("jxscl_odata");
-        baseEntity.setRowKey(UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(baseEntity);
-        }
-
-        // Insert entity
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-
-        String oldEtag = baseEntity.getEtag();
-
-        TableResult queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options, null);
-
-        // Retrieve entity
-        DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
-        assertNotNull("Property D", retrievedEntity.getProperties().get("D"));
-        assertTrue(Arrays.equals(baseEntity.getD(), retrievedEntity.getProperties().get("D").getValueAsByteArray()));
-
-        // Remove property and update
-        retrievedEntity.getProperties().remove("D");
-
-        tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity), options, null);
-
-        retrievedEntity.setEtag(oldEtag);
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity), options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Precondition Failed");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The update condition specified in the request was not satisfied."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "UpdateConditionNotSatisfied");
-        }
-
-        // delete entity
-        queryResult = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(baseEntity.getPartitionKey(),
-                        baseEntity.getRowKey(), DynamicTableEntity.class), options, null);
-
-        tClient.execute(testSuiteTableName, TableOperation.delete((DynamicTableEntity) queryResult.getResultAsType()),
-                options, null);
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.replace(retrievedEntity), options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Not Found");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The specified resource does not exist."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "ResourceNotFound");
-        }
-    }
-
-    @Test
-    public void testInsert() throws StorageException {
-        Class1 ref = new Class1();
-        ref.setA("foo_A");
-        ref.setB("foo_B");
-        ref.setC("foo_C");
-        // 1mb right here
-        ref.setD(new byte[1024]);
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey("echo_default" + UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        TableResult res = tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
-
-        ref.setRowKey("echo" + UUID.randomUUID().toString());
-        res = tClient.execute(testSuiteTableName, TableOperation.insert(ref, true), options, null);
-        assertEquals(HttpURLConnection.HTTP_CREATED, res.getHttpStatusCode());
-
-        ref.setRowKey("echo_off" + UUID.randomUUID().toString());
-        res = tClient.execute(testSuiteTableName, TableOperation.insert(ref, false), options, null);
-        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
-    }
-
-    @Test
-    public void testInsertEmptyEntity() throws StorageException {
-        EmptyClass ref = new EmptyClass();
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey("echo_default" + UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        TableResult res = tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
-
-        EmptyClassDynamic refDynamic = new EmptyClassDynamic();
-        refDynamic.setPartitionKey("jxscl_odata");
-        refDynamic.setRowKey("echo_default" + UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(refDynamic);
-        }
-
-        res = tClient.execute(testSuiteTableName, TableOperation.insert(refDynamic), options, null);
-        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, res.getHttpStatusCode());
-    }
-
-    @Test
-    public void testInsertEntityWithoutPartitionKeyRowKey() throws StorageException {
-        EmptyClass ref = new EmptyClass();
-        ref.setPartitionKey("jxscl_odata");
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-            fail("Inserts should not allow null row keys.");
-        }
-        catch (IllegalArgumentException e) {
-            // continue, this is appropriate
-        }
-        catch (Exception e) {
-            fail("Inserts with null row key should fail with an IllegalArgumentException thrown by assert not null.");
-        }
-
-        ref.setPartitionKey(null);
-        ref.setRowKey(UUID.randomUUID().toString());
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-            fail("Inserts should not allow null partition keys.");
-        }
-        catch (IllegalArgumentException e) {
-            // continue, this is appropriate
-        }
-        catch (Exception e) {
-            fail("Inserts with null partition key should fail with an IllegalArgumentException thrown by assert not null.");
-        }
-    }
-
-    @Test
-    public void testInsertEntityOver1MB() throws StorageException {
-        Class1 ref = new Class1();
-        ref.setA("foo_A");
-        ref.setB("foo_B");
-        ref.setC("foo_C");
-        // 1mb right here
-        ref.setD(new byte[1024 * 1024]);
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Bad Request");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The entity is larger than the maximum allowed size (1MB)."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "EntityTooLarge");
-        }
-    }
-
-    @Test
-    public void testInsertEntityWithPropertyMoreThan255chars() throws StorageException {
-        DynamicTableEntity ref = new DynamicTableEntity();
-
-        String propName = "";
-        for (int m = 0; m < 256; m++) {
-            propName = propName.concat("a");
-        }
-
-        ref.getProperties().put(propName, new EntityProperty("test"));
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Bad Request");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The property name exceeds the maximum allowed length (255)."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameTooLong");
-        }
-    }
-
-    @Test
-    public void testInsertEntityWithNumericProperty() throws StorageException {
-        DynamicTableEntity ref = new DynamicTableEntity();
-
-        String propName = "";
-        for (int m = 0; m < 255; m++) {
-            propName = propName.concat(Integer.toString(m % 9));
-        }
-
-        ref.getProperties().put(propName, new EntityProperty("test"));
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-
-        try {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            // OData handles AtomPub and Json differently when properties start with a number. 
-            // Hence, a different error code is returned. This may be fixed later.
-            if (options.getTablePayloadFormat() == TablePayloadFormat.AtomPub) {
-                assertEquals(ex.getMessage(), "Bad Request");
-                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                        .startsWith("One of the request inputs is not valid."));
-                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
-            }
-            else {
-                assertEquals(ex.getMessage(), "Bad Request");
-                assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                        .startsWith("The property name is invalid."));
-                assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "PropertyNameInvalid");
-            }
-        }
-    }
-
-    @Test
-    public void testPropertyCacheDisable() {
-        try {
-            TableServiceEntity.getReflectedEntityCache().put(this.getClass(), new HashMap<String, PropertyPair>());
-
-            TableServiceEntity.setReflectedEntityCacheDisabled(true);
-            assertEquals(true, TableServiceEntity.isReflectedEntityCacheDisabled());
-            assertTrue(TableServiceEntity.getReflectedEntityCache().isEmpty());
-
-            TableServiceEntity.setReflectedEntityCacheDisabled(false);
-            assertEquals(false, TableServiceEntity.isReflectedEntityCacheDisabled());
-        }
-        finally {
-
             TableServiceEntity.setReflectedEntityCacheDisabled(false);
         }
     }

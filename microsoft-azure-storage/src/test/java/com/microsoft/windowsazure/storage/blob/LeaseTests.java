@@ -25,12 +25,18 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.AccessCondition;
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class LeaseTests extends BlobTestBase {
 
     protected CloudBlobContainer container;
@@ -111,6 +117,7 @@ public class LeaseTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testContainerBreakLease() throws StorageException, URISyntaxException, InterruptedException {
         String proposedLeaseId = UUID.randomUUID().toString();
         try {
@@ -347,6 +354,7 @@ public class LeaseTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testBlobLeaseRenew() throws URISyntaxException, StorageException, IOException, InterruptedException {
         final CloudBlob blobRef = uploadNewBlob(container, BlobType.BLOCK_BLOB, "test", 128, null);
 

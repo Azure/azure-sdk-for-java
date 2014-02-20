@@ -235,7 +235,7 @@ public class TableOperation {
      *            The {@link TableOperationType} enumeration value for the operation type.
      */
     protected TableOperation(final TableEntity entity, final TableOperationType opType) {
-        this(entity, opType, true);
+        this(entity, opType, false);
     }
 
     /**
@@ -385,8 +385,8 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableParser.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(), entity, isTableEntry,
-                    opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(), entity,
+                    isTableEntry, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();
@@ -534,8 +534,8 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableParser.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(), this.getEntity(),
-                    false, opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(),
+                    this.getEntity(), false, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();
@@ -635,8 +635,8 @@ public class TableOperation {
 
         ByteArrayOutputStream entityStream = new ByteArrayOutputStream();
         try {
-            TableParser.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(), this.getEntity(),
-                    false, opContext);
+            TableEntitySerializer.writeSingleEntityToStream(entityStream, options.getTablePayloadFormat(),
+                    this.getEntity(), false, opContext);
             // We need to buffer once and use it for all retries instead of serializing the entity every single time. 
             // In the future, this could also be used to calculate transactional MD5 for table operations.
             final byte[] entityBytes = entityStream.toByteArray();
@@ -870,7 +870,7 @@ public class TableOperation {
 
         if (this.opType == TableOperationType.INSERT && this.echoContent) {
             // Sending null for class type and resolver will ignore parsing the return payload.
-            resObj = TableParser.parseSingleOpResponse(inStream, options, httpStatusCode, null /* clazzType */,
+            resObj = TableDeserializer.parseSingleOpResponse(inStream, options, httpStatusCode, null /* clazzType */,
                     null /*resolver */, opContext);
             resObj.setEtag(etagFromHeader);
             resObj.updateResultObject(this.getEntity());

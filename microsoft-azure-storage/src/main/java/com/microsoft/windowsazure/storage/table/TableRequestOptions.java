@@ -57,7 +57,7 @@ public class TableRequestOptions extends RequestOptions {
     /**
      * The <see {@link TablePayloadFormat} that is used for any table accessed with this {@link TableRequest} object.
      * 
-     * Default is AtomPub.
+     * Default is Json Minimal Metadata.
      */
     private TablePayloadFormat payloadFormat;
 
@@ -112,7 +112,8 @@ public class TableRequestOptions extends RequestOptions {
 
     /**
      * Gets the <see {@link TablePayloadFormat} that is used for any table accessed with this {@link TableRequest}
-     * object.
+     * object. This will default to the value of the payload format of the {@link CloudTableClient} used to make the
+     * request, which defaults to {@link TablePayloadFormat#Json}.
      * 
      * @return
      *         The {@link TablePayloadFormat} used by this {@link TableRequest}

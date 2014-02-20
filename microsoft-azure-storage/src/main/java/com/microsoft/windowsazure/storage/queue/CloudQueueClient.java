@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.core.ExecutionEngine;
 import com.microsoft.windowsazure.storage.core.LazySegmentedIterable;
+import com.microsoft.windowsazure.storage.core.ListResponse;
 import com.microsoft.windowsazure.storage.core.ListingContext;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.SegmentedStorageRequest;
@@ -75,19 +76,19 @@ public final class CloudQueueClient extends ServiceClient {
     }
 
     /**
-     * Gets a {@link CloudQueue} object that represents the storage service
-     * queue for the specified address.
+     * Gets a {@link CloudQueue} object with the specified name.
      * 
      * @param queueName
-     *            A <code>String</code> that represents the name of the queue.
-     * 
-     * @return A {@link CloudQueue} object that represents a reference to the
-     *         queue.
-     * 
+     *            The name of the queue, which must adhere to queue naming rules. The queue name should not include any
+     *            path separator characters (/).
+     *            Queue names must be lowercase, between 3-63 characters long and must start with a letter or number.
+     *            Queue names may contain only letters, numbers, and the dash (-) character.
+     * @return A reference to a {@link CloudQueue} object.
      * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     *             If the resource URI constructed based on the queueName is invalid.
      * @throws StorageException
-     *             If a storage service error occurred during the operation.
+     *             If a storage service error occurred.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179349.aspx">Naming Queues and Metadata</a>
      */
     public CloudQueue getQueueReference(final String queueName) throws URISyntaxException, StorageException {
         return new CloudQueue(queueName, this);
@@ -297,8 +298,8 @@ public final class CloudQueueClient extends ServiceClient {
             public ResultSegment<CloudQueue> postProcessResponse(HttpURLConnection connection, Void queue,
                     CloudQueueClient client, OperationContext context, ResultSegment<CloudQueue> storageObject)
                     throws Exception {
-                final ListQueuesResponse response = new ListQueuesResponse(connection.getInputStream());
-                response.parseResponse(client);
+                final ListResponse<CloudQueue> response = QueueDeserializer.getQueues(connection.getInputStream(),
+                        client);
 
                 ResultContinuation newToken = null;
 
@@ -309,7 +310,7 @@ public final class CloudQueueClient extends ServiceClient {
                     newToken.setTargetLocation(this.getResult().getTargetLocation());
                 }
 
-                final ResultSegment<CloudQueue> resSegment = new ResultSegment<CloudQueue>(response.getQueues(client),
+                final ResultSegment<CloudQueue> resSegment = new ResultSegment<CloudQueue>(response.getResults(),
                         maxResults, newToken);
 
                 // Important for listQueues because this is required by the lazy iterator between executions.

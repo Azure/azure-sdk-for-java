@@ -16,89 +16,25 @@ package com.microsoft.windowsazure.storage;
 
 import static org.junit.Assert.*;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 import com.microsoft.windowsazure.storage.blob.CloudBlobClient;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.queue.CloudQueueClient;
 import com.microsoft.windowsazure.storage.table.CloudTableClient;
 
-@RunWith(Parameterized.class)
+@Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class ServicePropertiesTests extends TestBase {
-
-    private final String clientType;
-    private ServiceClient client;
-    private ServiceProperties props;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run. These tests will be run once with a
-     * BlobClient, once with a QueueClient and once with a TableClient
-     * 
-     * @return the type of ServiceClient with which to run the tests
-     * @throws URISyntaxException
-     */
-    @Parameters
-    public static Collection<Object> data() throws URISyntaxException {
-
-        return Arrays
-                .asList(new Object[] { new String[] { "blob" }, new String[] { "queue" }, new String[] { "table" } });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests. Based on its value, creates a new Service
-     * Client to use for this test run.
-     * 
-     * @param clientType
-     *            the type of the ServiceClient to use, as specified in @Parameters
-     */
-    public ServicePropertiesTests(String clientType) {
-        this.clientType = clientType;
-        if (clientType.equals("blob")) {
-            client = createCloudBlobClient();
-        }
-        else if (clientType.equals("queue")) {
-            client = createCloudQueueClient();
-        }
-        else if (clientType.equals("table")) {
-            client = createCloudTableClient();
-        }
-        else {
-            client = null;
-        }
-    }
-
-    /**
-     * Resets the Service Properties to defaults before each test
-     * 
-     * @throws StorageException
-     */
-    @Before
-    public void methodSetup() throws StorageException {
-        if (clientType.equals("blob")) {
-            props = new ServiceProperties();
-            props.setDefaultServiceVersion("2013-08-15");
-        }
-        else if (clientType.equals("queue")) {
-            props = new ServiceProperties();
-        }
-        else if (clientType.equals("table")) {
-            props = new ServiceProperties();
-        }
-        else {
-            client = null;
-        }
-    }
 
     /**
      * Test Analytics Disable Service Properties
@@ -108,6 +44,22 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testAnalyticsDisable() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsDisable(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsDisable(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsDisable(client, props);
+    }
+
+    private void testAnalyticsDisable(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setVersion("1.0");
@@ -122,9 +74,9 @@ public class ServicePropertiesTests extends TestBase {
 
         props.getCors().getCorsRules().clear();
 
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
@@ -135,31 +87,47 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testAnalyticsDefaultServiceVersion() throws StorageException, InterruptedException {
-        if (clientType.equals("blob")) {
-            props.setDefaultServiceVersion("2009-09-19");
-            callUploadServiceProps(client, props, clientType);
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsDefaultServiceVersion(client, props);
 
-            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsDefaultServiceVersion(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsDefaultServiceVersion(client, props);
+    }
+
+    private void testAnalyticsDefaultServiceVersion(ServiceClient client, ServiceProperties props)
+            throws StorageException, InterruptedException {
+        if (client.getClass().equals(CloudBlobClient.class)) {
+            props.setDefaultServiceVersion("2009-09-19");
+            callUploadServiceProps(client, props);
+
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion("2011-08-18");
-            callUploadServiceProps(client, props, clientType);
+            callUploadServiceProps(client, props);
 
-            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion("2012-02-12");
-            callUploadServiceProps(client, props, clientType);
+            callUploadServiceProps(client, props);
 
-            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
             props.setDefaultServiceVersion("2013-08-15");
-            callUploadServiceProps(client, props, clientType);
+            callUploadServiceProps(client, props);
 
-            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+            assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
         }
         else {
             try {
                 props.setDefaultServiceVersion("2009-09-19");
-                callUploadServiceProps(client, props, clientType);
+                callUploadServiceProps(client, props);
                 fail("Should not be able to set default Service Version for non Blob Client");
             }
             catch (IllegalArgumentException e) {
@@ -171,48 +139,6 @@ public class ServicePropertiesTests extends TestBase {
         }
     }
 
-    private void callUploadServiceProps(ServiceClient client, ServiceProperties props, String clientType)
-            throws StorageException, InterruptedException {
-        if (clientType.equals("blob")) {
-            CloudBlobClient blobClient = (CloudBlobClient) client;
-            blobClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
-        }
-        else if (clientType.equals("table")) {
-            CloudTableClient tableClient = (CloudTableClient) client;
-            tableClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
-        }
-        else if (clientType.equals("queue")) {
-            CloudQueueClient queueClient = (CloudQueueClient) client;
-            queueClient.uploadServiceProperties(props);
-            Thread.sleep(30000);
-        }
-        else {
-            fail();
-        }
-    }
-
-    private ServiceProperties callDownloadServiceProperties(ServiceClient client, String clientType)
-            throws StorageException {
-        if (clientType.equals("blob")) {
-            CloudBlobClient blobClient = (CloudBlobClient) client;
-            return blobClient.downloadServiceProperties();
-        }
-        else if (clientType.equals("table")) {
-            CloudTableClient tableClient = (CloudTableClient) client;
-            return tableClient.downloadServiceProperties();
-        }
-        else if (clientType.equals("queue")) {
-            CloudQueueClient queueClient = (CloudQueueClient) client;
-            return queueClient.downloadServiceProperties();
-        }
-        else {
-            fail();
-        }
-        return null;
-    }
-
     /**
      * Test Analytics Logging Operations
      * 
@@ -221,20 +147,36 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testAnalyticsLoggingOperations() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsLoggingOperations(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsLoggingOperations(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsLoggingOperations(client, props);
+    }
+
+    private void testAnalyticsLoggingOperations(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         // None
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setVersion("1.0");
 
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // None
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
@@ -245,25 +187,41 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testAnalyticsMetricsLevel() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsMetricsLevel(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsMetricsLevel(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsMetricsLevel(client, props);
+    }
+
+    private void testAnalyticsMetricsLevel(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         // None
         props.getHourMetrics().setMetricsLevel(MetricsLevel.DISABLED);
         props.getHourMetrics().setRetentionIntervalInDays(null);
         props.getHourMetrics().setVersion("1.0");
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Service
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // ServiceAndAPI
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
@@ -272,26 +230,43 @@ public class ServicePropertiesTests extends TestBase {
      * @throws StorageException
      * @throws InterruptedException
      */
+    @Test
     public void testAnalyticsMinuteMetricsLevel() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsMinuteMetricsLevel(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsMinuteMetricsLevel(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsMinuteMetricsLevel(client, props);
+    }
+
+    private void testAnalyticsMinuteMetricsLevel(ServiceClient client, ServiceProperties props)
+            throws StorageException, InterruptedException {
         // None
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.DISABLED);
         props.getMinuteMetrics().setRetentionIntervalInDays(null);
         props.getMinuteMetrics().setVersion("1.0");
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Service
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // ServiceAndAPI
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
@@ -302,60 +277,76 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testAnalyticsRetentionPolicies() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testAnalyticsRetentionPolicies(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testAnalyticsRetentionPolicies(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testAnalyticsRetentionPolicies(client, props);
+    }
+
+    private void testAnalyticsRetentionPolicies(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         // Set retention policy null with metrics disabled.
         props.getHourMetrics().setMetricsLevel(MetricsLevel.DISABLED);
         props.getHourMetrics().setRetentionIntervalInDays(null);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.DISABLED);
         props.getMinuteMetrics().setRetentionIntervalInDays(null);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with metrics enabled.
         props.getHourMetrics().setRetentionIntervalInDays(1);
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE);
         props.getMinuteMetrics().setRetentionIntervalInDays(1);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with metrics enabled.
         props.getHourMetrics().setRetentionIntervalInDays(2);
         props.getHourMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
         props.getMinuteMetrics().setRetentionIntervalInDays(2);
         props.getMinuteMetrics().setMetricsLevel(MetricsLevel.SERVICE_AND_API);
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy null with logging disabled.
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with logging disabled.
         props.getLogging().setRetentionIntervalInDays(3);
         props.getLogging().setLogOperationTypes(EnumSet.noneOf(LoggingOperations.class));
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy null with logging enabled.
         props.getLogging().setRetentionIntervalInDays(null);
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         // Set retention policy not null with logging enabled.
         props.getLogging().setRetentionIntervalInDays(4);
         props.getLogging().setLogOperationTypes(EnumSet.allOf(LoggingOperations.class));
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
@@ -366,6 +357,22 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testCloudValidCorsRules() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testCloudValidCorsRules(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testCloudValidCorsRules(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testCloudValidCorsRules(client, props);
+    }
+
+    private void testCloudValidCorsRules(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         CorsRule ruleMinRequired = new CorsRule();
         ruleMinRequired.getAllowedOrigins().add("www.xyz.com");
         ruleMinRequired.getAllowedMethods().add(CorsHttpMethods.GET);
@@ -409,31 +416,31 @@ public class ServicePropertiesTests extends TestBase {
         ruleAllowAll.getAllowedHeaders().add("*");
         ruleAllowAll.getExposedHeaders().add("*");
 
-        this.testCorsRules(ruleBasic);
+        this.testCorsRules(ruleBasic, client, props);
 
-        this.testCorsRules(ruleMinRequired);
+        this.testCorsRules(ruleMinRequired, client, props);
 
-        this.testCorsRules(ruleAllMethods);
+        this.testCorsRules(ruleAllMethods, client, props);
 
-        this.testCorsRules(ruleSingleExposedHeader);
+        this.testCorsRules(ruleSingleExposedHeader, client, props);
 
-        this.testCorsRules(ruleSingleExposedPrefixHeader);
+        this.testCorsRules(ruleSingleExposedPrefixHeader, client, props);
 
-        this.testCorsRules(ruleSingleAllowedHeader);
+        this.testCorsRules(ruleSingleAllowedHeader, client, props);
 
-        this.testCorsRules(ruleSingleAllowedPrefixHeader);
+        this.testCorsRules(ruleSingleAllowedPrefixHeader, client, props);
 
-        this.testCorsRules(ruleAllowAll);
+        this.testCorsRules(ruleAllowAll, client, props);
 
         List<CorsRule> testList = new ArrayList<CorsRule>();
 
         // Empty rule set should delete all rules
-        this.testCorsRules(testList);
+        this.testCorsRules(testList, client, props);
 
         // Test duplicate rules
         testList.add(ruleBasic);
         testList.add(ruleBasic);
-        this.testCorsRules(testList);
+        this.testCorsRules(testList, client, props);
 
         // Test max number of  rules (five)
         testList.clear();
@@ -442,7 +449,7 @@ public class ServicePropertiesTests extends TestBase {
         testList.add(ruleAllMethods);
         testList.add(ruleSingleExposedHeader);
         testList.add(ruleSingleExposedPrefixHeader);
-        this.testCorsRules(testList);
+        this.testCorsRules(testList, client, props);
 
         // Test max number of  rules (six)
         testList.clear();
@@ -454,7 +461,7 @@ public class ServicePropertiesTests extends TestBase {
         testList.add(ruleSingleAllowedHeader);
 
         try {
-            this.testCorsRules(testList);
+            this.testCorsRules(testList, client, props);
             fail("Expecting exception but no exception received. Services are limited to a maximum of five CORS rules.");
         }
         catch (StorageException e) {
@@ -468,7 +475,22 @@ public class ServicePropertiesTests extends TestBase {
      * Test CORS with invalid values.
      */
     @Test
-    public void testCorsExpectedExceptions() {
+    public void testCorsExpectedExceptions() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testCorsExpectedExceptions(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testCorsExpectedExceptions(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testCorsExpectedExceptions(client, props);
+    }
+
+    private void testCorsExpectedExceptions(ServiceClient client, ServiceProperties props) {
         CorsRule ruleEmpty = new CorsRule();
 
         CorsRule ruleInvalidMaxAge = new CorsRule();
@@ -477,7 +499,7 @@ public class ServicePropertiesTests extends TestBase {
         ruleInvalidMaxAge.setMaxAgeInSeconds(-1);
 
         try {
-            this.testCorsRules(ruleEmpty);
+            this.testCorsRules(ruleEmpty, client, props);
             fail("No exception received. A CORS rule must contain at least one allowed origin and allowed method.");
         }
         catch (StorageException e) {
@@ -491,7 +513,7 @@ public class ServicePropertiesTests extends TestBase {
         }
 
         try {
-            this.testCorsRules(ruleInvalidMaxAge);
+            this.testCorsRules(ruleInvalidMaxAge, client, props);
             fail("No exception received. MaxAgeInSeconds cannot have a value less than 0.");
         }
         catch (StorageException e) {
@@ -513,6 +535,22 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testCorsMaxOrigins() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testCorsMaxOrigins(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testCorsMaxOrigins(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testCorsMaxOrigins(client, props);
+    }
+
+    private void testCorsMaxOrigins(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         CorsRule ruleManyOrigins = new CorsRule();
         ruleManyOrigins.getAllowedMethods().add(CorsHttpMethods.GET);
 
@@ -521,12 +559,12 @@ public class ServicePropertiesTests extends TestBase {
             ruleManyOrigins.getAllowedOrigins().add("www.xyz" + i + ".com");
         }
 
-        this.testCorsRules(ruleManyOrigins);
+        this.testCorsRules(ruleManyOrigins, client, props);
 
         ruleManyOrigins.getAllowedOrigins().add("www.xyz64.com");
 
         try {
-            this.testCorsRules(ruleManyOrigins);
+            this.testCorsRules(ruleManyOrigins, client, props);
             fail("No exception received. A maximum of 64 origins are allowed.");
         }
         catch (StorageException e) {
@@ -544,6 +582,22 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testCorsMaxHeaders() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testCorsMaxHeaders(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testCorsMaxHeaders(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testCorsMaxHeaders(client, props);
+    }
+
+    private void testCorsMaxHeaders(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         CorsRule ruleManyHeaders = new CorsRule();
         ruleManyHeaders.getAllowedOrigins().add("www.xyz.com");
         ruleManyHeaders.getAllowedMethods().add(CorsHttpMethods.GET);
@@ -556,13 +610,13 @@ public class ServicePropertiesTests extends TestBase {
             ruleManyHeaders.getExposedHeaders().add("x-ms-meta-" + i);
         }
 
-        this.testCorsRules(ruleManyHeaders);
+        this.testCorsRules(ruleManyHeaders, client, props);
 
         // Test with too many Exposed Headers (65)
         ruleManyHeaders.getExposedHeaders().add("x-ms-meta-toomany");
 
         try {
-            this.testCorsRules(ruleManyHeaders);
+            this.testCorsRules(ruleManyHeaders, client, props);
             fail("No exception received. A maximum of 64 exposed headers are allowed.");
         }
         catch (StorageException e) {
@@ -577,7 +631,7 @@ public class ServicePropertiesTests extends TestBase {
         ruleManyHeaders.getAllowedHeaders().add("x-ms-meta-toomany");
 
         try {
-            this.testCorsRules(ruleManyHeaders);
+            this.testCorsRules(ruleManyHeaders, client, props);
             fail("No exception received. A maximum of 64 allowed headers are allowed.");
         }
         catch (StorageException e) {
@@ -592,7 +646,7 @@ public class ServicePropertiesTests extends TestBase {
         ruleManyHeaders.getExposedHeaders().add("x-ms-meta-toomany*");
 
         try {
-            this.testCorsRules(ruleManyHeaders);
+            this.testCorsRules(ruleManyHeaders, client, props);
             fail("No exception received. A maximum of 2 exposed headers are allowed.");
         }
         catch (StorageException e) {
@@ -607,7 +661,7 @@ public class ServicePropertiesTests extends TestBase {
         ruleManyHeaders.getAllowedHeaders().add("x-ms-meta-toomany*");
 
         try {
-            this.testCorsRules(ruleManyHeaders);
+            this.testCorsRules(ruleManyHeaders, client, props);
             fail("No exception received. A maximum of 64 allowed headers are allowed.");
         }
         catch (StorageException e) {
@@ -627,6 +681,22 @@ public class ServicePropertiesTests extends TestBase {
      */
     @Test
     public void testOptionalServiceProperties() throws StorageException, InterruptedException {
+        ServiceClient client = createCloudBlobClient();
+        ServiceProperties props = new ServiceProperties();
+        props.setDefaultServiceVersion("2013-08-15");
+        testOptionalServiceProperties(client, props);
+
+        client = createCloudQueueClient();
+        props = new ServiceProperties();
+        testOptionalServiceProperties(client, props);
+
+        client = createCloudTableClient();
+        props = new ServiceProperties();
+        testOptionalServiceProperties(client, props);
+    }
+
+    private void testOptionalServiceProperties(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         // None
         props.getLogging().setLogOperationTypes(EnumSet.of(LoggingOperations.READ, LoggingOperations.WRITE));
         props.getLogging().setRetentionIntervalInDays(5);
@@ -644,7 +714,7 @@ public class ServicePropertiesTests extends TestBase {
 
         props.getCors().getCorsRules().clear();
 
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
         ServiceProperties newProps = new ServiceProperties();
 
@@ -662,54 +732,106 @@ public class ServicePropertiesTests extends TestBase {
         ruleBasic.setMaxAgeInSeconds(500);
         newProps.getCors().getCorsRules().add(ruleBasic);
 
-        callUploadServiceProps(client, newProps, clientType);
+        callUploadServiceProps(client, newProps);
 
         props.setCors(newProps.getCors());
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
 
         newProps.setLogging(props.getLogging());
         newProps.setHourMetrics(props.getHourMetrics());
         newProps.setMinuteMetrics(props.getMinuteMetrics());
         newProps.setCors(null);
-        callUploadServiceProps(client, newProps, clientType);
+        callUploadServiceProps(client, newProps);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
+    }
+
+    private void callUploadServiceProps(ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
+        if (client.getClass().equals(CloudBlobClient.class)) {
+            CloudBlobClient blobClient = (CloudBlobClient) client;
+            blobClient.uploadServiceProperties(props);
+            Thread.sleep(30000);
+        }
+        else if (client.getClass().equals(CloudTableClient.class)) {
+            CloudTableClient tableClient = (CloudTableClient) client;
+            tableClient.uploadServiceProperties(props);
+            Thread.sleep(30000);
+        }
+        else if (client.getClass().equals(CloudQueueClient.class)) {
+            CloudQueueClient queueClient = (CloudQueueClient) client;
+            queueClient.uploadServiceProperties(props);
+            Thread.sleep(30000);
+        }
+        else {
+            fail();
+        }
+    }
+
+    private ServiceProperties callDownloadServiceProperties(ServiceClient client) throws StorageException {
+        if (client.getClass().equals(CloudBlobClient.class)) {
+            CloudBlobClient blobClient = (CloudBlobClient) client;
+            return blobClient.downloadServiceProperties();
+        }
+        else if (client.getClass().equals(CloudTableClient.class)) {
+            CloudTableClient tableClient = (CloudTableClient) client;
+            return tableClient.downloadServiceProperties();
+        }
+        else if (client.getClass().equals(CloudQueueClient.class)) {
+            CloudQueueClient queueClient = (CloudQueueClient) client;
+            return queueClient.downloadServiceProperties();
+        }
+        else {
+            fail();
+        }
+        return null;
     }
 
     /**
      * Takes a CorsRule and tries to upload it. Then tries to download it and compares it to the initial CorsRule.
      * 
      * @param rule
+     * @param client
+     *            TODO
+     * @param props
+     *            TODO
      * @throws StorageException
      * @throws InterruptedException
      */
-    private void testCorsRules(CorsRule rule) throws StorageException, InterruptedException {
+    private void testCorsRules(CorsRule rule, ServiceClient client, ServiceProperties props) throws StorageException,
+            InterruptedException {
         props.getCors().getCorsRules().clear();
         props.getCors().getCorsRules().add(rule);
 
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**
      * Takes a List of CorsRules and tries to upload them. Then tries to download them and compares the list to the
      * initial CorsRule List.
      * 
+     * @param client
+     *            TODO
+     * @param props
+     *            TODO
      * @param rule
+     * 
      * @throws StorageException
      * @throws InterruptedException
      */
-    private void testCorsRules(List<CorsRule> corsRules) throws StorageException, InterruptedException {
+    private void testCorsRules(List<CorsRule> corsRules, ServiceClient client, ServiceProperties props)
+            throws StorageException, InterruptedException {
         props.getCors().getCorsRules().clear();
 
         for (CorsRule rule : corsRules) {
             props.getCors().getCorsRules().add(rule);
         }
 
-        callUploadServiceProps(client, props, clientType);
+        callUploadServiceProps(client, props);
 
-        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client, clientType));
+        assertServicePropertiesAreEqual(props, callDownloadServiceProperties(client));
     }
 
     /**

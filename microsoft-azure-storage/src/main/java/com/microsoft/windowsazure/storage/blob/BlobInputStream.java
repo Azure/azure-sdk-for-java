@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.storage.blob;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -153,9 +152,7 @@ public final class BlobInputStream extends InputStream {
 
         parentBlob.downloadAttributes(accessCondition, this.options, this.opContext);
 
-        final HttpURLConnection attributesRequest = this.opContext.getCurrentRequestObject();
-
-        this.retrievedContentMD5Value = attributesRequest.getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+        this.retrievedContentMD5Value = parentBlob.getProperties().getContentMD5();
 
         // Will validate it if it was returned
         this.validateBlobMd5 = !options.getDisableContentMD5Validation()
@@ -233,7 +230,7 @@ public final class BlobInputStream extends InputStream {
     public synchronized void close() throws IOException {
         this.currentBuffer = null;
         this.streamFaulted = true;
-        this.lastError = new IOException("Stream is closed");
+        this.lastError = new IOException(SR.STREAM_CLOSED);
     }
 
     /**
@@ -262,15 +259,6 @@ public final class BlobInputStream extends InputStream {
             this.lastError = Utility.initIOException(e);
             throw this.lastError;
         }
-    }
-
-    /**
-     * Gets a value indicating if MD5 should be validated.
-     * 
-     * @return a value indicating if MD5 should be validated.
-     */
-    protected synchronized boolean getValidateBlobMd5() {
-        return this.validateBlobMd5;
     }
 
     /**
@@ -498,16 +486,6 @@ public final class BlobInputStream extends InputStream {
     }
 
     /**
-     * Sets a value indicating if MD5 should be validated.
-     * 
-     * @param validateBlobMd5
-     *            a value indicating if MD5 should be validated.
-     */
-    protected synchronized void setValidateBlobMd5(final boolean validateBlobMd5) {
-        this.validateBlobMd5 = validateBlobMd5;
-    }
-
-    /**
      * Skips over and discards n bytes of data from this input stream. The skip method may, for a variety of reasons,
      * end up skipping over some smaller number of bytes, possibly 0. This may result from any of a number of
      * conditions; reaching end of file before n bytes have been skipped is only one possibility. The actual number of
@@ -532,29 +510,5 @@ public final class BlobInputStream extends InputStream {
         this.md5Digest = null;
         this.reposition(this.currentAbsoluteReadPosition + n);
         return n;
-    }
-
-    /**
-     * Writes the entire blob contents from the Windows Azure Blob service to the given output stream.
-     * 
-     * @param outStream
-     *            the output stream to write to.
-     * @return the number of bytes written.
-     * @throws IOException
-     *             if an I/O Error occurs
-     */
-    @DoesServiceRequest
-    protected long writeTo(final OutputStream outStream) throws IOException {
-        final byte[] buffer = new byte[Constants.BUFFER_COPY_LENGTH];
-        long total = 0;
-        int count = this.read(buffer);
-
-        while (count != -1) {
-            outStream.write(buffer, 0, count);
-            total += count;
-            count = this.read(buffer);
-        }
-
-        return total;
     }
 }

@@ -37,13 +37,14 @@ public class TableTestBase extends TestBase {
 
     protected static CloudTableClient tClient;
     protected static String testSuiteTableName = generateRandomTableName();
+    protected static CloudTable table;
 
     @BeforeClass
     public static void setup() throws URISyntaxException, StorageException, InvalidKeyException {
         tClient = createCloudTableClient();
         testSuiteTableName = generateRandomTableName();
 
-        CloudTable table = tClient.getTableReference(testSuiteTableName);
+        table = tClient.getTableReference(testSuiteTableName);
         table.create();
     }
 

@@ -14,24 +14,16 @@
  */
 package com.microsoft.windowsazure.storage.core;
 
-import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLStreamException;
-
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.LeaseDuration;
 import com.microsoft.windowsazure.storage.LeaseState;
 import com.microsoft.windowsazure.storage.LeaseStatus;
-import com.microsoft.windowsazure.storage.OperationContext;
-import com.microsoft.windowsazure.storage.ServiceProperties;
-import com.microsoft.windowsazure.storage.ServiceStats;
-import com.microsoft.windowsazure.storage.StorageException;
 
 /**
  * RESERVED FOR INTERNAL USE. The base response class for the protocol layer
@@ -144,11 +136,9 @@ public class BaseResponse {
      * 
      * @param request
      *            The response from server.
-     * @param opContext
-     *            a tracking object for the request
      * @return the lease id from the request header.
      */
-    public static String getLeaseID(final HttpURLConnection request, final OperationContext opContext) {
+    public static String getLeaseID(final HttpURLConnection request) {
         return request.getHeaderField(Constants.HeaderConstants.LEASE_ID_HEADER);
     }
 
@@ -157,11 +147,9 @@ public class BaseResponse {
      * 
      * @param request
      *            The response from server.
-     * @param opContext
-     *            a tracking object for the request
      * @return the lease Time from the request header.
      */
-    public static String getLeaseTime(final HttpURLConnection request, final OperationContext opContext) {
+    public static String getLeaseTime(final HttpURLConnection request) {
         return request.getHeaderField(Constants.HeaderConstants.LEASE_TIME_HEADER);
     }
 
@@ -187,44 +175,6 @@ public class BaseResponse {
         }
 
         return retVals;
-    }
-
-    /**
-     * Deserializes the ServiceProperties object from an input stream.
-     * 
-     * @param inStream
-     *            the stream to read from.
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return a ServiceProperties object representing the Analytics configuration for the client.
-     * @throws XMLStreamException
-     *             if the xml is invalid.
-     * @throws StorageException
-     *             if unexpected xml is found.
-     */
-    public static ServiceProperties readServicePropertiesFromStream(final InputStream inStream,
-            final OperationContext opContext) throws XMLStreamException, StorageException {
-        return ServiceProperties.readServicePropertiesFromStream(inStream, opContext);
-    }
-
-    /**
-     * De-serializes the ServiceStats object from an input stream.
-     * 
-     * @param inStream
-     *            the stream to read from.
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return a ServiceStats object that is stored in the stream.
-     * @throws XMLStreamException
-     *             if there was an XML parsing error.
-     * @throws StorageException
-     *             if the xml is invalid.
-     * @throws ParseException
-     *             if the last sync time string is invalid.
-     */
-    public static ServiceStats readServiceStatsFromStream(final InputStream inStream, final OperationContext opContext)
-            throws XMLStreamException, StorageException, ParseException {
-        return ServiceStats.readServiceStatsFromStream(inStream, opContext);
     }
 
     /**

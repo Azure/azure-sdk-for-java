@@ -32,14 +32,20 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 
 /**
  * Blob Container Tests
  */
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudBlobContainerTests extends BlobTestBase {
 
     protected static CloudBlobClient client;
@@ -160,6 +166,7 @@ public class CloudBlobContainerTests extends BlobTestBase {
      * @throws InterruptedException
      */
     @Test
+    @Category(SlowTests.class)
     public void testCloudBlobContainerSetPermissions() throws URISyntaxException, StorageException,
             InterruptedException {
         container.create();
@@ -214,19 +221,19 @@ public class CloudBlobContainerTests extends BlobTestBase {
         policy.setSharedAccessStartTime(start);
         policy.setSharedAccessExpiryTime(expiry);
 
-        policy.setPermissions(SharedAccessBlobPolicy.permissionsFromString("rwdl"));
+        policy.setPermissionsFromString("rwdl");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST), policy.getPermissions());
 
-        policy.setPermissions(SharedAccessBlobPolicy.permissionsFromString("rwl"));
+        policy.setPermissionsFromString("rwl");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.LIST), policy.getPermissions());
 
-        policy.setPermissions(SharedAccessBlobPolicy.permissionsFromString("wr"));
+        policy.setPermissionsFromString("wr");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.READ),
                 policy.getPermissions());
 
-        policy.setPermissions(SharedAccessBlobPolicy.permissionsFromString("d"));
+        policy.setPermissionsFromString("d");
         assertEquals(EnumSet.of(SharedAccessBlobPermissions.DELETE), policy.getPermissions());
     }
 
@@ -246,17 +253,17 @@ public class CloudBlobContainerTests extends BlobTestBase {
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.DELETE, SharedAccessBlobPermissions.LIST));
-        assertEquals("rwdl", SharedAccessBlobPolicy.permissionsToString(policy.getPermissions()));
+        assertEquals("rwdl", policy.permissionsToString());
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
                 SharedAccessBlobPermissions.LIST));
-        assertEquals("rwl", SharedAccessBlobPolicy.permissionsToString(policy.getPermissions()));
+        assertEquals("rwl", policy.permissionsToString());
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.WRITE, SharedAccessBlobPermissions.READ));
-        assertEquals("rw", SharedAccessBlobPolicy.permissionsToString(policy.getPermissions()));
+        assertEquals("rw", policy.permissionsToString());
 
         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.DELETE));
-        assertEquals("d", SharedAccessBlobPolicy.permissionsToString(policy.getPermissions()));
+        assertEquals("d", policy.permissionsToString());
     }
 
     @Test
@@ -337,7 +344,7 @@ public class CloudBlobContainerTests extends BlobTestBase {
      * @throws InterruptedException
      */
     @Test
-    public void testCloudBlobContainerListBlobsParser() throws URISyntaxException, StorageException, IOException,
+    public void testCloudBlobContainerListBlobsOptions() throws URISyntaxException, StorageException, IOException,
             InterruptedException {
         container.create();
         final int length = 128;
@@ -361,7 +368,8 @@ public class CloudBlobContainerTests extends BlobTestBase {
         waitForCopy(copySnapshot);
 
         int count = 0;
-        for (ListBlobItem item : container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null, null)) {
+        for (ListBlobItem item : container.listBlobs("originalBlob", true, EnumSet.allOf(BlobListingDetails.class),
+                null, null)) {
             CloudBlockBlob blob = (CloudBlockBlob) item;
             if (blob.getName().equals(originalBlob.getName()) && !blob.isSnapshot()) {
                 assertCreatedAndListedBlobsEquivalent(originalBlob, blob, length);

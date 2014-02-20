@@ -14,66 +14,15 @@
  */
 package com.microsoft.windowsazure.storage;
 
+import com.microsoft.windowsazure.storage.core.BaseEvent;
+
 /**
  * Represents an event that is fired when a response is received.
  */
-public final class ResponseReceivedEvent {
+public final class ResponseReceivedEvent extends BaseEvent {
 
-    /**
-     * Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as a
-     * connection object.
-     */
-    private final Object connectionObject;
-
-    /**
-     * Represents a context for the current operation. This object is used to track requests to the storage service, and
-     * to provide additional runtime information about the operation.
-     */
-    private final OperationContext opContext;
-
-    /**
-     * A {@link RequestResult} object that represents the last request result.
-     */
-    private final RequestResult requestResult;
-
-    /**
-     * Creates an instance of the <code>ResponseReceivedEvent</code> class.
-     * 
-     * @param opContext
-     *            An {@link OperationContext} object that represents the context for the current operation. This object
-     *            is used to track requests to the storage service, and to provide additional runtime information about
-     *            the operation.
-     * @param connectionObject
-     *            Represents a connection object. Currently only <code>java.net.HttpURLConnection</code> is supported as
-     *            a connection object.
-     * @param requestResult
-     *            A {@link RequestResult} object that represents the current request result.
-     */
-    public ResponseReceivedEvent(final OperationContext opContext, final Object connectionObject,
-            final RequestResult requestResult) {
-        this.opContext = opContext;
-        this.connectionObject = connectionObject;
-        this.requestResult = requestResult;
+    public ResponseReceivedEvent(OperationContext opContext, Object connectionObject, RequestResult requestResult) {
+        super(opContext, connectionObject, requestResult);
     }
 
-    /**
-     * @return the connectionObject
-     */
-    public Object getConnectionObject() {
-        return this.connectionObject;
-    }
-
-    /**
-     * @return the opContext
-     */
-    public OperationContext getOpContext() {
-        return this.opContext;
-    }
-
-    /**
-     * @return A {@link RequestResult} object that represents the current request result.
-     */
-    public RequestResult getRequestResult() {
-        return this.requestResult;
-    }
 }

@@ -14,16 +14,16 @@
  */
 package com.microsoft.windowsazure.storage.queue;
 
-import java.util.Date;
 import java.util.EnumSet;
 
 import com.microsoft.windowsazure.storage.Constants;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicy;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
  * signature.
  */
-public final class SharedAccessQueuePolicy {
+public final class SharedAccessQueuePolicy extends SharedAccessPolicy {
 
     /**
      * Assigns shared access permissions using the specified permissions string.
@@ -41,7 +41,11 @@ public final class SharedAccessQueuePolicy {
      * 
      * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessQueuePermissions} values that
      *         represents the set of shared access permissions.
+     * 
+     * @deprecated As of release 0.6.0, replaced by the instance method
+     *             {@link SharedAccessQueuePolicy#setPermissionsFromString(String)}.
      */
+    @Deprecated
     public static EnumSet<SharedAccessQueuePermissions> permissionsFromString(final String value) {
         final char[] chars = value.toCharArray();
         final EnumSet<SharedAccessQueuePermissions> retSet = EnumSet.noneOf(SharedAccessQueuePermissions.class);
@@ -74,9 +78,13 @@ public final class SharedAccessQueuePolicy {
      * @param permissions
      *            A {@link SharedAccessQueuePermissions} object that represents the shared access permissions.
      * 
-     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
+     * @return A <code>String</code> that represents the shared access permissions in the "raup" format, which is
      *         described at {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
+     * 
+     * @deprecated As of release 0.6.0, replaced by the instance method
+     *             {@link SharedAccessQueuePolicy#permissionsToString()}.
      */
+    @Deprecated
     public static String permissionsToString(final EnumSet<SharedAccessQueuePermissions> permissions) {
         if (permissions == null) {
             return Constants.EMPTY_STRING;
@@ -110,23 +118,6 @@ public final class SharedAccessQueuePolicy {
     private EnumSet<SharedAccessQueuePermissions> permissions;
 
     /**
-     * The expiry time for a shared access signature associated with this shared access policy.
-     */
-    private Date sharedAccessExpiryTime;
-
-    /**
-     * The start time for a shared access signature associated with this shared access policy.
-     */
-    private Date sharedAccessStartTime;
-
-    /**
-     * Creates an instance of the <code>SharedAccessQueuePolicy</code> class.
-     * */
-    public SharedAccessQueuePolicy() {
-        // Empty Default Ctor
-    }
-
-    /**
      * Gets the permissions for a shared access signature associated with this shared access policy.
      * 
      * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessQueuePermissions} values that
@@ -134,24 +125,6 @@ public final class SharedAccessQueuePolicy {
      */
     public EnumSet<SharedAccessQueuePermissions> getPermissions() {
         return this.permissions;
-    }
-
-    /**
-     * Gets the expiry time for a shared access signature associated with this shared access policy.
-     * 
-     * @return A <code>Date</code> object that contains the shared access signature expiry time.
-     */
-    public Date getSharedAccessExpiryTime() {
-        return this.sharedAccessExpiryTime;
-    }
-
-    /**
-     * Gets the start time for a shared access signature associated with this shared access policy.
-     * 
-     * @return A <code>Date</code> object that contains the shared access signature start time.
-     */
-    public Date getSharedAccessStartTime() {
-        return this.sharedAccessStartTime;
     }
 
     /**
@@ -166,22 +139,32 @@ public final class SharedAccessQueuePolicy {
     }
 
     /**
-     * Sets the expiry time for a shared access signature associated with this shared access policy.
+     * Converts this policy's permissions to a string.
      * 
-     * @param sharedAccessExpiryTime
-     *            The expiry time to set for the shared access signature.
+     * @return A <code>String</code> that represents the shared access permissions in the "raup" format, which is
+     *         described at {@link SharedAccessQueuePolicy#permissionsFromString(String)}.
      */
-    public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
-        this.sharedAccessExpiryTime = sharedAccessExpiryTime;
+    @Override
+    public String permissionsToString() {
+        return SharedAccessQueuePolicy.permissionsToString(this.permissions);
     }
 
     /**
-     * Sets the start time for a shared access signature associated with this shared access policy.
+     * Sets shared access permissions using the specified permissions string.
      * 
-     * @param sharedAccessStartTime
-     *            The start time to set for the shared access signature.
+     * @param value
+     *            A <code>String</code> that represents the shared access permissions. The string must contain one or
+     *            more of the following values. Note that they must be lower case, and the order that they are specified
+     *            must be in the order of "raup".
+     *            <ul>
+     *            <li><code>d</code>: Read access.</li>
+     *            <li><code>l</code>: Add access.</li>
+     *            <li><code>r</code>: Update access.</li>
+     *            <li><code>w</code>: ProcessMessages access.</li>
+     *            </ul>
      */
-    public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
-        this.sharedAccessStartTime = sharedAccessStartTime;
+    @Override
+    public void setPermissionsFromString(final String value) {
+        this.permissions = SharedAccessQueuePolicy.permissionsFromString(value);
     }
 }

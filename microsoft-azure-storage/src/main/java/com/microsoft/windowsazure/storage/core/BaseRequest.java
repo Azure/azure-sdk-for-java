@@ -23,12 +23,9 @@ import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLStreamException;
-
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.Credentials;
 import com.microsoft.windowsazure.storage.OperationContext;
-import com.microsoft.windowsazure.storage.ServiceProperties;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageKey;
 
@@ -239,8 +236,6 @@ public final class BaseRequest {
         }
 
         final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
-
-        retConnection.setDoOutput(true);
         retConnection.setRequestMethod(Constants.HTTP_DELETE);
 
         return retConnection;
@@ -271,7 +266,6 @@ public final class BaseRequest {
         builder.add(Constants.QueryConstants.COMPONENT, METADATA);
         final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
 
-        retConnection.setDoOutput(true);
         retConnection.setRequestMethod(Constants.HTTP_HEAD);
 
         return retConnection;
@@ -300,8 +294,6 @@ public final class BaseRequest {
         }
 
         final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
-
-        retConnection.setDoOutput(true);
         retConnection.setRequestMethod(Constants.HTTP_HEAD);
 
         return retConnection;
@@ -333,8 +325,6 @@ public final class BaseRequest {
         builder.add(Constants.QueryConstants.RESOURCETYPE, SERVICE);
 
         final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
-
-        retConnection.setDoOutput(true);
         retConnection.setRequestMethod(Constants.HTTP_GET);
 
         return retConnection;
@@ -366,7 +356,6 @@ public final class BaseRequest {
         builder.add(Constants.QueryConstants.RESOURCETYPE, SERVICE);
 
         final HttpURLConnection retConnection = createURLConnection(uri, timeout, builder, opContext);
-        retConnection.setDoOutput(true);
         retConnection.setRequestMethod("GET");
 
         return retConnection;
@@ -379,31 +368,14 @@ public final class BaseRequest {
      */
     public static String getUserAgent() {
         if (userAgent == null) {
-            String userAgentComment = String
-                    .format(Utility.LOCALE_US, "(Java JRE %s; %s %s)", System.getProperty("java.version"),
-                            System.getProperty("os.name"), System.getProperty("os.version"));
+            String userAgentComment = String.format(Utility.LOCALE_US, "(JavaJRE %s; %s %s)",
+                    System.getProperty("java.version"), System.getProperty("os.name").replaceAll(" ", ""),
+                    System.getProperty("os.version"));
             userAgent = String.format("%s/%s %s", Constants.HeaderConstants.USER_AGENT_PREFIX,
                     Constants.HeaderConstants.USER_AGENT_VERSION, userAgentComment);
         }
 
         return userAgent;
-    }
-
-    /**
-     * Writes the contents of the ServiceProperties object to a byte array in XML form.
-     * 
-     * @param properties
-     *            the ServiceProperties to write to the stream.
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return the number of bytes written to the output stream.
-     * @throws XMLStreamException
-     *             if there is an error writing the content to the stream.
-     * @throws StorageException
-     */
-    public static byte[] serializeServicePropertiesToByteArray(final ServiceProperties properties,
-            final OperationContext opContext) throws XMLStreamException, StorageException {
-        return properties.serializeToByteArray(opContext);
     }
 
     /**
@@ -492,8 +464,7 @@ public final class BaseRequest {
         request.setRequestProperty(Constants.HeaderConstants.DATE, Utility.getGMTTime());
         final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueFullCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
@@ -526,8 +497,7 @@ public final class BaseRequest {
 
         final Canonicalizer canonicalizer = CanonicalizerFactory.getBlobQueueLiteCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
@@ -560,8 +530,7 @@ public final class BaseRequest {
 
         final Canonicalizer canonicalizer = CanonicalizerFactory.getTableFullCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 
@@ -591,8 +560,7 @@ public final class BaseRequest {
 
         final Canonicalizer canonicalizer = CanonicalizerFactory.getTableLiteCanonicalizer(request);
 
-        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength,
-                opContext);
+        final String stringToSign = canonicalizer.canonicalize(request, credentials.getAccountName(), contentLength);
 
         final String computedBase64Signature = StorageKey.computeMacSha256(credentials.getKey(), stringToSign);
 

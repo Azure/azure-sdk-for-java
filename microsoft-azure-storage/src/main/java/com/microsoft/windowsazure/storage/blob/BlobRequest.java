@@ -15,16 +15,10 @@
 package com.microsoft.windowsazure.storage.blob;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import com.microsoft.windowsazure.storage.AccessCondition;
 import com.microsoft.windowsazure.storage.Constants;
@@ -85,6 +79,27 @@ final class BlobRequest {
     public static void addMetadata(final HttpURLConnection request, final String name, final String value,
             final OperationContext opContext) {
         BaseRequest.addMetadata(request, name, value, opContext);
+    }
+
+    /**
+     * Adds the metadata.
+     * 
+     * @param request
+     *            The request.
+     * @param name
+     *            The metadata name.
+     * @param value
+     *            The metadata value.
+     */
+    private static void addProperties(final HttpURLConnection request, BlobProperties properties) {
+        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
+                properties.getCacheControl());
+        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_DISPOSITION_HEADER,
+                properties.getContentDisposition());
+        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_ENCODING_HEADER, properties.getContentEncoding());
+        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
+        BaseRequest.addOptionalHeader(request, BlobConstants.BLOB_CONTENT_MD5_HEADER, properties.getContentMD5());
+        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_TYPE_HEADER, properties.getContentType());
     }
 
     /**
@@ -728,14 +743,7 @@ final class BlobRequest {
 
         request.setRequestMethod(Constants.HTTP_PUT);
 
-        // use set optional header
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL, properties.getCacheControl());
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_TYPE, properties.getContentType());
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_MD5, properties.getContentMD5());
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_LANGUAGE,
-                properties.getContentLanguage());
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CONTENT_ENCODING,
-                properties.getContentEncoding());
+        addProperties(request, properties);
 
         if (blobType == BlobType.PAGE_BLOB) {
             request.setFixedLengthStreamingMode(0);
@@ -840,18 +848,13 @@ final class BlobRequest {
             accessCondition.applyConditionToRequest(request);
         }
 
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
-                properties.getCacheControl());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_ENCODING_HEADER, properties.getContentEncoding());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
-        BaseRequest.addOptionalHeader(request, BlobConstants.BLOB_CONTENT_MD5_HEADER, properties.getContentMD5());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_TYPE_HEADER, properties.getContentType());
+        addProperties(request, properties);
 
         return request;
     }
 
     /**
-     * Constructs a HttpURLConnection to upload a block. Sign with page length for update, or 0 for clear.
+     * Constructs a HttpURLConnection to upload a page. Sign with page length for update, or 0 for clear.
      * 
      * @param uri
      *            The absolute URI to the blob
@@ -942,6 +945,54 @@ final class BlobRequest {
      *            The absolute URI to the blob
      * @param timeout
      *            The server timeout interval
+     * @param properties
+     *            The properties to upload.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param blobOptions
+     *            the options to use for the request.
+     * @param opContext
+     *            a tracking object for the request
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection setProperties(final URI uri, final int timeout, final BlobProperties properties,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.PROPERTIES);
+
+        final HttpURLConnection request = BlobRequest
+                .createURLConnection(uri, timeout, builder, blobOptions, opContext);
+
+        request.setFixedLengthStreamingMode(0);
+        request.setDoOutput(true);
+        request.setRequestMethod(Constants.HTTP_PUT);
+
+        if (accessCondition != null) {
+            accessCondition.applyConditionToRequest(request);
+        }
+
+        if (properties != null) {
+            addProperties(request, properties);
+        }
+
+        return request;
+    }
+
+    /**
+     * Constructs a HttpURLConnection to set the blob's size, Sign with zero length specified.
+     * 
+     * @param uri
+     *            The absolute URI to the blob
+     * @param timeout
+     *            The server timeout interval
      * @param newBlobSize
      *            The new blob size, if the blob is a page blob. Set this parameter to null to keep the existing blob
      *            size.
@@ -960,8 +1011,8 @@ final class BlobRequest {
      *             an exception representing any error which occurred during the operation.
      * @throws IllegalArgumentException
      */
-    public static HttpURLConnection setProperties(final URI uri, final int timeout, final BlobProperties properties,
-            final Long newBlobSize, final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
+    public static HttpURLConnection resize(final URI uri, final int timeout, final Long newBlobSize,
+            final AccessCondition accessCondition, final BlobRequestOptions blobOptions,
             final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.PROPERTIES);
@@ -979,15 +1030,7 @@ final class BlobRequest {
 
         if (newBlobSize != null) {
             request.setRequestProperty(BlobConstants.SIZE, newBlobSize.toString());
-            properties.setLength(newBlobSize);
         }
-
-        BaseRequest.addOptionalHeader(request, Constants.HeaderConstants.CACHE_CONTROL_HEADER,
-                properties.getCacheControl());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_ENCODING_HEADER, properties.getContentEncoding());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_LANGUAGE_HEADER, properties.getContentLanguage());
-        BaseRequest.addOptionalHeader(request, BlobConstants.BLOB_CONTENT_MD5_HEADER, properties.getContentMD5());
-        BaseRequest.addOptionalHeader(request, BlobConstants.CONTENT_TYPE_HEADER, properties.getContentType());
 
         return request;
     }
@@ -1031,57 +1074,6 @@ final class BlobRequest {
         }
 
         return request;
-    }
-
-    /**
-     * Writes a Block List and returns the corresponding UTF8 bytes.
-     * 
-     * @param blockList
-     *            the Iterable of BlockEntry to write
-     * @param opContext
-     *            a tracking object for the request
-     * @return a byte array of the UTF8 bytes representing the serialized block list.
-     * @throws XMLStreamException
-     *             if there is an error writing the block list.
-     * @throws StorageException
-     */
-    public static byte[] writeBlockListToStream(final Iterable<BlockEntry> blockList, final OperationContext opContext)
-            throws XMLStreamException, StorageException {
-
-        final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
-
-        // default is UTF8
-        xmlw.writeStartDocument();
-        xmlw.writeStartElement(BlobConstants.BLOCK_LIST_ELEMENT);
-
-        for (final BlockEntry block : blockList) {
-            if (block.searchMode == BlockSearchMode.COMMITTED) {
-                xmlw.writeStartElement(BlobConstants.COMMITTED_ELEMENT);
-            }
-            else if (block.searchMode == BlockSearchMode.UNCOMMITTED) {
-                xmlw.writeStartElement(BlobConstants.UNCOMMITTED_ELEMENT);
-            }
-            else if (block.searchMode == BlockSearchMode.LATEST) {
-                xmlw.writeStartElement(BlobConstants.LATEST_ELEMENT);
-            }
-
-            xmlw.writeCharacters(block.getId());
-            xmlw.writeEndElement();
-        }
-
-        // end BlockListElement
-        xmlw.writeEndElement();
-
-        // end doc
-        xmlw.writeEndDocument();
-        try {
-            return outWriter.toString().getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
-            throw Utility.generateNewUnexpectedStorageException(e);
-        }
     }
 
     /**

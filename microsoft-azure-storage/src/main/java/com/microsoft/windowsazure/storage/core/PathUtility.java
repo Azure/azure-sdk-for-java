@@ -144,68 +144,39 @@ public final class PathUtility {
      * 
      * @param uri
      *            The base Uri.
-     * @param relativeOrAbsoluteUri
-     *            The relative or absloute URI.
+     * @param relativeUri
+     *            The relative URI.
      * @param separator
      *            the separator to use.
      * @return The appended Uri.
      * @throws URISyntaxException
+     *             a valid Uri cannot be constructed
      */
-    public static URI appendPathToSingleUri(final URI uri, final String relativeOrAbsoluteUri, final String separator)
+    public static URI appendPathToSingleUri(final URI uri, final String relativeUri, final String separator)
             throws URISyntaxException {
 
         if (uri == null) {
             return null;
         }
 
-        int hostNameBeginIndex = -1;
-        if (relativeOrAbsoluteUri.length() > 8) {
-            final String header = relativeOrAbsoluteUri.substring(0, 8).toLowerCase();
-            if ("https://".equals(header)) {
-                hostNameBeginIndex = 8;
-            }
-            else if ("http://".equals(header.substring(0, 7))) {
-                hostNameBeginIndex = 7;
-            }
+        if (relativeUri == null || relativeUri.isEmpty()) {
+            return uri;
         }
 
-        // absolute URI
-        if (hostNameBeginIndex > 0) {
-            final int authorityLength = relativeOrAbsoluteUri.substring(hostNameBeginIndex).indexOf(separator);
-            final String authorityName = relativeOrAbsoluteUri.substring(hostNameBeginIndex, hostNameBeginIndex
-                    + authorityLength);
-            final URI absoluteUri = new URI(relativeOrAbsoluteUri);
+        if (uri.getPath().length() == 0 && relativeUri.startsWith(separator)) {
+            return new URI(uri.getScheme(), uri.getAuthority(), relativeUri, uri.getRawQuery(), uri.getRawFragment());
+        }
 
-            if (uri.getAuthority().equals(authorityName)) {
-                return absoluteUri;
-            }
-            else {
-                // Happens when using fiddler, DNS aliases, or potentially NATs
-                return new URI(uri.getScheme(), uri.getAuthority(), absoluteUri.getPath(), absoluteUri.getRawQuery(),
-                        absoluteUri.getRawFragment());
-            }
+        final StringBuilder pathString = new StringBuilder(uri.getPath());
+        if (uri.getPath().endsWith(separator)) {
+            pathString.append(relativeUri);
         }
         else {
-            // relative URI
-            // used by directory
-            if (uri.getPath().length() == 0 && relativeOrAbsoluteUri.startsWith(separator)) {
-                return new URI(uri.getScheme(), uri.getAuthority(), relativeOrAbsoluteUri, uri.getRawQuery(),
-                        uri.getRawFragment());
-            }
-
-            final StringBuilder pathString = new StringBuilder(uri.getPath());
-
-            if (uri.getPath().endsWith(separator)) {
-                pathString.append(relativeOrAbsoluteUri);
-            }
-            else {
-                pathString.append(separator);
-                pathString.append(relativeOrAbsoluteUri);
-            }
-
-            return new URI(uri.getScheme(), uri.getAuthority(), pathString.toString(), uri.getQuery(),
-                    uri.getFragment());
+            pathString.append(separator);
+            pathString.append(relativeUri);
         }
+
+        return new URI(uri.getScheme(), uri.getAuthority(), pathString.toString(), uri.getQuery(), uri.getFragment());
     }
 
     /**
@@ -319,91 +290,6 @@ public final class PathUtility {
         final StorageUri containerUri = appendPathToUri(getServiceClientBaseAddress(blobAddress, usePathStyleUris),
                 containerName);
         return containerUri;
-    }
-
-    /**
-     * Retrieves the parent address for a blob Uri.
-     * 
-     * @param blobAddress
-     *            The blob address
-     * @param delimiter
-     *            The delimiter.
-     * @param usePathStyleUris
-     *            a value indicating if the address is a path style uri.
-     * @return The address of the parent.
-     * @throws URISyntaxException
-     * @throws StorageException
-     */
-    public static StorageUri getParentAddress(final StorageUri blobAddress, final String delimiter,
-            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
-        final String parentName = getParentNameFromURI(blobAddress, delimiter, usePathStyleUris);
-
-        if (parentName == null) {
-            return null;
-        }
-
-        final StorageUri parentUri = appendPathToUri(PathUtility.getContainerURI(blobAddress, usePathStyleUris),
-                parentName);
-        return parentUri;
-    }
-
-    /**
-     * Retrieves the parent name for a blob Uri.
-     * 
-     * @param resourceAddress
-     *            The resource Uri.
-     * @param delimiter
-     *            the directory delimiter to use
-     * @param usePathStyleUris
-     *            a value indicating if the address is a path style uri.
-     * @return the parent address for a blob Uri.
-     * @throws URISyntaxException
-     * @throws StorageException
-     */
-    public static String getParentNameFromURI(final StorageUri resourceAddress, final String delimiter,
-            final boolean usePathStyleUris) throws URISyntaxException, StorageException {
-        Utility.assertNotNull("resourceAddress", resourceAddress);
-        Utility.assertNotNullOrEmpty("delimiter", delimiter);
-
-        String containerName = getContainerNameFromUri(resourceAddress.getPrimaryUri(), usePathStyleUris);
-
-        StorageUri baseURI = appendPathToUri(getServiceClientBaseAddress(resourceAddress, usePathStyleUris),
-                containerName);
-
-        containerName += "/";
-
-        String relativeURIString = Utility.safeRelativize(baseURI.getPrimaryUri(), resourceAddress.getPrimaryUri());
-
-        if (relativeURIString.endsWith(delimiter)) {
-            relativeURIString = relativeURIString.substring(0, relativeURIString.length() - delimiter.length());
-        }
-
-        String parentName = Constants.EMPTY_STRING;
-
-        if (Utility.isNullOrEmpty(relativeURIString)) {
-            // Case 1 /<ContainerName>[Delimiter]*? => /<ContainerName>
-            // Parent of container is container itself
-            parentName = null;
-        }
-        else {
-            final int lastDelimiterDex = relativeURIString.lastIndexOf(delimiter);
-
-            if (lastDelimiterDex < 0) {
-                // Case 2 /<Container>/<folder>
-                // Parent of a folder is container
-                parentName = null;
-            }
-            else {
-                // Case 3 /<Container>/<folder>/[<subfolder>/]*<BlobName>
-                // Parent of blob is folder
-                parentName = relativeURIString.substring(0, lastDelimiterDex + delimiter.length());
-                if (parentName != null && parentName.equals(containerName)) {
-                    parentName = null;
-                }
-            }
-        }
-
-        return parentName;
     }
 
     /**

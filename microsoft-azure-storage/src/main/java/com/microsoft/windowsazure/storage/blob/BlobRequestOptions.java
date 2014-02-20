@@ -96,14 +96,35 @@ public final class BlobRequestOptions extends RequestOptions {
      */
     protected static final BlobRequestOptions applyDefaults(final BlobRequestOptions options, final BlobType blobType,
             final CloudBlobClient client) {
-        BlobRequestOptions modifiedOptions = new BlobRequestOptions(options);
-        return BlobRequestOptions.applyDefaultsInternal(modifiedOptions, blobType, client);
+        return BlobRequestOptions.applyDefaults(options, blobType, client, true);
     }
 
-    protected static final BlobRequestOptions applyDefaultsInternal(final BlobRequestOptions modifiedOptions,
-            final BlobType blobtype, final CloudBlobClient client) {
+    /**
+     * Uses the concurrent request count from the specified client if <code>null</code>, sets a default value for
+     * everything else, and sets defaults as defined in the parent class.
+     * 
+     * @param options
+     *            The input options to copy from when applying defaults
+     * @param blobType
+     *            BlobType of the current operation
+     * @param client
+     *            A {@link CloudBlobClient} object that represents the service client used to set the default timeout
+     *            interval and retry policy, if they are <code>null</code>. Additionally, if the
+     *            {@link #concurrentRequestCount} field's value is null, it will be set to the value specified by the
+     *            cloud blob client's {@link CloudBlobClient#getConcurrentRequestCount} method.
+     * @param setStartTime
+     *            whether to initialize the startTimeInMs field, or not
+     */
+    protected static final BlobRequestOptions applyDefaults(final BlobRequestOptions options, final BlobType blobType,
+            final CloudBlobClient client, final boolean setStartTime) {
+        BlobRequestOptions modifiedOptions = new BlobRequestOptions(options);
+        return BlobRequestOptions.applyDefaultsInternal(modifiedOptions, blobType, client, setStartTime);
+    }
+
+    private static final BlobRequestOptions applyDefaultsInternal(final BlobRequestOptions modifiedOptions,
+            final BlobType blobtype, final CloudBlobClient client, final boolean setStartTime) {
         Utility.assertNotNull("modifiedOptions", modifiedOptions);
-        RequestOptions.applyBaseDefaultsInternal(modifiedOptions, client);
+        RequestOptions.applyBaseDefaultsInternal(modifiedOptions, client, setStartTime);
 
         if (modifiedOptions.getConcurrentRequestCount() == null) {
             modifiedOptions.setConcurrentRequestCount(client.getConcurrentRequestCount());

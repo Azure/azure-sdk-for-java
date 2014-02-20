@@ -1,10 +1,32 @@
+2014.02.19 Version 0.6.0
+ * Removed OperationContext getCurrentOperationByteCount/setCurrentOperationByteCount and getIntermediateMD5/setIntermediateMD5 methods
+ * Deprecated OperationContext getCurrentRequestObject/setCurrentReqestObject methods
+ * Deprecated SharedAccess{Blob|Queue|Table}Policy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods
+ * Moved all execute and executeSegmented methods for TableOperations, TableBatchOperations, and TableQueries from CloudTableClient to CloudTable. The CloudTableClient methods are now marked deprecated.
+ * Deprecated CloudPageBlob openOutputStream methods in favor of equivalent openWriteNew methods
+ * container.get{BlockBlob|PageBlob|Directory}Reference, directory.get{BlockBlob, PageBlob, SubDirectory}Reference always treat the string parameter as a relative address
+ * {CloudBlobContainer|CloudQueue|CloudTable}(String, CloudBlobClient) always treat the string parameter as a relative address
+ * If the parent of a blob is the container, Cloud{BlockBlob|PageBlob|BlobDirectory}.getParent() returns a valid CloudBlobDirectory with an empty prefix. Similarly, container.getDirectoryReference("") gets a valid CloudBlobDirectory representing the container.
+ * Blob downloads resume on every retry
+ * TableOperation(TableEntity, TableOperationType) sets echoContent to false by default
+ * Fixed translateException to handle 503 along with other special HTTP codes
+ * Fixed an issue so that the ContentMD5 is only calculated when the length is unknown or is within the single blob upload threshold for block blob uploads.
+ * Fixed snapshot creates to inherit base blob's metadata/properties unless metadata/properties are specified
+ * Any exception thrown while parsing an error response is ignored and the original exception is returned
+ * Added additional constructors to TableServiceEntity and DynamicTableEntity taking partition key, row key, etc
+ * Added support for Null Retry Policies
+ * Added a resize method for page blobs 
+ * Added openWriteExisting() and openWriteExisting(AccessCondition, BlobRequestOptions, OperationContext) methods to PageBlob allowing output streams to be opened on existing page blobs.
+ * Added StorageEventMultiCasters to OperationContext for when a retry occurs ("Retrying") and when the request is complete ("RequestComplete").
+ * Added static StorageEventMultiCasters for SendingRequest, ResponseReceived, RequestComplete and Retrying to Operation Context
+ * Added maximum execution time, settable for all requests via Cloud{Blob|Queue|Table}Client.setMaximumExecutionTime(Integer) or for an individual request via {Blob|Queue|Table}RequestOptions.setMaximumExecutionTime(Integer)
+
 2013.12.10 Version 0.5.0
  * Fixed content disposition parsing in BlobDeserializationHelper and added it to BlobProperties
  * Fixed etag for snapshots, which was previously not set correctly in CloudBlob
  * Fixed etag parsing so that quotes around etag are removed
  * Added Copy to BlobListingDetails enum and added logic and fixed xml parsers to enable that option when listing blobs
  * Fixed blob/container BreakLease so that the breakPeriodInSeconds is honored
- * Blob downloads now resume on every retry
  * Sending request event on the opContext is now fired before the connection is set up
  * Added Json support for tables
  * JsonMinimalMetadata is now the default payload format (rather than AtomPub). Payload format can be specified for all table requests by using CloudTableClient.setTablePayloadFormat or for an individual table request by using TableRequestOptions.setTablePayloadFormat

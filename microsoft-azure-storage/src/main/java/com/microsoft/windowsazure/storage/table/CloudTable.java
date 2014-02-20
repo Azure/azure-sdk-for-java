@@ -15,22 +15,28 @@
 package com.microsoft.windowsazure.storage.table;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.storage.OperationContext;
+import com.microsoft.windowsazure.storage.ResultContinuation;
+import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageCredentials;
 import com.microsoft.windowsazure.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.windowsazure.storage.StorageErrorCode;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
@@ -38,6 +44,8 @@ import com.microsoft.windowsazure.storage.core.ExecutionEngine;
 import com.microsoft.windowsazure.storage.core.PathUtility;
 import com.microsoft.windowsazure.storage.core.RequestLocationMode;
 import com.microsoft.windowsazure.storage.core.SR;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicyDeserializer;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicySerializer;
 import com.microsoft.windowsazure.storage.core.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
 import com.microsoft.windowsazure.storage.core.UriQueryBuilder;
@@ -99,18 +107,23 @@ public final class CloudTable {
     }
 
     /**
-     * Creates an instance of the <code>CloudTable</code> class using the specified address and client.
+     * Creates an instance of the <code>CloudTable</code> class using the specified name and client.
      * 
      * @param tableName
-     *            A <code>String</code> that represents the table name.
+     *            The name of the table, which must adhere to table naming rules. The table name
+     *            should not include any path separator characters (/).
+     *            Table names are case insensitive, must be unique within an account and must be between 3-63 characters
+     *            long. Table names must start with an cannot begin with a numeric character and may only contain
+     *            alphanumeric characters. Some table names are reserved, including "table".
      * @param client
      *            A {@link CloudTableClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Table service.
-     * 
+     * @throws URISyntaxException
+     *             If the resource URI constructed based on the tableName is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx">Understanding the Table Service
+     *      Data Model</a>
      */
     public CloudTable(final String tableName, final CloudTableClient client) throws URISyntaxException,
             StorageException {
@@ -119,7 +132,7 @@ public final class CloudTable {
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), tableName);
 
-        this.name = PathUtility.getTableNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
+        this.name = tableName;
         this.tableServiceClient = client;
 
         this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
@@ -209,6 +222,7 @@ public final class CloudTable {
      *             If an error occurs accessing the storage service, or because the table cannot be
      *             created, or already exists.
      */
+    @SuppressWarnings("deprecation")
     @DoesServiceRequest
     public void create(TableRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
@@ -261,6 +275,8 @@ public final class CloudTable {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(TableRequestOptions options, OperationContext opContext) throws StorageException {
+        options = TableRequestOptions.applyDefaults(options, this.tableServiceClient);
+
         boolean exists = this.exists(true, options, opContext);
         if (exists) {
             return false;
@@ -308,6 +324,7 @@ public final class CloudTable {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
+    @SuppressWarnings("deprecation")
     @DoesServiceRequest
     public void delete(TableRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
@@ -371,13 +388,15 @@ public final class CloudTable {
      */
     @DoesServiceRequest
     public boolean deleteIfExists(TableRequestOptions options, OperationContext opContext) throws StorageException {
+        options = TableRequestOptions.applyDefaults(options, this.tableServiceClient);
+
         if (this.exists(true, options, opContext)) {
             try {
                 this.delete(options, opContext);
             }
             catch (StorageException ex) {
                 if (ex.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCodeStrings.RESOURCE_NOT_FOUND.equals(ex.getErrorCode())) {
+                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(ex.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -389,6 +408,429 @@ public final class CloudTable {
         else {
             return false;
         }
+    }
+
+    /**
+     * Executes the specified batch operation on a table as an atomic operation. A batch operation may contain up to 100
+     * individual table operations, with the requirement that each operation entity must have same partition key. Only
+     * one retrieve operation is allowed per batch. Note that the total payload of a batch operation is limited to 4MB.
+     * <p>
+     * This method invokes an <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd894038.aspx">Entity Group
+     * Transaction</a> on the REST API to execute the specified batch operation on the table as an atomic unit, using
+     * the Table service endpoint and storage account credentials of this instance.
+     * 
+     * @param batch
+     *            The {@link TableBatchOperation} object representing the operations to execute on the table.
+     * 
+     * @return
+     *         A <code>java.util.ArrayList</code> of {@link TableResult} that contains the results, in order, of
+     *         each {@link TableOperation} in the {@link TableBatchOperation} on the named table.
+     * 
+     * @throws StorageException
+     *             if an error occurs accessing the storage service, or the operation fails.
+     */
+    @DoesServiceRequest
+    public ArrayList<TableResult> execute(final TableBatchOperation batch) throws StorageException {
+        return this.execute(batch, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes the specified batch operation on a table as an atomic operation, using the specified
+     * {@link TableRequestOptions} and {@link OperationContext}. A batch operation may contain up to 100 individual
+     * table operations, with the requirement that each operation entity must have same partition key. Only one retrieve
+     * operation is allowed per batch. Note that the total payload of a batch operation is limited to 4MB.
+     * <p>
+     * This method invokes an <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd894038.aspx">Entity Group
+     * Transaction</a> on the REST API to execute the specified batch operation on the table as an atomic unit, using
+     * the Table service endpoint and storage account credentials of this instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param batch
+     *            The {@link TableBatchOperation} object representing the operations to execute on the table.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A <code>java.util.ArrayList</code> of {@link TableResult} that contains the results, in order, of
+     *         each {@link TableOperation} in the {@link TableBatchOperation} on the named table.
+     * 
+     * @throws StorageException
+     *             if an error occurs accessing the storage service, or the operation fails.
+     */
+    @DoesServiceRequest
+    public ArrayList<TableResult> execute(final TableBatchOperation batch, TableRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("batch", batch);
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = TableRequestOptions.applyDefaults(options, this.getServiceClient());
+        return batch.execute(this.getServiceClient(), this.getName(), options, opContext);
+    }
+
+    /**
+     * Executes the operation on a table.
+     * <p>
+     * This method will invoke the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to execute the specified operation on the table, using the Table service endpoint and
+     * storage account credentials of this instance.
+     * 
+     * @param operation
+     *            The {@link TableOperation} object representing the operation to execute on the table.
+     * 
+     * @return
+     *         A {@link TableResult} containing the result of executing the {@link TableOperation} on the table.
+     * 
+     * @throws StorageException
+     *             if an error occurs accessing the storage service, or the operation fails.
+     */
+    @DoesServiceRequest
+    public TableResult execute(final TableOperation operation) throws StorageException {
+        return this.execute(operation, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes the operation on a table, using the specified {@link TableRequestOptions} and {@link OperationContext}.
+     * <p>
+     * This method will invoke the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to execute the specified operation on the table, using the Table service endpoint and
+     * storage account credentials of this instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param operation
+     *            The {@link TableOperation} object representing the operation to execute on the table.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A {@link TableResult} containing the result of executing the {@link TableOperation} on the table.
+     * 
+     * @throws StorageException
+     *             if an error occurs accessing the storage service, or the operation fails.
+     */
+    @DoesServiceRequest
+    public TableResult execute(final TableOperation operation, final TableRequestOptions options,
+            final OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("operation", operation);
+        return operation.execute(this.getServiceClient(), this.getName(), options, opContext);
+    }
+
+    /**
+     * Executes a query, applying the specified {@link EntityResolver} to the result.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
+     * @param resolver
+     *            An {@link EntityResolver} instance which creates a projection of the table query result entities into
+     *            the specified type <code>R</code>.
+     * 
+     * @return
+     *         A collection implementing the <code>Iterable</code> interface containing the projection into type
+     *         <code>R</code> of the results of executing the query.
+     * @throws StorageException
+     */
+    @DoesServiceRequest
+    public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver) throws StorageException {
+        return this.execute(query, resolver, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes a query, applying the specified {@link EntityResolver} to the result, using the
+     * specified {@link TableRequestOptions} and {@link OperationContext}.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
+     * @param resolver
+     *            An {@link EntityResolver} instance which creates a projection of the table query result entities into
+     *            the specified type <code>R</code>.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A collection implementing the <code>Iterable</code> interface containing the projection into type
+     *         <code>R</code> of the results of executing the query.
+     * @throws StorageException
+     */
+    @DoesServiceRequest
+    @SuppressWarnings({ "unchecked", "deprecation" })
+    public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver,
+            final TableRequestOptions options, final OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("query", query);
+        Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, resolver);
+        query.setSourceTableName(this.getName());
+        return (Iterable<R>) this.getServiceClient().generateIteratorForQuery(query, resolver, options, opContext);
+    }
+
+    /**
+     * Executes a query.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
+     *            specialized for a type T implementing {@link TableEntity}.
+     * 
+     * @return
+     *         A collection implementing the <code>Iterable</code> interface specialized for type T of the results of
+     *         executing the query.
+     * @throws StorageException
+     */
+    @DoesServiceRequest
+    public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query) throws StorageException {
+        return this.execute(query, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes a query, using the specified {@link TableRequestOptions} and {@link OperationContext}.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
+     *            specialized for a type T implementing {@link TableEntity}.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A collection implementing the <code>Iterable</code> interface specialized for type T of the results of
+     *         executing the query.
+     * @throws StorageException
+     */
+    @SuppressWarnings({ "unchecked", "deprecation" })
+    @DoesServiceRequest
+    public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query, final TableRequestOptions options,
+            final OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("query", query);
+        query.setSourceTableName(this.getName());
+        return (Iterable<T>) this.getServiceClient().generateIteratorForQuery(query, null, options, opContext);
+    }
+
+    /**
+     * Executes a query in segmented mode with the specified {@link ResultContinuation} continuation token,
+     * applying the {@link EntityResolver} to the result.
+     * Executing a query with <code>executeSegmented</code> allows the query to be resumed after returning partial
+     * results, using information returned by the server in the {@link ResultSegment} object.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
+     * @param resolver
+     *            An {@link EntityResolver} instance which creates a projection of the table query result entities into
+     *            the specified type <code>R</code>.
+     * @param continuationToken
+     *            A {@link ResultContinuation} object representing a continuation token from the server when the
+     *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
+     *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
+     *            {@link ResultContinuation} object to use in the next call to resume the query.
+     * 
+     * @return
+     *         A {@link ResultSegment} containing the projection into type <code>R</code> of the results of executing
+     *         the query.
+     * 
+     * @throws IOException
+     *             if an IO error occurred during the operation.
+     * @throws URISyntaxException
+     *             if the URI generated for the query is invalid.
+     * @throws StorageException
+     *             if a storage service error occurred during the operation.
+     */
+    @DoesServiceRequest
+    public <R> ResultSegment<R> executeSegmented(final TableQuery<?> query, final EntityResolver<R> resolver,
+            final ResultContinuation continuationToken) throws IOException, URISyntaxException, StorageException {
+        return this.executeSegmented(query, resolver, continuationToken, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes a query in segmented mode with the specified {@link ResultContinuation} continuation token,
+     * using the specified {@link TableRequestOptions} and {@link OperationContext}, applying the {@link EntityResolver}
+     * to the result.
+     * Executing a query with <code>executeSegmented</code> allows the query to be resumed after returning partial
+     * results, using information returned by the server in the {@link ResultSegment} object.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
+     * @param resolver
+     *            An {@link EntityResolver} instance which creates a projection of the table query result entities into
+     *            the specified type <code>R</code>.
+     * @param continuationToken
+     *            A {@link ResultContinuation} object representing a continuation token from the server when the
+     *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
+     *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
+     *            {@link ResultContinuation} object to use in the next call to resume the query.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A {@link ResultSegment} containing the projection into type <code>R</code> of the results of executing
+     *         the query.
+     * 
+     * @throws IOException
+     *             if an IO error occurred during the operation.
+     * @throws URISyntaxException
+     *             if the URI generated for the query is invalid.
+     * @throws StorageException
+     *             if a storage service error occurred during the operation.
+     */
+    @DoesServiceRequest
+    @SuppressWarnings({ "unchecked", "deprecation" })
+    public <R> ResultSegment<R> executeSegmented(final TableQuery<?> query, final EntityResolver<R> resolver,
+            final ResultContinuation continuationToken, final TableRequestOptions options,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+        Utility.assertNotNull(SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER, resolver);
+        query.setSourceTableName(this.getName());
+        return (ResultSegment<R>) this.getServiceClient().executeQuerySegmentedImpl(query, resolver, continuationToken,
+                options, opContext);
+    }
+
+    /**
+     * Executes a query in segmented mode with a {@link ResultContinuation} continuation token.
+     * Executing a query with <code>executeSegmented</code> allows the query to be resumed after returning partial
+     * results, using information returned by the server in the {@link ResultSegment} object.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
+     *            specialized for a type T implementing {@link TableEntity}.
+     * @param continuationToken
+     *            A {@link ResultContinuation} object representing a continuation token from the server when the
+     *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
+     *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
+     *            {@link ResultContinuation} object to use in the next call to resume the query.
+     * 
+     * @return
+     *         A {@link ResultSegment} specialized for type T of the results of executing the query.
+     * 
+     * @throws IOException
+     *             if an IO error occurred during the operation.
+     * @throws URISyntaxException
+     *             if the URI generated for the query is invalid.
+     * @throws StorageException
+     *             if a storage service error occurred during the operation.
+     */
+    @DoesServiceRequest
+    public <T extends TableEntity> ResultSegment<T> executeSegmented(final TableQuery<T> query,
+            final ResultContinuation continuationToken) throws IOException, URISyntaxException, StorageException {
+        return this.executeSegmented(query, continuationToken, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Executes a query in segmented mode with a {@link ResultContinuation} continuation token,
+     * using the specified {@link TableRequestOptions} and {@link OperationContext}.
+     * Executing a query with <code>executeSegmented</code> allows the query to be resumed after returning partial
+     * results, using information returned by the server in the {@link ResultSegment} object.
+     * <p>
+     * This method will invoke a <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179421.aspx">Query
+     * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
+     * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
+     * instance.
+     * 
+     * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
+     * operation.
+     * 
+     * @param query
+     *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
+     *            specialized for a type T implementing {@link TableEntity}.
+     * @param continuationToken
+     *            A {@link ResultContinuation} object representing a continuation token from the server when the
+     *            operation returns a partial result. Specify <code>null</code> on the initial call. Call the
+     *            {@link ResultSegment#getContinuationToken()} method on the result to obtain the
+     *            {@link ResultContinuation} object to use in the next call to resume the query.
+     * @param options
+     *            A {@link TableRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudTableClient}.
+     * @param opContext
+     *            An {@link OperationContext} object for tracking the current operation. Specify <code>null</code> to
+     *            safely ignore operation context.
+     * 
+     * @return
+     *         A {@link ResultSegment} specialized for type T of the results of executing the query.
+     * 
+     * @throws IOException
+     *             if an IO error occurred during the operation.
+     * @throws URISyntaxException
+     *             if the URI generated for the query is invalid.
+     * @throws StorageException
+     *             if a storage service error occurred during the operation.
+     */
+    @DoesServiceRequest
+    @SuppressWarnings({ "unchecked", "deprecation" })
+    public <T extends TableEntity> ResultSegment<T> executeSegmented(final TableQuery<T> query,
+            final ResultContinuation continuationToken, final TableRequestOptions options,
+            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+        Utility.assertNotNull("query", query);
+        query.setSourceTableName(this.getName());
+        return (ResultSegment<T>) this.getServiceClient().executeQuerySegmentedImpl(query, null, continuationToken,
+                options, opContext);
     }
 
     /**
@@ -445,6 +887,7 @@ public final class CloudTable {
      * @throws StorageException
      *             If a storage service error occurred during the operation.
      */
+    @SuppressWarnings("deprecation")
     @DoesServiceRequest
     private boolean exists(final boolean primaryOnly, TableRequestOptions options, OperationContext opContext)
             throws StorageException {
@@ -525,7 +968,8 @@ public final class CloudTable {
         final StringWriter outBuffer = new StringWriter();
 
         try {
-            TableRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
+            SharedAccessPolicySerializer.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(),
+                    outBuffer);
             final byte[] aclBytes = outBuffer.toString().getBytes(Constants.UTF8_CHARSET);
 
             final StorageRequest<CloudTableClient, CloudTable, Void> putRequest = new StorageRequest<CloudTableClient, CloudTable, Void>(
@@ -656,10 +1100,10 @@ public final class CloudTable {
             @Override
             public TablePermissions postProcessResponse(HttpURLConnection connection, CloudTable table,
                     CloudTableClient client, OperationContext context, TablePermissions permissions) throws Exception {
-                final TableAccessPolicyResponse response = new TableAccessPolicyResponse(this.getConnection()
-                        .getInputStream());
-                for (final String key : response.getAccessIdentifiers().keySet()) {
-                    permissions.getSharedAccessPolicies().put(key, response.getAccessIdentifiers().get(key));
+                HashMap<String, SharedAccessTablePolicy> accessIds = SharedAccessPolicyDeserializer
+                        .getAccessIdentifiers(this.getConnection().getInputStream(), SharedAccessTablePolicy.class);
+                for (final String key : accessIds.keySet()) {
+                    permissions.getSharedAccessPolicies().put(key, accessIds.get(key));
                 }
 
                 return permissions;
@@ -719,13 +1163,10 @@ public final class CloudTable {
      * @return A <code>String</code> containing the canonical name for shared access.
      */
     private String getSharedAccessCanonicalName() {
-        if (this.tableServiceClient.isUsePathStyleUris()) {
-            return this.getUri().getPath();
-        }
-        else {
-            return PathUtility.getCanonicalPathFromCredentials(this.tableServiceClient.getCredentials(), this.getUri()
-                    .getPath());
-        }
+        String accountName = this.getServiceClient().getCredentials().getAccountName();
+        String tableNameLowerCase = this.getName().toLowerCase(Locale.ENGLISH);
+
+        return String.format("/%s/%s", accountName, tableNameLowerCase);
     }
 
     /**

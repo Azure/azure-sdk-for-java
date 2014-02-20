@@ -130,6 +130,27 @@ public class TableQuery<T extends TableEntity> {
     }
 
     /**
+     * A static factory method that constructs a {@link TableQuery} instance and defines its table entity type. The
+     * method returns the {@link TableQuery} instance reference, allowing additional methods to be chained to modify the
+     * query.
+     * <p>
+     * The created {@link TableQuery} instance is specialized for table entities of the specified class type T. Callers
+     * may specify {@link TableServiceEntity} <code>.class</code> as the class type parameter if no more specialized
+     * type is required.
+     * 
+     * @param clazzType
+     *            The <code>java.lang.Class</code> of the class <code>T</code> implementing the {@link TableEntity}
+     *            interface that represents the table entity type for the query.
+     * 
+     * @return
+     *         The {@link TableQuery} instance with the entity type specialization set.
+     * 
+     */
+    public static <T extends TableEntity> TableQuery<T> from(final Class<T> clazzType) {
+        return new TableQuery<T>(clazzType);
+    }
+
+    /**
      * A static factory method that constructs a {@link TableQuery} instance and defines its source table and
      * table entity type. The method returns the {@link TableQuery} instance reference, allowing additional methods to
      * be chained to modify the query.
@@ -147,7 +168,11 @@ public class TableQuery<T extends TableEntity> {
      * 
      * @return
      *         The {@link TableQuery} instance with the source table name and entity type specialization set.
+     * 
+     * @deprecated As of release 0.6.0, replaced by {link {@link TableQuery#from(Class)} as execute should now be called
+     *             from {@link CloudTable} rather than {@link CloudTableClient}
      */
+    @Deprecated
     public static <T extends TableEntity> TableQuery<T> from(final String tablename, final Class<T> clazzType) {
         return new TableQuery<T>(tablename, clazzType);
     }
@@ -452,13 +477,28 @@ public class TableQuery<T extends TableEntity> {
 
     /**
      * Initializes an empty {@link TableQuery} instance. This table query cannot be executed without
-     * setting a source table and a table entity type.
+     * setting a table entity type.
      */
     public TableQuery() {
         // empty ctor
     }
 
     /**
+     * Initializes a {@link TableQuery} with the specified table entity type. Callers may specify
+     * {@link TableServiceEntity}<code>.class</code> as the class type parameter if no more specialized type is
+     * required.
+     * 
+     * @param clazzType
+     *            The <code>java.lang.Class</code> of the class <code>T</code> that represents the table entity type for
+     *            the query. Class <code>T</code> must be a type that implements {@link TableEntity} and has a nullary
+     *            constructor.
+     */
+    public TableQuery(final Class<T> clazzType) {
+        this.setClazzType(clazzType);
+    }
+
+    /**
+     * 
      * Initializes a {@link TableQuery} with the specified source table and table entity type. Callers may specify
      * {@link TableServiceEntity}<code>.class</code> as the class type parameter if no more specialized type is
      * required.
@@ -468,8 +508,12 @@ public class TableQuery<T extends TableEntity> {
      * @param clazzType
      *            The <code>java.lang.Class</code> of the class <code>T</code> that represents the table entity type for
      *            the query. Class <code>T</code> must be a type that implements {@link TableEntity} and has a nullary
-     *            constructor,
+     *            constructor.
+     * 
+     * @deprecated As of release 0.6.0, replaced by replaced by {link {@link TableQuery#TableQuery(Class)} as execute
+     *             should now be called from {@link CloudTable} rather than {@link CloudTableClient}
      */
+    @Deprecated
     public TableQuery(final String tableName, final Class<T> clazzType) {
         this.setSourceTableName(tableName);
         this.setClazzType(clazzType);
@@ -532,7 +576,11 @@ public class TableQuery<T extends TableEntity> {
      * 
      * @return
      *         A <code>String</code> containing the name of the source table used in the query.
+     * 
+     * @deprecated As of release 0.6.0, removed as execute should now be called from {@link CloudTable} rather than
+     *             {@link CloudTableClient} meaning table name will not be set on the {@link TableQuery} itself.
      */
+    @Deprecated
     public String getSourceTableName() {
         return this.sourceTableName;
     }
@@ -639,7 +687,11 @@ public class TableQuery<T extends TableEntity> {
      * 
      * @param sourceTableName
      *            A <code>String</code> containing the name of the source table to use in the query.
+     * 
+     * @deprecated As of release 0.6.0, removed as execute should now be called from {@link CloudTable} rather than
+     *             {@link CloudTableClient} meaning table name will not be set on the {@link TableQuery} itself.
      */
+    @Deprecated
     public void setSourceTableName(final String sourceTableName) {
         Utility.assertNotNullOrEmpty("tableName", sourceTableName);
         this.sourceTableName = sourceTableName;

@@ -22,14 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-import com.microsoft.windowsazure.storage.LocationMode;
-import com.microsoft.windowsazure.storage.OperationContext;
-import com.microsoft.windowsazure.storage.RetryContext;
-import com.microsoft.windowsazure.storage.RetryInfo;
-import com.microsoft.windowsazure.storage.RetryNoRetry;
-import com.microsoft.windowsazure.storage.StorageException;
-import com.microsoft.windowsazure.storage.StorageLocation;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 import com.microsoft.windowsazure.storage.blob.BlobRequestOptions;
 import com.microsoft.windowsazure.storage.blob.BlobTestBase;
 import com.microsoft.windowsazure.storage.blob.CloudBlobClient;
@@ -46,6 +44,7 @@ import com.microsoft.windowsazure.storage.table.CloudTableClient;
 import com.microsoft.windowsazure.storage.table.TableRequestOptions;
 import com.microsoft.windowsazure.storage.table.TableTestBase;
 
+@Category({ SecondaryTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class SecondaryTests extends TestBase {
 
     @Test
@@ -314,6 +313,7 @@ public class SecondaryTests extends TestBase {
         }
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testMultiLocationRetriesBlob() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();
@@ -422,6 +422,7 @@ public class SecondaryTests extends TestBase {
                 retryContextList, retryInfoList);
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testMultiLocationRetriesQueue() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();
@@ -530,6 +531,7 @@ public class SecondaryTests extends TestBase {
                 retryContextList, retryInfoList);
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testMultiLocationRetriesTable() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();

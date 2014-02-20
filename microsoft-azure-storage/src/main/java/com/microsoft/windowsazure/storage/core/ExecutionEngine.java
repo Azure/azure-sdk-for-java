@@ -31,6 +31,7 @@ import javax.xml.stream.XMLStreamException;
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.LocationMode;
 import com.microsoft.windowsazure.storage.OperationContext;
+import com.microsoft.windowsazure.storage.RequestCompletedEvent;
 import com.microsoft.windowsazure.storage.RequestResult;
 import com.microsoft.windowsazure.storage.ResponseReceivedEvent;
 import com.microsoft.windowsazure.storage.RetryContext;
@@ -38,6 +39,7 @@ import com.microsoft.windowsazure.storage.RetryInfo;
 import com.microsoft.windowsazure.storage.RetryNoRetry;
 import com.microsoft.windowsazure.storage.RetryPolicy;
 import com.microsoft.windowsazure.storage.RetryPolicyFactory;
+import com.microsoft.windowsazure.storage.RetryingEvent;
 import com.microsoft.windowsazure.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
@@ -71,26 +73,43 @@ public final class ExecutionEngine {
      * @throws StorageException
      *             an exception representing any error which occurred during the operation.
      */
+    @SuppressWarnings("deprecation")
     public static <CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> RESULT_TYPE executeWithRetry(final CLIENT_TYPE client,
             final PARENT_TYPE parentObject, final StorageRequest<CLIENT_TYPE, PARENT_TYPE, RESULT_TYPE> task,
             final RetryPolicyFactory policyFactory, final OperationContext opContext) throws StorageException {
 
-        RetryPolicy policy = policyFactory.createInstance(opContext);
+        RetryPolicy policy = null;
 
-        // if the returned policy is null, set to not retry
-        if (policy == null) {
+        if (policyFactory == null) {
             policy = new RetryNoRetry();
+        }
+        else {
+            policy = policyFactory.createInstance(opContext);
+
+            // if the returned policy is null, set to not retry
+            if (policy == null) {
+                policy = new RetryNoRetry();
+            }
         }
 
         int currentRetryCount = 0;
         StorageException translatedException = null;
+        HttpURLConnection request = null;
         final long startTime = new Date().getTime();
 
         while (true) {
             try {
-
                 // reset result flags
                 task.initialize(opContext);
+
+                if (Utility.validateMaxExecutionTimeout(task.getRequestOptions().getOperationExpiryTimeInMs())) {
+                    // maximum execution time would be exceeded by current time
+                    TimeoutException timeoutException = new TimeoutException(SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION);
+                    translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
+                            SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION, Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                            timeoutException);
+                    throw translatedException;
+                }
 
                 // Run the recovery action if this is a retry. Else, initialize the location mode for the task. 
                 // For retries, it will be initialized in retry logic.
@@ -113,7 +132,7 @@ public final class ExecutionEngine {
                 Logger.info(opContext, LogConstants.INIT_LOCATION, task.getCurrentLocation(), task.getLocationMode());
 
                 // 1. Build the request
-                HttpURLConnection request = task.buildRequest(client, parentObject, opContext);
+                request = task.buildRequest(client, parentObject, opContext);
                 task.setConnection(request);
                 opContext.setCurrentRequestObject(request);
 
@@ -128,10 +147,8 @@ public final class ExecutionEngine {
                 }
 
                 // 3. Fire sending request event
-                if (opContext.getSendingRequestEventHandler().hasListeners()) {
-                    opContext.getSendingRequestEventHandler().fireEvent(
-                            new SendingRequestEvent(opContext, request, task.getResult()));
-                }
+                ExecutionEngine.fireSendingRequestEvent(opContext, request, task.getResult());
+                task.setIsSent(true);
 
                 // 4. Sign the request
                 task.signRequest(request, client, opContext);
@@ -144,7 +161,7 @@ public final class ExecutionEngine {
                     Logger.info(opContext, LogConstants.UPLOAD);
                     final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
                             request.getOutputStream(), task.getLength(), false /* rewindStream */,
-                            false /* calculate MD5 */, opContext);
+                            false /* calculate MD5 */, opContext, task.getRequestOptions());
 
                     task.validateStreamWrite(descriptor);
                     Logger.info(opContext, LogConstants.UPLOADDONE);
@@ -166,10 +183,8 @@ public final class ExecutionEngine {
                 currResult.setContentMD5(BaseResponse.getContentMD5(request));
 
                 // 7. Fire ResponseReceived Event
-                if (opContext.getResponseReceivedEventHandler().hasListeners()) {
-                    opContext.getResponseReceivedEventHandler().fireEvent(
-                            new ResponseReceivedEvent(opContext, request, currResult));
-                }
+                ExecutionEngine.fireResponseReceivedEvent(opContext, request, task.getResult());
+
                 Logger.info(opContext, LogConstants.RESPONSE_RECEIVED, currResult.getStatusCode(),
                         currResult.getServiceRequestID(), currResult.getContentMD5(), currResult.getEtag());
 
@@ -192,7 +207,8 @@ public final class ExecutionEngine {
                             // At this point, we already have a result / exception to return to the user.
                             // This is just an optimization to improve socket reuse.
                             try {
-                                Utility.writeToOutputStream(inStream, null, -1, false, false, null);
+                                Utility.writeToOutputStream(inStream, null, -1, false, false, null,
+                                        task.getRequestOptions());
                             }
                             catch (final IOException ex) {
                             }
@@ -204,12 +220,13 @@ public final class ExecutionEngine {
                         }
                     }
                     Logger.info(opContext, LogConstants.COMPLETE);
+
                     return result;
                 }
                 else {
                     Logger.warn(opContext, LogConstants.UNEXPECTED_RESULT_OR_EXCEPTION);
                     // The task may have already parsed an exception.
-                    translatedException = task.materializeException(getLastRequestObject(opContext), opContext);
+                    translatedException = task.materializeException(task.getConnection(), opContext);
                     task.getResult().setException(translatedException);
 
                     // throw on non retryable status codes: 501, 505, blob type mismatch
@@ -223,8 +240,7 @@ public final class ExecutionEngine {
             catch (final TimeoutException e) {
                 // Retryable
                 Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException.translateException(task.getConnection(), e, opContext);
                 task.getResult().setException(translatedException);
             }
             catch (final SocketTimeoutException e) {
@@ -235,21 +251,30 @@ public final class ExecutionEngine {
                 task.getResult().setException(translatedException);
             }
             catch (final IOException e) {
-                // Retryable
-                Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
-                task.getResult().setException(translatedException);
+                // Non Retryable if the inner exception is actually an TimeoutException, otherwise Retryable
+                if (e.getCause() instanceof TimeoutException) {
+                    translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
+                            SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION, Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                            (Exception) e.getCause());
+                    task.getResult().setException(translatedException);
+                    Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getCause().getClass().getName(), e
+                            .getCause().getMessage());
+                    throw translatedException;
+                }
+                else {
+                    Logger.warn(opContext, LogConstants.RETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
+                    translatedException = StorageException.translateException(task.getConnection(), e, opContext);
+                    task.getResult().setException(translatedException);
+                }
             }
             catch (final XMLStreamException e) {
                 // Non Retryable except when the inner exception is actually an IOException
                 if (e.getCause() instanceof SocketException) {
-                    translatedException = StorageException.translateException(getLastRequestObject(opContext),
+                    translatedException = StorageException.translateException(task.getConnection(),
                             (Exception) e.getCause(), opContext);
                 }
                 else {
-                    translatedException = StorageException.translateException(getLastRequestObject(opContext), e,
-                            opContext);
+                    translatedException = StorageException.translateException(task.getConnection(), e, opContext);
                 }
 
                 task.getResult().setException(translatedException);
@@ -262,16 +287,14 @@ public final class ExecutionEngine {
             }
             catch (final InvalidKeyException e) {
                 // Non Retryable, just throw
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException.translateException(task.getConnection(), e, opContext);
                 task.getResult().setException(translatedException);
                 Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
                 throw translatedException;
             }
             catch (final URISyntaxException e) {
                 // Non Retryable, just throw
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException.translateException(task.getConnection(), e, opContext);
                 task.getResult().setException(translatedException);
                 Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
                 throw translatedException;
@@ -299,14 +322,18 @@ public final class ExecutionEngine {
             }
             catch (final Exception e) {
                 // Non Retryable, just throw
-                translatedException = StorageException
-                        .translateException(getLastRequestObject(opContext), e, opContext);
+                translatedException = StorageException.translateException(task.getConnection(), e, opContext);
                 task.getResult().setException(translatedException);
                 Logger.error(opContext, LogConstants.UNRETRYABLE_EXCEPTION, e.getClass().getName(), e.getMessage());
                 throw translatedException;
             }
             finally {
                 opContext.setClientTimeInMs(new Date().getTime() - startTime);
+
+                // 10. Fire RequestCompleted Event
+                if (task.isSent()) {
+                    ExecutionEngine.fireRequestCompletedEvent(opContext, request, task.getResult());
+                }
             }
 
             // Evaluate Retry Policy
@@ -321,12 +348,37 @@ public final class ExecutionEngine {
 
             RetryInfo retryInfo = policy.evaluate(retryContext, opContext);
 
-            if (retryInfo != null) {
+            if (retryInfo == null) {
+                // policy does not allow for retry
+                Logger.error(opContext, LogConstants.DO_NOT_RETRY_POLICY, translatedException == null ? null
+                        : translatedException.getMessage());
+                throw translatedException;
+            }
+            else if (Utility.validateMaxExecutionTimeout(task.getRequestOptions().getOperationExpiryTimeInMs(),
+                    retryInfo.getRetryInterval())) {
+                // maximum execution time would be exceeded by current time plus retry interval delay
+                TimeoutException timeoutException = new TimeoutException(SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION);
+                translatedException = new StorageException(StorageErrorCodeStrings.OPERATION_TIMED_OUT,
+                        SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION, Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                        timeoutException);
+
+                task.initialize(opContext);
+                task.getResult().setException(translatedException);
+
+                Logger.error(opContext, LogConstants.DO_NOT_RETRY_TIMEOUT, translatedException == null ? null
+                        : translatedException.getMessage());
+
+                throw translatedException;
+            }
+            else {
+                // attempt to retry
                 task.setCurrentLocation(retryInfo.getTargetLocation());
                 task.setLocationMode(retryInfo.getUpdatedLocationMode());
                 Logger.info(opContext, LogConstants.RETRY_INFO, task.getCurrentLocation(), task.getLocationMode());
 
                 try {
+                    ExecutionEngine.fireRetryingEvent(opContext, task.getConnection(), task.getResult(), retryContext);
+
                     Logger.info(opContext, LogConstants.RETRY_DELAY, retryInfo.getRetryInterval());
                     Thread.sleep(retryInfo.getRetryInterval());
                 }
@@ -334,11 +386,6 @@ public final class ExecutionEngine {
                     // Restore the interrupted status
                     Thread.currentThread().interrupt();
                 }
-            }
-            else {
-                Logger.error(opContext, LogConstants.DO_NOT_RETRY, translatedException == null ? null
-                        : translatedException.getMessage());
-                throw translatedException;
             }
         }
     }
@@ -361,17 +408,54 @@ public final class ExecutionEngine {
     }
 
     /**
-     * Gets the last request object in a safe way, returns null if there was not last request result.
-     * 
-     * @param opContext
-     *            an object used to track the execution of the operation
-     * @return the last request object in a safe way, returns null if there was not last request result.
+     * Fires events representing that a request will be sent.
      */
-    private static HttpURLConnection getLastRequestObject(final OperationContext opContext) {
-        if (opContext == null || opContext.getCurrentRequestObject() == null) {
-            return null;
+    private static void fireSendingRequestEvent(OperationContext opContext, HttpURLConnection request,
+            RequestResult result) {
+        if (opContext.getSendingRequestEventHandler().hasListeners()
+                || OperationContext.getGlobalSendingRequestEventHandler().hasListeners()) {
+            SendingRequestEvent event = new SendingRequestEvent(opContext, request, result);
+            opContext.getSendingRequestEventHandler().fireEvent(event);
+            OperationContext.getGlobalSendingRequestEventHandler().fireEvent(event);
         }
+    }
 
-        return opContext.getCurrentRequestObject();
+    /**
+     * Fires events representing that a response has been received.
+     */
+    private static void fireResponseReceivedEvent(OperationContext opContext, HttpURLConnection request,
+            RequestResult result) {
+        if (opContext.getResponseReceivedEventHandler().hasListeners()
+                || OperationContext.getGlobalResponseReceivedEventHandler().hasListeners()) {
+            ResponseReceivedEvent event = new ResponseReceivedEvent(opContext, request, result);
+            opContext.getResponseReceivedEventHandler().fireEvent(event);
+            OperationContext.getGlobalResponseReceivedEventHandler().fireEvent(event);
+        }
+    }
+
+    /**
+     * Fires events representing that a response received from the service is fully processed.
+     */
+    private static void fireRequestCompletedEvent(OperationContext opContext, HttpURLConnection request,
+            RequestResult result) {
+        if (opContext.getRequestCompletedEventHandler().hasListeners()
+                || OperationContext.getGlobalRequestCompletedEventHandler().hasListeners()) {
+            RequestCompletedEvent event = new RequestCompletedEvent(opContext, request, result);
+            opContext.getRequestCompletedEventHandler().fireEvent(event);
+            OperationContext.getGlobalRequestCompletedEventHandler().fireEvent(event);
+        }
+    }
+
+    /**
+     * Fires events representing that a request will be retried.
+     */
+    private static void fireRetryingEvent(OperationContext opContext, HttpURLConnection request, RequestResult result,
+            RetryContext retryContext) {
+        if (opContext.getRetryingEventHandler().hasListeners()
+                || OperationContext.getGlobalRetryingEventHandler().hasListeners()) {
+            RetryingEvent event = new RetryingEvent(opContext, request, result, retryContext);
+            opContext.getRetryingEventHandler().fireEvent(event);
+            OperationContext.getGlobalRetryingEventHandler().fireEvent(event);
+        }
     }
 }

@@ -6,149 +6,68 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.TestBase;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.core.PathUtility;
 
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudBlobDirectoryTests extends BlobTestBase {
 
-    private final String delimiter;
-    protected CloudBlobContainer container;
+    private static final String[] delimiters = { "$", ":", "@", "-", "%", "/", "|", "//", "%%", " " };
 
-    private static void setupWithDelimiter(CloudBlobContainer container, String delimiter) throws URISyntaxException,
-            StorageException {
-        for (int i = 1; i < 3; i++) {
-            for (int j = 1; j < 3; j++) {
-                for (int k = 1; k < 3; k++) {
-                    String directory = "TopDir" + i + delimiter + "MidDir" + j + delimiter + "EndDir" + k + delimiter
-                            + "EndBlob" + k;
-                    CloudPageBlob blob1 = container.getPageBlobReference(directory);
-                    blob1.create(0);
-                }
+    @Test
+    public void testGetDirectoryAbsoluteUriAppended() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testGetDirectoryAbsoluteUriAppended(delimiters[i], createContainer(delimiters[i]));
             }
-
-            CloudPageBlob blob2 = container.getPageBlobReference("TopDir" + i + delimiter + "Blob" + i);
-            blob2.create(0);
+            finally {
+                container.deleteIfExists();
+            }
         }
     }
 
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat,
-     * and if that format is JsonNoMetadata, whether or not to use a PropertyResolver
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays
-                .asList(new Object[][] { { "$" }, { "@" }, { "-" }, { "%" }, { "/" }, { "|" }, { "//" }, { "%%" } });
-    }
+    private void testGetDirectoryAbsoluteUriAppended(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
+        CloudBlobDirectory dir = container.getDirectoryReference(container.getUri().toString());
+        assertEquals(PathUtility.appendPathToSingleUri(container.getUri(), container.getUri().toString() + delimiter),
+                dir.getUri());
 
-    public CloudBlobDirectoryTests(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    @Before
-    public void directoryTestMethodSetup() throws URISyntaxException, StorageException {
-        CloudBlobClient client = TestBase.createCloudBlobClient();
-        client.setDirectoryDelimiter(delimiter);
-        String name = BlobTestBase.generateRandomContainerName();
-        container = client.getContainerReference(name);
-        container.create();
-    }
-
-    @After
-    public void directoryTestMethodTearDown() throws StorageException {
-        container.deleteIfExists();
+        dir = container.getDirectoryReference(container.getUri().toString() + "/" + "TopDir1" + delimiter);
+        assertEquals(
+                PathUtility.appendPathToSingleUri(container.getUri(), container.getUri().toString() + "/" + "TopDir1"
+                        + delimiter), dir.getUri());
     }
 
     @Test
-    public void testGetReferences() throws URISyntaxException, StorageException, IOException {
-        CloudBlobDirectory dir1 = container.getDirectoryReference("Dir1");
-
-        // get references to blobs, block blobs and directories from the directory and create them
-        CloudPageBlob pageBlob = dir1.getPageBlobReference("PageBlob");
-        pageBlob.create(0);
-        assertTrue(pageBlob.exists());
-        assertEquals(dir1.getContainer().getName(), pageBlob.getContainer().getName());
-        assertEquals(dir1.getServiceClient().getEndpoint().toString(), pageBlob.getServiceClient().getEndpoint()
-                .toString());
-        assertEquals("Dir1" + delimiter + "PageBlob", pageBlob.getName());
-        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
-                .getPath() + "/Dir1" + delimiter + "PageBlob", null, null), pageBlob.getUri());
-        CloudBlobDirectory pageParent = pageBlob.getParent();
-        assertEquals("Dir1" + delimiter, pageParent.getPrefix());
-
-        CloudBlockBlob blockBlob = dir1.getBlockBlobReference("BlockBlob");
-        blockBlob.upload(BlobTestBase.getRandomDataStream(128), 128);
-        assertTrue(blockBlob.exists());
-        assertEquals(dir1.getContainer().getName(), pageBlob.getContainer().getName());
-        assertEquals(dir1.getServiceClient().getEndpoint().toString(), blockBlob.getServiceClient().getEndpoint()
-                .toString());
-        assertEquals("Dir1" + delimiter + "BlockBlob", blockBlob.getName());
-        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
-                .getPath() + "/Dir1" + delimiter + "BlockBlob", null, null), blockBlob.getUri());
-        CloudBlobDirectory blockParent = blockBlob.getParent();
-        assertEquals("Dir1" + delimiter, blockParent.getPrefix());
-
-        CloudBlobDirectory subDirectory = dir1.getSubDirectoryReference("SubDirectory");
-        assertEquals(dir1.getContainer().getName(), subDirectory.getContainer().getName());
-        assertEquals(dir1.getServiceClient().getEndpoint().toString(), subDirectory.getServiceClient().getEndpoint()
-                .toString());
-        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
-                .getPath() + "/Dir1" + delimiter + "SubDirectory" + delimiter, null, null), subDirectory.getUri());
-        CloudBlobDirectory subDirectoryParent = subDirectory.getParent();
-        assertEquals("Dir1" + delimiter, subDirectoryParent.getPrefix());
-
-        // create snapshots for page and block blobs and then get references to them using the directory
-        CloudPageBlob pageSnapshot = (CloudPageBlob) pageBlob.createSnapshot();
-        CloudPageBlob pageSnapshotDir1 = dir1.getPageBlobReference("PageBlob", pageSnapshot.getSnapshotID());
-        assertEquals(pageSnapshot.getName(), pageSnapshotDir1.getName());
-        assertEquals(dir1.getContainer().getName(), pageSnapshotDir1.getContainer().getName());
-        assertEquals(dir1.getServiceClient().getEndpoint().toString(), pageSnapshotDir1.getServiceClient()
-                .getEndpoint().toString());
-        assertEquals(pageSnapshot.getUri().toString(), pageSnapshotDir1.getUri().toString());
-        assertEquals(pageSnapshot.getParent().getPrefix(), pageSnapshotDir1.getParent().getPrefix());
-
-        CloudBlockBlob blockSnapshot = (CloudBlockBlob) blockBlob.createSnapshot();
-        CloudBlockBlob blockSnapshotDir1 = dir1.getBlockBlobReference("BlockBlob", blockSnapshot.getSnapshotID());
-        assertEquals(blockSnapshot.getName(), blockSnapshotDir1.getName());
-        assertEquals(dir1.getContainer().getName(), blockSnapshotDir1.getContainer().getName());
-        assertEquals(dir1.getServiceClient().getEndpoint().toString(), blockSnapshotDir1.getServiceClient()
-                .getEndpoint().toString());
-        assertEquals(blockSnapshot.getUri().toString(), blockSnapshotDir1.getUri().toString());
-        assertEquals(blockSnapshot.getParent().getPrefix(), blockSnapshotDir1.getParent().getPrefix());
+    public void testFlatListingWithContainer() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testFlatListingWithContainer(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
     }
 
-    @Test
-    public void testGetParent() throws URISyntaxException, StorageException {
-        CloudPageBlob blob = container.getPageBlobReference("Dir1" + delimiter + "Blob1");
-        blob.create(0);
-        assertTrue(blob.exists());
-        assertEquals(blob.getName(), "Dir1" + delimiter + "Blob1");
-        CloudBlobDirectory parent = blob.getParent();
-        assertEquals("Dir1" + delimiter, parent.getPrefix());
-        blob.delete();
-    }
-
-    @Test
-    public void testFlatListingWithContainer() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
-
+    private void testFlatListingWithContainer(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         // check output of list blobs with TopDir1 and hierarchical
         Iterable<ListBlobItem> list1 = container.listBlobs("TopDir1" + delimiter, false,
                 EnumSet.noneOf(BlobListingDetails.class), null, null);
@@ -243,9 +162,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testListingWithDirectory() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testListingWithDirectory() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testListingWithDirectory(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testListingWithDirectory(String delimiter, CloudBlobContainer container) throws URISyntaxException,
+            StorageException {
         // check output of list blobs with TopDir1 with prefix
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1" + delimiter + "MidDir1" + delimiter);
 
@@ -271,9 +202,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testListingWithDirectorySegmented() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testListingWithDirectorySegmented() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testListingWithDirectorySegmented(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testListingWithDirectorySegmented(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         ResultContinuation token = null;
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1");
         ArrayList<ListBlobItem> list1 = new ArrayList<ListBlobItem>();
@@ -295,9 +238,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testPrefixListingWithDirectory() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testPrefixListingWithDirectory() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testPrefixListingWithDirectory(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testPrefixListingWithDirectory(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         // check output of list blobs with TopDir1 with prefix
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1");
 
@@ -321,9 +276,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testPrefixListingWithDirectorySegmented() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testPrefixListingWithDirectorySegmented() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testPrefixListingWithDirectorySegmented(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testPrefixListingWithDirectorySegmented(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         ResultContinuation token = null;
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1");
         ArrayList<ListBlobItem> list1 = new ArrayList<ListBlobItem>();
@@ -345,9 +312,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testFlatListingWithDirectory() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testFlatListingWithDirectory() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testFlatListingWithDirectory(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testFlatListingWithDirectory(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         // check output of list blobs with TopDir1 and flat listing
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1");
 
@@ -399,9 +378,21 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testFlatListingWithDirectorySegmented() throws URISyntaxException, StorageException {
-        setupWithDelimiter(container, delimiter);
+    public void testFlatListingWithDirectorySegmented() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testFlatListingWithDirectorySegmented(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
 
+    private void testFlatListingWithDirectorySegmented(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         // check output of list blobs with TopDir1 and flat listing
         ResultContinuation token = null;
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1");
@@ -452,7 +443,122 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testGetSubdirectoryAndTraverseBackToParent() throws URISyntaxException, StorageException {
+    public void testGetParent() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testGetParent(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testGetParent(String delimiter, CloudBlobContainer container) throws URISyntaxException,
+            StorageException {
+        CloudPageBlob blob = container.getPageBlobReference("Dir1" + delimiter + "Blob1");
+        blob.create(0);
+        try {
+            assertTrue(blob.exists());
+            assertEquals(blob.getName(), "Dir1" + delimiter + "Blob1");
+            CloudBlobDirectory parent = blob.getParent();
+            assertEquals("Dir1" + delimiter, parent.getPrefix());
+        }
+        finally {
+            blob.deleteIfExists();
+        }
+    }
+
+    @Test
+    public void testGetReferences() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testGetReferences(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testGetReferences(String delimiter, CloudBlobContainer container) throws URISyntaxException,
+            StorageException, IOException {
+        CloudBlobDirectory dir1 = container.getDirectoryReference("Dir1");
+
+        // get references to blobs, block blobs and directories from the directory and create them
+        CloudPageBlob pageBlob = dir1.getPageBlobReference("PageBlob");
+        pageBlob.create(0);
+        assertTrue(pageBlob.exists());
+        assertEquals(dir1.getContainer().getName(), pageBlob.getContainer().getName());
+        assertEquals(dir1.getServiceClient().getEndpoint().toString(), pageBlob.getServiceClient().getEndpoint()
+                .toString());
+        assertEquals("Dir1" + delimiter + "PageBlob", pageBlob.getName());
+        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                .getPath() + "/Dir1" + delimiter + "PageBlob", null, null), pageBlob.getUri());
+        CloudBlobDirectory pageParent = pageBlob.getParent();
+        assertEquals("Dir1" + delimiter, pageParent.getPrefix());
+
+        CloudBlockBlob blockBlob = dir1.getBlockBlobReference("BlockBlob");
+        blockBlob.upload(BlobTestBase.getRandomDataStream(128), 128);
+        assertTrue(blockBlob.exists());
+        assertEquals(dir1.getContainer().getName(), pageBlob.getContainer().getName());
+        assertEquals(dir1.getServiceClient().getEndpoint().toString(), blockBlob.getServiceClient().getEndpoint()
+                .toString());
+        assertEquals("Dir1" + delimiter + "BlockBlob", blockBlob.getName());
+        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                .getPath() + "/Dir1" + delimiter + "BlockBlob", null, null), blockBlob.getUri());
+        CloudBlobDirectory blockParent = blockBlob.getParent();
+        assertEquals("Dir1" + delimiter, blockParent.getPrefix());
+
+        CloudBlobDirectory subDirectory = dir1.getSubDirectoryReference("SubDirectory");
+        assertEquals(dir1.getContainer().getName(), subDirectory.getContainer().getName());
+        assertEquals(dir1.getServiceClient().getEndpoint().toString(), subDirectory.getServiceClient().getEndpoint()
+                .toString());
+        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                .getPath() + "/Dir1" + delimiter + "SubDirectory" + delimiter, null, null), subDirectory.getUri());
+        CloudBlobDirectory subDirectoryParent = subDirectory.getParent();
+        assertEquals("Dir1" + delimiter, subDirectoryParent.getPrefix());
+
+        // create snapshots for page and block blobs and then get references to them using the directory
+        CloudPageBlob pageSnapshot = (CloudPageBlob) pageBlob.createSnapshot();
+        CloudPageBlob pageSnapshotDir1 = dir1.getPageBlobReference("PageBlob", pageSnapshot.getSnapshotID());
+        assertEquals(pageSnapshot.getName(), pageSnapshotDir1.getName());
+        assertEquals(dir1.getContainer().getName(), pageSnapshotDir1.getContainer().getName());
+        assertEquals(dir1.getServiceClient().getEndpoint().toString(), pageSnapshotDir1.getServiceClient()
+                .getEndpoint().toString());
+        assertEquals(pageSnapshot.getUri().toString(), pageSnapshotDir1.getUri().toString());
+        assertEquals(pageSnapshot.getParent().getPrefix(), pageSnapshotDir1.getParent().getPrefix());
+
+        CloudBlockBlob blockSnapshot = (CloudBlockBlob) blockBlob.createSnapshot();
+        CloudBlockBlob blockSnapshotDir1 = dir1.getBlockBlobReference("BlockBlob", blockSnapshot.getSnapshotID());
+        assertEquals(blockSnapshot.getName(), blockSnapshotDir1.getName());
+        assertEquals(dir1.getContainer().getName(), blockSnapshotDir1.getContainer().getName());
+        assertEquals(dir1.getServiceClient().getEndpoint().toString(), blockSnapshotDir1.getServiceClient()
+                .getEndpoint().toString());
+        assertEquals(blockSnapshot.getUri().toString(), blockSnapshotDir1.getUri().toString());
+        assertEquals(blockSnapshot.getParent().getPrefix(), blockSnapshotDir1.getParent().getPrefix());
+    }
+
+    @Test
+    public void testGetSubdirectoryAndTraverseBackToParent() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testGetSubdirectoryAndTraverseBackToParent(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testGetSubdirectoryAndTraverseBackToParent(String delimiter, CloudBlobContainer container)
+            throws URISyntaxException, StorageException {
         CloudBlobDirectory directory = container.getDirectoryReference("TopDir1" + delimiter);
         CloudBlobDirectory subDirectory = directory.getSubDirectoryReference("MidDir1" + delimiter);
         CloudBlobDirectory parent = subDirectory.getParent();
@@ -461,14 +567,66 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testGetParentOnRoot() throws URISyntaxException, StorageException {
-        CloudBlobDirectory root = container.getDirectoryReference("TopDir1" + delimiter);
-        CloudBlobDirectory parent = root.getParent();
-        assertNull(parent);
+    public void testGetParentOnRoot() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testGetParentOnRoot(delimiters[i], createAndPopulateContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testGetParentOnRoot(String delimiter, CloudBlobContainer container) throws URISyntaxException,
+            StorageException {
+        // get container as parent
+        CloudBlobDirectory topDir = container.getDirectoryReference("TopDir1" + delimiter);
+        CloudBlobDirectory root = topDir.getParent();
+        assertEquals("", root.getPrefix());
+        assertEquals(container.getUri().toString(), root.getUri().toString());
+
+        // make sure the parent of the container dir is null
+        CloudBlobDirectory empty = root.getParent();
+        assertNull(empty);
+
+        // from container, get directory reference to container
+        root = container.getDirectoryReference("");
+        assertEquals("", root.getPrefix());
+        assertEquals(container.getUri().toString(), root.getUri().toString());
+
+        Iterable<ListBlobItem> results = root.listBlobs();
+
+        ArrayList<ListBlobItem> list1 = new ArrayList<ListBlobItem>();
+        Iterator<ListBlobItem> iter = results.iterator();
+        while (iter.hasNext()) {
+            list1.add(iter.next());
+        }
+        assertEquals(2, list1.size());
+
+        // make sure the parent of the container dir is null
+        empty = root.getParent();
+        assertNull(empty);
     }
 
     @Test
-    public void testHierarchicalTraversal() throws StorageException, URISyntaxException {
+    public void testHierarchicalTraversal() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testHierarchicalTraversal(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testHierarchicalTraversal(String delimiter, CloudBlobContainer container) throws StorageException,
+            URISyntaxException {
         // Traverse hierarchically starting with length 1
         CloudBlobDirectory directory1 = container.getDirectoryReference("Dir1" + delimiter);
 
@@ -490,18 +648,38 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
     }
 
     @Test
-    public void testParentValidate() throws StorageException, URISyntaxException {
+    public void testParentValidate() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testParentValidate(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testParentValidate(String delimiter, CloudBlobContainer container) throws StorageException,
+            URISyntaxException {
         CloudBlockBlob blob = container.getBlockBlobReference("TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1"
                 + delimiter + "EndBlob1");
         CloudBlobDirectory directory = blob.getParent();
-        assertEquals(directory.getPrefix(), "TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter);
-        assertEquals(directory.getUri(), new URI(container.getUri().getScheme(), container.getUri().getAuthority(),
-                container.getUri().getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter,
-                null, null));
+        assertEquals("TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter, directory.getPrefix());
+        assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                .getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter, null, null),
+                directory.getUri());
     }
 
     @Test
-    public void testValidateInRootContainer() throws URISyntaxException, StorageException {
+    public void testValidateInRootContainer() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            testValidateInRootContainer(delimiters[i]);
+        }
+    }
+
+    private void testValidateInRootContainer(String delimiter) throws URISyntaxException, StorageException {
         CloudBlobClient client = TestBase.createCloudBlobClient();
         client.setDirectoryDelimiter(delimiter);
         CloudBlobContainer container = client.getContainerReference("$root");
@@ -510,6 +688,7 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
         if (delimiter.equals("/")) {
             try {
                 pageBlob.create(0);
+                pageBlob.deleteIfExists();
                 fail("Try to create a CloudBlobDirectory/blob which has a slash in its name in the root container");
             }
             catch (StorageException e) {
@@ -523,59 +702,91 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
             CloudPageBlob blob = container.getPageBlobReference("TopDir1" + delimiter + "MidDir1" + delimiter
                     + "EndDir1" + delimiter + "EndBlob1");
             CloudBlobDirectory directory = blob.getParent();
-            assertEquals(directory.getPrefix(), "TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter);
-            assertEquals(directory.getUri(), new URI(container.getUri().getScheme(), container.getUri().getAuthority(),
-                    container.getUri().getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1"
-                            + delimiter, null, null));
-            assertEquals(blob.getUri(), new URI(container.getUri().getScheme(), container.getUri().getAuthority(),
-                    container.getUri().getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1"
-                            + delimiter + "EndBlob1", null, null));
+            assertEquals("TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter, directory.getPrefix());
+            assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                    .getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter, null, null),
+                    directory.getUri());
+            assertEquals(new URI(container.getUri().getScheme(), container.getUri().getAuthority(), container.getUri()
+                    .getPath() + "/TopDir1" + delimiter + "MidDir1" + delimiter + "EndDir1" + delimiter + "EndBlob1",
+                    null, null), blob.getUri());
 
             CloudBlobDirectory directory1 = container.getDirectoryReference("TopDir1" + delimiter);
+            CloudBlobDirectory root = directory1.getParent();
+            assertEquals("", root.getPrefix());
+            assertEquals(container.getUri(), root.getUri());
+
             CloudBlobDirectory subdir1 = directory1.getSubDirectoryReference("MidDir" + delimiter);
             CloudBlobDirectory parent1 = subdir1.getParent();
-            assertEquals(parent1.getPrefix(), directory1.getPrefix());
-            assertEquals(parent1.getUri(), directory1.getUri());
+            assertEquals(directory1.getPrefix(), parent1.getPrefix());
+            assertEquals(directory1.getUri(), parent1.getUri());
 
             CloudBlobDirectory subdir2 = subdir1.getSubDirectoryReference("EndDir" + delimiter);
             CloudBlobDirectory parent2 = subdir2.getParent();
-            assertEquals(parent2.getPrefix(), subdir1.getPrefix());
-            assertEquals(parent2.getUri(), subdir1.getUri());
+            assertEquals(subdir1.getPrefix(), parent2.getPrefix());
+            assertEquals(subdir1.getUri(), parent2.getUri());
         }
     }
 
     @Test
-    public void testDelimitersInARow() throws URISyntaxException, StorageException {
+    public void testDelimitersInARow() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testDelimitersInARow(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testDelimitersInARow(String delimiter, CloudBlobContainer container) throws URISyntaxException,
+            StorageException {
         CloudPageBlob blob = container.getPageBlobReference(delimiter + delimiter + delimiter + "Blob1");
 
         // Traverse from leaf to root
         CloudBlobDirectory directory1 = blob.getParent();
-        assertEquals(directory1.getPrefix(), delimiter + delimiter + delimiter);
+        assertEquals(delimiter + delimiter + delimiter, directory1.getPrefix());
 
         CloudBlobDirectory directory2 = directory1.getParent();
-        assertEquals(directory2.getPrefix(), delimiter + delimiter);
+        assertEquals(delimiter + delimiter, directory2.getPrefix());
 
         CloudBlobDirectory directory3 = directory2.getParent();
-        assertEquals(directory3.getPrefix(), delimiter);
+        assertEquals(delimiter, directory3.getPrefix());
 
         // Traverse from root to leaf
         CloudBlobDirectory directory4 = container.getDirectoryReference(delimiter);
         CloudBlobDirectory directory5 = directory4.getSubDirectoryReference(delimiter);
-        assertEquals(directory5.getPrefix(), delimiter + delimiter);
+        assertEquals(delimiter + delimiter, directory5.getPrefix());
 
         CloudBlobDirectory directory6 = directory5.getSubDirectoryReference(delimiter);
-        assertEquals(directory6.getPrefix(), delimiter + delimiter + delimiter);
+        assertEquals(delimiter + delimiter + delimiter, directory6.getPrefix());
 
         CloudPageBlob blob2 = directory6.getPageBlobReference("Blob1");
-        assertEquals(blob2.getName(), delimiter + delimiter + delimiter + "Blob1");
-        assertEquals(blob2.getUri(), blob.getUri());
+        assertEquals(delimiter + delimiter + delimiter + "Blob1", blob2.getName());
+        assertEquals(blob.getUri(), blob2.getUri());
     }
 
     @Test
-    public void testMultipleDelimiters() throws StorageException, URISyntaxException {
-        setupWithDelimiter(container, delimiter);
-        setupWithDelimiter(container, "*");
-        setupWithDelimiter(container, "#");
+    public void testMultipleDelimiters() throws URISyntaxException, StorageException, IOException {
+        for (int i = 0; i < delimiters.length; i++) {
+            CloudBlobContainer container = null;
+            try {
+                container = createContainer(delimiters[i]);
+                testMultipleDelimiters(delimiters[i], createContainer(delimiters[i]));
+            }
+            finally {
+                container.deleteIfExists();
+            }
+        }
+    }
+
+    private void testMultipleDelimiters(String delimiter, CloudBlobContainer container) throws StorageException,
+            URISyntaxException {
+        populateContainer(container, delimiter);
+        populateContainer(container, "*");
+        populateContainer(container, "#");
 
         Iterable<ListBlobItem> list1 = container.listBlobs("TopDir1" + delimiter, false,
                 EnumSet.noneOf(BlobListingDetails.class), null, null);
@@ -605,5 +816,38 @@ public class CloudBlobDirectoryTests extends BlobTestBase {
         CloudBlobDirectory parent = subDirectory.getParent();
         assertEquals(parent.getPrefix(), directory.getPrefix());
         assertEquals(parent.getUri(), directory.getUri());
+    }
+
+    private static CloudBlobContainer createAndPopulateContainer(String delimiter) throws URISyntaxException,
+            StorageException {
+        CloudBlobContainer container = createContainer(delimiter);
+        populateContainer(container, delimiter);
+        return container;
+    }
+
+    private static void populateContainer(CloudBlobContainer container, String delimiter) throws URISyntaxException,
+            StorageException {
+        for (int i = 1; i < 3; i++) {
+            for (int j = 1; j < 3; j++) {
+                for (int k = 1; k < 3; k++) {
+                    String directory = "TopDir" + i + delimiter + "MidDir" + j + delimiter + "EndDir" + k + delimiter
+                            + "EndBlob" + k;
+                    CloudPageBlob blob1 = container.getPageBlobReference(directory);
+                    blob1.create(0);
+                }
+            }
+
+            CloudPageBlob blob2 = container.getPageBlobReference("TopDir" + i + delimiter + "Blob" + i);
+            blob2.create(0);
+        }
+    }
+
+    private static CloudBlobContainer createContainer(String delimiter) throws URISyntaxException, StorageException {
+        CloudBlobClient client = TestBase.createCloudBlobClient();
+        client.setDirectoryDelimiter(delimiter);
+        String name = BlobTestBase.generateRandomContainerName();
+        CloudBlobContainer container = client.getContainerReference(name);
+        container.create();
+        return container;
     }
 }

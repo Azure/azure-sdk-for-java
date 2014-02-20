@@ -267,6 +267,19 @@ public class TableServiceEntity implements TableEntity {
     }
 
     /**
+     * Initializes a new instance of the {@link TableServiceEntity} class with the specified partition key and row key.
+     * 
+     * @param partitionKey
+     *            The partition key of the {@link TableServiceEntity} to be initialized.
+     * @param rowKey
+     *            The row key of the {@link TableServiceEntity} to be initialized.
+     */
+    public TableServiceEntity(String partitionKey, String rowKey) {
+        this.partitionKey = partitionKey;
+        this.rowKey = rowKey;
+    }
+
+    /**
      * Gets the Etag value for the entity. This value is used to determine if the table entity has changed since it was
      * last read from Windows Azure storage.
      * 

@@ -46,6 +46,8 @@ import com.microsoft.windowsazure.storage.StorageLocation;
 import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.core.Base64;
 import com.microsoft.windowsazure.storage.core.ExecutionEngine;
+import com.microsoft.windowsazure.storage.core.Logger;
+import com.microsoft.windowsazure.storage.core.NetworkInputStream;
 import com.microsoft.windowsazure.storage.core.PathUtility;
 import com.microsoft.windowsazure.storage.core.RequestLocationMode;
 import com.microsoft.windowsazure.storage.core.SR;
@@ -417,7 +419,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 updateEtagAndLastModifiedFromResponse(this.getConnection());
                 blob.properties.setLeaseStatus(LeaseStatus.LOCKED);
 
-                return BlobResponse.getLeaseID(this.getConnection(), context);
+                return BlobResponse.getLeaseID(this.getConnection());
             }
         };
 
@@ -545,7 +547,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 updateEtagAndLastModifiedFromResponse(this.getConnection());
 
-                final String leaseTime = BlobResponse.getLeaseTime(this.getConnection(), context);
+                final String leaseTime = BlobResponse.getLeaseTime(this.getConnection());
 
                 blob.properties.setLeaseStatus(LeaseStatus.UNLOCKED);
                 return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
@@ -647,7 +649,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 updateEtagAndLastModifiedFromResponse(this.getConnection());
 
-                return BlobResponse.getLeaseID(this.getConnection(), context);
+                return BlobResponse.getLeaseID(this.getConnection());
             }
         };
 
@@ -923,13 +925,17 @@ public abstract class CloudBlob implements ListBlobItem {
                     return null;
                 }
                 CloudBlob snapshot = null;
-                final String snapshotTime = BlobResponse.getSnapshotTime(this.getConnection(), context);
+                final String snapshotTime = BlobResponse.getSnapshotTime(this.getConnection());
                 if (blob instanceof CloudBlockBlob) {
                     snapshot = new CloudBlockBlob(blob.getStorageUri(), snapshotTime, client);
                 }
                 else if (blob instanceof CloudPageBlob) {
                     snapshot = new CloudPageBlob(blob.getStorageUri(), snapshotTime, client);
                 }
+                snapshot.setProperties(blob.properties);
+
+                // use the specified metadata if not null : otherwise blob's metadata
+                snapshot.setMetadata(metadata != null ? metadata : blob.metadata);
 
                 snapshot.updateEtagAndLastModifiedFromResponse(this.getConnection());
 
@@ -1044,6 +1050,8 @@ public abstract class CloudBlob implements ListBlobItem {
     public final boolean deleteIfExists(final DeleteSnapshotsOption deleteSnapshotsOption,
             final AccessCondition accessCondition, BlobRequestOptions options, OperationContext opContext)
             throws StorageException {
+        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+
         boolean exists = this.exists(true, accessCondition, options, opContext);
         if (exists) {
             try {
@@ -1305,7 +1313,7 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 // Set attributes
                 final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(this.getConnection(),
-                        blob.getStorageUri(), blob.snapshotID, context);
+                        blob.getStorageUri(), blob.snapshotID);
 
                 if (retrievedAttributes.getProperties().getBlobType() != blob.properties.getBlobType()) {
                     throw new StorageException(StorageErrorCodeStrings.INCORRECT_BLOB_TYPE, String.format(
@@ -1375,26 +1383,31 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public Integer postProcessResponse(HttpURLConnection connection, CloudBlob blob, CloudBlobClient client,
                     OperationContext context, Integer storageObject) throws Exception {
-                final InputStream streamRef = connection.getInputStream();
-
                 final Boolean validateMD5 = !options.getDisableContentMD5Validation()
                         && !Utility.isNullOrEmpty(this.getContentMD5());
                 final String contentLength = connection.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
 
-                final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
-                        validateMD5, context);
-                this.setCurrentRequestByteCount(this.getCurrentRequestByteCount()
-                        + context.getCurrentOperationByteCount());
-                if (descriptor.getLength() != expectedLength) {
-                    throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT, SR.CONTENT_LENGTH_MISMATCH,
-                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                }
+                Logger.info(context, String.format(SR.CREATING_NETWORK_STREAM, expectedLength));
+                final NetworkInputStream streamRef = new NetworkInputStream(connection.getInputStream(), expectedLength);
 
-                if (validateMD5 && !this.getContentMD5().equals(descriptor.getMd5())) {
-                    throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
-                            SR.BLOB_HASH_MISMATCH, this.getContentMD5(), descriptor.getMd5()),
-                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                try {
+                    // writeToOutputStream will update the currentRequestByteCount on this request in case a retry
+                    // is needed and download should resume from that point
+                    final StreamMd5AndLength descriptor = Utility.writeToOutputStream(streamRef, outStream, -1, false,
+                            validateMD5, context, options, this);
+
+                    // length was already checked by the NetworkInputStream, now check Md5
+                    if (validateMD5 && !this.getContentMD5().equals(descriptor.getMd5())) {
+                        throw new StorageException(StorageErrorCodeStrings.INVALID_MD5, String.format(
+                                SR.BLOB_HASH_MISMATCH, this.getContentMD5(), descriptor.getMd5()),
+                                Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
+                }
+                finally {
+                    // Close the stream and return. Closing an already closed stream is harmless. So its fine to try 
+                    // to drain the response and close the stream again in the executor.
+                    streamRef.close();
                 }
 
                 return null;
@@ -1658,33 +1671,47 @@ public abstract class CloudBlob implements ListBlobItem {
             @Override
             public Integer postProcessResponse(HttpURLConnection connection, CloudBlob blob, CloudBlobClient client,
                     OperationContext context, Integer storageObject) throws Exception {
-                final InputStream sourceStream = connection.getInputStream();
-
-                int totalRead = 0;
-                int nextRead = buffer.length - bufferOffset;
-                int count = sourceStream.read(buffer, bufferOffset, nextRead);
-
-                while (count > 0) {
-                    totalRead += count;
-                    this.setCurrentRequestByteCount(this.getCurrentRequestByteCount() + count);
-
-                    nextRead = buffer.length - (bufferOffset + totalRead);
-
-                    if (nextRead == 0) {
-                        // check for case where more data is returned
-                        if (sourceStream.read(new byte[1], 0, 1) != -1) {
-                            throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
-                                    SR.CONTENT_LENGTH_MISMATCH, Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
-                        }
-                    }
-                    count = sourceStream.read(buffer, bufferOffset + totalRead, nextRead);
-                }
 
                 final String contentLength = connection.getHeaderField(Constants.HeaderConstants.CONTENT_LENGTH);
                 final long expectedLength = Long.parseLong(contentLength);
-                if (totalRead != expectedLength) {
-                    throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT, SR.CONTENT_LENGTH_MISMATCH,
-                            Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+
+                Logger.info(context, String.format(SR.CREATING_NETWORK_STREAM, expectedLength));
+
+                final NetworkInputStream sourceStream = new NetworkInputStream(connection.getInputStream(),
+                        expectedLength);
+
+                try {
+                    int totalRead = 0;
+                    int nextRead = buffer.length - bufferOffset;
+                    int count = sourceStream.read(buffer, bufferOffset, nextRead);
+
+                    while (count > 0) {
+                        totalRead += count;
+                        this.setCurrentRequestByteCount(this.getCurrentRequestByteCount() + count);
+
+                        nextRead = buffer.length - (bufferOffset + totalRead);
+
+                        if (nextRead == 0) {
+                            // check for case where more data is returned
+                            if (sourceStream.read(new byte[1], 0, 1) != -1) {
+                                throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
+                                        SR.CONTENT_LENGTH_MISMATCH, Constants.HeaderConstants.HTTP_UNUSED_306, null,
+                                        null);
+                            }
+                        }
+
+                        count = sourceStream.read(buffer, bufferOffset + totalRead, nextRead);
+                    }
+
+                    if (totalRead != expectedLength) {
+                        throw new StorageException(StorageErrorCodeStrings.OUT_OF_RANGE_INPUT,
+                                SR.CONTENT_LENGTH_MISMATCH, Constants.HeaderConstants.HTTP_UNUSED_306, null, null);
+                    }
+                }
+                finally {
+                    // Close the stream. Closing an already closed stream is harmless. So its fine to try 
+                    // to drain the response and close the stream again in the executor.
+                    sourceStream.close();
                 }
 
                 final Boolean validateMD5 = !options.getDisableContentMD5Validation()
@@ -1944,7 +1971,7 @@ public abstract class CloudBlob implements ListBlobItem {
                     throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(this.getConnection(),
-                            blob.getStorageUri(), blob.snapshotID, context);
+                            blob.getStorageUri(), blob.snapshotID);
                     blob.properties = retrievedAttributes.getProperties();
                     blob.metadata = retrievedAttributes.getMetadata();
                     return Boolean.valueOf(true);
@@ -2120,11 +2147,12 @@ public abstract class CloudBlob implements ListBlobItem {
     @Override
     public final CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
-            final StorageUri parentURI = PathUtility.getParentAddress(this.getStorageUri(),
-                    this.blobServiceClient.getDirectoryDelimiter(), this.blobServiceClient.isUsePathStyleUris());
+            final String parentName = getParentNameFromURI(this.getStorageUri(),
+                    this.blobServiceClient.getDirectoryDelimiter(), this.getContainer());
 
-            if (parentURI != null) {
-                this.parent = new CloudBlobDirectory(parentURI, null, this.blobServiceClient);
+            if (parentName != null) {
+                StorageUri parentURI = PathUtility.appendPathToUri(container.getStorageUri(), parentName);
+                this.parent = new CloudBlobDirectory(parentURI, parentName, this.blobServiceClient, this.getContainer());
             }
         }
         return this.parent;
@@ -2957,7 +2985,7 @@ public abstract class CloudBlob implements ListBlobItem {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
                 return BlobRequest.setProperties(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options.getTimeoutIntervalInMs(), blob.properties, null, accessCondition, options, context);
+                        options.getTimeoutIntervalInMs(), blob.properties, accessCondition, options, context);
             }
 
             @Override
@@ -3002,7 +3030,7 @@ public abstract class CloudBlob implements ListBlobItem {
             String originalContentMD5 = null;
 
             final BlobAttributes retrievedAttributes = BlobResponse.getAttributes(request.getConnection(),
-                    blob.getStorageUri(), blob.snapshotID, context);
+                    blob.getStorageUri(), blob.snapshotID);
 
             // Do not update Content-MD5 if it is a range get. 
             if (isRangeGet) {
@@ -3031,5 +3059,61 @@ public abstract class CloudBlob implements ListBlobItem {
         request.setRequestLocationMode(request.getResult().getTargetLocation() == StorageLocation.PRIMARY ? RequestLocationMode.PRIMARY_ONLY
                 : RequestLocationMode.SECONDARY_ONLY);
         return null;
+    }
+
+    /**
+     * Retrieves the parent name for a blob Uri.
+     * 
+     * @param resourceAddress
+     *            The resource Uri.
+     * @param delimiter
+     *            the directory delimiter to use
+     * @param usePathStyleUris
+     *            a value indicating if the address is a path style uri.
+     * @return the parent address for a blob Uri.
+     * @throws URISyntaxException
+     * @throws StorageException
+     */
+    protected static String getParentNameFromURI(final StorageUri resourceAddress, final String delimiter,
+            final CloudBlobContainer container) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("resourceAddress", resourceAddress);
+        Utility.assertNotNull("container", container);
+        Utility.assertNotNullOrEmpty("delimiter", delimiter);
+
+        String containerName = container.getName() + "/";
+
+        String relativeURIString = Utility.safeRelativize(container.getStorageUri().getPrimaryUri(),
+                resourceAddress.getPrimaryUri());
+
+        if (relativeURIString.endsWith(delimiter)) {
+            relativeURIString = relativeURIString.substring(0, relativeURIString.length() - delimiter.length());
+        }
+
+        String parentName;
+
+        if (Utility.isNullOrEmpty(relativeURIString)) {
+            // Case 1 /<ContainerName>[Delimiter]*? => /<ContainerName>
+            // Parent of container is container itself
+            parentName = null;
+        }
+        else {
+            final int lastDelimiterDex = relativeURIString.lastIndexOf(delimiter);
+
+            if (lastDelimiterDex < 0) {
+                // Case 2 /<Container>/<folder>
+                // Parent of a folder is container
+                parentName = "";
+            }
+            else {
+                // Case 3 /<Container>/<folder>/[<subfolder>/]*<BlobName>
+                // Parent of blob is folder
+                parentName = relativeURIString.substring(0, lastDelimiterDex + delimiter.length());
+                if (parentName != null && parentName.equals(containerName)) {
+                    parentName = "";
+                }
+            }
+        }
+
+        return parentName;
     }
 }

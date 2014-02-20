@@ -39,7 +39,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
     /**
      * Holds the Blobs container Reference.
      */
-    private CloudBlobContainer container;
+    private final CloudBlobContainer container;
 
     /**
      * Represents the blob's directory.
@@ -59,47 +59,55 @@ public final class CloudBlobDirectory implements ListBlobItem {
     /**
      * Holds the prefix for the directory.
      */
-    private String prefix;
+    private final String prefix;
 
     /**
      * Creates an instance of the <code>CloudBlobDirectory</code> class using the specified address, directory parent,
      * and client.
      * 
      * @param uri
-     *            A <code>String</code> that represents the blob directory's address.
+     *            A <code>StorageUri</code> that represents the blob directory's address.
+     * @param prefix
+     *            A <code>String</code> that represents the blob directory's prefix.
+     * @param client
+     *            A {@link CloudBlobClient} object that represents the associated service client.
+     */
+    protected CloudBlobDirectory(final StorageUri uri, final String prefix, final CloudBlobClient client,
+            final CloudBlobContainer container) {
+        Utility.assertNotNull("uri", uri);
+        Utility.assertNotNull("client", client);
+        Utility.assertNotNull("container", container);
+
+        this.blobServiceClient = client;
+        this.container = container;
+        this.prefix = prefix;
+        this.storageUri = uri;
+    }
+
+    /**
+     * Creates an instance of the <code>CloudBlobDirectory</code> class using the specified address, directory parent,
+     * and client.
+     * 
+     * @param uri
+     *            A <code>StorageUri</code> that represents the blob directory's address.
+     * @param prefix
+     *            A <code>String</code> that represents the blob directory's prefix.
      * @param parent
      *            A <code>CloudBlobDirectory</code> object that represents the parent directory, if applicable.
      * @param client
      *            A {@link CloudBlobClient} object that represents the associated service client.
-     * @throws URISyntaxException
      */
-    protected CloudBlobDirectory(final StorageUri uri, final CloudBlobDirectory parent, final CloudBlobClient client)
-            throws URISyntaxException {
+    protected CloudBlobDirectory(final StorageUri uri, final String prefix, final CloudBlobClient client,
+            final CloudBlobContainer container, final CloudBlobDirectory parent) {
         Utility.assertNotNull("uri", uri);
         Utility.assertNotNull("client", client);
-
-        // if the uri to the directory does not end in the delimiter, add the delimiter
-        // do this by constructing a new URI with a modified path as this path will be encoded by the URI constructor
-        if (client.getDirectoryDelimiter() != null) {
-            URI primaryUri = uri.getPrimaryUri();
-            URI secondaryUri = uri.getSecondaryUri();
-            if (primaryUri != null && !primaryUri.getPath().endsWith(client.getDirectoryDelimiter())) {
-                primaryUri = new URI(primaryUri.getScheme(), primaryUri.getAuthority(), primaryUri.getPath().concat(
-                        client.getDirectoryDelimiter()), primaryUri.getQuery(), primaryUri.getFragment());
-            }
-            if (secondaryUri != null && !secondaryUri.getPath().endsWith(client.getDirectoryDelimiter())) {
-                secondaryUri = new URI(secondaryUri.getScheme(), secondaryUri.getAuthority(), secondaryUri.getPath()
-                        .concat(client.getDirectoryDelimiter()), secondaryUri.getQuery(), secondaryUri.getFragment());
-            }
-            this.storageUri = new StorageUri(primaryUri, secondaryUri);
-        }
-
-        else {
-            this.storageUri = uri;
-        }
+        Utility.assertNotNull("container", container);
 
         this.blobServiceClient = client;
         this.parent = parent;
+        this.container = container;
+        this.prefix = prefix;
+        this.storageUri = uri;
     }
 
     /**
@@ -159,12 +167,6 @@ public final class CloudBlobDirectory implements ListBlobItem {
      */
     @Override
     public CloudBlobContainer getContainer() throws StorageException, URISyntaxException {
-        if (this.container == null) {
-            final StorageUri containerURI = PathUtility.getContainerURI(this.storageUri,
-                    this.blobServiceClient.isUsePathStyleUris());
-            this.container = new CloudBlobContainer(containerURI, this.blobServiceClient);
-        }
-
         return this.container;
     }
 
@@ -227,11 +229,12 @@ public final class CloudBlobDirectory implements ListBlobItem {
     @Override
     public CloudBlobDirectory getParent() throws URISyntaxException, StorageException {
         if (this.parent == null) {
-            final StorageUri parentURI = PathUtility.getParentAddress(this.storageUri,
-                    this.blobServiceClient.getDirectoryDelimiter(), this.blobServiceClient.isUsePathStyleUris());
+            final String parentName = CloudBlob.getParentNameFromURI(this.getStorageUri(),
+                    this.blobServiceClient.getDirectoryDelimiter(), this.getContainer());
 
-            if (parentURI != null) {
-                this.parent = new CloudBlobDirectory(parentURI, null, this.blobServiceClient);
+            if (parentName != null) {
+                StorageUri parentURI = PathUtility.appendPathToUri(container.getStorageUri(), parentName);
+                this.parent = new CloudBlobDirectory(parentURI, parentName, this.blobServiceClient, this.getContainer());
             }
         }
         return this.parent;
@@ -247,12 +250,7 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    protected String getPrefix() throws StorageException, URISyntaxException {
-        if (this.prefix == null) {
-            final String containerUri = this.getContainer().getUri().toString().concat("/");
-            this.prefix = Utility.safeRelativize(new URI(containerUri), this.getUri());
-        }
-
+    public String getPrefix() throws StorageException, URISyntaxException {
         return this.prefix;
     }
 
@@ -278,18 +276,19 @@ public final class CloudBlobDirectory implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws StorageException, URISyntaxException {
-        Utility.assertNotNullOrEmpty("itemName", directoryName);
+    public CloudBlobDirectory getSubDirectoryReference(String directoryName) throws StorageException,
+            URISyntaxException {
+        Utility.assertNotNullOrEmpty("directoryName", directoryName);
 
-        if (this.blobServiceClient.getDirectoryDelimiter() != null
-                && !directoryName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
+        if (!directoryName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
             directoryName = directoryName.concat(this.blobServiceClient.getDirectoryDelimiter());
         }
+        final String subDirName = this.getPrefix().concat(directoryName);
 
         final StorageUri address = PathUtility.appendPathToUri(this.storageUri, directoryName,
                 this.blobServiceClient.getDirectoryDelimiter());
 
-        return new CloudBlobDirectory(address, this, this.blobServiceClient);
+        return new CloudBlobDirectory(address, subDirName, this.blobServiceClient, this.container, this);
     }
 
     /**

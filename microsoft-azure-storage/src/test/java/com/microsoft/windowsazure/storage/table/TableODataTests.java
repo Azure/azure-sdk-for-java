@@ -21,10 +21,15 @@ import java.util.UUID;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 import com.microsoft.windowsazure.storage.table.TableRequestOptions.PropertyResolver;
 
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableODataTests extends TableTestBase {
 
     TableRequestOptions options;
@@ -44,23 +49,22 @@ public class TableODataTests extends TableTestBase {
         ent.getProperties().put("foo", new EntityProperty("bar"));
         ent.getProperties().put("fooint", new EntityProperty(1234));
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ent), options, null);
+        table.execute(TableOperation.insert(ent), options, null);
     }
 
     @After
     public void tableODataTestsAfterMethod() throws StorageException {
-        tClient.execute(testSuiteTableName, TableOperation.delete(ent), options, null);
+        table.execute(TableOperation.delete(ent), options, null);
     }
 
     @Test
-    public void tableOperationRetrieveJsonNoMetadataFail() throws StorageException {
+    public void testTableOperationRetrieveJsonNoMetadataFail() throws StorageException {
 
         // set custom property resolver
         this.options.setPropertyResolver(new CustomPropertyResolver());
 
         try {
-            tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
+            table.execute(TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
             fail("Invalid property resolver should throw");
         }
         catch (StorageException e) {
@@ -69,14 +73,13 @@ public class TableODataTests extends TableTestBase {
     }
 
     @Test
-    public void tableOperationRetrieveJsonNoMetadataResolverFail() throws StorageException {
+    public void testTableOperationRetrieveJsonNoMetadataResolverFail() throws StorageException {
 
         // set custom property resolver which throws
         this.options.setPropertyResolver(new ThrowingPropertyResolver());
 
         try {
-            tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
+            table.execute(TableOperation.retrieve(ent.getPartitionKey(), ent.getRowKey(), Class1.class), options, null);
             fail("Invalid property resolver should throw");
         }
         catch (StorageException e) {

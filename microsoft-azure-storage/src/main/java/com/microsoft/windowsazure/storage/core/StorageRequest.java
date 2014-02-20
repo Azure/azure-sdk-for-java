@@ -125,6 +125,11 @@ public abstract class StorageRequest<C, P, R> {
     private long currentRequestByteCount = 0;
 
     /**
+     * Denotes whether the associated request has been sent.
+     */
+    private boolean isSent = false;
+
+    /**
      * Default Ctor.
      */
     protected StorageRequest() {
@@ -257,6 +262,13 @@ public abstract class StorageRequest<C, P, R> {
     }
 
     /**
+     * @return the isSent value
+     */
+    protected boolean isSent() {
+        return this.isSent;
+    }
+
+    /**
      * Resets the operation status flags between operations.
      */
     protected final void initialize(OperationContext opContext) {
@@ -266,6 +278,7 @@ public abstract class StorageRequest<C, P, R> {
 
         this.setException(null);
         this.setNonExceptionedRetryableFailure(false);
+        this.setIsSent(false);
     }
 
     /**
@@ -516,6 +529,14 @@ public abstract class StorageRequest<C, P, R> {
      */
     public void setRequestLocationMode() {
         // no-op
+    }
+
+    /**
+     * @param isSent
+     *            the isSent value
+     */
+    protected void setIsSent(boolean isSent) {
+        this.isSent = isSent;
     }
 
     /**

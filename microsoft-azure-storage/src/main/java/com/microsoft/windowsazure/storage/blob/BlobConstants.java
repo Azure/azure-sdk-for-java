@@ -103,6 +103,12 @@ final class BlobConstants {
     /**
      * The header that specifies blob content encoding.
      */
+    public static final String CONTENT_DISPOSITION_HEADER = com.microsoft.windowsazure.storage.Constants.PREFIX_FOR_STORAGE_HEADER
+            + "blob-content-disposition";
+
+    /**
+     * The header that specifies blob content encoding.
+     */
     public static final String CONTENT_ENCODING_HEADER = com.microsoft.windowsazure.storage.Constants.PREFIX_FOR_STORAGE_HEADER
             + "blob-content-encoding";
 

@@ -147,7 +147,7 @@ public class QueryTableOperation extends TableOperation {
             final OperationContext opContext, final TableRequestOptions options) throws XMLStreamException,
             ParseException, InstantiationException, IllegalAccessException, StorageException, JsonParseException,
             IOException {
-        TableResult res = TableParser.parseSingleOpResponse(inStream, options, httpStatusCode, this.getClazzType(),
+        TableResult res = TableDeserializer.parseSingleOpResponse(inStream, options, httpStatusCode, this.getClazzType(),
                 this.getResolver(), opContext);
         res.setEtag(etagFromHeader);
         return res;

@@ -20,9 +20,14 @@ import java.net.URISyntaxException;
 import java.util.EnumSet;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudQueueClientGB18030Test extends QueueTestBase {
 
     // GB18030CharSet is "啊齄丂狛狜隣郎隣兀﨩ˊ▇█〞〡￤℡㈱‐ー﹡﹢﹫、〓ⅰⅹ⒈€㈠㈩ⅠⅫ！￣ぁんァヶΑ︴АЯаяāɡㄅㄩ─╋︵﹄︻︱︳︴ⅰⅹɑɡ〇〾⿻⺁䜣€㐀㒣㕴㕵㙉㙊䵯䵰䶴䶵".
@@ -35,7 +40,7 @@ public class CloudQueueClientGB18030Test extends QueueTestBase {
             0x34A3, 0x3574, 0x3575, 0x3649, 0x364A, 0x4D6F, 0x4D70, 0x4DB4, 0x4DB5 });
 
     @Test
-    public void GB18030TestForSingleMessage() throws URISyntaxException, StorageException {
+    public void testGB18030TestForSingleMessage() throws URISyntaxException, StorageException {
         String messageContent = GB18030CharSet;
         CloudQueueMessage cqm = new CloudQueueMessage(messageContent);
         queue.addMessage(cqm);
@@ -65,7 +70,7 @@ public class CloudQueueClientGB18030Test extends QueueTestBase {
     }
 
     @Test
-    public void GB18030TestForMultipleMessages() throws URISyntaxException, StorageException {
+    public void testGB18030TestForMultipleMessages() throws URISyntaxException, StorageException {
         int messageLength = 2;
         String[] messageContents = new String[messageLength];
         for (int i = 0; i < messageLength; i++) {

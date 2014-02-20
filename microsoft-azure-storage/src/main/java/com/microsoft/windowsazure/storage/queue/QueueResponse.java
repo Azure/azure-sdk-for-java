@@ -32,6 +32,6 @@ final class QueueResponse extends BaseResponse {
      * @return The <code>long</code> value of the approximate messages count header field.
      */
     public static long getApproximateMessageCount(final HttpURLConnection request) {
-        return Long.parseLong(request.getHeaderField("x-ms-approximate-messages-count"));
+        return Long.parseLong(request.getHeaderField(QueueConstants.APPROXIMATE_MESSAGES_COUNT));
     }
 }

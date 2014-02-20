@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,45 +26,20 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.LocationMode;
 import com.microsoft.windowsazure.storage.RetryNoRetry;
+import com.microsoft.windowsazure.storage.SecondaryTests;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 import com.microsoft.windowsazure.storage.core.SR;
 
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableBatchOperationTests extends TableTestBase {
-
-    private final TableRequestOptions options;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat.
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata }, // Json Full Metadata
-                { TablePayloadFormat.Json }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata } // Json No Metadata without PropertyResolver 
-                });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     */
-    public TableBatchOperationTests(TablePayloadFormat format) {
-        this.options = TableRequestOptions.applyDefaults(null, tClient);
-        this.options.setTablePayloadFormat(format);
-    }
 
     @Test
     public void testBatchAddAll() throws StorageException {
@@ -75,7 +49,7 @@ public class TableBatchOperationTests extends TableTestBase {
         boolean added = batch.addAll(ops);
         assertTrue(added);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, null, null);
         assertEquals(8, results.size());
 
         Iterator<TableResult> iter = results.iterator();
@@ -90,6 +64,7 @@ public class TableBatchOperationTests extends TableTestBase {
         ops.add(TableOperation.retrieve(ref.partitionKey, ref.rowKey, ref.getClass()));
         try {
             batch.addAll(ops);
+            fail(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
         }
         catch (Exception e) {
             assertEquals(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH, e.getMessage());
@@ -101,6 +76,7 @@ public class TableBatchOperationTests extends TableTestBase {
         ops.add(TableOperation.insert(ref));
         try {
             batch.addAll(ops);
+            fail(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY);
         }
         catch (Exception e) {
             assertEquals(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY, e.getMessage());
@@ -115,7 +91,7 @@ public class TableBatchOperationTests extends TableTestBase {
         boolean added = batch.addAll(0, ops);
         assertTrue(added);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, null, null);
         assertEquals(8, results.size());
 
         Iterator<TableResult> iter = results.iterator();
@@ -130,6 +106,7 @@ public class TableBatchOperationTests extends TableTestBase {
         ops.add(TableOperation.retrieve(ref.partitionKey, ref.rowKey, ref.getClass()));
         try {
             batch.addAll(0, ops);
+            fail(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
         }
         catch (Exception e) {
             assertEquals(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH, e.getMessage());
@@ -141,6 +118,7 @@ public class TableBatchOperationTests extends TableTestBase {
         ops.add(TableOperation.insert(ref));
         try {
             batch.addAll(0, ops);
+            fail(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY);
         }
         catch (Exception e) {
             assertEquals(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY, e.getMessage());
@@ -153,15 +131,14 @@ public class TableBatchOperationTests extends TableTestBase {
 
         TableBatchOperation batch = new TableBatchOperation();
 
-        {
-            // Insert entity to retrieve
-            Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-            ops.add(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(), Class1.class));
-        }
+        // Insert entity to retrieve
+        Class1 baseEntity = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(baseEntity), null, null);
+        ops.add(TableOperation.retrieve(baseEntity.getPartitionKey(), baseEntity.getRowKey(), Class1.class));
 
         try {
             batch.addAll(ops);
+            fail(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
         }
         catch (IllegalArgumentException e) {
             assertEquals(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH, e.getMessage());
@@ -169,6 +146,7 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
+    @Category(SecondaryTests.class)
     public void testBatchAddIndex() throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
 
@@ -186,43 +164,14 @@ public class TableBatchOperationTests extends TableTestBase {
         TableOperation op = TableOperation.insert(baseEntity);
         batch.add(0, op);
 
-        // should not be able to make a request to secondary as there are writes
-        try {
-            TableRequestOptions options = new TableRequestOptions(this.options);
-            options.setLocationMode(LocationMode.SECONDARY_ONLY);
-            options.setRetryPolicyFactory(new RetryNoRetry());
-            tClient.execute(testSuiteTableName, batch, options, null);
-            fail("Should not be able to make a request to secondary as there are writes.");
-        }
-        catch (StorageException e) {
-            assertEquals(IllegalArgumentException.class, e.getCause().getClass());
-            assertEquals(SR.PRIMARY_ONLY_COMMAND, e.getCause().getMessage());
-        }
-
         // remove the insert
         batch.remove(0);
         assertEquals(0, batch.size());
 
-        // insert an object and add a retrieve to the batch
+        // add a retrieve to the batch
         ref = generateRandomEntity("jxscl_odata");
         queryOp = TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
         batch.add(0, queryOp);
-
-        // should be able to make a request to secondary as there are no writes
-        try {
-            TableRequestOptions options = new TableRequestOptions(this.options);
-            options.setLocationMode(LocationMode.SECONDARY_ONLY);
-            options.setRetryPolicyFactory(new RetryNoRetry());
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (StorageException e) {
-            // it's okay if entity is not found - we just want to make sure the request hit secondary
-            assertEquals("The specified resource does not exist.", e.getMessage());
-            assertEquals(StorageErrorCodeStrings.RESOURCE_NOT_FOUND, e.getErrorCode());
-        }
-        catch (Exception e) {
-            fail("Should be able to make a request to secondary as there are no writes.");
-        }
     }
 
     @Test
@@ -242,6 +191,7 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
+    @Category(SecondaryTests.class)
     public void testBatchRemoveRange() throws StorageException {
         ArrayList<TableOperation> ops = allOpsList();
 
@@ -265,6 +215,7 @@ public class TableBatchOperationTests extends TableTestBase {
         baseEntity = generateRandomEntity("jxscl_odata_2");
         try {
             batch.insert(baseEntity);
+            fail(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY);
         }
         catch (IllegalArgumentException e) {
             assertEquals(SR.OPS_IN_BATCH_MUST_HAVE_SAME_PARTITION_KEY, e.getMessage());
@@ -276,21 +227,10 @@ public class TableBatchOperationTests extends TableTestBase {
         Class1 ref = generateRandomEntity("jxscl_odata");
         TableOperation queryOp = TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
         batch.add(queryOp);
-
-        // should be able to make a request to secondary as there are no writes
-        try {
-            TableRequestOptions options = new TableRequestOptions(this.options);
-            options.setLocationMode(LocationMode.SECONDARY_ONLY);
-            options.setRetryPolicyFactory(new RetryNoRetry());
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (StorageException e) {
-            assertEquals("The specified resource does not exist.", e.getMessage());
-            assertEquals(StorageErrorCodeStrings.RESOURCE_NOT_FOUND, e.getErrorCode());
-        }
     }
 
     @Test
+    @Category(SecondaryTests.class)
     public void testBatchRemove() throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
 
@@ -316,103 +256,6 @@ public class TableBatchOperationTests extends TableTestBase {
         ref = generateRandomEntity("jxscl_odata");
         queryOp = TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
         batch.add(queryOp);
-
-        // should be able to make a request to secondary as there are no writes
-        try {
-            TableRequestOptions options = new TableRequestOptions(this.options);
-            options.setLocationMode(LocationMode.SECONDARY_ONLY);
-            options.setRetryPolicyFactory(new RetryNoRetry());
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (StorageException e) {
-            assertEquals("The specified resource does not exist.", e.getMessage());
-            assertEquals(StorageErrorCodeStrings.RESOURCE_NOT_FOUND, e.getErrorCode());
-        }
-    }
-
-    @Test
-    public void testBatchDelete() throws StorageException {
-        Class1 ref = generateRandomEntity("jxscl_odata");
-
-        // insert entity  
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableBatchOperation batch = new TableBatchOperation();
-        batch.delete(ref);
-
-        ArrayList<TableResult> delResults = tClient.execute(testSuiteTableName, batch, options, null);
-        for (TableResult r : delResults) {
-            assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
-        }
-
-        try {
-            tClient.execute(testSuiteTableName, batch, options, null);
-            fail();
-        }
-        catch (StorageException ex) {
-            assertEquals(ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
-        }
-    }
-
-    @Test
-    public void testBatchDeleteFail() throws StorageException {
-        TableBatchOperation batch = new TableBatchOperation();
-
-        // Insert entity to delete
-        Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-
-        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
-        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
-        updatedEntity.setRowKey(baseEntity.getRowKey());
-        updatedEntity.setEtag(baseEntity.getEtag());
-        tClient.execute(testSuiteTableName, TableOperation.replace(updatedEntity), options, null);
-
-        // add delete to fail
-        batch.delete(baseEntity);
-
-        try {
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Precondition Failed");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The update condition specified in the request was not satisfied."));
-            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
-        }
-    }
-
-    @Test
-    public void testBatchEmptyQuery() throws StorageException {
-        // insert entity
-        Class1 ref = generateRandomEntity("jxscl_odata");
-
-        TableBatchOperation batch = new TableBatchOperation();
-        batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
-
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
-
-        assertEquals(results.size(), 1);
-        assertNull(results.get(0).getResult());
-        assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
-    }
-
-    @Test
-    public void testBatchInsertFail() throws StorageException {
-        // insert entity
-        Class1 ref = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-        try {
-            TableBatchOperation batch = new TableBatchOperation();
-            batch.insert(ref);
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Conflict");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The specified entity already exists"));
-            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.ENTITY_ALREADY_EXISTS);
-        }
     }
 
     @Test
@@ -428,33 +271,65 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
-    public void testBatchMergeFail() throws StorageException {
-        TableBatchOperation batch = new TableBatchOperation();
-        addInsertBatch(batch);
-
-        // Insert entity to merge
-        Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-
-        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
-        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
-        updatedEntity.setRowKey(baseEntity.getRowKey());
-        updatedEntity.setEtag(baseEntity.getEtag());
-        tClient.execute(testSuiteTableName, TableOperation.replace(updatedEntity), options, null);
-
-        // add merge to fail
-        addMergeToBatch(baseEntity, batch);
+    public void testBatchRetrieveAndOneMoreOperationShouldThrow() throws StorageException {
+        Class1 ref2 = generateRandomEntity("jxscl_odata");
 
         try {
-            tClient.execute(testSuiteTableName, batch, options, null);
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.insert(generateRandomEntity("jxscl_odata"));
+            batch.retrieve(ref2.getPartitionKey(), ref2.getRowKey(), ref2.getClass());
+            fail();
         }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Precondition Failed");
-            String errorAfterSemiColon = ex.getExtendedErrorInformation().getErrorMessage();
-            errorAfterSemiColon = errorAfterSemiColon.substring(errorAfterSemiColon.indexOf(":") + 1);
-            assertTrue(errorAfterSemiColon
-                    .startsWith("The update condition specified in the request was not satisfied."));
-            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
+        }
+
+        try {
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.retrieve(ref2.getPartitionKey(), ref2.getRowKey(), ref2.getClass());
+            batch.insert(generateRandomEntity("jxscl_odata"));
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
+        }
+    }
+
+    @Test
+    public void testBatchAddNullShouldThrow() throws StorageException {
+        try {
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.add(null);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "element"));
+        }
+    }
+
+    @Test
+    public void testBatchRetrieveWithNullResolverShouldThrow() throws StorageException {
+        try {
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.retrieve("foo", "blah", (EntityResolver<?>) null);
+            fail();
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(),
+                    String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
+        }
+    }
+
+    @Test
+    public void testEmptyBatchShouldThrow() throws StorageException {
+        TableBatchOperation batch = new TableBatchOperation();
+
+        try {
+            table.execute(batch, null, null);
+            fail(SR.EMPTY_BATCH_NOT_ALLOWED);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), SR.EMPTY_BATCH_NOT_ALLOWED);
         }
     }
 
@@ -467,45 +342,76 @@ public class TableBatchOperationTests extends TableTestBase {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
             batch.retrieve(ref2.getPartitionKey(), ref2.getRowKey(), ref2.getClass());
+            fail(SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    "A batch transaction with a retrieve operation cannot contain any other operations.");
+            assertEquals(ex.getMessage(), SR.RETRIEVE_MUST_BE_ONLY_OPERATION_IN_BATCH);
         }
     }
 
     @Test
-    public void testBatchAddNullShouldThrow() throws StorageException {
+    // don't need the category secondary as the request will fail before being sent
+    public void testBatchSecondaryWriteShouldThrow() {
+        // create batch with an insert
+        Class1 baseEntity = generateRandomEntity("jxscl_odata");
+        TableOperation op = TableOperation.insert(baseEntity);
+
+        TableBatchOperation batch = new TableBatchOperation();
+        batch.add(op);
+
+        // should not be able to make a request to secondary as there are writes
         try {
-            TableBatchOperation batch = new TableBatchOperation();
-            batch.add(null);
+            TableRequestOptions options = new TableRequestOptions();
+            options.setLocationMode(LocationMode.SECONDARY_ONLY);
+            options.setRetryPolicyFactory(new RetryNoRetry());
+            table.execute(batch, options, null);
+            fail("Should not be able to make a request to secondary as there are writes.");
         }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "element"));
+        catch (StorageException e) {
+            assertEquals(IllegalArgumentException.class, e.getCause().getClass());
+            assertEquals(SR.PRIMARY_ONLY_COMMAND, e.getCause().getMessage());
         }
     }
 
     @Test
-    public void testBatchRetrieveWithNullResolver() throws StorageException {
-        try {
-            TableBatchOperation batch = new TableBatchOperation();
-            batch.retrieve("foo", "blah", (EntityResolver<?>) null);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
-        }
+    @Category(SecondaryTests.class)
+    public void testBatchSecondaryNoWrite() throws StorageException {
+        // create and insert an entity
+        Class1 ref = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(ref));
+
+        // create a batch and add a query for this entity
+        TableBatchOperation batch = new TableBatchOperation();
+        TableOperation queryOp = TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
+        batch.add(queryOp);
+
+        // should be able to make a request to secondary as there are no writes
+        TableRequestOptions options = new TableRequestOptions();
+        options.setLocationMode(LocationMode.SECONDARY_ONLY);
+        options.setRetryPolicyFactory(new RetryNoRetry());
+        table.execute(batch, options, null);
     }
 
     @Test
     public void testBatchOver100Entities() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchOver100Entities(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchOver100Entities(options);
+    }
+
+    private void testBatchOver100Entities(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         try {
             for (int m = 0; m < 101; m++) {
                 batch.insert(generateRandomEntity("jxscl_odata"));
             }
 
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
+            fail("Batch with over 100 entities should fail.");
         }
         catch (TableServiceException ex) {
             assertEquals(ex.getMessage(), "Bad Request");
@@ -517,116 +423,17 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
-    public void testBatchRetrieve() throws StorageException {
-        // insert entity
-        Class1 ref = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableBatchOperation batch = new TableBatchOperation();
-        batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
-
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
-        assertEquals(results.size(), 1);
-
-        assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_OK);
-        Class1 retrievedRef = results.get(0).getResultAsType();
-
-        assertEquals(ref.getA(), retrievedRef.getA());
-        assertEquals(ref.getB(), retrievedRef.getB());
-        assertEquals(ref.getC(), retrievedRef.getC());
-        assertTrue(Arrays.equals(ref.getD(), retrievedRef.getD()));
-
-        tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
-    }
-
-    @Test
-    public void tableBatchRetrieveWithEntityResolver() throws StorageException {
-        // insert entity
-        Class1 randEnt = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(randEnt), options, null);
-
-        TableBatchOperation batch = new TableBatchOperation();
-        batch.retrieve(randEnt.getPartitionKey(), randEnt.getRowKey(), new EntityResolver<Class1>() {
-            @Override
-            public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
-                    HashMap<String, EntityProperty> properties, String etag) {
-                assertEquals(properties.size(), 4);
-                Class1 ref = new Class1();
-                ref.setA(properties.get("A").getValueAsString());
-                ref.setB(properties.get("B").getValueAsString());
-                ref.setC(properties.get("C").getValueAsString());
-                ref.setD(properties.get("D").getValueAsByteArray());
-                return ref;
-            }
-        });
-
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
-        assertEquals(results.size(), 1);
-
-        Class1 ent = (Class1) results.get(0).getResult();
-
-        // Validate results
-        assertEquals(ent.getA(), randEnt.getA());
-        assertEquals(ent.getB(), randEnt.getB());
-        assertEquals(ent.getC(), randEnt.getC());
-        assertTrue(Arrays.equals(ent.getD(), randEnt.getD()));
-    }
-
-    @Test
-    public void testBatchRetrieveAndOneMoreOperationShouldThrow() throws StorageException {
-        Class1 ref2 = generateRandomEntity("jxscl_odata");
-
-        try {
-            TableBatchOperation batch = new TableBatchOperation();
-            batch.insert(generateRandomEntity("jxscl_odata"));
-            batch.retrieve(ref2.getPartitionKey(), ref2.getRowKey(), ref2.getClass());
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    "A batch transaction with a retrieve operation cannot contain any other operations.");
-        }
-
-        try {
-            TableBatchOperation batch = new TableBatchOperation();
-            batch.retrieve(ref2.getPartitionKey(), ref2.getRowKey(), ref2.getClass());
-            batch.insert(generateRandomEntity("jxscl_odata"));
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    "A batch transaction with a retrieve operation cannot contain any other operations.");
-        }
-    }
-
-    @Test
-    public void testBatchReplaceFail() throws StorageException {
-        TableBatchOperation batch = new TableBatchOperation();
-
-        // Insert entity to merge
-        Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
-
-        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
-        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
-        updatedEntity.setRowKey(baseEntity.getRowKey());
-        updatedEntity.setEtag(baseEntity.getEtag());
-        tClient.execute(testSuiteTableName, TableOperation.replace(updatedEntity), options, null);
-
-        // add merge to fail
-        addReplaceToBatch(baseEntity, batch);
-
-        try {
-            tClient.execute(testSuiteTableName, batch);
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Precondition Failed");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("The update condition specified in the request was not satisfied."));
-            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
-        }
-    }
-
-    @Test
     public void testBatchInsertEntityOver1MB() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsertEntityOver1MB(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsertEntityOver1MB(options);
+    }
+
+    private void testBatchInsertEntityOver1MB(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         Class1 bigEnt = new Class1();
 
@@ -651,7 +458,7 @@ public class TableBatchOperationTests extends TableTestBase {
         }
 
         try {
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -665,6 +472,16 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchInsertEntityWithPropertyMoreThan255chars() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsertEntityWithPropertyMoreThan255chars(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsertEntityWithPropertyMoreThan255chars(options);
+    }
+
+    private void testBatchInsertEntityWithPropertyMoreThan255chars(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         DynamicTableEntity bigEnt = new DynamicTableEntity();
 
@@ -690,7 +507,7 @@ public class TableBatchOperationTests extends TableTestBase {
         }
 
         try {
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
             fail();
         }
         catch (TableServiceException ex) {
@@ -704,6 +521,16 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchSizeOver4mb() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchSizeOver4mb(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchSizeOver4mb(options);
+    }
+
+    private void testBatchSizeOver4mb(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         byte[] datArr = new byte[1024 * 128];
         Random rand = new Random();
@@ -723,7 +550,8 @@ public class TableBatchOperationTests extends TableTestBase {
                 batch.insert(ref);
             }
 
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
+            fail();
         }
         catch (StorageException ex) {
             assertEquals(ex.getHttpStatusCode(), HttpURLConnection.HTTP_ENTITY_TOO_LARGE);
@@ -734,7 +562,197 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
+    public void testBatchDeleteFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchDeleteFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchDeleteFail(options);
+    }
+
+    private void testBatchDeleteFail(TableRequestOptions options) throws StorageException {
+        TableBatchOperation batch = new TableBatchOperation();
+
+        // Insert entity to delete
+        Class1 baseEntity = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(baseEntity), options, null);
+
+        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
+        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
+        updatedEntity.setRowKey(baseEntity.getRowKey());
+        updatedEntity.setEtag(baseEntity.getEtag());
+        table.execute(TableOperation.replace(updatedEntity), options, null);
+
+        // add delete to fail
+        batch.delete(baseEntity);
+
+        try {
+            table.execute(batch, options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Precondition Failed");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
+        }
+    }
+
+    @Test
+    public void testBatchInsertFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsertFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsertFail(options);
+    }
+
+    private void testBatchInsertFail(TableRequestOptions options) throws StorageException {
+        // insert entity
+        Class1 ref = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(ref), options, null);
+        try {
+            TableBatchOperation batch = new TableBatchOperation();
+            batch.insert(ref);
+            table.execute(batch, options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Conflict");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The specified entity already exists"));
+            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.ENTITY_ALREADY_EXISTS);
+        }
+    }
+
+    @Test
+    public void testBatchReplaceFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchReplaceFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchReplaceFail(options);
+    }
+
+    private void testBatchReplaceFail(TableRequestOptions options) throws StorageException {
+        TableBatchOperation batch = new TableBatchOperation();
+
+        // Insert entity to merge
+        Class1 baseEntity = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(baseEntity), options, null);
+
+        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
+        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
+        updatedEntity.setRowKey(baseEntity.getRowKey());
+        updatedEntity.setEtag(baseEntity.getEtag());
+        table.execute(TableOperation.replace(updatedEntity), options, null);
+
+        // add merge to fail
+        addReplaceToBatch(baseEntity, batch);
+
+        try {
+            table.execute(batch);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Precondition Failed");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
+        }
+    }
+
+    @Test
+    public void testBatchMergeFail() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchMergeFail(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchMergeFail(options);
+    }
+
+    private void testBatchMergeFail(TableRequestOptions options) throws StorageException {
+        TableBatchOperation batch = new TableBatchOperation();
+        addInsertBatch(batch);
+
+        // Insert entity to merge
+        Class1 baseEntity = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(baseEntity), options, null);
+
+        Class1 updatedEntity = generateRandomEntity("jxscl_odata");
+        updatedEntity.setPartitionKey(baseEntity.getPartitionKey());
+        updatedEntity.setRowKey(baseEntity.getRowKey());
+        updatedEntity.setEtag(baseEntity.getEtag());
+        table.execute(TableOperation.replace(updatedEntity), options, null);
+
+        // add merge to fail
+        addMergeToBatch(baseEntity, batch);
+
+        try {
+            table.execute(batch, options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Precondition Failed");
+            String errorAfterSemiColon = ex.getExtendedErrorInformation().getErrorMessage();
+            errorAfterSemiColon = errorAfterSemiColon.substring(errorAfterSemiColon.indexOf(":") + 1);
+            assertTrue(errorAfterSemiColon
+                    .startsWith("The update condition specified in the request was not satisfied."));
+            assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.UPDATE_CONDITION_NOT_SATISFIED);
+        }
+    }
+
+    @Test
+    public void testBatchEmptyQuery() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchEmptyQuery(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchEmptyQuery(options);
+    }
+
+    private void testBatchEmptyQuery(TableRequestOptions options) throws StorageException {
+        // insert entity
+        Class1 ref = generateRandomEntity("jxscl_odata");
+
+        TableBatchOperation batch = new TableBatchOperation();
+        batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
+
+        ArrayList<TableResult> results = table.execute(batch, options, null);
+
+        assertEquals(results.size(), 1);
+        assertNull(results.get(0).getResult());
+        assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+    }
+
+    @Test
     public void testBatchWithAllOperations() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchWithAllOperations(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchWithAllOperations(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchWithAllOperations(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchWithAllOperations(options);
+    }
+
+    private void testBatchWithAllOperations(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         // insert
         addInsertBatch(batch);
@@ -742,39 +760,39 @@ public class TableBatchOperationTests extends TableTestBase {
         {
             // insert entity to delete
             Class1 delRef = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(delRef), options, null);
+            table.execute(TableOperation.insert(delRef), options, null);
             batch.delete(delRef);
         }
 
         {
             // Insert entity to replace
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity), options, null);
             addReplaceToBatch(baseEntity, batch);
         }
 
         {
             // Insert entity to insert or replace
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity), options, null);
             addInsertOrReplaceToBatch(baseEntity, batch);
         }
 
         {
             // Insert entity to merge
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity), options, null);
             addMergeToBatch(baseEntity, batch);
         }
 
         {
-            // Insert entity to merge, no pre-esisting entity
+            // Insert entity to merge, no pre-existing entity
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity), options, null);
             addInsertOrMergeToBatch(baseEntity, batch);
         }
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, options, null);
         assertEquals(results.size(), 6);
 
         Iterator<TableResult> iter = results.iterator();
@@ -800,7 +818,159 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
+    public void testBatchDelete() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchDelete(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchDelete(options);
+    }
+
+    private void testBatchDelete(TableRequestOptions options) throws StorageException {
+        Class1 ref = generateRandomEntity("jxscl_odata");
+
+        // insert entity  
+        table.execute(TableOperation.insert(ref), options, null);
+
+        TableBatchOperation batch = new TableBatchOperation();
+        batch.delete(ref);
+
+        ArrayList<TableResult> delResults = table.execute(batch, options, null);
+        for (TableResult r : delResults) {
+            assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
+        }
+
+        try {
+            table.execute(batch, options, null);
+            fail();
+        }
+        catch (StorageException ex) {
+            assertEquals(ex.getHttpStatusCode(), HttpURLConnection.HTTP_NOT_FOUND);
+        }
+    }
+
+    @Test
+    public void testBatchRetrieve() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchRetrieve(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchRetrieve(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchRetrieve(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchRetrieve(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        options.setPropertyResolver(new Class1());
+        testBatchRetrieve(options);
+    }
+
+    private void testBatchRetrieve(TableRequestOptions options) throws StorageException {
+        // insert entity
+        Class1 ref = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(ref), options, null);
+
+        TableBatchOperation batch = new TableBatchOperation();
+        batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), ref.getClass());
+
+        ArrayList<TableResult> results = table.execute(batch, options, null);
+        assertEquals(results.size(), 1);
+
+        assertEquals(results.get(0).getHttpStatusCode(), HttpURLConnection.HTTP_OK);
+        Class1 retrievedRef = results.get(0).getResultAsType();
+
+        assertEquals(ref.getA(), retrievedRef.getA());
+        assertEquals(ref.getB(), retrievedRef.getB());
+        assertEquals(ref.getC(), retrievedRef.getC());
+        assertTrue(Arrays.equals(ref.getD(), retrievedRef.getD()));
+
+        table.execute(TableOperation.delete(ref), options, null);
+    }
+
+    @Test
+    public void tableBatchRetrieveWithEntityResolver() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        tableBatchRetrieveWithEntityResolver(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        tableBatchRetrieveWithEntityResolver(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        tableBatchRetrieveWithEntityResolver(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        tableBatchRetrieveWithEntityResolver(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        options.setPropertyResolver(new Class1());
+        tableBatchRetrieveWithEntityResolver(options);
+    }
+
+    private void tableBatchRetrieveWithEntityResolver(TableRequestOptions options) throws StorageException {
+        // insert entity
+        Class1 randEnt = generateRandomEntity("jxscl_odata");
+        table.execute(TableOperation.insert(randEnt), options, null);
+
+        TableBatchOperation batch = new TableBatchOperation();
+        batch.retrieve(randEnt.getPartitionKey(), randEnt.getRowKey(), new EntityResolver<Class1>() {
+            @Override
+            public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
+                    HashMap<String, EntityProperty> properties, String etag) {
+                assertEquals(properties.size(), 4);
+                Class1 ref = new Class1();
+                ref.setA(properties.get("A").getValueAsString());
+                ref.setB(properties.get("B").getValueAsString());
+                ref.setC(properties.get("C").getValueAsString());
+                ref.setD(properties.get("D").getValueAsByteArray());
+                return ref;
+            }
+        });
+
+        ArrayList<TableResult> results = table.execute(batch, options, null);
+        assertEquals(results.size(), 1);
+
+        Class1 ent = (Class1) results.get(0).getResult();
+
+        // Validate results
+        assertEquals(ent.getA(), randEnt.getA());
+        assertEquals(ent.getB(), randEnt.getB());
+        assertEquals(ent.getC(), randEnt.getC());
+        assertTrue(Arrays.equals(ent.getD(), randEnt.getD()));
+    }
+
+    @Test
     public void testBatchInsert() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsert(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchInsert(options);
+    }
+
+    private void testBatchInsert(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
 
         // Add 3 inserts
@@ -810,10 +980,10 @@ public class TableBatchOperationTests extends TableTestBase {
 
         // insert entity
         Class1 ref = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
         batch.delete(ref);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, options, null);
         assertEquals(results.size(), 4);
 
         Iterator<TableResult> iter = results.iterator();
@@ -833,20 +1003,36 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchMerge() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchMerge(options);
+    }
+
+    private void testBatchMerge(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         addInsertBatch(batch);
 
         // insert entity to delete
         Class1 delRef = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(delRef));
+        table.execute(TableOperation.insert(delRef));
         batch.delete(delRef);
 
         // Insert entity to merge
         Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+        table.execute(TableOperation.insert(baseEntity), options, null);
         addMergeToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch);
+        ArrayList<TableResult> results = table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -863,20 +1049,36 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchReplace() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchReplace(options);
+    }
+
+    private void testBatchReplace(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         addInsertBatch(batch);
 
         // insert entity to delete
         Class1 delRef = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(delRef), options, null);
+        table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to replace
         Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+        table.execute(TableOperation.insert(baseEntity), options, null);
         addReplaceToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch);
+        ArrayList<TableResult> results = table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -893,20 +1095,36 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchInsertOrMerge() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsertOrMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchInsertOrMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsertOrMerge(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchInsertOrMerge(options);
+    }
+
+    private void testBatchInsertOrMerge(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         addInsertBatch(batch);
 
         // insert entity to delete
         Class1 delRef = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(delRef), options, null);
+        table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to merge
         Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+        table.execute(TableOperation.insert(baseEntity), options, null);
         addInsertOrMergeToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch);
+        ArrayList<TableResult> results = table.execute(batch);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -923,20 +1141,36 @@ public class TableBatchOperationTests extends TableTestBase {
 
     @Test
     public void testBatchInsertOrReplace() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testBatchInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testBatchInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testBatchInsertOrReplace(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testBatchInsertOrReplace(options);
+    }
+
+    private void testBatchInsertOrReplace(TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         addInsertBatch(batch);
 
         // insert entity to delete
         Class1 delRef = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(delRef), options, null);
+        table.execute(TableOperation.insert(delRef), options, null);
         batch.delete(delRef);
 
         // Insert entity to replace
         Class1 baseEntity = generateRandomEntity("jxscl_odata");
-        tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+        table.execute(TableOperation.insert(baseEntity), options, null);
         addInsertOrReplaceToBatch(baseEntity, batch);
 
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, options, null);
         assertEquals(results.size(), 3);
 
         Iterator<TableResult> iter = results.iterator();
@@ -952,45 +1186,105 @@ public class TableBatchOperationTests extends TableTestBase {
     }
 
     @Test
-    public void testEmptyBatch() throws StorageException {
-        TableBatchOperation batch = new TableBatchOperation();
-
-        try {
-            tClient.execute(testSuiteTableName, batch, options, null);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), "Cannot execute an empty batch operation.");
-        }
-    }
-
-    @Test
     public void testInsertBatch1() throws StorageException {
-        insertAndDeleteBatchWithX(1);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        insertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        insertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        insertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        insertAndDeleteBatchWithX(1, options);
     }
 
     @Test
     public void testInsertBatch10() throws StorageException {
-        insertAndDeleteBatchWithX(10);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        insertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        insertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        insertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        insertAndDeleteBatchWithX(10, options);
     }
 
     @Test
     public void testInsertBatch100() throws StorageException {
-        insertAndDeleteBatchWithX(100);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        insertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        insertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        insertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        insertAndDeleteBatchWithX(100, options);
     }
 
     @Test
     public void testUpsertBatch1() throws StorageException {
-        upsertAndDeleteBatchWithX(1);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        upsertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        upsertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        upsertAndDeleteBatchWithX(1, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        upsertAndDeleteBatchWithX(1, options);
     }
 
     @Test
     public void testUpsertBatch10() throws StorageException {
-        upsertAndDeleteBatchWithX(10);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        upsertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        upsertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        upsertAndDeleteBatchWithX(10, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        upsertAndDeleteBatchWithX(10, options);
     }
 
     @Test
     public void testUpsertBatch100() throws StorageException {
-        upsertAndDeleteBatchWithX(100);
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        upsertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        upsertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        upsertAndDeleteBatchWithX(100, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        upsertAndDeleteBatchWithX(100, options);
     }
 
     private Class1 addInsertBatch(TableBatchOperation batch) {
@@ -1029,39 +1323,39 @@ public class TableBatchOperationTests extends TableTestBase {
         return secondEntity;
     }
 
-    private void insertAndDeleteBatchWithX(int x) throws StorageException {
+    private void insertAndDeleteBatchWithX(int x, TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         for (int m = 0; m < x; m++) {
             addInsertBatch(batch);
         }
 
         TableBatchOperation delBatch = new TableBatchOperation();
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch);
+        ArrayList<TableResult> results = table.execute(batch, options, null);
         for (TableResult r : results) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
             delBatch.delete((Class1) r.getResult());
         }
 
-        ArrayList<TableResult> delResults = tClient.execute(testSuiteTableName, delBatch);
+        ArrayList<TableResult> delResults = table.execute(delBatch, options, null);
         for (TableResult r : delResults) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
     }
 
-    private void upsertAndDeleteBatchWithX(int x) throws StorageException {
+    private void upsertAndDeleteBatchWithX(int x, TableRequestOptions options) throws StorageException {
         TableBatchOperation batch = new TableBatchOperation();
         for (int m = 0; m < x; m++) {
             addInsertOrMergeToBatch(generateRandomEntity("jxscl_odata"), batch);
         }
 
         TableBatchOperation delBatch = new TableBatchOperation();
-        ArrayList<TableResult> results = tClient.execute(testSuiteTableName, batch, options, null);
+        ArrayList<TableResult> results = table.execute(batch, options, null);
         for (TableResult r : results) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
             delBatch.delete((Class2) r.getResult());
         }
 
-        ArrayList<TableResult> delResults = tClient.execute(testSuiteTableName, delBatch, options, null);
+        ArrayList<TableResult> delResults = table.execute(delBatch, options, null);
         for (TableResult r : delResults) {
             assertEquals(r.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         }
@@ -1076,21 +1370,21 @@ public class TableBatchOperationTests extends TableTestBase {
         {
             // Insert entity to delete
             Class1 delRef = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(delRef), options, null);
+            table.execute(TableOperation.insert(delRef));
             ops.add(TableOperation.delete(delRef));
         }
 
         {
             // Insert entity to replace
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.replace(createEntityToReplaceOrMerge(baseEntity)));
         }
 
         {
             // Insert entity to insert or replace
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.insertOrReplace(createEntityToReplaceOrMerge(baseEntity)));
         }
 
@@ -1103,14 +1397,14 @@ public class TableBatchOperationTests extends TableTestBase {
         {
             // Insert entity to merge
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.merge(createEntityToReplaceOrMerge(baseEntity)));
         }
 
         {
             // Insert entity to insert or merge
             Class1 baseEntity = generateRandomEntity("jxscl_odata");
-            tClient.execute(testSuiteTableName, TableOperation.insert(baseEntity), options, null);
+            table.execute(TableOperation.insert(baseEntity));
             ops.add(TableOperation.insertOrMerge(baseEntity));
         }
 

@@ -52,7 +52,7 @@ public final class StorageKey {
 
         byte[] utf8Bytes = null;
         try {
-            utf8Bytes = stringToSign.getBytes("UTF8");
+            utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
         }
         catch (final UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);
@@ -84,7 +84,7 @@ public final class StorageKey {
 
         byte[] utf8Bytes = null;
         try {
-            utf8Bytes = stringToSign.getBytes("UTF8");
+            utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
         }
         catch (final UnsupportedEncodingException e) {
             throw new IllegalArgumentException(e);

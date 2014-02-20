@@ -1,6 +1,33 @@
-Tracking Breaking Changes since 0.4.6
+Changes in 0.6.0
 
-BLOB 
+BLOB
+ * container.get{BlockBlob|PageBlob|Directory}Reference, directory.get{BlockBlob, PageBlob, SubDirectory}Reference always treat the string parameter as a relative address.
+ * If the parent of a blob is the container, Cloud{BlockBlob|PageBlob|BlobDirectory}.getParent() returns a valid CloudBlobDirectory with an empty prefix. Similarly, container.getDirectoryReference("") gets a valid CloudBlobDirectory representing the container.
+ * Blob downloads resume on every retry.
+ * Fixed snapshot creates to inherit base blob's metadata/properties unless metadata/properties are specified.
+ * Deprecated CloudPageBlob openOutputStream methods in favor of equivalent openWriteNew methods.
+ * CloudBlobContainer(String, CloudBlobClient) and CloudBlobClient.getContainerReference(String) always treat the string parameter as a relative address.
+ * Deprecated SharedAccessBlobPolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+
+QUEUE
+ * CloudQueue(String, CloudQueueClient) and CloudQueueClient.getQueueReference(String) always treat the string parameter as a relative address.
+ * Deprecated SharedAccessQueuePolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+
+TABLE
+ * Moved all execute and executeSegmented methods for TableOperations, TableBatchOperations, and TableQueries from CloudTableClient to CloudTable. The CloudTableClient methods are now marked deprecated.
+ * CloudTable(String, CloudTableClient) and CloudTableClient.getTableReference(String) always treat the string parameter as a relative address.
+ * Deprecated SharedAccessTablePolicy permissionsFromString(String) and permissionsToString(EnumSet) static methods in favor of setPermissionsFromString(String) and permissionsToString() instance methods.
+ * TableOperation(TableEntity, TableOperationType) sets echoContent to false by default.
+
+OTHER
+ * Removed OperationContext getCurrentOperationByteCount/setCurrentOperationByteCount and getIntermediateMD5/setIntermediateMD5 methods.
+ * Fixed translateException to handle 503 along with other special HTTP codes.
+ * Any exception thrown while parsing an error response is ignored and the original exception is returned.
+ * Deprecated OperationContext getCurrentRequestObject/setCurrentReqestObject methods.
+
+Changes in 0.5.0
+
+ BLOB 
  * Removed setCopyState property from CloudBlob (was marked RESERVED FOR INTERNAL USE, but this was still accessible.)
  * Modified the CloudBlobContainer exists, delete, uploadMetadata, downloadAttributes APIs to take AccessCondition in order to specify LeaseIDs for these operations.
  * Added throws StorageException to listBlobs and listContainers.
@@ -19,18 +46,18 @@ BLOB
  * Removed all getDirectoryReference, getPageBlobReference, getBlockBlobReference methods from CloudBlobClient.
  * CloudContainer(String name, CloudBlobClient client) assert that client is not null.
 
-QUEUE
+ QUEUE
  * CloudQueue.createIfNotExist was renamed to CloudQueue.createIfNotExists.
  * CloudQueue(String name, CloudQueueClient client) assert that client is not null.
 
-TABLE
+ TABLE
  * Removed id field (along with getId, setId) from TableResult.
  * CloudTable.createIfNotExist was renamed to CloudTable.createIfNotExists.
  * CloudTable(String name, CloudTableClient client) assert that client is not null.
  * inserts in TableOperation and TableBatchOperation do not echo content any more. This will cause the resulting HTTP status code on the TableResult for successful inserts to be 204 (no-content) rather than 201 (Created). Echo content can be re-enabled by using the insert(TableEntity, boolean) method and specifying true.
  * Added throws StorageException to executeQuery methods for tables.
 
-OTHER
+ OTHER
  * The packaging structure has changed to
 	1. com.microsoft.windowsazure.storage – RetryPolicies, LocationMode, StorageException, Storage Credentials etc. Basically all public classes that are common across services.
 	2. com.microsoft.windowsazure.storage.core – These classes are reserved for internal use and users never have to include this namespace in their projects. 

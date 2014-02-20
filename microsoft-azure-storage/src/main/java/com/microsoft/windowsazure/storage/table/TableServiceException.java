@@ -112,8 +112,7 @@ public final class TableServiceException extends StorageException {
 
         if (reader != null) {
             try {
-                final TableStorageErrorResponse error = new TableStorageErrorResponse(reader, format);
-                this.extendedErrorInformation = error.getExtendedErrorInformation();
+                this.extendedErrorInformation = TableStorageErrorDeserializer.getExtendedErrorInformation(reader, format);
                 this.errorCode = this.extendedErrorInformation.getErrorCode();
             }
             catch (XMLStreamException e) {

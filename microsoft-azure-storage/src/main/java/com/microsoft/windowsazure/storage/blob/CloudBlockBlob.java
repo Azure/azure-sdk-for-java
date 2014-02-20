@@ -256,7 +256,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
         byte[] blockListBytes;
         try {
-            blockListBytes = BlobRequest.writeBlockListToStream(blockList, opContext);
+            blockListBytes = BlockEntryListSerializer.writeBlockListToStream(blockList, opContext);
 
             final ByteArrayInputStream blockListInputStream = new ByteArrayInputStream(blockListBytes);
 
@@ -426,8 +426,7 @@ public final class CloudBlockBlob extends CloudBlob {
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
                 blob.updateLengthFromResponse(this.getConnection());
 
-                final GetBlockListResponse response = new GetBlockListResponse(this.getConnection().getInputStream());
-                return response.getBlocks();
+                return BlobDeserializer.getBlockList(this.getConnection().getInputStream());
             }
         };
 
@@ -474,7 +473,7 @@ public final class CloudBlockBlob extends CloudBlob {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.applyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient);
+        options = BlobRequestOptions.applyDefaults(options, BlobType.BLOCK_BLOB, this.blobServiceClient, false);
 
         return new BlobOutputStream(this, accessCondition, options, opContext);
     }
@@ -552,7 +551,9 @@ public final class CloudBlockBlob extends CloudBlob {
         // options.getSingleBlobPutThresholdInBytes() bytes and return
         // -1 as length in which case we will revert to using a stream as it is
         // over the single put threshold.
-        if (sourceStream.markSupported() && (length < 0 || options.getStoreBlobContentMD5())) {
+        if (sourceStream.markSupported()
+                && (length < 0 || (options.getStoreBlobContentMD5() && length <= options
+                        .getSingleBlobPutThresholdInBytes()))) {
             // If the stream is of unknown length or we need to calculate
             // the MD5, then we we need to read the stream contents first
 
@@ -572,8 +573,12 @@ public final class CloudBlockBlob extends CloudBlob {
         }
         else {
             final BlobOutputStream writeStream = this.openOutputStream(accessCondition, options, opContext);
-            writeStream.write(sourceStream, length);
-            writeStream.close();
+            try {
+                writeStream.write(sourceStream, length);
+            }
+            finally {
+                writeStream.close();
+            }
         }
     }
 
@@ -664,7 +669,7 @@ public final class CloudBlockBlob extends CloudBlob {
             // needs buffering
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
             descriptor = Utility.writeToOutputStream(sourceStream, byteStream, length, false /* rewindSourceStream */,
-                    options.getUseTransactionalContentMD5(), opContext);
+                    options.getUseTransactionalContentMD5(), opContext, options);
 
             bufferedStreamReference = new ByteArrayInputStream(byteStream.toByteArray());
         }

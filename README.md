@@ -35,7 +35,7 @@ within your project you can also have them installed by the Java package manager
 <dependency>
 	<groupId>com.microsoft.windowsazure.storage</groupId>
 	<artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 </dependency>
 ```
 

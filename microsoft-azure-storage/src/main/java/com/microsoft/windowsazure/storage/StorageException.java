@@ -19,13 +19,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
 
-import javax.xml.stream.XMLStreamException;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.microsoft.windowsazure.storage.core.StorageErrorResponse;
+import com.microsoft.windowsazure.storage.core.StorageErrorDeserializer;
 import com.microsoft.windowsazure.storage.table.TableConstants;
 import com.microsoft.windowsazure.storage.table.TablePayloadFormat;
-import com.microsoft.windowsazure.storage.table.TableStorageErrorResponse;
+import com.microsoft.windowsazure.storage.table.TableStorageErrorDeserializer;
 
 /**
  * Represents an exception for the Windows Azure storage service.
@@ -53,14 +50,13 @@ public class StorageException extends Exception {
      */
     protected static StorageExtendedErrorInformation getErrorDetailsFromRequest(final HttpURLConnection request,
             final OperationContext opContext) {
-        if (request == null) {
+        if (request == null || request.getErrorStream() == null) {
             return null;
         }
         try {
-            final StorageErrorResponse response = new StorageErrorResponse(request.getErrorStream());
-            return response.getExtendedErrorInformation();
+            return StorageErrorDeserializer.getExtendedErrorInformation(request.getErrorStream());
         }
-        catch (final XMLStreamException e) {
+        catch (final Exception e) {
             return null;
         }
     }
@@ -83,22 +79,15 @@ public class StorageException extends Exception {
      */
     protected static StorageExtendedErrorInformation getErrorDetailsFromTableRequest(final HttpURLConnection request,
             final TablePayloadFormat format, final OperationContext opContext) {
-        if (request == null) {
+        if (request == null || request.getErrorStream() == null) {
             return null;
         }
 
         try {
-            final TableStorageErrorResponse response = new TableStorageErrorResponse(new InputStreamReader(
-                    request.getErrorStream()), format);
-            return response.getExtendedErrorInformation();
+            return TableStorageErrorDeserializer.getExtendedErrorInformation(
+                    new InputStreamReader(request.getErrorStream()), format);
         }
-        catch (JsonParseException e) {
-            return null;
-        }
-        catch (IOException e) {
-            return null;
-        }
-        catch (final XMLStreamException e) {
+        catch (Exception e) {
             return null;
         }
     }
@@ -134,20 +123,23 @@ public class StorageException extends Exception {
 
         StorageExtendedErrorInformation extendedError = null;
 
-        final String type = request.getRequestProperty(Constants.HeaderConstants.ACCEPT);
-        if (type != null) {
-            if (type.startsWith(TableConstants.HeaderConstants.ATOM_CONTENT_TYPE)) {
-                extendedError = getErrorDetailsFromTableRequest(request, TablePayloadFormat.AtomPub, opContext);
-            }
-            else if (type.startsWith(TableConstants.HeaderConstants.JSON_CONTENT_TYPE)) {
-                extendedError = getErrorDetailsFromTableRequest(request, TablePayloadFormat.Json, opContext);
+        try {
+            final String server = request.getHeaderField("Server");
+            if (server != null && server.startsWith("Windows-Azure-Table")) {
+                final String type = request.getHeaderField(Constants.HeaderConstants.CONTENT_TYPE);
+                if (TableConstants.HeaderConstants.JSON_CONTENT_TYPE.equals(type)) {
+                    extendedError = getErrorDetailsFromTableRequest(request, TablePayloadFormat.Json, opContext);
+                }
+                else {
+                    extendedError = getErrorDetailsFromTableRequest(request, TablePayloadFormat.AtomPub, opContext);
+                }
             }
             else {
                 extendedError = getErrorDetailsFromRequest(request, opContext);
             }
         }
-        else {
-            extendedError = getErrorDetailsFromRequest(request, opContext);
+        catch (Exception e) {
+            // do nothing and continue, we want to get as much error info as we can
         }
 
         StorageException translatedException = null;
@@ -228,6 +220,10 @@ public class StorageException extends Exception {
             case HttpURLConnection.HTTP_CONFLICT:
                 return new StorageException(StorageErrorCode.RESOURCE_ALREADY_EXISTS.toString(), statusDescription,
                         statusCode, details, inner);
+
+            case HttpURLConnection.HTTP_UNAVAILABLE:
+                return new StorageException(StorageErrorCode.SERVER_BUSY.toString(), statusDescription, statusCode,
+                        details, inner);
 
             case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
                 return new StorageException(StorageErrorCode.SERVICE_TIMEOUT.toString(), statusDescription, statusCode,

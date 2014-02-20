@@ -15,44 +15,12 @@
 
 package com.microsoft.windowsazure.storage.queue;
 
-import java.util.HashMap;
+import com.microsoft.windowsazure.storage.core.Permissions;
 
 /**
  * Represents the permissions for a container.
  */
 
-public final class QueuePermissions {
+public final class QueuePermissions extends Permissions<SharedAccessQueuePolicy> {
 
-    /**
-     * Gets the set of shared access policies for the queue.
-     */
-    private HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies;
-
-    /**
-     * Creates an instance of the <code>QueuePermissions</code> class.
-     */
-    public QueuePermissions() {
-        this.sharedAccessPolicies = new HashMap<String, SharedAccessQueuePolicy>();
-    }
-
-    /**
-     * Returns the set of shared access policies for the queue.
-     * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessQueuePolicy} objects that represent the set of shared
-     *         access policies for the queue.
-     */
-    public HashMap<String, SharedAccessQueuePolicy> getSharedAccessPolicies() {
-        return this.sharedAccessPolicies;
-    }
-
-    /**
-     * Sets the set of shared access policies for the queue.
-     * 
-     * @param sharedAccessPolicies
-     *            The set of shared access policies to set for the queue, represented by a <code>HashMap</code> object
-     *            of {@link SharedAccessQueuePolicy} objects.
-     */
-    public void setSharedAccessPolicies(final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies) {
-        this.sharedAccessPolicies = sharedAccessPolicies;
-    }
 }

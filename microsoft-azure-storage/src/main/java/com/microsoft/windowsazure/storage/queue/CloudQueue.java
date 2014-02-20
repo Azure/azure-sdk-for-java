@@ -32,6 +32,7 @@ import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.DoesServiceRequest;
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.windowsazure.storage.StorageErrorCode;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
@@ -40,6 +41,8 @@ import com.microsoft.windowsazure.storage.core.ExecutionEngine;
 import com.microsoft.windowsazure.storage.core.PathUtility;
 import com.microsoft.windowsazure.storage.core.RequestLocationMode;
 import com.microsoft.windowsazure.storage.core.SR;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicyDeserializer;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicySerializer;
 import com.microsoft.windowsazure.storage.core.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
 import com.microsoft.windowsazure.storage.core.UriQueryBuilder;
@@ -104,18 +107,21 @@ public final class CloudQueue {
     private boolean shouldEncodeMessage;
 
     /**
-     * Creates an instance of the <code>CloudQueue</code> class using the specified address and client.
+     * Creates an instance of the <code>CloudQueue</code> class using the specified name and client.
      * 
      * @param queueName
-     *            A <code>String</code> that represents the queue name.
+     *            The name of the queue, which must adhere to queue naming rules. The queue name should not include any
+     *            path separator characters (/).
+     *            Queue names must be lowercase, between 3-63 characters long and must start with a letter or number.
+     *            Queue names may contain only letters, numbers, and the dash (-) character.
      * @param client
      *            A {@link CloudQueueClient} object that represents the associated service client, and that specifies
      *            the endpoint for the Queue service.
-     * 
+     * @throws URISyntaxException
+     *             If the resource URI constructed based on the queueName is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179349.aspx">Naming Queues and Metadata</a>
      */
     public CloudQueue(final String queueName, final CloudQueueClient client) throws URISyntaxException,
             StorageException {
@@ -124,7 +130,7 @@ public final class CloudQueue {
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), queueName);
 
-        this.name = PathUtility.getQueueNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
+        this.name = queueName;
         this.queueServiceClient = client;
         this.shouldEncodeMessage = true;
 
@@ -252,7 +258,7 @@ public final class CloudQueue {
         final String stringToSend = message.getMessageContentForTransfer(this.shouldEncodeMessage);
 
         try {
-            final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
+            final byte[] messageBytes = QueueMessageSerializer.generateMessageRequestBody(stringToSend);
 
             final StorageRequest<CloudQueueClient, CloudQueue, Void> putRequest = new StorageRequest<CloudQueueClient, CloudQueue, Void>(
                     options, this.getStorageUri()) {
@@ -480,6 +486,8 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
+        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+
         boolean exists = this.exists(true, options, opContext);
         if (exists) {
             return false;
@@ -607,6 +615,8 @@ public final class CloudQueue {
      */
     @DoesServiceRequest
     public boolean deleteIfExists(QueueRequestOptions options, OperationContext opContext) throws StorageException {
+        options = QueueRequestOptions.applyDefaults(options, this.queueServiceClient);
+
         boolean exists = this.exists(true, options, opContext);
         if (exists) {
             try {
@@ -615,7 +625,7 @@ public final class CloudQueue {
             }
             catch (StorageException e) {
                 if (e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCodeStrings.QUEUE_NOT_FOUND.equals(e.getErrorCode())) {
+                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(e.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -1117,7 +1127,7 @@ public final class CloudQueue {
                     return null;
                 }
                 else {
-                    return QueueDeserializationHelper.readMessages(this.getConnection().getInputStream(),
+                    return QueueDeserializer.readMessages(this.getConnection().getInputStream(),
                             queue.shouldEncodeMessage);
                 }
             }
@@ -1262,7 +1272,7 @@ public final class CloudQueue {
                     return null;
                 }
                 else {
-                    return QueueDeserializationHelper.readMessages(this.getConnection().getInputStream(),
+                    return QueueDeserializer.readMessages(this.getConnection().getInputStream(),
                             queue.shouldEncodeMessage);
                 }
             }
@@ -1382,7 +1392,7 @@ public final class CloudQueue {
             public HttpURLConnection buildRequest(CloudQueueClient client, CloudQueue queue, OperationContext context)
                     throws Exception {
                 if (messageUpdateFields.contains(MessageUpdateFields.CONTENT)) {
-                    final byte[] messageBytes = QueueRequest.generateMessageRequestBody(stringToSend);
+                    final byte[] messageBytes = QueueMessageSerializer.generateMessageRequestBody(stringToSend);
                     this.setSendStream(new ByteArrayInputStream(messageBytes));
                     this.setLength((long) messageBytes.length);
                 }
@@ -1555,7 +1565,8 @@ public final class CloudQueue {
         final StringWriter outBuffer = new StringWriter();
 
         try {
-            QueueRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
+            SharedAccessPolicySerializer.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(),
+                    outBuffer);
 
             final byte[] aclBytes = outBuffer.toString().getBytes(Constants.UTF8_CHARSET);
 
@@ -1691,11 +1702,11 @@ public final class CloudQueue {
             public QueuePermissions postProcessResponse(HttpURLConnection connection, CloudQueue queue,
                     CloudQueueClient client, OperationContext context, QueuePermissions queuePermissions)
                     throws Exception {
+                HashMap<String, SharedAccessQueuePolicy> accessIds = SharedAccessPolicyDeserializer
+                        .getAccessIdentifiers(this.getConnection().getInputStream(), SharedAccessQueuePolicy.class);
 
-                final QueueAccessPolicyResponse response = new QueueAccessPolicyResponse(connection.getInputStream());
-
-                for (final String key : response.getAccessIdentifiers().keySet()) {
-                    queuePermissions.getSharedAccessPolicies().put(key, response.getAccessIdentifiers().get(key));
+                for (final String key : accessIds.keySet()) {
+                    queuePermissions.getSharedAccessPolicies().put(key, accessIds.get(key));
                 }
 
                 return queuePermissions;
@@ -1745,13 +1756,10 @@ public final class CloudQueue {
      * @return the canonical name for shared access.
      */
     private String getSharedAccessCanonicalName() {
-        if (this.queueServiceClient.isUsePathStyleUris()) {
-            return this.getUri().getPath();
-        }
-        else {
-            return PathUtility.getCanonicalPathFromCredentials(this.queueServiceClient.getCredentials(), this.getUri()
-                    .getPath());
-        }
+        String accountName = this.getServiceClient().getCredentials().getAccountName();
+        String queueName = this.getName();
+
+        return String.format("/%s/%s", accountName, queueName);
     }
 
     /**

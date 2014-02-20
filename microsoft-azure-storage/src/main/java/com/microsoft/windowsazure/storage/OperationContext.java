@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.storage;
 
 import java.net.HttpURLConnection;
-import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -79,6 +78,43 @@ public final class OperationContext {
      * @see StorageEventMultiCaster
      * @see SendingRequestEvent
      */
+    private static StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> globalSendingRequestEventHandler = new StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>>();
+
+    /**
+     * Represents an event that is triggered when a response is received from the storage service while processing a
+     * request.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see ResponseReceivedEvent
+     */
+    private static StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> globalResponseReceivedEventHandler = new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>();
+
+    /**
+     * Represents an event that is triggered when a response received from the service is fully processed.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see RequestCompletedEvent
+     */
+    private static StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> globalRequestCompletedEventHandler = new StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>>();
+
+    /**
+     * Represents an event that is triggered when a request is retried.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see RetryingEvent
+     */
+    private static StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> globalRetryingEventHandler = new StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>>();
+
+    /**
+     * Represents an event that is triggered before sending a request.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see SendingRequestEvent
+     */
     private StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> sendingRequestEventHandler = new StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>>();
 
     /**
@@ -92,21 +128,28 @@ public final class OperationContext {
     private StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler = new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>();
 
     /**
-     * Reserved for internal use.
+     * Represents an event that is triggered when a response received from the service is fully processed.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see RequestCompletedEvent
      */
-    // Represents the intermediate MD5 value, which is used in resuming downloads.
-    private MessageDigest intermediateMD5;
+    private StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> requestCompletedEventHandler = new StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>>();
+
+    /**
+     * Represents an event that is triggered when a response is received from the storage service while processing a
+     * request.
+     * 
+     * @see StorageEvent
+     * @see StorageEventMultiCaster
+     * @see RetryingEvent
+     */
+    private StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> retryingEventHandler = new StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>>();
 
     /**
      * Reserved for internal use. Represents the current request object, which is used in continuation.
      */
     private HttpURLConnection currentRequestObject;
-
-    /**
-     * Reserved for internal use.
-     */
-    // Used internally for download resume.
-    private volatile long currentOperationByteCount;
 
     /**
      * Creates an instance of the <code>OperationContext</code> class.
@@ -131,24 +174,14 @@ public final class OperationContext {
     }
 
     /**
-     * @return the currentOperationByteCount
-     */
-    public long getCurrentOperationByteCount() {
-        return this.currentOperationByteCount;
-    }
-
-    /**
+     * Reserved for internal use.
+     * 
      * @return the currentRequestObject
+     * @deprecated Deprecated as of 0.6.0.
      */
+    @Deprecated
     public HttpURLConnection getCurrentRequestObject() {
         return this.currentRequestObject;
-    }
-
-    /**
-     * @return the intermediateMD5
-     */
-    public MessageDigest getIntermediateMD5() {
-        return this.intermediateMD5;
     }
 
     /**
@@ -219,10 +252,59 @@ public final class OperationContext {
     }
 
     /**
-     * @return the SendingRequestEvent
+     * @return the globalSendingRequestEventHandler
+     */
+    public static StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getGlobalSendingRequestEventHandler() {
+        return OperationContext.globalSendingRequestEventHandler;
+    }
+
+    /**
+     * @return the globalResponseReceivedEventHandler
+     */
+    public static StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getGlobalResponseReceivedEventHandler() {
+        return OperationContext.globalResponseReceivedEventHandler;
+    }
+
+    /**
+     * @return the globalRequestCompletedEventHandler
+     */
+    public static StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> getGlobalRequestCompletedEventHandler() {
+        return OperationContext.globalRequestCompletedEventHandler;
+    }
+
+    /**
+     * @return the globalRetryingEventHandler
+     */
+    public static StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> getGlobalRetryingEventHandler() {
+        return OperationContext.globalRetryingEventHandler;
+    }
+
+    /**
+     * @return the sendingRequestEventHandler
      */
     public StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> getSendingRequestEventHandler() {
         return this.sendingRequestEventHandler;
+    }
+
+    /**
+     * @return the responseReceivedEventHandler
+     */
+    public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
+        return this.responseReceivedEventHandler;
+    }
+
+    /**
+     * @return the requestCompletedEventHandler
+     */
+    public StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> getRequestCompletedEventHandler() {
+        return this.requestCompletedEventHandler;
+    }
+
+    /**
+     * @return the retryingEventHandler
+     */
+    public StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> getRetryingEventHandler() {
+        return this.retryingEventHandler;
     }
 
     /**
@@ -232,15 +314,7 @@ public final class OperationContext {
     public void initialize() {
         this.setClientTimeInMs(0);
         this.requestResults.clear();
-        this.setIntermediateMD5(null);
         this.setCurrentRequestObject(null);
-    }
-
-    /**
-     * @return the responseReceivedEventHandler
-     */
-    public StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> getResponseReceivedEventHandler() {
-        return this.responseReceivedEventHandler;
     }
 
     /**
@@ -272,27 +346,15 @@ public final class OperationContext {
     }
 
     /**
-     * @param currentOperationByteCount
-     *            the currentOperationByteCount to set
-     */
-    public void setCurrentOperationByteCount(final long currentOperationByteCount) {
-        this.currentOperationByteCount = currentOperationByteCount;
-    }
-
-    /**
+     * Reserved for internal use.
+     * 
      * @param currentRequestObject
      *            the currentRequestObject to set
+     * @deprecated Deprecated as of 0.6.0.
      */
+    @Deprecated
     public void setCurrentRequestObject(final HttpURLConnection currentRequestObject) {
         this.currentRequestObject = currentRequestObject;
-    }
-
-    /**
-     * @param intermediateMD5
-     *            the intermediateMD5 to set
-     */
-    public void setIntermediateMD5(final MessageDigest intermediateMD5) {
-        this.intermediateMD5 = intermediateMD5;
     }
 
     /**
@@ -324,6 +386,42 @@ public final class OperationContext {
     }
 
     /**
+     * @param globalSendingRequestEventHandler
+     *            the globalSendingRequestEventHandler to set
+     */
+    public static void setGlobalSendingRequestEventHandler(
+            final StorageEventMultiCaster<SendingRequestEvent, StorageEvent<SendingRequestEvent>> globalSendingRequestEventHandler) {
+        OperationContext.globalSendingRequestEventHandler = globalSendingRequestEventHandler;
+    }
+
+    /**
+     * @param globalResponseReceivedEventHandler
+     *            the globalResponseReceivedEventHandler to set
+     */
+    public static void setGlobalResponseReceivedEventHandler(
+            final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> globalResponseReceivedEventHandler) {
+        OperationContext.globalResponseReceivedEventHandler = globalResponseReceivedEventHandler;
+    }
+
+    /**
+     * @param globalRequestCompletedEventHandler
+     *            the globalRequestCompletedEventHandler to set
+     */
+    public static void setGlobalRequestCompletedEventHandler(
+            final StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> globalRequestCompletedEventHandler) {
+        OperationContext.globalRequestCompletedEventHandler = globalRequestCompletedEventHandler;
+    }
+
+    /**
+     * @param globalRetryingEventHandler
+     *            the globalRetryingEventHandler to set
+     */
+    public static void setGlobalRetryingEventHandler(
+            final StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> globalRetryingEventHandler) {
+        OperationContext.globalRetryingEventHandler = globalRetryingEventHandler;
+    }
+
+    /**
      * @param sendingRequestEventHandler
      *            the sendingRequestEventHandler to set
      */
@@ -339,6 +437,24 @@ public final class OperationContext {
     public void setResponseReceivedEventHandler(
             final StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>> responseReceivedEventHandler) {
         this.responseReceivedEventHandler = responseReceivedEventHandler;
+    }
+
+    /**
+     * @param requestCompletedEventHandler
+     *            the requestCompletedEventHandler to set
+     */
+    public void setRequestCompletedEventHandler(
+            final StorageEventMultiCaster<RequestCompletedEvent, StorageEvent<RequestCompletedEvent>> requestCompletedEventHandler) {
+        this.requestCompletedEventHandler = requestCompletedEventHandler;
+    }
+
+    /**
+     * @param retryingEventHandler
+     *            the retryingEventHandler to set
+     */
+    public void setRetryingEventHandler(
+            final StorageEventMultiCaster<RetryingEvent, StorageEvent<RetryingEvent>> retryingEventHandler) {
+        this.retryingEventHandler = retryingEventHandler;
     }
 
     /**

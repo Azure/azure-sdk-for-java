@@ -35,18 +35,25 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.LocationMode;
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.RetryNoRetry;
+import com.microsoft.windowsazure.storage.SecondaryTests;
 import com.microsoft.windowsazure.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.storage.StorageCredentials;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageEvent;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 import com.microsoft.windowsazure.storage.core.PathUtility;
 
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class SasTests extends BlobTestBase {
 
     protected CloudBlobContainer container;
@@ -66,6 +73,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category({ SecondaryTests.class, SlowTests.class })
     public void testContainerSaS() throws IllegalArgumentException, StorageException, URISyntaxException, IOException,
             InvalidKeyException, InterruptedException {
         SharedAccessBlobPolicy sp1 = createSharedAccessPolicy(
@@ -125,6 +133,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testContainerUpdateSAS() throws InvalidKeyException, StorageException, IOException, URISyntaxException,
             InterruptedException {
         //Create a policy with read/write access and get SAS.
@@ -156,7 +165,7 @@ public class SasTests extends BlobTestBase {
         creds = new StorageCredentialsSharedAccessSignature(sasToken2);
 
         // Extra check to make sure that we have actually updated the SAS token.
-        CloudBlobClient client = new CloudBlobClient(account.createCloudBlobClient().getStorageUri(), creds);
+        CloudBlobClient client = new CloudBlobClient(createCloudBlobClient().getStorageUri(), creds);
         CloudBlobContainer sasContainer = new CloudBlobContainer(container.getUri(), client);
 
         try {
@@ -169,6 +178,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testContainerSASCombinations() throws StorageException, URISyntaxException, IOException,
             InvalidKeyException, InterruptedException {
         for (int i = 1; i < 16; i++) {
@@ -212,6 +222,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testContainerPublicAccess() throws StorageException, IOException, URISyntaxException,
             InterruptedException {
         CloudBlockBlob testBlockBlob = (CloudBlockBlob) uploadNewBlob(container, BlobType.BLOCK_BLOB, "blockblob", 64,
@@ -257,6 +268,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testBlobSaS() throws InvalidKeyException, IllegalArgumentException, StorageException,
             URISyntaxException, IOException, InterruptedException {
         SharedAccessBlobPolicy sp = createSharedAccessPolicy(
@@ -305,6 +317,7 @@ public class SasTests extends BlobTestBase {
     }
 
     @Test
+    @Category(SlowTests.class)
     public void testBlobSaSWithSharedAccessBlobHeaders() throws InvalidKeyException, IllegalArgumentException,
             StorageException, URISyntaxException, IOException, InterruptedException {
         SharedAccessBlobPolicy sp = createSharedAccessPolicy(EnumSet.of(SharedAccessBlobPermissions.READ,

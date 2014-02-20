@@ -15,6 +15,7 @@
 
 package com.microsoft.windowsazure.storage.table;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.storage.OperationContext;
@@ -36,6 +37,18 @@ public class DynamicTableEntity extends TableServiceEntity {
     }
 
     /**
+     * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
+     * 
+     * @param partitionKey
+     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     * @param rowKey
+     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     */
+    public DynamicTableEntity(String partitionKey, String rowKey) {
+        super(partitionKey, rowKey);
+    }
+
+    /**
      * Constructs a {@link DynamicTableEntity} instance using the specified property map.
      * 
      * @param properties
@@ -43,6 +56,67 @@ public class DynamicTableEntity extends TableServiceEntity {
      *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
      */
     public DynamicTableEntity(final HashMap<String, EntityProperty> properties) {
+        this.setProperties(properties);
+    }
+
+    /**
+     * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
+     * 
+     * @param partitionKey
+     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     * @param rowKey
+     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     * @param properties
+     *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
+     *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
+     */
+    public DynamicTableEntity(String partitionKey, String rowKey, final HashMap<String, EntityProperty> properties) {
+        this(partitionKey, rowKey, null /* etag */, properties);
+    }
+
+    /**
+     * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
+     * 
+     * @param partitionKey
+     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     * @param rowKey
+     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     * @param etag
+     *            The etag of the {@link DynamicTableEntity} to be initialized.
+     * @param properties
+     *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
+     *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
+     */
+    public DynamicTableEntity(String partitionKey, String rowKey, String etag,
+            final HashMap<String, EntityProperty> properties) {
+        this(partitionKey, rowKey, null /* timestamp */, etag, properties);
+    }
+
+    /**
+     * Initializes a new instance of the {@link DynamicTableEntity} class with the specified partition key and row key.
+     * 
+     * @param partitionKey
+     *            The partition key of the {@link DynamicTableEntity} to be initialized.
+     * @param rowKey
+     *            The row key of the {@link DynamicTableEntity} to be initialized.
+     * @param etag
+     *            The etag of the {@link DynamicTableEntity} to be initialized.
+     * @param timestamp
+     *            The timestamp of the {@link DynamicTableEntity} to be initialized.
+     * @param properties
+     *            A <code>java.util.HashMap</code> containing a map of <code>String</code> property names to
+     *            {@link EntityProperty} data typed values to store in the new {@link DynamicTableEntity}.
+     */
+    public DynamicTableEntity(String partitionKey, String rowKey, Date timestamp, String etag,
+            final HashMap<String, EntityProperty> properties) {
+        super(partitionKey, rowKey);
+
+        // only set if timestamp is not null; otherwise default to new Date()
+        if (timestamp != null) {
+            this.timeStamp = timestamp;
+        }
+
+        this.etag = etag;
         this.setProperties(properties);
     }
 
