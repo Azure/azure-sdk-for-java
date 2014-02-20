@@ -16,6 +16,8 @@ package com.microsoft.windowsazure.storage;
 
 import java.util.EventListener;
 
+import com.microsoft.windowsazure.storage.core.BaseEvent;
+
 /**
  * 
  * Abstract class that represents a generic event listener.
@@ -23,7 +25,7 @@ import java.util.EventListener;
  * @param <T>
  *            The type of the event to be received.
  */
-public abstract class StorageEvent<T> implements EventListener {
+public abstract class StorageEvent<T extends BaseEvent> implements EventListener {
     /**
      * Represents an event that occurred.
      * 

@@ -24,7 +24,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
@@ -134,7 +133,7 @@ public final class BlobOutputStream extends OutputStream {
     /**
      * The CompletionService used to await task completion for this stream.
      */
-    private final CompletionService<Void> completionService;
+    private final ExecutorCompletionService<Void> completionService;
 
     /**
      * Holds the {@link AccessCondition} object that represents the access conditions for the blob.
@@ -256,33 +255,45 @@ public final class BlobOutputStream extends OutputStream {
     @Override
     @DoesServiceRequest
     public void close() throws IOException {
-        this.flush();
-        this.checkStreamState();
-        Exception tempException = null;
+        try {
+            // if the user has already closed the stream, this will throw a STREAM_CLOSED exception
+            // if an exception was thrown by any thread in the threadExecutor, realize it now
+            this.checkStreamState();
 
-        synchronized (this.lastErrorLock) {
-            this.streamFaulted = true;
-            this.lastError = new IOException(SR.STREAM_CLOSED);
-            tempException = this.lastError;
-        }
+            // flush any remaining data
+            this.flush();
 
-        while (this.outstandingRequests > 0) {
-            this.waitForTaskToComplete();
-        }
+            // Shut down the ExecutorService. Executes previously submitted tasks, but accepts no new tasks.
+            this.threadExecutor.shutdown();
 
-        this.threadExecutor.shutdown();
-        synchronized (this.lastErrorLock) {
-            // if one of the workers threw an exception, realize it now.
-            if (tempException != this.lastError) {
-                throw this.lastError;
+            // Waits for all submitted tasks to complete
+            while (this.outstandingRequests > 0) {
+                this.waitForTaskToComplete();
+            }
+
+            // if one of the tasks threw an exception, realize it now.
+            this.checkStreamState();
+
+            // try to commit the blob
+            try {
+                this.commit();
+            }
+            catch (final StorageException e) {
+                throw Utility.initIOException(e);
             }
         }
+        finally {
+            // if close() is called again, an exception will be thrown
+            synchronized (this.lastErrorLock) {
+                this.streamFaulted = true;
+                this.lastError = new IOException(SR.STREAM_CLOSED);
+            }
 
-        try {
-            this.commit();
-        }
-        catch (final StorageException e) {
-            throw Utility.initIOException(e);
+            // if an exception was thrown and the executor was not yet closed, call shutDownNow() to cancel all tasks 
+            // and shutdown the ExecutorService
+            if (!threadExecutor.isShutdown()) {
+                this.threadExecutor.shutdownNow();
+            }
         }
     }
 
@@ -305,7 +316,6 @@ public final class BlobOutputStream extends OutputStream {
         if (this.streamType == BlobType.BLOCK_BLOB) {
             // wait for all blocks to finish
             final CloudBlockBlob blobRef = (CloudBlockBlob) this.parentBlobRef;
-
             blobRef.commitBlockList(this.blockList, this.accessCondition, this.options, this.opContext);
         }
         else if (this.streamType == BlobType.PAGE_BLOB) {
@@ -397,7 +407,7 @@ public final class BlobOutputStream extends OutputStream {
             };
         }
 
-        // Do work and rest buffer.
+        // Do work and reset buffer.
         this.completionService.submit(worker);
         this.outstandingRequests++;
         this.currentBufferedBytes = 0;
@@ -500,7 +510,7 @@ public final class BlobOutputStream extends OutputStream {
      */
     @DoesServiceRequest
     public void write(final InputStream sourceStream, final long writeLength) throws IOException, StorageException {
-        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext);
+        Utility.writeToOutputStream(sourceStream, this, writeLength, false, false, this.opContext, options);
     }
 
     /**
@@ -515,6 +525,7 @@ public final class BlobOutputStream extends OutputStream {
      *             closed.
      */
     @Override
+    @DoesServiceRequest
     public void write(final int byteVal) throws IOException {
         this.write(new byte[] { (byte) (byteVal & 0xFF) });
     }
@@ -536,6 +547,7 @@ public final class BlobOutputStream extends OutputStream {
     private synchronized void writeInternal(final byte[] data, int offset, int length) throws IOException {
         while (length > 0) {
             this.checkStreamState();
+
             final int availableBufferBytes = this.internalWriteThreshold - this.currentBufferedBytes;
             final int nextWrite = Math.min(availableBufferBytes, length);
 

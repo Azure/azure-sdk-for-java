@@ -22,7 +22,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.microsoft.windowsazure.storage.Constants;
-import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.core.BaseResponse;
 import com.microsoft.windowsazure.storage.core.Utility;
@@ -41,20 +40,19 @@ final class BlobResponse extends BaseResponse {
      *            The blob uri to set.
      * @param snapshotID
      *            The snapshot version, if the blob is a snapshot.
-     * @param opContext
-     *            a tracking object for the request
      * @return the BlobAttributes from the given request
      * @throws ParseException
      * @throws URISyntaxException
      */
     public static BlobAttributes getAttributes(final HttpURLConnection request, final StorageUri resourceURI,
-            final String snapshotID, final OperationContext opContext) throws URISyntaxException, ParseException {
+            final String snapshotID) throws URISyntaxException, ParseException {
 
         final String blobType = request.getHeaderField(BlobConstants.BLOB_TYPE_HEADER);
         final BlobAttributes attributes = new BlobAttributes(BlobType.parse(blobType));
         final BlobProperties properties = attributes.getProperties();
 
         properties.setCacheControl(request.getHeaderField(Constants.HeaderConstants.CACHE_CONTROL));
+        properties.setContentDisposition(request.getHeaderField(Constants.HeaderConstants.CONTENT_DISPOSITION));
         properties.setContentEncoding(request.getHeaderField(Constants.HeaderConstants.CONTENT_ENCODING));
         properties.setContentLanguage(request.getHeaderField(Constants.HeaderConstants.CONTENT_LANGUAGE));
         properties.setContentMD5(request.getHeaderField(Constants.HeaderConstants.CONTENT_MD5));
@@ -145,11 +143,9 @@ final class BlobResponse extends BaseResponse {
      * 
      * @param request
      *            The response from server.
-     * @param opContext
-     *            a tracking object for the request
      * @return the snapshot ID from the request header.
      */
-    public static String getSnapshotTime(final HttpURLConnection request, final OperationContext opContext) {
+    public static String getSnapshotTime(final HttpURLConnection request) {
         return request.getHeaderField(Constants.HeaderConstants.SNAPSHOT_ID_HEADER);
     }
 }

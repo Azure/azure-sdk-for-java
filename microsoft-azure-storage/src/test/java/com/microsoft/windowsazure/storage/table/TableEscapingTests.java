@@ -16,105 +16,69 @@ package com.microsoft.windowsazure.storage.table;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 
 /**
  * Table Escaping Tests
  */
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableEscapingTests extends TableTestBase {
 
-    private final TableRequestOptions options;
-    private final boolean usePropertyResolver;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat,
-     * and if that format is JsonNoMetadata, whether or not to use a PropertyResolver
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub, false }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata, false }, // Json Full Metadata
-                { TablePayloadFormat.Json, false }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata, false }, // Json No Metadata without PropertyResolver 
-                { TablePayloadFormat.JsonNoMetadata, true } // Json No Metadata with PropertyResolver
-                });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     * @param usePropertyResolver
-     *            Whether or not to use a property resolver, applicable only for <code>JsonNoMetadata</code> format
-     */
-    public TableEscapingTests(TablePayloadFormat format, boolean usePropertyResolver) {
-        this.options = TableRequestOptions.applyDefaults(null, TableTestBase.tClient);
-        this.options.setTablePayloadFormat(format);
-        this.usePropertyResolver = usePropertyResolver;
-    }
-
     @Test
-    public void emptyString() throws StorageException {
+    public void testEmptyString() throws StorageException {
         doEscapeTest("", false, true);
     }
 
     @Test
-    public void emptyStringBatch() throws StorageException {
+    public void testEmptyStringBatch() throws StorageException {
         doEscapeTest("", true, true);
     }
 
     @Test
-    public void randomChars() throws StorageException {
+    public void testRandomChars() throws StorageException {
         doEscapeTest("!$'\"()*+,;=", false);
     }
 
     @Test
-    public void randomCharsBatch() throws StorageException {
+    public void testRandomCharsBatch() throws StorageException {
         doEscapeTest("!$'\"()*+,;=", true);
     }
 
     @Test
-    @Ignore
-    public void percent25() throws StorageException {
-        // Disabled Until Double Percent decoding issue is fixed for single entity operations
-        // doEscapeTest("foo%25", false, true);
+    public void testPercent25() throws StorageException {
+        doEscapeTest("foo%25", false, true);
     }
 
     @Test
-    public void percent25Batch() throws StorageException {
+    public void testPercent25Batch() throws StorageException {
         doEscapeTest("foo%25", true, true);
     }
 
     @Test
-    public void regularPKInQuery() throws StorageException {
+    public void testRegularPKInQuery() throws StorageException {
         doQueryEscapeTest("data");
     }
 
     @Test
-    public void specialChars() throws StorageException {
+    public void testSpecialChars() throws StorageException {
         doEscapeTest("\\ // @ ? <?", true);
     }
 
     @Test
-    public void specialCharsBatch() throws StorageException {
+    public void testSpecialCharsBatch() throws StorageException {
         doEscapeTest("\\ // @ ? <?", true);
     }
 
     @Test
-    public void unicode() throws StorageException {
+    public void testUnicode() throws StorageException {
         doEscapeTest("\u00A9\u770b\u5168\u90e8", false, true);
         doEscapeTest("char中文test", false, true);
         doEscapeTest("charä¸­æ–‡test", false, true);
@@ -122,7 +86,7 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     @Test
-    public void unicodeBatch() throws StorageException {
+    public void testUnicodeBatch() throws StorageException {
         doEscapeTest("\u00A9\u770b\u5168\u90e8", true, true);
         doEscapeTest("char中文test", true, true);
         doEscapeTest("charä¸­æ–‡test", true, true);
@@ -130,7 +94,7 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     @Test
-    public void unicodeInQuery() throws StorageException {
+    public void testUnicodeInQuery() throws StorageException {
         doQueryEscapeTest("char中文test");
         doQueryEscapeTest("charä¸­æ–‡test");
         doQueryEscapeTest("世界你好");
@@ -138,22 +102,22 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     @Test
-    public void whiteSpaceOnly() throws StorageException {
+    public void testWhiteSpaceOnly() throws StorageException {
         doEscapeTest("     ", false, true);
     }
 
     @Test
-    public void whiteSpaceOnlyBatch() throws StorageException {
+    public void testWhiteSpaceOnlyBatch() throws StorageException {
         doEscapeTest("     ", true, true);
     }
 
     @Test
-    public void whiteSpaceOnlyInQuery() throws StorageException {
+    public void testWhiteSpaceOnlyInQuery() throws StorageException {
         doQueryEscapeTest("     ");
     }
 
     @Test
-    public void xmlTest() throws StorageException {
+    public void testXmlTest() throws StorageException {
         doEscapeTest("</>", false);
         doEscapeTest("<tag>", false);
         doEscapeTest("</entry>", false);
@@ -162,7 +126,7 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     @Test
-    public void xmlTestBatch() throws StorageException {
+    public void testXmlTestBatch() throws StorageException {
         doEscapeTest("</>", false);
         doEscapeTest("<tag>", false);
         doEscapeTest("</entry>", false);
@@ -175,22 +139,39 @@ public class TableEscapingTests extends TableTestBase {
     }
 
     private void doEscapeTest(String data, boolean useBatch, boolean includeInKey) throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        doEscapeTestHelper(data, useBatch, includeInKey, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        doEscapeTestHelper(data, useBatch, includeInKey, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        doEscapeTestHelper(data, useBatch, includeInKey, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        doEscapeTestHelper(data, useBatch, includeInKey, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        options.setPropertyResolver(new Class1());
+        doEscapeTestHelper(data, useBatch, includeInKey, options);
+    }
+
+    private void doEscapeTestHelper(String data, boolean useBatch, boolean includeInKey, TableRequestOptions options)
+            throws StorageException {
         Class1 ref = new Class1();
         ref.setA(data);
         ref.setPartitionKey(includeInKey ? "temp" + data : "temp");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.insert(ref);
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
         }
         else {
-            tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+            table.execute(TableOperation.insert(ref), options, null);
         }
 
         TableResult res = null;
@@ -198,11 +179,11 @@ public class TableEscapingTests extends TableTestBase {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = tClient.execute(testSuiteTableName, batch, options, null).get(0);
+            res = table.execute(batch, options, null).get(0);
         }
         else {
-            res = tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
+                    null);
         }
 
         Class1 retObj = res.getResultAsType();
@@ -216,20 +197,20 @@ public class TableEscapingTests extends TableTestBase {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.merge(ref);
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
         }
         else {
-            tClient.execute(testSuiteTableName, TableOperation.merge(ref), options, null);
+            table.execute(TableOperation.merge(ref), options, null);
         }
 
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = tClient.execute(testSuiteTableName, batch, options, null).get(0);
+            res = table.execute(batch, options, null).get(0);
         }
         else {
-            res = tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
+                    null);
         }
 
         retObj = res.getResultAsType();
@@ -243,20 +224,20 @@ public class TableEscapingTests extends TableTestBase {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.replace(ref);
-            tClient.execute(testSuiteTableName, batch, options, null);
+            table.execute(batch, options, null);
         }
         else {
-            tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
+            table.execute(TableOperation.replace(ref), options, null);
         }
 
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class);
-            res = tClient.execute(testSuiteTableName, batch, options, null).get(0);
+            res = table.execute(batch, options, null).get(0);
         }
         else {
-            res = tClient.execute(testSuiteTableName,
-                    TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+            res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options,
+                    null);
         }
 
         retObj = res.getResultAsType();
@@ -267,30 +248,46 @@ public class TableEscapingTests extends TableTestBase {
         if (useBatch) {
             TableBatchOperation batch = new TableBatchOperation();
             batch.delete(retObj);
-            res = tClient.execute(testSuiteTableName, batch, options, null).get(0);
+            res = table.execute(batch, options, null).get(0);
         }
         else {
-            res = tClient.execute(testSuiteTableName, TableOperation.delete(retObj), options, null);
+            res = table.execute(TableOperation.delete(retObj), options, null);
         }
     }
 
     private void doQueryEscapeTest(String data) throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        doQueryEscapeTestHelper(data, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        doQueryEscapeTestHelper(data, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        doQueryEscapeTestHelper(data, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        doQueryEscapeTestHelper(data, options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        options.setPropertyResolver(new Class1());
+        doQueryEscapeTestHelper(data, options);
+    }
+
+    private void doQueryEscapeTestHelper(String data, TableRequestOptions options) throws StorageException {
         Class1 ref = new Class1();
         ref.setA(data);
         ref.setPartitionKey(UUID.randomUUID().toString());
         ref.setRowKey("foo");
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-        TableQuery<Class1> query = TableQuery.from(testSuiteTableName, Class1.class).where(
+        table.execute(TableOperation.insert(ref), options, null);
+        TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                 String.format("(PartitionKey eq '%s') and (A eq '%s')", ref.getPartitionKey(), data));
 
         int count = 0;
 
-        for (Class1 ent : tClient.execute(query, options, null)) {
+        for (Class1 ent : table.execute(query, options, null)) {
             count++;
             assertEquals(ent.getA(), ref.getA());
             assertEquals(ent.getB(), ref.getB());

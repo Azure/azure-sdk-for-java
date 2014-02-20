@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -283,6 +285,24 @@ public class BlobTestBase extends TestBase {
         Random random = new Random();
         random.nextBytes(buffer);
         return buffer;
+    }
+
+    public static Map<String, BlockEntry> getBlockEntryList(int count) {
+        Map<String, BlockEntry> blocks = new HashMap<String, BlockEntry>();
+        for (int i = 0; i < count; i++) {
+            final String name = generateRandomBlobNameWithPrefix(null);
+            blocks.put(name, new BlockEntry(name, BlockSearchMode.LATEST));
+        }
+        return blocks;
+    }
+
+    public void setBlobProperties(CloudBlob blob) {
+        blob.getProperties().setCacheControl("no-transform");
+        blob.getProperties().setContentDisposition("attachment");
+        blob.getProperties().setContentEncoding("gzip");
+        blob.getProperties().setContentLanguage("tr,en");
+        blob.getProperties().setContentMD5("MDAwMDAwMDA=");
+        blob.getProperties().setContentType("text/html");
     }
 
     public static void assertAreEqual(CloudBlob blob1, CloudBlob blob2) throws URISyntaxException, StorageException {

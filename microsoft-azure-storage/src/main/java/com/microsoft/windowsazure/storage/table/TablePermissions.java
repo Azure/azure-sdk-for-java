@@ -15,43 +15,11 @@
 
 package com.microsoft.windowsazure.storage.table;
 
-import java.util.HashMap;
+import com.microsoft.windowsazure.storage.core.Permissions;
 
 /**
  * Represents the permissions for a table.
  */
-public final class TablePermissions {
+public final class TablePermissions extends Permissions<SharedAccessTablePolicy> {
 
-    /**
-     * Gets the set of shared access policies for the table.
-     */
-    private HashMap<String, SharedAccessTablePolicy> sharedAccessPolicies;
-
-    /**
-     * Creates an instance of the <code>TablePermissions</code> class.
-     */
-    public TablePermissions() {
-        this.sharedAccessPolicies = new HashMap<String, SharedAccessTablePolicy>();
-    }
-
-    /**
-     * Returns the set of shared access policies for the table.
-     * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessTablePolicy} objects that represent the set of shared
-     *         access policies for the table.
-     */
-    public HashMap<String, SharedAccessTablePolicy> getSharedAccessPolicies() {
-        return this.sharedAccessPolicies;
-    }
-
-    /**
-     * Sets the set of shared access policies for the table.
-     * 
-     * @param sharedAccessPolicies
-     *            The set of shared access policies to set for the table, represented by a <code>HashMap</code> object
-     *            of {@link SharedAccessTablePolicy} objects.
-     */
-    public void setSharedAccessPolicies(final HashMap<String, SharedAccessTablePolicy> sharedAccessPolicies) {
-        this.sharedAccessPolicies = sharedAccessPolicies;
-    }
 }

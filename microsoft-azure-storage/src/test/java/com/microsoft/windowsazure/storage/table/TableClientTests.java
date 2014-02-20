@@ -24,17 +24,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.storage.LocationMode;
@@ -48,51 +44,37 @@ import com.microsoft.windowsazure.storage.RetryLinearRetry;
 import com.microsoft.windowsazure.storage.RetryPolicy;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageLocation;
-import com.microsoft.windowsazure.storage.TestBase;
 import com.microsoft.windowsazure.storage.TestHelper;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 
 /**
  * Table Client Tests
  */
-@RunWith(Parameterized.class)
 public class TableClientTests extends TableTestBase {
 
-    private CloudTableClient tableClient;
-    private final TablePayloadFormat format;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run.
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata }, // Json Full Metadata
-                { TablePayloadFormat.Json }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata }, // Json No Metadata without PropertyResolver 
-        });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     */
-    public TableClientTests(TablePayloadFormat format) {
-        this.tableClient = TestBase.createCloudTableClient();
-        this.format = format;
-    }
-
-    @Before
-    public void tableClientTestsSetupMethod() throws URISyntaxException, StorageException, InvalidKeyException {
-        this.tableClient = TestBase.createCloudTableClient();
-        this.tableClient.setTablePayloadFormat(format);
-    }
-
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
-    public void listTablesSegmented() throws IOException, URISyntaxException, StorageException {
+    public void testListTablesSegmented() throws IOException, URISyntaxException, StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testListTablesSegmented(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testListTablesSegmented(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testListTablesSegmented(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testListTablesSegmented(options);
+    }
+
+    private void testListTablesSegmented(TableRequestOptions options) throws IOException, URISyntaxException,
+            StorageException {
         String tableBaseName = generateRandomTableName();
 
         ArrayList<String> tables = new ArrayList<String>();
@@ -105,7 +87,7 @@ public class TableClientTests extends TableTestBase {
 
         try {
             int currTable = 0;
-            ResultSegment<String> segment1 = tClient.listTablesSegmented(tableBaseName, 5, null, null, null);
+            ResultSegment<String> segment1 = tClient.listTablesSegmented(tableBaseName, 5, null, options, null);
             assertEquals(5, segment1.getLength());
             for (String s : segment1.getResults()) {
                 assertEquals(s, String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
@@ -113,7 +95,7 @@ public class TableClientTests extends TableTestBase {
             }
 
             ResultSegment<String> segment2 = tClient.listTablesSegmented(tableBaseName, 5,
-                    segment1.getContinuationToken(), null, null);
+                    segment1.getContinuationToken(), options, null);
             assertEquals(5, segment2.getLength());
             for (String s : segment2.getResults()) {
                 assertEquals(s, String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
@@ -121,7 +103,7 @@ public class TableClientTests extends TableTestBase {
             }
 
             ResultSegment<String> segment3 = tClient.listTablesSegmented(tableBaseName, 5,
-                    segment2.getContinuationToken(), null, null);
+                    segment2.getContinuationToken(), options, null);
             assertEquals(5, segment3.getLength());
             for (String s : segment3.getResults()) {
                 assertEquals(s, String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
@@ -136,8 +118,20 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
-    public void listTablesSegmentedNoPrefix() throws IOException, URISyntaxException, StorageException {
+    public void testListTablesSegmentedNoPrefix() throws IOException, URISyntaxException, StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testListTablesSegmentedNoPrefix(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testListTablesSegmentedNoPrefix(options);
+    }
+
+    private void testListTablesSegmentedNoPrefix(TableRequestOptions options) throws IOException, URISyntaxException,
+            StorageException {
         String tableBaseName = generateRandomTableName();
         ArrayList<String> tables = new ArrayList<String>();
         for (int m = 0; m < 20; m++) {
@@ -149,7 +143,7 @@ public class TableClientTests extends TableTestBase {
 
         try {
             int currTable = 0;
-            ResultSegment<String> segment1 = tClient.listTablesSegmented(null, 5, null, null, null);
+            ResultSegment<String> segment1 = tClient.listTablesSegmented(null, 5, null, options, null);
             assertEquals(5, segment1.getLength());
             for (String s : segment1.getResults()) {
                 if (s.startsWith(tableBaseName)) {
@@ -159,7 +153,7 @@ public class TableClientTests extends TableTestBase {
             }
 
             ResultSegment<String> segment2 = tClient.listTablesSegmented(null, 5, segment1.getContinuationToken(),
-                    null, null);
+                    options, null);
             assertEquals(5, segment2.getLength());
             for (String s : segment2.getResults()) {
                 if (s.startsWith(tableBaseName)) {
@@ -169,7 +163,7 @@ public class TableClientTests extends TableTestBase {
             }
 
             ResultSegment<String> segment3 = tClient.listTablesSegmented(null, 5, segment2.getContinuationToken(),
-                    null, null);
+                    options, null);
             assertEquals(5, segment3.getLength());
             for (String s : segment3.getResults()) {
                 if (s.startsWith(tableBaseName)) {
@@ -187,8 +181,20 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
-    public void listTablesWithIterator() throws IOException, URISyntaxException, StorageException {
+    public void testListTablesWithIterator() throws IOException, URISyntaxException, StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testListTablesWithIterator(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testListTablesWithIterator(options);
+    }
+
+    private void testListTablesWithIterator(TableRequestOptions options) throws IOException, URISyntaxException,
+            StorageException {
         String tableBaseName = generateRandomTableName();
         ArrayList<String> tables = new ArrayList<String>();
         for (int m = 0; m < 20; m++) {
@@ -201,7 +207,7 @@ public class TableClientTests extends TableTestBase {
         try {
             // With prefix
             int currTable = 0;
-            Iterable<String> listTables = tClient.listTables(tableBaseName, null, null);
+            Iterable<String> listTables = tClient.listTables(tableBaseName, options, null);
             for (String s : listTables) {
                 assertEquals(s, String.format("%s%s", tableBaseName, new DecimalFormat("#0000").format(currTable)));
                 currTable++;
@@ -243,6 +249,7 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testTableSASFromIdentifier() throws StorageException, URISyntaxException, InvalidKeyException,
             InterruptedException {
@@ -277,20 +284,21 @@ public class TableClientTests extends TableTestBase {
                     batch.insert(ent);
                 }
 
-                tClient.execute(name, batch);
+                table.execute(batch);
             }
 
             CloudTableClient tableClientFromIdentifierSAS = TableTestBase.getTableForSas(table, null, identifier, null,
                     null, null, null);
+            CloudTable tableFromIdentifierSAS = tableClientFromIdentifierSAS.getTableReference(table.getName());
 
             {
                 Class1 randEnt = TableTestBase.generateRandomEntity(null);
-                TableQuery<Class1> query = TableQuery.from(name, Class1.class).where(
+                TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                         String.format("(PartitionKey eq '%s') and (RowKey ge '%s')", "javatables_batch_1", "000050"));
 
                 int count = 0;
 
-                for (Class1 ent : tableClientFromIdentifierSAS.execute(query)) {
+                for (Class1 ent : tableFromIdentifierSAS.execute(query)) {
                     assertEquals(ent.getA(), randEnt.getA());
                     assertEquals(ent.getB(), randEnt.getB());
                     assertEquals(ent.getC(), randEnt.getC());
@@ -321,16 +329,15 @@ public class TableClientTests extends TableTestBase {
                 secondEntity.setEtag(baseEntity.getEtag());
 
                 // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
-                TableResult insertResult = tableClientFromIdentifierSAS.execute(name,
-                        TableOperation.insertOrMerge(baseEntity));
+                TableResult insertResult = tableFromIdentifierSAS.execute(TableOperation.insertOrMerge(baseEntity));
 
                 assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
 
                 // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
-                tableClientFromIdentifierSAS.execute(name, TableOperation.insertOrMerge(secondEntity));
+                tableFromIdentifierSAS.execute(TableOperation.insertOrMerge(secondEntity));
 
                 // Retrieve entity
-                TableResult queryResult = tableClientFromIdentifierSAS.execute(name, TableOperation.retrieve(
+                TableResult queryResult = tableFromIdentifierSAS.execute(TableOperation.retrieve(
                         baseEntity.getPartitionKey(), baseEntity.getRowKey(), DynamicTableEntity.class));
 
                 DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
@@ -368,6 +375,7 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testTableSASFromPermission() throws StorageException, URISyntaxException, InvalidKeyException,
             InterruptedException {
@@ -403,13 +411,16 @@ public class TableClientTests extends TableTestBase {
                     batch.insert(ent);
                 }
 
-                tClient.execute(name, batch);
+                table.execute(batch);
             }
 
             CloudTableClient tableClientFromPermission = TableTestBase.getTableForSas(table, policy1, null,
                     "javatables_batch_0", "0", "javatables_batch_9", "9");
+            CloudTable tableFromPermission = tableClientFromPermission.getTableReference(table.getName());
+
             CloudTableClient tableClientFromPermissionJustPks = TableTestBase.getTableForSas(table, policy1, null,
                     "javatables_batch_0", null, "javatables_batch_9", null);
+            CloudTable tableFromPermissionJustPks = tableClientFromPermissionJustPks.getTableReference(table.getName());
 
             {
                 TableBatchOperation batchFromSAS = new TableBatchOperation();
@@ -420,15 +431,15 @@ public class TableClientTests extends TableTestBase {
                     batchFromSAS.insert(ent);
                 }
 
-                tableClientFromPermission.execute(name, batchFromSAS);
+                tableFromPermission.execute(batchFromSAS);
 
                 Class1 randEnt = TableTestBase.generateRandomEntity(null);
-                TableQuery<Class1> query = TableQuery.from(name, Class1.class).where(
+                TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                         String.format("(PartitionKey eq '%s') and (RowKey ge '%s')", "javatables_batch_1", "000050"));
 
                 int count = 0;
 
-                for (Class1 ent : tableClientFromPermission.execute(query)) {
+                for (Class1 ent : tableFromPermission.execute(query)) {
                     assertEquals(ent.getA(), randEnt.getA());
                     assertEquals(ent.getB(), randEnt.getB());
                     assertEquals(ent.getC(), randEnt.getC());
@@ -441,7 +452,7 @@ public class TableClientTests extends TableTestBase {
 
                 count = 0;
 
-                for (Class1 ent : tableClientFromPermissionJustPks.execute(query)) {
+                for (Class1 ent : tableFromPermissionJustPks.execute(query)) {
                     assertEquals(ent.getA(), randEnt.getA());
                     assertEquals(ent.getB(), randEnt.getB());
                     assertEquals(ent.getC(), randEnt.getC());
@@ -471,18 +482,17 @@ public class TableClientTests extends TableTestBase {
                 secondEntity.setRowKey(baseEntity.getRowKey());
                 secondEntity.setEtag(baseEntity.getEtag());
 
-                TableResult insertResult = tableClientFromPermission.execute(name,
-                        TableOperation.insertOrMerge(baseEntity));
+                TableResult insertResult = tableFromPermission.execute(TableOperation.insertOrMerge(baseEntity));
 
                 // Insert or merge Entity - ENTITY DOES NOT EXIST NOW.
 
                 assertEquals(insertResult.getHttpStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
 
                 // Insert or replace Entity - ENTITY EXISTS -> WILL REPLACE
-                tableClientFromPermission.execute(name, TableOperation.insertOrMerge(secondEntity));
+                tableFromPermission.execute(TableOperation.insertOrMerge(secondEntity));
 
                 // Retrieve entity
-                TableResult queryResult = tableClientFromPermission.execute(name, TableOperation.retrieve(
+                TableResult queryResult = tableFromPermission.execute(TableOperation.retrieve(
                         baseEntity.getPartitionKey(), baseEntity.getRowKey(), DynamicTableEntity.class));
 
                 DynamicTableEntity retrievedEntity = queryResult.<DynamicTableEntity> getResultAsType();
@@ -520,6 +530,7 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void tableCreateAndAttemptCreateOnceExistsSharedKeyLite() throws StorageException, URISyntaxException {
         tClient.setAuthenticationScheme(AuthenticationScheme.SHAREDKEYLITE);
@@ -544,16 +555,17 @@ public class TableClientTests extends TableTestBase {
         }
     }
 
+    @Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
-    public void verifyBackoffTimeOverflow() {
+    public void testBackoffTimeOverflow() {
         RetryExponentialRetry exponentialRetry = new RetryExponentialRetry(4000, 100000);
-        verifyBackoffTimeOverflow(exponentialRetry, 100000);
+        testBackoffTimeOverflow(exponentialRetry, 100000);
 
         RetryLinearRetry linearRetry = new RetryLinearRetry(4000, 100000);
-        verifyBackoffTimeOverflow(linearRetry, 100000);
+        testBackoffTimeOverflow(linearRetry, 100000);
     }
 
-    private void verifyBackoffTimeOverflow(RetryPolicy retryPolicy, int maxAttempts) {
+    private void testBackoffTimeOverflow(RetryPolicy retryPolicy, int maxAttempts) {
         Exception e = new Exception();
         OperationContext context = new OperationContext();
 
@@ -575,6 +587,7 @@ public class TableClientTests extends TableTestBase {
         assertNull(retryPolicy.evaluate(retryContext, context));
     }
 
+    @Category({ CloudTests.class })
     @Test
     public void testGetServiceStats() throws StorageException {
         CloudTableClient tClient = createCloudTableClient();

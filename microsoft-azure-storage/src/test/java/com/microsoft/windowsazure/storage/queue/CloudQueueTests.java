@@ -28,11 +28,13 @@ import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.storage.LocationMode;
@@ -41,15 +43,52 @@ import com.microsoft.windowsazure.storage.RetryNoRetry;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
+import com.microsoft.windowsazure.storage.TestRunners.SlowTests;
 import com.microsoft.windowsazure.storage.core.PathUtility;
 
 /**
  * Queue Tests
  */
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudQueueTests extends QueueTestBase {
 
+    /**
+     * Get permissions from string
+     */
     @Test
-    public void queueGetSetPermissionTest() throws StorageException, URISyntaxException, InterruptedException {
+    public void testQueuePermissionsFromString() {
+        Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        Date start = cal.getTime();
+        cal.add(Calendar.MINUTE, 30);
+        Date expiry = cal.getTime();
+
+        SharedAccessQueuePolicy policy = new SharedAccessQueuePolicy();
+        policy.setSharedAccessStartTime(start);
+        policy.setSharedAccessExpiryTime(expiry);
+
+        policy.setPermissionsFromString("raup");
+        assertEquals(EnumSet.of(SharedAccessQueuePermissions.READ, SharedAccessQueuePermissions.ADD,
+                SharedAccessQueuePermissions.UPDATE, SharedAccessQueuePermissions.PROCESSMESSAGES),
+                policy.getPermissions());
+
+        policy.setPermissionsFromString("rap");
+        assertEquals(EnumSet.of(SharedAccessQueuePermissions.READ, SharedAccessQueuePermissions.ADD,
+                SharedAccessQueuePermissions.PROCESSMESSAGES), policy.getPermissions());
+
+        policy.setPermissionsFromString("ar");
+        assertEquals(EnumSet.of(SharedAccessQueuePermissions.READ, SharedAccessQueuePermissions.ADD),
+                policy.getPermissions());
+
+        policy.setPermissionsFromString("u");
+        assertEquals(EnumSet.of(SharedAccessQueuePermissions.UPDATE), policy.getPermissions());
+    }
+
+    @Category(SlowTests.class)
+    @Test
+    public void testQueueGetSetPermissionTest() throws StorageException, URISyntaxException, InterruptedException {
         String name = generateRandomQueueName();
         CloudQueue newQueue = qClient.getQueueReference(name);
         newQueue.create();
@@ -92,6 +131,7 @@ public class CloudQueueTests extends QueueTestBase {
         }
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testQueueSAS() throws StorageException, URISyntaxException, InvalidKeyException, InterruptedException {
         String name = generateRandomQueueName();
@@ -198,10 +238,9 @@ public class CloudQueueTests extends QueueTestBase {
     @Test
     public void testQueueClientConstructor() throws URISyntaxException, StorageException {
         String queueName = "queue";
-        String baseAddress = AppendQueueName(qClient.getEndpoint(), queueName);
-        CloudQueue queue1 = new CloudQueue(baseAddress, qClient);
+        CloudQueue queue1 = new CloudQueue(queueName, qClient);
         assertEquals(queueName, queue1.getName());
-        assertTrue(queue1.getUri().toString().endsWith(baseAddress));
+        assertTrue(queue1.getUri().toString().endsWith(queueName));
         assertEquals(qClient, queue1.getServiceClient());
 
         CloudQueue queue2 = new CloudQueue(new URI(AppendQueueName(qClient.getEndpoint(), queueName)), qClient);
@@ -713,6 +752,7 @@ public class CloudQueueTests extends QueueTestBase {
         queue.delete();
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testAddMessageWithVisibilityTimeout() throws URISyntaxException, StorageException,
             UnsupportedEncodingException, InterruptedException {
@@ -826,7 +866,7 @@ public class CloudQueueTests extends QueueTestBase {
     }
 
     @Test
-    public void testQueueCreateAddingMetaData() throws URISyntaxException, StorageException {
+    public void testQueueCreateAddingMetadata() throws URISyntaxException, StorageException {
         final CloudQueue queue = qClient.getQueueReference(UUID.randomUUID().toString().toLowerCase());
 
         final HashMap<String, String> metadata = new HashMap<String, String>(5);
@@ -852,6 +892,7 @@ public class CloudQueueTests extends QueueTestBase {
         }
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testRetrieveMessage() throws URISyntaxException, StorageException, UnsupportedEncodingException,
             InterruptedException {
@@ -1172,6 +1213,7 @@ public class CloudQueueTests extends QueueTestBase {
         }
     }
 
+    @Category(SlowTests.class)
     @Test
     public void testUpdateMessageFullPass() throws URISyntaxException, StorageException, UnsupportedEncodingException,
             InterruptedException {

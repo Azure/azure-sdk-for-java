@@ -22,63 +22,30 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.ResponseReceivedEvent;
 import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageEvent;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.table.TableQuery.QueryComparisons;
 
 /**
  * Table Query Tests
  */
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableQueryTests extends TableTestBase {
-
-    private final TableRequestOptions options;
-    private final boolean usePropertyResolver;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat,
-     * and if that format is JsonNoMetadata, whether or not to use a PropertyResolver
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub, false }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata, false }, // Json Full Metadata
-                { TablePayloadFormat.Json, false }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata, false }, // Json No Metadata without PropertyResolver 
-                { TablePayloadFormat.JsonNoMetadata, true } // Json No Metadata with PropertyResolver
-                });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     * @param usePropertyResolver
-     *            Whether or not to use a property resolver, applicable only for <code>JsonNoMetadata</code> format
-     */
-    public TableQueryTests(TablePayloadFormat format, boolean usePropertyResolver) {
-        this.options = new TableRequestOptions();
-        this.options.setTablePayloadFormat(format);
-        this.usePropertyResolver = usePropertyResolver;
-    }
 
     @BeforeClass
     public static void setup() throws URISyntaxException, StorageException, InvalidKeyException {
@@ -94,17 +61,262 @@ public class TableQueryTests extends TableTestBase {
                 batch.insert(ent);
             }
 
-            tClient.execute(testSuiteTableName, batch);
+            table.execute(batch);
         }
     }
 
-    //@Test
-    public void tableQueryIterateTwice() throws StorageException {
+    @Test
+    public void testQueryWithNullClassType() throws StorageException {
+        try {
+            TableQuery.from(null);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "class type"));
+        }
+    }
+
+    @Test
+    public void testQueryWithInvalidTakeCount() throws StorageException {
+        try {
+            TableQuery.from(TableServiceEntity.class).take(0);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
+        }
+
+        try {
+            TableQuery.from(TableServiceEntity.class).take(-1);
+        }
+        catch (IllegalArgumentException ex) {
+            assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
+        }
+    }
+
+    @Test
+    public void testTableInvalidQuery() throws StorageException, InterruptedException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableInvalidQuery(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableInvalidQuery(options);
+    }
+
+    private void testTableInvalidQuery(TableRequestOptions options) throws StorageException, IOException,
+            URISyntaxException {
+
+        TableQuery<Class1> query = TableQuery.from(Class1.class).where(
+                String.format("(PartitionKey ) and (RowKey ge '%s')", "000050"));
+        try {
+            table.executeSegmented(query, null, options, null);
+            fail();
+        }
+        catch (TableServiceException ex) {
+            assertEquals(ex.getMessage(), "Bad Request");
+            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
+                    .startsWith("One of the request inputs is not valid."));
+            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
+        }
+    }
+
+    @Test
+    public void testQueryOnSupportedTypes() throws StorageException, InterruptedException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testQueryOnSupportedTypes(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testQueryOnSupportedTypes(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testQueryOnSupportedTypes(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testQueryOnSupportedTypes(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testQueryOnSupportedTypes(options, true);
+    }
+
+    private void testQueryOnSupportedTypes(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException, InterruptedException {
+        // Setup
+        TableBatchOperation batch = new TableBatchOperation();
+        String pk = UUID.randomUUID().toString();
+
+        long maxInt = Integer.MAX_VALUE; // used to ensure the test sends longs that cannot be interpreted as ints
+
+        ComplexEntity middleRef = null;
+
+        for (int j = 0; j < 100; j++) {
+            ComplexEntity ent = new ComplexEntity();
+            ent.setPartitionKey(pk);
+            ent.setRowKey(String.format("%04d", j));
+            ent.setBinary(new Byte[] { 0x01, 0x02, (byte) j });
+            ent.setBinaryPrimitive(new byte[] { 0x01, 0x02, (byte) j });
+            ent.setBool(j % 2 == 0 ? true : false);
+            ent.setBoolPrimitive(j % 2 == 0 ? true : false);
+            ent.setDateTime(new Date());
+            ent.setDouble(j + ((double) j) / 100);
+            ent.setDoublePrimitive(j + ((double) j) / 100);
+            ent.setInt32(j);
+            ent.setInt64(j + maxInt);
+            ent.setIntegerPrimitive(j);
+            ent.setLongPrimitive(j + maxInt);
+            ent.setGuid(UUID.randomUUID());
+            ent.setString(String.format("%04d", j));
+
+            // Add delay to make times unique
+            Thread.sleep(50);
+            batch.insert(ent);
+            if (j == 50) {
+                middleRef = ent;
+            }
+        }
+
+        if (usePropertyResolver) {
+            options.setPropertyResolver(middleRef);
+        }
+
+        table.execute(batch, options, null);
+
+        try {
+            // 1. Filter on String
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("String", QueryComparisons.GREATER_THAN_OR_EQUAL, "0050"), 50,
+                    options, usePropertyResolver);
+
+            // 2. Filter on UUID
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Guid", QueryComparisons.EQUAL, middleRef.getGuid()), 1,
+                    options, usePropertyResolver);
+
+            // 3. Filter on Long
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Int64", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getInt64()), 50, options, usePropertyResolver);
+
+            executeQueryAndAssertResults(TableQuery.generateFilterCondition("LongPrimitive",
+                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getInt64()), 50, options, usePropertyResolver);
+
+            // 4. Filter on Double
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Double", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getDouble()), 50, options, usePropertyResolver);
+
+            executeQueryAndAssertResults(TableQuery.generateFilterCondition("DoublePrimitive",
+                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getDouble()), 50, options, usePropertyResolver);
+
+            // 5. Filter on Integer
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Int32", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getInt32()), 50, options, usePropertyResolver);
+
+            executeQueryAndAssertResults(TableQuery.generateFilterCondition("IntegerPrimitive",
+                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getInt32()), 50, options, usePropertyResolver);
+
+            // 6. Filter on Date
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("DateTime", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getDateTime()), 50, options, usePropertyResolver);
+
+            // 7. Filter on Boolean
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Bool", QueryComparisons.EQUAL, middleRef.getBool()), 50,
+                    options, usePropertyResolver);
+
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("BoolPrimitive", QueryComparisons.EQUAL, middleRef.getBool()),
+                    50, options, usePropertyResolver);
+
+            // 8. Filter on Binary 
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Binary", QueryComparisons.EQUAL, middleRef.getBinary()), 1,
+                    options, usePropertyResolver);
+
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("BinaryPrimitive", QueryComparisons.EQUAL,
+                            middleRef.getBinaryPrimitive()), 1, options, usePropertyResolver);
+
+            // 9. Filter on Binary GTE
+            executeQueryAndAssertResults(
+                    TableQuery.generateFilterCondition("Binary", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getBinary()), 50, options, usePropertyResolver);
+
+            executeQueryAndAssertResults(TableQuery.generateFilterCondition("BinaryPrimitive",
+                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getBinaryPrimitive()), 50, options,
+                    usePropertyResolver);
+
+            // 10. Complex Filter on Binary GTE
+            executeQueryAndAssertResults(TableQuery.combineFilters(
+                    TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY, QueryComparisons.EQUAL,
+                            middleRef.getPartitionKey()),
+                    TableQuery.Operators.AND,
+                    TableQuery.generateFilterCondition("Binary", QueryComparisons.GREATER_THAN_OR_EQUAL,
+                            middleRef.getBinary())), 50, options, usePropertyResolver);
+
+            executeQueryAndAssertResults(TableQuery.generateFilterCondition("BinaryPrimitive",
+                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getBinaryPrimitive()), 50, options,
+                    usePropertyResolver);
+
+        }
+        finally {
+            // cleanup
+            TableBatchOperation delBatch = new TableBatchOperation();
+            TableQuery<ComplexEntity> query = TableQuery.from(ComplexEntity.class).where(
+                    String.format("PartitionKey eq '%s'", pk));
+
+            for (ComplexEntity e : table.execute(query, options, null)) {
+                delBatch.delete(e);
+            }
+
+            table.execute(delBatch, options, null);
+        }
+    }
+
+    private void executeQueryAndAssertResults(String filter, int expectedResults, TableRequestOptions options,
+            boolean usePropertyResolver) throws StorageException {
+        // instantiate class to use property resolver
+        ComplexEntity ent = new ComplexEntity();
+        if (usePropertyResolver) {
+            options.setPropertyResolver(ent);
+        }
+
+        int count = 0;
+        TableQuery<ComplexEntity> query = TableQuery.from(ComplexEntity.class).where(filter);
+        for (@SuppressWarnings("unused")
+        ComplexEntity e : table.execute(query, options, null)) {
+            count++;
+        }
+
+        assertEquals(expectedResults, count);
+    }
+
+    @Test
+    public void testTableQueryIterateTwice() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryIterateTwice(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryIterateTwice(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryIterateTwice(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryIterateTwice(options);
+    }
+
+    private void testTableQueryIterateTwice(TableRequestOptions options) throws StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        final Iterable<DynamicTableEntity> result = tClient.execute(
-                TableQuery.from(testSuiteTableName, DynamicTableEntity.class).take(50), options, null);
+        final Iterable<DynamicTableEntity> result = table.execute(TableQuery.from(DynamicTableEntity.class).take(50),
+                options, null);
 
         ArrayList<DynamicTableEntity> firstIteration = new ArrayList<DynamicTableEntity>();
         ArrayList<DynamicTableEntity> secondIteration = new ArrayList<DynamicTableEntity>();
@@ -146,12 +358,28 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithDynamicEntity() throws StorageException {
+    public void testTableQueryWithDynamicEntity() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithDynamicEntity(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithDynamicEntity(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithDynamicEntity(options);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithDynamicEntity(options);
+    }
+
+    private void testTableQueryWithDynamicEntity(TableRequestOptions options) throws StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        final Iterable<DynamicTableEntity> result = tClient.execute(
-                TableQuery.from(testSuiteTableName, DynamicTableEntity.class), options, null);
+        final Iterable<DynamicTableEntity> result = table.execute(TableQuery.from(DynamicTableEntity.class), options,
+                null);
 
         // Validate results
         for (DynamicTableEntity ent : result) {
@@ -164,16 +392,36 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithProjection() throws StorageException {
+    public void testTableQueryWithProjection() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithProjection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithProjection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithProjection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithProjection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithProjection(options, true);
+    }
+
+    private void testTableQueryWithProjection(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        final Iterable<Class1> result = tClient.execute(
-                TableQuery.from(testSuiteTableName, Class1.class).select(new String[] { "A", "C" }), options, null);
+        final Iterable<Class1> result = table.execute(TableQuery.from(Class1.class).select(new String[] { "A", "C" }),
+                options, null);
 
         // Validate results
         for (Class1 ent : result) {
@@ -191,11 +439,31 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void ensureSelectOnlySendsReservedColumnsOnce() throws StorageException {
+    public void testSelectOnlySendsReservedColumnsOnce() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testSelectOnlySendsReservedColumnsOnce(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testSelectOnlySendsReservedColumnsOnce(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testSelectOnlySendsReservedColumnsOnce(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testSelectOnlySendsReservedColumnsOnce(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testSelectOnlySendsReservedColumnsOnce(options, true);
+    }
+
+    private void testSelectOnlySendsReservedColumnsOnce(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         // Create entity to use property resolver
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
@@ -214,9 +482,9 @@ public class TableQueryTests extends TableTestBase {
             }
         });
 
-        final Iterable<Class1> result = tClient.execute(
-                TableQuery.from(testSuiteTableName, Class1.class).select(
-                        new String[] { "PartitionKey", "RowKey", "Timestamp" }), options, opContext);
+        final Iterable<Class1> result = table.execute(
+                TableQuery.from(Class1.class).select(new String[] { "PartitionKey", "RowKey", "Timestamp" }), options,
+                opContext);
 
         // Validate results
         for (Class1 ent : result) {
@@ -228,16 +496,35 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithReflection() throws StorageException {
+    public void testTableQueryWithReflection() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithReflection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithReflection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithReflection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithReflection(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithReflection(options, true);
+    }
+
+    private void testTableQueryWithReflection(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        final Iterable<Class1> result = tClient.execute(TableQuery.from(testSuiteTableName, Class1.class), options,
-                null);
+        final Iterable<Class1> result = table.execute(TableQuery.from(Class1.class), options, null);
 
         // Validate results
         for (Class1 ent : result) {
@@ -249,15 +536,35 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithResolver() throws StorageException {
+    public void testTableQueryWithEntityResolver() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithEntityResolver(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithEntityResolver(options, true);
+    }
+
+    private void testTableQueryWithEntityResolver(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        final Iterable<Class1> result = tClient.execute(TableQuery.from(testSuiteTableName, TableServiceEntity.class),
+        final Iterable<Class1> result = table.execute(TableQuery.from(TableServiceEntity.class),
                 new EntityResolver<Class1>() {
                     @Override
                     public Class1 resolve(String partitionKey, String rowKey, Date timeStamp,
@@ -282,16 +589,36 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithTake() throws IOException, URISyntaxException, StorageException {
+    public void testTableQueryWithTake() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithTake(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithTake(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithTake(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithTake(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithTake(options, true);
+    }
+
+    private void testTableQueryWithTake(TableRequestOptions options, boolean usePropertyResolver) throws IOException,
+            URISyntaxException, StorageException {
         // Create entity to check against
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        final ResultSegment<Class1> result = tClient.executeSegmented(TableQuery.from(testSuiteTableName, Class1.class)
-                .select(new String[] { "A", "C" }).take(25), null, options, null);
+        final ResultSegment<Class1> result = table.executeSegmented(
+                TableQuery.from(Class1.class).select(new String[] { "A", "C" }).take(25), null, options, null);
 
         int count = 0;
         // Validate results
@@ -307,19 +634,39 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithFilter() throws StorageException {
+    public void testTableQueryWithFilter() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithFilter(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithFilter(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithFilter(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithFilter(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithFilter(options, true);
+    }
+
+    private void testTableQueryWithFilter(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        TableQuery<Class1> query = TableQuery.from(testSuiteTableName, Class1.class).where(
+        TableQuery<Class1> query = TableQuery.from(Class1.class).where(
                 String.format("(PartitionKey eq '%s') and (RowKey ge '%s')", "javatables_batch_1", "000050"));
 
         int count = 0;
 
-        for (Class1 ent : tClient.execute(query, options, null)) {
+        for (Class1 ent : table.execute(query, options, null)) {
             assertEquals(ent.getA(), randEnt.getA());
             assertEquals(ent.getB(), randEnt.getB());
             assertEquals(ent.getC(), randEnt.getC());
@@ -332,14 +679,34 @@ public class TableQueryTests extends TableTestBase {
     }
 
     @Test
-    public void tableQueryWithContinuation() throws StorageException {
+    public void testTableQueryWithContinuation() throws StorageException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testTableQueryWithContinuation(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testTableQueryWithContinuation(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testTableQueryWithContinuation(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithContinuation(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testTableQueryWithContinuation(options, true);
+    }
+
+    private void testTableQueryWithContinuation(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         Class1 randEnt = TableTestBase.generateRandomEntity(null);
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(randEnt);
         }
 
-        TableQuery<Class1> query = TableQuery.from(testSuiteTableName, Class1.class)
+        TableQuery<Class1> query = TableQuery.from(Class1.class)
                 .where(String.format("(PartitionKey ge '%s') and (RowKey ge '%s')", "javatables_batch_1", "000050"))
                 .take(25);
 
@@ -347,7 +714,7 @@ public class TableQueryTests extends TableTestBase {
 
         int count = 0;
         int pk = 1;
-        for (Class1 ent : tClient.execute(query, options, null)) {
+        for (Class1 ent : table.execute(query, options, null)) {
             assertEquals(ent.getA(), randEnt.getA());
             assertEquals(ent.getB(), randEnt.getB());
             assertEquals(ent.getC(), randEnt.getC());
@@ -361,202 +728,5 @@ public class TableQueryTests extends TableTestBase {
         }
 
         assertEquals(count, 200);
-    }
-
-    @Test
-    public void testQueryWithNullClassType() throws StorageException {
-        try {
-            TableQuery.from(testSuiteTableName, null);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "class type"));
-        }
-    }
-
-    @Test
-    public void testQueryWithInvalidTakeCount() throws StorageException {
-        try {
-            TableQuery.from(testSuiteTableName, TableServiceEntity.class).take(0);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
-        }
-
-        try {
-            TableQuery.from(testSuiteTableName, TableServiceEntity.class).take(-1);
-        }
-        catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
-        }
-    }
-
-    @Test
-    public void tableInvalidQuery() throws StorageException, IOException, URISyntaxException {
-        // Create entity to check against
-        Class1 randEnt = TableTestBase.generateRandomEntity(null);
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(randEnt);
-        }
-
-        TableQuery<Class1> query = TableQuery.from(testSuiteTableName, Class1.class).where(
-                String.format("(PartitionKey ) and (RowKey ge '%s')", "000050"));
-        try {
-            tClient.executeSegmented(query, null, options, null);
-            fail();
-        }
-        catch (TableServiceException ex) {
-            assertEquals(ex.getMessage(), "Bad Request");
-            assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("One of the request inputs is not valid."));
-            assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
-        }
-    }
-
-    @Test
-    public void testQueryOnSupportedTypes() throws StorageException, InterruptedException {
-        // Setup
-        TableBatchOperation batch = new TableBatchOperation();
-        String pk = UUID.randomUUID().toString();
-
-        long maxInt = Integer.MAX_VALUE; // used to ensure the test sends longs that cannot be interpreted as ints
-
-        ComplexEntity middleRef = null;
-
-        for (int j = 0; j < 100; j++) {
-            ComplexEntity ent = new ComplexEntity();
-            ent.setPartitionKey(pk);
-            ent.setRowKey(String.format("%04d", j));
-            ent.setBinary(new Byte[] { 0x01, 0x02, (byte) j });
-            ent.setBinaryPrimitive(new byte[] { 0x01, 0x02, (byte) j });
-            ent.setBool(j % 2 == 0 ? true : false);
-            ent.setBoolPrimitive(j % 2 == 0 ? true : false);
-            ent.setDateTime(new Date());
-            ent.setDouble(j + ((double) j) / 100);
-            ent.setDoublePrimitive(j + ((double) j) / 100);
-            ent.setInt32(j);
-            ent.setInt64(j + maxInt);
-            ent.setIntegerPrimitive(j);
-            ent.setLongPrimitive(j + maxInt);
-            ent.setGuid(UUID.randomUUID());
-            ent.setString(String.format("%04d", j));
-
-            // Add delay to make times unique
-            Thread.sleep(50);
-            batch.insert(ent);
-            if (j == 50) {
-                middleRef = ent;
-            }
-        }
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(middleRef);
-        }
-
-        tClient.execute(testSuiteTableName, batch, options, null);
-
-        try {
-            // 1. Filter on String
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("String", QueryComparisons.GREATER_THAN_OR_EQUAL, "0050"), 50);
-
-            // 2. Filter on UUID
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Guid", QueryComparisons.EQUAL, middleRef.getGuid()), 1);
-
-            // 3. Filter on Long
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Int64", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getInt64()), 50);
-
-            executeQueryAndAssertResults(TableQuery.generateFilterCondition("LongPrimitive",
-                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getInt64()), 50);
-
-            // 4. Filter on Double
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Double", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getDouble()), 50);
-
-            executeQueryAndAssertResults(TableQuery.generateFilterCondition("DoublePrimitive",
-                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getDouble()), 50);
-
-            // 5. Filter on Integer
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Int32", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getInt32()), 50);
-
-            executeQueryAndAssertResults(TableQuery.generateFilterCondition("IntegerPrimitive",
-                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getInt32()), 50);
-
-            // 6. Filter on Date
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("DateTime", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getDateTime()), 50);
-
-            // 7. Filter on Boolean
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Bool", QueryComparisons.EQUAL, middleRef.getBool()), 50);
-
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("BoolPrimitive", QueryComparisons.EQUAL, middleRef.getBool()),
-                    50);
-
-            // 8. Filter on Binary 
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Binary", QueryComparisons.EQUAL, middleRef.getBinary()), 1);
-
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("BinaryPrimitive", QueryComparisons.EQUAL,
-                            middleRef.getBinaryPrimitive()), 1);
-
-            // 9. Filter on Binary GTE
-            executeQueryAndAssertResults(
-                    TableQuery.generateFilterCondition("Binary", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getBinary()), 50);
-
-            executeQueryAndAssertResults(TableQuery.generateFilterCondition("BinaryPrimitive",
-                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getBinaryPrimitive()), 50);
-
-            // 10. Complex Filter on Binary GTE
-            executeQueryAndAssertResults(TableQuery.combineFilters(
-                    TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY, QueryComparisons.EQUAL,
-                            middleRef.getPartitionKey()),
-                    TableQuery.Operators.AND,
-                    TableQuery.generateFilterCondition("Binary", QueryComparisons.GREATER_THAN_OR_EQUAL,
-                            middleRef.getBinary())), 50);
-
-            executeQueryAndAssertResults(TableQuery.generateFilterCondition("BinaryPrimitive",
-                    QueryComparisons.GREATER_THAN_OR_EQUAL, middleRef.getBinaryPrimitive()), 50);
-
-        }
-        finally {
-            // cleanup
-            TableBatchOperation delBatch = new TableBatchOperation();
-            TableQuery<ComplexEntity> query = TableQuery.from(testSuiteTableName, ComplexEntity.class).where(
-                    String.format("PartitionKey eq '%s'", pk));
-
-            for (ComplexEntity e : tClient.execute(query, options, null)) {
-                delBatch.delete(e);
-            }
-
-            tClient.execute(testSuiteTableName, delBatch, options, null);
-        }
-    }
-
-    private void executeQueryAndAssertResults(String filter, int expectedResults) throws StorageException {
-        // instantiate class to use property resolver
-        ComplexEntity ent = new ComplexEntity();
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ent);
-        }
-
-        int count = 0;
-        TableQuery<ComplexEntity> query = TableQuery.from(testSuiteTableName, ComplexEntity.class).where(filter);
-        for (@SuppressWarnings("unused")
-        ComplexEntity e : tClient.execute(query, options, null)) {
-            count++;
-        }
-
-        assertEquals(expectedResults, count);
     }
 }

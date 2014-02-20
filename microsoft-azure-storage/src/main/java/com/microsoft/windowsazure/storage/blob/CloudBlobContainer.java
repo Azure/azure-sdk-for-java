@@ -36,6 +36,7 @@ import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.ResultContinuationType;
 import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.windowsazure.storage.StorageErrorCode;
 import com.microsoft.windowsazure.storage.StorageErrorCodeStrings;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
@@ -45,6 +46,8 @@ import com.microsoft.windowsazure.storage.core.PathUtility;
 import com.microsoft.windowsazure.storage.core.RequestLocationMode;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.SegmentedStorageRequest;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicyDeserializer;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicySerializer;
 import com.microsoft.windowsazure.storage.core.SharedAccessSignatureHelper;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
 import com.microsoft.windowsazure.storage.core.UriQueryBuilder;
@@ -125,30 +128,32 @@ public final class CloudBlobContainer {
     }
 
     /**
-     * Creates an instance of the <code>CloudBlobContainer</code> class using the specified address and client.
+     * Creates an instance of the <code>CloudBlobContainer</code> class using the specified name and client.
      * 
      * @param containerName
-     *            A <code>String</code> that represents the container name.
+     *            The name of the container, which must adhere to container naming rules. The container name should not
+     *            include any path separator characters (/).
+     *            Container names must be lowercase, between 3-63 characters long and must start with a letter or
+     *            number. Container names may contain only letters, numbers, and the dash (-) character.
      * @param client
      *            A {@link CloudBlobClient} object that represents the associated service client, and that specifies the
-     *            endpoint for the Blob service.
-     * 
+     *            endpoint for the Blob service. *
      * @throws StorageException
      *             If a storage service error occurred.
      * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     *             If the resource URI constructed based on the containerName is invalid.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135715.aspx">Naming and Referencing
+     *      Containers, Blobs, and Metadata</a>
      */
     public CloudBlobContainer(final String containerName, final CloudBlobClient client) throws URISyntaxException,
             StorageException {
         this(client);
-
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("containerName", containerName);
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), containerName);
 
-        this.name = PathUtility.getContainerNameFromUri(this.storageUri.getPrimaryUri(), client.isUsePathStyleUris());
-
+        this.name = containerName;
         this.parseQueryAndVerify(this.storageUri, client, client.isUsePathStyleUris());
     }
 
@@ -315,6 +320,8 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        options = BlobRequestOptions.applyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
+
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
         if (exists) {
             return false;
@@ -444,6 +451,8 @@ public final class CloudBlobContainer {
     @DoesServiceRequest
     public boolean deleteIfExists(AccessCondition accessCondition, BlobRequestOptions options,
             OperationContext opContext) throws StorageException {
+        options = BlobRequestOptions.applyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
+
         boolean exists = this.exists(true /* primaryOnly */, accessCondition, options, opContext);
         if (exists) {
             try {
@@ -452,7 +461,7 @@ public final class CloudBlobContainer {
             }
             catch (StorageException e) {
                 if (e.getHttpStatusCode() == HttpURLConnection.HTTP_NOT_FOUND
-                        && StorageErrorCodeStrings.CONTAINER_NOT_FOUND.equals(e.getErrorCode())) {
+                        && StorageErrorCode.RESOURCE_NOT_FOUND.toString().equals(e.getErrorCode())) {
                     return false;
                 }
                 else {
@@ -638,10 +647,11 @@ public final class CloudBlobContainer {
             public BlobContainerPermissions postProcessResponse(HttpURLConnection connection,
                     CloudBlobContainer container, CloudBlobClient client, OperationContext context,
                     BlobContainerPermissions containerAcl) throws Exception {
-                final BlobAccessPolicyResponse response = new BlobAccessPolicyResponse(connection.getInputStream());
+                HashMap<String, SharedAccessBlobPolicy> accessIds = SharedAccessPolicyDeserializer
+                        .getAccessIdentifiers(this.getConnection().getInputStream(), SharedAccessBlobPolicy.class);
 
-                for (final String key : response.getAccessIdentifiers().keySet()) {
-                    containerAcl.getSharedAccessPolicies().put(key, response.getAccessIdentifiers().get(key));
+                for (final String key : accessIds.keySet()) {
+                    containerAcl.getSharedAccessPolicies().put(key, accessIds.get(key));
                 }
 
                 return containerAcl;
@@ -783,8 +793,8 @@ public final class CloudBlobContainer {
     /**
      * Returns a reference to a {@link CloudBlockBlob} object that represents a block blob in this container.
      * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
      * 
      * @return A {@link CloudBlockBlob} object that represents a reference to the specified block blob.
      * 
@@ -793,11 +803,10 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri) throws URISyntaxException,
-            StorageException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
+    public CloudBlockBlob getBlockBlobReference(final String blobName) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("blobName", blobName);
 
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobAddressUri);
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
 
         return new CloudBlockBlob(address, this.blobServiceClient, this);
     }
@@ -806,8 +815,8 @@ public final class CloudBlobContainer {
      * Returns a reference to a {@link CloudBlockBlob} object that represents a block blob in this container, using the
      * specified snapshot ID.
      * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot ID of the blob.
      * 
@@ -818,11 +827,11 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlockBlob getBlockBlobReference(final String blobAddressUri, final String snapshotID)
+    public CloudBlockBlob getBlockBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
+        Utility.assertNotNullOrEmpty("blobName", blobName);
 
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobAddressUri);
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
 
         final CloudBlockBlob retBlob = new CloudBlockBlob(address, snapshotID, this.blobServiceClient);
         retBlob.setContainer(this);
@@ -833,9 +842,9 @@ public final class CloudBlobContainer {
      * Returns a reference to a {@link CloudBlobDirectory} object that represents a virtual blob directory within this
      * container.
      * 
-     * @param relativeAddress
-     *            A <code>String</code> that represents the name of the virtual blob directory.
-     * 
+     * @param directoryName
+     *            A <code>String</code> that represents the name of the virtual blob directory. If the root directory
+     *            (the directory representing the container itself) is desired, use an empty string.
      * @return A {@link CloudBlobDirectory} that represents a virtual blob directory within this container.
      * 
      * @throws StorageException
@@ -843,12 +852,17 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudBlobDirectory getDirectoryReference(final String relativeAddress) throws URISyntaxException,
-            StorageException {
-        Utility.assertNotNullOrEmpty("relativeAddress", relativeAddress);
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, relativeAddress);
+    public CloudBlobDirectory getDirectoryReference(String directoryName) throws URISyntaxException, StorageException {
+        Utility.assertNotNull("directoryName", directoryName);
 
-        return new CloudBlobDirectory(address, null, this.blobServiceClient);
+        // if the directory name does not end in the delimiter, add the delimiter
+        if (!directoryName.isEmpty() && !directoryName.endsWith(this.blobServiceClient.getDirectoryDelimiter())) {
+            directoryName = directoryName.concat(this.blobServiceClient.getDirectoryDelimiter());
+        }
+
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, directoryName);
+
+        return new CloudBlobDirectory(address, directoryName, this.blobServiceClient, this);
     }
 
     /**
@@ -881,9 +895,8 @@ public final class CloudBlobContainer {
     /**
      * Returns a reference to a {@link CloudPageBlob} object that represents a page blob in this container.
      * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
-     * 
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
      * @return A {@link CloudPageBlob} object that represents a reference to the specified page blob.
      * 
      * @throws StorageException
@@ -891,10 +904,10 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudPageBlob getPageBlobReference(final String blobAddressUri) throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
+    public CloudPageBlob getPageBlobReference(final String blobName) throws URISyntaxException, StorageException {
+        Utility.assertNotNullOrEmpty("blobName", blobName);
 
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobAddressUri);
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
 
         return new CloudPageBlob(address, this.blobServiceClient, this);
     }
@@ -903,8 +916,8 @@ public final class CloudBlobContainer {
      * Returns a reference to a {@link CloudPageBlob} object that represents a page blob in the directory, using the
      * specified snapshot ID.
      * 
-     * @param blobAddressUri
-     *            A <code>String</code> that represents the name of the blob, or the absolute URI to the blob.
+     * @param blobName
+     *            A <code>String</code> that represents the name of the blob.
      * @param snapshotID
      *            A <code>String</code> that represents the snapshot ID of the blob.
      * 
@@ -915,11 +928,11 @@ public final class CloudBlobContainer {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
-    public CloudPageBlob getPageBlobReference(final String blobAddressUri, final String snapshotID)
+    public CloudPageBlob getPageBlobReference(final String blobName, final String snapshotID)
             throws URISyntaxException, StorageException {
-        Utility.assertNotNullOrEmpty("blobAddressUri", blobAddressUri);
+        Utility.assertNotNullOrEmpty("blobName", blobName);
 
-        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobAddressUri);
+        final StorageUri address = PathUtility.appendPathToUri(this.storageUri, blobName);
 
         final CloudPageBlob retBlob = new CloudPageBlob(address, snapshotID, this.blobServiceClient);
         retBlob.setContainer(this);
@@ -950,13 +963,10 @@ public final class CloudBlobContainer {
      * @return the canonical name for shared access.
      */
     private String getSharedAccessCanonicalName() {
-        if (this.blobServiceClient.isUsePathStyleUris()) {
-            return this.getUri().getPath();
-        }
-        else {
-            return PathUtility.getCanonicalPathFromCredentials(this.blobServiceClient.getCredentials(), this.getUri()
-                    .getPath());
-        }
+        String accountName = this.getServiceClient().getCredentials().getAccountName();
+        String containerName = this.getName();
+
+        return String.format("/%s/%s", accountName, containerName);
     }
 
     /**
@@ -1223,8 +1233,8 @@ public final class CloudBlobContainer {
             public ResultSegment<ListBlobItem> postProcessResponse(HttpURLConnection connection,
                     CloudBlobContainer container, CloudBlobClient client, OperationContext context,
                     ResultSegment<ListBlobItem> storageObject) throws Exception {
-                final ListBlobsResponse response = new ListBlobsResponse(connection.getInputStream());
-                response.parseResponse(client, container);
+                final ListBlobsResponse response = BlobDeserializer.getBlobList(connection.getInputStream(), client,
+                        container);
 
                 ResultContinuation newToken = null;
 
@@ -1235,8 +1245,8 @@ public final class CloudBlobContainer {
                     newToken.setTargetLocation(this.getResult().getTargetLocation());
                 }
 
-                final ResultSegment<ListBlobItem> resSegment = new ResultSegment<ListBlobItem>(response.getBlobs(
-                        client, container), maxResults, newToken);
+                final ResultSegment<ListBlobItem> resSegment = new ResultSegment<ListBlobItem>(response.getResults(),
+                        maxResults, newToken);
 
                 // Important for listBlobs because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());
@@ -1624,7 +1634,8 @@ public final class CloudBlobContainer {
             final BlobRequestOptions options) throws StorageException {
         try {
             final StringWriter outBuffer = new StringWriter();
-            ContainerRequest.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(), outBuffer);
+            SharedAccessPolicySerializer.writeSharedAccessIdentifiersToStream(permissions.getSharedAccessPolicies(),
+                    outBuffer);
             final byte[] aclBytes = outBuffer.toString().getBytes(Constants.UTF8_CHARSET);
             final StorageRequest<CloudBlobClient, CloudBlobContainer, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlobContainer, Void>(
                     options, this.getStorageUri()) {
@@ -1775,7 +1786,7 @@ public final class CloudBlobContainer {
 
                 container.updatePropertiesFromResponse(this.getConnection());
 
-                return BlobResponse.getLeaseID(this.getConnection(), context);
+                return BlobResponse.getLeaseID(this.getConnection());
             }
 
         };
@@ -2049,7 +2060,7 @@ public final class CloudBlobContainer {
                 }
 
                 container.updatePropertiesFromResponse(this.getConnection());
-                final String leaseTime = BlobResponse.getLeaseTime(this.getConnection(), context);
+                final String leaseTime = BlobResponse.getLeaseTime(this.getConnection());
                 return Utility.isNullOrEmpty(leaseTime) ? -1L : Long.parseLong(leaseTime);
             }
         };
@@ -2151,7 +2162,7 @@ public final class CloudBlobContainer {
                 }
 
                 container.updatePropertiesFromResponse(this.getConnection());
-                return BlobResponse.getLeaseID(this.getConnection(), context);
+                return BlobResponse.getLeaseID(this.getConnection());
             }
         };
 

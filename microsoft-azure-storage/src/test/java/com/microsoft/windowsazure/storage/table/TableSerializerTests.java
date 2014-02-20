@@ -18,96 +18,21 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 
 /**
  * Table Serializer Tests
  */
-@RunWith(Parameterized.class)
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableSerializerTests extends TableTestBase {
-
-    private final TableRequestOptions options;
-    private final boolean usePropertyResolver;
-
-    /**
-     * These parameters are passed to the constructor at the start of each test run. This includes TablePayloadFormat,
-     * and if that format is JsonNoMetadata, whether or not to use a PropertyResolver
-     * 
-     * @return the parameters pass to the constructor
-     */
-    @Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][] { { TablePayloadFormat.AtomPub, false }, // AtomPub
-                { TablePayloadFormat.JsonFullMetadata, false }, // Json Full Metadata
-                { TablePayloadFormat.Json, false }, // Json Minimal Metadata
-                { TablePayloadFormat.JsonNoMetadata, false }, // Json No Metadata without PropertyResolver 
-                { TablePayloadFormat.JsonNoMetadata, true } // Json No Metadata with PropertyResolver
-                });
-    }
-
-    /**
-     * Takes a parameter from @Parameters to use for this run of the tests.
-     * 
-     * @param format
-     *            The {@link TablePaylodFormat} to use for this test run
-     * @param usePropertyResolver
-     *            Whether or not to use a property resolver, applicable only for <code>JsonNoMetadata</code> format
-     */
-    public TableSerializerTests(TablePayloadFormat format, boolean usePropertyResolver) {
-        this.options = new TableRequestOptions();
-        this.options.setTablePayloadFormat(format);
-        this.usePropertyResolver = usePropertyResolver;
-    }
-
-    @Test
-    public void testComplexEntityInsert() throws IOException, URISyntaxException, StorageException {
-        ComplexEntity ref = new ComplexEntity();
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-        ref.populateEntity();
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ComplexEntity retrievedComplexRef = res.getResultAsType();
-        ref.assertEquality(retrievedComplexRef);
-    }
-
-    @Test
-    public void testDoubles() throws StorageException {
-        StrangeDoubles ref = new StrangeDoubles();
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-        ref.populateEntity();
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        // try with pojo
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), StrangeDoubles.class), options, null);
-
-        StrangeDoubles retrievedComplexRef = res.getResultAsType();
-        ref.assertEquality(retrievedComplexRef);
-    }
 
     @Test
     public void testIgnoreAnnotation() throws IOException, URISyntaxException, StorageException {
@@ -117,15 +42,10 @@ public class TableSerializerTests extends TableTestBase {
         ignoreGetter.setRowKey(UUID.randomUUID().toString());
         ignoreGetter.setIgnoreString("ignore data");
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ignoreGetter);
-        }
+        table.execute(TableOperation.insert(ignoreGetter));
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ignoreGetter));
-
-        TableResult res = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(ignoreGetter.getPartitionKey(),
-                        ignoreGetter.getRowKey(), IgnoreOnGetter.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ignoreGetter.getPartitionKey(),
+                ignoreGetter.getRowKey(), IgnoreOnGetter.class));
 
         IgnoreOnGetter retrievedIgnoreG = res.getResultAsType();
         assertEquals(retrievedIgnoreG.getIgnoreString(), null);
@@ -136,11 +56,10 @@ public class TableSerializerTests extends TableTestBase {
         ignoreSetter.setRowKey(UUID.randomUUID().toString());
         ignoreSetter.setIgnoreString("ignore data");
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ignoreSetter), options, null);
+        table.execute(TableOperation.insert(ignoreSetter));
 
-        res = tClient
-                .execute(testSuiteTableName, TableOperation.retrieve(ignoreSetter.getPartitionKey(),
-                        ignoreSetter.getRowKey(), IgnoreOnSetter.class), options, null);
+        res = table.execute(TableOperation.retrieve(ignoreSetter.getPartitionKey(), ignoreSetter.getRowKey(),
+                IgnoreOnSetter.class));
 
         IgnoreOnSetter retrievedIgnoreS = res.getResultAsType();
         assertEquals(retrievedIgnoreS.getIgnoreString(), null);
@@ -151,112 +70,13 @@ public class TableSerializerTests extends TableTestBase {
         ignoreGetterSetter.setRowKey(UUID.randomUUID().toString());
         ignoreGetterSetter.setIgnoreString("ignore data");
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ignoreGetterSetter), options, null);
+        table.execute(TableOperation.insert(ignoreGetterSetter));
 
-        res = tClient.execute(testSuiteTableName, TableOperation.retrieve(ignoreGetterSetter.getPartitionKey(),
-                ignoreGetterSetter.getRowKey(), IgnoreOnGetterAndSetter.class), options, null);
+        res = table.execute(TableOperation.retrieve(ignoreGetterSetter.getPartitionKey(),
+                ignoreGetterSetter.getRowKey(), IgnoreOnGetterAndSetter.class));
 
         IgnoreOnGetterAndSetter retrievedIgnoreGS = res.getResultAsType();
         assertEquals(retrievedIgnoreGS.getIgnoreString(), null);
-    }
-
-    @Test
-    public void testNulls() throws IOException, URISyntaxException, StorageException {
-        ComplexEntity ref = new ComplexEntity();
-        ref.setPartitionKey("jxscl_odata");
-        ref.setRowKey(UUID.randomUUID().toString());
-        ref.populateEntity();
-
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
-
-        // Binary object
-        ref.setBinary(null);
-
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref));
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-        ref = res.getResultAsType();
-
-        assertNull("Binary should be null", ref.getBinary());
-
-        // Bool
-        ref.setBool(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("Bool should be null", ref.getBool());
-
-        // Date
-        ref.setDateTime(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("Date should be null", ref.getDateTime());
-
-        // Double
-        ref.setDouble(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("Double should be null", ref.getDouble());
-
-        // UUID
-        ref.setGuid(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("UUID should be null", ref.getGuid());
-
-        // Int32
-        ref.setInt32(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("Int32 should be null", ref.getInt32());
-
-        // Int64
-        ref.setInt64(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("Int64 should be null", ref.getInt64());
-
-        // String
-        ref.setString(null);
-        tClient.execute(testSuiteTableName, TableOperation.replace(ref), options, null);
-
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
-
-        ref = res.getResultAsType();
-
-        assertNull("String should be null", ref.getString());
     }
 
     @Test
@@ -267,26 +87,21 @@ public class TableSerializerTests extends TableTestBase {
         ref.setStoreAsString("StoreAsOverride Data");
         ref.populateEntity();
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
+        table.execute(TableOperation.insert(ref));
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), StoreAsEntity.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
+                StoreAsEntity.class));
 
         StoreAsEntity retrievedStoreAsRef = res.getResultAsType();
         assertEquals(retrievedStoreAsRef.getStoreAsString(), ref.getStoreAsString());
 
         // Same query with a class without the storeAs annotation
-        res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class));
 
         ComplexEntity retrievedComplexRef = res.getResultAsType();
         assertEquals(retrievedComplexRef.getString(), ref.getStoreAsString());
 
-        tClient.execute(testSuiteTableName, TableOperation.delete(retrievedComplexRef), options, null);
+        table.execute(TableOperation.delete(retrievedComplexRef));
     }
 
     @Test
@@ -297,22 +112,116 @@ public class TableSerializerTests extends TableTestBase {
         ref.setStoreAsString("StoreAsOverride Data");
         ref.populateEntity();
 
-        if (this.usePropertyResolver) {
-            options.setPropertyResolver(ref);
-        }
+        table.execute(TableOperation.insert(ref));
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
-
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), InvalidStoreAsEntity.class), options,
-                null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(),
+                InvalidStoreAsEntity.class));
 
         InvalidStoreAsEntity retrievedStoreAsRef = res.getResultAsType();
         assertEquals(retrievedStoreAsRef.getStoreAsString(), null);
     }
 
     @Test
-    public void whitespaceTest() throws StorageException {
+    public void testComplexEntityInsert() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testComplexEntityInsert(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testComplexEntityInsert(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testComplexEntityInsert(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testComplexEntityInsert(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testComplexEntityInsert(options, true);
+    }
+
+    private void testComplexEntityInsert(TableRequestOptions options, boolean usePropertyResolver) throws IOException,
+            URISyntaxException, StorageException {
+        ComplexEntity ref = new ComplexEntity();
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+        ref.populateEntity();
+
+        if (usePropertyResolver) {
+            options.setPropertyResolver(ref);
+        }
+
+        table.execute(TableOperation.insert(ref), options, null);
+
+        TableResult res = table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
+
+        ComplexEntity retrievedComplexRef = res.getResultAsType();
+        ref.assertEquality(retrievedComplexRef);
+    }
+
+    @Test
+    public void testDoubles() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testDoubles(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testDoubles(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testDoubles(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testDoubles(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testDoubles(options, true);
+    }
+
+    private void testDoubles(TableRequestOptions options, boolean usePropertyResolver) throws StorageException {
+        StrangeDoubles ref = new StrangeDoubles();
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+        ref.populateEntity();
+
+        if (usePropertyResolver) {
+            options.setPropertyResolver(ref);
+        }
+
+        // try with pojo
+        table.execute(TableOperation.insert(ref), options, null);
+
+        TableResult res = table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), StrangeDoubles.class), options, null);
+
+        StrangeDoubles retrievedComplexRef = res.getResultAsType();
+        ref.assertEquality(retrievedComplexRef);
+    }
+
+    @Test
+    public void testWhitespaceTest() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testWhitespaceTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testWhitespaceTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testWhitespaceTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testWhitespaceTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testWhitespaceTest(options, true);
+    }
+
+    private void testWhitespaceTest(TableRequestOptions options, boolean usePropertyResolver) throws StorageException {
         Class1 ref = new Class1();
 
         ref.setA("B    ");
@@ -322,20 +231,40 @@ public class TableSerializerTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(ref);
         }
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
     }
 
     @Test
-    public void whitespaceOnEmptyKeysTest() throws StorageException {
+    public void testWhitespaceOnEmptyKeysTest() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testWhitespaceOnEmptyKeysTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testWhitespaceOnEmptyKeysTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testWhitespaceOnEmptyKeysTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testWhitespaceOnEmptyKeysTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testWhitespaceOnEmptyKeysTest(options, true);
+    }
+
+    private void testWhitespaceOnEmptyKeysTest(TableRequestOptions options, boolean usePropertyResolver)
+            throws StorageException {
         Class1 ref = new Class1();
 
         ref.setA("B    ");
@@ -345,22 +274,41 @@ public class TableSerializerTests extends TableTestBase {
         ref.setPartitionKey("");
         ref.setRowKey("");
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(ref);
         }
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
 
-        tClient.execute(testSuiteTableName, TableOperation.delete(ref), options, null);
+        table.execute(TableOperation.delete(ref), options, null);
     }
 
     @Test
-    public void newLineTest() throws StorageException {
+    public void testNewLineTest() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testNewLineTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testNewLineTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testNewLineTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testNewLineTest(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testNewLineTest(options, true);
+    }
+
+    private void testNewLineTest(TableRequestOptions options, boolean usePropertyResolver) throws StorageException {
         Class1 ref = new Class1();
 
         ref.setA("B    ");
@@ -370,15 +318,134 @@ public class TableSerializerTests extends TableTestBase {
         ref.setPartitionKey("jxscl_odata");
         ref.setRowKey(UUID.randomUUID().toString());
 
-        if (this.usePropertyResolver) {
+        if (usePropertyResolver) {
             options.setPropertyResolver(ref);
         }
 
-        tClient.execute(testSuiteTableName, TableOperation.insert(ref), options, null);
+        table.execute(TableOperation.insert(ref), options, null);
 
-        TableResult res = tClient.execute(testSuiteTableName,
-                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class), options, null);
+        TableResult res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), Class1.class),
+                options, null);
 
         assertEquals(((Class1) res.getResult()).getA(), ref.getA());
+    }
+
+    @Test
+    public void testNulls() throws StorageException, IOException, URISyntaxException {
+        TableRequestOptions options = new TableRequestOptions();
+
+        options.setTablePayloadFormat(TablePayloadFormat.AtomPub);
+        testNulls(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonFullMetadata);
+        testNulls(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.Json);
+        testNulls(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testNulls(options, false);
+
+        options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
+        testNulls(options, true);
+    }
+
+    private void testNulls(TableRequestOptions options, boolean usePropertyResolver) throws IOException,
+            URISyntaxException, StorageException {
+        ComplexEntity ref = new ComplexEntity();
+        ref.setPartitionKey("jxscl_odata");
+        ref.setRowKey(UUID.randomUUID().toString());
+        ref.populateEntity();
+
+        if (usePropertyResolver) {
+            options.setPropertyResolver(ref);
+        }
+
+        // Binary object
+        ref.setBinary(null);
+
+        table.execute(TableOperation.insert(ref));
+        TableResult res = table.execute(
+                TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class), options, null);
+        ref = res.getResultAsType();
+
+        assertNull("Binary should be null", ref.getBinary());
+
+        // Bool
+        ref.setBool(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("Bool should be null", ref.getBool());
+
+        // Date
+        ref.setDateTime(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("Date should be null", ref.getDateTime());
+
+        // Double
+        ref.setDouble(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("Double should be null", ref.getDouble());
+
+        // UUID
+        ref.setGuid(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("UUID should be null", ref.getGuid());
+
+        // Int32
+        ref.setInt32(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("Int32 should be null", ref.getInt32());
+
+        // Int64
+        ref.setInt64(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("Int64 should be null", ref.getInt64());
+
+        // String
+        ref.setString(null);
+        table.execute(TableOperation.replace(ref), options, null);
+
+        res = table.execute(TableOperation.retrieve(ref.getPartitionKey(), ref.getRowKey(), ComplexEntity.class),
+                options, null);
+
+        ref = res.getResultAsType();
+
+        assertNull("String should be null", ref.getString());
     }
 }

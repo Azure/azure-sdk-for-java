@@ -25,8 +25,6 @@ import org.junit.BeforeClass;
 import com.microsoft.windowsazure.storage.AuthenticationScheme;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.TestBase;
-import com.microsoft.windowsazure.storage.queue.CloudQueue;
-import com.microsoft.windowsazure.storage.queue.CloudQueueClient;
 
 /**
  * Queue Test Base

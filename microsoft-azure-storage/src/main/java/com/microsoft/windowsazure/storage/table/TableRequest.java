@@ -16,16 +16,9 @@
 package com.microsoft.windowsazure.storage.table;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.OperationContext;
@@ -33,7 +26,6 @@ import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.core.BaseRequest;
 import com.microsoft.windowsazure.storage.core.PathUtility;
-import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.UriQueryBuilder;
 import com.microsoft.windowsazure.storage.core.Utility;
 
@@ -457,74 +449,6 @@ final class TableRequest {
         retConnection.setDoOutput(true);
 
         return retConnection;
-    }
-
-    /**
-     * Writes a collection of shared access policies to the specified stream in XML format.
-     * 
-     * @param sharedAccessPolicies
-     *            A collection of shared access policies
-     * @param outWriter
-     *            an sink to write the output to.
-     * @throws XMLStreamException
-     */
-    public static void writeSharedAccessIdentifiersToStream(
-            final HashMap<String, SharedAccessTablePolicy> sharedAccessPolicies, final StringWriter outWriter)
-            throws XMLStreamException {
-        Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
-        Utility.assertNotNull("outWriter", outWriter);
-
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
-
-        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
-            throw new IllegalArgumentException(String.format(SR.TOO_MANY_SHARED_ACCESS_POLICY_IDS, sharedAccessPolicies
-                    .keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS));
-        }
-
-        // default is UTF8
-        xmlw.writeStartDocument();
-        xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
-
-        for (final Entry<String, SharedAccessTablePolicy> entry : sharedAccessPolicies.entrySet()) {
-            final SharedAccessTablePolicy policy = entry.getValue();
-            xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
-
-            // Set the identifier
-            xmlw.writeStartElement(Constants.ID);
-            xmlw.writeCharacters(entry.getKey());
-            xmlw.writeEndElement();
-
-            xmlw.writeStartElement(Constants.ACCESS_POLICY);
-
-            // Set the Start Time
-            xmlw.writeStartElement(Constants.START);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
-            // end Start
-            xmlw.writeEndElement();
-
-            // Set the Expiry Time
-            xmlw.writeStartElement(Constants.EXPIRY);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
-            // end Expiry
-            xmlw.writeEndElement();
-
-            // Set the Permissions
-            xmlw.writeStartElement(Constants.PERMISSION);
-            xmlw.writeCharacters(SharedAccessTablePolicy.permissionsToString(policy.getPermissions()));
-            // end Permission
-            xmlw.writeEndElement();
-
-            // end AccessPolicy
-            xmlw.writeEndElement();
-            // end SignedIdentifier
-            xmlw.writeEndElement();
-        }
-
-        // end SignedIdentifiers
-        xmlw.writeEndElement();
-        // end doc
-        xmlw.writeEndDocument();
     }
 
     /**

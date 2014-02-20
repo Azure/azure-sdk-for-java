@@ -41,7 +41,6 @@ import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.SegmentedStorageRequest;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
 import com.microsoft.windowsazure.storage.core.Utility;
-import com.microsoft.windowsazure.storage.queue.CloudQueue;
 
 /**
  * Provides a service client for accessing the Windows Azure Table service.
@@ -143,19 +142,21 @@ public final class CloudTableClient extends ServiceClient {
     }
 
     /**
-     * Gets a {@link CloudTable} object that represents the storage service
-     * queue for the specified address.
+     * Gets a {@link CloudTable} object with the specified name.
      * 
      * @param tableName
-     *            A <code>String</code> that represents the name of the table.
-     * 
-     * @return A {@link CloudQueue} object that represents a reference to the
-     *         table.
-     * 
+     *            The name of the table, which must adhere to table naming rules. The table name
+     *            should not include any path separator characters (/).
+     *            Table names are case insensitive, must be unique within an account and must be between 3-63 characters
+     *            long. Table names must start with an cannot begin with a numeric character and may only contain
+     *            alphanumeric characters. Some table names are reserved, including "table".
+     * @return A reference to a {@link CloudTable} object.
      * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     *             If the resource URI constructed based on the tableName is invalid.
      * @throws StorageException
-     *             If a storage service error occurred during the operation.
+     *             If a storage service error occurred.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx">Understanding the Table Service
+     *      Data Model</a>
      */
     public CloudTable getTableReference(final String tableName) throws URISyntaxException, StorageException {
         Utility.assertNotNullOrEmpty("tableName", tableName);
@@ -171,6 +172,8 @@ public final class CloudTableClient extends ServiceClient {
      * Transaction</a> on the REST API to execute the specified batch operation on the table as an atomic unit, using
      * the Table service endpoint and storage account credentials of this instance.
      * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#execute(TableBatchOperation batch)}
+     * 
      * @param tableName
      *            A <code>String</code> containing the name of the table to execute the operations on.
      * @param batch
@@ -184,6 +187,7 @@ public final class CloudTableClient extends ServiceClient {
      *             if an error occurs accessing the storage service, or the operation fails.
      */
     @DoesServiceRequest
+    @Deprecated
     public ArrayList<TableResult> execute(final String tableName, final TableBatchOperation batch)
             throws StorageException {
         return this.execute(tableName, batch, null /* options */, null /* opContext */);
@@ -201,6 +205,9 @@ public final class CloudTableClient extends ServiceClient {
      * 
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
+     * 
+     * @deprecated As of release 0.6.0, replaced by
+     *             {@link CloudTable#execute(TableBatchOperation batch, TableRequestOptions options, OperationContext opContext)}
      * 
      * @param tableName
      *            A <code>String</code> containing the name of the table to execute the operations on.
@@ -221,6 +228,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
+    @Deprecated
     @DoesServiceRequest
     public ArrayList<TableResult> execute(final String tableName, final TableBatchOperation batch,
             TableRequestOptions options, OperationContext opContext) throws StorageException {
@@ -241,6 +249,8 @@ public final class CloudTableClient extends ServiceClient {
      * Service REST API</a> to execute the specified operation on the table, using the Table service endpoint and
      * storage account credentials of this instance.
      * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#execute(TableOperation operation)}
+     * 
      * @param tableName
      *            A <code>String</code> containing the name of the table to execute the operation on.
      * @param operation
@@ -252,6 +262,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
+    @Deprecated
     @DoesServiceRequest
     public TableResult execute(final String tableName, final TableOperation operation) throws StorageException {
         return this.execute(tableName, operation, null /* options */, null /* opContext */);
@@ -266,6 +277,9 @@ public final class CloudTableClient extends ServiceClient {
      * 
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
+     * 
+     * @deprecated As of release 0.6.0, replaced by
+     *             {@link CloudTable#execute(TableOperation operation, TableRequestOptions options, OperationContext opContext)}
      * 
      * @param tableName
      *            A <code>String</code> containing the name of the table to execute the operation on.
@@ -285,6 +299,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if an error occurs accessing the storage service, or the operation fails.
      */
+    @Deprecated
     @DoesServiceRequest
     public TableResult execute(final String tableName, final TableOperation operation,
             final TableRequestOptions options, final OperationContext opContext) throws StorageException {
@@ -300,6 +315,8 @@ public final class CloudTableClient extends ServiceClient {
      * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
      * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#execute(TableQuery, EntityResolver)}
+     * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -311,6 +328,7 @@ public final class CloudTableClient extends ServiceClient {
      *         <code>R</code> of the results of executing the query.
      * @throws StorageException
      */
+    @Deprecated
     @DoesServiceRequest
     public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver) throws StorageException {
         return this.execute(query, resolver, null /* options */, null /* opContext */);
@@ -328,6 +346,9 @@ public final class CloudTableClient extends ServiceClient {
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
      * 
+     * @deprecated As of release 0.6.0, replaced by
+     *             {@link CloudTable#execute(TableQuery, EntityResolver, TableRequestOptions, OperationContext)}
+     * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -346,6 +367,7 @@ public final class CloudTableClient extends ServiceClient {
      *         <code>R</code> of the results of executing the query.
      * @throws StorageException
      */
+    @Deprecated
     @DoesServiceRequest
     @SuppressWarnings("unchecked")
     public <R> Iterable<R> execute(final TableQuery<?> query, final EntityResolver<R> resolver,
@@ -363,6 +385,8 @@ public final class CloudTableClient extends ServiceClient {
      * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
      * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#execute(TableQuery)}
+     * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
@@ -372,6 +396,7 @@ public final class CloudTableClient extends ServiceClient {
      *         executing the query.
      * @throws StorageException
      */
+    @Deprecated
     @DoesServiceRequest
     public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query) throws StorageException {
         return this.execute(query, null /* options */, null /* opContext */);
@@ -387,6 +412,8 @@ public final class CloudTableClient extends ServiceClient {
      * 
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
+     * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#execute(TableQuery, TableRequestOptions)}
      * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
@@ -404,6 +431,7 @@ public final class CloudTableClient extends ServiceClient {
      *         executing the query.
      * @throws StorageException
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     @DoesServiceRequest
     public <T extends TableEntity> Iterable<T> execute(final TableQuery<T> query, final TableRequestOptions options,
@@ -422,6 +450,9 @@ public final class CloudTableClient extends ServiceClient {
      * Entities</a> operation on the <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179423.aspx">Table
      * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
+     * 
+     * @deprecated As of release 0.6.0, replaced by
+     *             {@link CloudTable#executeSegmented(TableQuery, EntityResolver, ResultContinuation)}
      * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
@@ -445,6 +476,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
+    @Deprecated
     @DoesServiceRequest
     public <R> ResultSegment<R> executeSegmented(final TableQuery<?> query, final EntityResolver<R> resolver,
             final ResultContinuation continuationToken) throws IOException, URISyntaxException, StorageException {
@@ -466,6 +498,9 @@ public final class CloudTableClient extends ServiceClient {
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
      * 
+     * @deprecated As of release 0.6.0, replaced by 
+     * {@link CloudTable#executeSegmented(TableQuery, EntityResolver, ResultContinuation, TableRequestOptions, OperationContext)
+     * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use.
      * @param resolver
@@ -495,6 +530,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
+    @Deprecated
     @DoesServiceRequest
     @SuppressWarnings("unchecked")
     public <R> ResultSegment<R> executeSegmented(final TableQuery<?> query, final EntityResolver<R> resolver,
@@ -515,6 +551,8 @@ public final class CloudTableClient extends ServiceClient {
      * Service REST API</a> to query the table, using the Table service endpoint and storage account credentials of this
      * instance.
      * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudTable#executeSegmented(TableQuery, ResultContinuation)
+     * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
      *            specialized for a type T implementing {@link TableEntity}.
@@ -527,13 +565,14 @@ public final class CloudTableClient extends ServiceClient {
      * @return
      *         A {@link ResultSegment} specialized for type T of the results of executing the query.
      * 
-     * @throws IOException
+     * @throws IOException 
      *             if an IO error occurred during the operation.
      * @throws URISyntaxException
      *             if the URI generated for the query is invalid.
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
+    @Deprecated
     @DoesServiceRequest
     public <T extends TableEntity> ResultSegment<T> executeSegmented(final TableQuery<T> query,
             final ResultContinuation continuationToken) throws IOException, URISyntaxException, StorageException {
@@ -553,6 +592,9 @@ public final class CloudTableClient extends ServiceClient {
      * 
      * Use the {@link TableRequestOptions} to override execution options such as the timeout or retry policy for the
      * operation.
+     * 
+     * @deprecated As of release 0.6.0, replaced by 
+     * {@link CloudTable#executeSegmented(TableQuery, ResultContinuation, TableRequestOptions, OperationContext)
      * 
      * @param query
      *            A {@link TableQuery} instance specifying the table to query and the query parameters to use,
@@ -580,6 +622,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if a storage service error occurred during the operation.
      */
+    @Deprecated
     @DoesServiceRequest
     @SuppressWarnings("unchecked")
     public <T extends TableEntity> ResultSegment<T> executeSegmented(final TableQuery<T> query,
@@ -770,6 +813,7 @@ public final class CloudTableClient extends ServiceClient {
      * @return
      *         A {@link TableQuery} instance for listing table names with the specified prefix.
      */
+    @SuppressWarnings("deprecation")
     private TableQuery<TableServiceEntity> generateListTablesQuery(final String prefix) {
         TableQuery<TableServiceEntity> listQuery = TableQuery.<TableServiceEntity> from(
                 TableConstants.TABLES_SERVICE_TABLES_NAME, TableServiceEntity.class);
@@ -810,7 +854,7 @@ public final class CloudTableClient extends ServiceClient {
      * @throws StorageException
      *             if a Storage service error occurs.
      */
-    private <T extends TableEntity, R> ResultSegment<?> executeQuerySegmentedImpl(final TableQuery<T> queryToExecute,
+    protected <T extends TableEntity, R> ResultSegment<?> executeQuerySegmentedImpl(final TableQuery<T> queryToExecute,
             final EntityResolver<R> resolver, final ResultContinuation continuationToken, TableRequestOptions options,
             OperationContext opContext) throws StorageException {
         if (opContext == null) {
@@ -846,6 +890,7 @@ public final class CloudTableClient extends ServiceClient {
                 this.setRequestLocationMode(Utility.getListingLocationMode(segmentedRequest.getToken()));
             }
 
+            @SuppressWarnings("deprecation")
             @Override
             public HttpURLConnection buildRequest(CloudTableClient client, TableQuery<T> queryRef,
                     OperationContext context) throws Exception {
@@ -879,7 +924,7 @@ public final class CloudTableClient extends ServiceClient {
 
                 InputStream inStream = connection.getInputStream();
 
-                clazzResponse = (ODataPayload<T>) TableParser.parseQueryResponse(inStream, options,
+                clazzResponse = (ODataPayload<T>) TableDeserializer.parseQueryResponse(inStream, options,
                         queryToExecute.getClazzType(), null, context);
 
                 final ResultContinuation nextToken = TableResponse.getTableContinuationFromResponse(connection);
@@ -916,6 +961,7 @@ public final class CloudTableClient extends ServiceClient {
                 this.setRequestLocationMode(Utility.getListingLocationMode(segmentedRequest.getToken()));
             }
 
+            @SuppressWarnings("deprecation")
             @Override
             public HttpURLConnection buildRequest(CloudTableClient client, TableQuery<T> queryRef,
                     OperationContext context) throws Exception {
@@ -949,7 +995,7 @@ public final class CloudTableClient extends ServiceClient {
 
                 InputStream inStream = connection.getInputStream();
 
-                resolvedResponse = (ODataPayload<R>) TableParser.parseQueryResponse(inStream, options,
+                resolvedResponse = (ODataPayload<R>) TableDeserializer.parseQueryResponse(inStream, options,
                         queryToExecute.getClazzType(), resolver, context);
 
                 final ResultContinuation nextToken = TableResponse.getTableContinuationFromResponse(connection);
@@ -1009,7 +1055,7 @@ public final class CloudTableClient extends ServiceClient {
      *         type returned by the query.
      * @throws StorageException
      */
-    private <T extends TableEntity, R> Iterable<?> generateIteratorForQuery(final TableQuery<T> queryRef,
+    protected <T extends TableEntity, R> Iterable<?> generateIteratorForQuery(final TableQuery<T> queryRef,
             final EntityResolver<R> resolver, TableRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
@@ -1167,7 +1213,7 @@ public final class CloudTableClient extends ServiceClient {
 
     /**
      * Gets the {@link TablePayloadFormat} that is used for any table accessed with this <code>CloudTableClient</code>
-     * object.
+     * object. Default is {@link TablePayloadFormat#Json}
      * 
      * @return
      *         The {@link TablePayloadFormat} used by this <code>CloudTableClient</code>

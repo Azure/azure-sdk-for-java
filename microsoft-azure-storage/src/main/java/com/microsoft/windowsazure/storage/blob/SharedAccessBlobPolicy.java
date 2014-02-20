@@ -14,16 +14,16 @@
  */
 package com.microsoft.windowsazure.storage.blob;
 
-import java.util.Date;
 import java.util.EnumSet;
 
 import com.microsoft.windowsazure.storage.Constants;
+import com.microsoft.windowsazure.storage.core.SharedAccessPolicy;
 
 /**
  * Represents a shared access policy, which specifies the start time, expiry time, and permissions for a shared access
  * signature.
  */
-public final class SharedAccessBlobPolicy {
+public final class SharedAccessBlobPolicy extends SharedAccessPolicy {
 
     /**
      * Assigns shared access permissions using the specified permissions string.
@@ -41,7 +41,11 @@ public final class SharedAccessBlobPolicy {
      * 
      * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessBlobPermissions} values that
      *         represents the set of shared access permissions.
+     * 
+     * @deprecated As of release 0.6.0, replaced by the instance method
+     *             {@link SharedAccessBlobPolicy#setPermissionsFromString(String)}.
      */
+    @Deprecated
     public static EnumSet<SharedAccessBlobPermissions> permissionsFromString(final String value) {
         final char[] chars = value.toCharArray();
         final EnumSet<SharedAccessBlobPermissions> retSet = EnumSet.noneOf(SharedAccessBlobPermissions.class);
@@ -75,8 +79,12 @@ public final class SharedAccessBlobPolicy {
      *            A {@link SharedAccessBlobPermissions} object that represents the shared access permissions.
      * 
      * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
-     *         described at {@link SharedAccessBlobPolicy#permissionsFromString}.
+     *         described at {@link SharedAccessBlobPolicy#permissionsFromString(String)}.
+     * 
+     * @deprecated As of release 0.6.0, replaced by the instance method
+     *             {@link SharedAccessBlobPolicy#permissionsToString()}.
      */
+    @Deprecated
     public static String permissionsToString(final EnumSet<SharedAccessBlobPermissions> permissions) {
         if (permissions == null) {
             return Constants.EMPTY_STRING;
@@ -110,23 +118,6 @@ public final class SharedAccessBlobPolicy {
     private EnumSet<SharedAccessBlobPermissions> permissions;
 
     /**
-     * The expiry time for a shared access signature associated with this shared access policy.
-     */
-    private Date sharedAccessExpiryTime;
-
-    /**
-     * The start time for a shared access signature associated with this shared access policy.
-     */
-    private Date sharedAccessStartTime;
-
-    /**
-     * Creates an instance of the <code>SharedAccessBlobPolicy</code> class.
-     * */
-    public SharedAccessBlobPolicy() {
-        // Empty Default Ctor
-    }
-
-    /**
      * Gets the permissions for a shared access signature associated with this shared access policy.
      * 
      * @return A <code>java.util.EnumSet</code> object that contains {@link SharedAccessBlobPermissions} values that
@@ -137,28 +128,10 @@ public final class SharedAccessBlobPolicy {
     }
 
     /**
-     * Gets the expiry time for a shared access signature associated with this shared access policy.
-     * 
-     * @return A <code>Date</code> object that contains the shared access signature expiry time.
-     */
-    public Date getSharedAccessExpiryTime() {
-        return this.sharedAccessExpiryTime;
-    }
-
-    /**
-     * Gets the start time for a shared access signature associated with this shared access policy.
-     * 
-     * @return A <code>Date</code> object that contains the shared access signature start time.
-     */
-    public Date getSharedAccessStartTime() {
-        return this.sharedAccessStartTime;
-    }
-
-    /**
      * Sets the permissions for a shared access signature associated with this shared access policy.
      * 
      * @param permissions
-     *            The permissions, represented by a <code>java.util.EnumSet</code> object that contains 
+     *            The permissions, represented by a <code>java.util.EnumSet</code> object that contains
      *            {@link SharedAccessBlobPermissions} values, to set for the shared access signature.
      */
     public void setPermissions(final EnumSet<SharedAccessBlobPermissions> permissions) {
@@ -166,22 +139,32 @@ public final class SharedAccessBlobPolicy {
     }
 
     /**
-     * Sets the expiry time for a shared access signature associated with this shared access policy.
+     * Converts this policy's permissions to a string.
      * 
-     * @param sharedAccessExpiryTime
-     *            The expiry time to set for the shared access signature.
+     * @return A <code>String</code> that represents the shared access permissions in the "rwdl" format, which is
+     *         described at {@link SharedAccessBlobPolicy#permissionsFromString(String)}.
      */
-    public void setSharedAccessExpiryTime(final Date sharedAccessExpiryTime) {
-        this.sharedAccessExpiryTime = sharedAccessExpiryTime;
+    @Override
+    public String permissionsToString() {
+        return SharedAccessBlobPolicy.permissionsToString(this.permissions);
     }
 
     /**
-     * Sets the start time for a shared access signature associated with this shared access policy.
+     * Sets shared access permissions using the specified permissions string.
      * 
-     * @param sharedAccessStartTime
-     *            The start time to set for the shared access signature.
+     * @param value
+     *            A <code>String</code> that represents the shared access permissions. The string must contain one or
+     *            more of the following values. Note they must be lowercase, and the order that they are specified must
+     *            be in the order of "rwdl".
+     *            <ul>
+     *            <li><code>d</code>: Delete access.</li>
+     *            <li><code>l</code>: List access.</li>
+     *            <li><code>r</code>: Read access.</li>
+     *            <li><code>w</code>: Write access.</li>
+     *            </ul>
      */
-    public void setSharedAccessStartTime(final Date sharedAccessStartTime) {
-        this.sharedAccessStartTime = sharedAccessStartTime;
+    @Override
+    public void setPermissionsFromString(final String value) {
+        this.permissions = SharedAccessBlobPolicy.permissionsFromString(value);
     }
 }

@@ -16,24 +16,16 @@
 package com.microsoft.windowsazure.storage.queue;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Map.Entry;
-
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.core.BaseRequest;
 import com.microsoft.windowsazure.storage.core.ListingContext;
-import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.UriQueryBuilder;
 import com.microsoft.windowsazure.storage.core.Utility;
 
@@ -253,48 +245,6 @@ final class QueueRequest {
     }
 
     /**
-     * Generates the message request body from a string containing the message.
-     * The message must be encodable as UTF-8. To be included in a web request,
-     * this message request body must be written to the output stream of the web
-     * request.
-     * 
-     * @param message
-     *            A <code>String<code> containing the message to wrap in a message request body.
-     * 
-     * @return An array of <code>byte</code> containing the message request body
-     *         encoded as UTF-8.
-     * 
-     * @throws XMLStreamException
-     * @throws StorageException
-     *             If the message cannot be encoded as UTF-8.
-     */
-    public static byte[] generateMessageRequestBody(final String message) throws XMLStreamException, StorageException {
-        final StringWriter outWriter = new StringWriter();
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
-
-        // default is UTF8
-        xmlw.writeStartDocument();
-        xmlw.writeStartElement(QueueConstants.QUEUE_MESSAGE_ELEMENT);
-
-        xmlw.writeStartElement(QueueConstants.MESSAGE_TEXT_ELEMENT);
-        xmlw.writeCharacters(message);
-        xmlw.writeEndElement();
-
-        // end QueueMessage_ELEMENT
-        xmlw.writeEndElement();
-
-        // end doc
-        xmlw.writeEndDocument();
-        try {
-            return outWriter.toString().getBytes("UTF8");
-        }
-        catch (final UnsupportedEncodingException e) {
-            throw Utility.generateNewUnexpectedStorageException(e);
-        }
-    }
-
-    /**
      * Constructs a web request to return a listing of all queues in this
      * storage account. Sign the web request with a length of -1L.
      * 
@@ -408,11 +358,9 @@ final class QueueRequest {
     }
 
     /**
-     * Constructs a web request to add a message to the back of the queue. Write
-     * the encoded message request body generated with a call to {@link #generateMessageRequestBody(String)} to the
-     * output stream of the
-     * request. Sign the web request with the length of the encoded message
-     * request body.
+     * Constructs a web request to add a message to the back of the queue. Write the encoded message request body
+     * generated with a call to QueueMessageSerializer#generateMessageRequestBody(String)} to the output
+     * stream of the request. Sign the web request with the length of the encoded message request body.
      * 
      * @param uri
      *            A <code>URI</code> object that specifies the absolute URI to
@@ -646,76 +594,6 @@ final class QueueRequest {
         request.setRequestMethod(Constants.HTTP_PUT);
 
         return request;
-    }
-
-    /**
-     * Writes a collection of shared access policies to the specified stream in XML format.
-     * 
-     * @param sharedAccessPolicies
-     *            A collection of shared access policies
-     * @param outWriter
-     *            an sink to write the output to.
-     * @throws XMLStreamException
-     */
-    public static void writeSharedAccessIdentifiersToStream(
-            final HashMap<String, SharedAccessQueuePolicy> sharedAccessPolicies, final StringWriter outWriter)
-            throws XMLStreamException {
-        Utility.assertNotNull("sharedAccessPolicies", sharedAccessPolicies);
-        Utility.assertNotNull("outWriter", outWriter);
-
-        final XMLOutputFactory xmlOutFactoryInst = XMLOutputFactory.newInstance();
-        final XMLStreamWriter xmlw = xmlOutFactoryInst.createXMLStreamWriter(outWriter);
-
-        if (sharedAccessPolicies.keySet().size() > Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS) {
-            final String errorMessage = String.format(SR.TOO_MANY_SHARED_ACCESS_POLICY_IDENTIFIERS,
-                    sharedAccessPolicies.keySet().size(), Constants.MAX_SHARED_ACCESS_POLICY_IDENTIFIERS);
-
-            throw new IllegalArgumentException(errorMessage);
-        }
-
-        // default is UTF8
-        xmlw.writeStartDocument();
-        xmlw.writeStartElement(Constants.SIGNED_IDENTIFIERS_ELEMENT);
-
-        for (final Entry<String, SharedAccessQueuePolicy> entry : sharedAccessPolicies.entrySet()) {
-            final SharedAccessQueuePolicy policy = entry.getValue();
-            xmlw.writeStartElement(Constants.SIGNED_IDENTIFIER_ELEMENT);
-
-            // Set the identifier
-            xmlw.writeStartElement(Constants.ID);
-            xmlw.writeCharacters(entry.getKey());
-            xmlw.writeEndElement();
-
-            xmlw.writeStartElement(Constants.ACCESS_POLICY);
-
-            // Set the Start Time
-            xmlw.writeStartElement(Constants.START);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessStartTime()));
-            // end Start
-            xmlw.writeEndElement();
-
-            // Set the Expiry Time
-            xmlw.writeStartElement(Constants.EXPIRY);
-            xmlw.writeCharacters(Utility.getUTCTimeOrEmpty(policy.getSharedAccessExpiryTime()));
-            // end Expiry
-            xmlw.writeEndElement();
-
-            // Set the Permissions
-            xmlw.writeStartElement(Constants.PERMISSION);
-            xmlw.writeCharacters(SharedAccessQueuePolicy.permissionsToString(policy.getPermissions()));
-            // end Permission
-            xmlw.writeEndElement();
-
-            // end AccessPolicy
-            xmlw.writeEndElement();
-            // end SignedIdentifier
-            xmlw.writeEndElement();
-        }
-
-        // end SignedIdentifiers
-        xmlw.writeEndElement();
-        // end doc
-        xmlw.writeEndDocument();
     }
 
     /**

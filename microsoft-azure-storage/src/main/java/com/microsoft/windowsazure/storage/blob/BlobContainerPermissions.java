@@ -14,7 +14,7 @@
  */
 package com.microsoft.windowsazure.storage.blob;
 
-import java.util.HashMap;
+import com.microsoft.windowsazure.storage.core.Permissions;
 
 /**
  * Represents the permissions for a container.
@@ -32,7 +32,7 @@ import java.util.HashMap;
  * href='http://go.microsoft.com/fwlink/?LinkID=224643&clcid=0x409'>Managing Access to Containers and Blobs</a>.
  * 
  */
-public final class BlobContainerPermissions {
+public final class BlobContainerPermissions extends Permissions<SharedAccessBlobPolicy> {
 
     /**
      * Represents the public access setting for the container.
@@ -53,16 +53,11 @@ public final class BlobContainerPermissions {
     private BlobContainerPublicAccessType publicAccess;
 
     /**
-     * Gets the set of shared access policies for the container.
-     */
-    private HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies;
-
-    /**
      * Creates an instance of the <code>BlobContainerPermissions</code> class.
      */
     public BlobContainerPermissions() {
+        super();
         this.setPublicAccess(BlobContainerPublicAccessType.OFF);
-        this.sharedAccessPolicies = new HashMap<String, SharedAccessBlobPolicy>();
     }
 
     /**
@@ -73,28 +68,10 @@ public final class BlobContainerPermissions {
     }
 
     /**
-     * Returns the set of shared access policies for the container.
-     * 
-     * @return A <code>HashMap</code> object of {@link SharedAccessBlobPolicy} objects that represent the set of shared
-     *         access policies for the container.
-     */
-    public HashMap<String, SharedAccessBlobPolicy> getSharedAccessPolicies() {
-        return this.sharedAccessPolicies;
-    }
-
-    /**
      * @param publicAccess
      *            the publicAccess to set
      */
     public void setPublicAccess(final BlobContainerPublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
-    }
-
-    /**
-     * @param sharedAccessPolicies
-     *            the sharedAccessPolicies to set
-     */
-    public void setSharedAccessPolicies(final HashMap<String, SharedAccessBlobPolicy> sharedAccessPolicies) {
-        this.sharedAccessPolicies = sharedAccessPolicies;
     }
 }

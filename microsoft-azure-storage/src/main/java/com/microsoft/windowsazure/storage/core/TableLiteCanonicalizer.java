@@ -21,7 +21,6 @@ import java.net.HttpURLConnection;
 import java.security.InvalidParameterException;
 
 import com.microsoft.windowsazure.storage.Constants;
-import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageException;
 
 /**
@@ -44,14 +43,11 @@ class TableLiteCanonicalizer extends Canonicalizer {
      *            the account name associated with the request
      * @param contentLength
      *            the length of the content written to the outputstream in bytes, -1 if unknown
-     * @param opContext
-     *            the OperationContext for the given request
      * @return a canonicalized string.
      * @throws StorageException
      */
     @Override
-    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength,
-            final OperationContext opContext) throws StorageException {
+    protected String canonicalize(final HttpURLConnection conn, final String accountName, final Long contentLength) throws StorageException {
         if (contentLength < -1) {
             throw new InvalidParameterException(SR.INVALID_CONTENT_LENGTH);
         }

@@ -23,43 +23,19 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.LocationMode;
 import com.microsoft.windowsazure.storage.ResultSegment;
 import com.microsoft.windowsazure.storage.StorageException;
-import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.TestHelper;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 
 public final class CloudQueueClientTests extends QueueTestBase {
 
-    @Test
-    public void testQueueClientConstructor() throws URISyntaxException, StorageException {
-        CloudQueueClient queueClient = new CloudQueueClient(account.getQueueEndpoint(), account.getCredentials());
-
-        assertEquals(account.getQueueEndpoint(), queueClient.getEndpoint());
-        assertEquals(account.getCredentials(), queueClient.getCredentials());
-    }
-
-    @Test
-    public void testQueueClientConstructorInvalidParam() throws URISyntaxException, StorageException {
-        try {
-            new CloudQueueClient(new StorageUri(null), account.getCredentials());
-            fail();
-        }
-        catch (IllegalArgumentException e) {
-
-        }
-
-        try {
-            char[] name = new char[2000];
-            new CloudQueueClient(new URI(name.toString()), account.getCredentials());
-            fail();
-        }
-        catch (URISyntaxException e) {
-
-        }
-    }
-
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListQueuesSmallNumber() throws URISyntaxException, StorageException {
         int initialCount = 0;
@@ -104,6 +80,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         assertEquals(count, 25);
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListQueuesAndListQueuesSegmentedLargeNumber() throws URISyntaxException, StorageException {
         int count = 0;
@@ -131,6 +108,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         assertTrue(segment.getContinuationToken() != null);
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListQueuesSegmented() throws URISyntaxException, StorageException {
         String prefix = "segment" + UUID.randomUUID().toString().substring(0, 8).toLowerCase();
@@ -139,8 +117,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         metadata1.put("ExistingMetadata1", "ExistingMetadataValue1");
 
         for (int i = 0; i < 35; i++) {
-            CloudQueue q = new CloudQueue(AppendQueueName(account.getQueueEndpoint(), prefix
-                    + UUID.randomUUID().toString().toLowerCase()), qClient);
+            CloudQueue q = new CloudQueue(prefix + UUID.randomUUID().toString().toLowerCase(), qClient);
             q.setMetadata(metadata1);
             q.create();
         }
@@ -167,6 +144,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         assertTrue(segment3.getLength() == 35);
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testListQueuesEqual() throws URISyntaxException, StorageException {
         int count1 = 0;
@@ -191,6 +169,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         assertEquals(count1, count3);
     }
 
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     @Test
     public void testTimeout() throws URISyntaxException, StorageException {
         assertTrue(qClient.getTimeoutInMs() == 30 * 1000);
@@ -211,6 +190,7 @@ public final class CloudQueueClientTests extends QueueTestBase {
         }
     }
 
+    @Category({ CloudTests.class })
     @Test
     public void testGetServiceStats() throws StorageException {
         CloudQueueClient qClient = createCloudQueueClient();

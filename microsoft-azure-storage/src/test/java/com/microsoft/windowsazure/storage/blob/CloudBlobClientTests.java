@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.LocationMode;
@@ -32,6 +33,9 @@ import com.microsoft.windowsazure.storage.SendingRequestEvent;
 import com.microsoft.windowsazure.storage.StorageEvent;
 import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.TestHelper;
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 
 /**
  * Blob Client Tests
@@ -45,6 +49,7 @@ public class CloudBlobClientTests extends BlobTestBase {
      * @throws InterruptedException
      */
     @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     public void testListContainersTest() throws StorageException, URISyntaxException, IOException, InterruptedException {
         CloudBlobClient bClient = createCloudBlobClient();
         ArrayList<String> containerList = new ArrayList<String>();
@@ -80,13 +85,15 @@ public class CloudBlobClientTests extends BlobTestBase {
     }
 
     @Test
-    public void getServiceStats() throws StorageException {
+    @Category({ CloudTests.class })
+    public void testGetServiceStats() throws StorageException {
         CloudBlobClient bClient = createCloudBlobClient();
         bClient.setLocationMode(LocationMode.SECONDARY_ONLY);
         TestHelper.verifyServiceStats(bClient.getServiceStats());
     }
 
     @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
     public void testSingleBlobPutThresholdInBytes() throws URISyntaxException, StorageException, IOException {
         CloudBlobClient bClient = createCloudBlobClient();
 

@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.storage.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.HttpURLConnection;
@@ -34,14 +33,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
+import java.util.concurrent.TimeoutException;
 
 import com.microsoft.windowsazure.storage.Constants;
 import com.microsoft.windowsazure.storage.OperationContext;
+import com.microsoft.windowsazure.storage.RequestOptions;
 import com.microsoft.windowsazure.storage.ResultContinuation;
 import com.microsoft.windowsazure.storage.ResultContinuationType;
 import com.microsoft.windowsazure.storage.StorageCredentials;
@@ -50,6 +46,8 @@ import com.microsoft.windowsazure.storage.StorageCredentialsAnonymous;
 import com.microsoft.windowsazure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.windowsazure.storage.StorageErrorCode;
 import com.microsoft.windowsazure.storage.StorageException;
+import com.microsoft.windowsazure.storage.blob.CloudBlob;
+import com.microsoft.windowsazure.storage.blob.CloudBlobClient;
 
 /**
  * RESERVED FOR INTERNAL USE. A class which provides utility methods.
@@ -312,54 +310,31 @@ public final class Utility {
     }
 
     /**
-     * Creates an XML stream reader from the specified input stream.
+     * Returns a value representing whether the maximum execution time would be surpassed.
      * 
-     * @param streamRef
-     *            An <code>InputStream</code> object that represents the input stream to use as the source.
-     * 
-     * @return A <code>java.xml.stream.XMLStreamReader</code> object that represents the XML stream reader created from
-     *         the specified input stream.
-     * 
-     * @throws XMLStreamException
-     *             If the XML stream reader could not be created.
+     * @param operationExpiryTimeInMs
+     *            the time the request expires
+     * @return <code>true</code> if the maximum execution time would be surpassed; otherwise, <code>false</code>.
      */
-    public static XMLStreamReader createXMLStreamReaderFromStream(final InputStream streamRef)
-            throws XMLStreamException {
-        XMLInputFactory xmlif = null;
-
-        xmlif = XMLInputFactory.newInstance();
-        xmlif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.TRUE);
-        xmlif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        // set the IS_COALESCING property to true , if application desires to
-        // get whole text data as one event.
-        xmlif.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-
-        return xmlif.createXMLStreamReader(streamRef, Constants.UTF8_CHARSET);
+    public static boolean validateMaxExecutionTimeout(Long operationExpiryTimeInMs) {
+        return validateMaxExecutionTimeout(operationExpiryTimeInMs, 0);
     }
 
     /**
-     * Creates an XML stream reader from the specified input stream.
+     * Returns a value representing whether the maximum execution time would be surpassed.
      * 
-     * @param reader
-     *            An <code>InputStreamReader</code> object that represents the input reader to use as the source.
-     * 
-     * @return A <code>java.xml.stream.XMLStreamReader</code> object that represents the XML stream reader created from
-     *         the specified input stream.
-     * 
-     * @throws XMLStreamException
-     *             If the XML stream reader could not be created.
+     * @param operationExpiryTimeInMs
+     *            the time the request expires
+     * @param additionalInterval
+     *            any additional time required from now
+     * @return <code>true</code> if the maximum execution time would be surpassed; otherwise, <code>false</code>.
      */
-    public static XMLStreamReader createXMLStreamReaderFromReader(final Reader reader) throws XMLStreamException {
-        XMLInputFactory xmlif = null;
-
-        xmlif = XMLInputFactory.newInstance();
-        xmlif.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, Boolean.TRUE);
-        xmlif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        // set the IS_COALESCING property to true , if application desires to
-        // get whole text data as one event.
-        xmlif.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
-
-        return xmlif.createXMLStreamReader(reader);
+    public static boolean validateMaxExecutionTimeout(Long operationExpiryTimeInMs, long additionalInterval) {
+        if (operationExpiryTimeInMs != null) {
+            long currentTime = new Date().getTime();
+            return operationExpiryTimeInMs < currentTime + additionalInterval;
+        }
+        return false;
     }
 
     /**
@@ -611,93 +586,6 @@ public final class Utility {
      */
     public static Date parseRFC1123DateFromStringInGMT(final String value) throws ParseException {
         return parseDateFromString(value, RFC1123_PATTERN, Utility.GMT_ZONE);
-    }
-
-    /**
-     * Reads character data for the Etag element from an XML stream reader.
-     * 
-     * @param xmlr
-     *            An <code>XMLStreamReader</code> object that represents the source XML stream reader.
-     * 
-     * @return A <code>String</code> that represents the character data for the Etag element.
-     * 
-     * @throws XMLStreamException
-     *             If an XML stream failure occurs.
-     */
-    public static String readETagFromXMLReader(final XMLStreamReader xmlr) throws XMLStreamException {
-        String etag = readElementFromXMLReader(xmlr, Constants.ETAG_ELEMENT, true);
-        if (etag.startsWith("\"") || etag.endsWith("\"")) {
-            return etag;
-        }
-        else {
-            return String.format("\"%s\"", etag);
-        }
-    }
-
-    /**
-     * Reads character data for the specified XML element from an XML stream reader. This method will read start events,
-     * characters, and end events from a stream.
-     * 
-     * @param xmlr
-     *            An <code>XMLStreamReader</code> object that represents the source XML stream reader.
-     * 
-     * @param elementName
-     *            A <code>String</code> that represents XML element name.
-     * 
-     * @return A <code>String</code> that represents the character data for the specified element.
-     * 
-     * @throws XMLStreamException
-     *             If an XML stream failure occurs.
-     */
-    public static String readElementFromXMLReader(final XMLStreamReader xmlr, final String elementName)
-            throws XMLStreamException {
-        return readElementFromXMLReader(xmlr, elementName, true);
-    }
-
-    /**
-     * Reads character data for the specified XML element from an XML stream reader. This method will read start events,
-     * characters, and end events from a stream.
-     * 
-     * @param xmlr
-     *            An <code>XMLStreamReader</code> object that represents the source XML stream reader.
-     * 
-     * @param elementName
-     *            A <code>String</code> that represents XML element name.
-     * @param returnNullOnEmpty
-     *            If true, returns null when a empty string is read, otherwise EmptyString ("") is returned.
-     * 
-     * @return A <code>String</code> that represents the character data for the specified element.
-     * 
-     * @throws XMLStreamException
-     *             If an XML stream failure occurs.
-     */
-    public static String readElementFromXMLReader(final XMLStreamReader xmlr, final String elementName,
-            boolean returnNullOnEmpty) throws XMLStreamException {
-        xmlr.require(XMLStreamConstants.START_ELEMENT, null, elementName);
-        int eventType = xmlr.next();
-        final StringBuilder retVal = new StringBuilder();
-
-        if (eventType == XMLStreamConstants.CHARACTERS) {
-            // This do while is in case the XMLStreamReader does not have
-            // the IS_COALESCING property set
-            // to true which may result in text being read in multiple events
-            // If we ensure all xmlreaders have this property we can optimize
-            // the StringBuilder and while loop
-            // away
-            do {
-                retVal.append(xmlr.getText());
-                eventType = xmlr.next();
-
-            } while (eventType == XMLStreamConstants.CHARACTERS);
-        }
-
-        xmlr.require(XMLStreamConstants.END_ELEMENT, null, elementName);
-        if (retVal.length() == 0) {
-            return returnNullOnEmpty ? null : Constants.EMPTY_STRING;
-        }
-        else {
-            return retVal.toString();
-        }
     }
 
     /**
@@ -958,7 +846,9 @@ public final class Utility {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * 
+     * @param options
+     *            A {@link RequestOptions} object that specifies any additional options for the request. Namely, the
+     *            maximum execution time.
      * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
      * 
      * @throws IOException
@@ -967,23 +857,57 @@ public final class Utility {
      *             If a storage service error occurred.
      */
     public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
-            long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext)
-            throws IOException, StorageException {
-        if (opContext != null) {
-            opContext.setCurrentOperationByteCount(0);
-        }
-        else {
-            opContext = new OperationContext();
-        }
+            long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
+            final RequestOptions options) throws IOException, StorageException {
+        return writeToOutputStream(sourceStream, outStream, writeLength, rewindSourceStream, calculateMD5, opContext,
+                options, null /*StorageRequest*/);
+    }
 
+    /**
+     * Reads data from an input stream and writes it to an output stream, calculates the length of the data written, and
+     * optionally calculates the MD5 hash for the data.
+     * 
+     * @param sourceStream
+     *            An <code>InputStream</code> object that represents the input stream to use as the source.
+     * @param outStream
+     *            An <code>OutputStream</code> object that represents the output stream to use as the destination.
+     * @param writeLength
+     *            The number of bytes to read from the stream.
+     * @param rewindSourceStream
+     *            <code>true</code> if the input stream should be rewound <strong>before</strong> it is read; otherwise,
+     *            <code>false</code>
+     * @param calculateMD5
+     *            <code>true</code> if an MD5 hash will be calculated; otherwise, <code>false</code>.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @param options
+     *            A {@link RequestOptions} object that specifies any additional options for the request. Namely, the
+     *            maximum execution time.
+     * @param request
+     *            Used by download resume to set currentRequestByteCount on the request. Otherwise, null is always used.
+     * @return A {@link StreamMd5AndLength} object that contains the output stream length, and optionally the MD5 hash.
+     * 
+     * @throws IOException
+     *             If an I/O error occurs.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public static StreamMd5AndLength writeToOutputStream(final InputStream sourceStream, final OutputStream outStream,
+            long writeLength, final boolean rewindSourceStream, final boolean calculateMD5, OperationContext opContext,
+            final RequestOptions options, StorageRequest<CloudBlobClient, CloudBlob, Integer> request)
+            throws IOException, StorageException {
         if (rewindSourceStream && sourceStream.markSupported()) {
             sourceStream.reset();
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
-        if (calculateMD5 && opContext.getIntermediateMD5() == null) {
+        final StreamMd5AndLength retVal = new StreamMd5AndLength();
+
+        if (calculateMD5) {
             try {
-                opContext.setIntermediateMD5(MessageDigest.getInstance("MD5"));
+                retVal.setDigest(MessageDigest.getInstance("MD5"));
             }
             catch (final NoSuchAlgorithmException e) {
                 // This wont happen, throw fatal.
@@ -991,30 +915,36 @@ public final class Utility {
             }
         }
 
-        final StreamMd5AndLength retVal = new StreamMd5AndLength();
-
         if (writeLength < 0) {
             writeLength = Long.MAX_VALUE;
         }
 
-        int count = -1;
         final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
-        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength - retVal.getLength());
-
-        count = sourceStream.read(retrievedBuff, 0, nextCopy);
+        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
+        int count = sourceStream.read(retrievedBuff, 0, nextCopy);
 
         while (nextCopy > 0 && count != -1) {
+
+            // if maximum execution time would be exceeded
+            if (Utility.validateMaxExecutionTimeout(options.getOperationExpiryTimeInMs())) {
+                // throw an exception
+                TimeoutException timeoutException = new TimeoutException(SR.MAXIMUM_EXCUTION_TIMEOUT_EXCEPTION);
+                throw Utility.initIOException(timeoutException);
+            }
+
             if (outStream != null) {
                 outStream.write(retrievedBuff, 0, count);
             }
 
             if (calculateMD5) {
-                opContext.getIntermediateMD5().update(retrievedBuff, 0, count);
+                retVal.getDigest().update(retrievedBuff, 0, count);
             }
 
             retVal.setLength(retVal.getLength() + count);
-            if (opContext != null) {
-                opContext.setCurrentOperationByteCount(opContext.getCurrentOperationByteCount() + count);
+            retVal.setCurrentOperationByteCount(retVal.getCurrentOperationByteCount() + count);
+
+            if (request != null) {
+                request.setCurrentRequestByteCount(request.getCurrentRequestByteCount() + count);
             }
 
             nextCopy = (int) Math.min(retrievedBuff.length, writeLength - retVal.getLength());
@@ -1023,10 +953,6 @@ public final class Utility {
 
         if (outStream != null) {
             outStream.flush();
-        }
-
-        if (calculateMD5) {
-            retVal.setDigest(opContext.getIntermediateMD5());
         }
 
         return retVal;

@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.storage.StorageException;
 import com.microsoft.windowsazure.storage.StorageUri;
 import com.microsoft.windowsazure.storage.core.ExecutionEngine;
 import com.microsoft.windowsazure.storage.core.LazySegmentedIterable;
+import com.microsoft.windowsazure.storage.core.ListResponse;
 import com.microsoft.windowsazure.storage.core.ListingContext;
 import com.microsoft.windowsazure.storage.core.SegmentedStorageRequest;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
@@ -111,18 +112,20 @@ public final class CloudBlobClient extends ServiceClient {
     }
 
     /**
-     * Returns a reference to a {@link CloudBlobContainer} object that represents the cloud blob container for the
-     * specified address.
+     * Gets a {@link CloudBlobContainer} object with the specified name.
      * 
      * @param containerName
-     *            A <code>String</code> that represents the name of the container.
-     * 
-     * @return A {@link CloudBlobContainer} object that represents a reference to the cloud blob container.
-     * 
+     *            The name of the container, which must adhere to container naming rules. The container name should not
+     *            include any path separator characters (/).
+     *            Container names must be lowercase, between 3-63 characters long and must start with a letter or
+     *            number. Container names may contain only letters, numbers, and the dash (-) character.
+     * @return A reference to a {@link CloudBlobContainer} object.
      * @throws URISyntaxException
-     *             If the resource URI is invalid.
+     *             If the resource URI constructed based on the containerName is invalid.
      * @throws StorageException
      *             If a storage service error occurred.
+     * @see <a href="http://msdn.microsoft.com/en-us/library/windowsazure/dd135715.aspx">Naming and Referencing
+     *      Containers, Blobs, and Metadata</a>
      */
     public CloudBlobContainer getContainerReference(final String containerName) throws URISyntaxException,
             StorageException {
@@ -415,10 +418,8 @@ public final class CloudBlobClient extends ServiceClient {
             public ResultSegment<CloudBlobContainer> postProcessResponse(HttpURLConnection connection, Void container,
                     CloudBlobClient client, OperationContext context, ResultSegment<CloudBlobContainer> storageObject)
                     throws Exception {
-                final ListContainersResponse response = new ListContainersResponse(this.getConnection()
-                        .getInputStream());
-                response.parseResponse(client);
-
+                final ListResponse<CloudBlobContainer> response = BlobDeserializer.getContainerList(this
+                        .getConnection().getInputStream(), client);
                 ResultContinuation newToken = null;
 
                 if (response.getNextMarker() != null) {
@@ -429,7 +430,7 @@ public final class CloudBlobClient extends ServiceClient {
                 }
 
                 final ResultSegment<CloudBlobContainer> resSegment = new ResultSegment<CloudBlobContainer>(
-                        response.getContainers(client), maxResults, newToken);
+                        response.getResults(), maxResults, newToken);
 
                 // Important for listContainers because this is required by the lazy iterator between executions.
                 segmentedRequest.setToken(resSegment.getContinuationToken());
@@ -584,6 +585,7 @@ public final class CloudBlobClient extends ServiceClient {
      *            A <code>String</code> that represents the value for the default directory delimiter.
      */
     public void setDirectoryDelimiter(final String directoryDelimiter) {
+        Utility.assertNotNullOrEmpty("directoryDelimiter", directoryDelimiter);
         this.directoryDelimiter = directoryDelimiter;
     }
 

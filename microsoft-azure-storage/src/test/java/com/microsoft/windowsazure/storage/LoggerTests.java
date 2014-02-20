@@ -21,8 +21,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.slf4j.LoggerFactory;
 
+import com.microsoft.windowsazure.storage.TestRunners.CloudTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevFabricTests;
+import com.microsoft.windowsazure.storage.TestRunners.DevStoreTests;
 import com.microsoft.windowsazure.storage.core.Logger;
 
 /*
@@ -42,8 +51,7 @@ import com.microsoft.windowsazure.storage.core.Logger;
  * org.slf4j.simpleLogger.log.limited = error
  * org.slf4j.simpleLogger.showThreadName = false
  * 
- * 3. Uncomment the junit annotations. This includes @Test, @BeforeClass, @Before, and @AfterClass annotations. They are
- * commented out so that a test run without the special configurations above will still pass.
+ * 3. Remove or comment out the @Ignore annotation on the class
  * 
  * See http://www.slf4j.org/apidocs/org/slf4j/impl/SimpleLogger.html for more information.
  * 
@@ -59,6 +67,8 @@ import com.microsoft.windowsazure.storage.core.Logger;
  * 
  * Then, you will need to modify the readAndCompareOutput method to parse the logs entries accordingly.
  */
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+@Ignore
 public class LoggerTests extends TestBase {
 
     private final static String TRACE = "TRACE";
@@ -82,7 +92,7 @@ public class LoggerTests extends TestBase {
     private final static PrintStream old = System.err;
     private static ByteArrayOutputStream baos;
 
-    // @BeforeClass
+    @BeforeClass
     public synchronized static void loggerTestsClassSetup() {
         // redirect the error stream to a custom print stream
         baos = new ByteArrayOutputStream();
@@ -90,7 +100,7 @@ public class LoggerTests extends TestBase {
         System.setErr(ps);
     }
 
-    // @AfterClass
+    @AfterClass
     public synchronized static void loggerTestsClassTearDown() {
         // flush the current error stream
         System.err.flush();
@@ -99,7 +109,7 @@ public class LoggerTests extends TestBase {
         System.setErr(old);
     }
 
-    // @Before
+    @Before
     public synchronized void loggerTestsMethodSetup() {
         // set default logging to off
         OperationContext.setLoggingEnabledByDefault(false);
@@ -108,7 +118,7 @@ public class LoggerTests extends TestBase {
         baos.reset();
     }
 
-    // @Test
+    @Test
     public synchronized void testInheritedLogLevel() throws IOException {
         // in the configs file, the default logger logs all levels
         OperationContext.setLoggingEnabledByDefault(true);
@@ -148,7 +158,7 @@ public class LoggerTests extends TestBase {
         readAndCompareOutput(ERROR, LIMITED_LOGGER_NAME, ctx.getClientRequestID());
     }
 
-    // @Test
+    @Test
     public synchronized void testDefaultLogging() throws IOException {
         // doesn't write logs by default
         OperationContext ctx = new OperationContext();
@@ -176,7 +186,7 @@ public class LoggerTests extends TestBase {
         assertEquals(0, baos.toString().length());
     }
 
-    // @Test
+    @Test
     public synchronized void testRequestLevelLogging() throws IOException {
         // enabling for an individual request works with default logger
         OperationContext ctx = new OperationContext();
@@ -218,7 +228,7 @@ public class LoggerTests extends TestBase {
         assertEquals(0, baos.toString().length());
     }
 
-    // @Test
+    @Test
     public synchronized void testTrace() throws IOException {
         OperationContext ctx = new OperationContext();
         ctx.setLoggingEnabled(true);
@@ -226,7 +236,7 @@ public class LoggerTests extends TestBase {
         readAndCompareOutput(TRACE, OperationContext.defaultLoggerName, ctx.getClientRequestID());
     }
 
-    // @Test
+    @Test
     public synchronized void testDebug() throws IOException {
         OperationContext ctx = new OperationContext();
         ctx.setLoggingEnabled(true);
@@ -234,7 +244,7 @@ public class LoggerTests extends TestBase {
         readAndCompareOutput(DEBUG, OperationContext.defaultLoggerName, ctx.getClientRequestID());
     }
 
-    // @Test
+    @Test
     public synchronized void testInfo() throws IOException {
         OperationContext ctx = new OperationContext();
         ctx.setLoggingEnabled(true);
@@ -242,7 +252,7 @@ public class LoggerTests extends TestBase {
         readAndCompareOutput(INFO, OperationContext.defaultLoggerName, ctx.getClientRequestID());
     }
 
-    // @Test
+    @Test
     public synchronized void testWarn() throws IOException {
         OperationContext ctx = new OperationContext();
         ctx.setLoggingEnabled(true);
@@ -250,7 +260,7 @@ public class LoggerTests extends TestBase {
         readAndCompareOutput(WARN, OperationContext.defaultLoggerName, ctx.getClientRequestID());
     }
 
-    // @Test
+    @Test
     public synchronized void testError() throws IOException {
         OperationContext ctx = new OperationContext();
         ctx.setLoggingEnabled(true);

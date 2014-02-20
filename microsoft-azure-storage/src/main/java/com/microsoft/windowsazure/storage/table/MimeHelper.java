@@ -464,7 +464,7 @@ class MimeHelper {
         Utility.assertNotNull("entity", operation.getEntity());
         final StringWriter outWriter = new StringWriter();
 
-        TableParser.writeSingleEntityToString(outWriter, format, operation.getEntity(), false, opContext);
+        TableEntitySerializer.writeSingleEntityToString(outWriter, format, operation.getEntity(), false, opContext);
         outWriter.write("\r\n");
 
         return outWriter.toString();

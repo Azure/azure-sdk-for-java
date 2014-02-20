@@ -17,7 +17,6 @@ package com.microsoft.windowsazure.storage.blob;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.security.MessageDigest;
@@ -459,8 +458,7 @@ public final class CloudPageBlob extends CloudBlob {
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
                 blob.updateLengthFromResponse(this.getConnection());
 
-                final GetPageRangesResponse response = new GetPageRangesResponse(this.getConnection().getInputStream());
-                return response.getPageRanges();
+                return BlobDeserializer.getPageRanges(this.getConnection().getInputStream());
             }
 
         };
@@ -469,7 +467,102 @@ public final class CloudPageBlob extends CloudBlob {
     }
 
     /**
-     * Opens an output stream object to write data to the page blob.
+     * Opens an output stream object to write data to the page blob. The page blob must already exist.
+     * 
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public BlobOutputStream openWriteExisting() throws StorageException {
+        return this
+                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob, using the specified lease ID, request options and
+     * operation context. The page blob must already exist.
+     * 
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public BlobOutputStream openWriteExisting(AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        return this
+                .openOutputStreamInternal(null /* length */, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob. The page blob does not need to yet exist and will
+     * be created with the length specified.
+     * 
+     * @deprecated As of release 0.6.0, replaced by {@link CloudPageBlob#openWriteNew(long)}
+     * 
+     * @param length
+     *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
+     * 
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Deprecated
+    @DoesServiceRequest
+    public BlobOutputStream openOutputStream(final long length) throws StorageException {
+        return this
+                .openOutputStreamInternal(length, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob, using the specified lease ID, request options and
+     * operation context. The page blob does not need to yet exist and will be created with the length specified.
+     * 
+     * @deprecated As of release 0.6.0, replaced by
+     *             {@link CloudPageBlob#openWriteNew(long, AccessCondition, BlobRequestOptions, OperationContext)}
+     * 
+     * @param length
+     *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @Deprecated
+    @DoesServiceRequest
+    public BlobOutputStream openOutputStream(final long length, AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        return openOutputStreamInternal(length, accessCondition, options, opContext);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob. The page blob does not need to yet exist and will
+     * be created with the length specified.
      * 
      * @param length
      *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
@@ -480,13 +573,14 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public BlobOutputStream openOutputStream(final long length) throws StorageException {
-        return this.openOutputStream(length, null /* accessCondition */, null /* options */, null /* opContext */);
+    public BlobOutputStream openWriteNew(final long length) throws StorageException {
+        return this
+                .openOutputStreamInternal(length, null /* accessCondition */, null /* options */, null /* opContext */);
     }
 
     /**
      * Opens an output stream object to write data to the page blob, using the specified lease ID, request options and
-     * operation context.
+     * operation context. The page blob does not need to yet exist and will be created with the length specified.
      * 
      * @param length
      *            The length, in bytes, of the stream to create. This value must be a multiple of 512.
@@ -507,7 +601,36 @@ public final class CloudPageBlob extends CloudBlob {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    public BlobOutputStream openOutputStream(final long length, AccessCondition accessCondition,
+    public BlobOutputStream openWriteNew(final long length, AccessCondition accessCondition,
+            BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        return openOutputStreamInternal(length, accessCondition, options, opContext);
+    }
+
+    /**
+     * Opens an output stream object to write data to the page blob, using the specified lease ID, request options and
+     * operation context. If the length is specified, a new page blob will be created with the length specified.
+     * Otherwise, the page blob must already exist and a stream of its current length will be opened.
+     * 
+     * @param length
+     *            The length, in bytes, of the stream to create. This value must be a multiple of 512 or null if the
+     *            page blob already exists.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * 
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * 
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    private BlobOutputStream openOutputStreamInternal(Long length, AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
@@ -515,21 +638,24 @@ public final class CloudPageBlob extends CloudBlob {
 
         assertNoWriteOperationForSnapshot();
 
-        options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+        options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient, false);
 
         if (options.getStoreBlobContentMD5()) {
             throw new IllegalArgumentException(SR.BLOB_MD5_NOT_SUPPORTED_FOR_PAGE_BLOBS);
         }
 
-        if (length % BlobConstants.PAGE_SIZE != 0) {
-            throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
+        if (length != null) {
+            if (length % BlobConstants.PAGE_SIZE != 0) {
+                throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
+            }
+
+            this.create(length, accessCondition, options, opContext);
+        }
+        else {
+            this.downloadAttributes(accessCondition, options, opContext);
+            length = this.getProperties().getLength();
         }
 
-        if (options.getStoreBlobContentMD5()) {
-            throw new IllegalArgumentException(SR.BLOB_MD5_NOT_SUPPORTED_FOR_PAGE_BLOBS);
-        }
-
-        this.create(length, accessCondition, options, opContext);
         if (accessCondition != null) {
             accessCondition = AccessCondition.generateLeaseCondition(accessCondition.getLeaseID());
         }
@@ -626,6 +752,90 @@ public final class CloudPageBlob extends CloudBlob {
     }
 
     /**
+     * Resizes the page blob to the specified size.
+     * 
+     * @param size
+     *            The size of the page blob, in bytes.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public void resize(long size) throws StorageException {
+        this.resize(size, null /* accessCondition */, null /* options */, null /* operationContext */);
+    }
+
+    /**
+     * Resizes the page blob to the specified size.
+     * 
+     * @param size
+     *            The size of the page blob, in bytes.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    public void resize(long size, AccessCondition accessCondition, BlobRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        assertNoWriteOperationForSnapshot();
+
+        if (size % BlobConstants.PAGE_SIZE != 0) {
+            throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
+        }
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = BlobRequestOptions.applyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this, this.resizeImpl(size, accessCondition, options),
+                options.getRetryPolicyFactory(), opContext);
+    }
+
+    private StorageRequest<CloudBlobClient, CloudBlob, Void> resizeImpl(final long size,
+            final AccessCondition accessCondition, final BlobRequestOptions options) throws StorageException {
+        final StorageRequest<CloudBlobClient, CloudBlob, Void> putRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+                    throws Exception {
+                return BlobRequest.resize(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
+                        options.getTimeoutIntervalInMs(), size, accessCondition, options, context);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobAndQueueRequest(connection, client, 0L, null);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudBlob blob, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                blob.getProperties().setLength(size);
+                blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
+                return null;
+            }
+        };
+
+        return putRequest;
+    }
+
+    /**
      * Uploads the source stream data to the page blob.
      * 
      * @param sourceStream
@@ -679,6 +889,7 @@ public final class CloudPageBlob extends CloudBlob {
         }
 
         options = BlobRequestOptions.applyDefaults(options, BlobType.PAGE_BLOB, this.blobServiceClient);
+
         if (length <= 0 || length % BlobConstants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException(SR.INVALID_PAGE_BLOB_LENGTH);
         }
@@ -692,9 +903,13 @@ public final class CloudPageBlob extends CloudBlob {
             sourceStream.mark(Constants.MAX_MARK_LENGTH);
         }
 
-        final OutputStream streamRef = this.openOutputStream(length, accessCondition, options, opContext);
-        Utility.writeToOutputStream(sourceStream, streamRef, length, false, false, opContext);
-        streamRef.close();
+        final BlobOutputStream streamRef = this.openWriteNew(length, accessCondition, options, opContext);
+        try {
+            streamRef.write(sourceStream, length);
+        }
+        finally {
+            streamRef.close();
+        }
     }
 
     /**

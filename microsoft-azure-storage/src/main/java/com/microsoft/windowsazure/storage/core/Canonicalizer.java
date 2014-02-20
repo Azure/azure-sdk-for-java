@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.microsoft.windowsazure.storage.Constants;
-import com.microsoft.windowsazure.storage.OperationContext;
 import com.microsoft.windowsazure.storage.StorageException;
 
 /**
@@ -139,14 +138,12 @@ abstract class Canonicalizer {
      *            the date/time specification for the HTTP request
      * @param conn
      *            the HttpURLConnection for the operation.
-     * @param opContext
-     *            the OperationContext for the request.
      * @return A canonicalized string.
      * @throws StorageException
      */
     protected static String canonicalizeHttpRequest(final java.net.URL address, final String accountName,
             final String method, final String contentType, final long contentLength, final String date,
-            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+            final HttpURLConnection conn) throws StorageException {
 
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
@@ -210,14 +207,12 @@ abstract class Canonicalizer {
      *            the date/time specification for the HTTP request
      * @param conn
      *            the HttpURLConnection for the operation.
-     * @param opContext
-     *            the OperationContext for the request.
      * @return A canonicalized string.
      * @throws StorageException
      */
     protected static String canonicalizeHttpRequestLite(final java.net.URL address, final String accountName,
             final String method, final String contentType, final long contentLength, final String date,
-            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+            final HttpURLConnection conn) throws StorageException {
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
         // 
@@ -266,14 +261,12 @@ abstract class Canonicalizer {
      *            the date/time specification for the HTTP request
      * @param conn
      *            the HttpURLConnection for the operation.
-     * @param opContext
-     *            the OperationContext for the request.
      * @return A canonicalized string.
      * @throws StorageException
      */
     protected static String canonicalizeTableHttpRequest(final java.net.URL address, final String accountName,
             final String method, final String contentType, final long contentLength, final String date,
-            final HttpURLConnection conn, final OperationContext opContext) throws StorageException {
+            final HttpURLConnection conn) throws StorageException {
         // The first element should be the Method of the request.
         // I.e. GET, POST, PUT, or HEAD.
         final StringBuilder canonicalizedString = new StringBuilder(ExpectedTableCanonicalizedStringLength);
@@ -450,10 +443,7 @@ abstract class Canonicalizer {
      *            the account name associated with the request
      * @param contentLength
      *            the length of the content written to the outputstream in bytes, -1 if unknown
-     * @param opContext
-     *            the OperationContext for the given request
      * @return a canonicalized string.
      */
-    protected abstract String canonicalize(HttpURLConnection conn, String accountName, Long contentLength,
-            OperationContext opContext) throws StorageException;
+    protected abstract String canonicalize(HttpURLConnection conn, String accountName, Long contentLength) throws StorageException;
 }

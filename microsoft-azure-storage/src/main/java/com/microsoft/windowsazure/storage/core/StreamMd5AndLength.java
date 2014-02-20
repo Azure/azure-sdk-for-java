@@ -30,10 +30,21 @@ public final class StreamMd5AndLength {
      */
     private long streamLength;
 
+    /**
+     * Contains the length, in bytes, that have been downloaded. Used by download resume.
+     */
+    private long currentOperationByteCount;
+
+    /**
+     * The MessageDigest, used to calculate MD5.
+     */
     private MessageDigest intermediateMD5;
 
-    public void setDigest(MessageDigest digest) {
-        this.intermediateMD5 = digest;
+    /**
+     * @return the intermediateMD5
+     */
+    public MessageDigest getDigest() {
+        return this.intermediateMD5;
     }
 
     /**
@@ -41,6 +52,13 @@ public final class StreamMd5AndLength {
      */
     public long getLength() {
         return this.streamLength;
+    }
+
+    /**
+     * @return the currentOperationByteCount
+     */
+    public long getCurrentOperationByteCount() {
+        return this.currentOperationByteCount;
     }
 
     /**
@@ -55,11 +73,29 @@ public final class StreamMd5AndLength {
     }
 
     /**
+     * Sets the MessageDigest, used to calculate MD5
+     * 
+     * @param digest
+     *            the digest to set
+     */
+    public void setDigest(MessageDigest digest) {
+        this.intermediateMD5 = digest;
+    }
+
+    /**
      * @param length
      *            the length to set
      */
     public void setLength(final long length) {
         this.streamLength = length;
+    }
+
+    /**
+     * @param currentOperationByteCount
+     *            the currentOperationByteCount to set
+     */
+    public void setCurrentOperationByteCount(final long currentOperationByteCount) {
+        this.currentOperationByteCount = currentOperationByteCount;
     }
 
     /**

@@ -22,7 +22,6 @@ import java.net.URI;
 import javax.xml.stream.XMLStreamException;
 
 import com.microsoft.windowsazure.storage.core.BaseRequest;
-import com.microsoft.windowsazure.storage.core.BaseResponse;
 import com.microsoft.windowsazure.storage.core.RequestLocationMode;
 import com.microsoft.windowsazure.storage.core.SR;
 import com.microsoft.windowsazure.storage.core.StorageRequest;
@@ -63,6 +62,11 @@ public abstract class ServiceClient {
      * Holds the default server and client timeout for requests made by the service client.
      */
     protected int timeoutInMs = Constants.DEFAULT_TIMEOUT_IN_MS;
+
+    /**
+     * The maximum execution time, in milliseconds, across all potential retries.
+     */
+    private Integer maximumExecutionTimeInMs;
 
     /**
      * Holds the AuthenticationScheme associated with this Service Client.
@@ -154,7 +158,8 @@ public abstract class ServiceClient {
             @Override
             public ServiceProperties postProcessResponse(HttpURLConnection connection, Void parentObject,
                     ServiceClient client, OperationContext context, ServiceProperties storageObject) throws Exception {
-                return BaseResponse.readServicePropertiesFromStream(connection.getInputStream(), context);
+                return ServicePropertiesDeserializer.readServicePropertiesFromStream(connection.getInputStream(),
+                        context);
             }
         };
 
@@ -203,7 +208,7 @@ public abstract class ServiceClient {
             @Override
             public ServiceStats postProcessResponse(HttpURLConnection connection, Void parentObject,
                     ServiceClient client, OperationContext context, ServiceStats storageObject) throws Exception {
-                return BaseResponse.readServiceStatsFromStream(connection.getInputStream(), context);
+                return ServiceStatsDeserializer.readServiceStatsFromStream(connection.getInputStream(), context);
             }
 
         };
@@ -282,6 +287,16 @@ public abstract class ServiceClient {
     }
 
     /**
+     * Returns the maximum execution time, in milliseconds, across all potential retries. For more information about
+     * maximum execution time, see {@link #setMaximumExecutionTimeInMs(Integer)}.
+     * 
+     * @return The maximum execution time, in milliseconds, for requests made to the storage service.
+     */
+    public Integer getMaximumExecutionTimeInMs() {
+        return maximumExecutionTimeInMs;
+    }
+
+    /**
      * @return the usePathStyleUris
      */
     public final boolean isUsePathStyleUris() {
@@ -300,7 +315,7 @@ public abstract class ServiceClient {
     }
 
     /**
-     * Sets the default location mode for requests made via the service client.
+     * Sets the default {@link LocationMode} for requests made via the service client.
      * 
      * @param locationMode
      *            the locationMode to set
@@ -353,7 +368,7 @@ public abstract class ServiceClient {
      * The default timeout interval for a request made via the service client is 90 seconds. You can change this value
      * on the service client by setting this property, so that all subsequent requests made via the service client will
      * use the new timeout interval. You can also change this value for an individual request, by setting the
-     * {@link RequestOptions#timeoutIntervalInMs} property.
+     * {@link RequestOptions#setTimeoutIntervalInMs(Integer)} property.
      * 
      * If you are downloading a large blob, you should increase the value of the timeout beyond the default value.
      * 
@@ -364,11 +379,31 @@ public abstract class ServiceClient {
         this.timeoutInMs = timeoutInMs;
     }
 
+    /**
+     * Sets the maximum execution time to use when making requests to the storage service.
+     * <p>
+     * The maximum execution time interval begins at the time that the client begins building the request. The maximum
+     * execution time is checked intermittently while uploading data, downloading data, and before executing retries.
+     * The service will continue to upload, download, and retry until the maximum execution time is reached. At that
+     * time, any partial uploads or downloads will be cancelled and an exception will be thrown.
+     * 
+     * The default maximum execution time is null, indicating no maximum time. You can change this value on the service
+     * client by setting this property, so that all subsequent requests made via the service client will use the new
+     * maximum execution time. You can also change this value for an individual request, by setting the
+     * {@link RequestOptions#setMaximumExecutionTimeInMs(Integer)} property.
+     * 
+     * @param maximumExecutionTimeInMs
+     *            The maximum execution time, in milliseconds, to use when making service requests.
+     */
+    public void setMaximumExecutionTimeInMs(Integer maximumExecutionTimeInMs) {
+        this.maximumExecutionTimeInMs = maximumExecutionTimeInMs;
+    }
+
     protected StorageRequest<ServiceClient, Void, Void> uploadServicePropertiesImpl(final ServiceProperties properties,
             final RequestOptions options, final OperationContext opContext, final boolean signAsTable)
             throws StorageException {
         try {
-            byte[] propertiesBytes = BaseRequest.serializeServicePropertiesToByteArray(properties, opContext);
+            byte[] propertiesBytes = ServicePropertiesSerializer.serializeToByteArray(properties);
 
             final ByteArrayInputStream sendStream = new ByteArrayInputStream(propertiesBytes);
             final StreamMd5AndLength descriptor = Utility.analyzeStream(sendStream, -1L, -1L,

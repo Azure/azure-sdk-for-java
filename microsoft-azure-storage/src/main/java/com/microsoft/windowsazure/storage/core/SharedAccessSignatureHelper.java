@@ -52,22 +52,10 @@ public class SharedAccessSignatureHelper {
             final SharedAccessBlobHeaders headers, final String groupPolicyIdentifier, final String resourceType,
             final String signature) throws StorageException {
         Utility.assertNotNullOrEmpty("resourceType", resourceType);
-        Utility.assertNotNull("signature", signature);
 
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessBlobPolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHelper(permissionString, startTime, expiryTime,
-                null /* startPartitionKey */, null /* startRowKey */, null /* endPartitionKey */,
-                null /* endRowKey */, groupPolicyIdentifier, resourceType, null /* tableName */, signature,
-                null /* accoutKetName */, headers);
+        return generateSharedAccessSignatureHelper(policy, null /* startPartitionKey */, null /* startRowKey */,
+                null /* endPartitionKey */, null /* endRowKey */, groupPolicyIdentifier, resourceType,
+                null /* tableName */, signature, null /* accoutKetName */, headers);
     }
 
     /**
@@ -85,22 +73,9 @@ public class SharedAccessSignatureHelper {
      */
     public static UriQueryBuilder generateSharedAccessSignatureForQueue(final SharedAccessQueuePolicy policy,
             final String groupPolicyIdentifier, final String signature) throws StorageException {
-        Utility.assertNotNull("signature", signature);
-
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessQueuePolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHelper(permissionString, startTime, expiryTime,
-                null /* startPartitionKey */, null /* startRowKey */, null /* endPartitionKey */,
-                null /* endRowKey */, groupPolicyIdentifier, null /* resourceType */, null /* tableName */,
-                signature, null /* accountKeyName */, null /* headers */);
+        return generateSharedAccessSignatureHelper(policy, null /* startPartitionKey */, null /* startRowKey */,
+                null /* endPartitionKey */, null /* endRowKey */, groupPolicyIdentifier, null /* resourceType */,
+                null /* tableName */, signature, null /* accountKeyName */, null /* headers */);
     }
 
     /**
@@ -111,21 +86,8 @@ public class SharedAccessSignatureHelper {
             final String endRowKey, final String accessPolicyIdentifier, final String tableName,
             final String signature, final String accountKeyName) throws StorageException {
         Utility.assertNotNull("tableName", tableName);
-        Utility.assertNotNull("signature", signature);
-
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessTablePolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHelper(permissionString, startTime, expiryTime, startPartitionKey,
-                startRowKey, endPartitionKey, endRowKey, accessPolicyIdentifier, null /* resourceType */, tableName,
-                signature, accountKeyName, null /* headers */);
+        return generateSharedAccessSignatureHelper(policy, startPartitionKey, startRowKey, endPartitionKey, endRowKey,
+                accessPolicyIdentifier, null /* resourceType */, tableName, signature, accountKeyName, null /* headers */);
     }
 
     /**
@@ -150,18 +112,8 @@ public class SharedAccessSignatureHelper {
     public static String generateSharedAccessSignatureHashForBlob(final SharedAccessBlobPolicy policy,
             final SharedAccessBlobHeaders headers, final String accessPolicyIdentifier, final String resourceName,
             final ServiceClient client, final OperationContext opContext) throws InvalidKeyException, StorageException {
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessBlobPolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHashForBlob(permissionString, startTime, expiryTime, resourceName,
-                accessPolicyIdentifier, client, opContext, headers);
+        return generateSharedAccessSignatureHashForBlob(policy, resourceName, accessPolicyIdentifier, client,
+                opContext, headers);
 
     }
 
@@ -186,19 +138,8 @@ public class SharedAccessSignatureHelper {
     public static String generateSharedAccessSignatureHashForQueue(final SharedAccessQueuePolicy policy,
             final String accessPolicyIdentifier, final String resourceName, final ServiceClient client,
             final OperationContext opContext) throws InvalidKeyException, StorageException {
-
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessQueuePolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHashForQueueAndTable(permissionString, startTime, expiryTime, resourceName,
-                accessPolicyIdentifier, false, null, null, null, null, client, opContext);
+        return generateSharedAccessSignatureHashForQueueAndTable(policy, resourceName, accessPolicyIdentifier, false,
+                null, null, null, null, client, opContext);
     }
 
     /**
@@ -222,19 +163,8 @@ public class SharedAccessSignatureHelper {
             final String accessPolicyIdentifier, final String resourceName, final String startPartitionKey,
             final String startRowKey, final String endPartitionKey, final String endRowKey, final ServiceClient client,
             final OperationContext opContext) throws InvalidKeyException, StorageException {
-        String permissionString = null;
-        Date startTime = null;
-        Date expiryTime = null;
-
-        if (policy != null) {
-            permissionString = SharedAccessTablePolicy.permissionsToString(policy.getPermissions());
-            startTime = policy.getSharedAccessStartTime();
-            expiryTime = policy.getSharedAccessExpiryTime();
-        }
-
-        return generateSharedAccessSignatureHashForQueueAndTable(permissionString, startTime, expiryTime, resourceName,
-                accessPolicyIdentifier, true, startPartitionKey, startRowKey, endPartitionKey, endRowKey, client,
-                opContext);
+        return generateSharedAccessSignatureHashForQueueAndTable(policy, resourceName, accessPolicyIdentifier, true,
+                startPartitionKey, startRowKey, endPartitionKey, endRowKey, client, opContext);
 
     }
 
@@ -415,12 +345,22 @@ public class SharedAccessSignatureHelper {
      * @return The finished query builder
      * @throws StorageException
      */
-    private static UriQueryBuilder generateSharedAccessSignatureHelper(final String permissions, final Date startTime,
-            final Date expiryTime, final String startPatitionKey, final String startRowKey,
-            final String endPatitionKey, final String endRowKey, final String accessPolicyIdentifier,
-            final String resourceType, final String tableName, final String signature, final String accountKeyName,
+    private static UriQueryBuilder generateSharedAccessSignatureHelper(final SharedAccessPolicy policy,
+            final String startPatitionKey, final String startRowKey, final String endPatitionKey,
+            final String endRowKey, final String accessPolicyIdentifier, final String resourceType,
+            final String tableName, final String signature, final String accountKeyName,
             final SharedAccessBlobHeaders headers) throws StorageException {
         Utility.assertNotNull("signature", signature);
+
+        String permissions = null;
+        Date startTime = null;
+        Date expiryTime = null;
+
+        if (policy != null) {
+            permissions = policy.permissionsToString();
+            startTime = policy.getSharedAccessStartTime();
+            expiryTime = policy.getSharedAccessExpiryTime();
+        }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
 
@@ -521,12 +461,22 @@ public class SharedAccessSignatureHelper {
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    private static String generateSharedAccessSignatureHashForBlob(final String permissions, final Date startTime,
-            final Date expiryTime, final String resourceName, final String accessPolicyIdentifier,
-            final ServiceClient client, final OperationContext opContext, final SharedAccessBlobHeaders headers)
-            throws InvalidKeyException, StorageException {
+    private static String generateSharedAccessSignatureHashForBlob(final SharedAccessPolicy policy,
+            final String resourceName, final String accessPolicyIdentifier, final ServiceClient client,
+            final OperationContext opContext, final SharedAccessBlobHeaders headers) throws InvalidKeyException,
+            StorageException {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
+
+        String permissions = null;
+        Date startTime = null;
+        Date expiryTime = null;
+
+        if (policy != null) {
+            permissions = policy.permissionsToString();
+            startTime = policy.getSharedAccessStartTime();
+            expiryTime = policy.getSharedAccessExpiryTime();
+        }
 
         String cacheControl = null;
         String contentDisposition = null;
@@ -581,13 +531,23 @@ public class SharedAccessSignatureHelper {
      * @throws InvalidKeyException
      * @throws StorageException
      */
-    private static String generateSharedAccessSignatureHashForQueueAndTable(final String permissions,
-            final Date startTime, final Date expiryTime, final String resourceName,
-            final String accessPolicyIdentifier, final boolean useTableSas, final String startPatitionKey,
-            final String startRowKey, final String endPatitionKey, final String endRowKey, final ServiceClient client,
-            final OperationContext opContext) throws InvalidKeyException, StorageException {
+    private static String generateSharedAccessSignatureHashForQueueAndTable(final SharedAccessPolicy policy,
+            final String resourceName, final String accessPolicyIdentifier, final boolean useTableSas,
+            final String startPatitionKey, final String startRowKey, final String endPatitionKey,
+            final String endRowKey, final ServiceClient client, final OperationContext opContext)
+            throws InvalidKeyException, StorageException {
         Utility.assertNotNullOrEmpty("resourceName", resourceName);
         Utility.assertNotNull("client", client);
+
+        String permissions = null;
+        Date startTime = null;
+        Date expiryTime = null;
+
+        if (policy != null) {
+            permissions = policy.permissionsToString();
+            startTime = policy.getSharedAccessStartTime();
+            expiryTime = policy.getSharedAccessExpiryTime();
+        }
 
         String stringToSign = String.format("%s\n%s\n%s\n%s\n%s\n%s", permissions == null ? Constants.EMPTY_STRING
                 : permissions, Utility.getUTCTimeOrEmpty(startTime), Utility.getUTCTimeOrEmpty(expiryTime),

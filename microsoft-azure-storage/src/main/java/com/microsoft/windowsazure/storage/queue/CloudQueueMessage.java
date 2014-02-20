@@ -149,7 +149,7 @@ public class CloudQueueMessage {
 
         if (this.messageType == QueueMessageType.RAW_STRING) {
             try {
-                return this.messageContent.getBytes("UTF8");
+                return this.messageContent.getBytes(Constants.UTF8_CHARSET);
             }
             catch (final UnsupportedEncodingException e) {
                 throw Utility.generateNewUnexpectedStorageException(e);

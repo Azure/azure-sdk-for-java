@@ -132,7 +132,12 @@ public enum StorageErrorCode {
     /**
      * A lease ID was used when no lease currently is held.
      */
-    LEASE_NOT_PRESENT(23);
+    LEASE_NOT_PRESENT(23),
+
+    /**
+     * The server is currently unavailable.
+     */
+    SERVER_BUSY(24);
 
     /**
      * Returns the value of this enum.
