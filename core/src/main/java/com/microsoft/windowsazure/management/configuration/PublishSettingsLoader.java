@@ -71,7 +71,9 @@ public final class PublishSettingsLoader {
 	public static Configuration createManagementConfiguration(String publishSettingsFile,
 	                                                          String subscriptionId) throws IOException {
 		File file = new File(publishSettingsFile);
-		String outStore = "keystore.out";
+		// By default creating keystore outfile in user home
+		String outStore = System.getProperty("user.home") + File.separator + ".azure" + 
+		                  File.separator + subscriptionId+".out";
 		String certificate = null;
 		try {
 			DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -112,6 +114,12 @@ public final class PublishSettingsLoader {
 			InputStream sslInputStream = new ByteArrayInputStream(Base64.decodeBase64(certificate));
 
 			store.load(sslInputStream, "".toCharArray());
+			
+			// create directories if doesnot exists
+			File outStoreFile = new File(outStore);
+			if (!outStoreFile.getParentFile().exists())
+				outStoreFile.getParentFile().mkdirs();
+				
 			OutputStream out = new FileOutputStream(outStore);
 			store.store(out, "".toCharArray());
 			out.close();
