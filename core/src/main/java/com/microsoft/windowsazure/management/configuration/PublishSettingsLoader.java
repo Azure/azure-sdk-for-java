@@ -117,13 +117,12 @@ public final class PublishSettingsLoader {
 			
 			// create directories if doesnot exists
 			File outStoreFile = new File(outStore);
-			if (!outStoreFile.getParentFile().exists())
+			if (!outStoreFile.getParentFile().exists()) {
 				outStoreFile.getParentFile().mkdirs();
-				
+			}
 			OutputStream out = new FileOutputStream(outStore);
 			store.store(out, "".toCharArray());
 			out.close();
-
 		} catch (KeyStoreException e) {
 			throw new IllegalArgumentException("could not create keystore from publishsettings file", e);
 		} catch (CertificateException e) {
