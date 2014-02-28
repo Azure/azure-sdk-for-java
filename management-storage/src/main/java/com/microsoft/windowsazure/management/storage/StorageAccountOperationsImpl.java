@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.OperationStatus;
+import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
@@ -751,24 +752,27 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             
             Element storageServiceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageService");
             if (storageServiceElement != null) {
+                StorageAccount storageServiceInstance = new StorageAccount();
+                result.setStorageAccount(storageServiceInstance);
+                
                 Element urlElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Url");
                 if (urlElement != null) {
                     URI urlInstance;
                     urlInstance = new URI(urlElement.getTextContent());
-                    result.setUri(urlInstance);
+                    storageServiceInstance.setUri(urlInstance);
                 }
                 
                 Element serviceNameElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                 if (serviceNameElement != null) {
                     String serviceNameInstance;
                     serviceNameInstance = serviceNameElement.getTextContent();
-                    result.setName(serviceNameInstance);
+                    storageServiceInstance.setName(serviceNameInstance);
                 }
                 
                 Element storageServicePropertiesElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
                 if (storageServicePropertiesElement != null) {
                     StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
-                    result.setProperties(storageServicePropertiesInstance);
+                    storageServiceInstance.setProperties(storageServicePropertiesInstance);
                     
                     Element descriptionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                     if (descriptionElement != null) {
@@ -869,15 +873,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i2));
                         String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                         String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
-                        result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
-                    }
-                }
-                
-                Element capabilitiesSequenceElement = XmlUtility.getElementByTagNameNS(storageServiceElement, "http://schemas.microsoft.com/windowsazure", "Capabilities");
-                if (capabilitiesSequenceElement != null) {
-                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").size(); i3 = i3 + 1) {
-                        org.w3c.dom.Element capabilitiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(capabilitiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Capability").get(i3));
-                        result.getCapabilities().add(capabilitiesElement.getTextContent());
+                        storageServiceInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                     }
                 }
             }
@@ -1123,29 +1119,29 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             
             Element storageServicesSequenceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "StorageServices");
             if (storageServicesSequenceElement != null) {
-                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").size(); i1 = i1 + 1) {
-                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageAccount").get(i1));
-                    StorageAccountListResponse.StorageAccount storageAccountInstance = new StorageAccountListResponse.StorageAccount();
-                    result.getStorageAccounts().add(storageAccountInstance);
+                for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").size(); i1 = i1 + 1) {
+                    org.w3c.dom.Element storageServicesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storageServicesSequenceElement, "http://schemas.microsoft.com/windowsazure", "StorageService").get(i1));
+                    StorageAccount storageServiceInstance = new StorageAccount();
+                    result.getStorageAccounts().add(storageServiceInstance);
                     
                     Element urlElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "Url");
                     if (urlElement != null) {
                         URI urlInstance;
                         urlInstance = new URI(urlElement.getTextContent());
-                        storageAccountInstance.setUri(urlInstance);
+                        storageServiceInstance.setUri(urlInstance);
                     }
                     
                     Element serviceNameElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "ServiceName");
                     if (serviceNameElement != null) {
                         String serviceNameInstance;
                         serviceNameInstance = serviceNameElement.getTextContent();
-                        storageAccountInstance.setName(serviceNameInstance);
+                        storageServiceInstance.setName(serviceNameInstance);
                     }
                     
                     Element storageServicePropertiesElement = XmlUtility.getElementByTagNameNS(storageServicesElement, "http://schemas.microsoft.com/windowsazure", "StorageServiceProperties");
                     if (storageServicePropertiesElement != null) {
                         StorageAccountProperties storageServicePropertiesInstance = new StorageAccountProperties();
-                        storageAccountInstance.setProperties(storageServicePropertiesInstance);
+                        storageServiceInstance.setProperties(storageServicePropertiesInstance);
                         
                         Element descriptionElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Description");
                         if (descriptionElement != null) {
@@ -1246,7 +1242,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                             org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i3));
                             String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                             String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
-                            storageAccountInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
+                            storageServiceInstance.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
                         }
                     }
                 }
