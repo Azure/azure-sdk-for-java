@@ -24,143 +24,24 @@
 package com.microsoft.windowsazure.management.storage.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
 * The Get Storage Account Properties operation response.
 */
 public class StorageAccountGetResponse extends OperationResponse {
-    private ArrayList<String> capabilities;
+    private StorageAccount storageAccount;
     
     /**
-    * Indicates if the storage account is able to perform virtual machine
-    * related operations. If so, this element returns a string containing
-    * PersistentVMRole. Otherwise, this element will not be present.
-    * @return The Capabilities value.
+    * @return The StorageAccount value.
     */
-    public ArrayList<String> getCapabilities() {
-        return this.capabilities;
+    public StorageAccount getStorageAccount() {
+        return this.storageAccount;
     }
     
     /**
-    * Indicates if the storage account is able to perform virtual machine
-    * related operations. If so, this element returns a string containing
-    * PersistentVMRole. Otherwise, this element will not be present.
-    * @param capabilitiesValue The Capabilities value.
+    * @param storageAccountValue The StorageAccount value.
     */
-    public void setCapabilities(final ArrayList<String> capabilitiesValue) {
-        this.capabilities = capabilitiesValue;
-    }
-    
-    private HashMap<String, String> extendedProperties;
-    
-    /**
-    * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the Name, and the name must
-    * start with a letter. Attempting to use other characters, starting the
-    * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
-    * property value has a maximum length of 255 characters.
-    * @return The ExtendedProperties value.
-    */
-    public HashMap<String, String> getExtendedProperties() {
-        return this.extendedProperties;
-    }
-    
-    /**
-    * Optional. Represents the name of an extended storage account property.
-    * Each extended property must have both a defined name and value. You can
-    * have a maximum of 50 extended property name/value pairs.  The maximum
-    * length of the Name element is 64 characters, only alphanumeric
-    * characters and underscores are valid in the Name, and the name must
-    * start with a letter. Attempting to use other characters, starting the
-    * Name with a non-letter character, or entering a name that is identical
-    * to that of another extended property owned by the same storage account,
-    * will result in a status code 400 (Bad Request) error.  Each extended
-    * property value has a maximum length of 255 characters.
-    * @param extendedPropertiesValue The ExtendedProperties value.
-    */
-    public void setExtendedProperties(final HashMap<String, String> extendedPropertiesValue) {
-        this.extendedProperties = extendedPropertiesValue;
-    }
-    
-    private String name;
-    
-    /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
-    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-    * @return The Name value.
-    */
-    public String getName() {
-        return this.name;
-    }
-    
-    /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
-    * http://MyStorageAccount.blob.core.windows.net/mycontainer/
-    * @param nameValue The Name value.
-    */
-    public void setName(final String nameValue) {
-        this.name = nameValue;
-    }
-    
-    private StorageAccountProperties properties;
-    
-    /**
-    * Details about the storage account.
-    * @return The Properties value.
-    */
-    public StorageAccountProperties getProperties() {
-        return this.properties;
-    }
-    
-    /**
-    * Details about the storage account.
-    * @param propertiesValue The Properties value.
-    */
-    public void setProperties(final StorageAccountProperties propertiesValue) {
-        this.properties = propertiesValue;
-    }
-    
-    private URI uri;
-    
-    /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
-    * @return The Uri value.
-    */
-    public URI getUri() {
-        return this.uri;
-    }
-    
-    /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
-    * @param uriValue The Uri value.
-    */
-    public void setUri(final URI uriValue) {
-        this.uri = uriValue;
-    }
-    
-    /**
-    * Initializes a new instance of the StorageAccountGetResponse class.
-    *
-    */
-    public StorageAccountGetResponse() {
-        super();
-        this.capabilities = new ArrayList<String>();
-        this.extendedProperties = new HashMap<String, String>();
+    public void setStorageAccount(final StorageAccount storageAccountValue) {
+        this.storageAccount = storageAccountValue;
     }
 }
