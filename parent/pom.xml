@@ -299,7 +299,7 @@
     <module>../management-sql</module>
     <module>../management-storage</module>
     <module>../management-store</module>
-    <module>../management-virtualnetwork</module>
+    <module>../management-network</module>
     <module>../management-website</module>
     <module>../media</module>
     <module>../scheduler</module>
