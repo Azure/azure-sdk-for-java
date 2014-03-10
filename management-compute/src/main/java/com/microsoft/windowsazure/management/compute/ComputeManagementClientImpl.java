@@ -23,15 +23,15 @@
 
 package com.microsoft.windowsazure.management.compute;
 
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.HostingResources;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -291,10 +291,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> getOperationStatusAsync(final String requestId) {
-        return this.getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -330,7 +330,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
@@ -375,10 +375,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
             }
             
             // Create Result
-            ComputeOperationStatusResponse result = null;
+            OperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ComputeOperationStatusResponse();
+            result = new OperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -409,7 +409,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
                 
                 Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
-                    ComputeOperationStatusResponse.ErrorDetails errorInstance = new ComputeOperationStatusResponse.ErrorDetails();
+                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
@@ -451,10 +451,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value.
     */
      static CertificateFormat parseCertificateFormat(String value) {
-        if ("pfx".equals(value)) {
+        if ("pfx".equalsIgnoreCase(value)) {
             return CertificateFormat.Pfx;
         }
-        if ("cer".equals(value)) {
+        if ("cer".equalsIgnoreCase(value)) {
             return CertificateFormat.Cer;
         }
         throw new IllegalArgumentException("value");
@@ -483,13 +483,13 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value.
     */
      static HostingResources parseHostingResources(String value) {
-        if ("WebRole".equals(value)) {
+        if ("WebRole".equalsIgnoreCase(value)) {
             return HostingResources.WebRole;
         }
-        if ("WorkerRole".equals(value)) {
+        if ("WorkerRole".equalsIgnoreCase(value)) {
             return HostingResources.WorkerRole;
         }
-        if ("WebRole|WorkerRole".equals(value)) {
+        if ("WebRole|WorkerRole".equalsIgnoreCase(value)) {
             return HostingResources.WebOrWorkerRole;
         }
         throw new IllegalArgumentException("value");
@@ -521,10 +521,10 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * @return The enum value.
     */
      static LoadBalancerProbeTransportProtocol parseLoadBalancerProbeTransportProtocol(String value) {
-        if ("tcp".equals(value)) {
+        if ("tcp".equalsIgnoreCase(value)) {
             return LoadBalancerProbeTransportProtocol.Tcp;
         }
-        if ("http".equals(value)) {
+        if ("http".equalsIgnoreCase(value)) {
             return LoadBalancerProbeTransportProtocol.Http;
         }
         throw new IllegalArgumentException("value");

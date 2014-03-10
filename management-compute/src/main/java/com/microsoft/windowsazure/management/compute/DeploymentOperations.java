@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.DeploymentGetPackageParameters;
@@ -968,7 +968,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -995,7 +995,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> changeConfigurationByNameAsync(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters);
+    Future<OperationStatusResponse> changeConfigurationByNameAsync(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters);
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -1034,7 +1034,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Change Deployment Configuration operation initiates a change to the
@@ -1061,7 +1061,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> changeConfigurationBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters);
+    Future<OperationStatusResponse> changeConfigurationBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters);
     
     /**
     * The Create Deployment operation uploads a new service package and creates
@@ -1107,7 +1107,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Create Deployment operation uploads a new service package and creates
@@ -1132,7 +1132,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> createAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters);
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1169,7 +1169,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse deleteByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1194,7 +1194,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteByNameAsync(String serviceName, String deploymentName, boolean deleteFromStorage);
+    Future<OperationStatusResponse> deleteByNameAsync(String serviceName, String deploymentName, boolean deleteFromStorage);
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1229,7 +1229,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Deployment operation deletes the specified deployment.  The
@@ -1252,7 +1252,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteBySlotAsync(String serviceName, DeploymentSlot deploymentSlot);
+    Future<OperationStatusResponse> deleteBySlotAsync(String serviceName, DeploymentSlot deploymentSlot);
     
     /**
     * The Get Deployment operation returns configuration information, status,
@@ -1445,7 +1445,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Reboot Role Instance operation requests a reboot of a role instance
@@ -1470,7 +1470,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
+    Future<OperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
     
     /**
     * The Reboot Role Instance operation requests a reboot of a role instance
@@ -1507,7 +1507,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Reboot Role Instance operation requests a reboot of a role instance
@@ -1532,7 +1532,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    Future<OperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1569,7 +1569,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1594,7 +1594,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
+    Future<OperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(String serviceName, String deploymentName, String roleInstanceName);
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1631,7 +1631,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Reimage Role Instance operation requests a reimage of a role instance
@@ -1656,7 +1656,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
+    Future<OperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName);
     
     /**
     * The Rollback Update Or Upgrade operation cancels an in-progress
@@ -1797,7 +1797,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Swap Deployment operation initiates a virtual IP address swap between
@@ -1822,7 +1822,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> swapAsync(String serviceName, DeploymentSwapParameters parameters);
+    Future<OperationStatusResponse> swapAsync(String serviceName, DeploymentSwapParameters parameters);
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1861,7 +1861,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1888,7 +1888,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> updateStatusByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters);
+    Future<OperationStatusResponse> updateStatusByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters);
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1927,7 +1927,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Update Deployment Status operation initiates a change in the running
@@ -1954,7 +1954,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> updateStatusByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters);
+    Future<OperationStatusResponse> updateStatusByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters);
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -2012,7 +2012,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -2058,7 +2058,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> upgradeByNameAsync(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters);
+    Future<OperationStatusResponse> upgradeByNameAsync(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters);
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -2116,7 +2116,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Upgrade Deployment operation initiates an update of role instances in
@@ -2162,7 +2162,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> upgradeBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters);
+    Future<OperationStatusResponse> upgradeBySlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters);
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a
@@ -2220,7 +2220,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a
@@ -2266,7 +2266,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters);
+    Future<OperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters);
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a
@@ -2324,7 +2324,7 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Walk Upgrade Domain operation specifies an update domain in which a
@@ -2370,5 +2370,5 @@ public interface DeploymentOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters);
+    Future<OperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters);
 }

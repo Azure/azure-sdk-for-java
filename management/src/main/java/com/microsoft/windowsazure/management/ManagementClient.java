@@ -24,9 +24,9 @@
 package com.microsoft.windowsazure.management;
 
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.OperationStatusResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;

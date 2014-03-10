@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.management.servicebus.models.CountDetails;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetail;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetailsResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueue;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueueCreateParameters;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueueResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueuesResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusSharedAccessAuthorizationRule;
@@ -102,7 +103,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular queue.
     */
     @Override
-    public Future<ServiceBusQueueResponse> createAsync(final String namespaceName, final ServiceBusQueue queue) {
+    public Future<ServiceBusQueueResponse> createAsync(final String namespaceName, final ServiceBusQueueCreateParameters queue) {
         return this.getClient().getExecutorService().submit(new Callable<ServiceBusQueueResponse>() { 
             @Override
             public ServiceBusQueueResponse call() throws Exception {
@@ -136,13 +137,16 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * @return A response to a request for a particular queue.
     */
     @Override
-    public ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public ServiceBusQueueResponse create(String namespaceName, ServiceBusQueueCreateParameters queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
         // Validate
         if (namespaceName == null) {
             throw new NullPointerException("namespaceName");
         }
         if (queue == null) {
             throw new NullPointerException("queue");
+        }
+        if (queue.getName() == null) {
+            throw new NullPointerException("queue.Name");
         }
         
         // Tracing

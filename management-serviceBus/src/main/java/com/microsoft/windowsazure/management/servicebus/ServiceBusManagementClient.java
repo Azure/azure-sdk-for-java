@@ -24,9 +24,9 @@
 package com.microsoft.windowsazure.management.servicebus;
 
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.servicebus.models.ServiceBusOperationStatusResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusRegionsResponse;
 import java.io.IOException;
 import java.net.URI;
@@ -122,7 +122,7 @@ public interface ServiceBusManagementClient extends FilterableService<ServiceBus
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ServiceBusOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Operation Status operation returns the status of thespecified
@@ -145,7 +145,7 @@ public interface ServiceBusManagementClient extends FilterableService<ServiceBus
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(String requestId);
+    Future<OperationStatusResponse> getOperationStatusAsync(String requestId);
     
     /**
     * Retrieves the list of regions that support the creation and management of

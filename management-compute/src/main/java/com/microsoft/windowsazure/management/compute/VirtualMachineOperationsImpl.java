@@ -24,13 +24,14 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.StreamUtils;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.DnsServer;
@@ -42,7 +43,6 @@ import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
 import com.microsoft.windowsazure.management.compute.models.Role;
@@ -1286,7 +1286,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         if (resourceExtensionParameterValuesItem.getType() != null) {
                             Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
                             resourceExtensionParameterValueElement.appendChild(typeElement);
                         }
                     }
@@ -1295,7 +1295,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 if (resourceExtensionReferencesItem.getState() != null) {
                     Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
                     resourceExtensionReferenceElement.appendChild(stateElement);
                 }
             }
@@ -1320,9 +1320,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     dataVirtualHardDiskElement.appendChild(diskLabelElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskName() != null) {
+                if (dataVirtualHardDisksItem.getName() != null) {
                     Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
+                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
                     dataVirtualHardDiskElement.appendChild(diskNameElement);
                 }
                 
@@ -1355,15 +1355,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 oSVirtualHardDiskElement.appendChild(hostCachingElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getDiskLabel() != null) {
+            if (parameters.getOSVirtualHardDisk().getLabel() != null) {
                 Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskLabel()));
+                diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getLabel()));
                 oSVirtualHardDiskElement.appendChild(diskLabelElement2);
             }
             
-            if (parameters.getOSVirtualHardDisk().getDiskName() != null) {
+            if (parameters.getOSVirtualHardDisk().getName() != null) {
                 Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskName()));
+                diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getName()));
                 oSVirtualHardDiskElement.appendChild(diskNameElement2);
             }
             
@@ -2048,7 +2048,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             
                             if (resourceExtensionParameterValuesItem.getType() != null) {
                                 Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                                typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                                typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
                                 resourceExtensionParameterValueElement.appendChild(typeElement);
                             }
                         }
@@ -2057,7 +2057,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     
                     if (resourceExtensionReferencesItem.getState() != null) {
                         Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                        stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
                         resourceExtensionReferenceElement.appendChild(stateElement);
                     }
                 }
@@ -2088,9 +2088,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         dataVirtualHardDiskElement.appendChild(diskLabelElement);
                     }
                     
-                    if (dataVirtualHardDisksItem.getDiskName() != null) {
+                    if (dataVirtualHardDisksItem.getName() != null) {
                         Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                        diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
+                        diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
                         dataVirtualHardDiskElement.appendChild(diskNameElement);
                     }
                     
@@ -2129,15 +2129,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     oSVirtualHardDiskElement.appendChild(hostCachingElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getDiskLabel() != null) {
+                if (roleListItem.getOSVirtualHardDisk().getLabel() != null) {
                     Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-                    diskLabelElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getDiskLabel()));
+                    diskLabelElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getLabel()));
                     oSVirtualHardDiskElement.appendChild(diskLabelElement2);
                 }
                 
-                if (roleListItem.getOSVirtualHardDisk().getDiskName() != null) {
+                if (roleListItem.getOSVirtualHardDisk().getName() != null) {
                     Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                    diskNameElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getDiskName()));
+                    diskNameElement2.appendChild(requestDoc.createTextNode(roleListItem.getOSVirtualHardDisk().getName()));
                     oSVirtualHardDiskElement.appendChild(diskNameElement2);
                 }
                 
@@ -3632,7 +3632,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         
                         if (resourceExtensionParameterValuesItem.getType() != null) {
                             Element typeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Type");
-                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType().toString()));
+                            typeElement.appendChild(requestDoc.createTextNode(resourceExtensionParameterValuesItem.getType()));
                             resourceExtensionParameterValueElement.appendChild(typeElement);
                         }
                     }
@@ -3641,7 +3641,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 
                 if (resourceExtensionReferencesItem.getState() != null) {
                     Element stateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "State");
-                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState().toString()));
+                    stateElement.appendChild(requestDoc.createTextNode(resourceExtensionReferencesItem.getState()));
                     resourceExtensionReferenceElement.appendChild(stateElement);
                 }
             }
@@ -3666,9 +3666,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     dataVirtualHardDiskElement.appendChild(diskLabelElement);
                 }
                 
-                if (dataVirtualHardDisksItem.getDiskName() != null) {
+                if (dataVirtualHardDisksItem.getName() != null) {
                     Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getDiskName()));
+                    diskNameElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getName()));
                     dataVirtualHardDiskElement.appendChild(diskNameElement);
                 }
                 
@@ -3700,15 +3700,15 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             oSVirtualHardDiskElement.appendChild(hostCachingElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getDiskLabel() != null) {
+        if (parameters.getOSVirtualHardDisk().getLabel() != null) {
             Element diskLabelElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskLabel()));
+            diskLabelElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getLabel()));
             oSVirtualHardDiskElement.appendChild(diskLabelElement2);
         }
         
-        if (parameters.getOSVirtualHardDisk().getDiskName() != null) {
+        if (parameters.getOSVirtualHardDisk().getName() != null) {
             Element diskNameElement2 = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getDiskName()));
+            diskNameElement2.appendChild(requestDoc.createTextNode(parameters.getOSVirtualHardDisk().getName()));
             oSVirtualHardDiskElement.appendChild(diskNameElement2);
         }
         
@@ -4080,10 +4080,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return capture(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -4130,7 +4130,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4149,7 +4149,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -4217,10 +4217,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createAsync(final String serviceName, final String deploymentName, final VirtualMachineCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return create(serviceName, deploymentName, parameters);
             }
          });
@@ -4277,7 +4277,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4295,7 +4295,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -4358,10 +4358,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createDeploymentAsync(final String serviceName, final VirtualMachineCreateDeploymentParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return createDeployment(serviceName, parameters);
             }
          });
@@ -4404,7 +4404,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4421,7 +4421,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginCreatingDeploymentAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -4480,10 +4480,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return delete(serviceName, deploymentName, virtualMachineName, deleteFromStorage);
             }
          });
@@ -4524,7 +4524,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4543,7 +4543,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginDeletingAsync(serviceName, deploymentName, virtualMachineName, deleteFromStorage).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5166,7 +5166,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         if (diskNameElement != null) {
                             String diskNameInstance;
                             diskNameInstance = diskNameElement.getTextContent();
-                            dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                            dataVirtualHardDiskInstance.setName(diskNameInstance);
                         }
                         
                         Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
@@ -5208,14 +5208,14 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     if (diskLabelElement2 != null) {
                         String diskLabelInstance2;
                         diskLabelInstance2 = diskLabelElement2.getTextContent();
-                        oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                        oSVirtualHardDiskInstance.setLabel(diskLabelInstance2);
                     }
                     
                     Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                     if (diskNameElement2 != null) {
                         String diskNameInstance2;
                         diskNameInstance2 = diskNameElement2.getTextContent();
-                        oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                        oSVirtualHardDiskInstance.setName(diskNameInstance2);
                     }
                     
                     Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
@@ -5388,10 +5388,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> restartAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> restartAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return restart(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -5428,7 +5428,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5446,7 +5446,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginRestartingAsync(serviceName, deploymentName, virtualMachineName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5504,10 +5504,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> shutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> shutdownAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineShutdownParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return shutdown(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -5545,7 +5545,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5564,7 +5564,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginShutdownAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5620,10 +5620,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> shutdownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> shutdownRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineShutdownRolesParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return shutdownRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -5659,7 +5659,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5677,7 +5677,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginShuttingDownRolesAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5734,10 +5734,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> startAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> startAsync(final String serviceName, final String deploymentName, final String virtualMachineName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return start(serviceName, deploymentName, virtualMachineName);
             }
          });
@@ -5774,7 +5774,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5792,7 +5792,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginStartingAsync(serviceName, deploymentName, virtualMachineName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5847,10 +5847,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> startRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> startRolesAsync(final String serviceName, final String deploymentName, final VirtualMachineStartRolesParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return startRoles(serviceName, deploymentName, parameters);
             }
          });
@@ -5885,7 +5885,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -5903,7 +5903,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginStartingRolesAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -5963,10 +5963,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> updateAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return update(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
@@ -6016,7 +6016,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6035,7 +6035,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -6094,10 +6094,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> updateLoadBalancedEndpointSetAsync(final String serviceName, final String deploymentName, final VirtualMachineUpdateLoadBalancedSetParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return updateLoadBalancedEndpointSet(serviceName, deploymentName, parameters);
             }
          });
@@ -6136,7 +6136,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6154,7 +6154,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             }
             
             OperationResponse response = client2.getVirtualMachinesOperations().beginUpdatingLoadBalancedEndpointSetAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);

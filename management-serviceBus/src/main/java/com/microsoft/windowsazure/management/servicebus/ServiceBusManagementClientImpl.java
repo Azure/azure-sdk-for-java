@@ -23,14 +23,14 @@
 
 package com.microsoft.windowsazure.management.servicebus;
 
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.servicebus.models.OperationStatus;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusLocation;
-import com.microsoft.windowsazure.management.servicebus.models.ServiceBusOperationStatusResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusRegionsResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -236,10 +236,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * failure.
     */
     @Override
-    public Future<ServiceBusOperationStatusResponse> getOperationStatusAsync(final String requestId) {
-        return this.getExecutorService().submit(new Callable<ServiceBusOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ServiceBusOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -275,7 +275,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * failure.
     */
     @Override
-    public ServiceBusOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
@@ -320,10 +320,10 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
             }
             
             // Create Result
-            ServiceBusOperationStatusResponse result = null;
+            OperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new ServiceBusOperationStatusResponse();
+            result = new OperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -354,7 +354,7 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
                 
                 Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
-                    ServiceBusOperationStatusResponse.ErrorDetails errorInstance = new ServiceBusOperationStatusResponse.ErrorDetails();
+                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");

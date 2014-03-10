@@ -462,8 +462,9 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
+        url = url + "&" + "action=register";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -549,8 +550,9 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
+        url = url + "&" + "action=unregister";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceAddExtensionParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
@@ -85,7 +85,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Add Extension operation adds an available extension to your cloud
@@ -109,7 +109,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> addExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
+    Future<OperationStatusResponse> addExtensionAsync(String serviceName, HostedServiceAddExtensionParameters parameters);
     
     /**
     * The Add Extension operation adds an available extension to your cloud
@@ -359,7 +359,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
@@ -378,7 +378,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteAllAsync(String serviceName);
+    Future<OperationStatusResponse> deleteAllAsync(String serviceName);
     
     /**
     * The Delete Extension operation deletes the specified extension from a
@@ -411,7 +411,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Extension operation deletes the specified extension from a
@@ -432,7 +432,7 @@ public interface HostedServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteExtensionAsync(String serviceName, String extensionId);
+    Future<OperationStatusResponse> deleteExtensionAsync(String serviceName, String extensionId);
     
     /**
     * The Get Hosted Service Properties operation retrieves system properties

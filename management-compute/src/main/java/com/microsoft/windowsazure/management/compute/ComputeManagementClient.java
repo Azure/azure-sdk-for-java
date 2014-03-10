@@ -24,9 +24,9 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
@@ -159,7 +159,7 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Operation Status operation returns the status of thespecified
@@ -182,5 +182,5 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> getOperationStatusAsync(String requestId);
+    Future<OperationStatusResponse> getOperationStatusAsync(String requestId);
 }

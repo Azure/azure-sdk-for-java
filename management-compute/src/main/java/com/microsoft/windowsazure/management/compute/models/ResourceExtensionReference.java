@@ -111,14 +111,14 @@ public class ResourceExtensionReference {
         this.resourceExtensionParameterValues = resourceExtensionParameterValuesValue;
     }
     
-    private ResourceExtensionReferenceState state;
+    private String state;
     
     /**
     * Optional. Specifies the state of the resource extension.Possible values
     * are: Enable | Disable. The default value is Enable.
     * @return The State value.
     */
-    public ResourceExtensionReferenceState getState() {
+    public String getState() {
         return this.state;
     }
     
@@ -127,7 +127,7 @@ public class ResourceExtensionReference {
     * are: Enable | Disable. The default value is Enable.
     * @param stateValue The State value.
     */
-    public void setState(final ResourceExtensionReferenceState stateValue) {
+    public void setState(final String stateValue) {
         this.state = stateValue;
     }
     

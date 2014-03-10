@@ -548,8 +548,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=website";
+        url = url + "&" + "action=register";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -636,8 +637,9 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=website";
+        url = url + "&" + "action=unregister";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

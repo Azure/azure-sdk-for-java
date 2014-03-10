@@ -33,8 +33,8 @@ def hydraSpecs = [
     ],
     [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Network.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.VirtualNetworks.VirtualNetworkManagementClient",
-        generatedCodeDestinationRootDirectoryName: 'management-virtualnetwork'
+        clientType: "Microsoft.WindowsAzure.Management.Network.NetworkManagementClient",
+        generatedCodeDestinationRootDirectoryName: 'management-network'
     ],
     [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",

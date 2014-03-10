@@ -49,26 +49,6 @@ public class DataVirtualHardDisk {
         this.diskLabel = diskLabelValue;
     }
     
-    private String diskName;
-    
-    /**
-    * Specifies the name of the VHD to use to create thedata disk for the
-    * virtual machine.
-    * @return The DiskName value.
-    */
-    public String getDiskName() {
-        return this.diskName;
-    }
-    
-    /**
-    * Specifies the name of the VHD to use to create thedata disk for the
-    * virtual machine.
-    * @param diskNameValue The DiskName value.
-    */
-    public void setDiskName(final String diskNameValue) {
-        this.diskName = diskNameValue;
-    }
-    
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
@@ -155,5 +135,25 @@ public class DataVirtualHardDisk {
     */
     public void setMediaLink(final URI mediaLinkValue) {
         this.mediaLink = mediaLinkValue;
+    }
+    
+    private String name;
+    
+    /**
+    * Specifies the name of the VHD to use to create thedata disk for the
+    * virtual machine.
+    * @return The Name value.
+    */
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+    * Specifies the name of the VHD to use to create thedata disk for the
+    * virtual machine.
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue) {
+        this.name = nameValue;
     }
 }

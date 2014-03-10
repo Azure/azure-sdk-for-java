@@ -26,6 +26,7 @@ package com.microsoft.windowsazure.management.servicebus;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusConnectionDetailsResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueue;
+import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueueCreateParameters;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueueResponse;
 import com.microsoft.windowsazure.management.servicebus.models.ServiceBusQueuesResponse;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public interface QueueOperations {
     * the response.
     * @return A response to a request for a particular queue.
     */
-    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueue queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
+    ServiceBusQueueResponse create(String namespaceName, ServiceBusQueueCreateParameters queue) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * Creates a new queue. Once created, this queue’s resource manifest is
@@ -78,7 +79,7 @@ public interface QueueOperations {
     * @param queue The service bus queue.
     * @return A response to a request for a particular queue.
     */
-    Future<ServiceBusQueueResponse> createAsync(String namespaceName, ServiceBusQueue queue);
+    Future<ServiceBusQueueResponse> createAsync(String namespaceName, ServiceBusQueueCreateParameters queue);
     
     /**
     * The queue description is an XML AtomPub document that defines the desired

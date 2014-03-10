@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateDeleteParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateGetParameters;
@@ -166,7 +166,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Add Service Certificate operation adds a certificate to a hosted
@@ -190,7 +190,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> createAsync(String serviceName, ServiceCertificateCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(String serviceName, ServiceCertificateCreateParameters parameters);
     
     /**
     * The Delete Service Certificate operation deletes a service certificate
@@ -227,7 +227,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Service Certificate operation deletes a service certificate
@@ -250,7 +250,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteAsync(ServiceCertificateDeleteParameters parameters);
+    Future<OperationStatusResponse> deleteAsync(ServiceCertificateDeleteParameters parameters);
     
     /**
     * The Get Service Certificate operation returns the public data for the

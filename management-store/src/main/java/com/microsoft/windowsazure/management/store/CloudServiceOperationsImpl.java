@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.store;
 
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
 import com.microsoft.windowsazure.management.store.models.CloudServiceCreateParameters;
 import com.microsoft.windowsazure.management.store.models.CloudServiceListResponse;
-import com.microsoft.windowsazure.management.store.models.OperationStatus;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -100,10 +100,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> beginCreatingAsync(final CloudServiceCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> beginCreatingAsync(final CloudServiceCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return beginCreating(parameters);
             }
          });
@@ -136,7 +136,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -230,8 +230,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
             }
             
             // Create Result
-            AddOnOperationStatusResponse result = null;
-            result = new AddOnOperationStatusResponse();
+            OperationStatusResponse result = null;
+            result = new OperationStatusResponse();
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
@@ -265,10 +265,10 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> createAsync(final CloudServiceCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createAsync(final CloudServiceCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -303,7 +303,7 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StoreManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -318,11 +318,11 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            AddOnOperationStatusResponse response = client2.getCloudServicesOperations().beginCreatingAsync(parameters).get();
+            OperationStatusResponse response = client2.getCloudServicesOperations().beginCreatingAsync(parameters).get();
             if (response.getStatus() == OperationStatus.Succeeded) {
                 return response;
             }
-            AddOnOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);

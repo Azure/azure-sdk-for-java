@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
@@ -533,7 +533,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Capture Role operation creates a copy of the operating system virtual
@@ -563,7 +563,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    Future<OperationStatusResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -615,7 +615,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -646,7 +646,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> createAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters);
     
     /**
     * The Create Virtual Machine Deployment operation provisions a virtual
@@ -684,7 +684,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse createDeployment(String serviceName, VirtualMachineCreateDeploymentParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Create Virtual Machine Deployment operation provisions a virtual
@@ -710,7 +710,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> createDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
+    Future<OperationStatusResponse> createDeploymentAsync(String serviceName, VirtualMachineCreateDeploymentParameters parameters);
     
     /**
     * The Delete Role operation deletes the specified virtual machine.  (see
@@ -746,7 +746,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Delete Role operation deletes the specified virtual machine.  (see
@@ -768,7 +768,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
+    Future<OperationStatusResponse> deleteAsync(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage);
     
     /**
     * The Get Role operation retrieves information about the specified virtual
@@ -866,7 +866,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse restart(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Restart role operation restarts the specified virtual machine.  (see
@@ -886,7 +886,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> restartAsync(String serviceName, String deploymentName, String virtualMachineName);
+    Future<OperationStatusResponse> restartAsync(String serviceName, String deploymentName, String virtualMachineName);
     
     /**
     * The Shutdown Role operation shuts down the specified virtual machine.
@@ -919,7 +919,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse shutdown(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Shutdown Role operation shuts down the specified virtual machine.
@@ -940,7 +940,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> shutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
+    Future<OperationStatusResponse> shutdownAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineShutdownParameters parameters);
     
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
@@ -971,7 +971,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse shutdownRoles(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
@@ -990,7 +990,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> shutdownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
+    Future<OperationStatusResponse> shutdownRolesAsync(String serviceName, String deploymentName, VirtualMachineShutdownRolesParameters parameters);
     
     /**
     * The Start Role operation starts the specified virtual machine.  (see
@@ -1022,7 +1022,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse start(String serviceName, String deploymentName, String virtualMachineName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Start Role operation starts the specified virtual machine.  (see
@@ -1042,7 +1042,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> startAsync(String serviceName, String deploymentName, String virtualMachineName);
+    Future<OperationStatusResponse> startAsync(String serviceName, String deploymentName, String virtualMachineName);
     
     /**
     * The Start Roles operation starts the specified set of virtual machines.
@@ -1072,7 +1072,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse startRoles(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Start Roles operation starts the specified set of virtual machines.
@@ -1090,7 +1090,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> startRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
+    Future<OperationStatusResponse> startRolesAsync(String serviceName, String deploymentName, VirtualMachineStartRolesParameters parameters);
     
     /**
     * The Update Role operation adds a virtual machine to an existing
@@ -1135,7 +1135,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing
@@ -1158,7 +1158,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> updateAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
+    Future<OperationStatusResponse> updateAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters);
     
     /**
     * The UpdateLoadBalancedEndpointSet operation changes the specified
@@ -1192,7 +1192,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse updateLoadBalancedEndpointSet(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The UpdateLoadBalancedEndpointSet operation changes the specified
@@ -1214,5 +1214,5 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> updateLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
+    Future<OperationStatusResponse> updateLoadBalancedEndpointSetAsync(String serviceName, String deploymentName, VirtualMachineUpdateLoadBalancedSetParameters parameters);
 }

@@ -53,6 +53,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteRuntimeAvail
 import com.microsoft.windowsazure.management.websites.models.WebSiteSslState;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateConfigurationParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSiteUpdateResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSiteUsageState;
 import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;

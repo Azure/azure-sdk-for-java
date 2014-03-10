@@ -24,12 +24,13 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
@@ -59,12 +60,9 @@ import com.microsoft.windowsazure.management.compute.models.InstanceEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.PersistentVMDowntime;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
-import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValueType;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
-import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReferenceState;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.RoleInstance;
 import com.microsoft.windowsazure.management.compute.models.RoleInstancePowerState;
@@ -163,10 +161,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> addExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> addExtensionAsync(final String serviceName, final HostedServiceAddExtensionParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return addExtension(serviceName, parameters);
             }
          });
@@ -207,7 +205,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse addExtension(String serviceName, HostedServiceAddExtensionParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -224,7 +222,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginAddingExtensionAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -1105,10 +1103,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAllAsync(final String serviceName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteAllAsync(final String serviceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return deleteAll(serviceName);
             }
          });
@@ -1144,7 +1142,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse deleteAll(String serviceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1160,7 +1158,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginDeletingAllAsync(serviceName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -1218,10 +1216,10 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteExtensionAsync(final String serviceName, final String extensionId) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteExtensionAsync(final String serviceName, final String extensionId) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return deleteExtension(serviceName, extensionId);
             }
          });
@@ -1259,7 +1257,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse deleteExtension(String serviceName, String extensionId) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1276,7 +1274,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             }
             
             OperationResponse response = client2.getHostedServicesOperations().beginDeletingExtensionAsync(serviceName, extensionId).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -2333,18 +2331,18 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 }
                                                 
                                                 Element typeElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                                                if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
-                                                    ResourceExtensionParameterValueType typeInstance;
-                                                    typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
+                                                if (typeElement != null) {
+                                                    String typeInstance;
+                                                    typeInstance = typeElement.getTextContent();
                                                     resourceExtensionParameterValueInstance.setType(typeInstance);
                                                 }
                                             }
                                         }
                                         
                                         Element stateElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                                        if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
-                                            ResourceExtensionReferenceState stateInstance;
-                                            stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                        if (stateElement != null) {
+                                            String stateInstance;
+                                            stateInstance = stateElement.getTextContent();
                                             resourceExtensionReferenceInstance.setState(stateInstance);
                                         }
                                     }
@@ -2382,7 +2380,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                         if (diskNameElement != null) {
                                             String diskNameInstance;
                                             diskNameInstance = diskNameElement.getTextContent();
-                                            dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                                            dataVirtualHardDiskInstance.setName(diskNameInstance);
                                         }
                                         
                                         Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
@@ -2431,14 +2429,14 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                     if (diskLabelElement2 != null) {
                                         String diskLabelInstance2;
                                         diskLabelInstance2 = diskLabelElement2.getTextContent();
-                                        oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                                        oSVirtualHardDiskInstance.setLabel(diskLabelInstance2);
                                     }
                                     
                                     Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                                     if (diskNameElement2 != null) {
                                         String diskNameInstance2;
                                         diskNameInstance2 = diskNameElement2.getTextContent();
-                                        oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                                        oSVirtualHardDiskInstance.setName(diskNameInstance2);
                                     }
                                     
                                     Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");

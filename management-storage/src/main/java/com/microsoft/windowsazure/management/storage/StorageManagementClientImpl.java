@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.storage;
 
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.storage.models.OperationStatus;
-import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,10 +191,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * failure.
     */
     @Override
-    public Future<StorageOperationStatusResponse> getOperationStatusAsync(final String requestId) {
-        return this.getExecutorService().submit(new Callable<StorageOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public StorageOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -230,7 +230,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
     * failure.
     */
     @Override
-    public StorageOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
@@ -275,10 +275,10 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
             }
             
             // Create Result
-            StorageOperationStatusResponse result = null;
+            OperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new StorageOperationStatusResponse();
+            result = new OperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -309,7 +309,7 @@ public class StorageManagementClientImpl extends ServiceClient<StorageManagement
                 
                 Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
-                    StorageOperationStatusResponse.ErrorDetails errorInstance = new StorageOperationStatusResponse.ErrorDetails();
+                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");
