@@ -24,12 +24,13 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.DataVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.DeploymentChangeConfigurationParameters;
@@ -56,12 +57,9 @@ import com.microsoft.windowsazure.management.compute.models.InstanceEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.PersistentVMDowntime;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
-import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValueType;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
-import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReferenceState;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.RoleInstance;
 import com.microsoft.windowsazure.management.compute.models.RoleInstancePowerState;
@@ -3102,10 +3100,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> changeConfigurationByNameAsync(final String serviceName, final String deploymentName, final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> changeConfigurationByNameAsync(final String serviceName, final String deploymentName, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return changeConfigurationByName(serviceName, deploymentName, parameters);
             }
          });
@@ -3149,7 +3147,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse changeConfigurationByName(String serviceName, String deploymentName, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3167,7 +3165,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginChangingConfigurationByNameAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -3231,10 +3229,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> changeConfigurationBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentChangeConfigurationParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> changeConfigurationBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentChangeConfigurationParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return changeConfigurationBySlot(serviceName, deploymentSlot, parameters);
             }
          });
@@ -3278,7 +3276,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse changeConfigurationBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentChangeConfigurationParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3296,7 +3294,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginChangingConfigurationBySlotAsync(serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -3358,10 +3356,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return create(serviceName, deploymentSlot, parameters);
             }
          });
@@ -3412,7 +3410,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationStatusResponse create(String serviceName, DeploymentSlot deploymentSlot, DeploymentCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3430,7 +3428,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginCreatingAsync(serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -3492,10 +3490,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteByNameAsync(final String serviceName, final String deploymentName, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteByNameAsync(final String serviceName, final String deploymentName, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return deleteByName(serviceName, deploymentName, deleteFromStorage);
             }
          });
@@ -3537,7 +3535,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse deleteByName(String serviceName, String deploymentName, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3555,7 +3553,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginDeletingByNameAsync(serviceName, deploymentName, deleteFromStorage).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -3615,10 +3613,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return deleteBySlot(serviceName, deploymentSlot);
             }
          });
@@ -3658,7 +3656,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse deleteBySlot(String serviceName, DeploymentSlot deploymentSlot) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -3675,7 +3673,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginDeletingBySlotAsync(serviceName, deploymentSlot).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -4530,18 +4528,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         Element typeElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                                        if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
-                                            ResourceExtensionParameterValueType typeInstance;
-                                            typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
+                                        if (typeElement != null) {
+                                            String typeInstance;
+                                            typeInstance = typeElement.getTextContent();
                                             resourceExtensionParameterValueInstance.setType(typeInstance);
                                         }
                                     }
                                 }
                                 
                                 Element stateElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                                if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
-                                    ResourceExtensionReferenceState stateInstance;
-                                    stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                if (stateElement != null) {
+                                    String stateInstance;
+                                    stateInstance = stateElement.getTextContent();
                                     resourceExtensionReferenceInstance.setState(stateInstance);
                                 }
                             }
@@ -4579,7 +4577,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
                                     diskNameInstance = diskNameElement.getTextContent();
-                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                                    dataVirtualHardDiskInstance.setName(diskNameInstance);
                                 }
                                 
                                 Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
@@ -4628,14 +4626,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
                                 diskLabelInstance2 = diskLabelElement2.getTextContent();
-                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                                oSVirtualHardDiskInstance.setLabel(diskLabelInstance2);
                             }
                             
                             Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
                                 diskNameInstance2 = diskNameElement2.getTextContent();
-                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                                oSVirtualHardDiskInstance.setName(diskNameInstance2);
                             }
                             
                             Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
@@ -5713,18 +5711,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         }
                                         
                                         Element typeElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Type");
-                                        if (typeElement != null && (typeElement.getTextContent() == null || typeElement.getTextContent().isEmpty() == true) == false) {
-                                            ResourceExtensionParameterValueType typeInstance;
-                                            typeInstance = ResourceExtensionParameterValueType.valueOf(typeElement.getTextContent());
+                                        if (typeElement != null) {
+                                            String typeInstance;
+                                            typeInstance = typeElement.getTextContent();
                                             resourceExtensionParameterValueInstance.setType(typeInstance);
                                         }
                                     }
                                 }
                                 
                                 Element stateElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "State");
-                                if (stateElement != null && (stateElement.getTextContent() == null || stateElement.getTextContent().isEmpty() == true) == false) {
-                                    ResourceExtensionReferenceState stateInstance;
-                                    stateInstance = ResourceExtensionReferenceState.valueOf(stateElement.getTextContent());
+                                if (stateElement != null) {
+                                    String stateInstance;
+                                    stateInstance = stateElement.getTextContent();
                                     resourceExtensionReferenceInstance.setState(stateInstance);
                                 }
                             }
@@ -5762,7 +5760,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 if (diskNameElement != null) {
                                     String diskNameInstance;
                                     diskNameInstance = diskNameElement.getTextContent();
-                                    dataVirtualHardDiskInstance.setDiskName(diskNameInstance);
+                                    dataVirtualHardDiskInstance.setName(diskNameInstance);
                                 }
                                 
                                 Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "Lun");
@@ -5811,14 +5809,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             if (diskLabelElement2 != null) {
                                 String diskLabelInstance2;
                                 diskLabelInstance2 = diskLabelElement2.getTextContent();
-                                oSVirtualHardDiskInstance.setDiskLabel(diskLabelInstance2);
+                                oSVirtualHardDiskInstance.setLabel(diskLabelInstance2);
                             }
                             
                             Element diskNameElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                             if (diskNameElement2 != null) {
                                 String diskNameInstance2;
                                 diskNameInstance2 = diskNameElement2.getTextContent();
-                                oSVirtualHardDiskInstance.setDiskName(diskNameInstance2);
+                                oSVirtualHardDiskInstance.setName(diskNameInstance2);
                             }
                             
                             Element mediaLinkElement2 = XmlUtility.getElementByTagNameNS(oSVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "MediaLink");
@@ -6361,10 +6359,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> rebootRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return rebootRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
             }
          });
@@ -6406,7 +6404,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse rebootRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6424,7 +6422,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginRebootingRoleInstanceByDeploymentNameAsync(serviceName, deploymentName, roleInstanceName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -6486,10 +6484,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> rebootRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return rebootRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
             }
          });
@@ -6531,7 +6529,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse rebootRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6549,7 +6547,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginRebootingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -6611,10 +6609,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> reimageRoleInstanceByDeploymentNameAsync(final String serviceName, final String deploymentName, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return reimageRoleInstanceByDeploymentName(serviceName, deploymentName, roleInstanceName);
             }
          });
@@ -6656,7 +6654,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse reimageRoleInstanceByDeploymentName(String serviceName, String deploymentName, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6674,7 +6672,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginReimagingRoleInstanceByDeploymentNameAsync(serviceName, deploymentName, roleInstanceName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -6736,10 +6734,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> reimageRoleInstanceByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final String roleInstanceName) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return reimageRoleInstanceByDeploymentSlot(serviceName, deploymentSlot, roleInstanceName);
             }
          });
@@ -6781,7 +6779,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse reimageRoleInstanceByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, String roleInstanceName) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6799,7 +6797,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginReimagingRoleInstanceByDeploymentSlotAsync(serviceName, deploymentSlot, roleInstanceName).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7178,10 +7176,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> swapAsync(final String serviceName, final DeploymentSwapParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> swapAsync(final String serviceName, final DeploymentSwapParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return swap(serviceName, parameters);
             }
          });
@@ -7223,7 +7221,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse swap(String serviceName, DeploymentSwapParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7240,7 +7238,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginSwappingAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7304,10 +7302,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> updateStatusByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return updateStatusByDeploymentName(serviceName, deploymentName, parameters);
             }
          });
@@ -7351,7 +7349,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse updateStatusByDeploymentName(String serviceName, String deploymentName, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7369,7 +7367,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginUpdatingStatusByDeploymentNameAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7433,10 +7431,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> updateStatusByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpdateStatusParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> updateStatusByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpdateStatusParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return updateStatusByDeploymentSlot(serviceName, deploymentSlot, parameters);
             }
          });
@@ -7480,7 +7478,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse updateStatusByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpdateStatusParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7498,7 +7496,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginUpdatingStatusByDeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7581,10 +7579,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> upgradeByNameAsync(final String serviceName, final String deploymentName, final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> upgradeByNameAsync(final String serviceName, final String deploymentName, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return upgradeByName(serviceName, deploymentName, parameters);
             }
          });
@@ -7647,7 +7645,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse upgradeByName(String serviceName, String deploymentName, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7665,7 +7663,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginUpgradingByNameAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7748,10 +7746,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> upgradeBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpgradeParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> upgradeBySlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentUpgradeParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return upgradeBySlot(serviceName, deploymentSlot, parameters);
             }
          });
@@ -7814,7 +7812,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse upgradeBySlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentUpgradeParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7832,7 +7830,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginUpgradingBySlotAsync(serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -7915,10 +7913,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> walkUpgradeDomainByDeploymentNameAsync(final String serviceName, final String deploymentName, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return walkUpgradeDomainByDeploymentName(serviceName, deploymentName, parameters);
             }
          });
@@ -7981,7 +7979,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse walkUpgradeDomainByDeploymentName(String serviceName, String deploymentName, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -7999,7 +7997,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginWalkingUpgradeDomainByDeploymentNameAsync(serviceName, deploymentName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -8082,10 +8080,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentWalkUpgradeDomainParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> walkUpgradeDomainByDeploymentSlotAsync(final String serviceName, final DeploymentSlot deploymentSlot, final DeploymentWalkUpgradeDomainParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return walkUpgradeDomainByDeploymentSlot(serviceName, deploymentSlot, parameters);
             }
          });
@@ -8148,7 +8146,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse walkUpgradeDomainByDeploymentSlot(String serviceName, DeploymentSlot deploymentSlot, DeploymentWalkUpgradeDomainParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -8166,7 +8164,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             }
             
             OperationResponse response = client2.getDeploymentsOperations().beginWalkingUpgradeDomainByDeploymentSlotAsync(serviceName, deploymentSlot, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);

@@ -45,7 +45,7 @@ public class ResourceExtensionParameterValue {
         this.key = keyValue;
     }
     
-    private ResourceExtensionParameterValueType type;
+    private String type;
     
     /**
     * If this value is set to Private, the parameter will not be returned by
@@ -53,7 +53,7 @@ public class ResourceExtensionParameterValue {
     * private parameter for a maximum of two parameters.
     * @return The Type value.
     */
-    public ResourceExtensionParameterValueType getType() {
+    public String getType() {
         return this.type;
     }
     
@@ -63,7 +63,7 @@ public class ResourceExtensionParameterValue {
     * private parameter for a maximum of two parameters.
     * @param typeValue The Type value.
     */
-    public void setType(final ResourceExtensionParameterValueType typeValue) {
+    public void setType(final String typeValue) {
         this.type = typeValue;
     }
     

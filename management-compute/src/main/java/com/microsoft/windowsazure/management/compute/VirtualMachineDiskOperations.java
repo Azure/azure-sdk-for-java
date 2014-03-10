@@ -24,17 +24,17 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDataDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetDataDiskResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetDiskResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskListResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDataDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDiskResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -127,7 +127,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Add Data Disk operation adds a data disk to a virtual machine. There
@@ -158,7 +158,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> createDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters);
+    Future<OperationResponse> createDataDiskAsync(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters);
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -182,7 +182,7 @@ public interface VirtualMachineDiskOperations {
     * the response.
     * @return A virtual machine disk associated with your subscription.
     */
-    VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
+    VirtualMachineDiskCreateResponse createDisk(VirtualMachineDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -194,7 +194,7 @@ public interface VirtualMachineDiskOperations {
     * operation.
     * @return A virtual machine disk associated with your subscription.
     */
-    Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(VirtualMachineDiskCreateDiskParameters parameters);
+    Future<VirtualMachineDiskCreateResponse> createDiskAsync(VirtualMachineDiskCreateParameters parameters);
     
     /**
     * The Delete Data Disk operation removes the specified data disk from a
@@ -230,7 +230,7 @@ public interface VirtualMachineDiskOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Data Disk operation removes the specified data disk from a
@@ -254,7 +254,7 @@ public interface VirtualMachineDiskOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<ComputeOperationStatusResponse> deleteDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
+    Future<OperationStatusResponse> deleteDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage);
     
     /**
     * The Delete Disk operation deletes the specified data or operating system
@@ -262,7 +262,7 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param diskName The name of the disk to delete.
+    * @param name The name of the disk to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -272,7 +272,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException;
+    OperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException;
     
     /**
     * The Delete Disk operation deletes the specified data or operating system
@@ -280,13 +280,13 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param diskName The name of the disk to delete.
+    * @param name The name of the disk to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> deleteDiskAsync(String diskName, boolean deleteFromStorage);
+    Future<OperationResponse> deleteDiskAsync(String name, boolean deleteFromStorage);
     
     /**
     * The Get Data Disk operation retrieves the specified data disk from a
@@ -310,7 +310,7 @@ public interface VirtualMachineDiskOperations {
     * the response.
     * @return The Get Data Disk operation response.
     */
-    VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    VirtualMachineDataDiskGetResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Data Disk operation retrieves the specified data disk from a
@@ -324,7 +324,7 @@ public interface VirtualMachineDiskOperations {
     * @param logicalUnitNumber The logical unit number of the disk.
     * @return The Get Data Disk operation response.
     */
-    Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber);
+    Future<VirtualMachineDataDiskGetResponse> getDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber);
     
     /**
     * The Get Disk operation retrieves a disk from the user image repository.
@@ -332,7 +332,7 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk.
+    * @param name The name of the disk.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -345,7 +345,7 @@ public interface VirtualMachineDiskOperations {
     * the response.
     * @return A virtual machine disk associated with your subscription.
     */
-    VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
+    VirtualMachineDiskGetResponse getDisk(String name) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The Get Disk operation retrieves a disk from the user image repository.
@@ -353,10 +353,10 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk.
+    * @param name The name of the disk.
     * @return A virtual machine disk associated with your subscription.
     */
-    Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(String diskName);
+    Future<VirtualMachineDiskGetResponse> getDiskAsync(String name);
     
     /**
     * The List Disks operation retrieves a list of the disks in your image
@@ -413,7 +413,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Data Disk operation updates the specified data disk attached
@@ -430,7 +430,7 @@ public interface VirtualMachineDiskOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> updateDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters);
+    Future<OperationResponse> updateDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters);
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -438,7 +438,7 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk being updated.
+    * @param name The name of the disk being updated.
     * @param parameters Parameters supplied to the Update Virtual Machine Disk
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -455,7 +455,7 @@ public interface VirtualMachineDiskOperations {
     * the response.
     * @return A virtual machine disk associated with your subscription.
     */
-    VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
+    VirtualMachineDiskUpdateResponse updateDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException;
     
     /**
     * The Add Disk operation adds a disk to the user image repository. The disk
@@ -463,10 +463,10 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk being updated.
+    * @param name The name of the disk being updated.
     * @param parameters Parameters supplied to the Update Virtual Machine Disk
     * operation.
     * @return A virtual machine disk associated with your subscription.
     */
-    Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(String diskName, VirtualMachineDiskUpdateDiskParameters parameters);
+    Future<VirtualMachineDiskUpdateResponse> updateDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);
 }

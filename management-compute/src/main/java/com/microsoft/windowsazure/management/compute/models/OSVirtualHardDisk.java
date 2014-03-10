@@ -30,44 +30,6 @@ import java.net.URI;
 * virtual machine.
 */
 public class OSVirtualHardDisk {
-    private String diskLabel;
-    
-    /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
-    * @return The DiskLabel value.
-    */
-    public String getDiskLabel() {
-        return this.diskLabel;
-    }
-    
-    /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
-    * @param diskLabelValue The DiskLabel value.
-    */
-    public void setDiskLabel(final String diskLabelValue) {
-        this.diskLabel = diskLabelValue;
-    }
-    
-    private String diskName;
-    
-    /**
-    * Specifies the name an operating system image in the image repository.
-    * @return The DiskName value.
-    */
-    public String getDiskName() {
-        return this.diskName;
-    }
-    
-    /**
-    * Specifies the name an operating system image in the image repository.
-    * @param diskNameValue The DiskName value.
-    */
-    public void setDiskName(final String diskNameValue) {
-        this.diskName = diskNameValue;
-    }
-    
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
@@ -88,6 +50,26 @@ public class OSVirtualHardDisk {
         this.hostCaching = hostCachingValue;
     }
     
+    private String label;
+    
+    /**
+    * Specifies the friendly name an operating system image in the image
+    * repository.
+    * @return The Label value.
+    */
+    public String getLabel() {
+        return this.label;
+    }
+    
+    /**
+    * Specifies the friendly name an operating system image in the image
+    * repository.
+    * @param labelValue The Label value.
+    */
+    public void setLabel(final String labelValue) {
+        this.label = labelValue;
+    }
+    
     private URI mediaLink;
     
     /**
@@ -106,6 +88,24 @@ public class OSVirtualHardDisk {
     */
     public void setMediaLink(final URI mediaLinkValue) {
         this.mediaLink = mediaLinkValue;
+    }
+    
+    private String name;
+    
+    /**
+    * Specifies the name an operating system image in the image repository.
+    * @return The Name value.
+    */
+    public String getName() {
+        return this.name;
+    }
+    
+    /**
+    * Specifies the name an operating system image in the image repository.
+    * @param nameValue The Name value.
+    */
+    public void setName(final String nameValue) {
+        this.name = nameValue;
     }
     
     private String operatingSystem;

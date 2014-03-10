@@ -23,8 +23,8 @@
 
 package com.microsoft.windowsazure.management.store;
 
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
 import com.microsoft.windowsazure.management.store.models.CloudServiceCreateParameters;
 import com.microsoft.windowsazure.management.store.models.CloudServiceListResponse;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public interface CloudServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationStatusResponse beginCreating(CloudServiceCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Cloud Service operation creates a Windows Azure cloud service
@@ -83,7 +83,7 @@ public interface CloudServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> beginCreatingAsync(CloudServiceCreateParameters parameters);
+    Future<OperationStatusResponse> beginCreatingAsync(CloudServiceCreateParameters parameters);
     
     /**
     * The Create Cloud Service operation creates a Windows Azure cloud service
@@ -113,7 +113,7 @@ public interface CloudServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse create(CloudServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Create Cloud Service operation creates a Windows Azure cloud service
@@ -131,7 +131,7 @@ public interface CloudServiceOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> createAsync(CloudServiceCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(CloudServiceCreateParameters parameters);
     
     /**
     * The List Cloud Services operation enumerates Windows Azure Store entries

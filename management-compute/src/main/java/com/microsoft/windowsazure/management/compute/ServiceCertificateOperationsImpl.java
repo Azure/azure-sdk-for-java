@@ -24,12 +24,12 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateDeleteParameters;
 import com.microsoft.windowsazure.management.compute.models.ServiceCertificateGetParameters;
@@ -384,10 +384,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createAsync(final String serviceName, final ServiceCertificateCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return create(serviceName, parameters);
             }
          });
@@ -437,7 +437,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -454,7 +454,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             OperationResponse response = client2.getServiceCertificatesOperations().beginCreatingAsync(serviceName, parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -514,10 +514,10 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteAsync(final ServiceCertificateDeleteParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return delete(parameters);
             }
          });
@@ -559,7 +559,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -575,7 +575,7 @@ public class ServiceCertificateOperationsImpl implements ServiceOperations<Compu
             }
             
             OperationResponse response = client2.getServiceCertificatesOperations().beginDeletingAsync(parameters).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);

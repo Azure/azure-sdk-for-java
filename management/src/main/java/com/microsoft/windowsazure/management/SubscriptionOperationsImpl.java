@@ -583,8 +583,9 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=register";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
+        url = url + "&" + "action=register";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -677,8 +678,9 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?" + "&" + "action=unregister";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + URLEncoder.encode(resourceName, "UTF-8");
+        url = url + "&" + "action=unregister";
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

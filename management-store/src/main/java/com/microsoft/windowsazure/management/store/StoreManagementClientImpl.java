@@ -23,13 +23,13 @@
 
 package com.microsoft.windowsazure.management.store;
 
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceClient;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
-import com.microsoft.windowsazure.management.store.models.OperationStatus;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -196,10 +196,10 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * failure.
     */
     @Override
-    public Future<AddOnOperationStatusResponse> getOperationStatusAsync(final String requestId) {
-        return this.getExecutorService().submit(new Callable<AddOnOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> getOperationStatusAsync(final String requestId) {
+        return this.getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public AddOnOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return getOperationStatus(requestId);
             }
          });
@@ -235,7 +235,7 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
     * failure.
     */
     @Override
-    public AddOnOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException {
         // Validate
         if (requestId == null) {
             throw new NullPointerException("requestId");
@@ -280,10 +280,10 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
             }
             
             // Create Result
-            AddOnOperationStatusResponse result = null;
+            OperationStatusResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new AddOnOperationStatusResponse();
+            result = new OperationStatusResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -314,7 +314,7 @@ public class StoreManagementClientImpl extends ServiceClient<StoreManagementClie
                 
                 Element errorElement = XmlUtility.getElementByTagNameNS(operationElement, "http://schemas.microsoft.com/windowsazure", "Error");
                 if (errorElement != null) {
-                    AddOnOperationStatusResponse.ErrorDetails errorInstance = new AddOnOperationStatusResponse.ErrorDetails();
+                    OperationStatusResponse.ErrorDetails errorInstance = new OperationStatusResponse.ErrorDetails();
                     result.setError(errorInstance);
                     
                     Element codeElement = XmlUtility.getElementByTagNameNS(errorElement, "http://schemas.microsoft.com/windowsazure", "Code");

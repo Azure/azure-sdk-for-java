@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
@@ -33,7 +34,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountListRe
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
-import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.ExecutionException;
@@ -147,7 +147,7 @@ public interface StorageAccountOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Create Storage Account operation creates a new storage account in
@@ -167,7 +167,7 @@ public interface StorageAccountOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<StorageOperationStatusResponse> createAsync(StorageAccountCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(StorageAccountCreateParameters parameters);
     
     /**
     * The Delete Storage Account operation deletes the specifiedstorage account

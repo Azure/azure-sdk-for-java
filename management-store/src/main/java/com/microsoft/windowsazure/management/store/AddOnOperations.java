@@ -23,9 +23,9 @@
 
 package com.microsoft.windowsazure.management.store;
 
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.store.models.AddOnCreateParameters;
-import com.microsoft.windowsazure.management.store.models.AddOnOperationStatusResponse;
 import com.microsoft.windowsazure.management.store.models.AddOnUpdateParameters;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -69,7 +69,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationStatusResponse beginCreating(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Create Store Item operation creates Windows Azure Store entries in a
@@ -91,7 +91,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> beginCreatingAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
+    Future<OperationStatusResponse> beginCreatingAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
     
     /**
     * The Delete Store Item operation deletes Windows Azure Store entries that
@@ -117,7 +117,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException;
+    OperationStatusResponse beginDeleting(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws IOException, ServiceException;
     
     /**
     * The Delete Store Item operation deletes Windows Azure Store entries that
@@ -139,7 +139,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> beginDeletingAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
+    Future<OperationStatusResponse> beginDeletingAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
     
     /**
     * The Create Store Item operation creates Windows Azure Store entries in a
@@ -173,7 +173,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse create(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Create Store Item operation creates Windows Azure Store entries in a
@@ -195,7 +195,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> createAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
+    Future<OperationStatusResponse> createAsync(String cloudServiceName, String resourceName, String addOnName, AddOnCreateParameters parameters);
     
     /**
     * The Delete Store Item operation deletes Windows Azure Storeentries that
@@ -229,7 +229,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse delete(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Delete Store Item operation deletes Windows Azure Storeentries that
@@ -251,7 +251,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> deleteAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
+    Future<OperationStatusResponse> deleteAsync(String cloudServiceName, String resourceProviderNamespace, String resourceProviderType, String resourceProviderName);
     
     /**
     * The Update Store Item operation creates Windows Azure Store entries in a
@@ -283,7 +283,7 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    AddOnOperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationStatusResponse update(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Update Store Item operation creates Windows Azure Store entries in a
@@ -305,5 +305,5 @@ public interface AddOnOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<AddOnOperationStatusResponse> updateAsync(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters);
+    Future<OperationStatusResponse> updateAsync(String cloudServiceName, String resourceName, String addOnName, AddOnUpdateParameters parameters);
 }

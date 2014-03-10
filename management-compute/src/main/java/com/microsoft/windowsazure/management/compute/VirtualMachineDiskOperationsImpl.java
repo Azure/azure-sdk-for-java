@@ -24,22 +24,22 @@
 package com.microsoft.windowsazure.management.compute;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.ComputeOperationStatusResponse;
-import com.microsoft.windowsazure.management.compute.models.OperationStatus;
 import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDataDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateDiskResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetDataDiskResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetDiskResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDataDiskUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskCreateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskListResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDataDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDiskParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateDiskResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineDiskUpdateResponse;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -248,7 +248,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDiskCreateDataDiskParameters parameters) {
+    public Future<OperationResponse> createDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final VirtualMachineDataDiskCreateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
@@ -297,7 +297,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDiskCreateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse createDataDisk(String serviceName, String deploymentName, String roleName, VirtualMachineDataDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -351,15 +351,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
         
-        if (parameters.getDiskLabel() != null) {
+        if (parameters.getLabel() != null) {
             Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
+            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
         
-        if (parameters.getDiskName() != null) {
+        if (parameters.getName() != null) {
             Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
+            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
         
@@ -443,10 +443,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskCreateDiskResponse> createDiskAsync(final VirtualMachineDiskCreateDiskParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskCreateDiskResponse>() { 
+    public Future<VirtualMachineDiskCreateResponse> createDiskAsync(final VirtualMachineDiskCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskCreateResponse>() { 
             @Override
-            public VirtualMachineDiskCreateDiskResponse call() throws Exception {
+            public VirtualMachineDiskCreateResponse call() throws Exception {
                 return createDisk(parameters);
             }
          });
@@ -475,7 +475,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskCreateDiskResponse createDisk(VirtualMachineDiskCreateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public VirtualMachineDiskCreateResponse createDisk(VirtualMachineDiskCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -568,10 +568,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            VirtualMachineDiskCreateDiskResponse result = null;
+            VirtualMachineDiskCreateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineDiskCreateDiskResponse();
+            result = new VirtualMachineDiskCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
@@ -637,7 +637,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 Element attachedToElement = XmlUtility.getElementByTagNameNS(diskElement2, "http://schemas.microsoft.com/windowsazure", "AttachedTo");
                 if (attachedToElement != null) {
-                    VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateDiskResponse.VirtualMachineDiskUsageDetails();
+                    VirtualMachineDiskCreateResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskCreateResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
                     Element hostedServiceNameElement = XmlUtility.getElementByTagNameNS(attachedToElement, "http://schemas.microsoft.com/windowsazure", "HostedServiceName");
@@ -709,10 +709,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public Future<ComputeOperationStatusResponse> deleteDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
-        return this.getClient().getExecutorService().submit(new Callable<ComputeOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> deleteDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final boolean deleteFromStorage) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public ComputeOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return deleteDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage);
             }
          });
@@ -753,7 +753,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * failure.
     */
     @Override
-    public ComputeOperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse deleteDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, boolean deleteFromStorage) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -773,7 +773,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             OperationResponse response = client2.getVirtualMachineDisksOperations().beginDeletingDataDiskAsync(serviceName, deploymentName, roleName, logicalUnitNumber, deleteFromStorage).get();
-            ComputeOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);
@@ -817,18 +817,18 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param diskName The name of the disk to delete.
+    * @param name The name of the disk to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> deleteDiskAsync(final String diskName, final boolean deleteFromStorage) {
+    public Future<OperationResponse> deleteDiskAsync(final String name, final boolean deleteFromStorage) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
-                return deleteDisk(diskName, deleteFromStorage);
+                return deleteDisk(name, deleteFromStorage);
             }
          });
     }
@@ -839,7 +839,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param diskName The name of the disk to delete.
+    * @param name The name of the disk to delete.
     * @param deleteFromStorage Optional. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
@@ -850,10 +850,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse deleteDisk(String diskName, boolean deleteFromStorage) throws IOException, ServiceException {
+    public OperationResponse deleteDisk(String name, boolean deleteFromStorage) throws IOException, ServiceException {
         // Validate
-        if (diskName == null) {
-            throw new NullPointerException("diskName");
+        if (name == null) {
+            throw new NullPointerException("name");
         }
         
         // Tracing
@@ -862,13 +862,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("diskName", diskName);
+            tracingParameters.put("name", name);
             tracingParameters.put("deleteFromStorage", deleteFromStorage);
             CloudTracing.enter(invocationId, this, "deleteDiskAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName + "?";
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -930,10 +930,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The Get Data Disk operation response.
     */
     @Override
-    public Future<VirtualMachineDiskGetDataDiskResponse> getDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDataDiskResponse>() { 
+    public Future<VirtualMachineDataDiskGetResponse> getDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDataDiskGetResponse>() { 
             @Override
-            public VirtualMachineDiskGetDataDiskResponse call() throws Exception {
+            public VirtualMachineDataDiskGetResponse call() throws Exception {
                 return getDataDisk(serviceName, deploymentName, roleName, logicalUnitNumber);
             }
          });
@@ -962,7 +962,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return The Get Data Disk operation response.
     */
     @Override
-    public VirtualMachineDiskGetDataDiskResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineDataDiskGetResponse getDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1016,10 +1016,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            VirtualMachineDiskGetDataDiskResponse result = null;
+            VirtualMachineDataDiskGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineDiskGetDataDiskResponse();
+            result = new VirtualMachineDataDiskGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -1038,14 +1038,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 if (diskLabelElement != null) {
                     String diskLabelInstance;
                     diskLabelInstance = diskLabelElement.getTextContent();
-                    result.setDiskLabel(diskLabelInstance);
+                    result.setLabel(diskLabelInstance);
                 }
                 
                 Element diskNameElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "DiskName");
                 if (diskNameElement != null) {
                     String diskNameInstance;
                     diskNameInstance = diskNameElement.getTextContent();
-                    result.setDiskName(diskNameInstance);
+                    result.setName(diskNameInstance);
                 }
                 
                 Element lunElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDiskElement, "http://schemas.microsoft.com/windowsazure", "Lun");
@@ -1092,15 +1092,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk.
+    * @param name The name of the disk.
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskGetDiskResponse> getDiskAsync(final String diskName) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetDiskResponse>() { 
+    public Future<VirtualMachineDiskGetResponse> getDiskAsync(final String name) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskGetResponse>() { 
             @Override
-            public VirtualMachineDiskGetDiskResponse call() throws Exception {
-                return getDisk(diskName);
+            public VirtualMachineDiskGetResponse call() throws Exception {
+                return getDisk(name);
             }
          });
     }
@@ -1111,7 +1111,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk.
+    * @param name The name of the disk.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1125,10 +1125,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskGetDiskResponse getDisk(String diskName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineDiskGetResponse getDisk(String name) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
-        if (diskName == null) {
-            throw new NullPointerException("diskName");
+        if (name == null) {
+            throw new NullPointerException("name");
         }
         
         // Tracing
@@ -1137,12 +1137,12 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("diskName", diskName);
+            tracingParameters.put("name", name);
             CloudTracing.enter(invocationId, this, "getDiskAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1170,10 +1170,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            VirtualMachineDiskGetDiskResponse result = null;
+            VirtualMachineDiskGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineDiskGetDiskResponse();
+            result = new VirtualMachineDiskGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -1239,7 +1239,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 
                 Element attachedToElement = XmlUtility.getElementByTagNameNS(diskElement, "http://schemas.microsoft.com/windowsazure", "AttachedTo");
                 if (attachedToElement != null) {
-                    VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetDiskResponse.VirtualMachineDiskUsageDetails();
+                    VirtualMachineDiskGetResponse.VirtualMachineDiskUsageDetails attachedToInstance = new VirtualMachineDiskGetResponse.VirtualMachineDiskUsageDetails();
                     result.setUsageDetails(attachedToInstance);
                     
                     Element hostedServiceNameElement = XmlUtility.getElementByTagNameNS(attachedToElement, "http://schemas.microsoft.com/windowsazure", "HostedServiceName");
@@ -1520,7 +1520,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDiskUpdateDataDiskParameters parameters) {
+    public Future<OperationResponse> updateDataDiskAsync(final String serviceName, final String deploymentName, final String roleName, final int logicalUnitNumber, final VirtualMachineDataDiskUpdateParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
@@ -1555,7 +1555,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * request ID.
     */
     @Override
-    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDiskUpdateDataDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse updateDataDisk(String serviceName, String deploymentName, String roleName, int logicalUnitNumber, VirtualMachineDataDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -1610,15 +1610,15 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         hostCachingElement.appendChild(requestDoc.createTextNode(parameters.getHostCaching().toString()));
         dataVirtualHardDiskElement.appendChild(hostCachingElement);
         
-        if (parameters.getDiskLabel() != null) {
+        if (parameters.getLabel() != null) {
             Element diskLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskLabel");
-            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getDiskLabel()));
+            diskLabelElement.appendChild(requestDoc.createTextNode(parameters.getLabel()));
             dataVirtualHardDiskElement.appendChild(diskLabelElement);
         }
         
-        if (parameters.getDiskName() != null) {
+        if (parameters.getName() != null) {
             Element diskNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DiskName");
-            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getDiskName()));
+            diskNameElement.appendChild(requestDoc.createTextNode(parameters.getName()));
             dataVirtualHardDiskElement.appendChild(diskNameElement);
         }
         
@@ -1691,17 +1691,17 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk being updated.
+    * @param name The name of the disk being updated.
     * @param parameters Parameters supplied to the Update Virtual Machine Disk
     * operation.
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineDiskUpdateDiskResponse> updateDiskAsync(final String diskName, final VirtualMachineDiskUpdateDiskParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskUpdateDiskResponse>() { 
+    public Future<VirtualMachineDiskUpdateResponse> updateDiskAsync(final String name, final VirtualMachineDiskUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineDiskUpdateResponse>() { 
             @Override
-            public VirtualMachineDiskUpdateDiskResponse call() throws Exception {
-                return updateDisk(diskName, parameters);
+            public VirtualMachineDiskUpdateResponse call() throws Exception {
+                return updateDisk(name, parameters);
             }
          });
     }
@@ -1712,7 +1712,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param diskName The name of the disk being updated.
+    * @param name The name of the disk being updated.
     * @param parameters Parameters supplied to the Update Virtual Machine Disk
     * operation.
     * @throws ParserConfigurationException Thrown if there was an error
@@ -1730,10 +1730,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
     * @return A virtual machine disk associated with your subscription.
     */
     @Override
-    public VirtualMachineDiskUpdateDiskResponse updateDisk(String diskName, VirtualMachineDiskUpdateDiskParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+    public VirtualMachineDiskUpdateResponse updateDisk(String name, VirtualMachineDiskUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
         // Validate
-        if (diskName == null) {
-            throw new NullPointerException("diskName");
+        if (name == null) {
+            throw new NullPointerException("name");
         }
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -1751,13 +1751,13 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
         if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
-            tracingParameters.put("diskName", diskName);
+            tracingParameters.put("name", name);
             tracingParameters.put("parameters", parameters);
             CloudTracing.enter(invocationId, this, "updateDiskAsync", tracingParameters);
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + diskName;
+        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/disks/" + name;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -1832,10 +1832,10 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
             }
             
             // Create Result
-            VirtualMachineDiskUpdateDiskResponse result = null;
+            VirtualMachineDiskUpdateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineDiskUpdateDiskResponse();
+            result = new VirtualMachineDiskUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();

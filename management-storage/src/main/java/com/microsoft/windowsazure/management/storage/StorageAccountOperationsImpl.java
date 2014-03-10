@@ -24,13 +24,14 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.OperationStatus;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.CheckNameAvailabilityResponse;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
-import com.microsoft.windowsazure.management.storage.models.OperationStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetKeysResponse;
@@ -41,7 +42,6 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountRegene
 import com.microsoft.windowsazure.management.storage.models.StorageAccountRegenerateKeysResponse;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
-import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import com.microsoft.windowsazure.tracing.ClientRequestTrackingHandler;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
@@ -465,10 +465,10 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * failure.
     */
     @Override
-    public Future<StorageOperationStatusResponse> createAsync(final StorageAccountCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<StorageOperationStatusResponse>() { 
+    public Future<OperationStatusResponse> createAsync(final StorageAccountCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
-            public StorageOperationStatusResponse call() throws Exception {
+            public OperationStatusResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -505,7 +505,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
     * failure.
     */
     @Override
-    public StorageOperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse create(StorageAccountCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         StorageManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -521,7 +521,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
             }
             
             OperationResponse response = client2.getStorageAccountsOperations().beginCreatingAsync(parameters).get();
-            StorageOperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
                 Thread.sleep(delayInSeconds * 1000);

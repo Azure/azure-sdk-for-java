@@ -24,9 +24,9 @@
 package com.microsoft.windowsazure.management.storage;
 
 import com.microsoft.windowsazure.core.FilterableService;
+import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.storage.models.StorageOperationStatusResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
@@ -97,7 +97,7 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    StorageOperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    OperationStatusResponse getOperationStatus(String requestId) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
     /**
     * The Get Operation Status operation returns the status of thespecified
@@ -120,5 +120,5 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<StorageOperationStatusResponse> getOperationStatusAsync(String requestId);
+    Future<OperationStatusResponse> getOperationStatusAsync(String requestId);
 }
