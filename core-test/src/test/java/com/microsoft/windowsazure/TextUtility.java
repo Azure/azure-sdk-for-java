@@ -6,7 +6,6 @@ import java.util.Calendar;
 
 import javax.xml.bind.DatatypeConverter;
 
-import com.microsoft.windowsazure.management.websites.models.ServerFarmWorkerSize;
 import com.microsoft.windowsazure.management.websites.models.WebSiteCreateParameters;
 
 public final class TextUtility
@@ -84,6 +83,7 @@ public final class TextUtility
                             "com.microsoft.windowsazure.management")
                     .replace(".Models", ".models")
                     .replace(".WebSites.", ".websites.")
+                    .replace(".Sql.", ".sql.")
                     .replace(".Storage.", ".storage."));
         }
     }

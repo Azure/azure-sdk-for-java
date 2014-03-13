@@ -75,6 +75,11 @@
       <artifactId>microsoft-azure-api-management-storage</artifactId>
       <version>0.4.6</version>
     </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-management-sql</artifactId>
+      <version>0.4.6</version>
+    </dependency>
 
     <dependency>
       <groupId>info.cukes</groupId>
