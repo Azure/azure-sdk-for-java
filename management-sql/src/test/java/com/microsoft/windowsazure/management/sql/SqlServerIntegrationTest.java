@@ -21,7 +21,10 @@ import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse.Server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -33,6 +36,9 @@ import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
+	private static List<String> serverToBeRemoved = new ArrayList<String>();
+	private static ServerOperations serverOperations = sqlManagementClient.getServersOperations();
+	
 	@Before
 	public void setup() throws Exception
 	{
@@ -42,13 +48,9 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 	@After
 	public void tearDown() throws Exception 
 	{
-		ServerOperations serverOperations = sqlManagementClient.getServersOperations();
-		ServerListResponse serverListResponse = serverOperations.list();
-        Iterator<Server> serverList = serverListResponse.iterator();
-        while (serverList.hasNext())
+        for (String serverName : serverToBeRemoved)
         {
-        	Server nextServer = serverList.next();
-        	serverOperations.delete(nextServer.getName());
+        	serverOperations.delete(serverName);
         }
 	}
 	
@@ -61,14 +63,13 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     	String testLocation = "West US";
     	
     	// act
-    	ServerOperations serverOperations = sqlManagementClient.getServersOperations();
     	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
     	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
     	serverCreateParameters.setAdministratorPassword(testPassword);
     	serverCreateParameters.setLocation(testLocation);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
-        
+        serverToBeRemoved.add(serverName);
         
         //assert
         
