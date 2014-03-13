@@ -47,11 +47,15 @@ public class XmlUtility {
 
     public static Element getElementByTagName(Node element, String name) {
         NodeList elements = element.getChildNodes();
-        for (int i = 0; i < elements.getLength(); i++) {
-            Element currentElement = (Element) elements.item(i);
-            if (currentElement.getNodeName().equals(name)) {
+        if (elements != null) {
+            for (int i = 0; i < elements.getLength(); i++) {
+                if (elements.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                    Element currentElement = (Element) elements.item(i);
+                    if (currentElement.getNodeName().equals(name)) {
 
-                return currentElement;
+                        return currentElement;
+                    }
+                }
             }
         }
 
