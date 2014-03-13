@@ -15,30 +15,21 @@
 package com.microsoft.windowsazure.management.sql;
 
 
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse.DatabaseOperation;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
+import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse.Server;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.junit.*;
 import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
 
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Alteration;
-import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.Configuration;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.LoggingFilter;
-import com.sun.xml.bind.v2.schemagen.xmlschema.List;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
@@ -48,21 +39,91 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 		createService();
 	}
 	
+	@After
+	public void tearDown() throws Exception 
+	{
+		ServerOperations serverOperations = sqlManagementClient.getServersOperations();
+		ServerListResponse serverListResponse = serverOperations.list();
+        Iterator<Server> serverList = serverListResponse.iterator();
+        while (serverList.hasNext())
+        {
+        	Server nextServer = serverList.next();
+        	serverOperations.delete(nextServer.getName());
+        }
+	}
+	
     @Test
     public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {
     	//arrange 
+    	String testAdministratorUserName = "testadminname";
+    	String testPassword = "testpassword8!";
+    	String testLocation = "West US";
+    	
+    	// act
     	ServerOperations serverOperations = sqlManagementClient.getServersOperations();
     	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-    	serverCreateParameters.setAdministratorUserName("testadminname");
-    	serverCreateParameters.setAdministratorPassword("testpassword8!");
-    	serverCreateParameters.setLocation("West US");
-        serverOperations.create(serverCreateParameters);
+    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+    	serverCreateParameters.setAdministratorPassword(testPassword);
+    	serverCreateParameters.setLocation(testLocation);
+        ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
+        String serverName = serverCreateResponse.getServerName();
+        
+        
+        //assert
+        
         ServerListResponse serverListResponse = serverOperations.list();
         Iterator<Server> serverList = serverListResponse.iterator();
-        Server nextServer = serverList.next();
+        Server createdServer = null;
+        while (serverList.hasNext())
+        {
+            Server nextServer = serverList.next();
+            if (nextServer.getName().equals(serverName))
+            {
+            	createdServer = nextServer;
+            }
+        }
+        assertNotNull(createdServer);
+        assertEquals(testAdministratorUserName, createdServer.getAdministratorUserName());
+        assertEquals(testLocation, createdServer.getLocation());
         
     }
+    
+    @Test
+    public void deleteServerSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
+    	//arrange 
+    	String testAdministratorUserName = "testadminname";
+    	String testPassword = "testpassword8!";
+    	String testLocation = "West US";
+    	
+    	// act
+    	ServerOperations serverOperations = sqlManagementClient.getServersOperations();
+    	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+    	serverCreateParameters.setAdministratorPassword(testPassword);
+    	serverCreateParameters.setLocation(testLocation);
+        ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
+        String serverName = serverCreateResponse.getServerName();
+        serverOperations.delete(serverName);
+        
+        // assert
+        ServerListResponse serverListResponse = serverOperations.list();
+        Iterator<Server> serverList = serverListResponse.iterator();
+        Server createdServer = null;
+        while (serverList.hasNext())
+        {
+            Server nextServer = serverList.next();
+            if (nextServer.getName().equals(serverName))
+            {
+            	createdServer = nextServer;
+            }
+        }
+        assertNull(createdServer);
+        
+    }
+    
+    
     
     
     
