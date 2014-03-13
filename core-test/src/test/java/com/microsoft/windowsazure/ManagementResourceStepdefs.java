@@ -55,6 +55,12 @@ public class ManagementResourceStepdefs
             Method method = serviceClass.getMethod("create", Configuration.class);
             objects.put(name, method.invoke(null, createConfiguration()));   
         }
+        else if (objectType.equals("SqlManagementClient"))
+        {
+            Class<?> serviceClass = Class.forName("com.microsoft.windowsazure.management.sql.SqlManagementService");
+            Method method = serviceClass.getMethod("create", Configuration.class);
+            objects.put(name, method.invoke(null, createConfiguration()));   
+        }
         else
         {
             Class<?> objectClass = TextUtility.getJavaType(objectType);
@@ -287,10 +293,10 @@ public class ManagementResourceStepdefs
                 parent = method.invoke(parent);   
             }
         }
-        
+
         return parent;
     }
-    
+
     protected static Configuration createConfiguration() throws Exception
     {
         return ManagementConfiguration.configure(
