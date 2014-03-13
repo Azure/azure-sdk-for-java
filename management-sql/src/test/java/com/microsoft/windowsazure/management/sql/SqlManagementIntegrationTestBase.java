@@ -14,6 +14,7 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
+
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class SqlManagementIntegrationTestBase {
 
-    protected static ManagementClient managementClient;
+    protected static SqlManagementClient sqlManagementClient;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -34,7 +35,7 @@ public abstract class SqlManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Alteration<Client>() {
+        builder.alter(SqlManagementClient.class, Client.class, new Alteration<Client>() {
             @Override
             public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
                 client.addFilter(new LoggingFilter());
@@ -42,7 +43,7 @@ public abstract class SqlManagementIntegrationTestBase {
             }
         });
 
-        managementClient = ManagementService.create(config);
+        sqlManagementClient = SqlManagementService.create(config);
     }
 
     protected static Configuration createConfiguration() throws Exception {
