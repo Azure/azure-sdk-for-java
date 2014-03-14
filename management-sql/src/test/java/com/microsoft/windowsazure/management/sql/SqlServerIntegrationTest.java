@@ -37,12 +37,13 @@ import com.microsoft.windowsazure.exception.ServiceException;
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
 	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static ServerOperations serverOperations = sqlManagementClient.getServersOperations();
+	private static ServerOperations serverOperations;
 	
 	@Before
 	public void setup() throws Exception
 	{
 		createService();
+		serverOperations = sqlManagementClient.getServersOperations();
 	}
 	
 	@After

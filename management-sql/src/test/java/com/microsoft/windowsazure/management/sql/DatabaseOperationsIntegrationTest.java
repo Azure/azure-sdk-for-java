@@ -15,26 +15,132 @@
 package com.microsoft.windowsazure.management.sql;
 
 
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse.DatabaseOperation;
+import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Alteration;
-import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.Configuration;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.LoggingFilter;
+import org.junit.*;
+import org.xml.sax.SAXException;
+
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
+import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse.Database;
+import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
+import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 
 public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
-
+	
+	private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
+	private static List<String> serverToBeRemoved = new ArrayList<String>();
+	private static DatabaseOperations databaseOperations = sqlManagementClient.getDatabasesOperations();
+	private static ServerOperations serverOperations = sqlManagementClient.getServersOperations();
+	private static String testAdministratorPasswordValue = "testAdminPassword!8";
+	private static String testAdministratorUserNameValue = "testadminuser";
+	private static String testLocationValue = "West US";
+	
+	@Before
+	public void setup() throws Exception
+	{
+		createService();
+		databaseOperations = sqlManagementClient.getDatabasesOperations();
+		serverOperations = sqlManagementClient.getServersOperations();
+	}
+	
+	@After
+	public void tearDown() throws Exception 
+	{
+        for (String databaseName : databaseToBeRemoved.keySet())
+        {
+        	String serverName = databaseToBeRemoved.get(databaseName);
+        	databaseOperations.delete(serverName, databaseName);
+        }
+        
+        for (String serverName : serverToBeRemoved)
+        {
+        	serverOperations.delete(serverName);
+        }
+	}
+	
+	private String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+	{
+		ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+		serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
+		serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
+		serverCreateParameters.setLocation(testLocationValue);
+		ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
+		String serverName = serverCreateResponse.getServerName();
+		serverToBeRemoved.add(serverName);
+		return serverName; 
+	
+	}
+	
     @Test
-    public void createDatabaseWithRequiredParameters() 
+    public void createDatabaseWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {
-    	DatabaseOperations databaseOperations = sqlManagementClient.getDatabasesOperations();
+    	// arrange 
+    	String expectedServerName = createServer();
     	
+    	// act 
+    	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
+    	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(expectedServerName, databaseCreateParameters);
+    	databaseToBeRemoved.put(expectedServerName, databaseCreateResponse.getName());
+    	
+    	// assert
+    	assertNotNull(databaseCreateResponse);
     }
+    
+    @Test
+    public void createDatabaseWithOptionalParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
+    {
+    	// arrange 
+    	long expectedMaximumDatabaseSizeInGBValue = 15; 
+    	String expectedDatabaseName = "expecteddatabasename";
+    	String expectedServerName = createServer();
+    	
+    	// act 
+    	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
+    	databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaximumDatabaseSizeInGBValue);
+    	databaseCreateParameters.setName(expectedDatabaseName);
+    	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(expectedServerName, databaseCreateParameters);
+    	
+    	
+    	// assert
+    	assertEquals(expectedDatabaseName, databaseCreateResponse.getName());
+    	assertEquals(expectedMaximumDatabaseSizeInGBValue, databaseCreateResponse.getMaximumDatabaseSizeInGB());
+        
+    }
+    
+    @Test
+    public void deleteDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
+    {
+    	// arrange 
+    	String serverName = createServer();
+    	
+    	// act 
+    	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
+    	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
+    	String databaseName = databaseCreateResponse.getName();
+    	databaseToBeRemoved.put(serverName, databaseName);
+    	databaseOperations.delete(serverName, databaseName);
+    	
+    	// assert
+    	DatabaseListResponse databaseListResponse = databaseOperations.list(serverName);
+    	ArrayList<Database> databaseList = databaseListResponse.getDatabases();
+    	for (Database database : databaseList)
+    	{
+    		assertNotEquals(databaseName, database.getName());
+    	}
+
+    }
+    
+    
 }
