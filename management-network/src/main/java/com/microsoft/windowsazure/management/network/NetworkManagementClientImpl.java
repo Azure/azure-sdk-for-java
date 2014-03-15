@@ -281,7 +281,16 @@ public class NetworkManagementClientImpl extends ServiceClient<NetworkManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        String baseUrl = this.getBaseUri().toString();
+        String url = "/" + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

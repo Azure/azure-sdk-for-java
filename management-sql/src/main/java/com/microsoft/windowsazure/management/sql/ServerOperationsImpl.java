@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.sql.models.Server;
 import com.microsoft.windowsazure.management.sql.models.ServerChangeAdministratorPasswordParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
@@ -154,7 +155,16 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "?" + "op=ResetPassword";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "?" + "op=ResetPassword";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -286,7 +296,16 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -427,7 +446,16 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -519,7 +547,16 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -560,7 +597,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
             if (serversSequenceElement != null) {
                 for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").size(); i1 = i1 + 1) {
                     org.w3c.dom.Element serversElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(serversSequenceElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Server").get(i1));
-                    ServerListResponse.Server serverInstance = new ServerListResponse.Server();
+                    Server serverInstance = new Server();
                     result.getServers().add(serverInstance);
                     
                     Element nameElement = XmlUtility.getElementByTagNameNS(serversElement, "http://schemas.microsoft.com/sqlazure/2010/12/", "Name");

@@ -170,7 +170,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingCredentials";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingCredentials";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -340,7 +349,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -522,7 +540,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=dnssuffix";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=dnssuffix";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -628,7 +655,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -816,7 +852,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=georegions";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=georegions";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -948,7 +993,16 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingUsers";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingUsers";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1073,10 +1127,19 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites" + "?";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites" + "?";
         if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0) {
             url = url + "&" + "propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
         }
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

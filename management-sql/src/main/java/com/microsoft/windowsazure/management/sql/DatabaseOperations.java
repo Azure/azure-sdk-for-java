@@ -27,6 +27,8 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
+import com.microsoft.windowsazure.management.sql.models.DatabaseGetEventLogsParameters;
+import com.microsoft.windowsazure.management.sql.models.DatabaseGetEventLogsResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseGetResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
 import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
@@ -58,8 +60,7 @@ public interface DatabaseOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the database create response.
     */
     DatabaseCreateResponse create(String serverName, DatabaseCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
@@ -69,8 +70,7 @@ public interface DatabaseOperations {
     * @param serverName The name of the SQL Server where the database will be
     * created.
     * @param parameters The parameters for the create database operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the database create response.
     */
     Future<DatabaseCreateResponse> createAsync(String serverName, DatabaseCreateParameters parameters);
     
@@ -116,8 +116,7 @@ public interface DatabaseOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the database get response.
     */
     DatabaseGetResponse get(String serverName, String databaseName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
     
@@ -127,10 +126,43 @@ public interface DatabaseOperations {
     * @param serverName The name of the SQL Server on which the database is
     * housed.
     * @param databaseName The name of the SQL Server database to be obtained.
+    * @return Response containing the database get response.
+    */
+    Future<DatabaseGetResponse> getAsync(String serverName, String databaseName);
+    
+    /**
+    * Returns information about a SQL Server database event logs.
+    *
+    * @param serverName The name of the SQL Server on which the database is
+    * housed.
+    * @param databaseName The name of the SQL Server database to be obtained.
+    * @param parameters The parameters for the get event logs database
+    * operation.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<DatabaseGetResponse> getAsync(String serverName, String databaseName);
+    DatabaseGetEventLogsResponse getEventLogs(String serverName, String databaseName, DatabaseGetEventLogsParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Returns information about a SQL Server database event logs.
+    *
+    * @param serverName The name of the SQL Server on which the database is
+    * housed.
+    * @param databaseName The name of the SQL Server database to be obtained.
+    * @param parameters The parameters for the get event logs database
+    * operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<DatabaseGetEventLogsResponse> getEventLogsAsync(String serverName, String databaseName, DatabaseGetEventLogsParameters parameters);
     
     /**
     * Returns the list SQL Server databases.
@@ -172,8 +204,7 @@ public interface DatabaseOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the database update response.
     */
     DatabaseUpdateResponse update(String serverName, String databaseName, DatabaseUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
@@ -183,8 +214,7 @@ public interface DatabaseOperations {
     * @param serverName The name of the SQL Server where the database is housed.
     * @param databaseName The name of the SQL Server database to be obtained.
     * @param parameters The parameters for the update database operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the database update response.
     */
     Future<DatabaseUpdateResponse> updateAsync(String serverName, String databaseName, DatabaseUpdateParameters parameters);
 }

@@ -124,7 +124,16 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/servicebus/namespaces/" + namespaceName + "/Relays/" + relayName + "/ConnectionDetails";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/servicebus/namespaces/" + namespaceName + "/Relays/" + relayName + "/ConnectionDetails";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);

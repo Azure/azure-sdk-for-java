@@ -339,7 +339,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -502,7 +511,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "comp=media";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "comp=media";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -609,7 +627,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -710,7 +737,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/operations/isavailable/" + serviceName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/operations/isavailable/" + serviceName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -865,7 +901,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -1039,7 +1084,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
@@ -1372,7 +1426,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -1569,7 +1632,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "embed-detail=true";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "embed-detail=true";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2783,7 +2855,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -2938,7 +3019,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3133,7 +3223,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3313,7 +3412,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3490,7 +3598,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions/" + providerNamespace + "/" + extensionType;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions/" + providerNamespace + "/" + extensionType;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -3701,7 +3818,16 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
