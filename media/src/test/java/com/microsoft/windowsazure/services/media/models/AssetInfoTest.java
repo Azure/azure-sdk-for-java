@@ -22,12 +22,10 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 
-public class AssetInfoTest
-{
+public class AssetInfoTest {
 
     @Test
-    public void testGetSetId()
-    {
+    public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
         AssetInfo assetInfo = new AssetInfo(null,
@@ -42,8 +40,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetState()
-    {
+    public void testGetSetState() {
         // Arrange
         AssetState expectedState = AssetState.Published;
         AssetInfo assetInfo = new AssetInfo(null,
@@ -57,8 +54,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetCreated() throws Exception
-    {
+    public void testGetSetCreated() throws Exception {
         // Arrange
         Date expectedCreated = new Date();
 
@@ -74,8 +70,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetLastModified() throws Exception
-    {
+    public void testGetSetLastModified() throws Exception {
         // Arrange
         Date expectedLastModified = new Date();
         AssetInfo assetInfo = new AssetInfo(null,
@@ -89,8 +84,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetAlternateId()
-    {
+    public void testGetSetAlternateId() {
         // Arrange
         String expectedAlternateId = "testAlternateId";
         AssetInfo assetInfo = new AssetInfo(null,
@@ -104,8 +98,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetName()
-    {
+    public void testGetSetName() {
         // Arrange
         String expectedName = "testName";
         AssetInfo assetInfo = new AssetInfo(null,
@@ -119,8 +112,7 @@ public class AssetInfoTest
     }
 
     @Test
-    public void testGetSetOptions()
-    {
+    public void testGetSetOptions() {
         // Arrange
 
         AssetOption expectedOptions = AssetOption.None;

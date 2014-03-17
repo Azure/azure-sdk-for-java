@@ -56,11 +56,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to delete the data disk
+    * from.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -77,11 +78,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to delete the data disk
+    * from.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -109,11 +111,11 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -150,11 +152,11 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157199.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param parameters Parameters supplied to the Create Virtual Machine Data
-    * Disk operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Data Disk operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -166,8 +168,8 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Disk operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -190,8 +192,8 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Disk
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Disk operation.
     * @return A virtual machine disk associated with your subscription.
     */
     Future<VirtualMachineDiskCreateResponse> createDiskAsync(VirtualMachineDiskCreateParameters parameters);
@@ -202,11 +204,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to delete the data disk
+    * from.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
@@ -238,11 +241,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157179.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to delete the data disk from.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to delete the data disk
+    * from.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
@@ -262,8 +266,8 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param name The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param name Required. The name of the disk to delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -280,8 +284,8 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157200.aspx for
     * more information)
     *
-    * @param name The name of the disk to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param name Required. The name of the disk to delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -294,10 +298,10 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -318,10 +322,10 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157180.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role.
-    * @param logicalUnitNumber The logical unit number of the disk.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
     * @return The Get Data Disk operation response.
     */
     Future<VirtualMachineDataDiskGetResponse> getDataDiskAsync(String serviceName, String deploymentName, String roleName, int logicalUnitNumber);
@@ -332,7 +336,7 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param name The name of the disk.
+    * @param name Required. The name of the disk.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -353,7 +357,7 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param name The name of the disk.
+    * @param name Required. The name of the disk.
     * @return A virtual machine disk associated with your subscription.
     */
     Future<VirtualMachineDiskGetResponse> getDiskAsync(String name);
@@ -394,12 +398,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Data Disk operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -421,12 +425,12 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157190.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of the deployment.
-    * @param roleName The name of the role to add the data disk to.
-    * @param logicalUnitNumber The logical unit number of the disk.
-    * @param parameters Parameters supplied to the Update Virtual Machine Data
-    * Disk operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of the deployment.
+    * @param roleName Required. The name of the role to add the data disk to.
+    * @param logicalUnitNumber Required. The logical unit number of the disk.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Data Disk operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -438,9 +442,9 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param name The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -463,9 +467,9 @@ public interface VirtualMachineDiskOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157178.aspx for
     * more information)
     *
-    * @param name The name of the disk being updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Disk
-    * operation.
+    * @param name Required. The name of the disk being updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Disk operation.
     * @return A virtual machine disk associated with your subscription.
     */
     Future<VirtualMachineDiskUpdateResponse> updateDiskAsync(String name, VirtualMachineDiskUpdateParameters parameters);

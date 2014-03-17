@@ -34,6 +34,7 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
     private ArrayList<ServiceBusNotificationHub> notificationHubs;
     
     /**
+    * Optional.
     * @return The NotificationHubs value.
     */
     public ArrayList<ServiceBusNotificationHub> getNotificationHubs() {
@@ -41,6 +42,7 @@ public class ServiceBusNotificationHubsResponse extends OperationResponse implem
     }
     
     /**
+    * Optional.
     * @param notificationHubsValue The NotificationHubs value.
     */
     public void setNotificationHubs(final ArrayList<ServiceBusNotificationHub> notificationHubsValue) {

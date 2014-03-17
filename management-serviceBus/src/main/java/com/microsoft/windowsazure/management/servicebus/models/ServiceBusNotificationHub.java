@@ -29,6 +29,7 @@ public class ServiceBusNotificationHub {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**
+    * Optional.
     * @return The AuthorizationRules value.
     */
     public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
@@ -36,6 +37,7 @@ public class ServiceBusNotificationHub {
     }
     
     /**
+    * Optional.
     * @param authorizationRulesValue The AuthorizationRules value.
     */
     public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {
@@ -45,6 +47,7 @@ public class ServiceBusNotificationHub {
     private String name;
     
     /**
+    * Optional.
     * @return The Name value.
     */
     public String getName() {
@@ -52,6 +55,7 @@ public class ServiceBusNotificationHub {
     }
     
     /**
+    * Optional.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -61,6 +65,7 @@ public class ServiceBusNotificationHub {
     private String registrationTtl;
     
     /**
+    * Optional.
     * @return The RegistrationTtl value.
     */
     public String getRegistrationTtl() {
@@ -68,6 +73,7 @@ public class ServiceBusNotificationHub {
     }
     
     /**
+    * Optional.
     * @param registrationTtlValue The RegistrationTtl value.
     */
     public void setRegistrationTtl(final String registrationTtlValue) {

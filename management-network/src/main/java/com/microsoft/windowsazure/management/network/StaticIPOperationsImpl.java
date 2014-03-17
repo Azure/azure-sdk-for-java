@@ -71,8 +71,8 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
     * The Check Static IP operation retrieves the details for the availability
     * of static IP addresses for the given virtual network.
     *
-    * @param networkName The name of the virtual network.
-    * @param ipAddress The address of the static IP.
+    * @param networkName Required. The name of the virtual network.
+    * @param ipAddress Required. The address of the static IP.
     * @return A response that indicates the availability of a static IP
     * address, and if not, provide a list of suggestions.
     */
@@ -90,8 +90,8 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
     * The Check Static IP operation retrieves the details for the availability
     * of static IP addresses for the given virtual network.
     *
-    * @param networkName The name of the virtual network.
-    * @param ipAddress The address of the static IP.
+    * @param networkName Required. The name of the virtual network.
+    * @param ipAddress Required. The address of the static IP.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

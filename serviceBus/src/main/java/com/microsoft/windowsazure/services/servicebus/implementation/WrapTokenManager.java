@@ -27,8 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.inject.Inject;
 import javax.management.timer.Timer;
 
-public class WrapTokenManager
-{
+public class WrapTokenManager {
 
     WrapContract contract;
     private final DateFactory dateFactory;
@@ -40,8 +39,7 @@ public class WrapTokenManager
 
     @Inject
     public WrapTokenManager(WrapContract contract, DateFactory dateFactory,
-            ServiceBusConnectionSettings connectionSettings)
-    {
+            ServiceBusConnectionSettings connectionSettings) {
         this.contract = contract;
         this.dateFactory = dateFactory;
         this.uri = connectionSettings.getWrapUri();
@@ -53,8 +51,7 @@ public class WrapTokenManager
     /**
      * @return the contract
      */
-    public WrapContract getContract()
-    {
+    public WrapContract getContract() {
         return contract;
     }
 
@@ -62,14 +59,12 @@ public class WrapTokenManager
      * @param contract
      *            the contract to set
      */
-    public void setContract(WrapContract contract)
-    {
+    public void setContract(WrapContract contract) {
         this.contract = contract;
     }
 
     public String getAccessToken(URI targetUri) throws ServiceException,
-            URISyntaxException
-    {
+            URISyntaxException {
         Date now = dateFactory.getDate();
 
         URI scopeUri = new URI("http", targetUri.getAuthority(),
@@ -78,19 +73,16 @@ public class WrapTokenManager
 
         ActiveToken active = this.activeTokens.get(scope);
 
-        if (active != null && now.before(active.getExpiresUtc()))
-        {
+        if (active != null && now.before(active.getExpiresUtc())) {
             return active.getWrapResponse().getAccessToken();
         }
 
         // sweep expired tokens out of collection
         Iterator<Entry<String, ActiveToken>> iterator = activeTokens.entrySet()
                 .iterator();
-        while (iterator.hasNext())
-        {
+        while (iterator.hasNext()) {
             Entry<String, ActiveToken> entry = iterator.next();
-            if (!now.before(entry.getValue().getExpiresUtc()))
-            {
+            if (!now.before(entry.getValue().getExpiresUtc())) {
                 iterator.remove();
             }
         }
@@ -108,16 +100,14 @@ public class WrapTokenManager
         return wrapResponse.getAccessToken();
     }
 
-    class ActiveToken
-    {
+    class ActiveToken {
         Date expiresUtc;
         WrapAccessTokenResult wrapResponse;
 
         /**
          * @return the expiresUtc
          */
-        public Date getExpiresUtc()
-        {
+        public Date getExpiresUtc() {
             return expiresUtc;
         }
 
@@ -125,16 +115,14 @@ public class WrapTokenManager
          * @param expiresUtc
          *            the expiresUtc to set
          */
-        public void setExpiresUtc(Date expiresUtc)
-        {
+        public void setExpiresUtc(Date expiresUtc) {
             this.expiresUtc = expiresUtc;
         }
 
         /**
          * @return the wrapResponse
          */
-        public WrapAccessTokenResult getWrapResponse()
-        {
+        public WrapAccessTokenResult getWrapResponse() {
             return wrapResponse;
         }
 
@@ -142,8 +130,7 @@ public class WrapTokenManager
          * @param wrapResponse
          *            the wrapResponse to set
          */
-        public void setWrapResponse(WrapAccessTokenResult wrapResponse)
-        {
+        public void setWrapResponse(WrapAccessTokenResult wrapResponse) {
             this.wrapResponse = wrapResponse;
         }
     }

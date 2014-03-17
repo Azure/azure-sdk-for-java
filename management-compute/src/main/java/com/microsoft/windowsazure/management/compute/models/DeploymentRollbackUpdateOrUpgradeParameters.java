@@ -30,9 +30,9 @@ public class DeploymentRollbackUpdateOrUpgradeParameters {
     private boolean force;
     
     /**
-    * Specifies whether the rollback should proceed even when it will cause
-    * local data to be lost from some role instances. True if the rollback
-    * should proceed; otherwise false.
+    * Optional. Specifies whether the rollback should proceed even when it will
+    * cause local data to be lost from some role instances. True if the
+    * rollback should proceed; otherwise false.
     * @return The Force value.
     */
     public boolean isForce() {
@@ -40,9 +40,9 @@ public class DeploymentRollbackUpdateOrUpgradeParameters {
     }
     
     /**
-    * Specifies whether the rollback should proceed even when it will cause
-    * local data to be lost from some role instances. True if the rollback
-    * should proceed; otherwise false.
+    * Optional. Specifies whether the rollback should proceed even when it will
+    * cause local data to be lost from some role instances. True if the
+    * rollback should proceed; otherwise false.
     * @param forceValue The Force value.
     */
     public void setForce(final boolean forceValue) {

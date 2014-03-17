@@ -25,8 +25,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * depending on the values of the Etag or last modified time of the container.
  * Options that are not set will not be passed to the server with a request.
  */
-public class SetContainerMetadataOptions extends BlobServiceOptions
-{
+public class SetContainerMetadataOptions extends BlobServiceOptions {
     private AccessConditionHeader accessCondition;
 
     /**
@@ -41,8 +40,7 @@ public class SetContainerMetadataOptions extends BlobServiceOptions
      * @return A reference to this {@link SetContainerMetadataOptions} instance.
      */
     @Override
-    public SetContainerMetadataOptions setTimeout(Integer timeout)
-    {
+    public SetContainerMetadataOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -55,8 +53,7 @@ public class SetContainerMetadataOptions extends BlobServiceOptions
      *         modified time conditions for performing the set container
      *         metadata operation, or <code>null</code> if not set.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -80,8 +77,7 @@ public class SetContainerMetadataOptions extends BlobServiceOptions
      * @return A reference to this {@link SetContainerMetadataOptions} instance.
      */
     public SetContainerMetadataOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

@@ -32,8 +32,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
 public class SharedKeyLiteFilter extends ClientFilter implements
-        EntityStreamingListener
-{
+        EntityStreamingListener {
     private static Log log = LogFactory.getLog(SharedKeyLiteFilter.class);
 
     private final String accountName;
@@ -41,8 +40,7 @@ public class SharedKeyLiteFilter extends ClientFilter implements
 
     public SharedKeyLiteFilter(
             @Named(BlobConfiguration.ACCOUNT_NAME) String accountName,
-            @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey)
-    {
+            @Named(BlobConfiguration.ACCOUNT_KEY) String accountKey) {
 
         this.accountName = accountName;
         this.signer = new HmacSHA256Sign(accountKey);
@@ -50,19 +48,16 @@ public class SharedKeyLiteFilter extends ClientFilter implements
 
     @Override
     public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException
-    {
+            throws ClientHandlerException {
         // Only sign if no other filter is handling authorization
-        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null)
-        {
+        if (cr.getProperties().get(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER) == null) {
             cr.getProperties().put(SharedKeyUtils.AUTHORIZATION_FILTER_MARKER,
                     null);
 
             // Register ourselves as listener so we are called back when the
             // entity is
             // written to the output stream by the next filter in line.
-            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null)
-            {
+            if (cr.getProperties().get(EntityStreamingListener.class.getName()) == null) {
                 cr.getProperties().put(EntityStreamingListener.class.getName(),
                         this);
             }
@@ -72,8 +67,7 @@ public class SharedKeyLiteFilter extends ClientFilter implements
     }
 
     @Override
-    public void onBeforeStreamingEntity(ClientRequest clientRequest)
-    {
+    public void onBeforeStreamingEntity(ClientRequest clientRequest) {
         // All headers should be known at this point, time to sign!
         sign(clientRequest);
     }
@@ -82,16 +76,14 @@ public class SharedKeyLiteFilter extends ClientFilter implements
      * StringToSign = VERB + "\n" + Content-MD5 + "\n" + Content-Type + "\n" +
      * Date + "\n" + CanonicalizedHeaders + CanonicalizedResource;
      */
-    public void sign(ClientRequest cr)
-    {
+    public void sign(ClientRequest cr) {
         // gather signed material
         String requestMethod = cr.getMethod();
         String contentMD5 = getHeader(cr, "Content-MD5");
         String contentType = getHeader(cr, "Content-Type");
         String date = getHeader(cr, "Date");
 
-        if (date == "")
-        {
+        if (date == "") {
             date = new RFC1123DateConverter().format(new Date());
             cr.getHeaders().add("Date", date);
         }
@@ -103,8 +95,7 @@ public class SharedKeyLiteFilter extends ClientFilter implements
         stringToSign += addCanonicalizedHeaders(cr);
         stringToSign += addCanonicalizedResource(cr);
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug(String.format("String to sign: \"%s\"", stringToSign));
         }
 
@@ -136,8 +127,7 @@ public class SharedKeyLiteFilter extends ClientFilter implements
      * the resulting list. Construct the CanonicalizedHeaders string by
      * concatenating all headers in this list into a single string.
      */
-    private String addCanonicalizedHeaders(ClientRequest cr)
-    {
+    private String addCanonicalizedHeaders(ClientRequest cr) {
         return SharedKeyUtils.getCanonicalizedHeaders(cr);
     }
 
@@ -158,26 +148,22 @@ public class SharedKeyLiteFilter extends ClientFilter implements
      * example, ?comp=metadata). No other parameters should be included on the
      * query string.
      */
-    private String addCanonicalizedResource(ClientRequest cr)
-    {
+    private String addCanonicalizedResource(ClientRequest cr) {
         String result = "/" + this.accountName;
 
         result += cr.getURI().getPath();
 
         List<QueryParam> queryParams = SharedKeyUtils.getQueryParams(cr
                 .getURI().getQuery());
-        for (QueryParam p : queryParams)
-        {
-            if ("comp".equals(p.getName()))
-            {
+        for (QueryParam p : queryParams) {
+            if ("comp".equals(p.getName())) {
                 result += "?" + p.getName() + "=" + p.getValues().get(0);
             }
         }
         return result;
     }
 
-    private String getHeader(ClientRequest cr, String headerKey)
-    {
+    private String getHeader(ClientRequest cr, String headerKey) {
         return SharedKeyUtils.getHeader(cr, headerKey);
     }
 }

@@ -61,11 +61,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -91,11 +92,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -111,11 +113,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -141,11 +144,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -161,9 +165,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -189,9 +194,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -206,9 +212,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -228,9 +234,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -246,8 +252,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -266,8 +272,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -283,9 +289,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -305,9 +311,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -323,9 +329,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -345,9 +351,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -363,9 +369,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -385,9 +391,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -403,9 +409,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -425,9 +431,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -444,8 +450,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -472,8 +479,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -490,10 +498,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -520,10 +528,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -540,10 +548,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -570,10 +578,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -610,9 +618,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -659,9 +668,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -698,9 +708,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -747,9 +758,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -785,10 +797,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -834,10 +846,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -873,10 +885,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -922,10 +934,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -941,11 +953,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -980,11 +993,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1007,11 +1021,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1046,11 +1061,12 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1073,9 +1089,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1119,9 +1136,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1143,9 +1161,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
@@ -1180,9 +1198,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
@@ -1205,8 +1223,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1240,8 +1258,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1260,8 +1278,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of the deployment.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1282,8 +1300,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of the deployment.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
     * @return A deployment that exists in the cloud service.
     */
     Future<DeploymentGetResponse> getByNameAsync(String serviceName, String deploymentName);
@@ -1294,8 +1312,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1316,8 +1334,8 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return A deployment that exists in the cloud service.
     */
     Future<DeploymentGetResponse> getBySlotAsync(String serviceName, DeploymentSlot deploymentSlot);
@@ -1334,9 +1352,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1358,9 +1377,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1378,9 +1398,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1402,9 +1423,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1420,9 +1442,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1457,9 +1479,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1482,9 +1504,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1519,9 +1541,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1544,9 +1566,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1581,9 +1603,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1606,9 +1628,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1643,9 +1665,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1670,10 +1692,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1701,10 +1723,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1722,10 +1744,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1753,10 +1775,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1773,8 +1795,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1810,8 +1833,9 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1835,10 +1859,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1874,10 +1898,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1901,10 +1925,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1940,10 +1964,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1987,9 +2011,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2045,9 +2070,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -2091,9 +2117,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2149,9 +2176,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -2194,10 +2222,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2252,10 +2280,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -2298,10 +2326,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -2356,10 +2384,10 @@ public interface DeploymentOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

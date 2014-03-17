@@ -32,7 +32,7 @@ public class DacImportParameters {
     private String azureEdition;
     
     /**
-    * The edition of this database.
+    * Optional. The edition of this database.
     * @return The AzureEdition value.
     */
     public String getAzureEdition() {
@@ -40,7 +40,7 @@ public class DacImportParameters {
     }
     
     /**
-    * The edition of this database.
+    * Optional. The edition of this database.
     * @param azureEditionValue The AzureEdition value.
     */
     public void setAzureEdition(final String azureEditionValue) {
@@ -50,7 +50,7 @@ public class DacImportParameters {
     private DacImportParameters.BlobCredentialsParameter blobCredentials;
     
     /**
-    * Gets or sets credentials for getting the DAC.
+    * Optional. Gets or sets credentials for getting the DAC.
     * @return The BlobCredentials value.
     */
     public DacImportParameters.BlobCredentialsParameter getBlobCredentials() {
@@ -58,7 +58,7 @@ public class DacImportParameters {
     }
     
     /**
-    * Gets or sets credentials for getting the DAC.
+    * Optional. Gets or sets credentials for getting the DAC.
     * @param blobCredentialsValue The BlobCredentials value.
     */
     public void setBlobCredentials(final DacImportParameters.BlobCredentialsParameter blobCredentialsValue) {
@@ -68,7 +68,7 @@ public class DacImportParameters {
     private DacImportParameters.ConnectionInfoParameter connectionInfo;
     
     /**
-    * Gets or sets connection information for the SQL Server Database.
+    * Optional. Gets or sets connection information for the SQL Server Database.
     * @return The ConnectionInfo value.
     */
     public DacImportParameters.ConnectionInfoParameter getConnectionInfo() {
@@ -76,7 +76,7 @@ public class DacImportParameters {
     }
     
     /**
-    * Gets or sets connection information for the SQL Server Database.
+    * Optional. Gets or sets connection information for the SQL Server Database.
     * @param connectionInfoValue The ConnectionInfo value.
     */
     public void setConnectionInfo(final DacImportParameters.ConnectionInfoParameter connectionInfoValue) {
@@ -86,7 +86,7 @@ public class DacImportParameters {
     private int databaseSizeInGB;
     
     /**
-    * Gets or sets the size of this database.
+    * Optional. Gets or sets the size of this database.
     * @return The DatabaseSizeInGB value.
     */
     public int getDatabaseSizeInGB() {
@@ -94,7 +94,7 @@ public class DacImportParameters {
     }
     
     /**
-    * Gets or sets the size of this database.
+    * Optional. Gets or sets the size of this database.
     * @param databaseSizeInGBValue The DatabaseSizeInGB value.
     */
     public void setDatabaseSizeInGB(final int databaseSizeInGBValue) {
@@ -108,7 +108,7 @@ public class DacImportParameters {
         private String storageAccessKey;
         
         /**
-        * Gets or sets the key for the Windows Azure Storage account.
+        * Required. Gets or sets the key for the Windows Azure Storage account.
         * @return The StorageAccessKey value.
         */
         public String getStorageAccessKey() {
@@ -116,7 +116,7 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the key for the Windows Azure Storage account.
+        * Required. Gets or sets the key for the Windows Azure Storage account.
         * @param storageAccessKeyValue The StorageAccessKey value.
         */
         public void setStorageAccessKey(final String storageAccessKeyValue) {
@@ -126,8 +126,8 @@ public class DacImportParameters {
         private URI uri;
         
         /**
-        * Gets or sets the URI of the DAC file stored in Windows Azure Blob
-        * Storage.
+        * Required. Gets or sets the URI of the DAC file stored in Windows
+        * Azure Blob Storage.
         * @return The Uri value.
         */
         public URI getUri() {
@@ -135,8 +135,8 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the URI of the DAC file stored in Windows Azure Blob
-        * Storage.
+        * Required. Gets or sets the URI of the DAC file stored in Windows
+        * Azure Blob Storage.
         * @param uriValue The Uri value.
         */
         public void setUri(final URI uriValue) {
@@ -151,7 +151,7 @@ public class DacImportParameters {
         private String databaseName;
         
         /**
-        * Gets or sets the name of the database.
+        * Required. Gets or sets the name of the database.
         * @return The DatabaseName value.
         */
         public String getDatabaseName() {
@@ -159,7 +159,7 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the name of the database.
+        * Required. Gets or sets the name of the database.
         * @param databaseNameValue The DatabaseName value.
         */
         public void setDatabaseName(final String databaseNameValue) {
@@ -169,7 +169,7 @@ public class DacImportParameters {
         private String password;
         
         /**
-        * Gets or sets the password for the database user.
+        * Required. Gets or sets the password for the database user.
         * @return The Password value.
         */
         public String getPassword() {
@@ -177,7 +177,7 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the password for the database user.
+        * Required. Gets or sets the password for the database user.
         * @param passwordValue The Password value.
         */
         public void setPassword(final String passwordValue) {
@@ -187,7 +187,7 @@ public class DacImportParameters {
         private String serverName;
         
         /**
-        * Gets or sets the SQL server name.
+        * Required. Gets or sets the SQL server name.
         * @return The ServerName value.
         */
         public String getServerName() {
@@ -195,7 +195,7 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the SQL server name.
+        * Required. Gets or sets the SQL server name.
         * @param serverNameValue The ServerName value.
         */
         public void setServerName(final String serverNameValue) {
@@ -205,7 +205,7 @@ public class DacImportParameters {
         private String userName;
         
         /**
-        * Gets or sets the username of the database user.
+        * Required. Gets or sets the username of the database user.
         * @return The UserName value.
         */
         public String getUserName() {
@@ -213,7 +213,7 @@ public class DacImportParameters {
         }
         
         /**
-        * Gets or sets the username of the database user.
+        * Required. Gets or sets the username of the database user.
         * @param userNameValue The UserName value.
         */
         public void setUserName(final String userNameValue) {

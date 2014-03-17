@@ -22,11 +22,9 @@ import com.microsoft.windowsazure.services.blob.implementation.SharedKeyLiteFilt
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.ISO8601DateConverter;
 
-public class Exports implements Builder.Exports
-{
+public class Exports implements Builder.Exports {
     @Override
-    public void register(Builder.Registry registry)
-    {
+    public void register(Builder.Registry registry) {
         registry.add(BlobContract.class, BlobExceptionProcessor.class);
         registry.add(BlobExceptionProcessor.class);
         registry.add(BlobRestProxy.class);

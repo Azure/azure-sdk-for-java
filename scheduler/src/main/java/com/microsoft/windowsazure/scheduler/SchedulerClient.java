@@ -27,15 +27,14 @@ import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import java.net.URI;
 
-public interface SchedulerClient extends FilterableService<SchedulerClient>
-{
-    URI getBaseUri(); 
-    
-    String getCloudServiceName(); 
-    
-    SubscriptionCloudCredentials getCredentials(); 
-    
-    String getJobCollectionName(); 
-    
-    JobOperations getJobsOperations(); 
+public interface SchedulerClient extends FilterableService<SchedulerClient> {
+    URI getBaseUri();
+
+    String getCloudServiceName();
+
+    SubscriptionCloudCredentials getCredentials();
+
+    String getJobCollectionName();
+
+    JobOperations getJobsOperations();
 }

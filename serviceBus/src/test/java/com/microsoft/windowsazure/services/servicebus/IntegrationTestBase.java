@@ -26,40 +26,32 @@ import com.microsoft.windowsazure.services.servicebus.models.QueueInfo;
 import com.microsoft.windowsazure.services.servicebus.models.ReceiveMessageOptions;
 import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 
-public abstract class IntegrationTestBase
-{
+public abstract class IntegrationTestBase {
 
     private ServiceBusContract service;
 
     @BeforeClass
-    public static void initializeSystem()
-    {
+    public static void initializeSystem() {
         System.setProperty("http.keepAlive", "false");
     }
 
     @Before
-    public void initialize() throws Exception
-    {
+    public void initialize() throws Exception {
 
         boolean testAlphaExists = false;
         Configuration config = createConfiguration();
         service = ServiceBusService.create(config);
-        for (QueueInfo queue : iterateQueues(service))
-        {
+        for (QueueInfo queue : iterateQueues(service)) {
             String queueName = queue.getPath();
-            if (queueName.startsWith("Test") || queueName.startsWith("test"))
-            {
-                if (queueName.equalsIgnoreCase("TestAlpha"))
-                {
+            if (queueName.startsWith("Test") || queueName.startsWith("test")) {
+                if (queueName.equalsIgnoreCase("TestAlpha")) {
                     testAlphaExists = true;
                     long count = queue.getMessageCount();
-                    for (long i = 0; i != count; ++i)
-                    {
+                    for (long i = 0; i != count; ++i) {
                         service.receiveQueueMessage(queueName,
                                 new ReceiveMessageOptions().setTimeout(20));
                     }
-                } else
-                {
+                } else {
                     service.deleteQueue(queueName);
                 }
             }
@@ -67,56 +59,45 @@ public abstract class IntegrationTestBase
 
         removeTopics();
 
-        if (!testAlphaExists)
-        {
+        if (!testAlphaExists) {
             service.createQueue(new QueueInfo("TestAlpha"));
         }
     }
 
-    protected void removeTopics() throws ServiceException
-    {
-        for (TopicInfo topic : iterateTopics(service))
-        {
+    protected void removeTopics() throws ServiceException {
+        for (TopicInfo topic : iterateTopics(service)) {
             String topicName = topic.getPath();
-            if (topicName.startsWith("Test") || topicName.startsWith("test"))
-            {
+            if (topicName.startsWith("Test") || topicName.startsWith("test")) {
                 service.deleteTopic(topicName);
             }
         }
     }
 
     @AfterClass
-    public static void cleanUpTestArtifacts() throws Exception
-    {
+    public static void cleanUpTestArtifacts() throws Exception {
         Configuration config = createConfiguration();
         ServiceBusContract service = ServiceBusService.create(config);
-        for (QueueInfo queue : iterateQueues(service))
-        {
+        for (QueueInfo queue : iterateQueues(service)) {
             String queueName = queue.getPath();
-            if (queueName.startsWith("Test") || queueName.startsWith("test"))
-            {
+            if (queueName.startsWith("Test") || queueName.startsWith("test")) {
                 service.deleteQueue(queueName);
             }
         }
-        for (TopicInfo topic : iterateTopics(service))
-        {
+        for (TopicInfo topic : iterateTopics(service)) {
             String topicName = topic.getPath();
-            if (topicName.startsWith("Test") || topicName.startsWith("test"))
-            {
+            if (topicName.startsWith("Test") || topicName.startsWith("test")) {
                 service.deleteTopic(topicName);
             }
         }
     }
 
-    protected static Configuration createConfiguration() throws Exception
-    {
+    protected static Configuration createConfiguration() throws Exception {
         Configuration config = Configuration.load();
         overrideWithEnv(config, ServiceBusConfiguration.CONNECTION_STRING);
         return config;
     }
 
-    private static void overrideWithEnv(Configuration config, String key)
-    {
+    private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
         if (value == null)
             return;

@@ -88,12 +88,13 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the webspace for the website where the
-    * operation was targeted.
-    * @param siteName The name of the site where the operation was targeted.
-    * @param operationId The operation ID for the operation you wish to track.
-    * The operation ID is returned in the Id field in the body of the response
-    * for long-running operations.
+    * @param webSpaceName Required. The name of the webspace for the website
+    * where the operation was targeted.
+    * @param siteName Required. The name of the site where the operation was
+    * targeted.
+    * @param operationId Required. The operation ID for the operation you wish
+    * to track. The operation ID is returned in the Id field in the body of
+    * the response for long-running operations.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -119,12 +120,13 @@ public interface WebSiteManagementClient extends FilterableService<WebSiteManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the webspace for the website where the
-    * operation was targeted.
-    * @param siteName The name of the site where the operation was targeted.
-    * @param operationId The operation ID for the operation you wish to track.
-    * The operation ID is returned in the Id field in the body of the response
-    * for long-running operations.
+    * @param webSpaceName Required. The name of the webspace for the website
+    * where the operation was targeted.
+    * @param siteName Required. The name of the site where the operation was
+    * targeted.
+    * @param operationId Required. The operation ID for the operation you wish
+    * to track. The operation ID is returned in the Id field in the body of
+    * the response for long-running operations.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is

@@ -33,8 +33,8 @@ public class OSVirtualHardDisk {
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
-    * Specifies the platform caching behavior of the operating system disk blob
-    * for read/write efficiency.
+    * Optional. Specifies the platform caching behavior of the operating system
+    * disk blob for read/write efficiency.
     * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching() {
@@ -42,8 +42,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Specifies the platform caching behavior of the operating system disk blob
-    * for read/write efficiency.
+    * Optional. Specifies the platform caching behavior of the operating system
+    * disk blob for read/write efficiency.
     * @param hostCachingValue The HostCaching value.
     */
     public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
@@ -53,8 +53,8 @@ public class OSVirtualHardDisk {
     private String label;
     
     /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
+    * Optional. Specifies the friendly name an operating system image in the
+    * image repository.
     * @return The Label value.
     */
     public String getLabel() {
@@ -62,8 +62,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Specifies the friendly name an operating system image in the image
-    * repository.
+    * Optional. Specifies the friendly name an operating system image in the
+    * image repository.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -73,8 +73,8 @@ public class OSVirtualHardDisk {
     private URI mediaLink;
     
     /**
-    * Specifies the location of the operating system disk in Windows Azure
-    * storage.
+    * Optional. Specifies the location of the operating system disk in Windows
+    * Azure storage.
     * @return The MediaLink value.
     */
     public URI getMediaLink() {
@@ -82,8 +82,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Specifies the location of the operating system disk in Windows Azure
-    * storage.
+    * Optional. Specifies the location of the operating system disk in Windows
+    * Azure storage.
     * @param mediaLinkValue The MediaLink value.
     */
     public void setMediaLink(final URI mediaLinkValue) {
@@ -93,7 +93,8 @@ public class OSVirtualHardDisk {
     private String name;
     
     /**
-    * Specifies the name an operating system image in the image repository.
+    * Optional. Specifies the name an operating system image in the image
+    * repository.
     * @return The Name value.
     */
     public String getName() {
@@ -101,7 +102,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Specifies the name an operating system image in the image repository.
+    * Optional. Specifies the name an operating system image in the image
+    * repository.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -111,7 +113,7 @@ public class OSVirtualHardDisk {
     private String operatingSystem;
     
     /**
-    * The operating system running in the virtual machine.
+    * Optional. The operating system running in the virtual machine.
     * @return The OperatingSystem value.
     */
     public String getOperatingSystem() {
@@ -119,7 +121,7 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * The operating system running in the virtual machine.
+    * Optional. The operating system running in the virtual machine.
     * @param operatingSystemValue The OperatingSystem value.
     */
     public void setOperatingSystem(final String operatingSystemValue) {
@@ -129,8 +131,8 @@ public class OSVirtualHardDisk {
     private String sourceImageName;
     
     /**
-    * Specifies the name of the source image that was used to provision the
-    * virtual machine.
+    * Optional. Specifies the name of the source image that was used to
+    * provision the virtual machine.
     * @return The SourceImageName value.
     */
     public String getSourceImageName() {
@@ -138,8 +140,8 @@ public class OSVirtualHardDisk {
     }
     
     /**
-    * Specifies the name of the source image that was used to provision the
-    * virtual machine.
+    * Optional. Specifies the name of the source image that was used to
+    * provision the virtual machine.
     * @param sourceImageNameValue The SourceImageName value.
     */
     public void setSourceImageName(final String sourceImageNameValue) {

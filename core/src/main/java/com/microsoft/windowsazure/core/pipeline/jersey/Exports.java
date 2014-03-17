@@ -25,18 +25,14 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 
-public class Exports implements Builder.Exports
-{
+public class Exports implements Builder.Exports {
 
     @Override
-    public void register(Registry registry)
-    {
-        registry.add(new Builder.Factory<ClientConfig>()
-        {
+    public void register(Registry registry) {
+        registry.add(new Builder.Factory<ClientConfig>() {
             @Override
             public <S> ClientConfig create(String profile, Class<S> service,
-                    Builder builder, Map<String, Object> properties)
-            {
+                    Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = new DefaultClientConfig();
                 ClientConfigSettings settings = builder.build(profile, service,
                         ClientConfigSettings.class, properties);
@@ -45,14 +41,12 @@ public class Exports implements Builder.Exports
             }
         });
 
-        registry.add(new Builder.Factory<ClientConfigSettings>()
-        {
+        registry.add(new Builder.Factory<ClientConfigSettings>() {
 
             @Override
             public <S> ClientConfigSettings create(String profile,
                     Class<S> service, Builder builder,
-                    Map<String, Object> properties)
-            {
+                    Map<String, Object> properties) {
                 Object connectTimeout = getPropertyIfExists(profile,
                         properties, Configuration.PROPERTY_CONNECT_TIMEOUT);
                 Object readTimeout = getPropertyIfExists(profile, properties,
@@ -67,12 +61,10 @@ public class Exports implements Builder.Exports
 
         });
 
-        registry.add(new Builder.Factory<Client>()
-        {
+        registry.add(new Builder.Factory<Client>() {
             @Override
             public <S> Client create(String profile, Class<S> service,
-                    Builder builder, Map<String, Object> properties)
-            {
+                    Builder builder, Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, service,
                         ClientConfig.class, properties);
                 ClientConfigSettings settings = builder.build(profile, service,
@@ -83,13 +75,11 @@ public class Exports implements Builder.Exports
             }
         });
 
-        registry.add(new Builder.Factory<HttpURLConnectionClient>()
-        {
+        registry.add(new Builder.Factory<HttpURLConnectionClient>() {
             @Override
             public <S> HttpURLConnectionClient create(String profile,
                     Class<S> service, Builder builder,
-                    Map<String, Object> properties)
-            {
+                    Map<String, Object> properties) {
                 ClientConfig clientConfig = builder.build(profile, service,
                         ClientConfig.class, properties);
                 ClientConfigSettings settings = builder.build(profile, service,

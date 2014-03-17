@@ -34,7 +34,8 @@ public class StorageAccountProperties {
     private String affinityGroup;
     
     /**
-    * The affinity group with which this storage account is associated.
+    * Optional. The affinity group with which this storage account is
+    * associated.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -42,7 +43,8 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The affinity group with which this storage account is associated.
+    * Optional. The affinity group with which this storage account is
+    * associated.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -52,7 +54,7 @@ public class StorageAccountProperties {
     private String description;
     
     /**
-    * The user supplied description of the storage account.
+    * Optional. The user supplied description of the storage account.
     * @return The Description value.
     */
     public String getDescription() {
@@ -60,7 +62,7 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The user supplied description of the storage account.
+    * Optional. The user supplied description of the storage account.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -70,8 +72,8 @@ public class StorageAccountProperties {
     private ArrayList<URI> endpoints;
     
     /**
-    * The URLs that are used to perform a retrieval of a public blob, queue, or
-    * table object.
+    * Optional. The URLs that are used to perform a retrieval of a public blob,
+    * queue, or table object.
     * @return The Endpoints value.
     */
     public ArrayList<URI> getEndpoints() {
@@ -79,8 +81,8 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The URLs that are used to perform a retrieval of a public blob, queue, or
-    * table object.
+    * Optional. The URLs that are used to perform a retrieval of a public blob,
+    * queue, or table object.
     * @param endpointsValue The Endpoints value.
     */
     public void setEndpoints(final ArrayList<URI> endpointsValue) {
@@ -90,8 +92,8 @@ public class StorageAccountProperties {
     private String geoPrimaryRegion;
     
     /**
-    * Indicates the primary geographical region in which the storage account
-    * exists at this time.
+    * Optional. Indicates the primary geographical region in which the storage
+    * account exists at this time.
     * @return The GeoPrimaryRegion value.
     */
     public String getGeoPrimaryRegion() {
@@ -99,8 +101,8 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Indicates the primary geographical region in which the storage account
-    * exists at this time.
+    * Optional. Indicates the primary geographical region in which the storage
+    * account exists at this time.
     * @param geoPrimaryRegionValue The GeoPrimaryRegion value.
     */
     public void setGeoPrimaryRegion(final String geoPrimaryRegionValue) {
@@ -110,10 +112,10 @@ public class StorageAccountProperties {
     private boolean geoReplicationEnabled;
     
     /**
-    * Indicates whether the data in the storage account is replicated across
-    * more than one geographic location so as to enable resilience in the face
-    * of catastrophic service loss. The value is true if geo-replication is
-    * enabled; otherwise false.
+    * Optional. Indicates whether the data in the storage account is replicated
+    * across more than one geographic location so as to enable resilience in
+    * the face of catastrophic service loss. The value is true if
+    * geo-replication is enabled; otherwise false.
     * @return The GeoReplicationEnabled value.
     */
     public boolean isGeoReplicationEnabled() {
@@ -121,10 +123,10 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Indicates whether the data in the storage account is replicated across
-    * more than one geographic location so as to enable resilience in the face
-    * of catastrophic service loss. The value is true if geo-replication is
-    * enabled; otherwise false.
+    * Optional. Indicates whether the data in the storage account is replicated
+    * across more than one geographic location so as to enable resilience in
+    * the face of catastrophic service loss. The value is true if
+    * geo-replication is enabled; otherwise false.
     * @param geoReplicationEnabledValue The GeoReplicationEnabled value.
     */
     public void setGeoReplicationEnabled(final boolean geoReplicationEnabledValue) {
@@ -134,8 +136,8 @@ public class StorageAccountProperties {
     private String geoSecondaryRegion;
     
     /**
-    * Indicates the geographical region in which the storage account is being
-    * replicated.  The GeoSecondaryRegion element is not returned if
+    * Optional. Indicates the geographical region in which the storage account
+    * is being replicated.  The GeoSecondaryRegion element is not returned if
     * geo-replication is “off” for this account.
     * @return The GeoSecondaryRegion value.
     */
@@ -144,8 +146,8 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Indicates the geographical region in which the storage account is being
-    * replicated.  The GeoSecondaryRegion element is not returned if
+    * Optional. Indicates the geographical region in which the storage account
+    * is being replicated.  The GeoSecondaryRegion element is not returned if
     * geo-replication is “off” for this account.
     * @param geoSecondaryRegionValue The GeoSecondaryRegion value.
     */
@@ -156,9 +158,9 @@ public class StorageAccountProperties {
     private String label;
     
     /**
-    * The user supplied name of the storage account returned as a base-64
-    * encoded string. This name can be used identify the storage account for
-    * your tracking purposes.
+    * Optional. The user supplied name of the storage account returned as a
+    * base-64 encoded string. This name can be used identify the storage
+    * account for your tracking purposes.
     * @return The Label value.
     */
     public String getLabel() {
@@ -166,9 +168,9 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The user supplied name of the storage account returned as a base-64
-    * encoded string. This name can be used identify the storage account for
-    * your tracking purposes.
+    * Optional. The user supplied name of the storage account returned as a
+    * base-64 encoded string. This name can be used identify the storage
+    * account for your tracking purposes.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -178,9 +180,10 @@ public class StorageAccountProperties {
     private Calendar lastGeoFailoverTime;
     
     /**
-    * A timestamp that indicates the most recent instance of a failover to the
-    * secondary region. In case of multiple failovers only the latest failover
-    * date and time maintained. The format of the returned timestamp is:
+    * Optional. A timestamp that indicates the most recent instance of a
+    * failover to the secondary region. In case of multiple failovers only the
+    * latest failover date and time maintained. The format of the returned
+    * timestamp is:
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
     * LastGeoFailoverTime is not returned if there has not been an instance
     * of a failover.
@@ -191,9 +194,10 @@ public class StorageAccountProperties {
     }
     
     /**
-    * A timestamp that indicates the most recent instance of a failover to the
-    * secondary region. In case of multiple failovers only the latest failover
-    * date and time maintained. The format of the returned timestamp is:
+    * Optional. A timestamp that indicates the most recent instance of a
+    * failover to the secondary region. In case of multiple failovers only the
+    * latest failover date and time maintained. The format of the returned
+    * timestamp is:
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitMinute]:[2DigitSecond]:[7DigitsOfPrecision]Z.
     * LastGeoFailoverTime is not returned if there has not been an instance
     * of a failover.
@@ -206,9 +210,9 @@ public class StorageAccountProperties {
     private String location;
     
     /**
-    * The geo-location specified when the storage account was created. This
-    * property is only returned if the storage account is not associated with
-    * an affinity group.
+    * Optional. The geo-location specified when the storage account was
+    * created. This property is only returned if the storage account is not
+    * associated with an affinity group.
     * @return The Location value.
     */
     public String getLocation() {
@@ -216,9 +220,9 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The geo-location specified when the storage account was created. This
-    * property is only returned if the storage account is not associated with
-    * an affinity group.
+    * Optional. The geo-location specified when the storage account was
+    * created. This property is only returned if the storage account is not
+    * associated with an affinity group.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
@@ -228,7 +232,8 @@ public class StorageAccountProperties {
     private StorageAccountStatus status;
     
     /**
-    * The status of the storage account at the time the operation was called.
+    * Optional. The status of the storage account at the time the operation was
+    * called.
     * @return The Status value.
     */
     public StorageAccountStatus getStatus() {
@@ -236,7 +241,8 @@ public class StorageAccountProperties {
     }
     
     /**
-    * The status of the storage account at the time the operation was called.
+    * Optional. The status of the storage account at the time the operation was
+    * called.
     * @param statusValue The Status value.
     */
     public void setStatus(final StorageAccountStatus statusValue) {
@@ -246,7 +252,7 @@ public class StorageAccountProperties {
     private GeoRegionStatus statusOfGeoPrimaryRegion;
     
     /**
-    * Indicates whether the primary storage region is available.
+    * Optional. Indicates whether the primary storage region is available.
     * @return The StatusOfGeoPrimaryRegion value.
     */
     public GeoRegionStatus getStatusOfGeoPrimaryRegion() {
@@ -254,7 +260,7 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Indicates whether the primary storage region is available.
+    * Optional. Indicates whether the primary storage region is available.
     * @param statusOfGeoPrimaryRegionValue The StatusOfGeoPrimaryRegion value.
     */
     public void setStatusOfGeoPrimaryRegion(final GeoRegionStatus statusOfGeoPrimaryRegionValue) {
@@ -264,7 +270,7 @@ public class StorageAccountProperties {
     private GeoRegionStatus statusOfGeoSecondaryRegion;
     
     /**
-    * Indicates whether the secondary storage region is available.
+    * Optional. Indicates whether the secondary storage region is available.
     * @return The StatusOfGeoSecondaryRegion value.
     */
     public GeoRegionStatus getStatusOfGeoSecondaryRegion() {
@@ -272,7 +278,7 @@ public class StorageAccountProperties {
     }
     
     /**
-    * Indicates whether the secondary storage region is available.
+    * Optional. Indicates whether the secondary storage region is available.
     * @param statusOfGeoSecondaryRegionValue The StatusOfGeoSecondaryRegion
     * value.
     */

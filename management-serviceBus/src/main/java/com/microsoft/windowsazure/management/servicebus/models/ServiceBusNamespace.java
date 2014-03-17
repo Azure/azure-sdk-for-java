@@ -33,7 +33,7 @@ public class ServiceBusNamespace {
     private URI acsManagementEndpoint;
     
     /**
-    * ACS endpoint you can use to obtain access tokens.  (see
+    * Optional. ACS endpoint you can use to obtain access tokens.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @return The AcsManagementEndpoint value.
@@ -43,7 +43,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * ACS endpoint you can use to obtain access tokens.  (see
+    * Optional. ACS endpoint you can use to obtain access tokens.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @param acsManagementEndpointValue The AcsManagementEndpoint value.
@@ -55,7 +55,7 @@ public class ServiceBusNamespace {
     private Calendar createdAt;
     
     /**
-    * The time the namespace was created.
+    * Optional. The time the namespace was created.
     * @return The CreatedAt value.
     */
     public Calendar getCreatedAt() {
@@ -63,7 +63,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * The time the namespace was created.
+    * Optional. The time the namespace was created.
     * @param createdAtValue The CreatedAt value.
     */
     public void setCreatedAt(final Calendar createdAtValue) {
@@ -73,7 +73,7 @@ public class ServiceBusNamespace {
     private boolean enabled;
     
     /**
-    * Whether or not the namespace is currently enabled.
+    * Optional. Whether or not the namespace is currently enabled.
     * @return The Enabled value.
     */
     public boolean isEnabled() {
@@ -81,7 +81,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * Whether or not the namespace is currently enabled.
+    * Optional. Whether or not the namespace is currently enabled.
     * @param enabledValue The Enabled value.
     */
     public void setEnabled(final boolean enabledValue) {
@@ -91,7 +91,7 @@ public class ServiceBusNamespace {
     private String name;
     
     /**
-    * The name of the namespace.
+    * Optional. The name of the namespace.
     * @return The Name value.
     */
     public String getName() {
@@ -99,7 +99,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * The name of the namespace.
+    * Optional. The name of the namespace.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -109,9 +109,10 @@ public class ServiceBusNamespace {
     private String region;
     
     /**
-    * Specifies the targeted region in which the namespace should be created.
-    * It can be any of the following values: East AsiaNorth EuropeWest
-    * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
+    * Optional. Specifies the targeted region in which the namespace should be
+    * created. It can be any of the following values: East AsiaNorth
+    * EuropeWest EuropeEast USSoutheast AsiaNorth Central USWest USSouth
+    * Central US  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @return The Region value.
@@ -121,9 +122,10 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * Specifies the targeted region in which the namespace should be created.
-    * It can be any of the following values: East AsiaNorth EuropeWest
-    * EuropeEast USSoutheast AsiaNorth Central USWest USSouth Central US  (see
+    * Optional. Specifies the targeted region in which the namespace should be
+    * created. It can be any of the following values: East AsiaNorth
+    * EuropeWest EuropeEast USSoutheast AsiaNorth Central USWest USSouth
+    * Central US  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @param regionValue The Region value.
@@ -135,9 +137,9 @@ public class ServiceBusNamespace {
     private URI serviceBusEndpoint;
     
     /**
-    * Endpoint you can use to perform messaging or relay operations.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-    * more information)
+    * Optional. Endpoint you can use to perform messaging or relay operations.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx
+    * for more information)
     * @return The ServiceBusEndpoint value.
     */
     public URI getServiceBusEndpoint() {
@@ -145,9 +147,9 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * Endpoint you can use to perform messaging or relay operations.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
-    * more information)
+    * Optional. Endpoint you can use to perform messaging or relay operations.
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx
+    * for more information)
     * @param serviceBusEndpointValue The ServiceBusEndpoint value.
     */
     public void setServiceBusEndpoint(final URI serviceBusEndpointValue) {
@@ -157,7 +159,7 @@ public class ServiceBusNamespace {
     private String status;
     
     /**
-    * Status of the namespace. It can be any of these values:1 =
+    * Optional. Status of the namespace. It can be any of these values:1 =
     * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
@@ -168,7 +170,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * Status of the namespace. It can be any of these values:1 =
+    * Optional. Status of the namespace. It can be any of these values:1 =
     * Created/Active2 = Creating3 = Suspended4 = Deleting  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
@@ -181,7 +183,7 @@ public class ServiceBusNamespace {
     private String subscriptionId;
     
     /**
-    * The Id of the Azure subscription associated with the namespace.
+    * Optional. The Id of the Azure subscription associated with the namespace.
     * @return The SubscriptionId value.
     */
     public String getSubscriptionId() {
@@ -189,7 +191,7 @@ public class ServiceBusNamespace {
     }
     
     /**
-    * The Id of the Azure subscription associated with the namespace.
+    * Optional. The Id of the Azure subscription associated with the namespace.
     * @param subscriptionIdValue The SubscriptionId value.
     */
     public void setSubscriptionId(final String subscriptionIdValue) {

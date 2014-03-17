@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  *
  */
-public final class ComputeManagementService
-{
-    private ComputeManagementService()
-    {
+public final class ComputeManagementService {
+    private ComputeManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public final class ComputeManagementService
      * Creates an instance of the <code>ComputeManagementClient</code> API.
      * @return An instance of the <code>ComputeManagementClient</code> API.
      */
-    public static ComputeManagementClient create()
-    {
+    public static ComputeManagementClient create() {
         return Configuration.getInstance().create(
                 ComputeManagementClient.class);
     }
@@ -46,8 +43,7 @@ public final class ComputeManagementService
      * configuration for the service management.
      * @return An instance of the <code>ComputeManagementClient</code> API.
      */
-    public static ComputeManagementClient create(final Configuration config)
-    {
+    public static ComputeManagementClient create(final Configuration config) {
         return config.create(ComputeManagementClient.class);
     }
 
@@ -58,8 +54,7 @@ public final class ComputeManagementService
      * of the service management service.
      * @return An instance of the <code>ComputeManagementClient</code> API.
      */
-    public static ComputeManagementClient create(final String profile)
-    {
+    public static ComputeManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 ComputeManagementClient.class);
     }
@@ -73,8 +68,7 @@ public final class ComputeManagementService
      * @return An instance of the <code>ComputeManagementClient</code> API.
      */
     public static ComputeManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, ComputeManagementClient.class);
     }
 }

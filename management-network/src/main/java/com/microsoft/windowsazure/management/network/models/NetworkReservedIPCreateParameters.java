@@ -30,8 +30,8 @@ public class NetworkReservedIPCreateParameters {
     private String affinityGroup;
     
     /**
-    * An affinity group, which indirectly refers to the location where the
-    * virtual network exists.
+    * Optional. An affinity group, which indirectly refers to the location
+    * where the virtual network exists.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -39,8 +39,8 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * An affinity group, which indirectly refers to the location where the
-    * virtual network exists.
+    * Optional. An affinity group, which indirectly refers to the location
+    * where the virtual network exists.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -50,7 +50,7 @@ public class NetworkReservedIPCreateParameters {
     private String deploymentName;
     
     /**
-    * The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if being used.
     * @return The DeploymentName value.
     */
     public String getDeploymentName() {
@@ -58,7 +58,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if being used.
     * @param deploymentNameValue The DeploymentName value.
     */
     public void setDeploymentName(final String deploymentNameValue) {
@@ -68,7 +68,7 @@ public class NetworkReservedIPCreateParameters {
     private String label;
     
     /**
-    * The friendly identifier of the site.
+    * Optional. The friendly identifier of the site.
     * @return The Label value.
     */
     public String getLabel() {
@@ -76,7 +76,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * The friendly identifier of the site.
+    * Optional. The friendly identifier of the site.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -86,7 +86,7 @@ public class NetworkReservedIPCreateParameters {
     private String name;
     
     /**
-    * Name of the reserved IP.
+    * Optional. Name of the reserved IP.
     * @return The Name value.
     */
     public String getName() {
@@ -94,7 +94,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * Name of the reserved IP.
+    * Optional. Name of the reserved IP.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -104,7 +104,7 @@ public class NetworkReservedIPCreateParameters {
     private String serviceName;
     
     /**
-    * The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if being used.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -112,7 +112,7 @@ public class NetworkReservedIPCreateParameters {
     }
     
     /**
-    * The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if being used.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {

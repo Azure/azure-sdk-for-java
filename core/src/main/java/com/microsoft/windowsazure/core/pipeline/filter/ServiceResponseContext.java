@@ -17,8 +17,7 @@ package com.microsoft.windowsazure.core.pipeline.filter;
 
 import java.io.InputStream;
 
-public interface ServiceResponseContext
-{
+public interface ServiceResponseContext {
     int getStatus();
 
     void setStatus(int status);

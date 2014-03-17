@@ -39,8 +39,7 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.LocatorInfo;
 
-public class AssetFileIntegrationTest extends IntegrationTestBase
-{
+public class AssetFileIntegrationTest extends IntegrationTestBase {
 
     // Some dummy binary data for uploading
     private static byte[] firstPrimes = new byte[] { 2, 3, 5, 7, 11, 13, 17,
@@ -54,16 +53,14 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     private static AccessPolicyInfo writePolicy;
 
     @BeforeClass
-    public static void setup() throws Exception
-    {
+    public static void setup() throws Exception {
         IntegrationTestBase.setup();
 
         writePolicy = createWritePolicy("uploadWritePolicy", 30);
     }
 
     @Test
-    public void canCreateFileForUploadedBlob() throws Exception
-    {
+    public void canCreateFileForUploadedBlob() throws Exception {
         AssetInfo asset = createTestAsset("createFileForUploadedBlob");
         LocatorInfo locator = createLocator(writePolicy, asset, 5);
         WritableBlobContainerContract blobWriter = service
@@ -82,8 +79,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canCreateFileEntityDirectly() throws Exception
-    {
+    public void canCreateFileEntityDirectly() throws Exception {
         AssetInfo asset = createTestAsset("createFileEntityDirectly");
         LocatorInfo locator = createLocator(writePolicy, asset, 5);
         WritableBlobContainerContract blobWriter = service
@@ -97,10 +93,8 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
                 .getAssetFilesLink()));
 
         boolean found = false;
-        for (AssetFileInfo file : files)
-        {
-            if (file.getName().equals(BLOB_NAME_2))
-            {
+        for (AssetFileInfo file : files) {
+            if (file.getName().equals(BLOB_NAME_2)) {
                 found = true;
                 break;
             }
@@ -110,8 +104,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canCreateAssetWithMultipleFiles() throws Exception
-    {
+    public void canCreateAssetWithMultipleFiles() throws Exception {
         AssetInfo asset = createTestAsset("createWithMultipleFiles");
         AccessPolicyInfo policy = createWritePolicy("createWithMultipleFiles",
                 10);
@@ -146,11 +139,9 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
         assertEquals(3, files.size());
 
         ArrayList<AssetFileInfo> results = new ArrayList<AssetFileInfo>(files);
-        Collections.sort(results, new Comparator<AssetFileInfo>()
-        {
+        Collections.sort(results, new Comparator<AssetFileInfo>() {
             @Override
-            public int compare(AssetFileInfo o1, AssetFileInfo o2)
-            {
+            public int compare(AssetFileInfo o1, AssetFileInfo o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
@@ -161,8 +152,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canCreateFileAndThenUpdateIt() throws Exception
-    {
+    public void canCreateFileAndThenUpdateIt() throws Exception {
         AssetInfo asset = createTestAsset("createAndUpdate");
         AccessPolicyInfo policy = createWritePolicy("createAndUpdate", 10);
         LocatorInfo locator = createLocator(policy, asset, 5);
@@ -183,8 +173,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canDeleteFileFromAsset() throws Exception
-    {
+    public void canDeleteFileFromAsset() throws Exception {
         AssetInfo asset = createTestAsset("deleteFile");
         AccessPolicyInfo policy = createWritePolicy("deleteFile", 10);
         LocatorInfo locator = createLocator(policy, asset, 5);
@@ -200,10 +189,8 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
                 .list(asset.getAssetFilesLink()));
         assertEquals(2, originalFiles.size());
 
-        for (AssetFileInfo file : originalFiles)
-        {
-            if (file.getName().equals("todelete.bin"))
-            {
+        for (AssetFileInfo file : originalFiles) {
+            if (file.getName().equals("todelete.bin")) {
                 service.delete(AssetFile.delete(file.getId()));
                 break;
             }
@@ -219,22 +206,19 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     // Helper functions to create various media services entities
     //
     private static AssetInfo createTestAsset(String name)
-            throws ServiceException
-    {
+            throws ServiceException {
         return service.create(Asset.create().setName(testAssetPrefix + name));
     }
 
     private static AccessPolicyInfo createWritePolicy(String name,
-            int durationInMinutes) throws ServiceException
-    {
+            int durationInMinutes) throws ServiceException {
         return service.create(AccessPolicy.create(testPolicyPrefix + name,
                 durationInMinutes, EnumSet.of(AccessPolicyPermission.WRITE)));
     }
 
     private static void createAndUploadBlob(
             WritableBlobContainerContract blobWriter, String blobName,
-            byte[] data) throws ServiceException
-    {
+            byte[] data) throws ServiceException {
         InputStream blobContent = new ByteArrayInputStream(data);
         blobWriter.createBlockBlob(blobName, blobContent);
     }
@@ -244,8 +228,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
     //
 
     private void assertAssetFileInfoEquals(String message,
-            AssetFileInfo expected, AssetFileInfo actual)
-    {
+            AssetFileInfo expected, AssetFileInfo actual) {
         verifyAssetInfoProperties(message, expected.getId(),
                 expected.getName(), expected.getParentAssetId(),
                 expected.getIsPrimary(), expected.getIsEncrypted(),
@@ -261,8 +244,7 @@ public class AssetFileIntegrationTest extends IntegrationTestBase
             boolean isEncrypted, String encryptionKeyId,
             String encryptionScheme, String encryptionVersion,
             String initializationVector, Date created, Date lastModified,
-            String contentChecksum, String mimeType, AssetFileInfo assetFile)
-    {
+            String contentChecksum, String mimeType, AssetFileInfo assetFile) {
         assertNotNull(message, assetFile);
 
         assertEquals(message + ".getId", id, assetFile.getId());

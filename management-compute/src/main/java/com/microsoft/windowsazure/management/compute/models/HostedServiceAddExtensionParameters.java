@@ -30,7 +30,7 @@ public class HostedServiceAddExtensionParameters {
     private String id;
     
     /**
-    * The identifier of the extension.
+    * Required. The identifier of the extension.
     * @return The Id value.
     */
     public String getId() {
@@ -38,7 +38,7 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The identifier of the extension.
+    * Required. The identifier of the extension.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -48,8 +48,8 @@ public class HostedServiceAddExtensionParameters {
     private String privateConfiguration;
     
     /**
-    * The private configuration that is defined using the schema returned by
-    * the List Available Extensions operation.
+    * Optional. The private configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @return The PrivateConfiguration value.
     */
     public String getPrivateConfiguration() {
@@ -57,8 +57,8 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The private configuration that is defined using the schema returned by
-    * the List Available Extensions operation.
+    * Optional. The private configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @param privateConfigurationValue The PrivateConfiguration value.
     */
     public void setPrivateConfiguration(final String privateConfigurationValue) {
@@ -68,8 +68,8 @@ public class HostedServiceAddExtensionParameters {
     private String providerNamespace;
     
     /**
-    * The provider namespace of the extension. The provider namespace for
-    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * Optional. The provider namespace of the extension. The provider namespace
+    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @return The ProviderNamespace value.
     */
     public String getProviderNamespace() {
@@ -77,8 +77,8 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The provider namespace of the extension. The provider namespace for
-    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * Optional. The provider namespace of the extension. The provider namespace
+    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @param providerNamespaceValue The ProviderNamespace value.
     */
     public void setProviderNamespace(final String providerNamespaceValue) {
@@ -88,8 +88,8 @@ public class HostedServiceAddExtensionParameters {
     private String publicConfiguration;
     
     /**
-    * The public configuration that is defined using the schema returned by the
-    * List Available Extensions operation.
+    * Optional. The public configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @return The PublicConfiguration value.
     */
     public String getPublicConfiguration() {
@@ -97,8 +97,8 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The public configuration that is defined using the schema returned by the
-    * List Available Extensions operation.
+    * Optional. The public configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @param publicConfigurationValue The PublicConfiguration value.
     */
     public void setPublicConfiguration(final String publicConfigurationValue) {
@@ -108,7 +108,7 @@ public class HostedServiceAddExtensionParameters {
     private String thumbprint;
     
     /**
-    * The thumbprint of the certificate that is used to encrypt the
+    * Optional. The thumbprint of the certificate that is used to encrypt the
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
@@ -119,7 +119,7 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The thumbprint of the certificate that is used to encrypt the
+    * Optional. The thumbprint of the certificate that is used to encrypt the
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
@@ -132,8 +132,8 @@ public class HostedServiceAddExtensionParameters {
     private String thumbprintAlgorithm;
     
     /**
-    * The thumbprint algorithm of the certificate that is used toencrypt the
-    * configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used
+    * toencrypt the configuration specified in PrivateConfiguration.
     * @return The ThumbprintAlgorithm value.
     */
     public String getThumbprintAlgorithm() {
@@ -141,8 +141,8 @@ public class HostedServiceAddExtensionParameters {
     }
     
     /**
-    * The thumbprint algorithm of the certificate that is used toencrypt the
-    * configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used
+    * toencrypt the configuration specified in PrivateConfiguration.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {

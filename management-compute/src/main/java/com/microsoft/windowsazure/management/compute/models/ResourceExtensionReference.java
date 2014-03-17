@@ -26,14 +26,14 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Required. Specifies the properties of a resource extension that should be
-* installed on the Virtual Machine.
+* Specifies the properties of a resource extension that should be installed on
+* the Virtual Machine.
 */
 public class ResourceExtensionReference {
     private String name;
     
     /**
-    * Required. Specifies the name of the resource extension. You can use List
+    * Optional. Specifies the name of the resource extension. You can use List
     * Resource Extensions to find the names of available resource extensions.
     * @return The Name value.
     */
@@ -42,7 +42,7 @@ public class ResourceExtensionReference {
     }
     
     /**
-    * Required. Specifies the name of the resource extension. You can use List
+    * Optional. Specifies the name of the resource extension. You can use List
     * Resource Extensions to find the names of available resource extensions.
     * @param nameValue The Name value.
     */
@@ -53,7 +53,7 @@ public class ResourceExtensionReference {
     private String publisher;
     
     /**
-    * Required. Specifies the name of the publisher who created the resource
+    * Optional. Specifies the name of the publisher who created the resource
     * extension. You can use List Resource Extensions to find the publisher
     * name of a resource extension.
     * @return The Publisher value.
@@ -63,7 +63,7 @@ public class ResourceExtensionReference {
     }
     
     /**
-    * Required. Specifies the name of the publisher who created the resource
+    * Optional. Specifies the name of the publisher who created the resource
     * extension. You can use List Resource Extensions to find the publisher
     * name of a resource extension.
     * @param publisherValue The Publisher value.
@@ -75,7 +75,7 @@ public class ResourceExtensionReference {
     private String referenceName;
     
     /**
-    * Required. Specifies the reference name of the resource extension.
+    * Optional. Specifies the reference name of the resource extension.
     * @return The ReferenceName value.
     */
     public String getReferenceName() {
@@ -83,7 +83,7 @@ public class ResourceExtensionReference {
     }
     
     /**
-    * Required. Specifies the reference name of the resource extension.
+    * Optional. Specifies the reference name of the resource extension.
     * @param referenceNameValue The ReferenceName value.
     */
     public void setReferenceName(final String referenceNameValue) {
@@ -134,7 +134,7 @@ public class ResourceExtensionReference {
     private String version;
     
     /**
-    * Required. Specifies the version of the resource extension. You can use
+    * Optional. Specifies the version of the resource extension. You can use
     * List Resource Extension Versions to find the version of the resource
     * extension.
     * @return The Version value.
@@ -144,7 +144,7 @@ public class ResourceExtensionReference {
     }
     
     /**
-    * Required. Specifies the version of the resource extension. You can use
+    * Optional. Specifies the version of the resource extension. You can use
     * List Resource Extension Versions to find the version of the resource
     * extension.
     * @param versionValue The Version value.

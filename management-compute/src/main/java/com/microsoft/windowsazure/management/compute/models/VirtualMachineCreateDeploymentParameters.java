@@ -114,9 +114,9 @@ public class VirtualMachineCreateDeploymentParameters {
     private String reservedIPName;
     
     /**
-    * Optional and Preview Only. Specifies the name of an existing reserved IP
-    * to which the deployment will belong. Reserved IPs are created by calling
-    * the Create Reserved IP operation.
+    * Optional. Optional and Preview Only. Specifies the name of an existing
+    * reserved IP to which the deployment will belong. Reserved IPs are
+    * created by calling the Create Reserved IP operation.
     * @return The ReservedIPName value.
     */
     public String getReservedIPName() {
@@ -124,9 +124,9 @@ public class VirtualMachineCreateDeploymentParameters {
     }
     
     /**
-    * Optional and Preview Only. Specifies the name of an existing reserved IP
-    * to which the deployment will belong. Reserved IPs are created by calling
-    * the Create Reserved IP operation.
+    * Optional. Optional and Preview Only. Specifies the name of an existing
+    * reserved IP to which the deployment will belong. Reserved IPs are
+    * created by calling the Create Reserved IP operation.
     * @param reservedIPNameValue The ReservedIPName value.
     */
     public void setReservedIPName(final String reservedIPNameValue) {

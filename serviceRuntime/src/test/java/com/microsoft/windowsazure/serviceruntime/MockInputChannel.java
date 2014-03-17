@@ -22,35 +22,28 @@ import java.util.LinkedList;
 /**
  *
  */
-public class MockInputChannel implements InputChannel
-{
+public class MockInputChannel implements InputChannel {
     private final ByteArrayInputStream inputStream;
 
-    public MockInputChannel(String channelData)
-    {
+    public MockInputChannel(String channelData) {
         byte data[] = null;
 
-        try
-        {
+        try {
             data = channelData.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
         this.inputStream = new ByteArrayInputStream(data);
     }
 
-    public MockInputChannel(String chunks[])
-    {
+    public MockInputChannel(String chunks[]) {
         int finalLength = 0;
         LinkedList<byte[]> chunkBytes = new LinkedList<byte[]>();
         byte[] crlf = new byte[] { 0x0D, 0x0A };
 
-        for (String chunk : chunks)
-        {
-            try
-            {
+        for (String chunk : chunks) {
+            try {
                 byte chunkLengthData[] = Integer.toHexString(chunk.length())
                         .getBytes("US-ASCII");
                 byte chunkData[] = chunk.getBytes("UTF-8");
@@ -60,8 +53,7 @@ public class MockInputChannel implements InputChannel
                 chunkBytes.add(chunkData);
 
                 finalLength += chunkLength;
-            } catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
@@ -69,8 +61,7 @@ public class MockInputChannel implements InputChannel
         byte data[] = new byte[finalLength];
         int dataIndex = 0;
 
-        for (byte[] chunk : chunkBytes)
-        {
+        for (byte[] chunk : chunkBytes) {
             System.arraycopy(chunk, 0, data, dataIndex, chunk.length);
 
             dataIndex += chunk.length;
@@ -84,8 +75,7 @@ public class MockInputChannel implements InputChannel
     }
 
     @Override
-    public InputStream getInputStream(String name)
-    {
+    public InputStream getInputStream(String name) {
         return this.inputStream;
     }
 

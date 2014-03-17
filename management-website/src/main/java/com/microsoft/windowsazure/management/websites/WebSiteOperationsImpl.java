@@ -121,10 +121,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * You can swap a web site from one slot to the production slot.
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param slotName The name of the web site slot to swap with the production
-    * slot.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Required. The name of the web site slot to swap with the
+    * production slot.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -145,10 +145,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * You can swap a web site from one slot to the production slot.
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param slotName The name of the web site slot to swap with the production
-    * slot.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Required. The name of the web site slot to swap with the
+    * production slot.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -434,8 +434,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166986.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Web Site operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Create Web Site
+    * operation.
     * @return The Create Web Space operation response.
     */
     @Override
@@ -454,8 +455,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166986.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Web Site operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Create Web Site
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1074,8 +1076,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1098,8 +1100,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1192,9 +1194,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236430.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The parameters to delete a web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters to delete a web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1216,9 +1218,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236430.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The parameters to delete a web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The parameters to delete a web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1319,8 +1321,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return The Delete Web Site Repository operation response.
     */
     @Override
@@ -1342,8 +1344,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1456,8 +1458,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236428.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1482,8 +1484,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236428.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1573,9 +1575,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn167007.aspx
     * for more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters Additional parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Optional. Additional parameters.
     * @return The Get Web Site Details operation response.
     */
     @Override
@@ -1593,9 +1595,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn167007.aspx
     * for more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters Additional parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Optional. Additional parameters.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2123,8 +2125,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return The Get Web Site Configuration operation response.
     */
     @Override
@@ -2144,8 +2146,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2470,9 +2472,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166964.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The Get Web Site Historical Usage Metrics parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The Get Web Site Historical Usage Metrics
+    * parameters.
     * @return The Get Web Site Historical Usage Metrics operation response.
     */
     @Override
@@ -2491,9 +2494,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166964.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The Get Web Site Historical Usage Metrics parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The Get Web Site Historical Usage Metrics
+    * parameters.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2749,8 +2753,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166996.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return The Get Web Site Publish Profile operation response.
     */
     @Override
@@ -2769,8 +2773,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166996.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2976,8 +2980,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return The Get Web Site Repository operation response.
     */
     @Override
@@ -2999,8 +3003,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3111,8 +3115,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166991.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return The Get Web Site Usage Metrics operation response.
     */
     @Override
@@ -3134,8 +3138,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166991.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3307,7 +3311,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * Determines if a hostname is available
     *
-    * @param webSiteName The name of the web site.
+    * @param webSiteName Required. The name of the web site.
     * @return The Is Hostname Available operation response.
     */
     @Override
@@ -3323,7 +3327,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * Determines if a hostname is available
     *
-    * @param webSiteName The name of the web site.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3427,8 +3431,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236425.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3447,8 +3451,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236425.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3536,10 +3540,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * You can swap a web site from one slot to the production slot.
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param slotName The name of the web site slot to swap with the production
-    * slot.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Required. The name of the web site slot to swap with the
+    * production slot.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -3560,10 +3564,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     /**
     * You can swap a web site from one slot to the production slot.
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param slotName The name of the web site slot to swap with the production
-    * slot.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param slotName Required. The name of the web site slot to swap with the
+    * production slot.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3651,8 +3655,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3674,8 +3678,8 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166967.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3766,9 +3770,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167005.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters Parameters supplied to the Update Web Site operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Update Web Site
+    * operation.
     * @return The Update Web Site operation response.
     */
     @Override
@@ -3787,9 +3792,10 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167005.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters Parameters supplied to the Update Web Site operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. Parameters supplied to the Update Web Site
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -4458,9 +4464,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The Update Web Site Configuration parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The Update Web Site Configuration parameters.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -4481,9 +4487,9 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn166985.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param webSiteName The name of the web site.
-    * @param parameters The Update Web Site Configuration parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param webSiteName Required. The name of the web site.
+    * @param parameters Required. The Update Web Site Configuration parameters.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

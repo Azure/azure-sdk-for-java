@@ -52,10 +52,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154107.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkSiteName The name of the site to connect to.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkSiteName Required. The name of the site to connect to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -79,10 +80,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154107.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkSiteName The name of the site to connect to.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkSiteName Required. The name of the site to connect to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -94,9 +96,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -118,9 +121,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -132,7 +136,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network.
+    * @param networkName Required. The name of the virtual network.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -152,7 +156,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network.
+    * @param networkName Required. The name of the virtual network.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -164,7 +168,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network in Azure.
+    * @param networkName Required. The name of the virtual network in Azure.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -184,7 +188,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network in Azure.
+    * @param networkName Required. The name of the virtual network in Azure.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -197,10 +201,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
-    * @param parameters The parameters to the Virtual Network Gateway Reset
-    * Shared Key request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. The parameters to the Virtual Network Gateway
+    * Reset Shared Key request.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -223,10 +228,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
-    * @param parameters The parameters to the Virtual Network Gateway Reset
-    * Shared Key request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. The parameters to the Virtual Network Gateway
+    * Reset Shared Key request.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -240,10 +246,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154107.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkSiteName The name of the site to connect to.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkSiteName Required. The name of the site to connect to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -276,10 +283,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154107.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkSiteName The name of the site to connect to.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkSiteName Required. The name of the site to connect to.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -298,9 +306,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -337,9 +346,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154119.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -358,7 +368,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network.
+    * @param networkName Required. The name of the virtual network.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -395,7 +405,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network.
+    * @param networkName Required. The name of the virtual network.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -414,7 +424,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network in Azure.
+    * @param networkName Required. The name of the virtual network in Azure.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -445,7 +455,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154118.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network in Azure.
+    * @param networkName Required. The name of the virtual network in Azure.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -464,9 +474,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -488,9 +499,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205126.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Create Virtual Network
-    * Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -502,7 +514,8 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154109.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -522,7 +535,8 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154109.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -534,9 +548,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154115.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters The parameters for the GetDeviceConfigurationScript
-    * request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. The parameters for the
+    * GetDeviceConfigurationScript request.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -552,9 +567,10 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154115.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters The parameters for the GetDeviceConfigurationScript
-    * request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. The parameters for the
+    * GetDeviceConfigurationScript request.
     * @return The configuration script returned from the get device
     * configuration script request.
     */
@@ -566,7 +582,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154112.aspx for
     * more information)
     *
-    * @param operationId The id  of the network operation.
+    * @param operationId Required. The id  of the network operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -593,7 +609,7 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154112.aspx for
     * more information)
     *
-    * @param operationId The id  of the network operation.
+    * @param operationId Required. The id  of the network operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -613,8 +629,9 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154122.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -634,8 +651,9 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154122.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
     * @return The response to the get shared key request.
     */
     Future<GatewayGetSharedKeyResponse> getSharedKeyAsync(String networkName, String localNetworkName);
@@ -646,7 +664,8 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154120.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -666,7 +685,8 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154120.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @return The response to a ListConnections request to a Virtual Network
     * Gateway.
     */
@@ -707,10 +727,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
-    * @param parameters The parameters to the Virtual Network Gateway Reset
-    * Shared Key request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. The parameters to the Virtual Network Gateway
+    * Reset Shared Key request.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -742,10 +763,11 @@ public interface GatewayOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154114.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param localNetworkName The name of the local network.
-    * @param parameters The parameters to the Virtual Network Gateway Reset
-    * Shared Key request.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param localNetworkName Required. The name of the local network.
+    * @param parameters Required. The parameters to the Virtual Network Gateway
+    * Reset Shared Key request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

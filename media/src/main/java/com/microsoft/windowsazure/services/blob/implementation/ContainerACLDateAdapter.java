@@ -23,18 +23,15 @@ import com.microsoft.windowsazure.core.ISO8601DateConverter;
 /*
  * JAXB adapter for a "not quite" ISO 8601 date time element
  */
-public class ContainerACLDateAdapter extends XmlAdapter<String, Date>
-{
+public class ContainerACLDateAdapter extends XmlAdapter<String, Date> {
 
     @Override
-    public Date unmarshal(String arg0) throws Exception
-    {
+    public Date unmarshal(String arg0) throws Exception {
         return new ISO8601DateConverter().parse(arg0);
     }
 
     @Override
-    public String marshal(Date arg0) throws Exception
-    {
+    public String marshal(Date arg0) throws Exception {
         return new ISO8601DateConverter().shortFormat(arg0);
     }
 }

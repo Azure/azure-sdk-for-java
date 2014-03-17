@@ -30,7 +30,7 @@ public class AccessControlListRule {
     private String action;
     
     /**
-    * The action allowed by this Access Control List Rule.
+    * Optional. The action allowed by this Access Control List Rule.
     * @return The Action value.
     */
     public String getAction() {
@@ -38,7 +38,7 @@ public class AccessControlListRule {
     }
     
     /**
-    * The action allowed by this Access Control List Rule.
+    * Optional. The action allowed by this Access Control List Rule.
     * @param actionValue The Action value.
     */
     public void setAction(final String actionValue) {
@@ -48,7 +48,7 @@ public class AccessControlListRule {
     private String description;
     
     /**
-    * The description for this Access Control List Rule.
+    * Optional. The description for this Access Control List Rule.
     * @return The Description value.
     */
     public String getDescription() {
@@ -56,7 +56,7 @@ public class AccessControlListRule {
     }
     
     /**
-    * The description for this Access Control List Rule.
+    * Optional. The description for this Access Control List Rule.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -66,7 +66,7 @@ public class AccessControlListRule {
     private Integer order;
     
     /**
-    * The order of application for this Access Control List Rule.
+    * Optional. The order of application for this Access Control List Rule.
     * @return The Order value.
     */
     public Integer getOrder() {
@@ -74,7 +74,7 @@ public class AccessControlListRule {
     }
     
     /**
-    * The order of application for this Access Control List Rule.
+    * Optional. The order of application for this Access Control List Rule.
     * @param orderValue The Order value.
     */
     public void setOrder(final Integer orderValue) {
@@ -84,8 +84,8 @@ public class AccessControlListRule {
     private String remoteSubnet;
     
     /**
-    * The remote subnet that is granted access for this Access Control List
-    * Rule.
+    * Optional. The remote subnet that is granted access for this Access
+    * Control List Rule.
     * @return The RemoteSubnet value.
     */
     public String getRemoteSubnet() {
@@ -93,8 +93,8 @@ public class AccessControlListRule {
     }
     
     /**
-    * The remote subnet that is granted access for this Access Control List
-    * Rule.
+    * Optional. The remote subnet that is granted access for this Access
+    * Control List Rule.
     * @param remoteSubnetValue The RemoteSubnet value.
     */
     public void setRemoteSubnet(final String remoteSubnetValue) {

@@ -21,19 +21,14 @@ import java.io.OutputStream;
 /**
  * 
  */
-class FileOutputChannel implements OutputChannel
-{
-    public FileOutputChannel()
-    {
+class FileOutputChannel implements OutputChannel {
+    public FileOutputChannel() {
     }
 
-    public OutputStream getOutputStream(String name)
-    {
-        try
-        {
+    public OutputStream getOutputStream(String name) {
+        try {
             return new FileOutputStream(name);
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

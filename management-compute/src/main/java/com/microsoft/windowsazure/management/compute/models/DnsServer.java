@@ -32,7 +32,7 @@ public class DnsServer {
     private InetAddress address;
     
     /**
-    * The DNS server address.
+    * Optional. The DNS server address.
     * @return The Address value.
     */
     public InetAddress getAddress() {
@@ -40,7 +40,7 @@ public class DnsServer {
     }
     
     /**
-    * The DNS server address.
+    * Optional. The DNS server address.
     * @param addressValue The Address value.
     */
     public void setAddress(final InetAddress addressValue) {
@@ -50,7 +50,7 @@ public class DnsServer {
     private String name;
     
     /**
-    * The name of the DNS server.
+    * Optional. The name of the DNS server.
     * @return The Name value.
     */
     public String getName() {
@@ -58,7 +58,7 @@ public class DnsServer {
     }
     
     /**
-    * The name of the DNS server.
+    * Optional. The name of the DNS server.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

@@ -16,10 +16,9 @@ package com.microsoft.windowsazure.core.utils;
 
 import java.util.Date;
 
-public class DefaultDateFactory implements DateFactory
-{
-    public Date getDate()
-    {
+public class DefaultDateFactory implements DateFactory {
+    @Override
+    public Date getDate() {
         return new Date();
     }
 }

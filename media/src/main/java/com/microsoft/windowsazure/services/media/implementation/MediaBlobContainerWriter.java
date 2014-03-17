@@ -36,42 +36,37 @@ import com.sun.jersey.api.client.Client;
  * Media Services storage.
  * 
  */
-public class MediaBlobContainerWriter implements WritableBlobContainerContract
-{
+public class MediaBlobContainerWriter implements WritableBlobContainerContract {
 
     private final BlobContract blobService;
     private BlobContract restProxy;
 
-    public BlobContract getBlobContract()
-    {
+    public BlobContract getBlobContract() {
         return this.restProxy;
     }
 
-    public void setBlobContract(BlobContract blobContract)
-    {
+    public void setBlobContract(BlobContract blobContract) {
         this.restProxy = blobContract;
     }
 
     private final String containerName;
 
     public MediaBlobContainerWriter(Client client, String accountName,
-            String blobServiceUri, String containerName, String sasToken)
-    {
+            String blobServiceUri, String containerName, String sasToken) {
         this.containerName = containerName;
         this.restProxy = new MediaBlobRestProxy(client, accountName,
                 blobServiceUri, new SASTokenFilter(sasToken));
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
 
-    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter, ServiceFilter filter)
-    {
+    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter,
+            ServiceFilter filter) {
         this.containerName = baseWriter.containerName;
         this.restProxy = baseWriter.restProxy.withFilter(filter);
         this.blobService = new BlobExceptionProcessor(this.restProxy);
     }
-    
-    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter)
-    {
+
+    private MediaBlobContainerWriter(MediaBlobContainerWriter baseWriter) {
         this.containerName = baseWriter.containerName;
         this.restProxy = baseWriter.restProxy;
         this.blobService = new BlobExceptionProcessor(this.restProxy);
@@ -85,8 +80,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public WritableBlobContainerContract withFilter(ServiceFilter filter)
-    {
+    public WritableBlobContainerContract withFilter(ServiceFilter filter) {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
                 this, filter);
         return mediaBlobContainerWriter;
@@ -101,8 +95,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public WritableBlobContainerContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
                 this);
         mediaBlobContainerWriter
@@ -120,8 +113,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public WritableBlobContainerContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
                 this);
         mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
@@ -138,8 +130,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public WritableBlobContainerContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
                 this);
         mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
@@ -157,8 +148,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public WritableBlobContainerContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         MediaBlobContainerWriter mediaBlobContainerWriter = new MediaBlobContainerWriter(
                 this);
         mediaBlobContainerWriter.setBlobContract(mediaBlobContainerWriter
@@ -176,8 +166,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public CreateBlobResult createBlockBlob(String blob,
-            InputStream contentStream) throws ServiceException
-    {
+            InputStream contentStream) throws ServiceException {
         return blobService.createBlockBlob(containerName, blob, contentStream);
     }
 
@@ -192,8 +181,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
     @Override
     public CreateBlobResult createBlockBlob(String blob,
             InputStream contentStream, CreateBlobOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         return blobService.createBlockBlob(containerName, blob, contentStream,
                 options);
     }
@@ -207,8 +195,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public void createBlobBlock(String blob, String blockId,
-            InputStream contentStream) throws ServiceException
-    {
+            InputStream contentStream) throws ServiceException {
         blobService
                 .createBlobBlock(containerName, blob, blockId, contentStream);
 
@@ -225,8 +212,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
     @Override
     public void createBlobBlock(String blob, String blockId,
             InputStream contentStream, CreateBlobBlockOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         blobService.createBlobBlock(containerName, blob, blockId,
                 contentStream, options);
     }
@@ -241,8 +227,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public void commitBlobBlocks(String blob, BlockList blockList)
-            throws ServiceException
-    {
+            throws ServiceException {
         blobService.commitBlobBlocks(containerName, blob, blockList);
     }
 
@@ -257,8 +242,7 @@ public class MediaBlobContainerWriter implements WritableBlobContainerContract
      */
     @Override
     public void commitBlobBlocks(String blob, BlockList blockList,
-            CommitBlobBlocksOptions options) throws ServiceException
-    {
+            CommitBlobBlocksOptions options) throws ServiceException {
         blobService.commitBlobBlocks(containerName, blob, blockList, options);
     }
 }

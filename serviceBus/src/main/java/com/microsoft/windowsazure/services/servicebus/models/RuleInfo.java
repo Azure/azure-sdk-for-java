@@ -34,14 +34,12 @@ import com.microsoft.windowsazure.services.servicebus.implementation.TrueFilter;
 /**
  * Represents a rule.
  */
-public class RuleInfo extends EntryModel<RuleDescription>
-{
+public class RuleInfo extends EntryModel<RuleDescription> {
 
     /**
      * Creates an instance of the <code>RuleInfo</code> class.
      */
-    public RuleInfo()
-    {
+    public RuleInfo() {
         super(new Entry(), new RuleDescription());
         getEntry().setContent(new Content());
         getEntry().getContent().setType(MediaType.APPLICATION_XML);
@@ -56,8 +54,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            An <code>Entry</code> object.
      * 
      */
-    public RuleInfo(Entry entry)
-    {
+    public RuleInfo(Entry entry) {
         super(entry, entry.getContent().getRuleDescription());
     }
 
@@ -70,8 +67,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            rule.
      * 
      */
-    public RuleInfo(String name)
-    {
+    public RuleInfo(String name) {
         this();
         setName(name);
     }
@@ -82,8 +78,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * @return A <code>String</code> object that represents the name of the
      *         rule.
      */
-    public String getName()
-    {
+    public String getName() {
         return getEntry().getTitle();
     }
 
@@ -96,8 +91,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo setName(String value)
-    {
+    public RuleInfo setName(String value) {
         getEntry().setTitle(value);
         return this;
     }
@@ -108,8 +102,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * @return A <code>Filter</code> object that represents the filter of the
      *         rule.
      */
-    public Filter getFilter()
-    {
+    public Filter getFilter() {
         return getModel().getFilter();
     }
 
@@ -122,8 +115,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo setFilter(Filter value)
-    {
+    public RuleInfo setFilter(Filter value) {
         getModel().setFilter(value);
         return this;
     }
@@ -133,8 +125,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleAction</code> object that represents the rule action.
      */
-    public RuleAction getAction()
-    {
+    public RuleAction getAction() {
         return getModel().getAction();
     }
 
@@ -147,8 +138,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo setAction(RuleAction value)
-    {
+    public RuleInfo setAction(RuleAction value) {
         getModel().setAction(value);
         return this;
     }
@@ -160,8 +150,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            the correlation id
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withCorrelationIdFilter(String correlationId)
-    {
+    public RuleInfo withCorrelationIdFilter(String correlationId) {
         CorrelationFilter filter = new CorrelationFilter();
         filter.setCorrelationId(correlationId);
         return setFilter(filter);
@@ -174,8 +163,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            the sql expression
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withSqlExpressionFilter(String sqlExpression)
-    {
+    public RuleInfo withSqlExpressionFilter(String sqlExpression) {
         SqlFilter filter = new SqlFilter();
         filter.setSqlExpression(sqlExpression);
         filter.setCompatibilityLevel(20);
@@ -187,8 +175,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withTrueFilter()
-    {
+    public RuleInfo withTrueFilter() {
         TrueFilter filter = new TrueFilter();
         filter.setCompatibilityLevel(20);
         filter.setSqlExpression("1=1");
@@ -200,8 +187,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withFalseFilter()
-    {
+    public RuleInfo withFalseFilter() {
         FalseFilter filter = new FalseFilter();
         filter.setCompatibilityLevel(20);
         filter.setSqlExpression("1=0");
@@ -213,8 +199,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withEmptyRuleAction()
-    {
+    public RuleInfo withEmptyRuleAction() {
         EmptyRuleAction action = new EmptyRuleAction();
         return setAction(action);
     }
@@ -226,8 +211,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            A <code>String</code> instance of the sql expression.
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo withSqlRuleAction(String sqlExpression)
-    {
+    public RuleInfo withSqlRuleAction(String sqlExpression) {
         SqlRuleAction action = new SqlRuleAction();
         action.setSqlExpression(sqlExpression);
         action.setCompatibilityLevel(20);
@@ -241,8 +225,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            A <code>String</code> instance representing the tag.
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo setTag(String tag)
-    {
+    public RuleInfo setTag(String tag) {
         getModel().setTag(tag);
         return this;
     }
@@ -252,8 +235,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * 
      * @return A <code>String</code> instance representing the tag.
      */
-    public String getTag()
-    {
+    public String getTag() {
         return getModel().getTag();
     }
 
@@ -265,8 +247,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      *            <code>Calendar> object which represents the time that the rule was created at.
      * @return A <code>RuleInfo</code> object that represents the updated rule.
      */
-    public RuleInfo setCreatedAt(Calendar createdAt)
-    {
+    public RuleInfo setCreatedAt(Calendar createdAt) {
         getModel().setCreatedAt(createdAt);
         return this;
     }
@@ -277,8 +258,7 @@ public class RuleInfo extends EntryModel<RuleDescription>
      * @return A
      *         <code>Calendar> object which represents the time that the rule was created at.
      */
-    public Calendar getCreatedAt()
-    {
+    public Calendar getCreatedAt() {
         return getModel().getCreatedAt();
     }
 }

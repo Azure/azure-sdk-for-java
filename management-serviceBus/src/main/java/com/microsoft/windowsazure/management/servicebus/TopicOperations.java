@@ -48,8 +48,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topic Required. The Service Bus topic.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -74,8 +74,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780728.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topic Required. The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> createAsync(String namespaceName, ServiceBusTopic topic);
@@ -88,8 +88,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topicName Required. The topic.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -112,8 +112,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topicName Required. The topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> getAsync(String namespaceName, String topicName);
@@ -121,8 +121,8 @@ public interface TopicOperations {
     /**
     * Gets the set of connection strings for a topic.
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topicName Required. The topic.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -138,8 +138,8 @@ public interface TopicOperations {
     /**
     * Gets the set of connection strings for a topic.
     *
-    * @param namespaceName The namespace name.
-    * @param topicName The topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topicName Required. The topic.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String topicName);
@@ -150,7 +150,7 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -171,7 +171,7 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780744.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return A response to a request for a list of topics.
     */
     Future<ServiceBusTopicsResponse> listAsync(String namespaceName);
@@ -181,8 +181,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topic Required. The Service Bus topic.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -202,8 +202,8 @@ public interface TopicOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param topic The Service Bus topic.
+    * @param namespaceName Required. The namespace name.
+    * @param topic Required. The Service Bus topic.
     * @return A response to a request for a particular topic.
     */
     Future<ServiceBusTopicResponse> updateAsync(String namespaceName, ServiceBusTopic topic);

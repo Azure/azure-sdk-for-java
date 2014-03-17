@@ -32,6 +32,7 @@ public class DatabaseGetResponse extends OperationResponse {
     private Database database;
     
     /**
+    * Optional.
     * @return The Database value.
     */
     public Database getDatabase() {
@@ -39,6 +40,7 @@ public class DatabaseGetResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param databaseValue The Database value.
     */
     public void setDatabase(final Database databaseValue) {

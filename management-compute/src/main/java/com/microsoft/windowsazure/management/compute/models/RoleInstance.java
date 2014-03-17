@@ -30,11 +30,29 @@ import java.util.ArrayList;
 * Details of a specific role instance.
 */
 public class RoleInstance {
+    private GuestAgentStatus guestAgentStatus;
+    
+    /**
+    * Optional. Guest Agent Status.
+    * @return The GuestAgentStatus value.
+    */
+    public GuestAgentStatus getGuestAgentStatus() {
+        return this.guestAgentStatus;
+    }
+    
+    /**
+    * Optional. Guest Agent Status.
+    * @param guestAgentStatusValue The GuestAgentStatus value.
+    */
+    public void setGuestAgentStatus(final GuestAgentStatus guestAgentStatusValue) {
+        this.guestAgentStatus = guestAgentStatusValue;
+    }
+    
     private String hostName;
     
     /**
-    * The DNS host name of the service in which the role instance is running.
-    * This element is only listed for Virtual Machine deployments.
+    * Optional. The DNS host name of the service in which the role instance is
+    * running. This element is only listed for Virtual Machine deployments.
     * @return The HostName value.
     */
     public String getHostName() {
@@ -42,8 +60,8 @@ public class RoleInstance {
     }
     
     /**
-    * The DNS host name of the service in which the role instance is running.
-    * This element is only listed for Virtual Machine deployments.
+    * Optional. The DNS host name of the service in which the role instance is
+    * running. This element is only listed for Virtual Machine deployments.
     * @param hostNameValue The HostName value.
     */
     public void setHostName(final String hostNameValue) {
@@ -53,7 +71,7 @@ public class RoleInstance {
     private ArrayList<InstanceEndpoint> instanceEndpoints;
     
     /**
-    * The list of instance endpoints for the role.
+    * Optional. The list of instance endpoints for the role.
     * @return The InstanceEndpoints value.
     */
     public ArrayList<InstanceEndpoint> getInstanceEndpoints() {
@@ -61,7 +79,7 @@ public class RoleInstance {
     }
     
     /**
-    * The list of instance endpoints for the role.
+    * Optional. The list of instance endpoints for the role.
     * @param instanceEndpointsValue The InstanceEndpoints value.
     */
     public void setInstanceEndpoints(final ArrayList<InstanceEndpoint> instanceEndpointsValue) {
@@ -71,8 +89,8 @@ public class RoleInstance {
     private String instanceErrorCode;
     
     /**
-    * An error code that can be provided to WindowsAzure support to assist in
-    * resolution of errors. Typicallythis field will be empty.
+    * Optional. An error code that can be provided to WindowsAzure support to
+    * assist in resolution of errors. Typicallythis field will be empty.
     * @return The InstanceErrorCode value.
     */
     public String getInstanceErrorCode() {
@@ -80,8 +98,8 @@ public class RoleInstance {
     }
     
     /**
-    * An error code that can be provided to WindowsAzure support to assist in
-    * resolution of errors. Typicallythis field will be empty.
+    * Optional. An error code that can be provided to WindowsAzure support to
+    * assist in resolution of errors. Typicallythis field will be empty.
     * @param instanceErrorCodeValue The InstanceErrorCode value.
     */
     public void setInstanceErrorCode(final String instanceErrorCodeValue) {
@@ -91,9 +109,9 @@ public class RoleInstance {
     private Integer instanceFaultDomain;
     
     /**
-    * The fault domain that this role instance belongs to. Role instances that
-    * are part of the same fault domain may all be vulnerable to the failure
-    * of the same piece of shared hardware.
+    * Optional. The fault domain that this role instance belongs to. Role
+    * instances that are part of the same fault domain may all be vulnerable
+    * to the failure of the same piece of shared hardware.
     * @return The InstanceFaultDomain value.
     */
     public Integer getInstanceFaultDomain() {
@@ -101,9 +119,9 @@ public class RoleInstance {
     }
     
     /**
-    * The fault domain that this role instance belongs to. Role instances that
-    * are part of the same fault domain may all be vulnerable to the failure
-    * of the same piece of shared hardware.
+    * Optional. The fault domain that this role instance belongs to. Role
+    * instances that are part of the same fault domain may all be vulnerable
+    * to the failure of the same piece of shared hardware.
     * @param instanceFaultDomainValue The InstanceFaultDomain value.
     */
     public void setInstanceFaultDomain(final Integer instanceFaultDomainValue) {
@@ -113,8 +131,8 @@ public class RoleInstance {
     private String instanceName;
     
     /**
-    * TThe name of the specific role instance, if an instance of the role is
-    * running.
+    * Optional. TThe name of the specific role instance, if an instance of the
+    * role is running.
     * @return The InstanceName value.
     */
     public String getInstanceName() {
@@ -122,8 +140,8 @@ public class RoleInstance {
     }
     
     /**
-    * TThe name of the specific role instance, if an instance of the role is
-    * running.
+    * Optional. TThe name of the specific role instance, if an instance of the
+    * role is running.
     * @param instanceNameValue The InstanceName value.
     */
     public void setInstanceName(final String instanceNameValue) {
@@ -133,7 +151,7 @@ public class RoleInstance {
     private String instanceSize;
     
     /**
-    * The size of the role instance.
+    * Optional. The size of the role instance.
     * @return The InstanceSize value.
     */
     public String getInstanceSize() {
@@ -141,7 +159,7 @@ public class RoleInstance {
     }
     
     /**
-    * The size of the role instance.
+    * Optional. The size of the role instance.
     * @param instanceSizeValue The InstanceSize value.
     */
     public void setInstanceSize(final String instanceSizeValue) {
@@ -151,9 +169,9 @@ public class RoleInstance {
     private String instanceStateDetails;
     
     /**
-    * The instance state is returned as a string that, when present, provides a
-    * snapshot of the state of the virtual machine at the time the operation
-    * was called.
+    * Optional. The instance state is returned as a string that, when present,
+    * provides a snapshot of the state of the virtual machine at the time the
+    * operation was called.
     * @return The InstanceStateDetails value.
     */
     public String getInstanceStateDetails() {
@@ -161,9 +179,9 @@ public class RoleInstance {
     }
     
     /**
-    * The instance state is returned as a string that, when present, provides a
-    * snapshot of the state of the virtual machine at the time the operation
-    * was called.
+    * Optional. The instance state is returned as a string that, when present,
+    * provides a snapshot of the state of the virtual machine at the time the
+    * operation was called.
     * @param instanceStateDetailsValue The InstanceStateDetails value.
     */
     public void setInstanceStateDetails(final String instanceStateDetailsValue) {
@@ -173,7 +191,7 @@ public class RoleInstance {
     private String instanceStatus;
     
     /**
-    * The current status of this instance.
+    * Optional. The current status of this instance.
     * @return The InstanceStatus value.
     */
     public String getInstanceStatus() {
@@ -181,7 +199,7 @@ public class RoleInstance {
     }
     
     /**
-    * The current status of this instance.
+    * Optional. The current status of this instance.
     * @param instanceStatusValue The InstanceStatus value.
     */
     public void setInstanceStatus(final String instanceStatusValue) {
@@ -191,9 +209,9 @@ public class RoleInstance {
     private Integer instanceUpgradeDomain;
     
     /**
-    * The update domain that this role instance belongs to. During an Upgrade
-    * Deployment, all roles in the same update domain are updated at the same
-    * time.
+    * Optional. The update domain that this role instance belongs to. During an
+    * Upgrade Deployment, all roles in the same update domain are updated at
+    * the same time.
     * @return The InstanceUpgradeDomain value.
     */
     public Integer getInstanceUpgradeDomain() {
@@ -201,9 +219,9 @@ public class RoleInstance {
     }
     
     /**
-    * The update domain that this role instance belongs to. During an Upgrade
-    * Deployment, all roles in the same update domain are updated at the same
-    * time.
+    * Optional. The update domain that this role instance belongs to. During an
+    * Upgrade Deployment, all roles in the same update domain are updated at
+    * the same time.
     * @param instanceUpgradeDomainValue The InstanceUpgradeDomain value.
     */
     public void setInstanceUpgradeDomain(final Integer instanceUpgradeDomainValue) {
@@ -213,7 +231,7 @@ public class RoleInstance {
     private InetAddress iPAddress;
     
     /**
-    * The IP address of the role instance (DIP).
+    * Optional. The IP address of the role instance (DIP).
     * @return The IPAddress value.
     */
     public InetAddress getIPAddress() {
@@ -221,7 +239,7 @@ public class RoleInstance {
     }
     
     /**
-    * The IP address of the role instance (DIP).
+    * Optional. The IP address of the role instance (DIP).
     * @param iPAddressValue The IPAddress value.
     */
     public void setIPAddress(final InetAddress iPAddressValue) {
@@ -231,7 +249,7 @@ public class RoleInstance {
     private RoleInstancePowerState powerState;
     
     /**
-    * The running state of the role instance.
+    * Optional. The running state of the role instance.
     * @return The PowerState value.
     */
     public RoleInstancePowerState getPowerState() {
@@ -239,7 +257,7 @@ public class RoleInstance {
     }
     
     /**
-    * The running state of the role instance.
+    * Optional. The running state of the role instance.
     * @param powerStateValue The PowerState value.
     */
     public void setPowerState(final RoleInstancePowerState powerStateValue) {
@@ -249,9 +267,9 @@ public class RoleInstance {
     private String remoteAccessCertificateThumbprint;
     
     /**
-    * The thumbprint of the RDP server certificate (in Windows) or SSH server
-    * certificate (in Linux). The thumbprint is only used for Virtual Machines
-    * that have been created from an image.
+    * Optional. The thumbprint of the RDP server certificate (in Windows) or
+    * SSH server certificate (in Linux). The thumbprint is only used for
+    * Virtual Machines that have been created from an image.
     * @return The RemoteAccessCertificateThumbprint value.
     */
     public String getRemoteAccessCertificateThumbprint() {
@@ -259,9 +277,9 @@ public class RoleInstance {
     }
     
     /**
-    * The thumbprint of the RDP server certificate (in Windows) or SSH server
-    * certificate (in Linux). The thumbprint is only used for Virtual Machines
-    * that have been created from an image.
+    * Optional. The thumbprint of the RDP server certificate (in Windows) or
+    * SSH server certificate (in Linux). The thumbprint is only used for
+    * Virtual Machines that have been created from an image.
     * @param remoteAccessCertificateThumbprintValue The
     * RemoteAccessCertificateThumbprint value.
     */
@@ -269,10 +287,29 @@ public class RoleInstance {
         this.remoteAccessCertificateThumbprint = remoteAccessCertificateThumbprintValue;
     }
     
+    private ArrayList<ResourceExtensionStatus> resourceExtensionStatusList;
+    
+    /**
+    * Optional. Resource Extension Status List.
+    * @return The ResourceExtensionStatusList value.
+    */
+    public ArrayList<ResourceExtensionStatus> getResourceExtensionStatusList() {
+        return this.resourceExtensionStatusList;
+    }
+    
+    /**
+    * Optional. Resource Extension Status List.
+    * @param resourceExtensionStatusListValue The ResourceExtensionStatusList
+    * value.
+    */
+    public void setResourceExtensionStatusList(final ArrayList<ResourceExtensionStatus> resourceExtensionStatusListValue) {
+        this.resourceExtensionStatusList = resourceExtensionStatusListValue;
+    }
+    
     private String roleName;
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @return The RoleName value.
     */
     public String getRoleName() {
@@ -280,7 +317,7 @@ public class RoleInstance {
     }
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @param roleNameValue The RoleName value.
     */
     public void setRoleName(final String roleNameValue) {
@@ -293,5 +330,6 @@ public class RoleInstance {
     */
     public RoleInstance() {
         this.instanceEndpoints = new ArrayList<InstanceEndpoint>();
+        this.resourceExtensionStatusList = new ArrayList<ResourceExtensionStatus>();
     }
 }

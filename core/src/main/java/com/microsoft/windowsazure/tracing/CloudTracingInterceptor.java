@@ -24,8 +24,7 @@ import org.apache.http.HttpResponse;
  * operations. Interception is global and a tracing interceptor can be added via
  * CloudContext.Configuration.Tracing.AddTracingInterceptor.
  */
-public interface CloudTracingInterceptor
-{
+public interface CloudTracingInterceptor {
     /**
      * Trace information.
      * 

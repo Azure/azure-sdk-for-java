@@ -30,7 +30,7 @@ public class StorageAccountRegenerateKeysParameters {
     private StorageKeyType keyType;
     
     /**
-    * Specifies which key to regenerate.
+    * Required. Specifies which key to regenerate.
     * @return The KeyType value.
     */
     public StorageKeyType getKeyType() {
@@ -38,7 +38,7 @@ public class StorageAccountRegenerateKeysParameters {
     }
     
     /**
-    * Specifies which key to regenerate.
+    * Required. Specifies which key to regenerate.
     * @param keyTypeValue The KeyType value.
     */
     public void setKeyType(final StorageKeyType keyTypeValue) {
@@ -48,7 +48,7 @@ public class StorageAccountRegenerateKeysParameters {
     private String name;
     
     /**
-    * The name of the desired storage account.
+    * Required. The name of the desired storage account.
     * @return The Name value.
     */
     public String getName() {
@@ -56,7 +56,7 @@ public class StorageAccountRegenerateKeysParameters {
     }
     
     /**
-    * The name of the desired storage account.
+    * Required. The name of the desired storage account.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

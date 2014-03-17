@@ -34,7 +34,7 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     private ArrayList<ServiceBusNamespace> namespaces;
     
     /**
-    * The list of namespaces.
+    * Optional. The list of namespaces.
     * @return The Namespaces value.
     */
     public ArrayList<ServiceBusNamespace> getNamespaces() {
@@ -42,7 +42,7 @@ public class ServiceBusNamespacesResponse extends OperationResponse implements I
     }
     
     /**
-    * The list of namespaces.
+    * Optional. The list of namespaces.
     * @param namespacesValue The Namespaces value.
     */
     public void setNamespaces(final ArrayList<ServiceBusNamespace> namespacesValue) {

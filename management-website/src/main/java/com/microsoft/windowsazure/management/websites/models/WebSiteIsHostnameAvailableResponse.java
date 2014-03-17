@@ -32,7 +32,7 @@ public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
     private boolean isAvailable;
     
     /**
-    * Indicates if the site name is available.
+    * Optional. Indicates if the site name is available.
     * @return The IsAvailable value.
     */
     public boolean isAvailable() {
@@ -40,7 +40,7 @@ public class WebSiteIsHostnameAvailableResponse extends OperationResponse {
     }
     
     /**
-    * Indicates if the site name is available.
+    * Optional. Indicates if the site name is available.
     * @param isAvailableValue The IsAvailable value.
     */
     public void setIsAvailable(final boolean isAvailableValue) {

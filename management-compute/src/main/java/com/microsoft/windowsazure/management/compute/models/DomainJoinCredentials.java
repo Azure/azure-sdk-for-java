@@ -24,8 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Optional. Specifies the values to use to join the virtual machine to the
-* domain.
+* Specifies the values to use to join the virtual machine to the domain.
 */
 public class DomainJoinCredentials {
     private String domain;

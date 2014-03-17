@@ -32,7 +32,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private String accountAdminLiveEmailId;
     
     /**
-    * The live ID of the account administrator.
+    * Optional. The live ID of the account administrator.
     * @return The AccountAdminLiveEmailId value.
     */
     public String getAccountAdminLiveEmailId() {
@@ -40,7 +40,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The live ID of the account administrator.
+    * Optional. The live ID of the account administrator.
     * @param accountAdminLiveEmailIdValue The AccountAdminLiveEmailId value.
     */
     public void setAccountAdminLiveEmailId(final String accountAdminLiveEmailIdValue) {
@@ -50,7 +50,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentCoreCount;
     
     /**
-    * The number of currently allocated cores.
+    * Optional. The number of currently allocated cores.
     * @return The CurrentCoreCount value.
     */
     public int getCurrentCoreCount() {
@@ -58,7 +58,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The number of currently allocated cores.
+    * Optional. The number of currently allocated cores.
     * @param currentCoreCountValue The CurrentCoreCount value.
     */
     public void setCurrentCoreCount(final int currentCoreCountValue) {
@@ -68,7 +68,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentDnsServers;
     
     /**
-    * The current number of DNS servers allocated on this subscription.
+    * Optional. The current number of DNS servers allocated on this
+    * subscription.
     * @return The CurrentDnsServers value.
     */
     public int getCurrentDnsServers() {
@@ -76,7 +77,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The current number of DNS servers allocated on this subscription.
+    * Optional. The current number of DNS servers allocated on this
+    * subscription.
     * @param currentDnsServersValue The CurrentDnsServers value.
     */
     public void setCurrentDnsServers(final int currentDnsServersValue) {
@@ -86,7 +88,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentHostedServices;
     
     /**
-    * The number of currently allocated cloud services.
+    * Optional. The number of currently allocated cloud services.
     * @return The CurrentHostedServices value.
     */
     public int getCurrentHostedServices() {
@@ -94,7 +96,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The number of currently allocated cloud services.
+    * Optional. The number of currently allocated cloud services.
     * @param currentHostedServicesValue The CurrentHostedServices value.
     */
     public void setCurrentHostedServices(final int currentHostedServicesValue) {
@@ -104,8 +106,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentLocalNetworkSites;
     
     /**
-    * The current number of local virtual network sites that are allocated on
-    * this subscription.
+    * Optional. The current number of local virtual network sites that are
+    * allocated on this subscription.
     * @return The CurrentLocalNetworkSites value.
     */
     public int getCurrentLocalNetworkSites() {
@@ -113,8 +115,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The current number of local virtual network sites that are allocated on
-    * this subscription.
+    * Optional. The current number of local virtual network sites that are
+    * allocated on this subscription.
     * @param currentLocalNetworkSitesValue The CurrentLocalNetworkSites value.
     */
     public void setCurrentLocalNetworkSites(final int currentLocalNetworkSitesValue) {
@@ -124,7 +126,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentStorageAccounts;
     
     /**
-    * The number of currently allocated storage accounts.
+    * Optional. The number of currently allocated storage accounts.
     * @return The CurrentStorageAccounts value.
     */
     public int getCurrentStorageAccounts() {
@@ -132,7 +134,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The number of currently allocated storage accounts.
+    * Optional. The number of currently allocated storage accounts.
     * @param currentStorageAccountsValue The CurrentStorageAccounts value.
     */
     public void setCurrentStorageAccounts(final int currentStorageAccountsValue) {
@@ -142,7 +144,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int currentVirtualNetworkSites;
     
     /**
-    * The number of currently allocated virtual network sites.
+    * Optional. The number of currently allocated virtual network sites.
     * @return The CurrentVirtualNetworkSites value.
     */
     public int getCurrentVirtualNetworkSites() {
@@ -150,7 +152,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The number of currently allocated virtual network sites.
+    * Optional. The number of currently allocated virtual network sites.
     * @param currentVirtualNetworkSitesValue The CurrentVirtualNetworkSites
     * value.
     */
@@ -161,7 +163,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumCoreCount;
     
     /**
-    * The maximum number of cores that can be allocated on this subscription.
+    * Optional. The maximum number of cores that can be allocated on this
+    * subscription.
     * @return The MaximumCoreCount value.
     */
     public int getMaximumCoreCount() {
@@ -169,7 +172,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of cores that can be allocated on this subscription.
+    * Optional. The maximum number of cores that can be allocated on this
+    * subscription.
     * @param maximumCoreCountValue The MaximumCoreCount value.
     */
     public void setMaximumCoreCount(final int maximumCoreCountValue) {
@@ -179,7 +183,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumDnsServers;
     
     /**
-    * The maximum number of DNS servers that can be allocated on this
+    * Optional. The maximum number of DNS servers that can be allocated on this
     * subscription.
     * @return The MaximumDnsServers value.
     */
@@ -188,7 +192,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of DNS servers that can be allocated on this
+    * Optional. The maximum number of DNS servers that can be allocated on this
     * subscription.
     * @param maximumDnsServersValue The MaximumDnsServers value.
     */
@@ -199,8 +203,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumHostedServices;
     
     /**
-    * The maximum number of cloud services that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of cloud services that can be allocated on
+    * this subscription.
     * @return The MaximumHostedServices value.
     */
     public int getMaximumHostedServices() {
@@ -208,8 +212,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of cloud services that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of cloud services that can be allocated on
+    * this subscription.
     * @param maximumHostedServicesValue The MaximumHostedServices value.
     */
     public void setMaximumHostedServices(final int maximumHostedServicesValue) {
@@ -219,8 +223,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumLocalNetworkSites;
     
     /**
-    * The maximum number of local virtual network sites that can be allocated
-    * on this subscription.
+    * Optional. The maximum number of local virtual network sites that can be
+    * allocated on this subscription.
     * @return The MaximumLocalNetworkSites value.
     */
     public int getMaximumLocalNetworkSites() {
@@ -228,8 +232,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of local virtual network sites that can be allocated
-    * on this subscription.
+    * Optional. The maximum number of local virtual network sites that can be
+    * allocated on this subscription.
     * @param maximumLocalNetworkSitesValue The MaximumLocalNetworkSites value.
     */
     public void setMaximumLocalNetworkSites(final int maximumLocalNetworkSitesValue) {
@@ -239,8 +243,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumStorageAccounts;
     
     /**
-    * The maximum number of storage accounts that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of storage accounts that can be allocated on
+    * this subscription.
     * @return The MaximumStorageAccounts value.
     */
     public int getMaximumStorageAccounts() {
@@ -248,8 +252,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of storage accounts that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of storage accounts that can be allocated on
+    * this subscription.
     * @param maximumStorageAccountsValue The MaximumStorageAccounts value.
     */
     public void setMaximumStorageAccounts(final int maximumStorageAccountsValue) {
@@ -259,8 +263,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     private int maximumVirtualNetworkSites;
     
     /**
-    * The maximum number of virtual network sites that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of virtual network sites that can be
+    * allocated on this subscription.
     * @return The MaximumVirtualNetworkSites value.
     */
     public int getMaximumVirtualNetworkSites() {
@@ -268,8 +272,8 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The maximum number of virtual network sites that can be allocated on this
-    * subscription.
+    * Optional. The maximum number of virtual network sites that can be
+    * allocated on this subscription.
     * @param maximumVirtualNetworkSitesValue The MaximumVirtualNetworkSites
     * value.
     */
@@ -280,7 +284,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private String serviceAdminLiveEmailId;
     
     /**
-    * The live ID of the subscription administrator.
+    * Optional. The live ID of the subscription administrator.
     * @return The ServiceAdminLiveEmailId value.
     */
     public String getServiceAdminLiveEmailId() {
@@ -288,7 +292,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The live ID of the subscription administrator.
+    * Optional. The live ID of the subscription administrator.
     * @param serviceAdminLiveEmailIdValue The ServiceAdminLiveEmailId value.
     */
     public void setServiceAdminLiveEmailId(final String serviceAdminLiveEmailIdValue) {
@@ -298,7 +302,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private String subscriptionID;
     
     /**
-    * The subscription ID that the operation was called on.
+    * Optional. The subscription ID that the operation was called on.
     * @return The SubscriptionID value.
     */
     public String getSubscriptionID() {
@@ -306,7 +310,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The subscription ID that the operation was called on.
+    * Optional. The subscription ID that the operation was called on.
     * @param subscriptionIDValue The SubscriptionID value.
     */
     public void setSubscriptionID(final String subscriptionIDValue) {
@@ -316,7 +320,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private String subscriptionName;
     
     /**
-    * The user-supplied name of the subscription.
+    * Optional. The user-supplied name of the subscription.
     * @return The SubscriptionName value.
     */
     public String getSubscriptionName() {
@@ -324,7 +328,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The user-supplied name of the subscription.
+    * Optional. The user-supplied name of the subscription.
     * @param subscriptionNameValue The SubscriptionName value.
     */
     public void setSubscriptionName(final String subscriptionNameValue) {
@@ -334,7 +338,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     private SubscriptionStatus subscriptionStatus;
     
     /**
-    * The subscription status.
+    * Optional. The subscription status.
     * @return The SubscriptionStatus value.
     */
     public SubscriptionStatus getSubscriptionStatus() {
@@ -342,7 +346,7 @@ public class SubscriptionGetResponse extends OperationResponse {
     }
     
     /**
-    * The subscription status.
+    * Optional. The subscription status.
     * @param subscriptionStatusValue The SubscriptionStatus value.
     */
     public void setSubscriptionStatus(final SubscriptionStatus subscriptionStatusValue) {

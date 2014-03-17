@@ -32,10 +32,10 @@ public class StorageAccountCreateParameters {
     private String affinityGroup;
     
     /**
-    * Required if Location is not specified. The name of an existing affinity
-    * group in the specified subscription.  You can include either a Location
-    * or AffinityGroup element in the request body, but not both. To list
-    * available affinity groups, use the List Affinity Groups operation.
+    * Optional. Required if Location is not specified. The name of an existing
+    * affinity group in the specified subscription.  You can include either a
+    * Location or AffinityGroup element in the request body, but not both. To
+    * list available affinity groups, use the List Affinity Groups operation.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -43,10 +43,10 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Required if Location is not specified. The name of an existing affinity
-    * group in the specified subscription.  You can include either a Location
-    * or AffinityGroup element in the request body, but not both. To list
-    * available affinity groups, use the List Affinity Groups operation.
+    * Optional. Required if Location is not specified. The name of an existing
+    * affinity group in the specified subscription.  You can include either a
+    * Location or AffinityGroup element in the request body, but not both. To
+    * list available affinity groups, use the List Affinity Groups operation.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -164,8 +164,8 @@ public class StorageAccountCreateParameters {
     private String location;
     
     /**
-    * Required if AffinityGroup is not specified. The location where the
-    * storage account is created.  You can include either a Location or
+    * Optional. Required if AffinityGroup is not specified. The location where
+    * the storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     * @return The Location value.
@@ -175,8 +175,8 @@ public class StorageAccountCreateParameters {
     }
     
     /**
-    * Required if AffinityGroup is not specified. The location where the
-    * storage account is created.  You can include either a Location or
+    * Optional. Required if AffinityGroup is not specified. The location where
+    * the storage account is created.  You can include either a Location or
     * AffinityGroup element in the request body, but not both. To list
     * available locations, use the List Locations operation.
     * @param locationValue The Location value.

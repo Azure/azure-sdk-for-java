@@ -19,8 +19,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public interface EntityOperation
-{
+public interface EntityOperation {
 
     /**
      * Supplies the current proxy information to the action.

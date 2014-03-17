@@ -26,8 +26,8 @@ package com.microsoft.windowsazure.management.compute.models;
 import java.util.ArrayList;
 
 /**
-* Optional. Specifies the SSH public keys and key pairs to populate in the
-* image during provisioning. This element is only used with the
+* Specifies the SSH public keys and key pairs to populate in the image during
+* provisioning. This element is only used with the
 * LinuxProvisioningConfiguration set.
 */
 public class SshSettings {

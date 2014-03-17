@@ -77,8 +77,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "textType", propOrder = { "content" })
-public class TextType
-{
+public class TextType {
 
     @XmlMixed
     @XmlAnyElement(lax = true)
@@ -121,10 +120,8 @@ public class TextType
      * 
      * 
      */
-    public List<Object> getContent()
-    {
-        if (content == null)
-        {
+    public List<Object> getContent() {
+        if (content == null) {
             content = new ArrayList<Object>();
         }
         return this.content;
@@ -136,8 +133,7 @@ public class TextType
      * @return possible object is {@link String }
      * 
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
@@ -148,8 +144,7 @@ public class TextType
      *            allowed object is {@link String }
      * 
      */
-    public void setType(String value)
-    {
+    public void setType(String value) {
         this.type = value;
     }
 
@@ -159,8 +154,7 @@ public class TextType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -171,8 +165,7 @@ public class TextType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -182,8 +175,7 @@ public class TextType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -194,8 +186,7 @@ public class TextType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -213,8 +204,7 @@ public class TextType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

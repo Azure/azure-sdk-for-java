@@ -32,6 +32,7 @@ public class ServiceBusNotificationHubResponse extends OperationResponse {
     private ServiceBusNotificationHub notificationHub;
     
     /**
+    * Optional.
     * @return The NotificationHub value.
     */
     public ServiceBusNotificationHub getNotificationHub() {
@@ -39,6 +40,7 @@ public class ServiceBusNotificationHubResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param notificationHubValue The NotificationHub value.
     */
     public void setNotificationHub(final ServiceBusNotificationHub notificationHubValue) {

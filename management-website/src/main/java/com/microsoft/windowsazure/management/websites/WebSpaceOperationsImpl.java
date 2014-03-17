@@ -104,10 +104,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     /**
     * Creates a source control user allowed to publish to this web space.
     *
-    * @param username The user name.
-    * @param password The user password.
-    * @param parameters Parameters supplied to the Create Publishing User
-    * operation.
+    * @param username Required. The user name.
+    * @param password Required. The user password.
+    * @param parameters Optional. Parameters supplied to the Create Publishing
+    * User operation.
     * @return The Create Publishing User operation response.
     */
     @Override
@@ -123,10 +123,10 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     /**
     * Creates a source control user allowed to publish to this web space.
     *
-    * @param username The user name.
-    * @param password The user password.
-    * @param parameters Parameters supplied to the Create Publishing User
-    * operation.
+    * @param username Required. The user name.
+    * @param password Required. The user password.
+    * @param parameters Optional. Parameters supplied to the Create Publishing
+    * User operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -299,7 +299,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @return The Get Web Space Details operation response.
     */
     @Override
@@ -318,7 +318,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn167017.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1074,8 +1074,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236429.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Additional parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Optional. Additional parameters.
     * @return The List Web Sites operation response.
     */
     @Override
@@ -1094,8 +1094,8 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn236429.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Additional parameters.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Optional. Additional parameters.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

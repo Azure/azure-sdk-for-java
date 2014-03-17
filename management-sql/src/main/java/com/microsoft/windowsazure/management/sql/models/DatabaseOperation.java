@@ -32,8 +32,8 @@ public class DatabaseOperation {
     private String databaseName;
     
     /**
-    * Gets or sets the name of the SQL Database on which the operation is
-    * performed.
+    * Optional. Gets or sets the name of the SQL Database on which the
+    * operation is performed.
     * @return The DatabaseName value.
     */
     public String getDatabaseName() {
@@ -41,8 +41,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the name of the SQL Database on which the operation is
-    * performed.
+    * Optional. Gets or sets the name of the SQL Database on which the
+    * operation is performed.
     * @param databaseNameValue The DatabaseName value.
     */
     public void setDatabaseName(final String databaseNameValue) {
@@ -52,8 +52,8 @@ public class DatabaseOperation {
     private String error;
     
     /**
-    * Gets or sets the description of the error that occurred during a failed
-    * operation.
+    * Optional. Gets or sets the description of the error that occurred during
+    * a failed operation.
     * @return The Error value.
     */
     public String getError() {
@@ -61,8 +61,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the description of the error that occurred during a failed
-    * operation.
+    * Optional. Gets or sets the description of the error that occurred during
+    * a failed operation.
     * @param errorValue The Error value.
     */
     public void setError(final String errorValue) {
@@ -72,8 +72,8 @@ public class DatabaseOperation {
     private int errorCode;
     
     /**
-    * Gets or sets the code indicating the error that occurred during a failed
-    * operation.
+    * Optional. Gets or sets the code indicating the error that occurred during
+    * a failed operation.
     * @return The ErrorCode value.
     */
     public int getErrorCode() {
@@ -81,8 +81,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the code indicating the error that occurred during a failed
-    * operation.
+    * Optional. Gets or sets the code indicating the error that occurred during
+    * a failed operation.
     * @param errorCodeValue The ErrorCode value.
     */
     public void setErrorCode(final int errorCodeValue) {
@@ -92,8 +92,8 @@ public class DatabaseOperation {
     private int errorSeverity;
     
     /**
-    * Gets or sets the severity level of the error that occurred during a
-    * failed operation.
+    * Optional. Gets or sets the severity level of the error that occurred
+    * during a failed operation.
     * @return The ErrorSeverity value.
     */
     public int getErrorSeverity() {
@@ -101,8 +101,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the severity level of the error that occurred during a
-    * failed operation.
+    * Optional. Gets or sets the severity level of the error that occurred
+    * during a failed operation.
     * @param errorSeverityValue The ErrorSeverity value.
     */
     public void setErrorSeverity(final int errorSeverityValue) {
@@ -112,7 +112,7 @@ public class DatabaseOperation {
     private int errorState;
     
     /**
-    * Gets or sets the error state.
+    * Optional. Gets or sets the error state.
     * @return The ErrorState value.
     */
     public int getErrorState() {
@@ -120,7 +120,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the error state.
+    * Optional. Gets or sets the error state.
     * @param errorStateValue The ErrorState value.
     */
     public void setErrorState(final int errorStateValue) {
@@ -130,7 +130,7 @@ public class DatabaseOperation {
     private String id;
     
     /**
-    * Gets or sets unique identifier of the operation..
+    * Optional. Gets or sets unique identifier of the operation..
     * @return The Id value.
     */
     public String getId() {
@@ -138,7 +138,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets unique identifier of the operation..
+    * Optional. Gets or sets unique identifier of the operation..
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -148,8 +148,8 @@ public class DatabaseOperation {
     private Calendar lastModifyTime;
     
     /**
-    * Gets or sets the timestamp when the record was last modified for a long
-    * running operation.
+    * Optional. Gets or sets the timestamp when the record was last modified
+    * for a long running operation.
     * @return The LastModifyTime value.
     */
     public Calendar getLastModifyTime() {
@@ -157,8 +157,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the timestamp when the record was last modified for a long
-    * running operation.
+    * Optional. Gets or sets the timestamp when the record was last modified
+    * for a long running operation.
     * @param lastModifyTimeValue The LastModifyTime value.
     */
     public void setLastModifyTime(final Calendar lastModifyTimeValue) {
@@ -168,7 +168,7 @@ public class DatabaseOperation {
     private String name;
     
     /**
-    * Gets or sets the name of the operation.
+    * Optional. Gets or sets the name of the operation.
     * @return The Name value.
     */
     public String getName() {
@@ -176,7 +176,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the name of the operation.
+    * Optional. Gets or sets the name of the operation.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -186,7 +186,7 @@ public class DatabaseOperation {
     private String parentLink;
     
     /**
-    * Gets or sets the ParentLink of the operation.
+    * Optional. Gets or sets the ParentLink of the operation.
     * @return The ParentLink value.
     */
     public String getParentLink() {
@@ -194,7 +194,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the ParentLink of the operation.
+    * Optional. Gets or sets the ParentLink of the operation.
     * @param parentLinkValue The ParentLink value.
     */
     public void setParentLink(final String parentLinkValue) {
@@ -204,7 +204,7 @@ public class DatabaseOperation {
     private int percentComplete;
     
     /**
-    * Gets or sets the percentage of operation that has completed.
+    * Optional. Gets or sets the percentage of operation that has completed.
     * @return The PercentComplete value.
     */
     public int getPercentComplete() {
@@ -212,7 +212,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the percentage of operation that has completed.
+    * Optional. Gets or sets the percentage of operation that has completed.
     * @param percentCompleteValue The PercentComplete value.
     */
     public void setPercentComplete(final int percentCompleteValue) {
@@ -222,7 +222,7 @@ public class DatabaseOperation {
     private String selfLink;
     
     /**
-    * Gets or sets the SelfLink of the operation.
+    * Optional. Gets or sets the SelfLink of the operation.
     * @return The SelfLink value.
     */
     public String getSelfLink() {
@@ -230,7 +230,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the SelfLink of the operation.
+    * Optional. Gets or sets the SelfLink of the operation.
     * @param selfLinkValue The SelfLink value.
     */
     public void setSelfLink(final String selfLinkValue) {
@@ -240,7 +240,7 @@ public class DatabaseOperation {
     private String sessionActivityId;
     
     /**
-    * Gets or sets session scoped ID of the operation.
+    * Optional. Gets or sets session scoped ID of the operation.
     * @return The SessionActivityId value.
     */
     public String getSessionActivityId() {
@@ -248,7 +248,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets session scoped ID of the operation.
+    * Optional. Gets or sets session scoped ID of the operation.
     * @param sessionActivityIdValue The SessionActivityId value.
     */
     public void setSessionActivityId(final String sessionActivityIdValue) {
@@ -258,7 +258,7 @@ public class DatabaseOperation {
     private Calendar startTime;
     
     /**
-    * Gets or sets the timestamp when the operation started.
+    * Optional. Gets or sets the timestamp when the operation started.
     * @return The StartTime value.
     */
     public Calendar getStartTime() {
@@ -266,7 +266,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the timestamp when the operation started.
+    * Optional. Gets or sets the timestamp when the operation started.
     * @param startTimeValue The StartTime value.
     */
     public void setStartTime(final Calendar startTimeValue) {
@@ -276,7 +276,7 @@ public class DatabaseOperation {
     private String state;
     
     /**
-    * Gets or sets the state of the operation.
+    * Optional. Gets or sets the state of the operation.
     * @return The State value.
     */
     public String getState() {
@@ -284,7 +284,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the state of the operation.
+    * Optional. Gets or sets the state of the operation.
     * @param stateValue The State value.
     */
     public void setState(final String stateValue) {
@@ -294,8 +294,8 @@ public class DatabaseOperation {
     private int stateId;
     
     /**
-    * Gets or sets current state of the long running operation in numeric
-    * format.
+    * Optional. Gets or sets current state of the long running operation in
+    * numeric format.
     * @return The StateId value.
     */
     public int getStateId() {
@@ -303,8 +303,8 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets current state of the long running operation in numeric
-    * format.
+    * Optional. Gets or sets current state of the long running operation in
+    * numeric format.
     * @param stateIdValue The StateId value.
     */
     public void setStateId(final int stateIdValue) {
@@ -314,7 +314,7 @@ public class DatabaseOperation {
     private String type;
     
     /**
-    * Gets or sets the type of resource.
+    * Optional. Gets or sets the type of resource.
     * @return The Type value.
     */
     public String getType() {
@@ -322,7 +322,7 @@ public class DatabaseOperation {
     }
     
     /**
-    * Gets or sets the type of resource.
+    * Optional. Gets or sets the type of resource.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {

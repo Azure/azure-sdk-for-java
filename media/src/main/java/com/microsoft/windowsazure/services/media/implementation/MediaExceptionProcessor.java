@@ -44,8 +44,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
  * translates exceptions into ServiceExceptions.
  * 
  */
-public class MediaExceptionProcessor implements MediaContract
-{
+public class MediaExceptionProcessor implements MediaContract {
 
     /** The service. */
     private final MediaContract service;
@@ -59,8 +58,7 @@ public class MediaExceptionProcessor implements MediaContract
      * @param service
      *            the service
      */
-    public MediaExceptionProcessor(MediaContract service)
-    {
+    public MediaExceptionProcessor(MediaContract service) {
         this.service = service;
     }
 
@@ -71,8 +69,7 @@ public class MediaExceptionProcessor implements MediaContract
      *            the service
      */
     @Inject
-    public MediaExceptionProcessor(MediaRestProxy service)
-    {
+    public MediaExceptionProcessor(MediaRestProxy service) {
         this.service = service;
     }
 
@@ -84,39 +81,34 @@ public class MediaExceptionProcessor implements MediaContract
      * (com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public MediaContract withFilter(ServiceFilter filter)
-    {
+    public MediaContract withFilter(ServiceFilter filter) {
         return new MediaExceptionProcessor(service.withFilter(filter));
     }
 
     @Override
     public MediaContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         return new MediaExceptionProcessor(
                 service.withRequestFilterFirst(serviceRequestFilter));
     }
 
     @Override
     public MediaContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         return new MediaExceptionProcessor(
                 service.withRequestFilterLast(serviceRequestFilter));
     }
 
     @Override
     public MediaContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         return new MediaExceptionProcessor(
                 service.withResponseFilterFirst(serviceResponseFilter));
     }
 
     @Override
     public MediaContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         return new MediaExceptionProcessor(
                 service.withResponseFilterLast(serviceResponseFilter));
     }
@@ -128,8 +120,7 @@ public class MediaExceptionProcessor implements MediaContract
      *            the e
      * @return the service exception
      */
-    private ServiceException processCatch(ServiceException e)
-    {
+    private ServiceException processCatch(ServiceException e) {
         log.warn(e.getMessage(), e.getCause());
         return ServiceExceptionFactory.process("MediaServices", e);
     }
@@ -144,16 +135,12 @@ public class MediaExceptionProcessor implements MediaContract
      */
     @Override
     public <T> T create(EntityCreateOperation<T> creator)
-            throws ServiceException
-    {
-        try
-        {
+            throws ServiceException {
+        try {
             return service.create(creator);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -167,16 +154,12 @@ public class MediaExceptionProcessor implements MediaContract
      * EntityGetOperation)
      */
     @Override
-    public <T> T get(EntityGetOperation<T> getter) throws ServiceException
-    {
-        try
-        {
+    public <T> T get(EntityGetOperation<T> getter) throws ServiceException {
+        try {
             return service.get(getter);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -191,16 +174,12 @@ public class MediaExceptionProcessor implements MediaContract
      */
     @Override
     public <T> ListResult<T> list(EntityListOperation<T> lister)
-            throws ServiceException
-    {
-        try
-        {
+            throws ServiceException {
+        try {
             return service.list(lister);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -214,16 +193,12 @@ public class MediaExceptionProcessor implements MediaContract
      * EntityUpdateOperation)
      */
     @Override
-    public void update(EntityUpdateOperation updater) throws ServiceException
-    {
-        try
-        {
+    public void update(EntityUpdateOperation updater) throws ServiceException {
+        try {
             service.update(updater);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
 
@@ -238,16 +213,12 @@ public class MediaExceptionProcessor implements MediaContract
      * EntityDeleteOperation)
      */
     @Override
-    public void delete(EntityDeleteOperation deleter) throws ServiceException
-    {
-        try
-        {
+    public void delete(EntityDeleteOperation deleter) throws ServiceException {
+        try {
             service.delete(deleter);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -262,16 +233,12 @@ public class MediaExceptionProcessor implements MediaContract
      */
     @Override
     public void action(EntityActionOperation entityActionOperation)
-            throws ServiceException
-    {
-        try
-        {
+            throws ServiceException {
+        try {
             service.action(entityActionOperation);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -286,16 +253,12 @@ public class MediaExceptionProcessor implements MediaContract
      */
     @Override
     public <T> T action(EntityTypeActionOperation<T> entityTypeActionOperation)
-            throws ServiceException
-    {
-        try
-        {
+            throws ServiceException {
+        try {
             return service.action(entityTypeActionOperation);
-        } catch (UniformInterfaceException e)
-        {
+        } catch (UniformInterfaceException e) {
             throw processCatch(new ServiceException(e));
-        } catch (ClientHandlerException e)
-        {
+        } catch (ClientHandlerException e) {
             throw processCatch(new ServiceException(e));
         }
     }
@@ -308,8 +271,7 @@ public class MediaExceptionProcessor implements MediaContract
      * (com.microsoft.windowsazure.services.media.models.LocatorInfo)
      */
     @Override
-    public WritableBlobContainerContract createBlobWriter(LocatorInfo locator)
-    {
+    public WritableBlobContainerContract createBlobWriter(LocatorInfo locator) {
         return service.createBlobWriter(locator);
     }
 

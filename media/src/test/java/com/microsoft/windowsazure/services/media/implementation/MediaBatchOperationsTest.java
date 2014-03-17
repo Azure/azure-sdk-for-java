@@ -31,13 +31,11 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.models.Job;
 import com.microsoft.windowsazure.services.media.models.Task;
 
-public class MediaBatchOperationsTest
-{
+public class MediaBatchOperationsTest {
 
     @Test
     public void createMediaBatchOperationSuccess() throws JAXBException,
-            ParserConfigurationException
-    {
+            ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
                 .build();
@@ -53,8 +51,7 @@ public class MediaBatchOperationsTest
 
     @Test(expected = IllegalArgumentException.class)
     public void createMediaBatchOperationFailedWithNullUri()
-            throws JAXBException, ParserConfigurationException
-    {
+            throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = null;
 
@@ -70,8 +67,7 @@ public class MediaBatchOperationsTest
 
     @Test
     public void addCreateJobOperationToMediaBatchOperationsSuccess()
-            throws JAXBException, ParserConfigurationException
-    {
+            throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
                 .build();
@@ -91,8 +87,7 @@ public class MediaBatchOperationsTest
 
     @Test
     public void addCreateTaskOperationToMediaBatchOperationsSuccess()
-            throws JAXBException, ParserConfigurationException
-    {
+            throws JAXBException, ParserConfigurationException {
         // Arrange
         URI serviceUri = UriBuilder.fromPath("http://www.contoso.com/media")
                 .build();
@@ -114,8 +109,7 @@ public class MediaBatchOperationsTest
 
     @Test
     public void getMimeMultipartSuccess() throws JAXBException,
-            ParserConfigurationException, MessagingException, IOException
-    {
+            ParserConfigurationException, MessagingException, IOException {
         // Arrange
         String mediaProcessorId = "testMediaProcessorId";
         String taskBody = "testTaskBody";

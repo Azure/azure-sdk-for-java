@@ -52,6 +52,8 @@ import com.microsoft.windowsazure.management.compute.models.DomainJoinProvisioni
 import com.microsoft.windowsazure.management.compute.models.DomainJoinSettings;
 import com.microsoft.windowsazure.management.compute.models.EndpointAcl;
 import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration;
+import com.microsoft.windowsazure.management.compute.models.FormattedMessage;
+import com.microsoft.windowsazure.management.compute.models.GuestAgentStatus;
 import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.InstanceEndpoint;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
@@ -60,6 +62,7 @@ import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.PersistentVMDowntime;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
+import com.microsoft.windowsazure.management.compute.models.ResourceExtensionStatus;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.RoleInstance;
 import com.microsoft.windowsazure.management.compute.models.RoleInstancePowerState;
@@ -145,11 +148,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -173,11 +177,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -263,7 +268,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -410,11 +415,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -438,11 +444,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -525,7 +532,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -672,9 +679,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -698,9 +706,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -795,7 +804,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -953,9 +962,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -979,9 +988,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -1031,7 +1040,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1080,8 +1089,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1104,8 +1113,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1147,7 +1156,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1197,9 +1206,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1223,9 +1232,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1275,7 +1284,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1325,9 +1334,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1351,9 +1360,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1400,7 +1409,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1450,9 +1459,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1476,9 +1485,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1528,7 +1537,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1578,9 +1587,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1604,9 +1613,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1653,7 +1662,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -1704,8 +1713,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1730,8 +1740,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1787,7 +1798,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1868,10 +1879,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1896,10 +1907,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1956,7 +1967,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2031,10 +2042,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2059,10 +2070,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2116,7 +2127,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2211,9 +2222,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2258,9 +2270,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2355,7 +2368,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2533,9 +2546,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2580,9 +2594,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2674,7 +2689,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2851,10 +2866,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2898,10 +2913,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2957,7 +2972,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3051,10 +3066,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3098,10 +3113,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -3154,7 +3169,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3228,11 +3243,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3263,11 +3279,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentName Required. The deployment to change configuration
     * for.
-    * @param deploymentName The deployment to change configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3357,11 +3374,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3392,11 +3410,12 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460809.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to change deployment configuration
-    * for.
-    * @param deploymentSlot The slot to change deployment configuration for.
-    * @param parameters Parameters supplied to the Change Configuration
-    * Deployment operation.
+    * @param serviceName Required. The cloud service to change deployment
+    * configuration for.
+    * @param deploymentSlot Required. The slot to change deployment
+    * configuration for.
+    * @param parameters Required. Parameters supplied to the Change
+    * Configuration Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3486,9 +3505,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3519,9 +3539,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460813.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to create a deployment for.
-    * @param deploymentSlot The slot to create a deployment for.
-    * @param parameters Parameters supplied to the Create Deployment operation.
+    * @param serviceName Required. The cloud service to create a deployment for.
+    * @param deploymentSlot Required. The slot to create a deployment for.
+    * @param parameters Required. Parameters supplied to the Create Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3619,9 +3640,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
@@ -3652,9 +3673,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * disk should also be deleted from storage.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
@@ -3744,8 +3765,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -3775,8 +3796,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460815.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -3861,8 +3882,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of the deployment.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
     * @return A deployment that exists in the cloud service.
     */
     @Override
@@ -3881,8 +3902,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of the deployment.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of the deployment.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -3932,7 +3953,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -4128,6 +4149,117 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
+                        Element guestAgentStatusElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "GuestAgentStatus");
+                        if (guestAgentStatusElement != null) {
+                            GuestAgentStatus guestAgentStatusInstance = new GuestAgentStatus();
+                            roleInstanceInstance.setGuestAgentStatus(guestAgentStatusInstance);
+                            
+                            Element protocolVersionElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "ProtocolVersion");
+                            if (protocolVersionElement != null) {
+                                String protocolVersionInstance;
+                                protocolVersionInstance = protocolVersionElement.getTextContent();
+                                guestAgentStatusInstance.setProtocolVersion(protocolVersionInstance);
+                            }
+                            
+                            Element timestampElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                            if (timestampElement != null) {
+                                String timestampInstance;
+                                timestampInstance = timestampElement.getTextContent();
+                                guestAgentStatusInstance.setTimestamp(timestampInstance);
+                            }
+                            
+                            Element guestAgentVersionElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "GuestAgentVersion");
+                            if (guestAgentVersionElement != null) {
+                                String guestAgentVersionInstance;
+                                guestAgentVersionInstance = guestAgentVersionElement.getTextContent();
+                                guestAgentStatusInstance.setGuestAgentVersion(guestAgentVersionInstance);
+                            }
+                            
+                            Element statusElement2 = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                            if (statusElement2 != null) {
+                                String statusInstance2;
+                                statusInstance2 = statusElement2.getTextContent();
+                                guestAgentStatusInstance.setStatus(statusInstance2);
+                            }
+                            
+                            Element formattedMessageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                            if (formattedMessageElement != null) {
+                                FormattedMessage formattedMessageInstance = new FormattedMessage();
+                                guestAgentStatusInstance.setFormattedMessage(formattedMessageInstance);
+                                
+                                Element languageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                                if (languageElement != null) {
+                                    String languageInstance;
+                                    languageInstance = languageElement.getTextContent();
+                                    formattedMessageInstance.setLanguage(languageInstance);
+                                }
+                                
+                                Element messageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement != null) {
+                                    String messageInstance;
+                                    messageInstance = messageElement.getTextContent();
+                                    formattedMessageInstance.setMessage(messageInstance);
+                                }
+                            }
+                        }
+                        
+                        Element resourceExtensionStatusListSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatusList");
+                        if (resourceExtensionStatusListSequenceElement != null) {
+                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i3 = i3 + 1) {
+                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i3));
+                                ResourceExtensionStatus resourceExtensionStatusInstance = new ResourceExtensionStatus();
+                                roleInstanceInstance.getResourceExtensionStatusList().add(resourceExtensionStatusInstance);
+                                
+                                Element handlerNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "HandlerName");
+                                if (handlerNameElement != null) {
+                                    String handlerNameInstance;
+                                    handlerNameInstance = handlerNameElement.getTextContent();
+                                    resourceExtensionStatusInstance.setHandlerName(handlerNameInstance);
+                                }
+                                
+                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                                if (versionElement != null) {
+                                    String versionInstance;
+                                    versionInstance = versionElement.getTextContent();
+                                    resourceExtensionStatusInstance.setVersion(versionInstance);
+                                }
+                                
+                                Element statusElement3 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                if (statusElement3 != null) {
+                                    String statusInstance3;
+                                    statusInstance3 = statusElement3.getTextContent();
+                                    resourceExtensionStatusInstance.setStatus(statusInstance3);
+                                }
+                                
+                                Element codeElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                if (codeElement != null) {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    resourceExtensionStatusInstance.setCode(codeInstance);
+                                }
+                                
+                                Element formattedMessageElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                if (formattedMessageElement2 != null) {
+                                    FormattedMessage formattedMessageInstance2 = new FormattedMessage();
+                                    resourceExtensionStatusInstance.setFormattedMessage(formattedMessageInstance2);
+                                    
+                                    Element languageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
+                                    if (languageElement2 != null) {
+                                        String languageInstance2;
+                                        languageInstance2 = languageElement2.getTextContent();
+                                        formattedMessageInstance2.setLanguage(languageInstance2);
+                                    }
+                                    
+                                    Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement2 != null) {
+                                        String messageInstance2;
+                                        messageInstance2 = messageElement2.getTextContent();
+                                        formattedMessageInstance2.setMessage(messageInstance2);
+                                    }
+                                }
+                            }
+                        }
+                        
                         Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
@@ -4187,8 +4319,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i3));
+                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i4 = i4 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i4));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
@@ -4215,8 +4347,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i4));
+                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i5 = i5 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i5));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
@@ -4229,8 +4361,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i5));
+                                    for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i6 = i6 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i6));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
@@ -4331,8 +4463,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             
                                             Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i6));
+                                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i7 = i7 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i7));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
@@ -4371,8 +4503,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i7));
+                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i8));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
@@ -4481,8 +4613,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
+                                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i9 = i9 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i9));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
@@ -4513,8 +4645,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
+                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i10));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
@@ -4577,8 +4709,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
+                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i11));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
@@ -4600,8 +4732,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
+                                        for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i12 = i12 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i12));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
@@ -4626,8 +4758,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i12));
+                            for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i13 = i13 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i13));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
@@ -4652,17 +4784,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
                                 
-                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                                if (versionElement != null) {
-                                    String versionInstance;
-                                    versionInstance = versionElement.getTextContent();
-                                    resourceExtensionReferenceInstance.setVersion(versionInstance);
+                                Element versionElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                                if (versionElement2 != null) {
+                                    String versionInstance2;
+                                    versionInstance2 = versionElement2.getTextContent();
+                                    resourceExtensionReferenceInstance.setVersion(versionInstance2);
                                 }
                                 
                                 Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i13));
+                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i14 = i14 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i14));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
@@ -4698,6 +4830,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
+                        Element vMImageNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "VMImageName");
+                        if (vMImageNameElement != null) {
+                            String vMImageNameInstance;
+                            vMImageNameInstance = vMImageNameElement.getTextContent();
+                            roleInstance.setVMImageName(vMImageNameInstance);
+                        }
+                        
                         Element availabilitySetNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
@@ -4707,8 +4846,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i14));
+                            for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i15 = i15 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i15));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
@@ -4741,7 +4880,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 Element logicalDiskSizeInGBElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                                if (logicalDiskSizeInGBElement != null) {
+                                if (logicalDiskSizeInGBElement != null && (logicalDiskSizeInGBElement.getTextContent() == null || logicalDiskSizeInGBElement.getTextContent().isEmpty() == true) == false) {
                                     int logicalDiskSizeInGBInstance;
                                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -4752,6 +4891,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     URI mediaLinkInstance;
                                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                                     dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                                }
+                                
+                                Element sourceMediaLinkElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                                if (sourceMediaLinkElement != null) {
+                                    URI sourceMediaLinkInstance;
+                                    sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                                 }
                             }
                         }
@@ -4878,8 +5024,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i15));
+                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i16 = i16 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i16));
                         String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                         String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -4905,18 +5051,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    Element statusElement2 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    if (statusElement2 != null) {
-                        String statusInstance2;
-                        statusInstance2 = statusElement2.getTextContent();
-                        persistentVMDowntimeInstance.setStatus(statusInstance2);
+                    Element statusElement4 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement4 != null) {
+                        String statusInstance4;
+                        statusInstance4 = statusElement4.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance4);
                     }
                 }
                 
                 Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i16));
+                    for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i17 = i17 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i17));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
@@ -4957,8 +5103,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i17));
+                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i18 = i18 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i18));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
@@ -4986,8 +5132,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i18));
+                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i19 = i19 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i19));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
@@ -5002,8 +5148,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i19));
+                        for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i20 = i20 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i20));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
@@ -5016,8 +5162,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i20));
+                                for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i21 = i21 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i21));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     
@@ -5056,8 +5202,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @return A deployment that exists in the cloud service.
     */
     @Override
@@ -5076,8 +5222,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460804.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -5124,7 +5270,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5320,6 +5466,117 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
+                        Element guestAgentStatusElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "GuestAgentStatus");
+                        if (guestAgentStatusElement != null) {
+                            GuestAgentStatus guestAgentStatusInstance = new GuestAgentStatus();
+                            roleInstanceInstance.setGuestAgentStatus(guestAgentStatusInstance);
+                            
+                            Element protocolVersionElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "ProtocolVersion");
+                            if (protocolVersionElement != null) {
+                                String protocolVersionInstance;
+                                protocolVersionInstance = protocolVersionElement.getTextContent();
+                                guestAgentStatusInstance.setProtocolVersion(protocolVersionInstance);
+                            }
+                            
+                            Element timestampElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                            if (timestampElement != null) {
+                                String timestampInstance;
+                                timestampInstance = timestampElement.getTextContent();
+                                guestAgentStatusInstance.setTimestamp(timestampInstance);
+                            }
+                            
+                            Element guestAgentVersionElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "GuestAgentVersion");
+                            if (guestAgentVersionElement != null) {
+                                String guestAgentVersionInstance;
+                                guestAgentVersionInstance = guestAgentVersionElement.getTextContent();
+                                guestAgentStatusInstance.setGuestAgentVersion(guestAgentVersionInstance);
+                            }
+                            
+                            Element statusElement2 = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                            if (statusElement2 != null) {
+                                String statusInstance2;
+                                statusInstance2 = statusElement2.getTextContent();
+                                guestAgentStatusInstance.setStatus(statusInstance2);
+                            }
+                            
+                            Element formattedMessageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                            if (formattedMessageElement != null) {
+                                FormattedMessage formattedMessageInstance = new FormattedMessage();
+                                guestAgentStatusInstance.setFormattedMessage(formattedMessageInstance);
+                                
+                                Element languageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Language");
+                                if (languageElement != null) {
+                                    String languageInstance;
+                                    languageInstance = languageElement.getTextContent();
+                                    formattedMessageInstance.setLanguage(languageInstance);
+                                }
+                                
+                                Element messageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement != null) {
+                                    String messageInstance;
+                                    messageInstance = messageElement.getTextContent();
+                                    formattedMessageInstance.setMessage(messageInstance);
+                                }
+                            }
+                        }
+                        
+                        Element resourceExtensionStatusListSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatusList");
+                        if (resourceExtensionStatusListSequenceElement != null) {
+                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i3 = i3 + 1) {
+                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i3));
+                                ResourceExtensionStatus resourceExtensionStatusInstance = new ResourceExtensionStatus();
+                                roleInstanceInstance.getResourceExtensionStatusList().add(resourceExtensionStatusInstance);
+                                
+                                Element handlerNameElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "HandlerName");
+                                if (handlerNameElement != null) {
+                                    String handlerNameInstance;
+                                    handlerNameInstance = handlerNameElement.getTextContent();
+                                    resourceExtensionStatusInstance.setHandlerName(handlerNameInstance);
+                                }
+                                
+                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                                if (versionElement != null) {
+                                    String versionInstance;
+                                    versionInstance = versionElement.getTextContent();
+                                    resourceExtensionStatusInstance.setVersion(versionInstance);
+                                }
+                                
+                                Element statusElement3 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                if (statusElement3 != null) {
+                                    String statusInstance3;
+                                    statusInstance3 = statusElement3.getTextContent();
+                                    resourceExtensionStatusInstance.setStatus(statusInstance3);
+                                }
+                                
+                                Element codeElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                if (codeElement != null) {
+                                    String codeInstance;
+                                    codeInstance = codeElement.getTextContent();
+                                    resourceExtensionStatusInstance.setCode(codeInstance);
+                                }
+                                
+                                Element formattedMessageElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                if (formattedMessageElement2 != null) {
+                                    FormattedMessage formattedMessageInstance2 = new FormattedMessage();
+                                    resourceExtensionStatusInstance.setFormattedMessage(formattedMessageInstance2);
+                                    
+                                    Element languageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
+                                    if (languageElement2 != null) {
+                                        String languageInstance2;
+                                        languageInstance2 = languageElement2.getTextContent();
+                                        formattedMessageInstance2.setLanguage(languageInstance2);
+                                    }
+                                    
+                                    Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement2 != null) {
+                                        String messageInstance2;
+                                        messageInstance2 = messageElement2.getTextContent();
+                                        formattedMessageInstance2.setMessage(messageInstance2);
+                                    }
+                                }
+                            }
+                        }
+                        
                         Element powerStateElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "PowerState");
                         if (powerStateElement != null) {
                             RoleInstancePowerState powerStateInstance;
@@ -5379,8 +5636,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i3 = i3 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i3));
+                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i4 = i4 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i4));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
@@ -5407,8 +5664,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i4 = i4 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i4));
+                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i5 = i5 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i5));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
@@ -5421,8 +5678,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i5 = i5 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i5));
+                                    for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i6 = i6 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i6));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
@@ -5523,8 +5780,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             
                                             Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i6 = i6 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i6));
+                                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i7 = i7 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i7));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
@@ -5563,8 +5820,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i7 = i7 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i7));
+                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i8 = i8 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i8));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
@@ -5673,8 +5930,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i8));
+                                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i9 = i9 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i9));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
@@ -5705,8 +5962,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i9 = i9 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i9));
+                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i10 = i10 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i10));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
@@ -5769,8 +6026,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i10));
+                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i11 = i11 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i11));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
@@ -5792,8 +6049,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i11));
+                                        for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i12 = i12 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i12));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
@@ -5818,8 +6075,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i12 = i12 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i12));
+                            for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i13 = i13 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i13));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
@@ -5844,17 +6101,17 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionReferenceInstance.setName(nameInstance4);
                                 }
                                 
-                                Element versionElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
-                                if (versionElement != null) {
-                                    String versionInstance;
-                                    versionInstance = versionElement.getTextContent();
-                                    resourceExtensionReferenceInstance.setVersion(versionInstance);
+                                Element versionElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
+                                if (versionElement2 != null) {
+                                    String versionInstance2;
+                                    versionInstance2 = versionElement2.getTextContent();
+                                    resourceExtensionReferenceInstance.setVersion(versionInstance2);
                                 }
                                 
                                 Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i13 = i13 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i13));
+                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i14 = i14 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i14));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
@@ -5890,6 +6147,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                         }
                         
+                        Element vMImageNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "VMImageName");
+                        if (vMImageNameElement != null) {
+                            String vMImageNameInstance;
+                            vMImageNameInstance = vMImageNameElement.getTextContent();
+                            roleInstance.setVMImageName(vMImageNameInstance);
+                        }
+                        
                         Element availabilitySetNameElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                         if (availabilitySetNameElement != null) {
                             String availabilitySetNameInstance;
@@ -5899,8 +6163,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i14 = i14 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i14));
+                            for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i15 = i15 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i15));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
@@ -5933,7 +6197,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 }
                                 
                                 Element logicalDiskSizeInGBElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                                if (logicalDiskSizeInGBElement != null) {
+                                if (logicalDiskSizeInGBElement != null && (logicalDiskSizeInGBElement.getTextContent() == null || logicalDiskSizeInGBElement.getTextContent().isEmpty() == true) == false) {
                                     int logicalDiskSizeInGBInstance;
                                     logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                                     dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -5944,6 +6208,13 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     URI mediaLinkInstance;
                                     mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                                     dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                                }
+                                
+                                Element sourceMediaLinkElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                                if (sourceMediaLinkElement != null) {
+                                    URI sourceMediaLinkInstance;
+                                    sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
+                                    dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                                 }
                             }
                         }
@@ -6070,8 +6341,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i15 = i15 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i15));
+                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i16 = i16 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i16));
                         String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                         String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -6097,18 +6368,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    Element statusElement2 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    if (statusElement2 != null) {
-                        String statusInstance2;
-                        statusInstance2 = statusElement2.getTextContent();
-                        persistentVMDowntimeInstance.setStatus(statusInstance2);
+                    Element statusElement4 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement4 != null) {
+                        String statusInstance4;
+                        statusInstance4 = statusElement4.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance4);
                     }
                 }
                 
                 Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i16 = i16 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i16));
+                    for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i17 = i17 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i17));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
@@ -6149,8 +6420,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i17 = i17 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i17));
+                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i18 = i18 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i18));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
@@ -6178,8 +6449,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i18 = i18 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i18));
+                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i19 = i19 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i19));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
@@ -6194,8 +6465,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i19 = i19 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i19));
+                        for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i20 = i20 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i20));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
@@ -6208,8 +6479,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i20 = i20 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i20));
+                                for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i21 = i21 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i21));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     
@@ -6254,9 +6525,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -6282,9 +6554,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -6340,7 +6613,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -6392,9 +6665,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -6420,9 +6694,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154121.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Get Package operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Get Package
+    * operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -6475,7 +6750,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -6525,9 +6800,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6558,9 +6833,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -6650,9 +6925,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6683,9 +6958,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441298.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -6775,9 +7050,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6808,9 +7083,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -6900,9 +7175,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6933,9 +7208,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441292.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param roleInstanceName The name of your role instance.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param roleInstanceName Required. The name of your role instance.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7027,10 +7302,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -7056,10 +7331,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -7116,7 +7391,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -7196,10 +7471,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -7225,10 +7500,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh403977.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Rollback Update Or Upgrade
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Rollback Update Or
+    * Upgrade operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -7282,7 +7557,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -7361,8 +7636,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7394,8 +7670,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460814.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param parameters Parameters supplied to the Swap Deployment operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param parameters Required. Parameters supplied to the Swap Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7485,10 +7762,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7520,10 +7797,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7614,10 +7891,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7649,10 +7926,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460808.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to swap deployments for.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Update Deployment Status
-    * operation.
+    * @param serviceName Required. The cloud service to swap deployments for.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Update Deployment
+    * Status operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7763,9 +8040,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7817,9 +8095,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentName The deployment to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentName Required. The deployment to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -7930,9 +8209,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -7984,9 +8264,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460793.aspx for
     * more information)
     *
-    * @param serviceName The cloud service to upgrade.
-    * @param deploymentSlot The slot to upgrade.
-    * @param parameters Parameters supplied to the Upgrade Deployment operation.
+    * @param serviceName Required. The cloud service to upgrade.
+    * @param deploymentSlot Required. The slot to upgrade.
+    * @param parameters Required. Parameters supplied to the Upgrade Deployment
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -8096,10 +8377,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8150,10 +8431,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -8263,10 +8544,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -8317,10 +8598,10 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460800.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param deploymentSlot The deployment slot.
-    * @param parameters Parameters supplied to the Walk Upgrade Domain
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param deploymentSlot Required. The deployment slot.
+    * @param parameters Required. Parameters supplied to the Walk Upgrade
+    * Domain operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the

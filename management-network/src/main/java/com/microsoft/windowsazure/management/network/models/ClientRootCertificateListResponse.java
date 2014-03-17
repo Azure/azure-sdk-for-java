@@ -35,7 +35,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     private ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificates;
     
     /**
-    * The list of client root certificates.
+    * Optional. The list of client root certificates.
     * @return The ClientRootCertificates value.
     */
     public ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> getClientRootCertificates() {
@@ -43,7 +43,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
     }
     
     /**
-    * The list of client root certificates.
+    * Optional. The list of client root certificates.
     * @param clientRootCertificatesValue The ClientRootCertificates value.
     */
     public void setClientRootCertificates(final ArrayList<ClientRootCertificateListResponse.ClientRootCertificate> clientRootCertificatesValue) {
@@ -71,7 +71,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         private Calendar expirationTime;
         
         /**
-        * Specifies the time that the certificate will expire.
+        * Optional. Specifies the time that the certificate will expire.
         * @return The ExpirationTime value.
         */
         public Calendar getExpirationTime() {
@@ -79,7 +79,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Specifies the time that the certificate will expire.
+        * Optional. Specifies the time that the certificate will expire.
         * @param expirationTimeValue The ExpirationTime value.
         */
         public void setExpirationTime(final Calendar expirationTimeValue) {
@@ -89,7 +89,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         private String subject;
         
         /**
-        * Specifies the distinguished name of the certificate issuer.
+        * Optional. Specifies the distinguished name of the certificate issuer.
         * @return The Subject value.
         */
         public String getSubject() {
@@ -97,7 +97,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Specifies the distinguished name of the certificate issuer.
+        * Optional. Specifies the distinguished name of the certificate issuer.
         * @param subjectValue The Subject value.
         */
         public void setSubject(final String subjectValue) {
@@ -107,7 +107,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         private String thumbprint;
         
         /**
-        * Specifies the thumbprint of the certificate.
+        * Optional. Specifies the thumbprint of the certificate.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -115,7 +115,7 @@ public class ClientRootCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * Specifies the thumbprint of the certificate.
+        * Optional. Specifies the thumbprint of the certificate.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {

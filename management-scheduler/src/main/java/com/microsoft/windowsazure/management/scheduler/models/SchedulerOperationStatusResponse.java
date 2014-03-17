@@ -39,9 +39,9 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     private SchedulerOperationStatusResponse.ErrorDetails error;
     
     /**
-    * If the asynchronous operation failed, the response body includes the HTTP
-    * status code for the failed request, and also includes error information
-    * regarding the failure.
+    * Optional. If the asynchronous operation failed, the response body
+    * includes the HTTP status code for the failed request, and also includes
+    * error information regarding the failure.
     * @return The Error value.
     */
     public SchedulerOperationStatusResponse.ErrorDetails getError() {
@@ -49,9 +49,9 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * If the asynchronous operation failed, the response body includes the HTTP
-    * status code for the failed request, and also includes error information
-    * regarding the failure.
+    * Optional. If the asynchronous operation failed, the response body
+    * includes the HTTP status code for the failed request, and also includes
+    * error information regarding the failure.
     * @param errorValue The Error value.
     */
     public void setError(final SchedulerOperationStatusResponse.ErrorDetails errorValue) {
@@ -61,7 +61,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     private String eTag;
     
     /**
-    * Optional ETag, if returned from the original request.
+    * Optional. Optional ETag, if returned from the original request.
     * @return The ETag value.
     */
     public String getETag() {
@@ -69,7 +69,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * Optional ETag, if returned from the original request.
+    * Optional. Optional ETag, if returned from the original request.
     * @param eTagValue The ETag value.
     */
     public void setETag(final String eTagValue) {
@@ -79,7 +79,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     private Integer httpStatusCode;
     
     /**
-    * The HTTP status code for the asynchronous request.
+    * Optional. The HTTP status code for the asynchronous request.
     * @return The HttpStatusCode value.
     */
     public Integer getHttpStatusCode() {
@@ -87,7 +87,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The HTTP status code for the asynchronous request.
+    * Optional. The HTTP status code for the asynchronous request.
     * @param httpStatusCodeValue The HttpStatusCode value.
     */
     public void setHttpStatusCode(final Integer httpStatusCodeValue) {
@@ -97,8 +97,9 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     private String id;
     
     /**
-    * The request ID of the asynchronous request. This value is returned in the
-    * x-ms-request-id response header of the asynchronous request.
+    * Optional. The request ID of the asynchronous request. This value is
+    * returned in the x-ms-request-id response header of the asynchronous
+    * request.
     * @return The Id value.
     */
     public String getId() {
@@ -106,8 +107,9 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The request ID of the asynchronous request. This value is returned in the
-    * x-ms-request-id response header of the asynchronous request.
+    * Optional. The request ID of the asynchronous request. This value is
+    * returned in the x-ms-request-id response header of the asynchronous
+    * request.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -117,7 +119,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     private SchedulerOperationStatus status;
     
     /**
-    * The status of the asynchronous request.
+    * Optional. The status of the asynchronous request.
     * @return The Status value.
     */
     public SchedulerOperationStatus getStatus() {
@@ -125,7 +127,7 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The status of the asynchronous request.
+    * Optional. The status of the asynchronous request.
     * @param statusValue The Status value.
     */
     public void setStatus(final SchedulerOperationStatus statusValue) {
@@ -141,8 +143,8 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
         private String code;
         
         /**
-        * The management service error code returned if the asynchronous
-        * request failed.
+        * Optional. The management service error code returned if the
+        * asynchronous request failed.
         * @return The Code value.
         */
         public String getCode() {
@@ -150,8 +152,8 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
         }
         
         /**
-        * The management service error code returned if the asynchronous
-        * request failed.
+        * Optional. The management service error code returned if the
+        * asynchronous request failed.
         * @param codeValue The Code value.
         */
         public void setCode(final String codeValue) {
@@ -161,8 +163,8 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
         private String message;
         
         /**
-        * The management service error message returned if the asynchronous
-        * request failed.
+        * Optional. The management service error message returned if the
+        * asynchronous request failed.
         * @return The Message value.
         */
         public String getMessage() {
@@ -170,8 +172,8 @@ public class SchedulerOperationStatusResponse extends OperationResponse {
         }
         
         /**
-        * The management service error message returned if the asynchronous
-        * request failed.
+        * Optional. The management service error message returned if the
+        * asynchronous request failed.
         * @param messageValue The Message value.
         */
         public void setMessage(final String messageValue) {

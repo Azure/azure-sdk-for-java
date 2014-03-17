@@ -20,8 +20,7 @@ import java.util.Calendar;
 /**
  * 
  */
-class GoalState
-{
+class GoalState {
     private final BigInteger incarnation;
     private final ExpectedState expectedState;
     private final String environmentPath;
@@ -30,8 +29,7 @@ class GoalState
 
     public GoalState(BigInteger incarnation, ExpectedState expectedState,
             String environmentPath, Calendar deadline,
-            String currentStateEndpoint)
-    {
+            String currentStateEndpoint) {
         this.incarnation = incarnation;
         this.expectedState = expectedState;
         this.environmentPath = environmentPath;
@@ -39,28 +37,23 @@ class GoalState
         this.currentStateEndpoint = currentStateEndpoint;
     }
 
-    public BigInteger getIncarnation()
-    {
+    public BigInteger getIncarnation() {
         return incarnation;
     }
 
-    public ExpectedState getExpectedState()
-    {
+    public ExpectedState getExpectedState() {
         return expectedState;
     }
 
-    public String getEnvironmentPath()
-    {
+    public String getEnvironmentPath() {
         return environmentPath;
     }
 
-    public Calendar getDeadline()
-    {
+    public Calendar getDeadline() {
         return deadline;
     }
 
-    public String getCurrentStateEndpoint()
-    {
+    public String getCurrentStateEndpoint() {
         return currentStateEndpoint;
     }
 }

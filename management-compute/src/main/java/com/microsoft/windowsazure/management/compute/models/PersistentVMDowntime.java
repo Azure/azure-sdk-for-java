@@ -33,7 +33,7 @@ public class PersistentVMDowntime {
     private Calendar endTime;
     
     /**
-    * The time that the virtual machine was stopped.
+    * Optional. The time that the virtual machine was stopped.
     * @return The EndTime value.
     */
     public Calendar getEndTime() {
@@ -41,7 +41,7 @@ public class PersistentVMDowntime {
     }
     
     /**
-    * The time that the virtual machine was stopped.
+    * Optional. The time that the virtual machine was stopped.
     * @param endTimeValue The EndTime value.
     */
     public void setEndTime(final Calendar endTimeValue) {
@@ -51,7 +51,7 @@ public class PersistentVMDowntime {
     private Calendar startTime;
     
     /**
-    * The time that the virtual machine was started.
+    * Optional. The time that the virtual machine was started.
     * @return The StartTime value.
     */
     public Calendar getStartTime() {
@@ -59,7 +59,7 @@ public class PersistentVMDowntime {
     }
     
     /**
-    * The time that the virtual machine was started.
+    * Optional. The time that the virtual machine was started.
     * @param startTimeValue The StartTime value.
     */
     public void setStartTime(final Calendar startTimeValue) {
@@ -69,7 +69,7 @@ public class PersistentVMDowntime {
     private String status;
     
     /**
-    * The status of the virtual machine.
+    * Optional. The status of the virtual machine.
     * @return The Status value.
     */
     public String getStatus() {
@@ -77,7 +77,7 @@ public class PersistentVMDowntime {
     }
     
     /**
-    * The status of the virtual machine.
+    * Optional. The status of the virtual machine.
     * @param statusValue The Status value.
     */
     public void setStatus(final String statusValue) {

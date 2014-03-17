@@ -24,8 +24,8 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Optional.  Contains properties that specify a domain to which the virtual
-* machine will be joined. This element is only used with the
+* Contains properties that specify a domain to which the virtual machine will
+* be joined. This element is only used with the
 * WindowsProvisioningConfiguration set.
 */
 public class DomainJoinSettings {
@@ -96,7 +96,7 @@ public class DomainJoinSettings {
     private DomainJoinProvisioning provisioning;
     
     /**
-    * Additional information for domain join provisioning.
+    * Optional. Additional information for domain join provisioning.
     * @return The Provisioning value.
     */
     public DomainJoinProvisioning getProvisioning() {
@@ -104,7 +104,7 @@ public class DomainJoinSettings {
     }
     
     /**
-    * Additional information for domain join provisioning.
+    * Optional. Additional information for domain join provisioning.
     * @param provisioningValue The Provisioning value.
     */
     public void setProvisioning(final DomainJoinProvisioning provisioningValue) {

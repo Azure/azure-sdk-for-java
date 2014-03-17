@@ -322,8 +322,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the List Subscription Operations
-    * operation.
+    * @param parameters Required. Parameters supplied to the List Subscription
+    * Operations operation.
     * @return The List Subscription Operations operation response.
     */
     @Override
@@ -343,8 +343,8 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715318.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the List Subscription Operations
-    * operation.
+    * @param parameters Required. Parameters supplied to the List Subscription
+    * Operations operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -558,7 +558,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     /**
     * Register a resource with your subscription.
     *
-    * @param resourceName Name of the resource to register.
+    * @param resourceName Required. Name of the resource to register.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -575,7 +575,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     /**
     * Register a resource with your subscription.
     *
-    * @param resourceName Name of the resource to register.
+    * @param resourceName Required. Name of the resource to register.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -662,7 +662,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     /**
     * Unregister a resource with your subscription.
     *
-    * @param resourceName Name of the resource to unregister.
+    * @param resourceName Required. Name of the resource to unregister.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -679,7 +679,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
     /**
     * Unregister a resource with your subscription.
     *
-    * @param resourceName Name of the resource to unregister.
+    * @param resourceName Required. Name of the resource to unregister.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

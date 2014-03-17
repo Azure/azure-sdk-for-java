@@ -33,10 +33,10 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private String affinityGroup;
     
     /**
-    * The affinity group in which the disk is located. The AffinityGroup value
-    * is derived from storage account that contains the blob in which the
-    * media is located. If the storage account does not belong to an affinity
-    * group the value is NULL.
+    * Optional. The affinity group in which the disk is located. The
+    * AffinityGroup value is derived from storage account that contains the
+    * blob in which the media is located. If the storage account does not
+    * belong to an affinity group the value is NULL.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -44,10 +44,10 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The affinity group in which the disk is located. The AffinityGroup value
-    * is derived from storage account that contains the blob in which the
-    * media is located. If the storage account does not belong to an affinity
-    * group the value is NULL.
+    * Optional. The affinity group in which the disk is located. The
+    * AffinityGroup value is derived from storage account that contains the
+    * blob in which the media is located. If the storage account does not
+    * belong to an affinity group the value is NULL.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -57,7 +57,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private Boolean isPremium;
     
     /**
-    * Specifies whether the comtained image is a premium image
+    * Optional. Specifies whether the comtained image is a premium image
     * @return The IsPremium value.
     */
     public Boolean isPremium() {
@@ -65,7 +65,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies whether the comtained image is a premium image
+    * Optional. Specifies whether the comtained image is a premium image
     * @param isPremiumValue The IsPremium value.
     */
     public void setIsPremium(final Boolean isPremiumValue) {
@@ -75,7 +75,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private String label;
     
     /**
-    * The friendly name of the disk
+    * Optional. The friendly name of the disk
     * @return The Label value.
     */
     public String getLabel() {
@@ -83,7 +83,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The friendly name of the disk
+    * Optional. The friendly name of the disk
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -93,10 +93,10 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private String location;
     
     /**
-    * The geo-location in which the disk is located. The Location value is
-    * derived from storage account that contains the blob in which the disk is
-    * located. If the storage account belongs to an affinity group the value
-    * is NULL.
+    * Optional. The geo-location in which the disk is located. The Location
+    * value is derived from storage account that contains the blob in which
+    * the disk is located. If the storage account belongs to an affinity group
+    * the value is NULL.
     * @return The Location value.
     */
     public String getLocation() {
@@ -104,10 +104,10 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The geo-location in which the disk is located. The Location value is
-    * derived from storage account that contains the blob in which the disk is
-    * located. If the storage account belongs to an affinity group the value
-    * is NULL.
+    * Optional. The geo-location in which the disk is located. The Location
+    * value is derived from storage account that contains the blob in which
+    * the disk is located. If the storage account belongs to an affinity group
+    * the value is NULL.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
@@ -117,7 +117,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private int logicalSizeInGB;
     
     /**
-    * The size, in GB, of the disk.
+    * Optional. The size, in GB, of the disk.
     * @return The LogicalSizeInGB value.
     */
     public int getLogicalSizeInGB() {
@@ -125,7 +125,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The size, in GB, of the disk.
+    * Optional. The size, in GB, of the disk.
     * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
     public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
@@ -135,10 +135,11 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * The location of the blob in the blob store in which the media for the
-    * disk is located. The blob location belongs to a storage account in the
-    * subscription specified by the SubscriptionId value in the operation
-    * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. The location of the blob in the blob store in which the media
+    * for the disk is located. The blob location belongs to a storage account
+    * in the subscription specified by the SubscriptionId value in the
+    * operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -146,10 +147,11 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The location of the blob in the blob store in which the media for the
-    * disk is located. The blob location belongs to a storage account in the
-    * subscription specified by the SubscriptionId value in the operation
-    * call. Example: http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. The location of the blob in the blob store in which the media
+    * for the disk is located. The blob location belongs to a storage account
+    * in the subscription specified by the SubscriptionId value in the
+    * operation call. Example:
+    * http://example.blob.core.windows.net/disks/mydisk.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -159,8 +161,8 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private String name;
     
     /**
-    * The name of the disk. This is the name that is used when creating one or
-    * more virtual machines using the disk.
+    * Optional. The name of the disk. This is the name that is used when
+    * creating one or more virtual machines using the disk.
     * @return The Name value.
     */
     public String getName() {
@@ -168,8 +170,8 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The name of the disk. This is the name that is used when creating one or
-    * more virtual machines using the disk.
+    * Optional. The name of the disk. This is the name that is used when
+    * creating one or more virtual machines using the disk.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -179,7 +181,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     private String operatingSystem;
     
     /**
-    * The Operating System type for the disk.
+    * Optional. The Operating System type for the disk.
     * @return The OperatingSystem value.
     */
     public String getOperatingSystem() {
@@ -187,7 +189,7 @@ public class VirtualMachineDiskUpdateResponse extends OperationResponse {
     }
     
     /**
-    * The Operating System type for the disk.
+    * Optional. The Operating System type for the disk.
     * @param operatingSystemValue The OperatingSystem value.
     */
     public void setOperatingSystem(final String operatingSystemValue) {

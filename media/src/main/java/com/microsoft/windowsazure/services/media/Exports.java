@@ -36,15 +36,13 @@ import com.microsoft.windowsazure.services.media.implementation.VersionHeadersFi
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class Exports implements Builder.Exports
-{
+public class Exports implements Builder.Exports {
 
     /**
      * register the Media services.
      */
     @Override
-    public void register(Builder.Registry registry)
-    {
+    public void register(Builder.Registry registry) {
         registry.add(MediaContract.class, MediaExceptionProcessor.class);
         registry.add(MediaRestProxy.class);
         registry.add(OAuthContract.class, OAuthRestProxy.class);
@@ -56,14 +54,12 @@ public class Exports implements Builder.Exports
         registry.add(UserAgentFilter.class);
 
         registry.alter(MediaContract.class, ClientConfig.class,
-                new Builder.Alteration<ClientConfig>()
-                {
+                new Builder.Alteration<ClientConfig>() {
                     @SuppressWarnings("rawtypes")
                     @Override
                     public ClientConfig alter(String profile,
                             ClientConfig instance, Builder builder,
-                            Map<String, Object> properties)
-                    {
+                            Map<String, Object> properties) {
 
                         instance.getProperties().put(
                                 JSONConfiguration.FEATURE_POJO_MAPPING, true);
@@ -73,19 +69,16 @@ public class Exports implements Builder.Exports
                         instance.getProperties().put(
                                 ClientConfig.PROPERTY_FOLLOW_REDIRECTS, false);
 
-                        try
-                        {
+                        try {
                             instance.getSingletons().add(
                                     new ODataEntityProvider());
                             instance.getSingletons().add(
                                     new ODataEntityCollectionProvider());
                             instance.getSingletons().add(
                                     new MediaContentProvider());
-                        } catch (JAXBException e)
-                        {
+                        } catch (JAXBException e) {
                             throw new RuntimeException(e);
-                        } catch (ParserConfigurationException e)
-                        {
+                        } catch (ParserConfigurationException e) {
                             throw new RuntimeException(e);
                         }
 

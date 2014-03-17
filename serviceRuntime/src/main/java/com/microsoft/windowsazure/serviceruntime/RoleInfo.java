@@ -54,8 +54,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleInfo", propOrder = {
 
 })
-class RoleInfo
-{
+class RoleInfo {
 
     @XmlElement(name = "Instances", required = true)
     protected RoleInstancesInfo instances;
@@ -68,8 +67,7 @@ class RoleInfo
      * @return possible object is {@link RoleInstancesInfo }
      * 
      */
-    public RoleInstancesInfo getInstances()
-    {
+    public RoleInstancesInfo getInstances() {
         return instances;
     }
 
@@ -80,8 +78,7 @@ class RoleInfo
      *            allowed object is {@link RoleInstancesInfo }
      * 
      */
-    public void setInstances(RoleInstancesInfo value)
-    {
+    public void setInstances(RoleInstancesInfo value) {
         this.instances = value;
     }
 
@@ -91,8 +88,7 @@ class RoleInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -103,8 +99,7 @@ class RoleInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 

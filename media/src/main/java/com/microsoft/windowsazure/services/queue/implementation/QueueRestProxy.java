@@ -52,8 +52,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
 
-public class QueueRestProxy implements QueueContract
-{
+public class QueueRestProxy implements QueueContract {
     // private static Log log = LogFactory.getLog(QueueRestProxy.class);
 
     private static final String API_VERSION = "2011-08-18";
@@ -68,8 +67,7 @@ public class QueueRestProxy implements QueueContract
     public QueueRestProxy(HttpURLConnectionClient channel,
             @Named(QueueConfiguration.ACCOUNT_NAME) String accountName,
             @Named(QueueConfiguration.URI) String url,
-            SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter)
-    {
+            SharedKeyFilter sharedKeyFilter, UserAgentFilter userAgentFilter) {
 
         this.channel = channel;
         this.accountName = accountName;
@@ -83,8 +81,7 @@ public class QueueRestProxy implements QueueContract
 
     public QueueRestProxy(HttpURLConnectionClient channel,
             ClientFilter[] filters, String accountName, String url,
-            SharedKeyFilter filter, RFC1123DateConverter dateMapper)
-    {
+            SharedKeyFilter filter, RFC1123DateConverter dateMapper) {
 
         this.channel = channel;
         this.filters = filters;
@@ -95,8 +92,7 @@ public class QueueRestProxy implements QueueContract
     }
 
     @Override
-    public QueueContract withFilter(ServiceFilter filter)
-    {
+    public QueueContract withFilter(ServiceFilter filter) {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -107,8 +103,7 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public QueueContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -120,8 +115,7 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public QueueContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -133,8 +127,7 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public QueueContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -146,8 +139,7 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public QueueContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = filters;
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -157,43 +149,36 @@ public class QueueRestProxy implements QueueContract
                 this.url, this.sharedKeyFilter, this.dateMapper);
     }
 
-    private void ThrowIfError(ClientResponse r)
-    {
+    private void ThrowIfError(ClientResponse r) {
         PipelineHelpers.ThrowIfError(r);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource,
-            String key, Object value)
-    {
+            String key, Object value) {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource,
-            String key, int value, int defaultValue)
-    {
+            String key, int value, int defaultValue) {
         return PipelineHelpers.addOptionalQueryParam(webResource, key, value,
                 defaultValue);
     }
 
     private Builder addOptionalMetadataHeader(Builder builder,
-            Map<String, String> metadata)
-    {
+            Map<String, String> metadata) {
         return PipelineHelpers.addOptionalMetadataHeader(builder, metadata);
     }
 
     private HashMap<String, String> getMetadataFromHeaders(
-            ClientResponse response)
-    {
+            ClientResponse response) {
         return PipelineHelpers.getMetadataFromHeaders(response);
     }
 
-    private WebResource getResource(QueueServiceOptions options)
-    {
+    private WebResource getResource(QueueServiceOptions options) {
         WebResource webResource = channel.resource(url).path("/");
         webResource = addOptionalQueryParam(webResource, "timeout",
                 options.getTimeout());
-        for (ClientFilter filter : filters)
-        {
+        for (ClientFilter filter : filters) {
             webResource.addFilter(filter);
         }
 
@@ -202,15 +187,13 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public GetServicePropertiesResult getServiceProperties()
-            throws ServiceException
-    {
+            throws ServiceException {
         return getServiceProperties(new QueueServiceOptions());
     }
 
     @Override
     public GetServicePropertiesResult getServiceProperties(
-            QueueServiceOptions options) throws ServiceException
-    {
+            QueueServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/")
                 .queryParam("resType", "service")
                 .queryParam("comp", "properties");
@@ -225,15 +208,13 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public void setServiceProperties(ServiceProperties serviceProperties)
-            throws ServiceException
-    {
+            throws ServiceException {
         setServiceProperties(serviceProperties, new QueueServiceOptions());
     }
 
     @Override
     public void setServiceProperties(ServiceProperties serviceProperties,
-            QueueServiceOptions options) throws ServiceException
-    {
+            QueueServiceOptions options) throws ServiceException {
         WebResource webResource = getResource(options).path("/")
                 .queryParam("resType", "service")
                 .queryParam("comp", "properties");
@@ -245,16 +226,14 @@ public class QueueRestProxy implements QueueContract
     }
 
     @Override
-    public void createQueue(String queue) throws ServiceException
-    {
+    public void createQueue(String queue) throws ServiceException {
         createQueue(queue, new CreateQueueOptions());
 
     }
 
     @Override
     public void createQueue(String queue, CreateQueueOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -268,15 +247,13 @@ public class QueueRestProxy implements QueueContract
     }
 
     @Override
-    public void deleteQueue(String queue) throws ServiceException
-    {
+    public void deleteQueue(String queue) throws ServiceException {
         deleteQueue(queue, new QueueServiceOptions());
     }
 
     @Override
     public void deleteQueue(String queue, QueueServiceOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -289,15 +266,13 @@ public class QueueRestProxy implements QueueContract
     }
 
     @Override
-    public ListQueuesResult listQueues() throws ServiceException
-    {
+    public ListQueuesResult listQueues() throws ServiceException {
         return listQueues(new ListQueuesOptions());
     }
 
     @Override
     public ListQueuesResult listQueues(ListQueuesOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         WebResource webResource = getResource(options).path("/").queryParam(
                 "comp", "list");
         webResource = addOptionalQueryParam(webResource, "prefix",
@@ -306,8 +281,7 @@ public class QueueRestProxy implements QueueContract
                 options.getMarker());
         webResource = addOptionalQueryParam(webResource, "maxresults",
                 options.getMaxResults(), 0);
-        if (options.isIncludeMetadata())
-        {
+        if (options.isIncludeMetadata()) {
             webResource = webResource.queryParam("include", "metadata");
         }
 
@@ -318,15 +292,13 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public GetQueueMetadataResult getQueueMetadata(String queue)
-            throws ServiceException
-    {
+            throws ServiceException {
         return getQueueMetadata(queue, new QueueServiceOptions());
     }
 
     @Override
     public GetQueueMetadataResult getQueueMetadata(String queue,
-            QueueServiceOptions options) throws ServiceException
-    {
+            QueueServiceOptions options) throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -348,16 +320,14 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public void setQueueMetadata(String queue, HashMap<String, String> metadata)
-            throws ServiceException
-    {
+            throws ServiceException {
         setQueueMetadata(queue, metadata, new QueueServiceOptions());
     }
 
     @Override
     public void setQueueMetadata(String queue,
             HashMap<String, String> metadata, QueueServiceOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -373,19 +343,16 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public void createMessage(String queue, String messageText)
-            throws ServiceException
-    {
+            throws ServiceException {
         createMessage(queue, messageText, new CreateMessageOptions());
     }
 
     @Override
     public void createMessage(String queue, String messageText,
-            CreateMessageOptions options) throws ServiceException
-    {
+            CreateMessageOptions options) throws ServiceException {
         if (queue == null)
             throw new NullPointerException("queue");
-        if (messageText == null)
-        {
+        if (messageText == null) {
             throw new NullPointerException("messageText");
         }
 
@@ -407,8 +374,7 @@ public class QueueRestProxy implements QueueContract
     @Override
     public UpdateMessageResult updateMessage(String queue, String messageId,
             String popReceipt, String messageText,
-            int visibilityTimeoutInSeconds) throws ServiceException
-    {
+            int visibilityTimeoutInSeconds) throws ServiceException {
         return updateMessage(queue, messageId, popReceipt, messageText,
                 visibilityTimeoutInSeconds, new QueueServiceOptions());
     }
@@ -417,8 +383,7 @@ public class QueueRestProxy implements QueueContract
     public UpdateMessageResult updateMessage(String queue, String messageId,
             String popReceipt, String messageText,
             int visibilityTimeoutInSeconds, QueueServiceOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException("queue");
         if (messageId == null)
@@ -451,15 +416,13 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public ListMessagesResult listMessages(String queue)
-            throws ServiceException
-    {
+            throws ServiceException {
         return listMessages(queue, new ListMessagesOptions());
     }
 
     @Override
     public ListMessagesResult listMessages(String queue,
-            ListMessagesOptions options) throws ServiceException
-    {
+            ListMessagesOptions options) throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -477,15 +440,13 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public PeekMessagesResult peekMessages(String queue)
-            throws ServiceException
-    {
+            throws ServiceException {
         return peekMessages(queue, new PeekMessagesOptions());
     }
 
     @Override
     public PeekMessagesResult peekMessages(String queue,
-            PeekMessagesOptions options) throws ServiceException
-    {
+            PeekMessagesOptions options) throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 
@@ -501,16 +462,14 @@ public class QueueRestProxy implements QueueContract
 
     @Override
     public void deleteMessage(String queue, String messageId, String popReceipt)
-            throws ServiceException
-    {
+            throws ServiceException {
         deleteMessage(queue, messageId, popReceipt, new QueueServiceOptions());
     }
 
     @Override
     public void deleteMessage(String queue, String messageId,
             String popReceipt, QueueServiceOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
         if (messageId == null)
@@ -527,15 +486,13 @@ public class QueueRestProxy implements QueueContract
     }
 
     @Override
-    public void clearMessages(String queue) throws ServiceException
-    {
+    public void clearMessages(String queue) throws ServiceException {
         clearMessages(queue, new QueueServiceOptions());
     }
 
     @Override
     public void clearMessages(String queue, QueueServiceOptions options)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (queue == null)
             throw new NullPointerException();
 

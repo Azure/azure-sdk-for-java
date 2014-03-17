@@ -52,8 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RolesInfo", propOrder = { "role" })
-class RolesInfo
-{
+class RolesInfo {
 
     @XmlElement(name = "Role")
     protected List<RoleInfo> role;
@@ -80,10 +79,8 @@ class RolesInfo
      * 
      * 
      */
-    public List<RoleInfo> getRole()
-    {
-        if (role == null)
-        {
+    public List<RoleInfo> getRole() {
+        if (role == null) {
             role = new ArrayList<RoleInfo>();
         }
         return this.role;

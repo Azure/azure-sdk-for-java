@@ -87,8 +87,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * The Create Cloud Service operation creates a Windows Azure cloud service
     * in a Windows Azure subscription.
     *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -113,8 +113,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * The Create Cloud Service operation creates a Windows Azure cloud service
     * in a Windows Azure subscription.
     *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -261,8 +261,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * The Create Cloud Service operation creates a Windows Azure cloud service
     * in a Windows Azure subscription.
     *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -287,8 +287,8 @@ public class CloudServiceOperationsImpl implements ServiceOperations<StoreManage
     * The Create Cloud Service operation creates a Windows Azure cloud service
     * in a Windows Azure subscription.
     *
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the

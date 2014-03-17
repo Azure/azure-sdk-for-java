@@ -35,7 +35,7 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     private ArrayList<DatabaseOperation> databaseOperations;
     
     /**
-    * Gets or sets the list of database operations' response.
+    * Optional. Gets or sets the list of database operations' response.
     * @return The DatabaseOperations value.
     */
     public ArrayList<DatabaseOperation> getDatabaseOperations() {
@@ -43,7 +43,7 @@ public class DatabaseOperationListResponse extends OperationResponse implements 
     }
     
     /**
-    * Gets or sets the list of database operations' response.
+    * Optional. Gets or sets the list of database operations' response.
     * @param databaseOperationsValue The DatabaseOperations value.
     */
     public void setDatabaseOperations(final ArrayList<DatabaseOperation> databaseOperationsValue) {

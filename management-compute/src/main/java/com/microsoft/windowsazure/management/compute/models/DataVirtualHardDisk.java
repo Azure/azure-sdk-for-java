@@ -32,8 +32,8 @@ public class DataVirtualHardDisk {
     private String diskLabel;
     
     /**
-    * Specifies the friendly name of the VHD to use to create thedata disk for
-    * the virtual machine.
+    * Optional. Specifies the friendly name of the VHD to use to create thedata
+    * disk for the virtual machine.
     * @return The DiskLabel value.
     */
     public String getDiskLabel() {
@@ -41,8 +41,8 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Specifies the friendly name of the VHD to use to create thedata disk for
-    * the virtual machine.
+    * Optional. Specifies the friendly name of the VHD to use to create thedata
+    * disk for the virtual machine.
     * @param diskLabelValue The DiskLabel value.
     */
     public void setDiskLabel(final String diskLabelValue) {
@@ -52,8 +52,8 @@ public class DataVirtualHardDisk {
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
-    * Specifies the platform caching behavior of the data disk blob for
-    * read/write efficiency. The default vault is ReadOnly.
+    * Optional. Specifies the platform caching behavior of the data disk blob
+    * for read/write efficiency. The default vault is ReadOnly.
     * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching() {
@@ -61,45 +61,45 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Specifies the platform caching behavior of the data disk blob for
-    * read/write efficiency. The default vault is ReadOnly.
+    * Optional. Specifies the platform caching behavior of the data disk blob
+    * for read/write efficiency. The default vault is ReadOnly.
     * @param hostCachingValue The HostCaching value.
     */
     public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
         this.hostCaching = hostCachingValue;
     }
     
-    private int logicalDiskSizeInGB;
+    private Integer logicalDiskSizeInGB;
     
     /**
-    * Specifies the size, in GB, of an empty VHD to be attached to the virtual
-    * machine. The VHD can be created as part of disk attach or create virtual
-    * machine call by specifying the value for this property.  Windows Azure
-    * creates the empty VHD based on size preference and attaches the newly
-    * created VHD to the virtual machine.
+    * Optional. Specifies the size, in GB, of an empty VHD to be attached to
+    * the virtual machine. The VHD can be created as part of disk attach or
+    * create virtual machine call by specifying the value for this property.
+    * Windows Azure creates the empty VHD based on size preference and
+    * attaches the newly created VHD to the virtual machine.
     * @return The LogicalDiskSizeInGB value.
     */
-    public int getLogicalDiskSizeInGB() {
+    public Integer getLogicalDiskSizeInGB() {
         return this.logicalDiskSizeInGB;
     }
     
     /**
-    * Specifies the size, in GB, of an empty VHD to be attached to the virtual
-    * machine. The VHD can be created as part of disk attach or create virtual
-    * machine call by specifying the value for this property.  Windows Azure
-    * creates the empty VHD based on size preference and attaches the newly
-    * created VHD to the virtual machine.
+    * Optional. Specifies the size, in GB, of an empty VHD to be attached to
+    * the virtual machine. The VHD can be created as part of disk attach or
+    * create virtual machine call by specifying the value for this property.
+    * Windows Azure creates the empty VHD based on size preference and
+    * attaches the newly created VHD to the virtual machine.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
-    public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
+    public void setLogicalDiskSizeInGB(final Integer logicalDiskSizeInGBValue) {
         this.logicalDiskSizeInGB = logicalDiskSizeInGBValue;
     }
     
     private Integer logicalUnitNumber;
     
     /**
-    * Specifies the Logical Unit Number (LUN) for the data disk. The LUN
-    * specifies the slot in which the data drive appears when mounted for
+    * Optional. Specifies the Logical Unit Number (LUN) for the data disk. The
+    * LUN specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
     * @return The LogicalUnitNumber value.
@@ -109,8 +109,8 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Specifies the Logical Unit Number (LUN) for the data disk. The LUN
-    * specifies the slot in which the data drive appears when mounted for
+    * Optional. Specifies the Logical Unit Number (LUN) for the data disk. The
+    * LUN specifies the slot in which the data drive appears when mounted for
     * usage by the virtual machine. This element is only listed when more than
     * one data disk is attached to a virtual machine.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
@@ -122,7 +122,12 @@ public class DataVirtualHardDisk {
     private URI mediaLink;
     
     /**
-    * Specifies the location of the disk in Windows Azure storage.
+    * Optional. Optional. If the disk that is being added is already registered
+    * in the subscription or the VHD for the disk already exists in blob
+    * storage, this element is ignored. If a VHD file does not exist in blob
+    * storage, this element defines the location of the new VHD that is
+    * created when the new disk is added. Example:
+    * http://example.blob.core.windows.net/disks/mydatadisk.vhd
     * @return The MediaLink value.
     */
     public URI getMediaLink() {
@@ -130,7 +135,12 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Specifies the location of the disk in Windows Azure storage.
+    * Optional. Optional. If the disk that is being added is already registered
+    * in the subscription or the VHD for the disk already exists in blob
+    * storage, this element is ignored. If a VHD file does not exist in blob
+    * storage, this element defines the location of the new VHD that is
+    * created when the new disk is added. Example:
+    * http://example.blob.core.windows.net/disks/mydatadisk.vhd
     * @param mediaLinkValue The MediaLink value.
     */
     public void setMediaLink(final URI mediaLinkValue) {
@@ -140,8 +150,8 @@ public class DataVirtualHardDisk {
     private String name;
     
     /**
-    * Specifies the name of the VHD to use to create thedata disk for the
-    * virtual machine.
+    * Optional. Specifies the name of the VHD to use to create thedata disk for
+    * the virtual machine.
     * @return The Name value.
     */
     public String getName() {
@@ -149,11 +159,37 @@ public class DataVirtualHardDisk {
     }
     
     /**
-    * Specifies the name of the VHD to use to create thedata disk for the
-    * virtual machine.
+    * Optional. Specifies the name of the VHD to use to create thedata disk for
+    * the virtual machine.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
         this.name = nameValue;
+    }
+    
+    private URI sourceMediaLink;
+    
+    /**
+    * Optional. Optional. If the disk that is being added is already registered
+    * in the subscription or the VHD for the disk does not exist in blob
+    * storage, this element is ignored. If the VHD file exists in blob
+    * storage, this element defines the path to the VHD and a disk is
+    * registered from it and attached to the virtual machine.
+    * @return The SourceMediaLink value.
+    */
+    public URI getSourceMediaLink() {
+        return this.sourceMediaLink;
+    }
+    
+    /**
+    * Optional. Optional. If the disk that is being added is already registered
+    * in the subscription or the VHD for the disk does not exist in blob
+    * storage, this element is ignored. If the VHD file exists in blob
+    * storage, this element defines the path to the VHD and a disk is
+    * registered from it and attached to the virtual machine.
+    * @param sourceMediaLinkValue The SourceMediaLink value.
+    */
+    public void setSourceMediaLink(final URI sourceMediaLinkValue) {
+        this.sourceMediaLink = sourceMediaLinkValue;
     }
 }

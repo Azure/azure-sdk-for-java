@@ -24,10 +24,10 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Optional. Specifies the state of the resource extension.
+* The guest agent status, which can be: "Ready" or "NotReady"
 */
-public enum ResourceExtensionReferenceState {
-    Enable,
+public class GuestAgentStatusTypes {
+    public static final String Ready = "Ready";
     
-    Disable,
+    public static final String NotReady = "NotReady";
 }

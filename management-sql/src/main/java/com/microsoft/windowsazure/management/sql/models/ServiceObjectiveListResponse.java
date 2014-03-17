@@ -34,7 +34,8 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     private ArrayList<ServiceObjective> serviceObjectives;
     
     /**
-    * Gets or sets the list of Service Objectives that are existing in a server.
+    * Optional. Gets or sets the list of Service Objectives that are existing
+    * in a server.
     * @return The ServiceObjectives value.
     */
     public ArrayList<ServiceObjective> getServiceObjectives() {
@@ -42,7 +43,8 @@ public class ServiceObjectiveListResponse extends OperationResponse implements I
     }
     
     /**
-    * Gets or sets the list of Service Objectives that are existing in a server.
+    * Optional. Gets or sets the list of Service Objectives that are existing
+    * in a server.
     * @param serviceObjectivesValue The ServiceObjectives value.
     */
     public void setServiceObjectives(final ArrayList<ServiceObjective> serviceObjectivesValue) {

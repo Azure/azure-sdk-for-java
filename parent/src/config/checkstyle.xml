@@ -176,10 +176,7 @@
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
         <module name="AvoidNestedBlocks"/>
         <module name="EmptyBlock"/>
-        <module name="LeftCurly">
-            <property name="option" value="nl" />
-        </module>
-
+        <module name="LeftCurly" />
         <module name="NeedBraces"/>
 
         <!-- Removed on 11/02/2012:
@@ -208,11 +205,10 @@
 
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber">
-            <!-- Updated on 01/23/2013: -->
-            <!-- Added ignore list, to keep enums from triggering violations -->
-            <property name="ignoreNumbers" value="0, 1, 2, 3, 4, 5, 6, 7, 8"/>
-        </module>
+
+        <!-- Updated on 03/17/2014: -->
+        <!-- Added ignore. Code is generated so magic numbers are not a largish issue. -->
+        <!-- <module name="MagicNumber" /> -->
         <module name="MissingSwitchDefault"/>
         <module name="RedundantThrows"/>
         <module name="SimplifyBooleanExpression"/>

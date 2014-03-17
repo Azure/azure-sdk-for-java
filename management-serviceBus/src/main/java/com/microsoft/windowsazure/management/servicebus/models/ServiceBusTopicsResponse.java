@@ -34,7 +34,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     private ArrayList<ServiceBusTopic> topics;
     
     /**
-    * The list of topics.
+    * Optional. The list of topics.
     * @return The Topics value.
     */
     public ArrayList<ServiceBusTopic> getTopics() {
@@ -42,7 +42,7 @@ public class ServiceBusTopicsResponse extends OperationResponse implements Itera
     }
     
     /**
-    * The list of topics.
+    * Optional. The list of topics.
     * @param topicsValue The Topics value.
     */
     public void setTopics(final ArrayList<ServiceBusTopic> topicsValue) {

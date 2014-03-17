@@ -25,34 +25,27 @@ import java.util.concurrent.Executors;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 
-public class Exports implements Builder.Exports
-{
+public class Exports implements Builder.Exports {
 
     @Override
-    public void register(Registry registry)
-    {
-        registry.add(new Builder.Factory<ExecutorService>()
-        {
+    public void register(Registry registry) {
+        registry.add(new Builder.Factory<ExecutorService>() {
             @Override
             public <S> ExecutorService create(String profile, Class<S> service,
-                    Builder builder, Map<String, Object> properties)
-            {
+                    Builder builder, Map<String, Object> properties) {
 
                 return Executors.newCachedThreadPool();
             }
         });
 
-        registry.add(new Builder.Factory<ApacheConfigSettings>()
-        {
+        registry.add(new Builder.Factory<ApacheConfigSettings>() {
             @Override
             public <S> ApacheConfigSettings create(String profile,
                     Class<S> service, Builder builder,
-                    Map<String, Object> properties)
-            {
+                    Map<String, Object> properties) {
 
                 if (properties
-                        .containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS))
-                {
+                        .containsKey(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS)) {
                     CloudCredentials cloudCredentials = (CloudCredentials) properties
                             .get(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS);
                     cloudCredentials.applyConfig(profile, properties);
@@ -62,13 +55,11 @@ public class Exports implements Builder.Exports
             }
         });
 
-        registry.add(new Builder.Factory<HttpClientBuilder>()
-        {
+        registry.add(new Builder.Factory<HttpClientBuilder>() {
             @Override
             public <S> HttpClientBuilder create(String profile,
                     Class<S> service, Builder builder,
-                    Map<String, Object> properties)
-            {
+                    Map<String, Object> properties) {
 
                 HttpClientBuilder httpClientBuilder = HttpClients.custom();
                 ApacheConfigSettings settings = builder.build(profile, service,

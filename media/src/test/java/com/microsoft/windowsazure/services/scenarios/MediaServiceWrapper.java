@@ -70,8 +70,7 @@ import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 import com.microsoft.windowsazure.services.media.models.ProtectionKey;
 import com.microsoft.windowsazure.services.media.models.Task;
 
-class MediaServiceWrapper
-{
+class MediaServiceWrapper {
     private final MediaContract service;
 
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
@@ -79,23 +78,19 @@ class MediaServiceWrapper
     private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
     private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
 
-    public static enum EncoderType
-    {
+    public static enum EncoderType {
         WindowsAzureMediaEncoder, StorageDecryption
     }
 
-    public MediaServiceWrapper(MediaContract service)
-    {
+    public MediaServiceWrapper(MediaContract service) {
         this.service = service;
     }
 
     // Manage
     public AssetInfo createAsset(String name, AssetOption encryption)
-            throws ServiceException
-    {
+            throws ServiceException {
         if (encryption == AssetOption.StorageEncrypted
-                && !EncryptionHelper.canUseStrongCrypto())
-        {
+                && !EncryptionHelper.canUseStrongCrypto()) {
             Assert.fail("JVM does not support the required encryption");
         }
 
@@ -106,11 +101,9 @@ class MediaServiceWrapper
     }
 
     public List<ListResult<AssetInfo>> getAssetSortedPagedResults(
-            String rootName, int pageSize) throws ServiceException
-    {
+            String rootName, int pageSize) throws ServiceException {
         List<ListResult<AssetInfo>> pages = new ArrayList<ListResult<AssetInfo>>();
-        for (int skip = 0; true; skip += pageSize)
-        {
+        for (int skip = 0; true; skip += pageSize) {
             EntityListOperation<AssetInfo> listOperation = Asset.list()
                     .setTop(pageSize).setSkip(skip)
                     .set("$filter", "startswith(Name,'" + rootName + "')")
@@ -118,8 +111,7 @@ class MediaServiceWrapper
 
             ListResult<AssetInfo> listAssetResult = service.list(listOperation);
             pages.add(listAssetResult);
-            if (listAssetResult.size() == 0)
-            {
+            if (listAssetResult.size() == 0) {
                 break;
             }
         }
@@ -129,15 +121,13 @@ class MediaServiceWrapper
 
     // Ingest
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
-            Hashtable<String, InputStream> inputFiles) throws Exception
-    {
+            Hashtable<String, InputStream> inputFiles) throws Exception {
         uploadFilesToAsset(asset, uploadWindowInMinutes, inputFiles, null);
     }
 
     public void uploadFilesToAsset(AssetInfo asset, int uploadWindowInMinutes,
             Hashtable<String, InputStream> inputFiles, byte[] aesKey)
-            throws Exception
-    {
+            throws Exception {
         AccessPolicyInfo accessPolicy = service.create(AccessPolicy.create(
                 accessPolicyPrefix + "tempAccessPolicy", uploadWindowInMinutes,
                 EnumSet.of(AccessPolicyPermission.WRITE)));
@@ -152,15 +142,13 @@ class MediaServiceWrapper
         Hashtable<String, AssetFileInfo> infoToUpload = new Hashtable<String, AssetFileInfo>();
 
         boolean isFirst = true;
-        for (String fileName : inputFiles.keySet())
-        {
+        for (String fileName : inputFiles.keySet()) {
             MessageDigest digest = MessageDigest.getInstance("MD5");
 
             InputStream inputStream = inputFiles.get(fileName);
 
             byte[] iv = null;
-            if (aesKey != null)
-            {
+            if (aesKey != null) {
                 iv = createIV();
                 inputStream = EncryptionHelper.encryptFile(inputStream, aesKey,
                         iv);
@@ -187,16 +175,14 @@ class MediaServiceWrapper
 
         service.action(AssetFile.createFileInfos(asset.getId()));
         for (AssetFileInfo assetFile : service.list(AssetFile.list(asset
-                .getAssetFilesLink())))
-        {
+                .getAssetFilesLink()))) {
             AssetFileInfo fileInfo = infoToUpload.get(assetFile.getName());
             Updater updateOp = AssetFile.update(assetFile.getId())
                     .setContentChecksum(fileInfo.getContentChecksum())
                     .setContentFileSize(fileInfo.getContentFileSize())
                     .setIsPrimary(fileInfo.getIsPrimary());
 
-            if (aesKey != null)
-            {
+            if (aesKey != null) {
                 updateOp.setIsEncrypted(true)
                         .setEncryptionKeyId(contentKeyId)
                         .setEncryptionScheme("StorageEncryption")
@@ -214,10 +200,8 @@ class MediaServiceWrapper
         service.delete(AccessPolicy.delete(accessPolicy.getId()));
     }
 
-    private String getIVString(byte[] iv)
-    {
-        if (iv == null)
-        {
+    private String getIVString(byte[] iv) {
+        if (iv == null) {
             return null;
         }
 
@@ -229,8 +213,7 @@ class MediaServiceWrapper
         return longIv.toString();
     }
 
-    private byte[] createIV()
-    {
+    private byte[] createIV() {
         // Media Services requires 128-bit (16-byte) initialization vectors (IV)
         // for AES encryption, but also that only the first 8 bytes are filled.
         Random random = new Random();
@@ -242,10 +225,8 @@ class MediaServiceWrapper
     }
 
     private String createAssetContentKey(AssetInfo asset, byte[] aesKey)
-            throws Exception
-    {
-        if (aesKey == null)
-        {
+            throws Exception {
+        if (aesKey == null) {
             return null;
         }
 
@@ -271,47 +252,40 @@ class MediaServiceWrapper
         return contentKeyId;
     }
 
-    private static class CountingStream extends InputStream
-    {
+    private static class CountingStream extends InputStream {
         private final InputStream wrappedStream;
         private long count;
 
-        public CountingStream(InputStream wrapped)
-        {
+        public CountingStream(InputStream wrapped) {
             wrappedStream = wrapped;
             count = 0;
         }
 
         @Override
-        public int read() throws IOException
-        {
+        public int read() throws IOException {
             count++;
             return wrappedStream.read();
         }
 
-        public long getCount()
-        {
+        public long getCount() {
             return count;
         }
     }
 
     // Process
     public JobInfo createJob(String jobName, AssetInfo inputAsset,
-            Task.CreateBatchOperation task) throws ServiceException
-    {
+            Task.CreateBatchOperation task) throws ServiceException {
         List<Task.CreateBatchOperation> tasks = new ArrayList<Task.CreateBatchOperation>();
         tasks.add(task);
         return createJob(jobName, inputAsset, tasks);
     }
 
     public JobInfo createJob(String jobName, AssetInfo inputAsset,
-            List<Task.CreateBatchOperation> tasks) throws ServiceException
-    {
+            List<Task.CreateBatchOperation> tasks) throws ServiceException {
         Creator jobCreator = Job.create().setName(jobName)
                 .addInputMediaAsset(inputAsset.getId()).setPriority(2);
 
-        for (Task.CreateBatchOperation task : tasks)
-        {
+        for (Task.CreateBatchOperation task : tasks) {
             jobCreator.addTaskCreator(task);
         }
 
@@ -321,14 +295,12 @@ class MediaServiceWrapper
     // Process
     public Task.CreateBatchOperation createTaskOptions(String taskName,
             int inputAssetId, int outputAssetId, EncoderType encoderType)
-            throws ServiceException
-    {
+            throws ServiceException {
         String taskBody = getTaskBody(inputAssetId, outputAssetId);
 
         String processor = null;
         String configuration = null;
-        switch (encoderType)
-        {
+        switch (encoderType) {
         case WindowsAzureMediaEncoder:
             processor = getMediaProcessorIdByName(MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER);
             // Full list of configurations strings for version 2.1 is at:
@@ -349,16 +321,14 @@ class MediaServiceWrapper
         return taskCreate;
     }
 
-    private String getTaskBody(int inputAssetId, int outputAssetId)
-    {
+    private String getTaskBody(int inputAssetId, int outputAssetId) {
         return "<taskBody><inputAsset>JobInputAsset(" + inputAssetId
                 + ")</inputAsset>" + "<outputAsset>JobOutputAsset("
                 + outputAssetId + ")</outputAsset></taskBody>";
     }
 
     private String getMediaProcessorIdByName(String processorName)
-            throws ServiceException
-    {
+            throws ServiceException {
         EntityListOperation<MediaProcessorInfo> operation = MediaProcessor
                 .list();
         operation.getQueryParameters().putSingle("$filter",
@@ -369,12 +339,10 @@ class MediaServiceWrapper
 
     // Process
     public boolean isJobFinished(JobInfo initialJobInfo)
-            throws ServiceException
-    {
+            throws ServiceException {
         JobInfo currentJob = service.get(Job.get(initialJobInfo.getId()));
         System.out.println(currentJob.getState());
-        switch (currentJob.getState())
-        {
+        switch (currentJob.getState()) {
         case Finished:
         case Canceled:
         case Error:
@@ -385,14 +353,12 @@ class MediaServiceWrapper
     }
 
     public List<AssetInfo> getJobOutputMediaAssets(JobInfo job)
-            throws ServiceException
-    {
+            throws ServiceException {
         return service.list(Asset.list(job.getOutputAssetsLink()));
     }
 
     // Process
-    public void cancelJob(JobInfo job) throws ServiceException
-    {
+    public void cancelJob(JobInfo job) throws ServiceException {
         // Use the service function
         service.action(Job.cancel(job.getId()));
     }
@@ -400,8 +366,7 @@ class MediaServiceWrapper
     // Deliver
     private Hashtable<String, URL> createFileURLsFromAsset(AssetInfo asset,
             int availabilityWindowInMinutes) throws ServiceException,
-            MalformedURLException
-    {
+            MalformedURLException {
         Hashtable<String, URL> ret = new Hashtable<String, URL>();
 
         AccessPolicyInfo readAP = service.create(AccessPolicy.create(
@@ -413,8 +378,7 @@ class MediaServiceWrapper
 
         List<AssetFileInfo> publishedFiles = service.list(AssetFile.list(asset
                 .getAssetFilesLink()));
-        for (AssetFileInfo fi : publishedFiles)
-        {
+        for (AssetFileInfo fi : publishedFiles) {
             ret.put(fi.getName(),
                     new URL(readLocator.getBaseUri() + "/" + fi.getName()
                             + readLocator.getContentAccessToken()));
@@ -425,14 +389,12 @@ class MediaServiceWrapper
 
     // Deliver
     public Hashtable<String, InputStream> downloadFilesFromAsset(
-            AssetInfo asset, int downloadWindowInMinutes) throws Exception
-    {
+            AssetInfo asset, int downloadWindowInMinutes) throws Exception {
         Hashtable<String, URL> urls = createFileURLsFromAsset(asset,
                 downloadWindowInMinutes);
         Hashtable<String, InputStream> ret = new Hashtable<String, InputStream>();
 
-        for (String fileName : urls.keySet())
-        {
+        for (String fileName : urls.keySet()) {
             URL url = urls.get(fileName);
             InputStream stream = getInputStreamWithRetry(url);
             ret.put(fileName, stream);
@@ -445,23 +407,17 @@ class MediaServiceWrapper
     // locator
     // is applied for the asset files.
     private InputStream getInputStreamWithRetry(URL file) throws IOException,
-            InterruptedException
-    {
+            InterruptedException {
         InputStream reader = null;
-        for (int counter = 0; true; counter++)
-        {
-            try
-            {
+        for (int counter = 0; true; counter++) {
+            try {
                 reader = file.openConnection().getInputStream();
                 break;
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.out.println("Got error, wait a bit and try again");
-                if (counter < 6)
-                {
+                if (counter < 6) {
                     Thread.sleep(10000);
-                } else
-                {
+                } else {
                     // No more retries.
                     throw e;
                 }
@@ -472,39 +428,30 @@ class MediaServiceWrapper
     }
 
     public void removeAllAssetsWithPrefix(String assetPrefix)
-            throws ServiceException
-    {
+            throws ServiceException {
         ListResult<LocatorInfo> locators = service.list(Locator.list());
         EntityListOperation<AssetInfo> operation = Asset.list();
         operation.getQueryParameters().add("$filter",
                 "startswith(Name,'" + assetPrefix + "')");
         List<AssetInfo> assets = service.list(operation);
-        for (AssetInfo asset : assets)
-        {
+        for (AssetInfo asset : assets) {
             if (asset.getName().length() > assetPrefix.length()
                     && asset.getName().substring(0, assetPrefix.length())
-                            .equals(assetPrefix))
-            {
-                for (LocatorInfo locator : locators)
-                {
-                    if (locator.getAssetId().equals(asset.getId()))
-                    {
-                        try
-                        {
+                            .equals(assetPrefix)) {
+                for (LocatorInfo locator : locators) {
+                    if (locator.getAssetId().equals(asset.getId())) {
+                        try {
                             service.delete(Locator.delete(locator.getId()));
-                        } catch (ServiceException e)
-                        {
+                        } catch (ServiceException e) {
                             // Don't worry if cannot delete now.
                             // Might be held on to by a running job
                         }
                     }
                 }
 
-                try
-                {
+                try {
                     service.delete(Asset.delete(asset.getId()));
-                } catch (ServiceException e)
-                {
+                } catch (ServiceException e) {
                     // Don't worry if cannot delete now.
                     // Might be held on to by a running job
                 }
@@ -512,22 +459,17 @@ class MediaServiceWrapper
         }
     }
 
-    public void removeAllAccessPoliciesWithPrefix() throws ServiceException
-    {
+    public void removeAllAccessPoliciesWithPrefix() throws ServiceException {
         List<AccessPolicyInfo> accessPolicies = service.list(AccessPolicy
                 .list());
-        for (AccessPolicyInfo accessPolicy : accessPolicies)
-        {
+        for (AccessPolicyInfo accessPolicy : accessPolicies) {
             if (accessPolicy.getName().length() > accessPolicyPrefix.length()
                     && accessPolicy.getName()
                             .substring(0, accessPolicyPrefix.length())
-                            .equals(accessPolicyPrefix))
-            {
-                try
-                {
+                            .equals(accessPolicyPrefix)) {
+                try {
                     service.delete(AccessPolicy.delete(accessPolicy.getId()));
-                } catch (ServiceException e)
-                {
+                } catch (ServiceException e) {
                     // Don't worry if cannot delete now.
                     // Might be held on to by a running job
                 }
@@ -536,43 +478,33 @@ class MediaServiceWrapper
     }
 
     public void removeAllJobWithPrefix(String testJobPrefix)
-            throws ServiceException
-    {
+            throws ServiceException {
         List<JobInfo> jobInfos = service.list(Job.list());
-        for (JobInfo jobInfo : jobInfos)
-        {
-            if (jobInfo.getName().startsWith(testJobPrefix))
-            {
-                try
-                {
+        for (JobInfo jobInfo : jobInfos) {
+            if (jobInfo.getName().startsWith(testJobPrefix)) {
+                try {
                     service.delete(Job.delete(jobInfo.getId()));
-                } catch (ServiceException e)
-                {
+                } catch (ServiceException e) {
                 }
             }
         }
     }
 
-    private static class EncryptionHelper
-    {
-        public static boolean canUseStrongCrypto()
-        {
-            try
-            {
+    private static class EncryptionHelper {
+        public static boolean canUseStrongCrypto() {
+            try {
                 Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                 SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[32],
                         "AES");
                 cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 return false;
             }
             return true;
         }
 
         public static byte[] encryptSymmetricKey(String protectionKey,
-                byte[] inputData) throws Exception
-        {
+                byte[] inputData) throws Exception {
             Cipher cipher = Cipher
                     .getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
             CertificateFactory certificateFactory = CertificateFactory
@@ -590,8 +522,7 @@ class MediaServiceWrapper
         }
 
         public static String calculateContentKeyChecksum(String uuid,
-                byte[] aesKey) throws Exception
-        {
+                byte[] aesKey) throws Exception {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
@@ -603,8 +534,7 @@ class MediaServiceWrapper
         }
 
         public static InputStream encryptFile(InputStream inputStream,
-                byte[] key, byte[] iv) throws Exception
-        {
+                byte[] key, byte[] iv) throws Exception {
             Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
             SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
             IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);

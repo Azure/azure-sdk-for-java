@@ -32,10 +32,10 @@ public class WebSiteCreateParameters {
     private WebSiteComputeMode computeMode;
     
     /**
-    * This value should be Shared for the Free or Paid Shared offerings, or
-    * Dedicated for the Standard offering. The default value is Shared. If you
-    * set ComputeMode to Dedicated, you must specify a value for the
-    * ServerFarm element.
+    * Optional. This value should be Shared for the Free or Paid Shared
+    * offerings, or Dedicated for the Standard offering. The default value is
+    * Shared. If you set ComputeMode to Dedicated, you must specify a value
+    * for the ServerFarm element.
     * @return The ComputeMode value.
     */
     public WebSiteComputeMode getComputeMode() {
@@ -43,10 +43,10 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * This value should be Shared for the Free or Paid Shared offerings, or
-    * Dedicated for the Standard offering. The default value is Shared. If you
-    * set ComputeMode to Dedicated, you must specify a value for the
-    * ServerFarm element.
+    * Optional. This value should be Shared for the Free or Paid Shared
+    * offerings, or Dedicated for the Standard offering. The default value is
+    * Shared. If you set ComputeMode to Dedicated, you must specify a value
+    * for the ServerFarm element.
     * @param computeModeValue The ComputeMode value.
     */
     public void setComputeMode(final WebSiteComputeMode computeModeValue) {
@@ -56,7 +56,7 @@ public class WebSiteCreateParameters {
     private ArrayList<String> hostNames;
     
     /**
-    * Required. The fully qualified domain name for website. Only one hostname
+    * Optional. The fully qualified domain name for website. Only one hostname
     * can be specified in the azurewebsites.net domain. The hostname should
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
@@ -67,7 +67,7 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Required. The fully qualified domain name for website. Only one hostname
+    * Optional. The fully qualified domain name for website. Only one hostname
     * can be specified in the azurewebsites.net domain. The hostname should
     * match the name of the website. Custom domains can only be specified for
     * Shared or Standard websites.
@@ -100,8 +100,8 @@ public class WebSiteCreateParameters {
     private String serverFarm;
     
     /**
-    * The name of the Server Farm associated with this website. This is a
-    * required value for Standard mode.
+    * Optional. The name of the Server Farm associated with this website. This
+    * is a required value for Standard mode.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -109,8 +109,8 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * The name of the Server Farm associated with this website. This is a
-    * required value for Standard mode.
+    * Optional. The name of the Server Farm associated with this website. This
+    * is a required value for Standard mode.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
@@ -120,9 +120,9 @@ public class WebSiteCreateParameters {
     private WebSiteMode siteMode;
     
     /**
-    * This value is limited for the Free offering Basic for the Paid Shared
-    * offering. The default value is Limited. Note: Standard mode does not use
-    * the SiteMode setting; it uses the ComputeMode setting. For more
+    * Optional. This value is limited for the Free offering Basic for the Paid
+    * Shared offering. The default value is Limited. Note: Standard mode does
+    * not use the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
     * @return The SiteMode value.
     */
@@ -131,9 +131,9 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * This value is limited for the Free offering Basic for the Paid Shared
-    * offering. The default value is Limited. Note: Standard mode does not use
-    * the SiteMode setting; it uses the ComputeMode setting. For more
+    * Optional. This value is limited for the Free offering Basic for the Paid
+    * Shared offering. The default value is Limited. Note: Standard mode does
+    * not use the SiteMode setting; it uses the ComputeMode setting. For more
     * information, see Upgrade or Downgrade a Web Site.
     * @param siteModeValue The SiteMode value.
     */
@@ -144,7 +144,7 @@ public class WebSiteCreateParameters {
     private WebSiteCreateParameters.WebSpaceDetails webSpace;
     
     /**
-    * Information about the web space to create.
+    * Optional. Information about the web space to create.
     * @return The WebSpace value.
     */
     public WebSiteCreateParameters.WebSpaceDetails getWebSpace() {
@@ -152,7 +152,7 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * Information about the web space to create.
+    * Optional. Information about the web space to create.
     * @param webSpaceValue The WebSpace value.
     */
     public void setWebSpace(final WebSiteCreateParameters.WebSpaceDetails webSpaceValue) {
@@ -162,7 +162,7 @@ public class WebSiteCreateParameters {
     private String webSpaceName;
     
     /**
-    * The name of the webspace.
+    * Required. The name of the webspace.
     * @return The WebSpaceName value.
     */
     public String getWebSpaceName() {
@@ -170,7 +170,7 @@ public class WebSiteCreateParameters {
     }
     
     /**
-    * The name of the webspace.
+    * Required. The name of the webspace.
     * @param webSpaceNameValue The WebSpaceName value.
     */
     public void setWebSpaceName(final String webSpaceNameValue) {

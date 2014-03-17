@@ -26,36 +26,35 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import java.util.ArrayList;
 
 /**
-* Alert rules collection.
-*/
-public class RuleCollection
-{
+ * Alert rules collection.
+ */
+public class RuleCollection {
     private ArrayList<Rule> value;
-    
+
     /**
-    * Rule collection.
-    * @return The Value value.
-    */
-    public ArrayList<Rule> getValue()
-    {
+     * Rule collection.
+     * 
+     * @return The Value value.
+     */
+    public ArrayList<Rule> getValue() {
         return this.value;
     }
-    
+
     /**
-    * Rule collection.
-    * @param valueValue The Value value.
-    */
-    public void setValue(final ArrayList<Rule> valueValue)
-    {
+     * Rule collection.
+     * 
+     * @param valueValue
+     *            The Value value.
+     */
+    public void setValue(final ArrayList<Rule> valueValue) {
         this.value = valueValue;
     }
-    
+
     /**
-    * Initializes a new instance of the RuleCollection class.
-    *
-    */
-    public RuleCollection()
-    {
+     * Initializes a new instance of the RuleCollection class.
+     * 
+     */
+    public RuleCollection() {
         this.value = new ArrayList<Rule>();
     }
 }

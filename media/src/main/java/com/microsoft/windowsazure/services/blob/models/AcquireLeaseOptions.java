@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * acquireLease} request. These options include an optional server timeout for
  * the operation and any access conditions for the operation.
  */
-public class AcquireLeaseOptions extends BlobServiceOptions
-{
+public class AcquireLeaseOptions extends BlobServiceOptions {
     private AccessConditionHeader accessCondition;
 
     /**
@@ -39,8 +38,7 @@ public class AcquireLeaseOptions extends BlobServiceOptions
      * @return A reference to this {@link AcquireLeaseOptions} instance.
      */
     @Override
-    public AcquireLeaseOptions setTimeout(Integer timeout)
-    {
+    public AcquireLeaseOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -52,8 +50,7 @@ public class AcquireLeaseOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -72,8 +69,7 @@ public class AcquireLeaseOptions extends BlobServiceOptions
      * @return A reference to this {@link AcquireLeaseOptions} instance.
      */
     public AcquireLeaseOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

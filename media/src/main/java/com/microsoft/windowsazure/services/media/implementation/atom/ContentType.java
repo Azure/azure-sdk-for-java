@@ -70,8 +70,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "contentType", propOrder = { "content" })
-public class ContentType
-{
+public class ContentType {
 
     @XmlMixed
     @XmlAnyElement(lax = true)
@@ -116,10 +115,8 @@ public class ContentType
      * 
      * 
      */
-    public List<Object> getContent()
-    {
-        if (content == null)
-        {
+    public List<Object> getContent() {
+        if (content == null) {
             content = new ArrayList<Object>();
         }
         return this.content;
@@ -131,8 +128,7 @@ public class ContentType
      * @return possible object is {@link String }
      * 
      */
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
@@ -143,8 +139,7 @@ public class ContentType
      *            allowed object is {@link String }
      * 
      */
-    public void setType(String value)
-    {
+    public void setType(String value) {
         this.type = value;
     }
 
@@ -154,8 +149,7 @@ public class ContentType
      * @return possible object is {@link String }
      * 
      */
-    public String getSrc()
-    {
+    public String getSrc() {
         return src;
     }
 
@@ -166,8 +160,7 @@ public class ContentType
      *            allowed object is {@link String }
      * 
      */
-    public void setSrc(String value)
-    {
+    public void setSrc(String value) {
         this.src = value;
     }
 
@@ -177,8 +170,7 @@ public class ContentType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -189,8 +181,7 @@ public class ContentType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -200,8 +191,7 @@ public class ContentType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -212,8 +202,7 @@ public class ContentType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -231,8 +220,7 @@ public class ContentType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

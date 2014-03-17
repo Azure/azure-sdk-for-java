@@ -27,8 +27,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * Queue Service Properties</a> documentation on MSDN for details of the
  * underlying Queue Service REST API operation.
  */
-public class GetServicePropertiesResult
-{
+public class GetServicePropertiesResult {
     private ServiceProperties value;
 
     /**
@@ -44,8 +43,7 @@ public class GetServicePropertiesResult
      * @return A {@link ServiceProperties} instance containing the property
      *         values associated with the storage account.
      */
-    public ServiceProperties getValue()
-    {
+    public ServiceProperties getValue() {
         return value;
     }
 
@@ -60,8 +58,7 @@ public class GetServicePropertiesResult
      *            A {@link ServiceProperties} instance containing the property
      *            values associated with the storage account.
      */
-    public void setValue(ServiceProperties value)
-    {
+    public void setValue(ServiceProperties value) {
         this.value = value;
     }
 }

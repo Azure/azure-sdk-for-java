@@ -32,7 +32,7 @@ public class NetworkGetConfigurationResponse extends OperationResponse {
     private String configuration;
     
     /**
-    * The network configuration for this subscription.
+    * Required. The network configuration for this subscription.
     * @return The Configuration value.
     */
     public String getConfiguration() {
@@ -40,7 +40,7 @@ public class NetworkGetConfigurationResponse extends OperationResponse {
     }
     
     /**
-    * The network configuration for this subscription.
+    * Required. The network configuration for this subscription.
     * @param configurationValue The Configuration value.
     */
     public void setConfiguration(final String configurationValue) {

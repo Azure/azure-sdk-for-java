@@ -35,7 +35,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     private ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disks;
     
     /**
-    * The virtual machine disks associated with your subscription.
+    * Optional. The virtual machine disks associated with your subscription.
     * @return The Disks value.
     */
     public ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> getDisks() {
@@ -43,7 +43,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
     }
     
     /**
-    * The virtual machine disks associated with your subscription.
+    * Optional. The virtual machine disks associated with your subscription.
     * @param disksValue The Disks value.
     */
     public void setDisks(final ArrayList<VirtualMachineDiskListResponse.VirtualMachineDisk> disksValue) {
@@ -74,10 +74,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String affinityGroup;
         
         /**
-        * The affinity group in which the disk is located. The AffinityGroup
-        * value is derived from storage account that contains the blob in
-        * which the media is located. If the storage account does not belong
-        * to an affinity group the value is NULL.
+        * Optional. The affinity group in which the disk is located. The
+        * AffinityGroup value is derived from storage account that contains
+        * the blob in which the media is located. If the storage account does
+        * not belong to an affinity group the value is NULL.
         * @return The AffinityGroup value.
         */
         public String getAffinityGroup() {
@@ -85,10 +85,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The affinity group in which the disk is located. The AffinityGroup
-        * value is derived from storage account that contains the blob in
-        * which the media is located. If the storage account does not belong
-        * to an affinity group the value is NULL.
+        * Optional. The affinity group in which the disk is located. The
+        * AffinityGroup value is derived from storage account that contains
+        * the blob in which the media is located. If the storage account does
+        * not belong to an affinity group the value is NULL.
         * @param affinityGroupValue The AffinityGroup value.
         */
         public void setAffinityGroup(final String affinityGroupValue) {
@@ -98,7 +98,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private Boolean isCorrupted;
         
         /**
-        * Specifies thether the disk is known to be corrupt.
+        * Optional. Specifies thether the disk is known to be corrupt.
         * @return The IsCorrupted value.
         */
         public Boolean isCorrupted() {
@@ -106,7 +106,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * Specifies thether the disk is known to be corrupt.
+        * Optional. Specifies thether the disk is known to be corrupt.
         * @param isCorruptedValue The IsCorrupted value.
         */
         public void setIsCorrupted(final Boolean isCorruptedValue) {
@@ -116,8 +116,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private Boolean isPremium;
         
         /**
-        * Specifies whether or not the disk contains a premium virtual machine
-        * image.
+        * Optional. Specifies whether or not the disk contains a premium
+        * virtual machine image.
         * @return The IsPremium value.
         */
         public Boolean isPremium() {
@@ -125,8 +125,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * Specifies whether or not the disk contains a premium virtual machine
-        * image.
+        * Optional. Specifies whether or not the disk contains a premium
+        * virtual machine image.
         * @param isPremiumValue The IsPremium value.
         */
         public void setIsPremium(final Boolean isPremiumValue) {
@@ -136,7 +136,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String label;
         
         /**
-        * The friendly name of the disk.
+        * Optional. The friendly name of the disk.
         * @return The Label value.
         */
         public String getLabel() {
@@ -144,7 +144,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The friendly name of the disk.
+        * Optional. The friendly name of the disk.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -154,10 +154,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String location;
         
         /**
-        * The geo-location in which the disk is located. The Location value is
-        * derived from storage account that contains the blob in which the
-        * disk is located. If the storage account belongs to an affinity group
-        * the value is NULL.
+        * Optional. The geo-location in which the disk is located. The Location
+        * value is derived from storage account that contains the blob in
+        * which the disk is located. If the storage account belongs to an
+        * affinity group the value is NULL.
         * @return The Location value.
         */
         public String getLocation() {
@@ -165,10 +165,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The geo-location in which the disk is located. The Location value is
-        * derived from storage account that contains the blob in which the
-        * disk is located. If the storage account belongs to an affinity group
-        * the value is NULL.
+        * Optional. The geo-location in which the disk is located. The Location
+        * value is derived from storage account that contains the blob in
+        * which the disk is located. If the storage account belongs to an
+        * affinity group the value is NULL.
         * @param locationValue The Location value.
         */
         public void setLocation(final String locationValue) {
@@ -178,7 +178,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private int logicalSizeInGB;
         
         /**
-        * The size, in GB, of the disk.
+        * Optional. The size, in GB, of the disk.
         * @return The LogicalSizeInGB value.
         */
         public int getLogicalSizeInGB() {
@@ -186,7 +186,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The size, in GB, of the disk.
+        * Optional. The size, in GB, of the disk.
         * @param logicalSizeInGBValue The LogicalSizeInGB value.
         */
         public void setLogicalSizeInGB(final int logicalSizeInGBValue) {
@@ -196,10 +196,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private URI mediaLinkUri;
         
         /**
-        * The location of the blob in the blob store in which the media for the
-        * disk is located. The blob location belongs to a storage account in
-        * the subscription specified by the SubscriptionId value in the
-        * operation call. Example:
+        * Optional. The location of the blob in the blob store in which the
+        * media for the disk is located. The blob location belongs to a
+        * storage account in the subscription specified by the SubscriptionId
+        * value in the operation call. Example:
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         * @return The MediaLinkUri value.
         */
@@ -208,10 +208,10 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The location of the blob in the blob store in which the media for the
-        * disk is located. The blob location belongs to a storage account in
-        * the subscription specified by the SubscriptionId value in the
-        * operation call. Example:
+        * Optional. The location of the blob in the blob store in which the
+        * media for the disk is located. The blob location belongs to a
+        * storage account in the subscription specified by the SubscriptionId
+        * value in the operation call. Example:
         * http://example.blob.core.windows.net/disks/mydisk.vhd
         * @param mediaLinkUriValue The MediaLinkUri value.
         */
@@ -222,8 +222,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String name;
         
         /**
-        * The name of the disk. This is the name that is used when creating one
-        * or more virtual machines using the disk.
+        * Optional. The name of the disk. This is the name that is used when
+        * creating one or more virtual machines using the disk.
         * @return The Name value.
         */
         public String getName() {
@@ -231,8 +231,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The name of the disk. This is the name that is used when creating one
-        * or more virtual machines using the disk.
+        * Optional. The name of the disk. This is the name that is used when
+        * creating one or more virtual machines using the disk.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -242,8 +242,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String operatingSystemType;
         
         /**
-        * The operating system type of the OS image.  Possible Values are:
-        * Linux, Windows, NULL.
+        * Optional. The operating system type of the OS image.  Possible Values
+        * are: Linux, Windows, NULL.
         * @return The OperatingSystemType value.
         */
         public String getOperatingSystemType() {
@@ -251,8 +251,8 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The operating system type of the OS image.  Possible Values are:
-        * Linux, Windows, NULL.
+        * Optional. The operating system type of the OS image.  Possible Values
+        * are: Linux, Windows, NULL.
         * @param operatingSystemTypeValue The OperatingSystemType value.
         */
         public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -262,9 +262,9 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String sourceImageName;
         
         /**
-        * The name of the OS Image from which the disk was created. This
-        * property is populated automatically when a disk is created from an
-        * OS image by calling the Add Role, Create Deployment, or Provision
+        * Optional. The name of the OS Image from which the disk was created.
+        * This property is populated automatically when a disk is created from
+        * an OS image by calling the Add Role, Create Deployment, or Provision
         * Disk operations.
         * @return The SourceImageName value.
         */
@@ -273,9 +273,9 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The name of the OS Image from which the disk was created. This
-        * property is populated automatically when a disk is created from an
-        * OS image by calling the Add Role, Create Deployment, or Provision
+        * Optional. The name of the OS Image from which the disk was created.
+        * This property is populated automatically when a disk is created from
+        * an OS image by calling the Add Role, Create Deployment, or Provision
         * Disk operations.
         * @param sourceImageNameValue The SourceImageName value.
         */
@@ -286,9 +286,9 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetails;
         
         /**
-        * Contains properties that specify a virtual machine that currently
-        * using the disk. A disk cannot be deleted as long as it is attached
-        * to a virtual machine.
+        * Optional. Contains properties that specify a virtual machine that
+        * currently using the disk. A disk cannot be deleted as long as it is
+        * attached to a virtual machine.
         * @return The UsageDetails value.
         */
         public VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails getUsageDetails() {
@@ -296,9 +296,9 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * Contains properties that specify a virtual machine that currently
-        * using the disk. A disk cannot be deleted as long as it is attached
-        * to a virtual machine.
+        * Optional. Contains properties that specify a virtual machine that
+        * currently using the disk. A disk cannot be deleted as long as it is
+        * attached to a virtual machine.
         * @param usageDetailsValue The UsageDetails value.
         */
         public void setUsageDetails(final VirtualMachineDiskListResponse.VirtualMachineDiskUsageDetails usageDetailsValue) {
@@ -315,7 +315,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String deploymentName;
         
         /**
-        * The deployment in which the disk is being used.
+        * Optional. The deployment in which the disk is being used.
         * @return The DeploymentName value.
         */
         public String getDeploymentName() {
@@ -323,7 +323,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The deployment in which the disk is being used.
+        * Optional. The deployment in which the disk is being used.
         * @param deploymentNameValue The DeploymentName value.
         */
         public void setDeploymentName(final String deploymentNameValue) {
@@ -333,7 +333,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String hostedServiceName;
         
         /**
-        * The hosted service in which the disk is being used.
+        * Optional. The hosted service in which the disk is being used.
         * @return The HostedServiceName value.
         */
         public String getHostedServiceName() {
@@ -341,7 +341,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The hosted service in which the disk is being used.
+        * Optional. The hosted service in which the disk is being used.
         * @param hostedServiceNameValue The HostedServiceName value.
         */
         public void setHostedServiceName(final String hostedServiceNameValue) {
@@ -351,7 +351,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         private String roleName;
         
         /**
-        * The virtual machine that the disk is attached to.
+        * Optional. The virtual machine that the disk is attached to.
         * @return The RoleName value.
         */
         public String getRoleName() {
@@ -359,7 +359,7 @@ public class VirtualMachineDiskListResponse extends OperationResponse implements
         }
         
         /**
-        * The virtual machine that the disk is attached to.
+        * Optional. The virtual machine that the disk is attached to.
         * @param roleNameValue The RoleName value.
         */
         public void setRoleName(final String roleNameValue) {

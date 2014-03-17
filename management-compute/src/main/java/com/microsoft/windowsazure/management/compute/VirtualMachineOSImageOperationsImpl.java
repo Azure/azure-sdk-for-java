@@ -28,12 +28,12 @@ import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageCreateResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageGetResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageListResponse;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageUpdateParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineImageUpdateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageCreateResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageUpdateParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageUpdateResponse;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,13 +72,14 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for more
 * information)
 */
-public class VirtualMachineImageOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineImageOperations {
+public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<ComputeManagementClientImpl>, VirtualMachineOSImageOperations {
     /**
-    * Initializes a new instance of the VirtualMachineImageOperationsImpl class.
+    * Initializes a new instance of the VirtualMachineOSImageOperationsImpl
+    * class.
     *
     * @param client Reference to the service client.
     */
-    VirtualMachineImageOperationsImpl(ComputeManagementClientImpl client) {
+    VirtualMachineOSImageOperationsImpl(ComputeManagementClientImpl client) {
         this.client = client;
     }
     
@@ -99,16 +100,16 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Image
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
     @Override
-    public Future<VirtualMachineImageCreateResponse> createAsync(final VirtualMachineImageCreateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageCreateResponse>() { 
+    public Future<VirtualMachineOSImageCreateResponse> createAsync(final VirtualMachineOSImageCreateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageCreateResponse>() { 
             @Override
-            public VirtualMachineImageCreateResponse call() throws Exception {
+            public VirtualMachineOSImageCreateResponse call() throws Exception {
                 return create(parameters);
             }
          });
@@ -120,8 +121,8 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157192.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Image
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -147,7 +148,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * operation.
     */
     @Override
-    public VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -192,7 +193,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -314,10 +315,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             // Create Result
-            VirtualMachineImageCreateResponse result = null;
+            VirtualMachineOSImageCreateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageCreateResponse();
+            result = new VirtualMachineOSImageCreateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();
@@ -481,8 +482,8 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157203.aspx for
     * more information)
     *
-    * @param imageName The name of the image to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param imageName Required. The name of the image to delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * image should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -503,8 +504,8 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157203.aspx for
     * more information)
     *
-    * @param imageName The name of the image to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob for the
+    * @param imageName Required. The name of the image to delete.
+    * @param deleteFromStorage Required. Specifies that the source blob for the
     * image should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -560,7 +561,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -606,14 +607,14 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157191.aspx for
     * more information)
     *
-    * @param imageName The name of the OS image to retrieve.
+    * @param imageName Required. The name of the OS image to retrieve.
     * @return A virtual machine image associated with your subscription.
     */
     @Override
-    public Future<VirtualMachineImageGetResponse> getAsync(final String imageName) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageGetResponse>() { 
+    public Future<VirtualMachineOSImageGetResponse> getAsync(final String imageName) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageGetResponse>() { 
             @Override
-            public VirtualMachineImageGetResponse call() throws Exception {
+            public VirtualMachineOSImageGetResponse call() throws Exception {
                 return get(imageName);
             }
          });
@@ -625,7 +626,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157191.aspx for
     * more information)
     *
-    * @param imageName The name of the OS image to retrieve.
+    * @param imageName Required. The name of the OS image to retrieve.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -639,7 +640,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @return A virtual machine image associated with your subscription.
     */
     @Override
-    public VirtualMachineImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineOSImageGetResponse get(String imageName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -671,7 +672,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -693,10 +694,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             // Create Result
-            VirtualMachineImageGetResponse result = null;
+            VirtualMachineOSImageGetResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageGetResponse();
+            result = new VirtualMachineOSImageGetResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -870,10 +871,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @return The List OS Images operation response.
     */
     @Override
-    public Future<VirtualMachineImageListResponse> listAsync() {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageListResponse>() { 
+    public Future<VirtualMachineOSImageListResponse> listAsync() {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageListResponse>() { 
             @Override
-            public VirtualMachineImageListResponse call() throws Exception {
+            public VirtualMachineOSImageListResponse call() throws Exception {
                 return list();
             }
          });
@@ -898,7 +899,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * @return The List OS Images operation response.
     */
     @Override
-    public VirtualMachineImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
+    public VirtualMachineOSImageListResponse list() throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         
         // Tracing
@@ -926,7 +927,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -948,10 +949,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             // Create Result
-            VirtualMachineImageListResponse result = null;
+            VirtualMachineOSImageListResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageListResponse();
+            result = new VirtualMachineOSImageListResponse();
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             documentBuilderFactory.setNamespaceAware(true);
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -961,7 +962,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             if (imagesSequenceElement != null) {
                 for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").size(); i1 = i1 + 1) {
                     org.w3c.dom.Element imagesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(imagesSequenceElement, "http://schemas.microsoft.com/windowsazure", "OSImage").get(i1));
-                    VirtualMachineImageListResponse.VirtualMachineImage oSImageInstance = new VirtualMachineImageListResponse.VirtualMachineImage();
+                    VirtualMachineOSImageListResponse.VirtualMachineOSImage oSImageInstance = new VirtualMachineOSImageListResponse.VirtualMachineOSImage();
                     result.getImages().add(oSImageInstance);
                     
                     Element affinityGroupElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "AffinityGroup");
@@ -1121,17 +1122,18 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157198.aspx for
     * more information)
     *
-    * @param imageName The name of the virtual machine image to be updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Image
-    * operation.
+    * @param imageName Required. The name of the virtual machine image to be
+    * updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Image operation.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
     @Override
-    public Future<VirtualMachineImageUpdateResponse> updateAsync(final String imageName, final VirtualMachineImageUpdateParameters parameters) {
-        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineImageUpdateResponse>() { 
+    public Future<VirtualMachineOSImageUpdateResponse> updateAsync(final String imageName, final VirtualMachineOSImageUpdateParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<VirtualMachineOSImageUpdateResponse>() { 
             @Override
-            public VirtualMachineImageUpdateResponse call() throws Exception {
+            public VirtualMachineOSImageUpdateResponse call() throws Exception {
                 return update(imageName, parameters);
             }
          });
@@ -1143,9 +1145,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157198.aspx for
     * more information)
     *
-    * @param imageName The name of the virtual machine image to be updated.
-    * @param parameters Parameters supplied to the Update Virtual Machine Image
-    * operation.
+    * @param imageName Required. The name of the virtual machine image to be
+    * updated.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine Image operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1156,8 +1159,6 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1168,11 +1169,13 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
     @Override
-    public VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
+    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -1212,7 +1215,7 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1318,10 +1321,10 @@ public class VirtualMachineImageOperationsImpl implements ServiceOperations<Comp
             }
             
             // Create Result
-            VirtualMachineImageUpdateResponse result = null;
+            VirtualMachineOSImageUpdateResponse result = null;
             // Deserialize Response
             InputStream responseContent = httpResponse.getEntity().getContent();
-            result = new VirtualMachineImageUpdateResponse();
+            result = new VirtualMachineOSImageUpdateResponse();
             DocumentBuilderFactory documentBuilderFactory2 = DocumentBuilderFactory.newInstance();
             documentBuilderFactory2.setNamespaceAware(true);
             DocumentBuilder documentBuilder2 = documentBuilderFactory2.newDocumentBuilder();

@@ -20,8 +20,7 @@ import java.util.Date;
 /**
  * The Class TaskHistoricalEvent.
  */
-public class TaskHistoricalEvent
-{
+public class TaskHistoricalEvent {
 
     /** The code. */
     private final String code;
@@ -42,8 +41,7 @@ public class TaskHistoricalEvent
      * @param timeStamp
      *            the time stamp
      */
-    public TaskHistoricalEvent(String code, String message, Date timeStamp)
-    {
+    public TaskHistoricalEvent(String code, String message, Date timeStamp) {
         this.code = code;
         this.message = message;
         this.timeStamp = timeStamp;
@@ -54,8 +52,7 @@ public class TaskHistoricalEvent
      * 
      * @return the code
      */
-    public String getCode()
-    {
+    public String getCode() {
         return this.code;
     }
 
@@ -64,8 +61,7 @@ public class TaskHistoricalEvent
      * 
      * @return the message
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.message;
     }
 
@@ -74,8 +70,7 @@ public class TaskHistoricalEvent
      * 
      * @return the time stamp
      */
-    public Date getTimeStamp()
-    {
+    public Date getTimeStamp() {
         return this.timeStamp;
     }
 }

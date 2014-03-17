@@ -51,7 +51,8 @@ import com.microsoft.windowsazure.management.compute.models.SshSettingPublicKey;
 import com.microsoft.windowsazure.management.compute.models.SshSettings;
 import com.microsoft.windowsazure.management.compute.models.StoredCertificateSettings;
 import com.microsoft.windowsazure.management.compute.models.VirtualHardDiskHostCaching;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureOSImageParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureVMImageParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetRemoteDesktopFileResponse;
@@ -137,20 +138,21 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
     @Override
-    public Future<OperationResponse> beginCapturingAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
+    public Future<OperationResponse> beginCapturingOSImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureOSImageParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
             @Override
             public OperationResponse call() throws Exception {
-                return beginCapturing(serviceName, deploymentName, virtualMachineName, parameters);
+                return beginCapturingOSImage(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
     }
@@ -168,11 +170,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -187,7 +190,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * request ID.
     */
     @Override
-    public OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+    public OperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -202,6 +205,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             throw new NullPointerException("parameters");
         }
         if (parameters.getProvisioningConfiguration() != null) {
+            if (parameters.getProvisioningConfiguration().getAdminPassword() == null) {
+                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminPassword");
+            }
+            if (parameters.getProvisioningConfiguration().getAdminUserName() == null) {
+                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminUserName");
+            }
             if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
                 if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
                     if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null) {
@@ -280,7 +289,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("virtualMachineName", virtualMachineName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "beginCapturingAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "beginCapturingOSImageAsync", tracingParameters);
         }
         
         // Construct URL
@@ -300,7 +309,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -471,11 +480,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(computerNameElement);
             }
             
-            if (parameters.getProvisioningConfiguration().getAdminPassword() != null) {
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
-                provisioningConfigurationElement.appendChild(adminPasswordElement);
-            }
+            Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+            adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
+            provisioningConfigurationElement.appendChild(adminPasswordElement);
             
             if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null) {
                 Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -587,11 +594,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            if (parameters.getProvisioningConfiguration().getAdminUserName() != null) {
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
-                provisioningConfigurationElement.appendChild(adminUsernameElement);
-            }
+            Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+            adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
+            provisioningConfigurationElement.appendChild(adminUsernameElement);
             
             if (parameters.getProvisioningConfiguration().getHostName() != null) {
                 Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -715,6 +720,178 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     }
     
     /**
+    * Begin capturing role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<OperationResponse> beginCapturingVMImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureVMImageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
+            @Override
+            public OperationResponse call() throws Exception {
+                return beginCapturingVMImage(serviceName, deploymentName, virtualMachineName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Begin capturing role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public OperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // Validate
+        if (serviceName == null) {
+            throw new NullPointerException("serviceName");
+        }
+        if (deploymentName == null) {
+            throw new NullPointerException("deploymentName");
+        }
+        if (virtualMachineName == null) {
+            throw new NullPointerException("virtualMachineName");
+        }
+        if (parameters == null) {
+            throw new NullPointerException("parameters");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("virtualMachineName", virtualMachineName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "beginCapturingVMImageAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + virtualMachineName + "/Operations";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpPost httpRequest = new HttpPost(url);
+        
+        // Set Headers
+        httpRequest.setHeader("Content-Type", "application/xml");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
+        
+        // Serialize Request
+        String requestContent = null;
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document requestDoc = documentBuilder.newDocument();
+        
+        Element captureRoleAsVMImageOperationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "CaptureRoleAsVMImageOperation");
+        requestDoc.appendChild(captureRoleAsVMImageOperationElement);
+        
+        Element operationTypeElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OperationType");
+        operationTypeElement.appendChild(requestDoc.createTextNode("CaptureRoleAsVMImageOperation"));
+        captureRoleAsVMImageOperationElement.appendChild(operationTypeElement);
+        
+        if (parameters.getOSState() != null) {
+            Element oSStateElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "OSState");
+            oSStateElement.appendChild(requestDoc.createTextNode(parameters.getOSState()));
+            captureRoleAsVMImageOperationElement.appendChild(oSStateElement);
+        }
+        
+        if (parameters.getVMImageName() != null) {
+            Element vMImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageName");
+            vMImageNameElement.appendChild(requestDoc.createTextNode(parameters.getVMImageName()));
+            captureRoleAsVMImageOperationElement.appendChild(vMImageNameElement);
+        }
+        
+        if (parameters.getVMImageLabel() != null) {
+            Element vMImageLabelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageLabel");
+            vMImageLabelElement.appendChild(requestDoc.createTextNode(parameters.getVMImageLabel()));
+            captureRoleAsVMImageOperationElement.appendChild(vMImageLabelElement);
+        }
+        
+        DOMSource domSource = new DOMSource(requestDoc);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult streamResult = new StreamResult(stringWriter);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        transformer.transform(domSource, streamResult);
+        requestContent = stringWriter.toString();
+        StringEntity entity = new StringEntity(requestContent);
+        httpRequest.setEntity(entity);
+        httpRequest.setHeader("Content-Type", "application/xml");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_ACCEPTED) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            OperationResponse result = null;
+            result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
     * The Add Role operation adds a virtual machine to an existing deployment.
     * You can refer to the OSDisk in the Add Role operation in the following
     * ways.  Platform/User Image – Set the SourceImageName to a platform or
@@ -729,10 +906,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -761,10 +938,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -792,6 +969,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getAdminPassword() == null) {
+                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
+                }
+                if (configurationSetsParameterItem.getAdminUserName() == null) {
+                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
+                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -887,7 +1070,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1060,11 +1243,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                if (configurationSetsItem.getAdminPassword() != null) {
-                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                    configurationSetElement.appendChild(adminPasswordElement);
-                }
+                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                configurationSetElement.appendChild(adminPasswordElement);
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -1176,11 +1357,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getAdminUserName() != null) {
-                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                    configurationSetElement.appendChild(adminUsernameElement);
-                }
+                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                configurationSetElement.appendChild(adminUsernameElement);
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -1320,6 +1499,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             persistentVMRoleElement.appendChild(resourceExtensionReferencesSequenceElement);
         }
         
+        if (parameters.getVMImageName() != null) {
+            Element vMImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageName");
+            vMImageNameElement.appendChild(requestDoc.createTextNode(parameters.getVMImageName()));
+            persistentVMRoleElement.appendChild(vMImageNameElement);
+        }
+        
         if (parameters.getDataVirtualHardDisks() != null) {
             Element dataVirtualHardDisksSequenceElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
             for (DataVirtualHardDisk dataVirtualHardDisksItem : parameters.getDataVirtualHardDisks()) {
@@ -1350,14 +1535,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     dataVirtualHardDiskElement.appendChild(lunElement);
                 }
                 
-                Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                    Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                    dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                }
                 
                 if (dataVirtualHardDisksItem.getMediaLink() != null) {
                     Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                     dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                    Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                    sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
                 }
             }
             persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
@@ -1476,9 +1669,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -1503,9 +1696,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1544,6 +1737,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             for (Role rolesParameterItem : parameters.getRoles()) {
                 if (rolesParameterItem.getConfigurationSets() != null) {
                     for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets()) {
+                        if (configurationSetsParameterItem.getAdminPassword() == null) {
+                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminPassword");
+                        }
+                        if (configurationSetsParameterItem.getAdminUserName() == null) {
+                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminUserName");
+                        }
                         if (configurationSetsParameterItem.getDomainJoin() != null) {
                             if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                                 if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -1637,7 +1836,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -1837,11 +2036,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(computerNameElement);
                     }
                     
-                    if (configurationSetsItem.getAdminPassword() != null) {
-                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                        configurationSetElement.appendChild(adminPasswordElement);
-                    }
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
                     
                     if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -1953,11 +2150,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    if (configurationSetsItem.getAdminUserName() != null) {
-                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                        configurationSetElement.appendChild(adminUsernameElement);
-                    }
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
                     
                     if (configurationSetsItem.getHostName() != null) {
                         Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -2091,6 +2286,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 roleElement.appendChild(resourceExtensionReferencesSequenceElement);
             }
             
+            if (roleListItem.getVMImageName() != null) {
+                Element vMImageNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "VMImageName");
+                vMImageNameElement.appendChild(requestDoc.createTextNode(roleListItem.getVMImageName()));
+                roleElement.appendChild(vMImageNameElement);
+            }
+            
             if (roleListItem.getAvailabilitySetName() != null) {
                 Element availabilitySetNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AvailabilitySetName");
                 availabilitySetNameElement.appendChild(requestDoc.createTextNode(roleListItem.getAvailabilitySetName()));
@@ -2127,14 +2328,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         dataVirtualHardDiskElement.appendChild(lunElement);
                     }
                     
-                    Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                    dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                    if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                        Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                        logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                        dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                    }
                     
                     if (dataVirtualHardDisksItem.getMediaLink() != null) {
                         Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                         mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                         dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                    }
+                    
+                    if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                        Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                        sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                        dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
                     }
                 }
                 roleElement.appendChild(dataVirtualHardDisksSequenceElement);
@@ -2299,10 +2508,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -2322,10 +2532,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -2379,7 +2590,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -2424,9 +2635,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2445,9 +2657,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2497,7 +2710,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = "<RestartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>RestartRoleOperation</OperationType></RestartRoleOperation>";
@@ -2548,10 +2761,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2570,10 +2784,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2633,7 +2848,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2704,10 +2919,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2724,10 +2939,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -2783,7 +2998,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -2868,9 +3083,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -2889,9 +3105,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -2941,7 +3158,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = "<StartRoleOperation xmlns=\"http://schemas.microsoft.com/windowsazure\"><OperationType>StartRoleOperation</OperationType></StartRoleOperation>";
@@ -2990,9 +3207,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3009,9 +3226,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -3067,7 +3284,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3147,11 +3364,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3171,11 +3388,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -3206,6 +3423,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
+                if (configurationSetsParameterItem.getAdminPassword() == null) {
+                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
+                }
+                if (configurationSetsParameterItem.getAdminUserName() == null) {
+                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
+                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -3305,7 +3528,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -3478,11 +3701,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                if (configurationSetsItem.getAdminPassword() != null) {
-                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                    configurationSetElement.appendChild(adminPasswordElement);
-                }
+                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                configurationSetElement.appendChild(adminPasswordElement);
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -3594,11 +3815,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                if (configurationSetsItem.getAdminUserName() != null) {
-                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                    configurationSetElement.appendChild(adminUsernameElement);
-                }
+                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                configurationSetElement.appendChild(adminUsernameElement);
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -3768,14 +3987,22 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     dataVirtualHardDiskElement.appendChild(lunElement);
                 }
                 
-                Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
-                dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                if (dataVirtualHardDisksItem.getLogicalDiskSizeInGB() != null) {
+                    Element logicalDiskSizeInGBElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
+                    logicalDiskSizeInGBElement.appendChild(requestDoc.createTextNode(Integer.toString(dataVirtualHardDisksItem.getLogicalDiskSizeInGB())));
+                    dataVirtualHardDiskElement.appendChild(logicalDiskSizeInGBElement);
+                }
                 
                 if (dataVirtualHardDisksItem.getMediaLink() != null) {
                     Element mediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "MediaLink");
                     mediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getMediaLink().toString()));
                     dataVirtualHardDiskElement.appendChild(mediaLinkElement);
+                }
+                
+                if (dataVirtualHardDisksItem.getSourceMediaLink() != null) {
+                    Element sourceMediaLinkElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                    sourceMediaLinkElement.appendChild(requestDoc.createTextNode(dataVirtualHardDisksItem.getSourceMediaLink().toString()));
+                    dataVirtualHardDiskElement.appendChild(sourceMediaLinkElement);
                 }
             }
             persistentVMRoleElement.appendChild(dataVirtualHardDisksSequenceElement);
@@ -3887,10 +4114,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -3910,10 +4137,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -3976,7 +4203,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/xml");
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Serialize Request
         String requestContent = null;
@@ -4163,11 +4390,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4179,11 +4407,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public Future<OperationStatusResponse> captureAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureParameters parameters) {
+    public Future<OperationStatusResponse> captureOSImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureOSImageParameters parameters) {
         return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
             @Override
             public OperationStatusResponse call() throws Exception {
-                return capture(serviceName, deploymentName, virtualMachineName, parameters);
+                return captureOSImage(serviceName, deploymentName, virtualMachineName, parameters);
             }
          });
     }
@@ -4201,11 +4429,12 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -4229,7 +4458,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public OperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+    public OperationStatusResponse captureOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -4240,14 +4469,132 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             tracingParameters.put("deploymentName", deploymentName);
             tracingParameters.put("virtualMachineName", virtualMachineName);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "captureAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "captureOSImageAsync", tracingParameters);
         }
         try {
             if (shouldTrace) {
                 client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
             }
             
-            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingOSImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
+            OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
+            int delayInSeconds = 30;
+            while ((result.getStatus() != OperationStatus.InProgress) == false) {
+                Thread.sleep(delayInSeconds * 1000);
+                result = client2.getOperationStatusAsync(response.getRequestId()).get();
+                delayInSeconds = 30;
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            
+            if (result.getStatus() != OperationStatus.Succeeded) {
+                if (result.getError() != null) {
+                    ServiceException ex = new ServiceException(result.getError().getCode() + " : " + result.getError().getMessage());
+                    ex.setErrorCode(result.getError().getCode());
+                    ex.setErrorMessage(result.getError().getMessage());
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                } else {
+                    ServiceException ex = new ServiceException("");
+                    if (shouldTrace) {
+                        CloudTracing.error(invocationId, ex);
+                    }
+                    throw ex;
+                }
+            }
+            
+            return result;
+        } finally {
+            if (this.getClient() != null && shouldTrace) {
+                this.getClient().close();
+            }
+        }
+    }
+    
+    /**
+    * Capture role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public Future<OperationStatusResponse> captureVMImageAsync(final String serviceName, final String deploymentName, final String virtualMachineName, final VirtualMachineCaptureVMImageParameters parameters) {
+        return this.getClient().getExecutorService().submit(new Callable<OperationStatusResponse>() { 
+            @Override
+            public OperationStatusResponse call() throws Exception {
+                return captureVMImage(serviceName, deploymentName, virtualMachineName, parameters);
+            }
+         });
+    }
+    
+    /**
+    * Capture role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    @Override
+    public OperationStatusResponse captureVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException {
+        ComputeManagementClient client2 = this.getClient();
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serviceName", serviceName);
+            tracingParameters.put("deploymentName", deploymentName);
+            tracingParameters.put("virtualMachineName", virtualMachineName);
+            tracingParameters.put("parameters", parameters);
+            CloudTracing.enter(invocationId, this, "captureVMImageAsync", tracingParameters);
+        }
+        try {
+            if (shouldTrace) {
+                client2 = this.getClient().withRequestFilterLast(new ClientRequestTrackingHandler(invocationId)).withResponseFilterLast(new ClientRequestTrackingHandler(invocationId));
+            }
+            
+            OperationResponse response = client2.getVirtualMachinesOperations().beginCapturingVMImageAsync(serviceName, deploymentName, virtualMachineName, parameters).get();
             OperationStatusResponse result = client2.getOperationStatusAsync(response.getRequestId()).get();
             int delayInSeconds = 30;
             while ((result.getStatus() != OperationStatus.InProgress) == false) {
@@ -4301,10 +4648,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4340,10 +4687,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -4443,9 +4790,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -4477,9 +4824,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -4563,10 +4910,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
@@ -4593,10 +4941,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -4686,9 +5035,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @return The Get Virtual Machine operation response.
     */
     @Override
@@ -4707,9 +5056,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -4763,7 +5112,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5285,7 +5634,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                         
                         Element logicalDiskSizeInGBElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "LogicalDiskSizeInGB");
-                        if (logicalDiskSizeInGBElement != null) {
+                        if (logicalDiskSizeInGBElement != null && (logicalDiskSizeInGBElement.getTextContent() == null || logicalDiskSizeInGBElement.getTextContent().isEmpty() == true) == false) {
                             int logicalDiskSizeInGBInstance;
                             logicalDiskSizeInGBInstance = DatatypeConverter.parseInt(logicalDiskSizeInGBElement.getTextContent());
                             dataVirtualHardDiskInstance.setLogicalDiskSizeInGB(logicalDiskSizeInGBInstance);
@@ -5296,6 +5645,13 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                             URI mediaLinkInstance;
                             mediaLinkInstance = new URI(mediaLinkElement.getTextContent());
                             dataVirtualHardDiskInstance.setMediaLink(mediaLinkInstance);
+                        }
+                        
+                        Element sourceMediaLinkElement = XmlUtility.getElementByTagNameNS(dataVirtualHardDisksElement, "http://schemas.microsoft.com/windowsazure", "SourceMediaLink");
+                        if (sourceMediaLinkElement != null) {
+                            URI sourceMediaLinkInstance;
+                            sourceMediaLinkInstance = new URI(sourceMediaLinkElement.getTextContent());
+                            dataVirtualHardDiskInstance.setSourceMediaLink(sourceMediaLinkInstance);
                         }
                     }
                 }
@@ -5371,9 +5727,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @return The Download RDP file operation response.
     */
     @Override
@@ -5392,9 +5748,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -5442,7 +5798,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -5491,9 +5847,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5519,9 +5876,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -5606,10 +5964,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5635,10 +5994,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -5722,10 +6082,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5749,10 +6109,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -5837,9 +6197,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5865,9 +6226,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -5950,9 +6312,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -5976,9 +6338,9 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -6064,11 +6426,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6095,11 +6457,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -6110,8 +6472,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -6122,6 +6482,8 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6133,7 +6495,7 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * failure.
     */
     @Override
-    public OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -6196,10 +6558,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -6226,10 +6588,10 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the

@@ -23,20 +23,19 @@
 
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
-public enum ScaleDirection
-{
+public enum ScaleDirection {
     /**
-    * Do nothing.
-    */
+     * Do nothing.
+     */
     None,
-    
+
     /**
-    * Increase capacity.
-    */
+     * Increase capacity.
+     */
     Increase,
-    
+
     /**
-    * Decrease capacity.
-    */
+     * Decrease capacity.
+     */
     Decrease,
 }

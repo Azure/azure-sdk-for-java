@@ -27,8 +27,8 @@ public class JobCollectionQuota {
     private Integer maxJobCount;
     
     /**
-    * Maximum number of jobs that can be created in this job collection.
-    * Maximum value is dependent on the plan.
+    * Optional. Maximum number of jobs that can be created in this job
+    * collection. Maximum value is dependent on the plan.
     * @return The MaxJobCount value.
     */
     public Integer getMaxJobCount() {
@@ -36,8 +36,8 @@ public class JobCollectionQuota {
     }
     
     /**
-    * Maximum number of jobs that can be created in this job collection.
-    * Maximum value is dependent on the plan.
+    * Optional. Maximum number of jobs that can be created in this job
+    * collection. Maximum value is dependent on the plan.
     * @param maxJobCountValue The MaxJobCount value.
     */
     public void setMaxJobCount(final Integer maxJobCountValue) {
@@ -47,7 +47,8 @@ public class JobCollectionQuota {
     private Integer maxJobOccurrence;
     
     /**
-    * Maximum number of occurrences for all jobs in the job collection.
+    * Optional. Maximum number of occurrences for all jobs in the job
+    * collection.
     * @return The MaxJobOccurrence value.
     */
     public Integer getMaxJobOccurrence() {
@@ -55,7 +56,8 @@ public class JobCollectionQuota {
     }
     
     /**
-    * Maximum number of occurrences for all jobs in the job collection.
+    * Optional. Maximum number of occurrences for all jobs in the job
+    * collection.
     * @param maxJobOccurrenceValue The MaxJobOccurrence value.
     */
     public void setMaxJobOccurrence(final Integer maxJobOccurrenceValue) {
@@ -65,8 +67,8 @@ public class JobCollectionQuota {
     private JobCollectionMaxRecurrence maxRecurrence;
     
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
+    * Optional. Defines the maximum recurrences that can be specified in any
+    * job in this job collection.
     * @return The MaxRecurrence value.
     */
     public JobCollectionMaxRecurrence getMaxRecurrence() {
@@ -74,8 +76,8 @@ public class JobCollectionQuota {
     }
     
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
+    * Optional. Defines the maximum recurrences that can be specified in any
+    * job in this job collection.
     * @param maxRecurrenceValue The MaxRecurrence value.
     */
     public void setMaxRecurrence(final JobCollectionMaxRecurrence maxRecurrenceValue) {

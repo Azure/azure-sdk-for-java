@@ -34,7 +34,8 @@ public class WebSiteUpdateConfigurationParameters {
     private HashMap<String, String> appSettings;
     
     /**
-    * A set of name/value pairs that contain application settings for a site.
+    * Optional. A set of name/value pairs that contain application settings for
+    * a site.
     * @return The AppSettings value.
     */
     public HashMap<String, String> getAppSettings() {
@@ -42,7 +43,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * A set of name/value pairs that contain application settings for a site.
+    * Optional. A set of name/value pairs that contain application settings for
+    * a site.
     * @param appSettingsValue The AppSettings value.
     */
     public void setAppSettings(final HashMap<String, String> appSettingsValue) {
@@ -52,7 +54,8 @@ public class WebSiteUpdateConfigurationParameters {
     private ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStrings;
     
     /**
-    * Contains connection strings for database and other external resources.
+    * Optional. Contains connection strings for database and other external
+    * resources.
     * @return The ConnectionStrings value.
     */
     public ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> getConnectionStrings() {
@@ -60,7 +63,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Contains connection strings for database and other external resources.
+    * Optional. Contains connection strings for database and other external
+    * resources.
     * @param connectionStringsValue The ConnectionStrings value.
     */
     public void setConnectionStrings(final ArrayList<WebSiteUpdateConfigurationParameters.ConnectionStringInfo> connectionStringsValue) {
@@ -70,10 +74,10 @@ public class WebSiteUpdateConfigurationParameters {
     private ArrayList<String> defaultDocuments;
     
     /**
-    * Contains one or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
-    * http://contoso.com is default.htm, the page
+    * Optional. Contains one or more string elements that list, in order of
+    * preference, the name of the file that a web site returns when the web
+    * site's domain name is requested by itself. For example, if the default
+    * document for http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     * @return The DefaultDocuments value.
@@ -83,10 +87,10 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Contains one or more string elements that list, in order of preference,
-    * the name of the file that a web site returns when the web site's domain
-    * name is requested by itself. For example, if the default document for
-    * http://contoso.com is default.htm, the page
+    * Optional. Contains one or more string elements that list, in order of
+    * preference, the name of the file that a web site returns when the web
+    * site's domain name is requested by itself. For example, if the default
+    * document for http://contoso.com is default.htm, the page
     * http://www.contoso.com/default.htm is returned when the browser is
     * pointed to http://www.contoso.com.
     * @param defaultDocumentsValue The DefaultDocuments value.
@@ -98,7 +102,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean detailedErrorLoggingEnabled;
     
     /**
-    * True if detailed error logging is enabled; otherwise, false.
+    * Optional. True if detailed error logging is enabled; otherwise, false.
     * @return The DetailedErrorLoggingEnabled value.
     */
     public Boolean isDetailedErrorLoggingEnabled() {
@@ -106,7 +110,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True if detailed error logging is enabled; otherwise, false.
+    * Optional. True if detailed error logging is enabled; otherwise, false.
     * @param detailedErrorLoggingEnabledValue The DetailedErrorLoggingEnabled
     * value.
     */
@@ -117,7 +121,7 @@ public class WebSiteUpdateConfigurationParameters {
     private String documentRoot;
     
     /**
-    * The document root.
+    * Optional. The document root.
     * @return The DocumentRoot value.
     */
     public String getDocumentRoot() {
@@ -125,7 +129,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The document root.
+    * Optional. The document root.
     * @param documentRootValue The DocumentRoot value.
     */
     public void setDocumentRoot(final String documentRootValue) {
@@ -135,8 +139,8 @@ public class WebSiteUpdateConfigurationParameters {
     private ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> handlerMappings;
     
     /**
-    * Specifies custom executable programs for handling requests for specific
-    * file name extensions.
+    * Optional. Specifies custom executable programs for handling requests for
+    * specific file name extensions.
     * @return The HandlerMappings value.
     */
     public ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> getHandlerMappings() {
@@ -144,8 +148,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Specifies custom executable programs for handling requests for specific
-    * file name extensions.
+    * Optional. Specifies custom executable programs for handling requests for
+    * specific file name extensions.
     * @param handlerMappingsValue The HandlerMappings value.
     */
     public void setHandlerMappings(final ArrayList<WebSiteUpdateConfigurationParameters.HandlerMapping> handlerMappingsValue) {
@@ -155,7 +159,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean httpLoggingEnabled;
     
     /**
-    * True if HTTP error logging is enabled; otherwise, false.
+    * Optional. True if HTTP error logging is enabled; otherwise, false.
     * @return The HttpLoggingEnabled value.
     */
     public Boolean isHttpLoggingEnabled() {
@@ -163,7 +167,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True if HTTP error logging is enabled; otherwise, false.
+    * Optional. True if HTTP error logging is enabled; otherwise, false.
     * @param httpLoggingEnabledValue The HttpLoggingEnabled value.
     */
     public void setHttpLoggingEnabled(final Boolean httpLoggingEnabledValue) {
@@ -173,7 +177,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Integer logsDirectorySizeLimit;
     
     /**
-    * The limit of the logs directory.
+    * Optional. The limit of the logs directory.
     * @return The LogsDirectorySizeLimit value.
     */
     public Integer getLogsDirectorySizeLimit() {
@@ -181,7 +185,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The limit of the logs directory.
+    * Optional. The limit of the logs directory.
     * @param logsDirectorySizeLimitValue The LogsDirectorySizeLimit value.
     */
     public void setLogsDirectorySizeLimit(final Integer logsDirectorySizeLimitValue) {
@@ -191,7 +195,7 @@ public class WebSiteUpdateConfigurationParameters {
     private ManagedPipelineMode managedPipelineMode;
     
     /**
-    * Managed pipeline modes.
+    * Optional. Managed pipeline modes.
     * @return The ManagedPipelineMode value.
     */
     public ManagedPipelineMode getManagedPipelineMode() {
@@ -199,7 +203,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Managed pipeline modes.
+    * Optional. Managed pipeline modes.
     * @param managedPipelineModeValue The ManagedPipelineMode value.
     */
     public void setManagedPipelineMode(final ManagedPipelineMode managedPipelineModeValue) {
@@ -209,7 +213,8 @@ public class WebSiteUpdateConfigurationParameters {
     private HashMap<String, String> metadata;
     
     /**
-    * Contains name/value pairs for source control or other information.
+    * Optional. Contains name/value pairs for source control or other
+    * information.
     * @return The Metadata value.
     */
     public HashMap<String, String> getMetadata() {
@@ -217,7 +222,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Contains name/value pairs for source control or other information.
+    * Optional. Contains name/value pairs for source control or other
+    * information.
     * @param metadataValue The Metadata value.
     */
     public void setMetadata(final HashMap<String, String> metadataValue) {
@@ -227,7 +233,7 @@ public class WebSiteUpdateConfigurationParameters {
     private String netFrameworkVersion;
     
     /**
-    * The .NET Framework version. Supported values are v2.0 and v4.0.
+    * Optional. The .NET Framework version. Supported values are v2.0 and v4.0.
     * @return The NetFrameworkVersion value.
     */
     public String getNetFrameworkVersion() {
@@ -235,7 +241,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The .NET Framework version. Supported values are v2.0 and v4.0.
+    * Optional. The .NET Framework version. Supported values are v2.0 and v4.0.
     * @param netFrameworkVersionValue The NetFrameworkVersion value.
     */
     public void setNetFrameworkVersion(final String netFrameworkVersionValue) {
@@ -245,10 +251,10 @@ public class WebSiteUpdateConfigurationParameters {
     private Integer numberOfWorkers;
     
     /**
-    * The number of web workers allotted to the web site. If the site mode is
-    * Free, this value is 1. If the site mode is Shared, this value can range
-    * from 1 through 6. If the site mode is Standard, this value can range
-    * from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the site
+    * mode is Free, this value is 1. If the site mode is Shared, this value
+    * can range from 1 through 6. If the site mode is Standard, this value can
+    * range from 1 through 10.
     * @return The NumberOfWorkers value.
     */
     public Integer getNumberOfWorkers() {
@@ -256,10 +262,10 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The number of web workers allotted to the web site. If the site mode is
-    * Free, this value is 1. If the site mode is Shared, this value can range
-    * from 1 through 6. If the site mode is Standard, this value can range
-    * from 1 through 10.
+    * Optional. The number of web workers allotted to the web site. If the site
+    * mode is Free, this value is 1. If the site mode is Shared, this value
+    * can range from 1 through 6. If the site mode is Standard, this value can
+    * range from 1 through 10.
     * @param numberOfWorkersValue The NumberOfWorkers value.
     */
     public void setNumberOfWorkers(final Integer numberOfWorkersValue) {
@@ -269,8 +275,8 @@ public class WebSiteUpdateConfigurationParameters {
     private String phpVersion;
     
     /**
-    * Supported values are an empty string (an empty string disables PHP), 5.3,
-    * and 5.4.
+    * Optional. Supported values are an empty string (an empty string disables
+    * PHP), 5.3, and 5.4.
     * @return The PhpVersion value.
     */
     public String getPhpVersion() {
@@ -278,8 +284,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Supported values are an empty string (an empty string disables PHP), 5.3,
-    * and 5.4.
+    * Optional. Supported values are an empty string (an empty string disables
+    * PHP), 5.3, and 5.4.
     * @param phpVersionValue The PhpVersion value.
     */
     public void setPhpVersion(final String phpVersionValue) {
@@ -289,7 +295,7 @@ public class WebSiteUpdateConfigurationParameters {
     private String publishingPassword;
     
     /**
-    * Hash value of the password used for publishing the web site.
+    * Optional. Hash value of the password used for publishing the web site.
     * @return The PublishingPassword value.
     */
     public String getPublishingPassword() {
@@ -297,7 +303,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Hash value of the password used for publishing the web site.
+    * Optional. Hash value of the password used for publishing the web site.
     * @param publishingPasswordValue The PublishingPassword value.
     */
     public void setPublishingPassword(final String publishingPasswordValue) {
@@ -307,8 +313,8 @@ public class WebSiteUpdateConfigurationParameters {
     private String publishingUserName;
     
     /**
-    * The username used for publishing the web site. This is normally a dollar
-    * sign prepended to the web site name (for example, “$contoso”).
+    * Optional. The username used for publishing the web site. This is normally
+    * a dollar sign prepended to the web site name (for example, “$contoso”).
     * @return The PublishingUserName value.
     */
     public String getPublishingUserName() {
@@ -316,8 +322,8 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The username used for publishing the web site. This is normally a dollar
-    * sign prepended to the web site name (for example, “$contoso”).
+    * Optional. The username used for publishing the web site. This is normally
+    * a dollar sign prepended to the web site name (for example, “$contoso”).
     * @param publishingUserNameValue The PublishingUserName value.
     */
     public void setPublishingUserName(final String publishingUserNameValue) {
@@ -327,7 +333,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean remoteDebuggingEnabled;
     
     /**
-    * True remote debugging is enabled; otherwise, false.
+    * Optional. True remote debugging is enabled; otherwise, false.
     * @return The RemoteDebuggingEnabled value.
     */
     public Boolean isRemoteDebuggingEnabled() {
@@ -335,7 +341,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True remote debugging is enabled; otherwise, false.
+    * Optional. True remote debugging is enabled; otherwise, false.
     * @param remoteDebuggingEnabledValue The RemoteDebuggingEnabled value.
     */
     public void setRemoteDebuggingEnabled(final Boolean remoteDebuggingEnabledValue) {
@@ -345,7 +351,7 @@ public class WebSiteUpdateConfigurationParameters {
     private RemoteDebuggingVersion remoteDebuggingVersion;
     
     /**
-    * True remote debugging version.
+    * Optional. True remote debugging version.
     * @return The RemoteDebuggingVersion value.
     */
     public RemoteDebuggingVersion getRemoteDebuggingVersion() {
@@ -353,7 +359,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True remote debugging version.
+    * Optional. True remote debugging version.
     * @param remoteDebuggingVersionValue The RemoteDebuggingVersion value.
     */
     public void setRemoteDebuggingVersion(final RemoteDebuggingVersion remoteDebuggingVersionValue) {
@@ -363,7 +369,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean requestTracingEnabled;
     
     /**
-    * True if request tracing is enabled; otherwise, false.
+    * Optional. True if request tracing is enabled; otherwise, false.
     * @return The RequestTracingEnabled value.
     */
     public Boolean isRequestTracingEnabled() {
@@ -371,7 +377,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True if request tracing is enabled; otherwise, false.
+    * Optional. True if request tracing is enabled; otherwise, false.
     * @param requestTracingEnabledValue The RequestTracingEnabled value.
     */
     public void setRequestTracingEnabled(final Boolean requestTracingEnabledValue) {
@@ -381,7 +387,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Calendar requestTracingExpirationTime;
     
     /**
-    * Time remaining until request tracing expires.
+    * Optional. Time remaining until request tracing expires.
     * @return The RequestTracingExpirationTime value.
     */
     public Calendar getRequestTracingExpirationTime() {
@@ -389,7 +395,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * Time remaining until request tracing expires.
+    * Optional. Time remaining until request tracing expires.
     * @param requestTracingExpirationTimeValue The RequestTracingExpirationTime
     * value.
     */
@@ -400,9 +406,9 @@ public class WebSiteUpdateConfigurationParameters {
     private String scmType;
     
     /**
-    * The source control method that the web site is using (for example, Local
-    * Git). If deployment from source control has not been set up for the web
-    * site, this value is None.
+    * Optional. The source control method that the web site is using (for
+    * example, Local Git). If deployment from source control has not been set
+    * up for the web site, this value is None.
     * @return The ScmType value.
     */
     public String getScmType() {
@@ -410,9 +416,9 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * The source control method that the web site is using (for example, Local
-    * Git). If deployment from source control has not been set up for the web
-    * site, this value is None.
+    * Optional. The source control method that the web site is using (for
+    * example, Local Git). If deployment from source control has not been set
+    * up for the web site, this value is None.
     * @param scmTypeValue The ScmType value.
     */
     public void setScmType(final String scmTypeValue) {
@@ -422,7 +428,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean use32BitWorkerProcess;
     
     /**
-    * True if 32-bit mode is enabled; otherwise, false.
+    * Optional. True if 32-bit mode is enabled; otherwise, false.
     * @return The Use32BitWorkerProcess value.
     */
     public Boolean isUse32BitWorkerProcess() {
@@ -430,7 +436,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True if 32-bit mode is enabled; otherwise, false.
+    * Optional. True if 32-bit mode is enabled; otherwise, false.
     * @param use32BitWorkerProcessValue The Use32BitWorkerProcess value.
     */
     public void setUse32BitWorkerProcess(final Boolean use32BitWorkerProcessValue) {
@@ -440,7 +446,7 @@ public class WebSiteUpdateConfigurationParameters {
     private Boolean webSocketsEnabled;
     
     /**
-    * True if Web Sockets are enabled; otherwise, false.
+    * Optional. True if Web Sockets are enabled; otherwise, false.
     * @return The WebSocketsEnabled value.
     */
     public Boolean isWebSocketsEnabled() {
@@ -448,7 +454,7 @@ public class WebSiteUpdateConfigurationParameters {
     }
     
     /**
-    * True if Web Sockets are enabled; otherwise, false.
+    * Optional. True if Web Sockets are enabled; otherwise, false.
     * @param webSocketsEnabledValue The WebSocketsEnabled value.
     */
     public void setWebSocketsEnabled(final Boolean webSocketsEnabledValue) {
@@ -475,7 +481,7 @@ public class WebSiteUpdateConfigurationParameters {
         private String connectionString;
         
         /**
-        * A database connection string.
+        * Optional. A database connection string.
         * @return The ConnectionString value.
         */
         public String getConnectionString() {
@@ -483,7 +489,7 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * A database connection string.
+        * Optional. A database connection string.
         * @param connectionStringValue The ConnectionString value.
         */
         public void setConnectionString(final String connectionStringValue) {
@@ -493,7 +499,7 @@ public class WebSiteUpdateConfigurationParameters {
         private String name;
         
         /**
-        * The name of the connection string.
+        * Optional. The name of the connection string.
         * @return The Name value.
         */
         public String getName() {
@@ -501,7 +507,7 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * The name of the connection string.
+        * Optional. The name of the connection string.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -511,7 +517,7 @@ public class WebSiteUpdateConfigurationParameters {
         private String type;
         
         /**
-        * The type of the connection string (for example, "MySQL").
+        * Optional. The type of the connection string (for example, "MySQL").
         * @return The Type value.
         */
         public String getType() {
@@ -519,7 +525,7 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * The type of the connection string (for example, "MySQL").
+        * Optional. The type of the connection string (for example, "MySQL").
         * @param typeValue The Type value.
         */
         public void setType(final String typeValue) {
@@ -535,8 +541,8 @@ public class WebSiteUpdateConfigurationParameters {
         private String arguments;
         
         /**
-        * A string that contains optional arguments for the script processor
-        * specified by the
+        * Optional. A string that contains optional arguments for the script
+        * processor specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
         * @return The Arguments value.
         */
@@ -545,8 +551,8 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * A string that contains optional arguments for the script processor
-        * specified by the
+        * Optional. A string that contains optional arguments for the script
+        * processor specified by the
         * SiteConfig.HandlerMappings.HandlerMapping.ScriptProcessor element.
         * @param argumentsValue The Arguments value.
         */
@@ -557,8 +563,8 @@ public class WebSiteUpdateConfigurationParameters {
         private String extension;
         
         /**
-        * A string that specifies the extension of the file type that the
-        * script processor will handle (for example, *.php).
+        * Optional. A string that specifies the extension of the file type that
+        * the script processor will handle (for example, *.php).
         * @return The Extension value.
         */
         public String getExtension() {
@@ -566,8 +572,8 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * A string that specifies the extension of the file type that the
-        * script processor will handle (for example, *.php).
+        * Optional. A string that specifies the extension of the file type that
+        * the script processor will handle (for example, *.php).
         * @param extensionValue The Extension value.
         */
         public void setExtension(final String extensionValue) {
@@ -577,8 +583,8 @@ public class WebSiteUpdateConfigurationParameters {
         private String scriptProcessor;
         
         /**
-        * The absolute path to the location of the executable file that will
-        * handle the files specified in the
+        * Optional. The absolute path to the location of the executable file
+        * that will handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
         * @return The ScriptProcessor value.
         */
@@ -587,8 +593,8 @@ public class WebSiteUpdateConfigurationParameters {
         }
         
         /**
-        * The absolute path to the location of the executable file that will
-        * handle the files specified in the
+        * Optional. The absolute path to the location of the executable file
+        * that will handle the files specified in the
         * SiteConfig.HandlerMappings.HandlerMapping.Extension element.
         * @param scriptProcessorValue The ScriptProcessor value.
         */

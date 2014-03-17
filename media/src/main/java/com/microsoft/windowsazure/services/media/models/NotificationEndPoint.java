@@ -31,13 +31,11 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate notification end point entities.
  * 
  */
-public class NotificationEndPoint
-{
+public class NotificationEndPoint {
 
     private static final String ENTITY_SET = "NotificationEndPoints";
 
-    private NotificationEndPoint()
-    {
+    private NotificationEndPoint() {
     }
 
     /**
@@ -52,22 +50,19 @@ public class NotificationEndPoint
      * @return The operation
      */
     public static EntityCreateOperation<NotificationEndPointInfo> create(
-            String name, EndPointType endPointType, String endPointAddress)
-    {
+            String name, EndPointType endPointType, String endPointAddress) {
         return new Creator(name, endPointType, endPointAddress);
     }
 
     public static class Creator extends
             EntityOperationSingleResultBase<NotificationEndPointInfo> implements
-            EntityCreateOperation<NotificationEndPointInfo>
-    {
+            EntityCreateOperation<NotificationEndPointInfo> {
         private final String name;
         private final EndPointType endPointType;
         private final String endPointAddress;
 
         public Creator(String name, EndPointType endPointType,
-                String endPointAddress)
-        {
+                String endPointAddress) {
 
             super(ENTITY_SET, NotificationEndPointInfo.class);
 
@@ -77,8 +72,7 @@ public class NotificationEndPoint
         }
 
         @Override
-        public Object getRequestContents()
-        {
+        public Object getRequestContents() {
             return new NotificationEndPointType().setName(name)
                     .setEndPointType(endPointType.getCode())
                     .setEndPointAddress(endPointAddress);
@@ -93,8 +87,7 @@ public class NotificationEndPoint
      * @return the operation
      */
     public static EntityGetOperation<NotificationEndPointInfo> get(
-            String notificationEndPointId)
-    {
+            String notificationEndPointId) {
         return new DefaultGetOperation<NotificationEndPointInfo>(ENTITY_SET,
                 notificationEndPointId, NotificationEndPointInfo.class);
     }
@@ -108,8 +101,7 @@ public class NotificationEndPoint
      * @return the operation
      */
     public static EntityGetOperation<NotificationEndPointInfo> get(
-            LinkInfo<NotificationEndPointInfo> link)
-    {
+            LinkInfo<NotificationEndPointInfo> link) {
         return new DefaultGetOperation<NotificationEndPointInfo>(
                 link.getHref(), NotificationEndPointInfo.class);
     }
@@ -119,16 +111,13 @@ public class NotificationEndPoint
      * 
      * @return the operation
      */
-    public static DefaultListOperation<NotificationEndPointInfo> list()
-    {
+    public static DefaultListOperation<NotificationEndPointInfo> list() {
         return new DefaultListOperation<NotificationEndPointInfo>(ENTITY_SET,
-                new GenericType<ListResult<NotificationEndPointInfo>>()
-                {
+                new GenericType<ListResult<NotificationEndPointInfo>>() {
                 });
     }
 
-    public static Updater update(String notificationEndPointId)
-    {
+    public static Updater update(String notificationEndPointId) {
         return new Updater(notificationEndPointId);
     }
 
@@ -139,8 +128,7 @@ public class NotificationEndPoint
      *            id of notification end point to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String notificationEndPointId)
-    {
+    public static EntityDeleteOperation delete(String notificationEndPointId) {
         return new DefaultDeleteOperation(ENTITY_SET, notificationEndPointId);
     }
 
@@ -148,8 +136,7 @@ public class NotificationEndPoint
      * The Class Updater.
      */
     public static class Updater extends EntityOperationBase implements
-            EntityUpdateOperation
-    {
+            EntityUpdateOperation {
 
         /** The name. */
         private String name;
@@ -160,8 +147,7 @@ public class NotificationEndPoint
          * @param notificationEndPointId
          *            the asset id
          */
-        protected Updater(String notificationEndPointId)
-        {
+        protected Updater(String notificationEndPointId) {
             super(new EntityOperationBase.EntityIdUriBuilder(ENTITY_SET,
                     notificationEndPointId));
         }
@@ -173,8 +159,7 @@ public class NotificationEndPoint
          * EntityUpdateOperation#getRequestContents()
          */
         @Override
-        public Object getRequestContents()
-        {
+        public Object getRequestContents() {
             NotificationEndPointType notificationEndPointType = new NotificationEndPointType();
             notificationEndPointType.setName(name);
             return notificationEndPointType;
@@ -187,8 +172,7 @@ public class NotificationEndPoint
          *            The new name
          * @return Updater instance
          */
-        public Updater setName(String name)
-        {
+        public Updater setName(String name) {
             this.name = name;
             return this;
         }

@@ -32,6 +32,7 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     private DatabaseOperation databaseOperation;
     
     /**
+    * Optional.
     * @return The DatabaseOperation value.
     */
     public DatabaseOperation getDatabaseOperation() {
@@ -39,6 +40,7 @@ public class DatabaseOperationGetResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param databaseOperationValue The DatabaseOperation value.
     */
     public void setDatabaseOperation(final DatabaseOperation databaseOperationValue) {

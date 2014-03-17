@@ -95,11 +95,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Create a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to create.
-    * @param parameters Parameters supplied to the Create Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * create.
+    * @param parameters Required. Parameters supplied to the Create Job
+    * Collection operation.
     * @return The Create Job Collection operation response.
     */
     @Override
@@ -115,11 +116,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Create a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to create.
-    * @param parameters Parameters supplied to the Create Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * create.
+    * @param parameters Required. Parameters supplied to the Create Job
+    * Collection operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -294,8 +296,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Deletes a job collection.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName The name of the job collection to delete.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. The name of the job collection to
+    * delete.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -312,8 +315,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Deletes a job collection.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName The name of the job collection to delete.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. The name of the job collection to
+    * delete.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -401,11 +405,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Update a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to update.
-    * @param parameters Parameters supplied to the Update Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * update.
+    * @param parameters Required. Parameters supplied to the Update Job
+    * Collection operation.
     * @return The Update Job Collection operation response.
     */
     @Override
@@ -421,11 +426,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Update a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to update.
-    * @param parameters Parameters supplied to the Update Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * update.
+    * @param parameters Required. Parameters supplied to the Update Job
+    * Collection operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -608,10 +614,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * Determine if the JobCollection name is available to be used.
     * JobCollection names must be unique within a cloud-service.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName A name for the JobCollection. The name must be
-    * unique as scoped within the CloudService.  The name can be up to 100
-    * characters in length.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. A name for the JobCollection. The name
+    * must be unique as scoped within the CloudService.  The name can be up to
+    * 100 characters in length.
     * @return The Check Name Availability operation response.
     */
     @Override
@@ -628,10 +634,10 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     * Determine if the JobCollection name is available to be used.
     * JobCollection names must be unique within a cloud-service.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName A name for the JobCollection. The name must be
-    * unique as scoped within the CloudService.  The name can be up to 100
-    * characters in length.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. A name for the JobCollection. The name
+    * must be unique as scoped within the CloudService.  The name can be up to
+    * 100 characters in length.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -744,11 +750,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Create a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to create.
-    * @param parameters Parameters supplied to the Create Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * create.
+    * @param parameters Required. Parameters supplied to the Create Job
+    * Collection operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -772,11 +779,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Create a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to create.
-    * @param parameters Parameters supplied to the Create Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * create.
+    * @param parameters Required. Parameters supplied to the Create Job
+    * Collection operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -860,8 +868,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Deletes a job collection.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName The name of the job collection to delete.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. The name of the job collection to
+    * delete.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -885,8 +894,9 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Deletes a job collection.
     *
-    * @param cloudServiceName The name of the cloud service.
-    * @param jobCollectionName The name of the job collection to delete.
+    * @param cloudServiceName Required. The name of the cloud service.
+    * @param jobCollectionName Required. The name of the job collection to
+    * delete.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -968,8 +978,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Retreive a job collection.
     *
-    * @param cloudServiceName Name of the cloud service.
-    * @param jobCollectionName Name of the job collection.
+    * @param cloudServiceName Required. Name of the cloud service.
+    * @param jobCollectionName Required. Name of the job collection.
     * @return The Get Job Collection operation response.
     */
     @Override
@@ -985,8 +995,8 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Retreive a job collection.
     *
-    * @param cloudServiceName Name of the cloud service.
-    * @param jobCollectionName Name of the job collection.
+    * @param cloudServiceName Required. Name of the cloud service.
+    * @param jobCollectionName Required. Name of the job collection.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1095,13 +1105,6 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     result.setSchemaVersion(schemaVersionInstance);
                 }
                 
-                Element planElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "Plan");
-                if (planElement != null) {
-                    String planInstance;
-                    planInstance = planElement.getTextContent();
-                    result.setPlan(planInstance);
-                }
-                
                 Element promotionCodeElement = XmlUtility.getElementByTagNameNS(resourceElement, "http://schemas.microsoft.com/windowsazure", "PromotionCode");
                 if (promotionCodeElement != null) {
                     String promotionCodeInstance;
@@ -1114,11 +1117,11 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
                     JobCollectionIntrinsicSettings intrinsicSettingsInstance = new JobCollectionIntrinsicSettings();
                     result.setIntrinsicSettings(intrinsicSettingsInstance);
                     
-                    Element planElement2 = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
-                    if (planElement2 != null) {
-                        JobCollectionPlan planInstance2;
-                        planInstance2 = JobCollectionPlan.valueOf(planElement2.getTextContent());
-                        intrinsicSettingsInstance.setPlan(planInstance2);
+                    Element planElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Plan");
+                    if (planElement != null) {
+                        JobCollectionPlan planInstance;
+                        planInstance = JobCollectionPlan.valueOf(planElement.getTextContent());
+                        intrinsicSettingsInstance.setPlan(planInstance);
                     }
                     
                     Element quotaElement = XmlUtility.getElementByTagNameNS(intrinsicSettingsElement, "http://schemas.microsoft.com/windowsazure", "Quota");
@@ -1222,11 +1225,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Update a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to update.
-    * @param parameters Parameters supplied to the Update Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * update.
+    * @param parameters Required. Parameters supplied to the Update Job
+    * Collection operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1250,11 +1254,12 @@ public class JobCollectionOperationsImpl implements ServiceOperations<SchedulerM
     /**
     * Update a job collection.
     *
-    * @param cloudServiceName The name of the cloud service containing the job
-    * collection.
-    * @param jobCollectionName The name of the job collection to update.
-    * @param parameters Parameters supplied to the Update Job Collection
-    * operation.
+    * @param cloudServiceName Required. The name of the cloud service
+    * containing the job collection.
+    * @param jobCollectionName Required. The name of the job collection to
+    * update.
+    * @param parameters Required. Parameters supplied to the Update Job
+    * Collection operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the

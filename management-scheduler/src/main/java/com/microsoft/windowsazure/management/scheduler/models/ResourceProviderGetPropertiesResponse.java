@@ -33,6 +33,7 @@ public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     private HashMap<String, String> properties;
     
     /**
+    * Optional.
     * @return The Properties value.
     */
     public HashMap<String, String> getProperties() {
@@ -40,6 +41,7 @@ public class ResourceProviderGetPropertiesResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final HashMap<String, String> propertiesValue) {

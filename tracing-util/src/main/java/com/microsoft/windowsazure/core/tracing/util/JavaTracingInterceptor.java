@@ -36,116 +36,109 @@ import com.microsoft.windowsazure.tracing.CloudTracingInterceptor;
 /// <summary>
 /// Implementation for CloudTracingInterceptor that works using log4net framework.
 /// </summary>
-public class JavaTracingInterceptor implements CloudTracingInterceptor
-{
-	private Logger logger;
-	
-	/**
-	 * Initializes a new instance of the JavaTracingInterceptor.
-	 */
-    public JavaTracingInterceptor()
-    {
+public class JavaTracingInterceptor implements CloudTracingInterceptor {
+    private Logger logger;
+    
+    /**
+     * Initializes a new instance of the JavaTracingInterceptor.
+     */
+    public JavaTracingInterceptor() {
         logger = Logger.getLogger(this.getClass().getName());
     }
-	
-	/**
-	 * Trace information.
-	 * 
-	 * @param message
-	 *            The information to trace.
-	 */
-	public void information(String message)
-	{
+    
+    /**
+     * Trace information.
+     * 
+     * @param message
+     *            The information to trace.
+     */
+    public void information(String message) {
         logger.log(Level.INFO, message);
-	}
+    }
 
-	/**
-	 * Probe configuration for the value of a setting.
-	 * 
-	 * @param source
-	 *            The configuration source.
-	 * @param name
-	 *            The name of the setting.
-	 * @param value
-	 *            The value of the setting in the source.
-	 */
-	public void configuration(String source, String name, String value)
-	{
-		logger.log(Level.CONFIG, String.format("Configuration: source=%s, name=%s, value=%s", source, name, value));
-	}
+    /**
+     * Probe configuration for the value of a setting.
+     * 
+     * @param source
+     *            The configuration source.
+     * @param name
+     *            The name of the setting.
+     * @param value
+     *            The value of the setting in the source.
+     */
+    public void configuration(String source, String name, String value) {
+        logger.log(Level.CONFIG, String.format("Configuration: source=%s, name=%s, value=%s", source, name, value));
+    }
 
-	/**
-	 * Enter a method.
-	 * 
-	 * @param invocationId
-	 *            Method invocation identifier.
-	 * @param instance
-	 *            The instance with the method.
-	 * @param method
-	 *            Name of the method.
-	 * @param parameters
-	 *            Method parameters.
-	 */
-	public void enter(String invocationId, Object instance, String method,
-			HashMap<String, Object> parameters)
-	{
-		ArrayList<Object> valuesList = new ArrayList<Object>(parameters.values());
-		logger.entering(instance.getClass().getName(), method, valuesList.toArray());
-	}
+    /**
+     * Enter a method.
+     * 
+     * @param invocationId
+     *            Method invocation identifier.
+     * @param instance
+     *            The instance with the method.
+     * @param method
+     *            Name of the method.
+     * @param parameters
+     *            Method parameters.
+     */
+    public void enter(String invocationId, Object instance, String method,
+            HashMap<String, Object> parameters) {
+        ArrayList<Object> valuesList = new ArrayList<Object>(parameters.values());
+        logger.entering(instance.getClass().getName(), method, valuesList.toArray());
+    }
 
-	/**
-	 * Send an HTTP request.
-	 * 
-	 * @param invocationId
-	 *            Method invocation identifier.
-	 * @param request
-	 *            The request about to be sent.
-	 */
-	public void sendRequest(String invocationId, HttpRequest request)
-	{
+    /**
+     * Send an HTTP request.
+     * 
+     * @param invocationId
+     *            Method invocation identifier.
+     * @param request
+     *            The request about to be sent.
+     */
+    public void sendRequest(String invocationId, HttpRequest request) {
         String requestAsString = request == null ? "" : request.toString();
-		logger.log(Level.INFO, String.format("invocationId: %s\r\nrequest: %s", invocationId, requestAsString));
-	}
+        logger.log(Level.INFO, String.format("invocationId: %s\r\nrequest: %s", invocationId, requestAsString));
+    }
 
-	/**
-	 * Receive an HTTP response.
-	 * 
-	 * @param invocationId
-	 *            Method invocation identifier.
-	 * @param response
-	 *            The response instance.
-	 */
-	public void receiveResponse(String invocationId, HttpResponse response)
-	{
+    /**
+     * Receive an HTTP response.
+     * 
+     * @param invocationId
+     *            Method invocation identifier.
+     * @param response
+     *            The response instance.
+     */
+    public void receiveResponse(String invocationId, HttpResponse response) {
         String responseAsString = response == null ? "" : response.toString();
-		logger.log(Level.INFO, String.format("invocationId: %s\r\nrequest: %s", invocationId, responseAsString));
-	}
+        logger.log(Level.INFO, String.format("invocationId: %s\r\nrequest: %s", invocationId, responseAsString));
+    }
 
-	/**
-	 * Raise an error.
-	 * 
-	 * @param invocationId
-	 *            Method invocation identifier.
-	 * @param exception
-	 *            The error.
-	 */
-	public void error(String invocationId, Exception exception)
-	{
-		logger.log(Level.SEVERE, String.format("invocationId: %s", invocationId), exception);
-	}
+    /**
+     * Raise an error.
+     * 
+     * @param invocationId
+     *            Method invocation identifier.
+     * @param exception
+     *            The error.
+     */
+    public void error(String invocationId, Exception exception)
+    {
+        logger.log(Level.SEVERE, String.format("invocationId: %s", invocationId), exception);
+    }
 
-	/**
-	 * Exit a method. Note: Exit will not be called in the event of an error.
-	 * 
-	 * @param invocationId
-	 *            Method invocation identifier.
-	 * @param returnValue
-	 *            Method return value.
-	 */
-	public void exit(String invocationId, Object returnValue)
-	{
-		logger.log(Level.INFO, String.format("Exit with invocation id %s, the return value is %s",
-				invocationId,
-				returnValue));
-	}
+    /**
+     * Exit a method. Note: Exit will not be called in the event of an error.
+     * 
+     * @param invocationId
+     *            Method invocation identifier.
+     * @param returnValue
+     *            Method return value.
+     */
+    public void exit(String invocationId, Object returnValue)
+    {
+        logger.log(Level.INFO, String.format("Exit with invocation id %s, the return value is %s",
+                invocationId,
+                returnValue));
+    }
 }

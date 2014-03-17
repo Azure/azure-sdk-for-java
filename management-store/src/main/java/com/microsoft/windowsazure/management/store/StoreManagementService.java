@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public final class StoreManagementService
-{
-    private StoreManagementService()
-    {
+public final class StoreManagementService {
+    private StoreManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public final class StoreManagementService
      * Creates an instance of the <code>StoreManagementClient</code> API.
      * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create()
-    {
+    public static StoreManagementClient create() {
         return Configuration.getInstance().create(StoreManagementClient.class);
     }
 
@@ -45,8 +42,7 @@ public final class StoreManagementService
      * configuration for the service management.
      * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create(final Configuration config)
-    {
+    public static StoreManagementClient create(final Configuration config) {
         return config.create(StoreManagementClient.class);
     }
 
@@ -57,8 +53,7 @@ public final class StoreManagementService
      * of the service management service.
      * @return An instance of the <code>StoreManagementClient</code> API.
      */
-    public static StoreManagementClient create(final String profile)
-    {
+    public static StoreManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 StoreManagementClient.class);
     }
@@ -73,8 +68,7 @@ public final class StoreManagementService
      * @return An instance of the <code>StoreManagementClient</code> API.
      */
     public static StoreManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, StoreManagementClient.class);
     }
 }

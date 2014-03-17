@@ -30,7 +30,7 @@ public class CountDetails {
     private int activeMessageCount;
     
     /**
-    * The current number of active messages.
+    * Optional. The current number of active messages.
     * @return The ActiveMessageCount value.
     */
     public int getActiveMessageCount() {
@@ -38,7 +38,7 @@ public class CountDetails {
     }
     
     /**
-    * The current number of active messages.
+    * Optional. The current number of active messages.
     * @param activeMessageCountValue The ActiveMessageCount value.
     */
     public void setActiveMessageCount(final int activeMessageCountValue) {
@@ -48,7 +48,7 @@ public class CountDetails {
     private int deadLetterMessageCount;
     
     /**
-    * The current number of dead letters.
+    * Optional. The current number of dead letters.
     * @return The DeadLetterMessageCount value.
     */
     public int getDeadLetterMessageCount() {
@@ -56,7 +56,7 @@ public class CountDetails {
     }
     
     /**
-    * The current number of dead letters.
+    * Optional. The current number of dead letters.
     * @param deadLetterMessageCountValue The DeadLetterMessageCount value.
     */
     public void setDeadLetterMessageCount(final int deadLetterMessageCountValue) {
@@ -66,7 +66,7 @@ public class CountDetails {
     private int scheduledMessageCount;
     
     /**
-    * The current number of scheduled messages.
+    * Optional. The current number of scheduled messages.
     * @return The ScheduledMessageCount value.
     */
     public int getScheduledMessageCount() {
@@ -74,7 +74,7 @@ public class CountDetails {
     }
     
     /**
-    * The current number of scheduled messages.
+    * Optional. The current number of scheduled messages.
     * @param scheduledMessageCountValue The ScheduledMessageCount value.
     */
     public void setScheduledMessageCount(final int scheduledMessageCountValue) {
@@ -84,7 +84,7 @@ public class CountDetails {
     private int transferDeadLetterMessageCount;
     
     /**
-    * The current number of transfer dead letters.
+    * Optional. The current number of transfer dead letters.
     * @return The TransferDeadLetterMessageCount value.
     */
     public int getTransferDeadLetterMessageCount() {
@@ -92,7 +92,7 @@ public class CountDetails {
     }
     
     /**
-    * The current number of transfer dead letters.
+    * Optional. The current number of transfer dead letters.
     * @param transferDeadLetterMessageCountValue The
     * TransferDeadLetterMessageCount value.
     */
@@ -103,7 +103,7 @@ public class CountDetails {
     private int transferMessageCount;
     
     /**
-    * The current number of transfer messages.
+    * Optional. The current number of transfer messages.
     * @return The TransferMessageCount value.
     */
     public int getTransferMessageCount() {
@@ -111,7 +111,7 @@ public class CountDetails {
     }
     
     /**
-    * The current number of transfer messages.
+    * Optional. The current number of transfer messages.
     * @param transferMessageCountValue The TransferMessageCount value.
     */
     public void setTransferMessageCount(final int transferMessageCountValue) {

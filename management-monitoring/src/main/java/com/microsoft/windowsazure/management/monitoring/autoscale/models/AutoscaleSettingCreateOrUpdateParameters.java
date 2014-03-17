@@ -24,27 +24,27 @@
 package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 
 /**
-* Parameters supplied to the Create or Update autoscale setting operation.
-*/
-public class AutoscaleSettingCreateOrUpdateParameters
-{
+ * Parameters supplied to the Create or Update autoscale setting operation.
+ */
+public class AutoscaleSettingCreateOrUpdateParameters {
     private AutoscaleSetting setting;
-    
+
     /**
-    * The setting to create or update.
-    * @return The Setting value.
-    */
-    public AutoscaleSetting getSetting()
-    {
+     * The setting to create or update.
+     * 
+     * @return The Setting value.
+     */
+    public AutoscaleSetting getSetting() {
         return this.setting;
     }
-    
+
     /**
-    * The setting to create or update.
-    * @param settingValue The Setting value.
-    */
-    public void setSetting(final AutoscaleSetting settingValue)
-    {
+     * The setting to create or update.
+     * 
+     * @param settingValue
+     *            The Setting value.
+     */
+    public void setSetting(final AutoscaleSetting settingValue) {
         this.setting = settingValue;
     }
 }

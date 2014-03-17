@@ -29,8 +29,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  *            the generic type
  */
 public class DefaultEntityTypeActionOperation<T> implements
-        EntityTypeActionOperation<T>
-{
+        EntityTypeActionOperation<T> {
 
     /** The name. */
     private String name;
@@ -53,8 +52,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * @param name
      *            the name
      */
-    public DefaultEntityTypeActionOperation(String name)
-    {
+    public DefaultEntityTypeActionOperation(String name) {
         this();
         this.name = name;
     }
@@ -62,8 +60,7 @@ public class DefaultEntityTypeActionOperation<T> implements
     /**
      * Instantiates a new default type action operation.
      */
-    public DefaultEntityTypeActionOperation()
-    {
+    public DefaultEntityTypeActionOperation() {
         this.queryParameters = new MultivaluedMapImpl();
     }
 
@@ -75,8 +72,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * #processTypeResponse(com.sun.jersey.api.client.ClientResponse)
      */
     @Override
-    public T processTypeResponse(ClientResponse clientResponse)
-    {
+    public T processTypeResponse(ClientResponse clientResponse) {
         return null;
     }
 
@@ -87,8 +83,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityTypeActionOperation#getQueryParameters()
      */
     @Override
-    public MultivaluedMap<String, String> getQueryParameters()
-    {
+    public MultivaluedMap<String, String> getQueryParameters() {
         return this.queryParameters;
     }
 
@@ -99,8 +94,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityTypeActionOperation#getVerb()
      */
     @Override
-    public String getVerb()
-    {
+    public String getVerb() {
         return "GET";
     }
 
@@ -111,8 +105,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityTypeActionOperation#getRequestContents()
      */
     @Override
-    public Object getRequestContents()
-    {
+    public Object getRequestContents() {
         return null;
     }
 
@@ -125,8 +118,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityProxyData)
      */
     @Override
-    public void setProxyData(EntityProxyData proxyData)
-    {
+    public void setProxyData(EntityProxyData proxyData) {
         this.proxyData = proxyData;
     }
 
@@ -138,8 +130,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * #getUri()
      */
     @Override
-    public String getUri()
-    {
+    public String getUri() {
         return this.name;
     }
 
@@ -151,8 +142,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * #getContentType()
      */
     @Override
-    public MediaType getContentType()
-    {
+    public MediaType getContentType() {
         return this.contentType;
     }
 
@@ -164,8 +154,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * #getAcceptType()
      */
     @Override
-    public MediaType getAcceptType()
-    {
+    public MediaType getAcceptType() {
         return this.acceptType;
     }
 
@@ -177,8 +166,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * #processResponse(java.lang.Object)
      */
     @Override
-    public Object processResponse(Object rawResponse) throws ServiceException
-    {
+    public Object processResponse(Object rawResponse) throws ServiceException {
         return null;
     }
 
@@ -191,8 +179,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      */
     @Override
     public DefaultEntityTypeActionOperation<T> addQueryParameter(String key,
-            String value)
-    {
+            String value) {
         this.queryParameters.add(key, value);
         return this;
     }
@@ -204,8 +191,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityTypeActionOperation#setContentType(javax.ws.rs.core.MediaType)
      */
     @Override
-    public EntityTypeActionOperation<T> setContentType(MediaType contentType)
-    {
+    public EntityTypeActionOperation<T> setContentType(MediaType contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -217,8 +203,7 @@ public class DefaultEntityTypeActionOperation<T> implements
      * EntityTypeActionOperation#setAcceptType(javax.ws.rs.core.MediaType)
      */
     @Override
-    public EntityTypeActionOperation<T> setAcceptType(MediaType acceptType)
-    {
+    public EntityTypeActionOperation<T> setAcceptType(MediaType acceptType) {
         this.acceptType = acceptType;
         return this;
     }

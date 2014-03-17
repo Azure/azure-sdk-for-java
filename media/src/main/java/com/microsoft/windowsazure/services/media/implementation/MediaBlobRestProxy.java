@@ -34,8 +34,7 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * created by and for Media Services storage.
  * 
  */
-class MediaBlobRestProxy extends BlobOperationRestProxy
-{
+class MediaBlobRestProxy extends BlobOperationRestProxy {
     private final SASTokenFilter tokenFilter;
 
     /**
@@ -51,8 +50,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
      *            filter used to add SAS tokens to requests.
      */
     public MediaBlobRestProxy(Client channel, String accountName, String url,
-            SASTokenFilter tokenFilter)
-    {
+            SASTokenFilter tokenFilter) {
         super(channel, accountName, url);
 
         this.tokenFilter = tokenFilter;
@@ -75,8 +73,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
      */
     public MediaBlobRestProxy(Client channel, ClientFilter[] filters,
             String accountName, String url, SASTokenFilter tokenFilter,
-            RFC1123DateConverter dateMapper)
-    {
+            RFC1123DateConverter dateMapper) {
         super(channel, filters, accountName, url, dateMapper);
 
         this.tokenFilter = tokenFilter;
@@ -90,8 +87,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
      * #withFilter(com.microsoft.windowsazure.services.core.ServiceFilter)
      */
     @Override
-    public BlobContract withFilter(ServiceFilter filter)
-    {
+    public BlobContract withFilter(ServiceFilter filter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -102,8 +98,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
 
     @Override
     public BlobContract withRequestFilterFirst(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -115,8 +110,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
 
     @Override
     public BlobContract withRequestFilterLast(
-            ServiceRequestFilter serviceRequestFilter)
-    {
+            ServiceRequestFilter serviceRequestFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);
@@ -128,8 +122,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
 
     @Override
     public BlobContract withResponseFilterFirst(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = new ClientFilter[currentFilters.length + 1];
         System.arraycopy(currentFilters, 0, newFilters, 1,
@@ -141,8 +134,7 @@ class MediaBlobRestProxy extends BlobOperationRestProxy
 
     @Override
     public BlobContract withResponseFilterLast(
-            ServiceResponseFilter serviceResponseFilter)
-    {
+            ServiceResponseFilter serviceResponseFilter) {
         ClientFilter[] currentFilters = getFilters();
         ClientFilter[] newFilters = Arrays.copyOf(currentFilters,
                 currentFilters.length + 1);

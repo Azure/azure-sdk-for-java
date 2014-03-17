@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * the request, the visibility timeout to set on the created message, and the
  * time-to-live value to set on the message.
  */
-public class CreateMessageOptions extends QueueServiceOptions
-{
+public class CreateMessageOptions extends QueueServiceOptions {
     private Integer visibilityTimeoutInSeconds;
     private Integer timeToLiveInSeconds;
 
@@ -40,8 +39,7 @@ public class CreateMessageOptions extends QueueServiceOptions
      * @return A reference to this {@link CreateMessageOptions} instance.
      */
     @Override
-    public CreateMessageOptions setTimeout(Integer timeout)
-    {
+    public CreateMessageOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -54,8 +52,7 @@ public class CreateMessageOptions extends QueueServiceOptions
      * 
      * @return The message visibility timeout in seconds.
      */
-    public Integer getVisibilityTimeoutInSeconds()
-    {
+    public Integer getVisibilityTimeoutInSeconds() {
         return visibilityTimeoutInSeconds;
     }
 
@@ -81,8 +78,7 @@ public class CreateMessageOptions extends QueueServiceOptions
      * @return A reference to this {@link CreateMessageOptions} instance.
      */
     public CreateMessageOptions setVisibilityTimeoutInSeconds(
-            Integer visibilityTimeoutInSeconds)
-    {
+            Integer visibilityTimeoutInSeconds) {
         this.visibilityTimeoutInSeconds = visibilityTimeoutInSeconds;
         return this;
     }
@@ -93,8 +89,7 @@ public class CreateMessageOptions extends QueueServiceOptions
      * 
      * @return The message time-to-live value in seconds.
      */
-    public Integer getTimeToLiveInSeconds()
-    {
+    public Integer getTimeToLiveInSeconds() {
         return timeToLiveInSeconds;
     }
 
@@ -117,8 +112,7 @@ public class CreateMessageOptions extends QueueServiceOptions
      * @return A reference to this {@link CreateMessageOptions} instance.
      */
     public CreateMessageOptions setTimeToLiveInSeconds(
-            Integer timeToLiveInSeconds)
-    {
+            Integer timeToLiveInSeconds) {
         this.timeToLiveInSeconds = timeToLiveInSeconds;
         return this;
     }

@@ -26,17 +26,14 @@ package com.microsoft.windowsazure.services.blob.models;
  * >Lease Blob</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class BreakLeaseResult
-{
+public class BreakLeaseResult {
     private int remainingLeaseTimeInSeconds;
 
-    public int getRemainingLeaseTimeInSeconds()
-    {
+    public int getRemainingLeaseTimeInSeconds() {
         return remainingLeaseTimeInSeconds;
     }
 
-    public void setRemainingLeaseTimeInSeconds(int remainingLeaseTimeInSeconds)
-    {
+    public void setRemainingLeaseTimeInSeconds(int remainingLeaseTimeInSeconds) {
         this.remainingLeaseTimeInSeconds = remainingLeaseTimeInSeconds;
     }
 }

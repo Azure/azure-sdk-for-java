@@ -35,7 +35,7 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     private ArrayList<InetAddress> availableAddresses;
     
     /**
-    * The list of the available IP addresses.
+    * Optional. The list of the available IP addresses.
     * @return The AvailableAddresses value.
     */
     public ArrayList<InetAddress> getAvailableAddresses() {
@@ -43,7 +43,7 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     }
     
     /**
-    * The list of the available IP addresses.
+    * Optional. The list of the available IP addresses.
     * @param availableAddressesValue The AvailableAddresses value.
     */
     public void setAvailableAddresses(final ArrayList<InetAddress> availableAddressesValue) {
@@ -53,7 +53,7 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
     
     /**
-    * Whether the IP address is available.
+    * Optional. Whether the IP address is available.
     * @return The IsAvailable value.
     */
     public boolean isAvailable() {
@@ -61,7 +61,7 @@ public class NetworkStaticIPAvailabilityResponse extends OperationResponse {
     }
     
     /**
-    * Whether the IP address is available.
+    * Optional. Whether the IP address is available.
     * @param isAvailableValue The IsAvailable value.
     */
     public void setIsAvailable(final boolean isAvailableValue) {

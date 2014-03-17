@@ -26,27 +26,27 @@ package com.microsoft.windowsazure.management.monitoring.alerts.models;
 import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
-* The Get Rule operation response.
-*/
-public class RuleGetResponse extends OperationResponse
-{
+ * The Get Rule operation response.
+ */
+public class RuleGetResponse extends OperationResponse {
     private Rule rule;
-    
+
     /**
-    * The retrieved rule.
-    * @return The Rule value.
-    */
-    public Rule getRule()
-    {
+     * The retrieved rule.
+     * 
+     * @return The Rule value.
+     */
+    public Rule getRule() {
         return this.rule;
     }
-    
+
     /**
-    * The retrieved rule.
-    * @param ruleValue The Rule value.
-    */
-    public void setRule(final Rule ruleValue)
-    {
+     * The retrieved rule.
+     * 
+     * @param ruleValue
+     *            The Rule value.
+     */
+    public void setRule(final Rule ruleValue) {
         this.rule = ruleValue;
     }
 }

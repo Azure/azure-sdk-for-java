@@ -30,7 +30,7 @@ public class ServiceBusQueue {
     private Calendar accessedAt;
     
     /**
-    * The time the queue was last accessed.
+    * Optional. The time the queue was last accessed.
     * @return The AccessedAt value.
     */
     public Calendar getAccessedAt() {
@@ -38,7 +38,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The time the queue was last accessed.
+    * Optional. The time the queue was last accessed.
     * @param accessedAtValue The AccessedAt value.
     */
     public void setAccessedAt(final Calendar accessedAtValue) {
@@ -48,7 +48,7 @@ public class ServiceBusQueue {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**
-    * Gets the authorization rules for the description.  (see
+    * Optional. Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The AuthorizationRules value.
@@ -58,7 +58,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Gets the authorization rules for the description.  (see
+    * Optional. Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param authorizationRulesValue The AuthorizationRules value.
@@ -70,7 +70,7 @@ public class ServiceBusQueue {
     private String autoDeleteOnIdle;
     
     /**
-    * Implemented.
+    * Optional. Implemented.
     * @return The AutoDeleteOnIdle value.
     */
     public String getAutoDeleteOnIdle() {
@@ -78,7 +78,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Implemented.
+    * Optional. Implemented.
     * @param autoDeleteOnIdleValue The AutoDeleteOnIdle value.
     */
     public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue) {
@@ -88,7 +88,7 @@ public class ServiceBusQueue {
     private CountDetails countDetails;
     
     /**
-    * Current queue statistics.
+    * Optional. Current queue statistics.
     * @return The CountDetails value.
     */
     public CountDetails getCountDetails() {
@@ -96,7 +96,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Current queue statistics.
+    * Optional. Current queue statistics.
     * @param countDetailsValue The CountDetails value.
     */
     public void setCountDetails(final CountDetails countDetailsValue) {
@@ -106,7 +106,7 @@ public class ServiceBusQueue {
     private Calendar createdAt;
     
     /**
-    * The time the queue was created at.
+    * Optional. The time the queue was created at.
     * @return The CreatedAt value.
     */
     public Calendar getCreatedAt() {
@@ -114,7 +114,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The time the queue was created at.
+    * Optional. The time the queue was created at.
     * @param createdAtValue The CreatedAt value.
     */
     public void setCreatedAt(final Calendar createdAtValue) {
@@ -124,11 +124,11 @@ public class ServiceBusQueue {
     private boolean deadLetteringOnMessageExpiration;
     
     /**
-    * This field controls how the Service Bus handles a message whose TTL has
-    * expired. If it is enabled and a message expires, the Service Bus moves
-    * the message from the queue into the queue’s dead-letter sub-queue. If
-    * disabled, message will be permanently deleted from the queue. Settable
-    * only at queue creation time.* Default: false  (see
+    * Optional. This field controls how the Service Bus handles a message whose
+    * TTL has expired. If it is enabled and a message expires, the Service Bus
+    * moves the message from the queue into the queue’s dead-letter sub-queue.
+    * If disabled, message will be permanently deleted from the queue.
+    * Settable only at queue creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The DeadLetteringOnMessageExpiration value.
@@ -138,11 +138,11 @@ public class ServiceBusQueue {
     }
     
     /**
-    * This field controls how the Service Bus handles a message whose TTL has
-    * expired. If it is enabled and a message expires, the Service Bus moves
-    * the message from the queue into the queue’s dead-letter sub-queue. If
-    * disabled, message will be permanently deleted from the queue. Settable
-    * only at queue creation time.* Default: false  (see
+    * Optional. This field controls how the Service Bus handles a message whose
+    * TTL has expired. If it is enabled and a message expires, the Service Bus
+    * moves the message from the queue into the queue’s dead-letter sub-queue.
+    * If disabled, message will be permanently deleted from the queue.
+    * Settable only at queue creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param deadLetteringOnMessageExpirationValue The
@@ -155,13 +155,13 @@ public class ServiceBusQueue {
     private String defaultMessageTimeToLive;
     
     /**
-    * Depending on whether DeadLettering is enabled, a message is automatically
-    * moved to the DeadLetterQueue or deleted if it has been stored in the
-    * queue for longer than the specified time. This value is overwritten by a
-    * TTL specified on the message if and only if the message TTL is smaller
-    * than the TTL set on the queue. This value is immutable after the Queue
-    * has been created:* Range: 1 second - TimeSpan.MaxValue* Default:
-    * TimeSpan.MaxValue  (see
+    * Optional. Depending on whether DeadLettering is enabled, a message is
+    * automatically moved to the DeadLetterQueue or deleted if it has been
+    * stored in the queue for longer than the specified time. This value is
+    * overwritten by a TTL specified on the message if and only if the message
+    * TTL is smaller than the TTL set on the queue. This value is immutable
+    * after the Queue has been created:* Range: 1 second - TimeSpan.MaxValue*
+    * Default: TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The DefaultMessageTimeToLive value.
@@ -171,13 +171,13 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Depending on whether DeadLettering is enabled, a message is automatically
-    * moved to the DeadLetterQueue or deleted if it has been stored in the
-    * queue for longer than the specified time. This value is overwritten by a
-    * TTL specified on the message if and only if the message TTL is smaller
-    * than the TTL set on the queue. This value is immutable after the Queue
-    * has been created:* Range: 1 second - TimeSpan.MaxValue* Default:
-    * TimeSpan.MaxValue  (see
+    * Optional. Depending on whether DeadLettering is enabled, a message is
+    * automatically moved to the DeadLetterQueue or deleted if it has been
+    * stored in the queue for longer than the specified time. This value is
+    * overwritten by a TTL specified on the message if and only if the message
+    * TTL is smaller than the TTL set on the queue. This value is immutable
+    * after the Queue has been created:* Range: 1 second - TimeSpan.MaxValue*
+    * Default: TimeSpan.MaxValue  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param defaultMessageTimeToLiveValue The DefaultMessageTimeToLive value.
@@ -189,10 +189,10 @@ public class ServiceBusQueue {
     private String duplicateDetectionHistoryTimeWindow;
     
     /**
-    * Specifies the time span during which the Service Bus detects message
-    * duplication:* Range: 1 second - 7 days* Default: 10 minutes  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
+    * Optional. Specifies the time span during which the Service Bus detects
+    * message duplication:* Range: 1 second - 7 days* Default: 10 minutes
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
+    * for more information)
     * @return The DuplicateDetectionHistoryTimeWindow value.
     */
     public String getDuplicateDetectionHistoryTimeWindow() {
@@ -200,10 +200,10 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Specifies the time span during which the Service Bus detects message
-    * duplication:* Range: 1 second - 7 days* Default: 10 minutes  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
+    * Optional. Specifies the time span during which the Service Bus detects
+    * message duplication:* Range: 1 second - 7 days* Default: 10 minutes
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
+    * for more information)
     * @param duplicateDetectionHistoryTimeWindowValue The
     * DuplicateDetectionHistoryTimeWindow value.
     */
@@ -214,11 +214,11 @@ public class ServiceBusQueue {
     private boolean enableBatchedOperations;
     
     /**
-    * Enables or disables service side batching behavior when performing
-    * operations for the specific queue. When enabled, service bus will
-    * collect/batch multiple operations to the backend to be more connection
-    * efficient. If user wants lower operation latency then they can disable
-    * this feature.  (see
+    * Optional. Enables or disables service side batching behavior when
+    * performing operations for the specific queue. When enabled, service bus
+    * will collect/batch multiple operations to the backend to be more
+    * connection efficient. If user wants lower operation latency then they
+    * can disable this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The EnableBatchedOperations value.
@@ -228,11 +228,11 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Enables or disables service side batching behavior when performing
-    * operations for the specific queue. When enabled, service bus will
-    * collect/batch multiple operations to the backend to be more connection
-    * efficient. If user wants lower operation latency then they can disable
-    * this feature.  (see
+    * Optional. Enables or disables service side batching behavior when
+    * performing operations for the specific queue. When enabled, service bus
+    * will collect/batch multiple operations to the backend to be more
+    * connection efficient. If user wants lower operation latency then they
+    * can disable this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param enableBatchedOperationsValue The EnableBatchedOperations value.
@@ -244,7 +244,7 @@ public class ServiceBusQueue {
     private String entityAvailabilityStatus;
     
     /**
-    * The current availability status of the queue.
+    * Optional. The current availability status of the queue.
     * @return The EntityAvailabilityStatus value.
     */
     public String getEntityAvailabilityStatus() {
@@ -252,7 +252,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The current availability status of the queue.
+    * Optional. The current availability status of the queue.
     * @param entityAvailabilityStatusValue The EntityAvailabilityStatus value.
     */
     public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue) {
@@ -262,7 +262,7 @@ public class ServiceBusQueue {
     private boolean isAnonymousAccessible;
     
     /**
-    * Gets whether anonymous access is allowed.  (see
+    * Optional. Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The IsAnonymousAccessible value.
@@ -272,7 +272,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Gets whether anonymous access is allowed.  (see
+    * Optional. Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param isAnonymousAccessibleValue The IsAnonymousAccessible value.
@@ -284,11 +284,11 @@ public class ServiceBusQueue {
     private String lockDuration;
     
     /**
-    * Determines the amount of time in seconds in which a message should be
-    * locked for processing by a receiver. After this period, the message is
-    * unlocked and available for consumption by the next receiver. Settable
-    * only at queue creation time:* Range: 0 - 5 minutes. 0 means that the
-    * message is not locked* Default: 30 seconds  (see
+    * Optional. Determines the amount of time in seconds in which a message
+    * should be locked for processing by a receiver. After this period, the
+    * message is unlocked and available for consumption by the next receiver.
+    * Settable only at queue creation time:* Range: 0 - 5 minutes. 0 means
+    * that the message is not locked* Default: 30 seconds  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The LockDuration value.
@@ -298,11 +298,11 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Determines the amount of time in seconds in which a message should be
-    * locked for processing by a receiver. After this period, the message is
-    * unlocked and available for consumption by the next receiver. Settable
-    * only at queue creation time:* Range: 0 - 5 minutes. 0 means that the
-    * message is not locked* Default: 30 seconds  (see
+    * Optional. Determines the amount of time in seconds in which a message
+    * should be locked for processing by a receiver. After this period, the
+    * message is unlocked and available for consumption by the next receiver.
+    * Settable only at queue creation time:* Range: 0 - 5 minutes. 0 means
+    * that the message is not locked* Default: 30 seconds  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param lockDurationValue The LockDuration value.
@@ -314,8 +314,8 @@ public class ServiceBusQueue {
     private int maxDeliveryCount;
     
     /**
-    * The maximum number of times a message SB will try to deliver before being
-    * dead lettered or discarded.  (see
+    * Optional. The maximum number of times a message SB will try to deliver
+    * before being dead lettered or discarded.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The MaxDeliveryCount value.
@@ -325,8 +325,8 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The maximum number of times a message SB will try to deliver before being
-    * dead lettered or discarded.  (see
+    * Optional. The maximum number of times a message SB will try to deliver
+    * before being dead lettered or discarded.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param maxDeliveryCountValue The MaxDeliveryCount value.
@@ -338,13 +338,14 @@ public class ServiceBusQueue {
     private int maxSizeInMegabytes;
     
     /**
-    * Specifies the maximum queue size in megabytes. Any attempt to enqueue a
-    * message that will cause the queue to exceed this value will fail. You
-    * can only set this parameter at queue creation time using the following
-    * values: * Range: 1 - 1024 (valid values are 1024, 2048, 3072, 4096,
-    * 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096, 5120)
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Specifies the maximum queue size in megabytes. Any attempt to
+    * enqueue a message that will cause the queue to exceed this value will
+    * fail. You can only set this parameter at queue creation time using the
+    * following values: * Range: 1 - 1024 (valid values are 1024, 2048, 3072,
+    * 4096, 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096,
+    * 5120)  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @return The MaxSizeInMegabytes value.
     */
     public int getMaxSizeInMegabytes() {
@@ -352,13 +353,14 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Specifies the maximum queue size in megabytes. Any attempt to enqueue a
-    * message that will cause the queue to exceed this value will fail. You
-    * can only set this parameter at queue creation time using the following
-    * values: * Range: 1 - 1024 (valid values are 1024, 2048, 3072, 4096,
-    * 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096, 5120)
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Specifies the maximum queue size in megabytes. Any attempt to
+    * enqueue a message that will cause the queue to exceed this value will
+    * fail. You can only set this parameter at queue creation time using the
+    * following values: * Range: 1 - 1024 (valid values are 1024, 2048, 3072,
+    * 4096, 5120) * Default: 1*1024 (valid values are 1024, 2048, 3072, 4096,
+    * 5120)  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @param maxSizeInMegabytesValue The MaxSizeInMegabytes value.
     */
     public void setMaxSizeInMegabytes(final int maxSizeInMegabytesValue) {
@@ -368,7 +370,7 @@ public class ServiceBusQueue {
     private int messageCount;
     
     /**
-    * Displays the number of messages currently in the queue.  (see
+    * Optional. Displays the number of messages currently in the queue.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The MessageCount value.
@@ -378,7 +380,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Displays the number of messages currently in the queue.  (see
+    * Optional. Displays the number of messages currently in the queue.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param messageCountValue The MessageCount value.
@@ -390,7 +392,7 @@ public class ServiceBusQueue {
     private String name;
     
     /**
-    * The name of the queue.
+    * Optional. The name of the queue.
     * @return The Name value.
     */
     public String getName() {
@@ -398,7 +400,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The name of the queue.
+    * Optional. The name of the queue.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -408,9 +410,10 @@ public class ServiceBusQueue {
     private boolean requiresDuplicateDetection;
     
     /**
-    * Settable only at queue creation time.* Default for durable queue: false
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Settable only at queue creation time.* Default for durable
+    * queue: false  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @return The RequiresDuplicateDetection value.
     */
     public boolean isRequiresDuplicateDetection() {
@@ -418,9 +421,10 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Settable only at queue creation time.* Default for durable queue: false
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Settable only at queue creation time.* Default for durable
+    * queue: false  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @param requiresDuplicateDetectionValue The RequiresDuplicateDetection
     * value.
     */
@@ -431,11 +435,12 @@ public class ServiceBusQueue {
     private boolean requiresSession;
     
     /**
-    * Settable only at queue creation time. If set to true, the queue will be
-    * session-aware and only SessionReceiver will be supported. Session-aware
-    * queues are not supported through REST.* Default for durable queue: false
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Settable only at queue creation time. If set to true, the queue
+    * will be session-aware and only SessionReceiver will be supported.
+    * Session-aware queues are not supported through REST.* Default for
+    * durable queue: false  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @return The RequiresSession value.
     */
     public boolean isRequiresSession() {
@@ -443,11 +448,12 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Settable only at queue creation time. If set to true, the queue will be
-    * session-aware and only SessionReceiver will be supported. Session-aware
-    * queues are not supported through REST.* Default for durable queue: false
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
-    * for more information)
+    * Optional. Settable only at queue creation time. If set to true, the queue
+    * will be session-aware and only SessionReceiver will be supported.
+    * Session-aware queues are not supported through REST.* Default for
+    * durable queue: false  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
+    * more information)
     * @param requiresSessionValue The RequiresSession value.
     */
     public void setRequiresSession(final boolean requiresSessionValue) {
@@ -457,10 +463,10 @@ public class ServiceBusQueue {
     private int sizeInBytes;
     
     /**
-    * Reflects the actual bytes that messages in the queue currently occupy
-    * toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
+    * Optional. Reflects the actual bytes that messages in the queue currently
+    * occupy toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
+    * for more information)
     * @return The SizeInBytes value.
     */
     public int getSizeInBytes() {
@@ -468,10 +474,10 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Reflects the actual bytes that messages in the queue currently occupy
-    * toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
-    * more information)
+    * Optional. Reflects the actual bytes that messages in the queue currently
+    * occupy toward the queue’s quota.* Range: 0 -MaxTopicSizeinMegaBytes
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx
+    * for more information)
     * @param sizeInBytesValue The SizeInBytes value.
     */
     public void setSizeInBytes(final int sizeInBytesValue) {
@@ -481,8 +487,9 @@ public class ServiceBusQueue {
     private String status;
     
     /**
-    * Gets or sets the current status of the queue (enabled or disabled). When
-    * a queue is disabled, that queue cannot send or receive messages.  (see
+    * Optional. Gets or sets the current status of the queue (enabled or
+    * disabled). When a queue is disabled, that queue cannot send or receive
+    * messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The Status value.
@@ -492,8 +499,9 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Gets or sets the current status of the queue (enabled or disabled). When
-    * a queue is disabled, that queue cannot send or receive messages.  (see
+    * Optional. Gets or sets the current status of the queue (enabled or
+    * disabled). When a queue is disabled, that queue cannot send or receive
+    * messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param statusValue The Status value.
@@ -505,7 +513,7 @@ public class ServiceBusQueue {
     private boolean supportOrdering;
     
     /**
-    * Gets or sets whether the queue supports ordering.  (see
+    * Optional. Gets or sets whether the queue supports ordering.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @return The SupportOrdering value.
@@ -515,7 +523,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * Gets or sets whether the queue supports ordering.  (see
+    * Optional. Gets or sets whether the queue supports ordering.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     * @param supportOrderingValue The SupportOrdering value.
@@ -527,7 +535,7 @@ public class ServiceBusQueue {
     private Calendar updatedAt;
     
     /**
-    * The time the queue was last updated.
+    * Optional. The time the queue was last updated.
     * @return The UpdatedAt value.
     */
     public Calendar getUpdatedAt() {
@@ -535,7 +543,7 @@ public class ServiceBusQueue {
     }
     
     /**
-    * The time the queue was last updated.
+    * Optional. The time the queue was last updated.
     * @param updatedAtValue The UpdatedAt value.
     */
     public void setUpdatedAt(final Calendar updatedAtValue) {

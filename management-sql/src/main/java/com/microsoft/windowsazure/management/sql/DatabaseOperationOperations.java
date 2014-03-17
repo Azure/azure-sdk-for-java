@@ -39,10 +39,10 @@ public interface DatabaseOperationOperations {
     /**
     * Returns information about one operation on a given operation Guid.
     *
-    * @param serverName The name of the SQL Server on which the operation was
-    * executed.
-    * @param operationGuid The Guid of the SQL Server database operation to be
-    * obtained.
+    * @param serverName Required. The name of the SQL Server on which the
+    * operation was executed.
+    * @param operationGuid Required. The Guid of the SQL Server database
+    * operation to be obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -59,10 +59,10 @@ public interface DatabaseOperationOperations {
     /**
     * Returns information about one operation on a given operation Guid.
     *
-    * @param serverName The name of the SQL Server on which the operation was
-    * executed.
-    * @param operationGuid The Guid of the SQL Server database operation to be
-    * obtained.
+    * @param serverName Required. The name of the SQL Server on which the
+    * operation was executed.
+    * @param operationGuid Required. The Guid of the SQL Server database
+    * operation to be obtained.
     * @return Response containing the database operation for a given operation
     * Guid.
     */
@@ -71,8 +71,8 @@ public interface DatabaseOperationOperations {
     /**
     * Returns the list database operations for a given server and database.
     *
-    * @param serverName The name of the SQL Server to be queried.
-    * @param databaseName The name of the Database to be queried.
+    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param databaseName Required. The name of the Database to be queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -89,8 +89,8 @@ public interface DatabaseOperationOperations {
     /**
     * Returns the list database operations for a given server and database.
     *
-    * @param serverName The name of the SQL Server to be queried.
-    * @param databaseName The name of the Database to be queried.
+    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param databaseName Required. The name of the Database to be queried.
     * @return Response containing the list of database operations for a given
     * server or database.
     */
@@ -99,7 +99,7 @@ public interface DatabaseOperationOperations {
     /**
     * Returns the list database operations for a given server.
     *
-    * @param serverName The name of the SQL Server to be queried.
+    * @param serverName Required. The name of the SQL Server to be queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -116,7 +116,7 @@ public interface DatabaseOperationOperations {
     /**
     * Returns the list database operations for a given server.
     *
-    * @param serverName The name of the SQL Server to be queried.
+    * @param serverName Required. The name of the SQL Server to be queried.
     * @return Response containing the list of database operations for a given
     * server or database.
     */

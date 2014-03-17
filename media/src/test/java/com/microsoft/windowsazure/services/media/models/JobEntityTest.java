@@ -30,28 +30,22 @@ import com.microsoft.windowsazure.services.media.entityoperations.EntityProxyDat
 /**
  * Tests for the methods and factories of the Job entity.
  */
-public class JobEntityTest
-{
+public class JobEntityTest {
 
-    private EntityProxyData createProxyData()
-    {
-        return new EntityProxyData()
-        {
+    private EntityProxyData createProxyData() {
+        return new EntityProxyData() {
             @Override
-            public URI getServiceUri()
-            {
+            public URI getServiceUri() {
                 return URI.create("http://contoso.com");
             }
         };
     }
 
-    public JobEntityTest() throws Exception
-    {
+    public JobEntityTest() throws Exception {
     }
 
     @Test
-    public void JobCreateReturnsDefaultCreatePayload() throws ServiceException
-    {
+    public void JobCreateReturnsDefaultCreatePayload() throws ServiceException {
         Job.Creator jobCreator = Job.create();
         jobCreator.setProxyData(createProxyData());
         MimeMultipart payload = (MimeMultipart) jobCreator.getRequestContents();
@@ -59,8 +53,7 @@ public class JobEntityTest
     }
 
     @Test
-    public void JobListReturnsExpectedUri()
-    {
+    public void JobListReturnsExpectedUri() {
         EntityListOperation<JobInfo> lister = Job.list();
 
         assertEquals("Jobs", lister.getUri());
@@ -69,8 +62,7 @@ public class JobEntityTest
     }
 
     @Test
-    public void JobListCanTakeQueryParameters()
-    {
+    public void JobListCanTakeQueryParameters() {
         EntityListOperation<JobInfo> lister = Job.list().setTop(10).setSkip(2);
 
         assertEquals("10", lister.getQueryParameters().getFirst("$top"));
@@ -79,8 +71,7 @@ public class JobEntityTest
     }
 
     @Test
-    public void JobListCanTakeQueryParametersChained()
-    {
+    public void JobListCanTakeQueryParametersChained() {
         EntityListOperation<JobInfo> lister = Job.list().setTop(10).setSkip(2)
                 .set("filter", "something");
 

@@ -39,9 +39,9 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     private GatewayGetOperationStatusResponse.ErrorDetails error;
     
     /**
-    * If the asynchronous operation failed, the response body includes the HTTP
-    * status code for the failed request, and also includes error information
-    * regarding the failure.
+    * Optional. If the asynchronous operation failed, the response body
+    * includes the HTTP status code for the failed request, and also includes
+    * error information regarding the failure.
     * @return The Error value.
     */
     public GatewayGetOperationStatusResponse.ErrorDetails getError() {
@@ -49,9 +49,9 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * If the asynchronous operation failed, the response body includes the HTTP
-    * status code for the failed request, and also includes error information
-    * regarding the failure.
+    * Optional. If the asynchronous operation failed, the response body
+    * includes the HTTP status code for the failed request, and also includes
+    * error information regarding the failure.
     * @param errorValue The Error value.
     */
     public void setError(final GatewayGetOperationStatusResponse.ErrorDetails errorValue) {
@@ -61,7 +61,7 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     private Integer httpStatusCode;
     
     /**
-    * The HTTP status code for the asynchronous request.
+    * Optional. The HTTP status code for the asynchronous request.
     * @return The HttpStatusCode value.
     */
     public Integer getHttpStatusCode() {
@@ -69,7 +69,7 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The HTTP status code for the asynchronous request.
+    * Optional. The HTTP status code for the asynchronous request.
     * @param httpStatusCodeValue The HttpStatusCode value.
     */
     public void setHttpStatusCode(final Integer httpStatusCodeValue) {
@@ -79,8 +79,9 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     private String id;
     
     /**
-    * The request ID of the asynchronous request. This value is returned in the
-    * x-ms-request-id response header of the asynchronous request.
+    * Optional. The request ID of the asynchronous request. This value is
+    * returned in the x-ms-request-id response header of the asynchronous
+    * request.
     * @return The Id value.
     */
     public String getId() {
@@ -88,8 +89,9 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The request ID of the asynchronous request. This value is returned in the
-    * x-ms-request-id response header of the asynchronous request.
+    * Optional. The request ID of the asynchronous request. This value is
+    * returned in the x-ms-request-id response header of the asynchronous
+    * request.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -99,7 +101,7 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     private GatewayOperationStatus status;
     
     /**
-    * The status of the asynchronous request.
+    * Optional. The status of the asynchronous request.
     * @return The Status value.
     */
     public GatewayOperationStatus getStatus() {
@@ -107,7 +109,7 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
     }
     
     /**
-    * The status of the asynchronous request.
+    * Optional. The status of the asynchronous request.
     * @param statusValue The Status value.
     */
     public void setStatus(final GatewayOperationStatus statusValue) {
@@ -123,8 +125,8 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
         private String code;
         
         /**
-        * The management service error code returned if the asynchronous
-        * request failed.
+        * Optional. The management service error code returned if the
+        * asynchronous request failed.
         * @return The Code value.
         */
         public String getCode() {
@@ -132,8 +134,8 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
         }
         
         /**
-        * The management service error code returned if the asynchronous
-        * request failed.
+        * Optional. The management service error code returned if the
+        * asynchronous request failed.
         * @param codeValue The Code value.
         */
         public void setCode(final String codeValue) {
@@ -143,8 +145,8 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
         private String message;
         
         /**
-        * The management service error message returned if the asynchronous
-        * request failed.
+        * Optional. The management service error message returned if the
+        * asynchronous request failed.
         * @return The Message value.
         */
         public String getMessage() {
@@ -152,8 +154,8 @@ public class GatewayGetOperationStatusResponse extends OperationResponse {
         }
         
         /**
-        * The management service error message returned if the asynchronous
-        * request failed.
+        * Optional. The management service error message returned if the
+        * asynchronous request failed.
         * @param messageValue The Message value.
         */
         public void setMessage(final String messageValue) {

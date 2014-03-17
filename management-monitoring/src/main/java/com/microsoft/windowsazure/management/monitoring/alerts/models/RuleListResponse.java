@@ -28,46 +28,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List Rules operation response.
-*/
-public class RuleListResponse extends OperationResponse implements Iterable<Rule>
-{
+ * The List Rules operation response.
+ */
+public class RuleListResponse extends OperationResponse implements
+        Iterable<Rule> {
     private ArrayList<Rule> value;
-    
+
     /**
-    * Alert rules collection.
-    * @return The Value value.
-    */
-    public ArrayList<Rule> getValue()
-    {
+     * Alert rules collection.
+     * 
+     * @return The Value value.
+     */
+    public ArrayList<Rule> getValue() {
         return this.value;
     }
-    
+
     /**
-    * Alert rules collection.
-    * @param valueValue The Value value.
-    */
-    public void setValue(final ArrayList<Rule> valueValue)
-    {
+     * Alert rules collection.
+     * 
+     * @param valueValue
+     *            The Value value.
+     */
+    public void setValue(final ArrayList<Rule> valueValue) {
         this.value = valueValue;
     }
-    
+
     /**
-    * Initializes a new instance of the RuleListResponse class.
-    *
-    */
-    public RuleListResponse()
-    {
+     * Initializes a new instance of the RuleListResponse class.
+     * 
+     */
+    public RuleListResponse() {
         super();
         this.value = new ArrayList<Rule>();
     }
-    
+
     /**
-    * Gets the sequence of Value.
-    *
-    */
-    public Iterator<Rule> iterator()
-    {
+     * Gets the sequence of Value.
+     * 
+     */
+    public Iterator<Rule> iterator() {
         return this.getValue().iterator();
     }
 }

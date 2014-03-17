@@ -20,8 +20,7 @@ package com.microsoft.windowsazure.serviceruntime;
  * The {@link RoleEnvironment#setStatus} method uses a value from this
  * enumeration.
  */
-public enum RoleInstanceStatus
-{
+public enum RoleInstanceStatus {
     /**
      * The role instance is unavailable for requests.
      */

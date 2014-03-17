@@ -20,8 +20,7 @@ import java.util.Collection;
  * Occurs after a change to the service configuration has been applied to the
  * running instances of the role.
  */
-public class RoleEnvironmentChangedEvent
-{
+public class RoleEnvironmentChangedEvent {
 
     private Collection<RoleEnvironmentChange> changes;
 
@@ -30,8 +29,7 @@ public class RoleEnvironmentChangedEvent
      * 
      * @param changes
      */
-    RoleEnvironmentChangedEvent(Collection<RoleEnvironmentChange> changes)
-    {
+    RoleEnvironmentChangedEvent(Collection<RoleEnvironmentChange> changes) {
         this.changes = changes;
     }
 
@@ -45,8 +43,7 @@ public class RoleEnvironmentChangedEvent
      * 
      * @see RoleEnvironmentChange
      */
-    public Collection<RoleEnvironmentChange> getChanges()
-    {
+    public Collection<RoleEnvironmentChange> getChanges() {
         return changes;
     }
 

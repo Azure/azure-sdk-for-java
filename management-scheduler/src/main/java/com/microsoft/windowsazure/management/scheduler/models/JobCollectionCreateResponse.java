@@ -32,7 +32,7 @@ public class JobCollectionCreateResponse extends OperationResponse {
     private String eTag;
     
     /**
-    * ETag of the Job Collection.
+    * Optional. ETag of the Job Collection.
     * @return The ETag value.
     */
     public String getETag() {
@@ -40,7 +40,7 @@ public class JobCollectionCreateResponse extends OperationResponse {
     }
     
     /**
-    * ETag of the Job Collection.
+    * Optional. ETag of the Job Collection.
     * @param eTagValue The ETag value.
     */
     public void setETag(final String eTagValue) {

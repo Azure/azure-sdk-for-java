@@ -32,6 +32,7 @@ public class StorageAccountGetResponse extends OperationResponse {
     private StorageAccount storageAccount;
     
     /**
+    * Optional.
     * @return The StorageAccount value.
     */
     public StorageAccount getStorageAccount() {
@@ -39,6 +40,7 @@ public class StorageAccountGetResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param storageAccountValue The StorageAccount value.
     */
     public void setStorageAccount(final StorageAccount storageAccountValue) {

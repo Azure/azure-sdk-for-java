@@ -34,7 +34,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     private ArrayList<FirewallRule> firewallRules;
     
     /**
-    * Gets or sets the firewall rules for this SQL Database Server.
+    * Optional. Gets or sets the firewall rules for this SQL Database Server.
     * @return The FirewallRules value.
     */
     public ArrayList<FirewallRule> getFirewallRules() {
@@ -42,7 +42,7 @@ public class FirewallRuleListResponse extends OperationResponse implements Itera
     }
     
     /**
-    * Gets or sets the firewall rules for this SQL Database Server.
+    * Optional. Gets or sets the firewall rules for this SQL Database Server.
     * @param firewallRulesValue The FirewallRules value.
     */
     public void setFirewallRules(final ArrayList<FirewallRule> firewallRulesValue) {

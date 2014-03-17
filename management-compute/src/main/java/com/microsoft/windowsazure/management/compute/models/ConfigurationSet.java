@@ -53,8 +53,7 @@ public class ConfigurationSet {
     
     /**
     * Required. Specifies the name that is used to rename the default
-    * administrator account. This is a required parameter after version
-    * 2013-03-01.
+    * administrator account.
     * @return The AdminUserName value.
     */
     public String getAdminUserName() {
@@ -63,8 +62,7 @@ public class ConfigurationSet {
     
     /**
     * Required. Specifies the name that is used to rename the default
-    * administrator account. This is a required parameter after version
-    * 2013-03-01.
+    * administrator account.
     * @param adminUserNameValue The AdminUserName value.
     */
     public void setAdminUserName(final String adminUserNameValue) {
@@ -98,7 +96,7 @@ public class ConfigurationSet {
     private String configurationSetType;
     
     /**
-    * Specifies the configuration type for the configuration set.
+    * Optional. Specifies the configuration type for the configuration set.
     * @return The ConfigurationSetType value.
     */
     public String getConfigurationSetType() {
@@ -106,7 +104,7 @@ public class ConfigurationSet {
     }
     
     /**
-    * Specifies the configuration type for the configuration set.
+    * Optional. Specifies the configuration type for the configuration set.
     * @param configurationSetTypeValue The ConfigurationSetType value.
     */
     public void setConfigurationSetType(final String configurationSetTypeValue) {
@@ -183,7 +181,7 @@ public class ConfigurationSet {
     private String hostName;
     
     /**
-    * Required. Specifies the host name for the VM. Host names are ASCII
+    * Optional. Specifies the host name for the VM. Host names are ASCII
     * character strings 1 to 64 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
     * @return The HostName value.
@@ -193,7 +191,7 @@ public class ConfigurationSet {
     }
     
     /**
-    * Required. Specifies the host name for the VM. Host names are ASCII
+    * Optional. Specifies the host name for the VM. Host names are ASCII
     * character strings 1 to 64 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
     * @param hostNameValue The HostName value.
@@ -205,8 +203,9 @@ public class ConfigurationSet {
     private ArrayList<InputEndpoint> inputEndpoints;
     
     /**
-    * Contains a collection of external endpoints for the virtual machine.
-    * This element is only used with the NetworkConfigurationSet type.
+    * Optional. Contains a collection of external endpoints for the virtual
+    * machine.  This element is only used with the NetworkConfigurationSet
+    * type.
     * @return The InputEndpoints value.
     */
     public ArrayList<InputEndpoint> getInputEndpoints() {
@@ -214,8 +213,9 @@ public class ConfigurationSet {
     }
     
     /**
-    * Contains a collection of external endpoints for the virtual machine.
-    * This element is only used with the NetworkConfigurationSet type.
+    * Optional. Contains a collection of external endpoints for the virtual
+    * machine.  This element is only used with the NetworkConfigurationSet
+    * type.
     * @param inputEndpointsValue The InputEndpoints value.
     */
     public void setInputEndpoints(final ArrayList<InputEndpoint> inputEndpointsValue) {
@@ -310,8 +310,9 @@ public class ConfigurationSet {
     private ArrayList<String> subnetNames;
     
     /**
-    * The list of Virtual Network subnet names that the deployment belongs to.
-    * This element is only used with the NetworkConfigurationSet type.
+    * Optional. The list of Virtual Network subnet names that the deployment
+    * belongs to.  This element is only used with the NetworkConfigurationSet
+    * type.
     * @return The SubnetNames value.
     */
     public ArrayList<String> getSubnetNames() {
@@ -319,8 +320,9 @@ public class ConfigurationSet {
     }
     
     /**
-    * The list of Virtual Network subnet names that the deployment belongs to.
-    * This element is only used with the NetworkConfigurationSet type.
+    * Optional. The list of Virtual Network subnet names that the deployment
+    * belongs to.  This element is only used with the NetworkConfigurationSet
+    * type.
     * @param subnetNamesValue The SubnetNames value.
     */
     public void setSubnetNames(final ArrayList<String> subnetNamesValue) {
@@ -364,7 +366,7 @@ public class ConfigurationSet {
     private String userName;
     
     /**
-    * Required. Specifies the name of a user to be created in the sudoer group
+    * Optional. Specifies the name of a user to be created in the sudoer group
     * of the virtual machine. User names are ASCII character strings 1 to 32
     * characters in length. This element is only used with the
     * LinuxProvisioningConfiguration set.
@@ -375,7 +377,7 @@ public class ConfigurationSet {
     }
     
     /**
-    * Required. Specifies the name of a user to be created in the sudoer group
+    * Optional. Specifies the name of a user to be created in the sudoer group
     * of the virtual machine. User names are ASCII character strings 1 to 32
     * characters in length. This element is only used with the
     * LinuxProvisioningConfiguration set.
@@ -388,7 +390,7 @@ public class ConfigurationSet {
     private String userPassword;
     
     /**
-    * Required. Specifies the password for user name. Passwords are ASCII
+    * Optional. Specifies the password for user name. Passwords are ASCII
     * character strings 6 to 72 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
     * @return The UserPassword value.
@@ -398,7 +400,7 @@ public class ConfigurationSet {
     }
     
     /**
-    * Required. Specifies the password for user name. Passwords are ASCII
+    * Optional. Specifies the password for user name. Passwords are ASCII
     * character strings 6 to 72 characters in length. This element is only
     * used with the LinuxProvisioningConfiguration set.
     * @param userPasswordValue The UserPassword value.
