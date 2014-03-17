@@ -30,6 +30,7 @@ import com.microsoft.windowsazure.management.sql.models.DacExportParameters;
 import com.microsoft.windowsazure.management.sql.models.DacGetStatusResponse;
 import com.microsoft.windowsazure.management.sql.models.DacImportExportResponse;
 import com.microsoft.windowsazure.management.sql.models.DacImportParameters;
+import com.microsoft.windowsazure.management.sql.models.StatusInfo;
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
@@ -162,7 +163,16 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Export";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Export";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
@@ -355,11 +365,20 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Status" + "?";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Status" + "?";
         url = url + "servername=" + URLEncoder.encode(fullyQualifiedServerName, "UTF-8");
         url = url + "&" + "username=" + URLEncoder.encode(username, "UTF-8");
         url = url + "&" + "password=" + URLEncoder.encode(password, "UTF-8");
         url = url + "&" + "reqId=" + URLEncoder.encode(requestId, "UTF-8");
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -401,7 +420,7 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
                 if (arrayOfStatusInfoElement != null) {
                     for (int i1 = 0; i1 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").size(); i1 = i1 + 1) {
                         org.w3c.dom.Element statusInfoElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(arrayOfStatusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "StatusInfo").get(i1));
-                        DacGetStatusResponse.StatusInfo statusInfoInstance = new DacGetStatusResponse.StatusInfo();
+                        StatusInfo statusInfoInstance = new StatusInfo();
                         result.getStatusInfoList().add(statusInfoInstance);
                         
                         Element blobUriElement = XmlUtility.getElementByTagNameNS(statusInfoElement, "http://schemas.datacontract.org/2004/07/Microsoft.SqlServer.Management.Dac.ServiceTypes", "BlobUri");
@@ -570,7 +589,16 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
         }
         
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Import";
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/DacOperations/Import";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);

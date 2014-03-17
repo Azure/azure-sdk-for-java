@@ -28,42 +28,41 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* Response containing the list of database operations for a given server or
-* database.
+* A standard service response including an HTTP status code and request ID.
 */
-public class DatabaseOperationListResponse extends OperationResponse implements Iterable<DatabaseOperation> {
-    private ArrayList<DatabaseOperation> databaseOperations;
+public class DatabaseGetEventLogsResponse extends OperationResponse implements Iterable<DatabaseEventLog> {
+    private ArrayList<DatabaseEventLog> eventLogs;
     
     /**
-    * Gets or sets the list of database operations' response.
-    * @return The DatabaseOperations value.
+    * Gets or sets the SQL Server database event logs.
+    * @return The EventLogs value.
     */
-    public ArrayList<DatabaseOperation> getDatabaseOperations() {
-        return this.databaseOperations;
+    public ArrayList<DatabaseEventLog> getEventLogs() {
+        return this.eventLogs;
     }
     
     /**
-    * Gets or sets the list of database operations' response.
-    * @param databaseOperationsValue The DatabaseOperations value.
+    * Gets or sets the SQL Server database event logs.
+    * @param eventLogsValue The EventLogs value.
     */
-    public void setDatabaseOperations(final ArrayList<DatabaseOperation> databaseOperationsValue) {
-        this.databaseOperations = databaseOperationsValue;
+    public void setEventLogs(final ArrayList<DatabaseEventLog> eventLogsValue) {
+        this.eventLogs = eventLogsValue;
     }
     
     /**
-    * Initializes a new instance of the DatabaseOperationListResponse class.
+    * Initializes a new instance of the DatabaseGetEventLogsResponse class.
     *
     */
-    public DatabaseOperationListResponse() {
+    public DatabaseGetEventLogsResponse() {
         super();
-        this.databaseOperations = new ArrayList<DatabaseOperation>();
+        this.eventLogs = new ArrayList<DatabaseEventLog>();
     }
     
     /**
-    * Gets the sequence of DatabaseOperations.
+    * Gets the sequence of EventLogs.
     *
     */
-    public Iterator<DatabaseOperation> iterator() {
-        return this.getDatabaseOperations().iterator();
+    public Iterator<DatabaseEventLog> iterator() {
+        return this.getEventLogs().iterator();
     }
 }

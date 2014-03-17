@@ -63,13 +63,13 @@ public class DatabaseCreateParameters {
         this.edition = editionValue;
     }
     
-    private long maximumDatabaseSizeInGB;
+    private int maximumDatabaseSizeInGB;
     
     /**
     * Gets or sets the maximum size of this database, in Gigabytes.
     * @return The MaximumDatabaseSizeInGB value.
     */
-    public long getMaximumDatabaseSizeInGB() {
+    public int getMaximumDatabaseSizeInGB() {
         return this.maximumDatabaseSizeInGB;
     }
     
@@ -77,7 +77,7 @@ public class DatabaseCreateParameters {
     * Gets or sets the maximum size of this database, in Gigabytes.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
-    public void setMaximumDatabaseSizeInGB(final long maximumDatabaseSizeInGBValue) {
+    public void setMaximumDatabaseSizeInGB(final int maximumDatabaseSizeInGBValue) {
         this.maximumDatabaseSizeInGB = maximumDatabaseSizeInGBValue;
     }
     
