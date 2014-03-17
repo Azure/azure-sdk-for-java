@@ -65,8 +65,7 @@ public interface FirewallRuleOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the firewall rule create response.
     */
     FirewallRuleCreateResponse create(String serverName, FirewallRuleCreateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
@@ -79,8 +78,7 @@ public interface FirewallRuleOperations {
     * @param serverName The name of the SQL database server to which this rule
     * will be applied.
     * @param parameters Parameters for the Create Firewall Rule operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the firewall rule create response.
     */
     Future<FirewallRuleCreateResponse> createAsync(String serverName, FirewallRuleCreateParameters parameters);
     
@@ -168,8 +166,7 @@ public interface FirewallRuleOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the firewall rule update response.
     */
     FirewallRuleUpdateResponse update(String serverName, String ruleName, FirewallRuleUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
@@ -183,8 +180,7 @@ public interface FirewallRuleOperations {
     * will be applied.
     * @param ruleName The name of the firewall rule to be updated.
     * @param parameters Parameters for the Update Firewall Rule operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
+    * @return Response containing the firewall rule update response.
     */
     Future<FirewallRuleUpdateResponse> updateAsync(String serverName, String ruleName, FirewallRuleUpdateParameters parameters);
 }

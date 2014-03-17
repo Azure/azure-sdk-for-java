@@ -217,7 +217,16 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        String baseUrl = this.getBaseUri().toString();
+        String url = this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -358,8 +367,17 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/resourceproviders/" + "scheduler" + "/Properties" + "?";
+        String baseUrl = this.getBaseUri().toString();
+        String url = this.getCredentials().getSubscriptionId() + "/resourceproviders/" + "scheduler" + "/Properties" + "?";
         url = url + "resourceType=" + "JobCollections";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -462,9 +480,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String baseUrl = this.getBaseUri().toString();
+        String url = this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
         url = url + "&" + "action=register";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -550,9 +577,18 @@ public class SchedulerManagementClientImpl extends ServiceClient<SchedulerManage
         }
         
         // Construct URL
-        String url = this.getBaseUri() + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String baseUrl = this.getBaseUri().toString();
+        String url = this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=" + "scheduler" + "." + "JobCollections";
         url = url + "&" + "action=unregister";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);

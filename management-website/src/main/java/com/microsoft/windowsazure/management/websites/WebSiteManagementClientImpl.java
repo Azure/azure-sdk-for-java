@@ -281,7 +281,16 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + siteName + "/operations/" + operationId;
+        String baseUrl = this.getBaseUri().toString();
+        String url = "/" + this.getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites/" + siteName + "/operations/" + operationId;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
@@ -548,9 +557,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String baseUrl = this.getBaseUri().toString();
+        String url = "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=register";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
@@ -637,9 +655,18 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
         }
         
         // Construct URL
-        String url = this.getBaseUri() + "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
+        String baseUrl = this.getBaseUri().toString();
+        String url = "/" + this.getCredentials().getSubscriptionId() + "/services" + "?";
         url = url + "service=website";
         url = url + "&" + "action=unregister";
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
         
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
