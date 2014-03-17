@@ -23,8 +23,9 @@ Scenario: Create SQL Database
     And set "parameters.Name" with value "expecteddatabasename" of type "System.String"
     And set "parameters.CollationName" with value "SQL_Latin1_General_CP1_CI_AS" of type "System.String"
     And set "parameters.Edition" with value "Web" of type "System.String"
-    And set "parameters.ServerName" with value "Server" of type "System.String"
-    And I invoke "management.DatabasesOperations.Create" with parameter "parameters" I get the result into "operationResponse"
+    And I create a "System.String" with name "param1"
+    And set "param1" with value "n2o0jop9jy" of type "System.String"
+    And I invoke "management.DatabasesOperations.Create" with parameters "param1" and "parameters" I get the result into "operationResponse"
     Then property with type "System.Int32" and path "operationResponse.StatusCode" should equal "201"
     And property with type "System.String" and path "operationResponse.RequestId" should not equal "null"
     
