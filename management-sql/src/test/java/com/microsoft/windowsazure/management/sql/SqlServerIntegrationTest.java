@@ -15,11 +15,10 @@
 package com.microsoft.windowsazure.management.sql;
 
 
+import com.microsoft.windowsazure.management.sql.models.Server;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
-import com.microsoft.windowsazure.management.sql.models.ServerListResponse.Server;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -53,6 +52,7 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         {
         	serverOperations.delete(serverName);
         }
+        serverToBeRemoved.clear();
 	}
 	
     @Test
@@ -100,7 +100,6 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     	String testLocation = "West US";
     	
     	// act
-    	ServerOperations serverOperations = sqlManagementClient.getServersOperations();
     	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
     	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
     	serverCreateParameters.setAdministratorPassword(testPassword);
