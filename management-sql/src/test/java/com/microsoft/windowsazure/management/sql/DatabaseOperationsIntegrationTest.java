@@ -145,12 +145,14 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     	String expectedEdition = "Web";
     	String expectedDatabaseName = "expecteddatabasename";
     	String serverName = createServer();
+    	int expectedMaxSizeInGB = 5;
     	
     	// act 
     	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
     	databaseCreateParameters.setName(expectedDatabaseName);
     	databaseCreateParameters.setCollationName(expectedCollationName);
     	databaseCreateParameters.setEdition(expectedEdition);
+    	databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
     	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
     	String databaseName = databaseCreateResponse.getDatabase().getName();
     	databaseOperations.delete(serverName, databaseName);
@@ -173,22 +175,23 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     	String expectedEdition = "Web";
     	String expectedDatabaseName = "expecteddatabasename";
     	String serverName = createServer();
-    	int maximumDatabaseSizeInGBValue = 3;
+    	int expectedMaxSizeInGB = 5;
     	
     	// act 
     	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
     	databaseCreateParameters.setName(expectedDatabaseName);
     	databaseCreateParameters.setCollationName(expectedCollationName);
     	databaseCreateParameters.setEdition(expectedEdition);
+    	databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
     	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
     	String databaseName = databaseCreateResponse.getDatabase().getName();
     	databaseToBeRemoved.put(databaseName, serverName);
     	DatabaseUpdateParameters databaseUpdateParameters = new DatabaseUpdateParameters();
-    	databaseUpdateParameters.setMaximumDatabaseSizeInGB(maximumDatabaseSizeInGBValue);
+    	databaseUpdateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
     	DatabaseUpdateResponse databaseUpdateResponse = databaseOperations.update(serverName, databaseName, databaseUpdateParameters);
     	
     	// assert
-    	assertEquals(maximumDatabaseSizeInGBValue, databaseUpdateResponse.getDatabase().getMaximumDatabaseSizeInGB());
+    	assertEquals(expectedMaxSizeInGB, databaseUpdateResponse.getDatabase().getMaximumDatabaseSizeInGB());
     }
     
     

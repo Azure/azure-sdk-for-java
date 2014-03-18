@@ -31,12 +31,6 @@ import org.junit.*;
 import org.xml.sax.SAXException;
 
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.sql.models.Database;
-import com.microsoft.windowsazure.management.sql.models.DatabaseCreateParameters;
-import com.microsoft.windowsazure.management.sql.models.DatabaseCreateResponse;
-import com.microsoft.windowsazure.management.sql.models.DatabaseListResponse;
-import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateParameters;
-import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRule;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateResponse;
@@ -120,7 +114,6 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
     	assertEquals(expectedType, firewallRule.getType());
     }
     
-    
     @Test
     public void deleteFirewallRuleSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
     {
@@ -175,8 +168,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
     	FirewallRuleUpdateResponse firewallRuleUpdateResponse = firewallRuleOperations.update(expectedServerName, expectedRuleName, firewallRuleUpdateParameters);
     	
     	// assert
-    	FirewallRuleListResponse firewallRuleListResponse = firewallRuleOperations.list(expectedServerName);
-    	FirewallRule updatedFirewallRule = firewallRuleListResponse.getFirewallRules().get(0);
+    	FirewallRule updatedFirewallRule = firewallRuleUpdateResponse.getFirewallRule();
     	assertEquals(updatedEndIpAddress, updatedFirewallRule.getEndIPAddress());
     	assertEquals(expectedStartIpAddress, updatedFirewallRule.getStartIPAddress());
     	assertEquals(expectedRuleName, updatedFirewallRule.getName());
