@@ -32,7 +32,7 @@ public class DacImportExportResponse extends OperationResponse {
     private String guid;
     
     /**
-    * Gets or sets the operation's identifier.
+    * Optional. Gets or sets the operation's identifier.
     * @return The Guid value.
     */
     public String getGuid() {
@@ -40,7 +40,7 @@ public class DacImportExportResponse extends OperationResponse {
     }
     
     /**
-    * Gets or sets the operation's identifier.
+    * Optional. Gets or sets the operation's identifier.
     * @param guidValue The Guid value.
     */
     public void setGuid(final String guidValue) {

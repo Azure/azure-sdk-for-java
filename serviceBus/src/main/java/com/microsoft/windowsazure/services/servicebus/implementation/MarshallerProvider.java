@@ -25,47 +25,37 @@ import javax.xml.bind.PropertyException;
 
 @Provider
 @Produces("application/atom+xml")
-public class MarshallerProvider implements ContextResolver<Marshaller>
-{
+public class MarshallerProvider implements ContextResolver<Marshaller> {
 
     @Context
     private ContextResolver<JAXBContext> jaxbContextResolver;
 
     @Override
-    public Marshaller getContext(Class<?> type)
-    {
+    public Marshaller getContext(Class<?> type) {
         Marshaller marshaller;
-        try
-        {
+        try {
             marshaller = getJAXBContext(type).createMarshaller();
-        } catch (JAXBException e)
-        {
+        } catch (JAXBException e) {
             return null;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
         com.sun.xml.bind.marshaller.NamespacePrefixMapper mapper = new NamespacePrefixMapperImpl();
-        try
-        {
+        try {
             marshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper",
                     mapper);
-        } catch (PropertyException e)
-        {
+        } catch (PropertyException e) {
             return null;
         }
         return marshaller;
     }
 
-    private JAXBContext getJAXBContext(Class<?> type) throws Exception
-    {
+    private JAXBContext getJAXBContext(Class<?> type) throws Exception {
         JAXBContext context = null;
-        if (jaxbContextResolver != null)
-        {
+        if (jaxbContextResolver != null) {
             context = jaxbContextResolver.getContext(type);
         }
-        if (context == null)
-        {
+        if (context == null) {
             context = JAXBContext.newInstance(type);
         }
         return context;

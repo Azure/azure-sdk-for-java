@@ -21,12 +21,10 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.Configuration;
 
-public class MediaServiceTest
-{
+public class MediaServiceTest {
 
     @Test
-    public void createMediaContractSuccessTest()
-    {
+    public void createMediaContractSuccessTest() {
         // Arrange
         Configuration configurationInstance = Configuration.getInstance();
         configurationInstance = MediaConfiguration
@@ -44,8 +42,7 @@ public class MediaServiceTest
     }
 
     @Test
-    public void createMediaContractWithSpecifiedConfigurationTest()
-    {
+    public void createMediaContractWithSpecifiedConfigurationTest() {
         // Arrange
         Configuration configuration = MediaConfiguration
                 .configureWithOAuthAuthentication("mediaServiceBaseUri",
@@ -59,8 +56,7 @@ public class MediaServiceTest
     }
 
     @Test
-    public void createMediaContractWithSpecifiedProfileTest()
-    {
+    public void createMediaContractWithSpecifiedProfileTest() {
         // Arrange
         String profile = "testProfile";
 
@@ -73,8 +69,7 @@ public class MediaServiceTest
     }
 
     @Test
-    public void createMediaContractWithSpecifiedProfileAndConfiguration()
-    {
+    public void createMediaContractWithSpecifiedProfileAndConfiguration() {
         // Arrange
         String profile = "testProfile";
         Configuration configuration = MediaConfiguration

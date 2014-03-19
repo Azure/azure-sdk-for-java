@@ -26,52 +26,48 @@ package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 import java.util.ArrayList;
 
 /**
-* Autoscale setting.
-*/
-public class AutoscaleSetting
-{
+ * Autoscale setting.
+ */
+public class AutoscaleSetting {
     private boolean enabled;
-    
+
     /**
-    * @return The Enabled value.
-    */
-    public boolean isEnabled()
-    {
+     * @return The Enabled value.
+     */
+    public boolean isEnabled() {
         return this.enabled;
     }
-    
+
     /**
-    * @param enabledValue The Enabled value.
-    */
-    public void setEnabled(final boolean enabledValue)
-    {
+     * @param enabledValue
+     *            The Enabled value.
+     */
+    public void setEnabled(final boolean enabledValue) {
         this.enabled = enabledValue;
     }
-    
+
     private ArrayList<AutoscaleProfile> profiles;
-    
+
     /**
-    * @return The Profiles value.
-    */
-    public ArrayList<AutoscaleProfile> getProfiles()
-    {
+     * @return The Profiles value.
+     */
+    public ArrayList<AutoscaleProfile> getProfiles() {
         return this.profiles;
     }
-    
+
     /**
-    * @param profilesValue The Profiles value.
-    */
-    public void setProfiles(final ArrayList<AutoscaleProfile> profilesValue)
-    {
+     * @param profilesValue
+     *            The Profiles value.
+     */
+    public void setProfiles(final ArrayList<AutoscaleProfile> profilesValue) {
         this.profiles = profilesValue;
     }
-    
+
     /**
-    * Initializes a new instance of the AutoscaleSetting class.
-    *
-    */
-    public AutoscaleSetting()
-    {
+     * Initializes a new instance of the AutoscaleSetting class.
+     * 
+     */
+    public AutoscaleSetting() {
         this.profiles = new ArrayList<AutoscaleProfile>();
     }
 }

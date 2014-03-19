@@ -32,7 +32,7 @@ public class ServerCreateResponse extends OperationResponse {
     private String serverName;
     
     /**
-    * Gets or sets the name of the server that was created.
+    * Optional. Gets or sets the name of the server that was created.
     * @return The ServerName value.
     */
     public String getServerName() {
@@ -40,7 +40,7 @@ public class ServerCreateResponse extends OperationResponse {
     }
     
     /**
-    * Gets or sets the name of the server that was created.
+    * Optional. Gets or sets the name of the server that was created.
     * @param serverNameValue The ServerName value.
     */
     public void setServerName(final String serverNameValue) {

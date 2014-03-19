@@ -36,10 +36,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     private String continuationToken;
     
     /**
-    * The string that can be used to return the rest of the list. Subsequent
-    * requests must include this parameter to continue listing operations from
-    * where the last response left off. This element exists only if the
-    * complete list of subscription operations was not returned.
+    * Optional. The string that can be used to return the rest of the list.
+    * Subsequent requests must include this parameter to continue listing
+    * operations from where the last response left off. This element exists
+    * only if the complete list of subscription operations was not returned.
     * @return The ContinuationToken value.
     */
     public String getContinuationToken() {
@@ -47,10 +47,10 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     }
     
     /**
-    * The string that can be used to return the rest of the list. Subsequent
-    * requests must include this parameter to continue listing operations from
-    * where the last response left off. This element exists only if the
-    * complete list of subscription operations was not returned.
+    * Optional. The string that can be used to return the rest of the list.
+    * Subsequent requests must include this parameter to continue listing
+    * operations from where the last response left off. This element exists
+    * only if the complete list of subscription operations was not returned.
     * @param continuationTokenValue The ContinuationToken value.
     */
     public void setContinuationToken(final String continuationTokenValue) {
@@ -60,8 +60,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     private ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperations;
     
     /**
-    * The list of operations that have been performed on the subscription
-    * during the specified timeframe.
+    * Optional. The list of operations that have been performed on the
+    * subscription during the specified timeframe.
     * @return The SubscriptionOperations value.
     */
     public ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> getSubscriptionOperations() {
@@ -69,8 +69,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
     }
     
     /**
-    * The list of operations that have been performed on the subscription
-    * during the specified timeframe.
+    * Optional. The list of operations that have been performed on the
+    * subscription during the specified timeframe.
     * @param subscriptionOperationsValue The SubscriptionOperations value.
     */
     public void setSubscriptionOperations(final ArrayList<SubscriptionListOperationsResponse.SubscriptionOperation> subscriptionOperationsValue) {
@@ -94,8 +94,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private InetAddress clientIPAddress;
         
         /**
-        * The IP address of the client computer that initiated the operation.
-        * This element is returned only if UsedServiceManagementApi is true.
+        * Optional. The IP address of the client computer that initiated the
+        * operation. This element is returned only if UsedServiceManagementApi
+        * is true.
         * @return The ClientIPAddress value.
         */
         public InetAddress getClientIPAddress() {
@@ -103,8 +104,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The IP address of the client computer that initiated the operation.
-        * This element is returned only if UsedServiceManagementApi is true.
+        * Optional. The IP address of the client computer that initiated the
+        * operation. This element is returned only if UsedServiceManagementApi
+        * is true.
         * @param clientIPAddressValue The ClientIPAddress value.
         */
         public void setClientIPAddress(final InetAddress clientIPAddressValue) {
@@ -114,8 +116,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String subscriptionCertificateThumbprint;
         
         /**
-        * The thumbprint of the subscription certificate used to initiate the
-        * operation.
+        * Optional. The thumbprint of the subscription certificate used to
+        * initiate the operation.
         * @return The SubscriptionCertificateThumbprint value.
         */
         public String getSubscriptionCertificateThumbprint() {
@@ -123,8 +125,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The thumbprint of the subscription certificate used to initiate the
-        * operation.
+        * Optional. The thumbprint of the subscription certificate used to
+        * initiate the operation.
         * @param subscriptionCertificateThumbprintValue The
         * SubscriptionCertificateThumbprint value.
         */
@@ -135,9 +137,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private boolean usedServiceManagementApi;
         
         /**
-        * Indicates whether the operation was initiated by using the Service
-        * Management API. False if it was initiated by another source, such as
-        * the Management Portal.
+        * Optional. Indicates whether the operation was initiated by using the
+        * Service Management API. False if it was initiated by another source,
+        * such as the Management Portal.
         * @return The UsedServiceManagementApi value.
         */
         public boolean isUsedServiceManagementApi() {
@@ -145,9 +147,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * Indicates whether the operation was initiated by using the Service
-        * Management API. False if it was initiated by another source, such as
-        * the Management Portal.
+        * Optional. Indicates whether the operation was initiated by using the
+        * Service Management API. False if it was initiated by another source,
+        * such as the Management Portal.
         * @param usedServiceManagementApiValue The UsedServiceManagementApi
         * value.
         */
@@ -158,9 +160,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String userEmailAddress;
         
         /**
-        * The email associated with the Windows Live ID of the user who
-        * initiated the operation from the Management Portal. This element is
-        * returned only if UsedServiceManagementApi is false.
+        * Optional. The email associated with the Windows Live ID of the user
+        * who initiated the operation from the Management Portal. This element
+        * is returned only if UsedServiceManagementApi is false.
         * @return The UserEmailAddress value.
         */
         public String getUserEmailAddress() {
@@ -168,9 +170,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The email associated with the Windows Live ID of the user who
-        * initiated the operation from the Management Portal. This element is
-        * returned only if UsedServiceManagementApi is false.
+        * Optional. The email associated with the Windows Live ID of the user
+        * who initiated the operation from the Management Portal. This element
+        * is returned only if UsedServiceManagementApi is false.
         * @param userEmailAddressValue The UserEmailAddress value.
         */
         public void setUserEmailAddress(final String userEmailAddressValue) {
@@ -186,8 +188,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private SubscriptionListOperationsResponse.OperationCallerDetails operationCaller;
         
         /**
-        * A collection of attributes that identifies the source of the
-        * operation.
+        * Optional. A collection of attributes that identifies the source of
+        * the operation.
         * @return The OperationCaller value.
         */
         public SubscriptionListOperationsResponse.OperationCallerDetails getOperationCaller() {
@@ -195,8 +197,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * A collection of attributes that identifies the source of the
-        * operation.
+        * Optional. A collection of attributes that identifies the source of
+        * the operation.
         * @param operationCallerValue The OperationCaller value.
         */
         public void setOperationCaller(final SubscriptionListOperationsResponse.OperationCallerDetails operationCallerValue) {
@@ -206,7 +208,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private Calendar operationCompletedTime;
         
         /**
-        * The time that the operation finished executing.
+        * Optional. The time that the operation finished executing.
         * @return The OperationCompletedTime value.
         */
         public Calendar getOperationCompletedTime() {
@@ -214,7 +216,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The time that the operation finished executing.
+        * Optional. The time that the operation finished executing.
         * @param operationCompletedTimeValue The OperationCompletedTime value.
         */
         public void setOperationCompletedTime(final Calendar operationCompletedTimeValue) {
@@ -224,7 +226,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String operationId;
         
         /**
-        * The globally unique identifier (GUID) of the operation.
+        * Optional. The globally unique identifier (GUID) of the operation.
         * @return The OperationId value.
         */
         public String getOperationId() {
@@ -232,7 +234,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The globally unique identifier (GUID) of the operation.
+        * Optional. The globally unique identifier (GUID) of the operation.
         * @param operationIdValue The OperationId value.
         */
         public void setOperationId(final String operationIdValue) {
@@ -242,7 +244,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String operationName;
         
         /**
-        * The name of the performed operation.
+        * Optional. The name of the performed operation.
         * @return The OperationName value.
         */
         public String getOperationName() {
@@ -250,7 +252,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The name of the performed operation.
+        * Optional. The name of the performed operation.
         * @param operationNameValue The OperationName value.
         */
         public void setOperationName(final String operationNameValue) {
@@ -260,9 +262,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String operationObjectId;
         
         /**
-        * The target object for the operation. This value is equal to the URL
-        * for performing an HTTP GET on the object, and corresponds to the
-        * same values for the ObjectIdFilter in the request.
+        * Optional. The target object for the operation. This value is equal to
+        * the URL for performing an HTTP GET on the object, and corresponds to
+        * the same values for the ObjectIdFilter in the request.
         * @return The OperationObjectId value.
         */
         public String getOperationObjectId() {
@@ -270,9 +272,9 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The target object for the operation. This value is equal to the URL
-        * for performing an HTTP GET on the object, and corresponds to the
-        * same values for the ObjectIdFilter in the request.
+        * Optional. The target object for the operation. This value is equal to
+        * the URL for performing an HTTP GET on the object, and corresponds to
+        * the same values for the ObjectIdFilter in the request.
         * @param operationObjectIdValue The OperationObjectId value.
         */
         public void setOperationObjectId(final String operationObjectIdValue) {
@@ -282,7 +284,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private HashMap<String, String> operationParameters;
         
         /**
-        * The collection of parameters for the performed operation.
+        * Optional. The collection of parameters for the performed operation.
         * @return The OperationParameters value.
         */
         public HashMap<String, String> getOperationParameters() {
@@ -290,7 +292,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The collection of parameters for the performed operation.
+        * Optional. The collection of parameters for the performed operation.
         * @param operationParametersValue The OperationParameters value.
         */
         public void setOperationParameters(final HashMap<String, String> operationParametersValue) {
@@ -300,7 +302,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private Calendar operationStartedTime;
         
         /**
-        * The time that the operation started to execute.
+        * Optional. The time that the operation started to execute.
         * @return The OperationStartedTime value.
         */
         public Calendar getOperationStartedTime() {
@@ -308,7 +310,7 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * The time that the operation started to execute.
+        * Optional. The time that the operation started to execute.
         * @param operationStartedTimeValue The OperationStartedTime value.
         */
         public void setOperationStartedTime(final Calendar operationStartedTimeValue) {
@@ -318,8 +320,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         private String operationStatus;
         
         /**
-        * An object that contains information on the current status of the
-        * operation. The object returned has the following XML format:
+        * Optional. An object that contains information on the current status
+        * of the operation. The object returned has the following XML format:
         * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
         * </OperationStatus>  Possible values of the Status element,
@@ -331,8 +333,8 @@ public class SubscriptionListOperationsResponse extends OperationResponse {
         }
         
         /**
-        * An object that contains information on the current status of the
-        * operation. The object returned has the following XML format:
+        * Optional. An object that contains information on the current status
+        * of the operation. The object returned has the following XML format:
         * <OperationStatus> <ID>339c6c13-1f81-412f-9bc6-00e9c5876695</ID>
         * <Status>Succeeded</Status> <HttpStatusCode>200</HttpStatusCode>
         * </OperationStatus>  Possible values of the Status element,

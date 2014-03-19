@@ -32,7 +32,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String id;
     
     /**
-    * The identifier of the extension.
+    * Optional. The identifier of the extension.
     * @return The Id value.
     */
     public String getId() {
@@ -40,7 +40,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The identifier of the extension.
+    * Optional. The identifier of the extension.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -50,8 +50,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String providerNamespace;
     
     /**
-    * The provider namespace of the extension. The provider namespace for
-    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * Optional. The provider namespace of the extension. The provider namespace
+    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @return The ProviderNamespace value.
     */
     public String getProviderNamespace() {
@@ -59,8 +59,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The provider namespace of the extension. The provider namespace for
-    * Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
+    * Optional. The provider namespace of the extension. The provider namespace
+    * for Windows Azure extensions is Microsoft.Windows.Azure.Extensions.
     * @param providerNamespaceValue The ProviderNamespace value.
     */
     public void setProviderNamespace(final String providerNamespaceValue) {
@@ -70,8 +70,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String publicConfiguration;
     
     /**
-    * The public configuration that is defined using the schema returned by the
-    * List Available Extensions operation.
+    * Optional. The public configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @return The PublicConfiguration value.
     */
     public String getPublicConfiguration() {
@@ -79,8 +79,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The public configuration that is defined using the schema returned by the
-    * List Available Extensions operation.
+    * Optional. The public configuration that is defined using the schema
+    * returned by the List Available Extensions operation.
     * @param publicConfigurationValue The PublicConfiguration value.
     */
     public void setPublicConfiguration(final String publicConfigurationValue) {
@@ -90,7 +90,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String thumbprint;
     
     /**
-    * The thumbprint of the certificate that is used to encrypt the
+    * Optional. The thumbprint of the certificate that is used to encrypt the
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
@@ -101,7 +101,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The thumbprint of the certificate that is used to encrypt the
+    * Optional. The thumbprint of the certificate that is used to encrypt the
     * configuration specified in PrivateConfiguration. If this element is not
     * specified, a certificate may be automatically generated and added to the
     * cloud service.
@@ -114,8 +114,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String thumbprintAlgorithm;
     
     /**
-    * The thumbprint algorithm of the certificate that is used toencrypt the
-    * configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used
+    * toencrypt the configuration specified in PrivateConfiguration.
     * @return The ThumbprintAlgorithm value.
     */
     public String getThumbprintAlgorithm() {
@@ -123,8 +123,8 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The thumbprint algorithm of the certificate that is used toencrypt the
-    * configuration specified in PrivateConfiguration.
+    * Optional. The thumbprint algorithm of the certificate that is used
+    * toencrypt the configuration specified in PrivateConfiguration.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {
@@ -152,7 +152,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     private String version;
     
     /**
-    * The version of the extension.
+    * Optional. The version of the extension.
     * @return The Version value.
     */
     public String getVersion() {
@@ -160,7 +160,7 @@ public class HostedServiceGetExtensionResponse extends OperationResponse {
     }
     
     /**
-    * The version of the extension.
+    * Optional. The version of the extension.
     * @param versionValue The Version value.
     */
     public void setVersion(final String versionValue) {

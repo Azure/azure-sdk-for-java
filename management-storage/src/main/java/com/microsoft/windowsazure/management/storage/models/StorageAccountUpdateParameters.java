@@ -32,6 +32,7 @@ public class StorageAccountUpdateParameters {
     private String description;
     
     /**
+    * Optional.
     * @return The Description value.
     */
     public String getDescription() {
@@ -39,6 +40,7 @@ public class StorageAccountUpdateParameters {
     }
     
     /**
+    * Optional.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {

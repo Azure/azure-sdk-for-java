@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "error", namespace = Constants.ODATA_METADATA_NS)
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorType
-{
+public class ErrorType {
 
     /** The code. */
     @XmlElement(name = "code", namespace = Constants.ODATA_METADATA_NS)
@@ -44,8 +43,7 @@ public class ErrorType
      * 
      * @return the code
      */
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 
@@ -56,8 +54,7 @@ public class ErrorType
      *            the id to set
      * @return the error type
      */
-    public ErrorType setCode(String code)
-    {
+    public ErrorType setCode(String code) {
         this.code = code;
         return this;
     }
@@ -67,8 +64,7 @@ public class ErrorType
      * 
      * @return the message
      */
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 
@@ -79,8 +75,7 @@ public class ErrorType
      *            the message to set
      * @return the error type
      */
-    public ErrorType setMessage(String message)
-    {
+    public ErrorType setMessage(String message) {
         this.message = message;
         return this;
     }

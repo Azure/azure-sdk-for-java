@@ -14,16 +14,14 @@
  */
 package com.microsoft.windowsazure.services.servicebus.implementation;
 
-public class WrapAccessTokenResult
-{
+public class WrapAccessTokenResult {
     String accessToken;
     long expiresIn;
 
     /**
      * @return the accessToken
      */
-    public String getAccessToken()
-    {
+    public String getAccessToken() {
         return accessToken;
     }
 
@@ -31,16 +29,14 @@ public class WrapAccessTokenResult
      * @param accessToken
      *            the accessToken to set
      */
-    public void setAccessToken(String accessToken)
-    {
+    public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
     /**
      * @return the expiresIn
      */
-    public long getExpiresIn()
-    {
+    public long getExpiresIn() {
         return expiresIn;
     }
 
@@ -48,8 +44,7 @@ public class WrapAccessTokenResult
      * @param expiresIn
      *            the expiresIn to set
      */
-    public void setExpiresIn(long expiresIn)
-    {
+    public void setExpiresIn(long expiresIn) {
         this.expiresIn = expiresIn;
     }
 }

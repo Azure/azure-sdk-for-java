@@ -34,7 +34,8 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     private ArrayList<Database> databases;
     
     /**
-    * Gets or sets the SQL Server databases that are housed in a server.
+    * Optional. Gets or sets the SQL Server databases that are housed in a
+    * server.
     * @return The Databases value.
     */
     public ArrayList<Database> getDatabases() {
@@ -42,7 +43,8 @@ public class DatabaseListResponse extends OperationResponse implements Iterable<
     }
     
     /**
-    * Gets or sets the SQL Server databases that are housed in a server.
+    * Optional. Gets or sets the SQL Server databases that are housed in a
+    * server.
     * @param databasesValue The Databases value.
     */
     public void setDatabases(final ArrayList<Database> databasesValue) {

@@ -24,11 +24,15 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Required. Specifies the type for the resource extension. Possible values are:
-* Public | Private.
+* The resource extension status, which can be "Installing", "Ready",
+* "NotReady", "Unresponsive"
 */
-public enum ResourceExtensionParameterValueType {
-    Public,
+public class ResourceExtensionStatusTypes {
+    public static final String Installing = "Installing";
     
-    Private,
+    public static final String Ready = "Ready";
+    
+    public static final String NorReady = "NorReady";
+    
+    public static final String Unresponsive = "Unresponsive";
 }

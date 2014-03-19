@@ -32,7 +32,7 @@ public class Role {
     private String availabilitySetName;
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @return The AvailabilitySetName value.
     */
     public String getAvailabilitySetName() {
@@ -40,7 +40,7 @@ public class Role {
     }
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @param availabilitySetNameValue The AvailabilitySetName value.
     */
     public void setAvailabilitySetName(final String availabilitySetNameValue) {
@@ -50,7 +50,7 @@ public class Role {
     private ArrayList<ConfigurationSet> configurationSets;
     
     /**
-    * A collection of values that represents system or application
+    * Optional. A collection of values that represents system or application
     * configuration settings.
     * @return The ConfigurationSets value.
     */
@@ -59,7 +59,7 @@ public class Role {
     }
     
     /**
-    * A collection of values that represents system or application
+    * Optional. A collection of values that represents system or application
     * configuration settings.
     * @param configurationSetsValue The ConfigurationSets value.
     */
@@ -70,8 +70,8 @@ public class Role {
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
-    * Contains the parameters Windows Azure uses to create a data disk for a
-    * virtual machine.
+    * Optional. Contains the parameters Windows Azure uses to create a data
+    * disk for a virtual machine.
     * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
@@ -79,8 +79,8 @@ public class Role {
     }
     
     /**
-    * Contains the parameters Windows Azure uses to create a data disk for a
-    * virtual machine.
+    * Optional. Contains the parameters Windows Azure uses to create a data
+    * disk for a virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
@@ -90,8 +90,8 @@ public class Role {
     private String defaultWinRmCertificateThumbprint;
     
     /**
-    * The read-only thumbprint of the certificate that is used with the HTTPS
-    * listener for WinRM.
+    * Optional. The read-only thumbprint of the certificate that is used with
+    * the HTTPS listener for WinRM.
     * @return The DefaultWinRmCertificateThumbprint value.
     */
     public String getDefaultWinRmCertificateThumbprint() {
@@ -99,8 +99,8 @@ public class Role {
     }
     
     /**
-    * The read-only thumbprint of the certificate that is used with the HTTPS
-    * listener for WinRM.
+    * Optional. The read-only thumbprint of the certificate that is used with
+    * the HTTPS listener for WinRM.
     * @param defaultWinRmCertificateThumbprintValue The
     * DefaultWinRmCertificateThumbprint value.
     */
@@ -111,7 +111,7 @@ public class Role {
     private String label;
     
     /**
-    * The friendly name for the role.
+    * Optional. The friendly name for the role.
     * @return The Label value.
     */
     public String getLabel() {
@@ -119,7 +119,7 @@ public class Role {
     }
     
     /**
-    * The friendly name for the role.
+    * Optional. The friendly name for the role.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -129,8 +129,8 @@ public class Role {
     private String oSVersion;
     
     /**
-    * The version of the operating system on which the role instances are
-    * running.
+    * Optional. The version of the operating system on which the role instances
+    * are running.
     * @return The OSVersion value.
     */
     public String getOSVersion() {
@@ -138,8 +138,8 @@ public class Role {
     }
     
     /**
-    * The version of the operating system on which the role instances are
-    * running.
+    * Optional. The version of the operating system on which the role instances
+    * are running.
     * @param oSVersionValue The OSVersion value.
     */
     public void setOSVersion(final String oSVersionValue) {
@@ -149,8 +149,8 @@ public class Role {
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
-    * Contains the parameters Windows Azure uses to create the operating system
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Windows Azure uses to create the
+    * operating system disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk() {
@@ -158,8 +158,8 @@ public class Role {
     }
     
     /**
-    * Contains the parameters Windows Azure uses to create the operating system
-    * disk for the virtual machine.
+    * Optional. Contains the parameters Windows Azure uses to create the
+    * operating system disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
     public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
@@ -214,7 +214,7 @@ public class Role {
     private String roleName;
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @return The RoleName value.
     */
     public String getRoleName() {
@@ -222,7 +222,7 @@ public class Role {
     }
     
     /**
-    * The name of the role.
+    * Optional. The name of the role.
     * @param roleNameValue The RoleName value.
     */
     public void setRoleName(final String roleNameValue) {
@@ -232,7 +232,7 @@ public class Role {
     private String roleSize;
     
     /**
-    * The size of the role instance.
+    * Optional. The size of the role instance.
     * @return The RoleSize value.
     */
     public String getRoleSize() {
@@ -240,7 +240,7 @@ public class Role {
     }
     
     /**
-    * The size of the role instance.
+    * Optional. The size of the role instance.
     * @param roleSizeValue The RoleSize value.
     */
     public void setRoleSize(final String roleSizeValue) {
@@ -250,8 +250,8 @@ public class Role {
     private String roleType;
     
     /**
-    * Specifies the type of the role. This element is only listed for Virtual
-    * Machine deployments and by default is PersistentVMRole.
+    * Optional. Specifies the type of the role. This element is only listed for
+    * Virtual Machine deployments and by default is PersistentVMRole.
     * @return The RoleType value.
     */
     public String getRoleType() {
@@ -259,12 +259,38 @@ public class Role {
     }
     
     /**
-    * Specifies the type of the role. This element is only listed for Virtual
-    * Machine deployments and by default is PersistentVMRole.
+    * Optional. Specifies the type of the role. This element is only listed for
+    * Virtual Machine deployments and by default is PersistentVMRole.
     * @param roleTypeValue The RoleType value.
     */
     public void setRoleType(final String roleTypeValue) {
         this.roleType = roleTypeValue;
+    }
+    
+    private String vMImageName;
+    
+    /**
+    * Optional. Optional. Name of the VMImage from which this Role is to be
+    * created. If the OSDisk in the VMImage was Specialized, then no
+    * WindowsProvisioningConfigurationSet or LinuxProvisioningConfigurationSet
+    * should be provided. No OSVirtualHardDisk or DataVirtualHardDisk should
+    * be specified when using this argument.
+    * @return The VMImageName value.
+    */
+    public String getVMImageName() {
+        return this.vMImageName;
+    }
+    
+    /**
+    * Optional. Optional. Name of the VMImage from which this Role is to be
+    * created. If the OSDisk in the VMImage was Specialized, then no
+    * WindowsProvisioningConfigurationSet or LinuxProvisioningConfigurationSet
+    * should be provided. No OSVirtualHardDisk or DataVirtualHardDisk should
+    * be specified when using this argument.
+    * @param vMImageNameValue The VMImageName value.
+    */
+    public void setVMImageName(final String vMImageNameValue) {
+        this.vMImageName = vMImageNameValue;
     }
     
     /**

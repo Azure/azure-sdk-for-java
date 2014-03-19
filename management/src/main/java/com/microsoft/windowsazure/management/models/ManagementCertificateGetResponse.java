@@ -33,7 +33,7 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private Calendar created;
     
     /**
-    * The time that the management certificate was created, in UTC.
+    * Optional. The time that the management certificate was created, in UTC.
     * @return The Created value.
     */
     public Calendar getCreated() {
@@ -41,7 +41,7 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * The time that the management certificate was created, in UTC.
+    * Optional. The time that the management certificate was created, in UTC.
     * @param createdValue The Created value.
     */
     public void setCreated(final Calendar createdValue) {
@@ -51,8 +51,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private byte[] data;
     
     /**
-    * A base64 representation of the raw data contained in the management
-    * certificate in .cer format.
+    * Optional. A base64 representation of the raw data contained in the
+    * management certificate in .cer format.
     * @return The Data value.
     */
     public byte[] getData() {
@@ -60,8 +60,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * A base64 representation of the raw data contained in the management
-    * certificate in .cer format.
+    * Optional. A base64 representation of the raw data contained in the
+    * management certificate in .cer format.
     * @param dataValue The Data value.
     */
     public void setData(final byte[] dataValue) {
@@ -71,7 +71,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private byte[] publicKey;
     
     /**
-    * A base64 representation of the management certificate public key.
+    * Optional. A base64 representation of the management certificate public
+    * key.
     * @return The PublicKey value.
     */
     public byte[] getPublicKey() {
@@ -79,7 +80,8 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * A base64 representation of the management certificate public key.
+    * Optional. A base64 representation of the management certificate public
+    * key.
     * @param publicKeyValue The PublicKey value.
     */
     public void setPublicKey(final byte[] publicKeyValue) {
@@ -89,8 +91,9 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     private String thumbprint;
     
     /**
-    * The thumb print that uniquely identifies the management certificate. This
-    * thumb print is the same value as the one specified by the request URI.
+    * Optional. The thumb print that uniquely identifies the management
+    * certificate. This thumb print is the same value as the one specified by
+    * the request URI.
     * @return The Thumbprint value.
     */
     public String getThumbprint() {
@@ -98,8 +101,9 @@ public class ManagementCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * The thumb print that uniquely identifies the management certificate. This
-    * thumb print is the same value as the one specified by the request URI.
+    * Optional. The thumb print that uniquely identifies the management
+    * certificate. This thumb print is the same value as the one specified by
+    * the request URI.
     * @param thumbprintValue The Thumbprint value.
     */
     public void setThumbprint(final String thumbprintValue) {

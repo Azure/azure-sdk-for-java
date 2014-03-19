@@ -18,13 +18,11 @@ package com.microsoft.windowsazure.services.blob.models;
  * Defines constants for use with blob operations, HTTP headers, and query
  * strings.
  */
-public final class Constants
-{
+public final class Constants {
     /**
      * Defines constants for use Analytics requests.
      */
-    public static class AnalyticsConstants
-    {
+    public static class AnalyticsConstants {
         /**
          * The XML element for the Analytics RetentionPolicy Days.
          */
@@ -89,8 +87,7 @@ public final class Constants
     /**
      * Defines constants for use with HTTP headers.
      */
-    public static class HeaderConstants
-    {
+    public static class HeaderConstants {
         /**
          * The Accept header.
          */
@@ -364,8 +361,7 @@ public final class Constants
     /**
      * Defines constants for use with query strings.
      */
-    public static class QueryConstants
-    {
+    public static class QueryConstants {
         /**
          * The query component for the SAS signature.
          */
@@ -692,8 +688,7 @@ public final class Constants
     /**
      * Private Default Ctor
      */
-    private Constants()
-    {
+    private Constants() {
         // No op
     }
 }

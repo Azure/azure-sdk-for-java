@@ -32,6 +32,7 @@ public class FirewallRuleCreateResponse extends OperationResponse {
     private FirewallRule firewallRule;
     
     /**
+    * Optional.
     * @return The FirewallRule value.
     */
     public FirewallRule getFirewallRule() {
@@ -39,6 +40,7 @@ public class FirewallRuleCreateResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param firewallRuleValue The FirewallRule value.
     */
     public void setFirewallRule(final FirewallRule firewallRuleValue) {

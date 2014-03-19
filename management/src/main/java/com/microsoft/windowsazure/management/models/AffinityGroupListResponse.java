@@ -34,7 +34,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     private ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroups;
     
     /**
-    * The affinity groups associated with the specified subscription.
+    * Optional. The affinity groups associated with the specified subscription.
     * @return The AffinityGroups value.
     */
     public ArrayList<AffinityGroupListResponse.AffinityGroup> getAffinityGroups() {
@@ -42,7 +42,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
     }
     
     /**
-    * The affinity groups associated with the specified subscription.
+    * Optional. The affinity groups associated with the specified subscription.
     * @param affinityGroupsValue The AffinityGroups value.
     */
     public void setAffinityGroups(final ArrayList<AffinityGroupListResponse.AffinityGroup> affinityGroupsValue) {
@@ -73,9 +73,9 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private ArrayList<String> capabilities;
         
         /**
-        * Indicates if the affinity group is able to perform virtual machine
-        * related operations. If so, the string PersistentVMRole will be
-        * returned by this element. Otherwise, this element will not be
+        * Optional. Indicates if the affinity group is able to perform virtual
+        * machine related operations. If so, the string PersistentVMRole will
+        * be returned by this element. Otherwise, this element will not be
         * present.
         * @return The Capabilities value.
         */
@@ -84,9 +84,9 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * Indicates if the affinity group is able to perform virtual machine
-        * related operations. If so, the string PersistentVMRole will be
-        * returned by this element. Otherwise, this element will not be
+        * Optional. Indicates if the affinity group is able to perform virtual
+        * machine related operations. If so, the string PersistentVMRole will
+        * be returned by this element. Otherwise, this element will not be
         * present.
         * @param capabilitiesValue The Capabilities value.
         */
@@ -97,7 +97,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String description;
         
         /**
-        * The user supplied description of this affinity group.
+        * Optional. The user supplied description of this affinity group.
         * @return The Description value.
         */
         public String getDescription() {
@@ -105,7 +105,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * The user supplied description of this affinity group.
+        * Optional. The user supplied description of this affinity group.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
@@ -115,8 +115,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String label;
         
         /**
-        * The user supplied label of the affinity group returned as a base-64
-        * encoded string.
+        * Optional. The user supplied label of the affinity group returned as a
+        * base-64 encoded string.
         * @return The Label value.
         */
         public String getLabel() {
@@ -124,8 +124,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * The user supplied label of the affinity group returned as a base-64
-        * encoded string.
+        * Optional. The user supplied label of the affinity group returned as a
+        * base-64 encoded string.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -135,8 +135,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String location;
         
         /**
-        * The user specified data center that this affinity groups is located
-        * in.
+        * Optional. The user specified data center that this affinity groups is
+        * located in.
         * @return The Location value.
         */
         public String getLocation() {
@@ -144,8 +144,8 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * The user specified data center that this affinity groups is located
-        * in.
+        * Optional. The user specified data center that this affinity groups is
+        * located in.
         * @param locationValue The Location value.
         */
         public void setLocation(final String locationValue) {
@@ -155,7 +155,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         private String name;
         
         /**
-        * The user supplied name of the affinity group.
+        * Optional. The user supplied name of the affinity group.
         * @return The Name value.
         */
         public String getName() {
@@ -163,7 +163,7 @@ public class AffinityGroupListResponse extends OperationResponse implements Iter
         }
         
         /**
-        * The user supplied name of the affinity group.
+        * Optional. The user supplied name of the affinity group.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {

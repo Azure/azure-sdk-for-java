@@ -26,7 +26,8 @@ package com.microsoft.windowsazure.management.compute;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureOSImageParameters;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineCaptureVMImageParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetRemoteDesktopFileResponse;
@@ -64,11 +65,12 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -82,7 +84,7 @@ public interface VirtualMachineOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse beginCapturing(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    OperationResponse beginCapturingOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
     
     /**
     * The Capture Role operation creates a copy of the operating system virtual
@@ -97,15 +99,54 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    Future<OperationResponse> beginCapturingAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    Future<OperationResponse> beginCapturingOSImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters);
+    
+    /**
+    * Begin capturing role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @throws ParserConfigurationException Thrown if there was an error
+    * configuring the parser for the response body.
+    * @throws SAXException Thrown if there was an error parsing the response
+    * body.
+    * @throws TransformerException Thrown if there was an error creating the
+    * DOM transformer.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    OperationResponse beginCapturingVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException;
+    
+    /**
+    * Begin capturing role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<OperationResponse> beginCapturingVMImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters);
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -122,10 +163,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -156,10 +197,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -176,9 +217,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -205,9 +246,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -218,10 +259,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -237,10 +279,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -252,9 +295,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -269,9 +313,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -282,10 +327,11 @@ public interface VirtualMachineOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -306,10 +352,11 @@ public interface VirtualMachineOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -318,10 +365,10 @@ public interface VirtualMachineOperations {
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -340,10 +387,10 @@ public interface VirtualMachineOperations {
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -354,9 +401,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -371,9 +419,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -382,9 +431,9 @@ public interface VirtualMachineOperations {
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -403,9 +452,9 @@ public interface VirtualMachineOperations {
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -417,11 +466,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -443,11 +492,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -459,10 +508,10 @@ public interface VirtualMachineOperations {
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -484,10 +533,10 @@ public interface VirtualMachineOperations {
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -506,11 +555,12 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -533,7 +583,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse capture(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    OperationStatusResponse captureOSImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
     
     /**
     * The Capture Role operation creates a copy of the operating system virtual
@@ -548,11 +598,12 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157201.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
-    * @param parameters Parameters supplied to the Capture Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -563,7 +614,61 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    Future<OperationStatusResponse> captureAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureParameters parameters);
+    Future<OperationStatusResponse> captureOSImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureOSImageParameters parameters);
+    
+    /**
+    * Capture role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @throws InterruptedException Thrown when a thread is waiting, sleeping,
+    * or otherwise occupied, and the thread is interrupted, either before or
+    * during the activity. Occasionally a method may wish to test whether the
+    * current thread has been interrupted, and if so, to immediately throw
+    * this exception. The following code can be used to achieve this effect:
+    * @throws ExecutionException Thrown when attempting to retrieve the result
+    * of a task that aborted by throwing an exception. This exception can be
+    * inspected using the Throwable.getCause() method.
+    * @throws ServiceException Thrown if the server returned an error for the
+    * request.
+    * @throws IOException Thrown if there was an error setting up tracing for
+    * the request.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    OperationStatusResponse captureVMImage(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException;
+    
+    /**
+    * Capture role as VM template.
+    *
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
+    * @param parameters Required. Parameters supplied to the Capture Virtual
+    * Machine operation.
+    * @return The response body contains the status of the specified
+    * asynchronous operation, indicating whether it has succeeded, is
+    * inprogress, or has failed. Note that this status is distinct from the
+    * HTTP status code returned for the Get Operation Status operation itself.
+    * If the asynchronous operation succeeded, the response body includes the
+    * HTTP status code for the successful request.  If the asynchronous
+    * operation failed, the response body includes the HTTP status code for
+    * the failed request, and also includes error information regarding the
+    * failure.
+    */
+    Future<OperationStatusResponse> captureVMImageAsync(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineCaptureVMImageParameters parameters);
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -580,10 +685,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -632,10 +737,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157186.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -659,9 +764,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -697,9 +802,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param parameters Parameters supplied to the Create Virtual Machine
-    * Deployment operation.
+    * @param serviceName Required. The name of your service.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Deployment operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -717,10 +822,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
@@ -753,10 +859,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157184.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to delete.
-    * @param deleteFromStorage Optional. Specifies that the source blob(s) for
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * delete.
+    * @param deleteFromStorage Required. Specifies that the source blob(s) for
     * the virtual machine should also be deleted from storage.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
@@ -776,9 +883,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -799,9 +906,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157193.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @return The Get Virtual Machine operation response.
     */
     Future<VirtualMachineGetResponse> getAsync(String serviceName, String deploymentName, String virtualMachineName);
@@ -812,9 +919,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -829,9 +936,9 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157183.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine.
     * @return The Download RDP file operation response.
     */
     Future<VirtualMachineGetRemoteDesktopFileResponse> getRemoteDesktopFileAsync(String serviceName, String deploymentName, String virtualMachineName);
@@ -841,9 +948,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -873,9 +981,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157197.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to restart.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * restart.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -893,10 +1002,11 @@ public interface VirtualMachineOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -926,10 +1036,11 @@ public interface VirtualMachineOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj157195.aspx
     * for more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to shutdown.
-    * @param parameters The parameters for the shutdown vm operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * shutdown.
+    * @param parameters Required. The parameters for the shutdown vm operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -945,10 +1056,10 @@ public interface VirtualMachineOperations {
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -976,10 +1087,10 @@ public interface VirtualMachineOperations {
     /**
     * The Shutdown Roles operation stops the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to shutdown and their
-    * post shutdown state.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to shutdown
+    * and their post shutdown state.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -997,9 +1108,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1029,9 +1141,10 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157189.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of the virtual machine to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of the virtual machine to
+    * start.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1047,9 +1160,9 @@ public interface VirtualMachineOperations {
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1077,9 +1190,9 @@ public interface VirtualMachineOperations {
     /**
     * The Start Roles operation starts the specified set of virtual machines.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters The set of virtual machine roles to start.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. The set of virtual machine roles to start.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1098,11 +1211,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -1113,8 +1226,6 @@ public interface VirtualMachineOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1125,6 +1236,8 @@ public interface VirtualMachineOperations {
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1135,7 +1248,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing
@@ -1143,11 +1256,11 @@ public interface VirtualMachineOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157187.aspx for
     * more information)
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param virtualMachineName The name of your virtual machine.
-    * @param parameters Parameters supplied to the Update Virtual Machine
-    * operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param virtualMachineName Required. The name of your virtual machine.
+    * @param parameters Required. Parameters supplied to the Update Virtual
+    * Machine operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -1166,10 +1279,10 @@ public interface VirtualMachineOperations {
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -1200,10 +1313,10 @@ public interface VirtualMachineOperations {
     * Service deployment. Non load-balanced endpoints must be changed using
     * UpdateRole.
     *
-    * @param serviceName The name of your service.
-    * @param deploymentName The name of your deployment.
-    * @param parameters Parameters supplied to the Update Load Balanced
-    * Endpoint Set operation.
+    * @param serviceName Required. The name of your service.
+    * @param deploymentName Required. The name of your deployment.
+    * @param parameters Required. Parameters supplied to the Update Load
+    * Balanced Endpoint Set operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

@@ -15,8 +15,7 @@
 
 package com.microsoft.windowsazure.core.pipeline.apache;
 
-public class ApacheConfigurationProperties
-{
+public class ApacheConfigurationProperties {
     public static final String PROPERTY_SSL_CONNECTION_SOCKET_FACTORY = "com.microsoft.windowsazure.Configuration.sslConnectionSocketFactory";
 
     public static final String PROPERTY_CONNECTION_MANAGER = "com.microsoft.windowsazure.Configuration.connectionManager";

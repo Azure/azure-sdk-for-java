@@ -20,8 +20,7 @@ import java.security.InvalidParameterException;
 /**
  * The Enum LocatorType.
  */
-public enum LocatorType
-{
+public enum LocatorType {
 
     /** The None. */
     None(0),
@@ -39,8 +38,7 @@ public enum LocatorType
      * @param locatorTypeCode
      *            the locator type code
      */
-    private LocatorType(int locatorTypeCode)
-    {
+    private LocatorType(int locatorTypeCode) {
         this.locatorTypeCode = locatorTypeCode;
     }
 
@@ -49,8 +47,7 @@ public enum LocatorType
      * 
      * @return the code
      */
-    public int getCode()
-    {
+    public int getCode() {
         return this.locatorTypeCode;
     }
 
@@ -61,10 +58,8 @@ public enum LocatorType
      *            the type
      * @return the locator type
      */
-    public static LocatorType fromCode(int type)
-    {
-        switch (type)
-        {
+    public static LocatorType fromCode(int type) {
+        switch (type) {
         case 0:
             return LocatorType.None;
         case 1:

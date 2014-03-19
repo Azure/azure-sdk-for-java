@@ -26,7 +26,7 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Parameters supplied to the Capture Virtual Machine operation.
 */
-public class VirtualMachineCaptureParameters {
+public class VirtualMachineCaptureOSImageParameters {
     private PostCaptureAction postCaptureAction;
     
     /**

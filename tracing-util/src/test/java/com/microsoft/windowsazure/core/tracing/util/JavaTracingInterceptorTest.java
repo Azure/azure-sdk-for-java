@@ -28,9 +28,9 @@ import com.microsoft.windowsazure.tracing.CloudTracing;
 
 public class JavaTracingInterceptorTest
 {
-	private ByteArrayOutputStream logContent;
-	
-	@Test
+    private ByteArrayOutputStream logContent;
+    
+    @Test
     public void testInformationSendRequest()
     {
         // Arrange

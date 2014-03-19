@@ -21,11 +21,9 @@ import com.microsoft.windowsazure.Configuration;
  * Access service functionality.
  * 
  */
-public class SchedulerService
-{
+public class SchedulerService {
 
-    private SchedulerService()
-    {
+    private SchedulerService() {
         // class is not instantiated
     }
 
@@ -33,8 +31,7 @@ public class SchedulerService
      * Creates an instance of the <code>SchedulerClient</code> API.
      * 
      */
-    public static SchedulerClient create()
-    {
+    public static SchedulerClient create() {
         return Configuration.getInstance().create(SchedulerClient.class);
     }
 
@@ -47,8 +44,7 @@ public class SchedulerService
      *            configuration for the service management.
      * 
      */
-    public static SchedulerClient create(Configuration config)
-    {
+    public static SchedulerClient create(Configuration config) {
         return config.create(SchedulerClient.class);
     }
 
@@ -60,8 +56,7 @@ public class SchedulerService
      *            the service management service.
      * 
      */
-    public static SchedulerClient create(String profile)
-    {
+    public static SchedulerClient create(String profile) {
         return Configuration.getInstance().create(profile,
                 SchedulerClient.class);
     }
@@ -75,8 +70,7 @@ public class SchedulerService
      *            configuration for the service management.
      * 
      */
-    public static SchedulerClient create(String profile, Configuration config)
-    {
+    public static SchedulerClient create(String profile, Configuration config) {
         return config.create(profile, SchedulerClient.class);
     }
 }

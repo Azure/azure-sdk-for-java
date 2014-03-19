@@ -24,8 +24,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ODataActionType
-{
+public class ODataActionType {
 
     @XmlAttribute(required = true)
     protected String metadata;
@@ -41,8 +40,7 @@ public class ODataActionType
      * 
      * @return the metadata
      */
-    public String getMetadata()
-    {
+    public String getMetadata() {
         return metadata;
     }
 
@@ -51,8 +49,7 @@ public class ODataActionType
      * 
      * @param metadata
      */
-    public void setMetadata(String metadata)
-    {
+    public void setMetadata(String metadata) {
         this.metadata = metadata;
     }
 
@@ -61,8 +58,7 @@ public class ODataActionType
      * 
      * @return the target
      */
-    public String getTarget()
-    {
+    public String getTarget() {
         return target;
     }
 
@@ -71,8 +67,7 @@ public class ODataActionType
      * 
      * @param target
      */
-    public void setTarget(String target)
-    {
+    public void setTarget(String target) {
         this.target = target;
     }
 
@@ -81,8 +76,7 @@ public class ODataActionType
      * 
      * @return the title
      */
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
@@ -91,8 +85,7 @@ public class ODataActionType
      * 
      * @param title
      */
-    public void setTitle(String title)
-    {
+    public void setTitle(String title) {
         this.title = title;
     }
 }

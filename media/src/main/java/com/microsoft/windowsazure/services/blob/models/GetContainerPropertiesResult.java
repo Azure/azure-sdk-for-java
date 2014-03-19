@@ -35,8 +35,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Container Metadata</a> documentation on MSDN for details of the underlying
  * Blob Service REST API operations.
  */
-public class GetContainerPropertiesResult
-{
+public class GetContainerPropertiesResult {
     private String etag;
     private Date lastModified;
     private HashMap<String, String> metadata;
@@ -49,8 +48,7 @@ public class GetContainerPropertiesResult
      * @return A {@link String} containing the server-assigned Etag value for
      *         the container.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -65,8 +63,7 @@ public class GetContainerPropertiesResult
      *            A {@link String} containing the server-assigned Etag value for
      *            the container.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -79,8 +76,7 @@ public class GetContainerPropertiesResult
      * @return A {@link java.util.Date} containing the last modified time of the
      *         container.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -95,8 +91,7 @@ public class GetContainerPropertiesResult
      *            A {@link java.util.Date} containing the last modified time of
      *            the container.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -107,8 +102,7 @@ public class GetContainerPropertiesResult
      * @return A {@link java.util.HashMap} of key-value pairs of {@link String}
      *         containing the names and values of the container metadata.
      */
-    public HashMap<String, String> getMetadata()
-    {
+    public HashMap<String, String> getMetadata() {
         return metadata;
     }
 
@@ -124,8 +118,7 @@ public class GetContainerPropertiesResult
      *            {@link String} containing the names and values of the
      *            container metadata.
      */
-    public void setMetadata(HashMap<String, String> metadata)
-    {
+    public void setMetadata(HashMap<String, String> metadata) {
         this.metadata = metadata;
     }
 }

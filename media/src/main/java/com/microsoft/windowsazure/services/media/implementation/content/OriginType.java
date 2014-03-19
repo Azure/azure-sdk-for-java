@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OriginType implements MediaServiceDTO
-{
+public class OriginType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -71,8 +70,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return this.id;
     }
 
@@ -83,8 +81,7 @@ public class OriginType implements MediaServiceDTO
      *            the id
      * @return the origin type
      */
-    public OriginType setId(String id)
-    {
+    public OriginType setId(String id) {
         this.id = id;
         return this;
     }
@@ -94,8 +91,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -106,8 +102,7 @@ public class OriginType implements MediaServiceDTO
      *            the name to set
      * @return the origin type
      */
-    public OriginType setName(String name)
-    {
+    public OriginType setName(String name) {
         this.name = name;
         return this;
     }
@@ -117,8 +112,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
@@ -129,8 +123,7 @@ public class OriginType implements MediaServiceDTO
      *            the description
      * @return the origin type
      */
-    public OriginType setDescription(String description)
-    {
+    public OriginType setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -140,8 +133,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the host name
      */
-    public String getHostName()
-    {
+    public String getHostName() {
         return hostName;
     }
 
@@ -152,8 +144,7 @@ public class OriginType implements MediaServiceDTO
      *            name the host name to set
      * @return the origin type
      */
-    public OriginType setHostName(String hostName)
-    {
+    public OriginType setHostName(String hostName) {
         this.hostName = hostName;
         return this;
     }
@@ -163,8 +154,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return created;
     }
 
@@ -175,8 +165,7 @@ public class OriginType implements MediaServiceDTO
      *            the created
      * @return the origin type
      */
-    public OriginType setCreated(Date created)
-    {
+    public OriginType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -186,8 +175,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the lastModified
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -198,8 +186,7 @@ public class OriginType implements MediaServiceDTO
      *            the last modified
      * @return the origin type
      */
-    public OriginType setLastModified(Date lastModified)
-    {
+    public OriginType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -211,8 +198,7 @@ public class OriginType implements MediaServiceDTO
      *            the state
      * @return the origin type
      */
-    public OriginType setState(String state)
-    {
+    public OriginType setState(String state) {
         this.state = state;
         return this;
     }
@@ -222,8 +208,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the state
      */
-    public String getState()
-    {
+    public String getState() {
         return this.state;
     }
 
@@ -234,8 +219,7 @@ public class OriginType implements MediaServiceDTO
      *            the reserved units
      * @return the origin type
      */
-    public OriginType setReservedUnits(int reservedUnits)
-    {
+    public OriginType setReservedUnits(int reservedUnits) {
         this.reservedUnits = reservedUnits;
         return this;
     }
@@ -245,8 +229,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the reserved units
      */
-    public int getReservedUnits()
-    {
+    public int getReservedUnits() {
         return this.reservedUnits;
     }
 
@@ -255,8 +238,7 @@ public class OriginType implements MediaServiceDTO
      * 
      * @return the settings
      */
-    public String getSettings()
-    {
+    public String getSettings() {
         return this.settings;
     }
 
@@ -267,8 +249,7 @@ public class OriginType implements MediaServiceDTO
      *            the settings
      * @return the origin type
      */
-    public OriginType setSettings(String settings)
-    {
+    public OriginType setSettings(String settings) {
         this.settings = settings;
         return this;
     }

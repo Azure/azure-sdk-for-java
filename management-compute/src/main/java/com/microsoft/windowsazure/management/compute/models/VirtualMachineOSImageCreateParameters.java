@@ -29,7 +29,7 @@ import java.util.Calendar;
 /**
 * Parameters supplied to the Create Virtual Machine Image operation.
 */
-public class VirtualMachineImageCreateParameters {
+public class VirtualMachineOSImageCreateParameters {
     private String description;
     
     /**
@@ -111,8 +111,8 @@ public class VirtualMachineImageCreateParameters {
     private boolean isPremium;
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Required. Indicates if the image contains software or associated services
+    * that will incur charges above the core price for the virtual machine.
     * @return The IsPremium value.
     */
     public boolean isPremium() {
@@ -120,8 +120,8 @@ public class VirtualMachineImageCreateParameters {
     }
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Required. Indicates if the image contains software or associated services
+    * that will incur charges above the core price for the virtual machine.
     * @param isPremiumValue The IsPremium value.
     */
     public void setIsPremium(final boolean isPremiumValue) {
@@ -149,8 +149,8 @@ public class VirtualMachineImageCreateParameters {
     private String language;
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
     public String getLanguage() {
@@ -158,8 +158,8 @@ public class VirtualMachineImageCreateParameters {
     }
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
     public void setLanguage(final String languageValue) {
@@ -293,7 +293,7 @@ public class VirtualMachineImageCreateParameters {
     private boolean showInGui;
     
     /**
-    * Specifies whether the image should appear in the image gallery.
+    * Required. Specifies whether the image should appear in the image gallery.
     * @return The ShowInGui value.
     */
     public boolean isShowInGui() {
@@ -301,7 +301,7 @@ public class VirtualMachineImageCreateParameters {
     }
     
     /**
-    * Specifies whether the image should appear in the image gallery.
+    * Required. Specifies whether the image should appear in the image gallery.
     * @param showInGuiValue The ShowInGui value.
     */
     public void setShowInGui(final boolean showInGuiValue) {
@@ -311,9 +311,10 @@ public class VirtualMachineImageCreateParameters {
     private URI smallIconUri;
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -321,9 +322,10 @@ public class VirtualMachineImageCreateParameters {
     }
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

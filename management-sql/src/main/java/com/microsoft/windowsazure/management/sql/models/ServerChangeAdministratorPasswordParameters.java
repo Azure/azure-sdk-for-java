@@ -30,7 +30,7 @@ public class ServerChangeAdministratorPasswordParameters {
     private String newPassword;
     
     /**
-    * Gets or sets new password for the administrator.
+    * Required. Gets or sets new password for the administrator.
     * @return The NewPassword value.
     */
     public String getNewPassword() {
@@ -38,7 +38,7 @@ public class ServerChangeAdministratorPasswordParameters {
     }
     
     /**
-    * Gets or sets new password for the administrator.
+    * Required. Gets or sets new password for the administrator.
     * @param newPasswordValue The NewPassword value.
     */
     public void setNewPassword(final String newPasswordValue) {

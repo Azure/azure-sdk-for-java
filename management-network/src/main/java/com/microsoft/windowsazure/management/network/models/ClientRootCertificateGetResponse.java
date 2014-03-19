@@ -32,7 +32,7 @@ public class ClientRootCertificateGetResponse extends OperationResponse {
     private String certificate;
     
     /**
-    * The current client root certificate for the network gateway.
+    * Optional. The current client root certificate for the network gateway.
     * @return The Certificate value.
     */
     public String getCertificate() {
@@ -40,7 +40,7 @@ public class ClientRootCertificateGetResponse extends OperationResponse {
     }
     
     /**
-    * The current client root certificate for the network gateway.
+    * Optional. The current client root certificate for the network gateway.
     * @param certificateValue The Certificate value.
     */
     public void setCertificate(final String certificateValue) {

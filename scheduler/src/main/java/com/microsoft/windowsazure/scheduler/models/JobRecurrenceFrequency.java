@@ -24,20 +24,19 @@
 package com.microsoft.windowsazure.scheduler.models;
 
 /**
-* The frequency of recurrence. Must be one of: minute, hour, day, week, month,
-* year.
-*/
-public enum JobRecurrenceFrequency
-{
+ * The frequency of recurrence. Must be one of: minute, hour, day, week, month,
+ * year.
+ */
+public enum JobRecurrenceFrequency {
     Minute,
-    
+
     Hour,
-    
+
     Day,
-    
+
     Week,
-    
+
     Month,
-    
+
     Year,
 }

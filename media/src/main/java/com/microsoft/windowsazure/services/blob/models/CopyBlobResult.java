@@ -29,8 +29,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * >Copy Blob</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class CopyBlobResult
-{
+public class CopyBlobResult {
     private String etag;
     private Date lastModified;
 
@@ -40,8 +39,7 @@ public class CopyBlobResult
      * @return A {@link String} containing the server-assigned ETag value for
      *         the copy blob.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -56,8 +54,7 @@ public class CopyBlobResult
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -68,8 +65,7 @@ public class CopyBlobResult
      * @return A {@link java.util.Date} containing the last modified time of the
      *         blob.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -84,8 +80,7 @@ public class CopyBlobResult
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 }

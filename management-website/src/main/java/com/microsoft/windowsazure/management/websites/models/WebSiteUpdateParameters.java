@@ -32,9 +32,9 @@ public class WebSiteUpdateParameters {
     private WebSpaceAvailabilityState availabilityState;
     
     /**
-    * The state of the availability of management information for the site.
-    * Possible values are Normal or Limited. Normal means that the site is
-    * running correctly and that management information for the site is
+    * Optional. The state of the availability of management information for the
+    * site. Possible values are Normal or Limited. Normal means that the site
+    * is running correctly and that management information for the site is
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     * @return The AvailabilityState value.
@@ -44,9 +44,9 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * The state of the availability of management information for the site.
-    * Possible values are Normal or Limited. Normal means that the site is
-    * running correctly and that management information for the site is
+    * Optional. The state of the availability of management information for the
+    * site. Possible values are Normal or Limited. Normal means that the site
+    * is running correctly and that management information for the site is
     * available. Limited means that only partial management information for
     * the site is available and that detailed site information is unavailable.
     * @param availabilityStateValue The AvailabilityState value.
@@ -58,8 +58,8 @@ public class WebSiteUpdateParameters {
     private WebSiteComputeMode computeMode;
     
     /**
-    * The Compute Mode for the web site. Possible values are Shared or
-    * Dedicated.
+    * Optional. The Compute Mode for the web site. Possible values are Shared
+    * or Dedicated.
     * @return The ComputeMode value.
     */
     public WebSiteComputeMode getComputeMode() {
@@ -67,8 +67,8 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * The Compute Mode for the web site. Possible values are Shared or
-    * Dedicated.
+    * Optional. The Compute Mode for the web site. Possible values are Shared
+    * or Dedicated.
     * @param computeModeValue The ComputeMode value.
     */
     public void setComputeMode(final WebSiteComputeMode computeModeValue) {
@@ -78,8 +78,8 @@ public class WebSiteUpdateParameters {
     private Boolean enabled;
     
     /**
-    * true if the site is enabled; otherwise, false. Setting this value to
-    * false disables the site (takes the site off line).
+    * Optional. true if the site is enabled; otherwise, false. Setting this
+    * value to false disables the site (takes the site off line).
     * @return The Enabled value.
     */
     public Boolean isEnabled() {
@@ -87,8 +87,8 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * true if the site is enabled; otherwise, false. Setting this value to
-    * false disables the site (takes the site off line).
+    * Optional. true if the site is enabled; otherwise, false. Setting this
+    * value to false disables the site (takes the site off line).
     * @param enabledValue The Enabled value.
     */
     public void setEnabled(final Boolean enabledValue) {
@@ -98,12 +98,12 @@ public class WebSiteUpdateParameters {
     private ArrayList<String> hostNames;
     
     /**
-    * An array of strings that contains the public hostnames for the site,
-    * including custom domains. Important: When you add a custom domain in a
-    * PUT operation, be sure to include every hostname that you want for the
-    * web site. To delete a custom domain name in a PUT operation, include all
-    * of the hostnames for the site that you want to keep, but leave out the
-    * one that you wangt to delete.
+    * Optional. An array of strings that contains the public hostnames for the
+    * site, including custom domains. Important: When you add a custom domain
+    * in a PUT operation, be sure to include every hostname that you want for
+    * the web site. To delete a custom domain name in a PUT operation, include
+    * all of the hostnames for the site that you want to keep, but leave out
+    * the one that you wangt to delete.
     * @return The HostNames value.
     */
     public ArrayList<String> getHostNames() {
@@ -111,12 +111,12 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * An array of strings that contains the public hostnames for the site,
-    * including custom domains. Important: When you add a custom domain in a
-    * PUT operation, be sure to include every hostname that you want for the
-    * web site. To delete a custom domain name in a PUT operation, include all
-    * of the hostnames for the site that you want to keep, but leave out the
-    * one that you wangt to delete.
+    * Optional. An array of strings that contains the public hostnames for the
+    * site, including custom domains. Important: When you add a custom domain
+    * in a PUT operation, be sure to include every hostname that you want for
+    * the web site. To delete a custom domain name in a PUT operation, include
+    * all of the hostnames for the site that you want to keep, but leave out
+    * the one that you wangt to delete.
     * @param hostNamesValue The HostNames value.
     */
     public void setHostNames(final ArrayList<String> hostNamesValue) {
@@ -126,7 +126,7 @@ public class WebSiteUpdateParameters {
     private ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStates;
     
     /**
-    * SSL states bound to the website.
+    * Optional. SSL states bound to the website.
     * @return The HostNameSslStates value.
     */
     public ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> getHostNameSslStates() {
@@ -134,7 +134,7 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * SSL states bound to the website.
+    * Optional. SSL states bound to the website.
     * @param hostNameSslStatesValue The HostNameSslStates value.
     */
     public void setHostNameSslStates(final ArrayList<WebSiteUpdateParameters.WebSiteHostNameSslState> hostNameSslStatesValue) {
@@ -144,11 +144,11 @@ public class WebSiteUpdateParameters {
     private WebSiteRuntimeAvailabilityState runtimeAvailabilityState;
     
     /**
-    * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
-    * site is running correctly. Degraded: the web site is running temporarily
-    * in a degraded mode (typically with less memory and a shared instance.)
-    * Not Available: due to an unexpected issue, the site has been excluded
-    * from provisioning. This typically occurs only for free sites.
+    * Optional. Possible values are Normal, Degraded, or NotAvailable. Normal:
+    * the web site is running correctly. Degraded: the web site is running
+    * temporarily in a degraded mode (typically with less memory and a shared
+    * instance.) Not Available: due to an unexpected issue, the site has been
+    * excluded from provisioning. This typically occurs only for free sites.
     * @return The RuntimeAvailabilityState value.
     */
     public WebSiteRuntimeAvailabilityState getRuntimeAvailabilityState() {
@@ -156,11 +156,11 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * Possible values are Normal, Degraded, or NotAvailable. Normal: the web
-    * site is running correctly. Degraded: the web site is running temporarily
-    * in a degraded mode (typically with less memory and a shared instance.)
-    * Not Available: due to an unexpected issue, the site has been excluded
-    * from provisioning. This typically occurs only for free sites.
+    * Optional. Possible values are Normal, Degraded, or NotAvailable. Normal:
+    * the web site is running correctly. Degraded: the web site is running
+    * temporarily in a degraded mode (typically with less memory and a shared
+    * instance.) Not Available: due to an unexpected issue, the site has been
+    * excluded from provisioning. This typically occurs only for free sites.
     * @param runtimeAvailabilityStateValue The RuntimeAvailabilityState value.
     */
     public void setRuntimeAvailabilityState(final WebSiteRuntimeAvailabilityState runtimeAvailabilityStateValue) {
@@ -170,7 +170,8 @@ public class WebSiteUpdateParameters {
     private String serverFarm;
     
     /**
-    * String. If a server farm exists, this value is DefaultServerFarm.
+    * Optional. String. If a server farm exists, this value is
+    * DefaultServerFarm.
     * @return The ServerFarm value.
     */
     public String getServerFarm() {
@@ -178,7 +179,8 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * String. If a server farm exists, this value is DefaultServerFarm.
+    * Optional. String. If a server farm exists, this value is
+    * DefaultServerFarm.
     * @param serverFarmValue The ServerFarm value.
     */
     public void setServerFarm(final String serverFarmValue) {
@@ -188,10 +190,10 @@ public class WebSiteUpdateParameters {
     private WebSiteMode siteMode;
     
     /**
-    * String that represents the web site mode. If the web site mode is Free,
-    * this value is Limited. If the web site mode is Shared, this value is
-    * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
-    * mode uses the ComputeMode setting.
+    * Optional. String that represents the web site mode. If the web site mode
+    * is Free, this value is Limited. If the web site mode is Shared, this
+    * value is Basic.  Note: The SiteMode value is not used for Reserved mode.
+    * Reserved mode uses the ComputeMode setting.
     * @return The SiteMode value.
     */
     public WebSiteMode getSiteMode() {
@@ -199,10 +201,10 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * String that represents the web site mode. If the web site mode is Free,
-    * this value is Limited. If the web site mode is Shared, this value is
-    * Basic.  Note: The SiteMode value is not used for Reserved mode. Reserved
-    * mode uses the ComputeMode setting.
+    * Optional. String that represents the web site mode. If the web site mode
+    * is Free, this value is Limited. If the web site mode is Shared, this
+    * value is Basic.  Note: The SiteMode value is not used for Reserved mode.
+    * Reserved mode uses the ComputeMode setting.
     * @param siteModeValue The SiteMode value.
     */
     public void setSiteMode(final WebSiteMode siteModeValue) {
@@ -212,7 +214,7 @@ public class WebSiteUpdateParameters {
     private ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificates;
     
     /**
-    * SSL certificates bound to the web site.
+    * Optional. SSL certificates bound to the web site.
     * @return The SslCertificates value.
     */
     public ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> getSslCertificates() {
@@ -220,7 +222,7 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * SSL certificates bound to the web site.
+    * Optional. SSL certificates bound to the web site.
     * @param sslCertificatesValue The SslCertificates value.
     */
     public void setSslCertificates(final ArrayList<WebSiteUpdateParameters.WebSiteSslCertificate> sslCertificatesValue) {
@@ -230,8 +232,8 @@ public class WebSiteUpdateParameters {
     private String state;
     
     /**
-    * A string that describes the state of the web site. Possible values
-    * include Stopped, Running or QuotaExceeded.
+    * Optional. A string that describes the state of the web site. Possible
+    * values include Stopped, Running or QuotaExceeded.
     * @return The State value.
     */
     public String getState() {
@@ -239,8 +241,8 @@ public class WebSiteUpdateParameters {
     }
     
     /**
-    * A string that describes the state of the web site. Possible values
-    * include Stopped, Running or QuotaExceeded.
+    * Optional. A string that describes the state of the web site. Possible
+    * values include Stopped, Running or QuotaExceeded.
     * @param stateValue The State value.
     */
     public void setState(final String stateValue) {
@@ -264,7 +266,7 @@ public class WebSiteUpdateParameters {
         private WebSiteSslState sslState;
         
         /**
-        * The SSL state. Possible values are Disabled, SniEnabled, or
+        * Optional. The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         * @return The SslState value.
         */
@@ -273,7 +275,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * The SSL state. Possible values are Disabled, SniEnabled, or
+        * Optional. The SSL state. Possible values are Disabled, SniEnabled, or
         * IpBasedEnabled.
         * @param sslStateValue The SslState value.
         */
@@ -284,7 +286,8 @@ public class WebSiteUpdateParameters {
         private String thumbprint;
         
         /**
-        * A string that contains the thumbprint of the SSL certificate.
+        * Optional. A string that contains the thumbprint of the SSL
+        * certificate.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -292,7 +295,8 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * A string that contains the thumbprint of the SSL certificate.
+        * Optional. A string that contains the thumbprint of the SSL
+        * certificate.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {
@@ -302,6 +306,7 @@ public class WebSiteUpdateParameters {
         private Boolean toUpdate;
         
         /**
+        * Optional.
         * @return The ToUpdate value.
         */
         public Boolean isToUpdate() {
@@ -309,6 +314,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
+        * Optional.
         * @param toUpdateValue The ToUpdate value.
         */
         public void setToUpdate(final Boolean toUpdateValue) {
@@ -323,7 +329,7 @@ public class WebSiteUpdateParameters {
         private Boolean isToBeDeleted;
         
         /**
-        * Boolean. true if the certificate is to be deleted.
+        * Optional. Boolean. true if the certificate is to be deleted.
         * @return The IsToBeDeleted value.
         */
         public Boolean isToBeDeleted() {
@@ -331,7 +337,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * Boolean. true if the certificate is to be deleted.
+        * Optional. Boolean. true if the certificate is to be deleted.
         * @param isToBeDeletedValue The IsToBeDeleted value.
         */
         public void setIsToBeDeleted(final Boolean isToBeDeletedValue) {
@@ -341,7 +347,7 @@ public class WebSiteUpdateParameters {
         private String password;
         
         /**
-        * A string that contains the password for the certificate.
+        * Optional. A string that contains the password for the certificate.
         * @return The Password value.
         */
         public String getPassword() {
@@ -349,7 +355,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * A string that contains the password for the certificate.
+        * Optional. A string that contains the password for the certificate.
         * @param passwordValue The Password value.
         */
         public void setPassword(final String passwordValue) {
@@ -359,7 +365,8 @@ public class WebSiteUpdateParameters {
         private byte[] pfxBlob;
         
         /**
-        * A base64Binary value that contains the PfxBlob of the certificate.
+        * Optional. A base64Binary value that contains the PfxBlob of the
+        * certificate.
         * @return The PfxBlob value.
         */
         public byte[] getPfxBlob() {
@@ -367,7 +374,8 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * A base64Binary value that contains the PfxBlob of the certificate.
+        * Optional. A base64Binary value that contains the PfxBlob of the
+        * certificate.
         * @param pfxBlobValue The PfxBlob value.
         */
         public void setPfxBlob(final byte[] pfxBlobValue) {
@@ -377,7 +385,7 @@ public class WebSiteUpdateParameters {
         private String thumbprint;
         
         /**
-        * A string that contains the certificate thumbprint.
+        * Optional. A string that contains the certificate thumbprint.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -385,7 +393,7 @@ public class WebSiteUpdateParameters {
         }
         
         /**
-        * A string that contains the certificate thumbprint.
+        * Optional. A string that contains the certificate thumbprint.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {

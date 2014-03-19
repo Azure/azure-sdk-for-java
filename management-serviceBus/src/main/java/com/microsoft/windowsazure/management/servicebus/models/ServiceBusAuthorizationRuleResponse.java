@@ -32,7 +32,7 @@ public class ServiceBusAuthorizationRuleResponse extends OperationResponse {
     private ServiceBusSharedAccessAuthorizationRule authorizationRule;
     
     /**
-    * The requested authorization rule.
+    * Optional. The requested authorization rule.
     * @return The AuthorizationRule value.
     */
     public ServiceBusSharedAccessAuthorizationRule getAuthorizationRule() {
@@ -40,7 +40,7 @@ public class ServiceBusAuthorizationRuleResponse extends OperationResponse {
     }
     
     /**
-    * The requested authorization rule.
+    * Optional. The requested authorization rule.
     * @param authorizationRuleValue The AuthorizationRule value.
     */
     public void setAuthorizationRule(final ServiceBusSharedAccessAuthorizationRule authorizationRuleValue) {

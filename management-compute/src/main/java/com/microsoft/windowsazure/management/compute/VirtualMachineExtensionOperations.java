@@ -83,8 +83,8 @@ public interface VirtualMachineExtensionOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
     * for more information)
     *
-    * @param publisherName The name of the publisher.
-    * @param extensionName The name of the extension.
+    * @param publisherName Required. The name of the publisher.
+    * @param extensionName Required. The name of the extension.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -93,9 +93,11 @@ public interface VirtualMachineExtensionOperations {
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The List Resource Extensions operation response.
     */
-    VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException;
     
     /**
     * The List Resource Extension Versions operation lists the versions of a
@@ -106,8 +108,8 @@ public interface VirtualMachineExtensionOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
     * for more information)
     *
-    * @param publisherName The name of the publisher.
-    * @param extensionName The name of the extension.
+    * @param publisherName Required. The name of the publisher.
+    * @param extensionName Required. The name of the extension.
     * @return The List Resource Extensions operation response.
     */
     Future<VirtualMachineExtensionListResponse> listVersionsAsync(String publisherName, String extensionName);

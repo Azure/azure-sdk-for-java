@@ -22,13 +22,11 @@ import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class ApacheConfigSettings
-{
+public class ApacheConfigSettings {
     private final String profile;
     private final Map<String, Object> properties;
 
-    public ApacheConfigSettings(String profile, Map<String, Object> properties)
-    {
+    public ApacheConfigSettings(String profile, Map<String, Object> properties) {
         this.profile = profile;
         this.properties = properties;
     }
@@ -41,12 +39,10 @@ public class ApacheConfigSettings
      *            The object to update.
      * @return The updates httpClientBuilder
      */
-    public HttpClientBuilder applyConfig(HttpClientBuilder httpClientBuilder)
-    {
+    public HttpClientBuilder applyConfig(HttpClientBuilder httpClientBuilder) {
         if (properties
                 .containsKey(profile
-                        + ApacheConfigurationProperties.PROPERTY_SSL_CONNECTION_SOCKET_FACTORY))
-        {
+                        + ApacheConfigurationProperties.PROPERTY_SSL_CONNECTION_SOCKET_FACTORY)) {
             httpClientBuilder
                     .setSSLSocketFactory((LayeredConnectionSocketFactory) properties
                             .get(profile
@@ -54,8 +50,7 @@ public class ApacheConfigSettings
         }
 
         if (properties.containsKey(profile
-                + ApacheConfigurationProperties.PROPERTY_CONNECTION_MANAGER))
-        {
+                + ApacheConfigurationProperties.PROPERTY_CONNECTION_MANAGER)) {
             httpClientBuilder
                     .setConnectionManager((HttpClientConnectionManager) properties
                             .get(profile
@@ -63,16 +58,14 @@ public class ApacheConfigSettings
         }
 
         if (properties.containsKey(profile
-                + ApacheConfigurationProperties.PROPERTY_PROXY_URI))
-        {
+                + ApacheConfigurationProperties.PROPERTY_PROXY_URI)) {
             httpClientBuilder
                     .setProxy(new HttpHost((String) properties.get(profile
                             + ApacheConfigurationProperties.PROPERTY_PROXY_URI)));
         }
 
         if (properties.containsKey(profile
-                + ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER))
-        {
+                + ApacheConfigurationProperties.PROPERTY_RETRY_HANDLER)) {
             httpClientBuilder
                     .setRetryHandler((HttpRequestRetryHandler) properties
                             .get(profile
@@ -80,8 +73,7 @@ public class ApacheConfigSettings
         }
 
         if (properties.containsKey(profile
-                + ApacheConfigurationProperties.PROPERTY_HTTP_CLIENT_BUILDER))
-        {
+                + ApacheConfigurationProperties.PROPERTY_HTTP_CLIENT_BUILDER)) {
             return (HttpClientBuilder) properties
                     .get(profile
                             + ApacheConfigurationProperties.PROPERTY_HTTP_CLIENT_BUILDER);

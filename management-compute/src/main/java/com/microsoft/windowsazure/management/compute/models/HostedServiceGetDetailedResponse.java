@@ -35,7 +35,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     private ArrayList<HostedServiceGetDetailedResponse.Deployment> deployments;
     
     /**
-    * The deployments that exist in the cloud service.
+    * Optional. The deployments that exist in the cloud service.
     * @return The Deployments value.
     */
     public ArrayList<HostedServiceGetDetailedResponse.Deployment> getDeployments() {
@@ -43,7 +43,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
     }
     
     /**
-    * The deployments that exist in the cloud service.
+    * Optional. The deployments that exist in the cloud service.
     * @param deploymentsValue The Deployments value.
     */
     public void setDeployments(final ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentsValue) {
@@ -66,7 +66,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String configuration;
         
         /**
-        * The configuration file of the deployment.
+        * Optional. The configuration file of the deployment.
         * @return The Configuration value.
         */
         public String getConfiguration() {
@@ -74,7 +74,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The configuration file of the deployment.
+        * Optional. The configuration file of the deployment.
         * @param configurationValue The Configuration value.
         */
         public void setConfiguration(final String configurationValue) {
@@ -84,7 +84,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private Calendar createdTime;
         
         /**
-        * The time that the deployment was created.
+        * Optional. The time that the deployment was created.
         * @return The CreatedTime value.
         */
         public Calendar getCreatedTime() {
@@ -92,7 +92,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The time that the deployment was created.
+        * Optional. The time that the deployment was created.
         * @param createdTimeValue The CreatedTime value.
         */
         public void setCreatedTime(final Calendar createdTimeValue) {
@@ -102,7 +102,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private DeploymentSlot deploymentSlot;
         
         /**
-        * The deployment environment in which this deployment is running.
+        * Optional. The deployment environment in which this deployment is
+        * running.
         * @return The DeploymentSlot value.
         */
         public DeploymentSlot getDeploymentSlot() {
@@ -110,7 +111,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The deployment environment in which this deployment is running.
+        * Optional. The deployment environment in which this deployment is
+        * running.
         * @param deploymentSlotValue The DeploymentSlot value.
         */
         public void setDeploymentSlot(final DeploymentSlot deploymentSlotValue) {
@@ -120,7 +122,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private DnsSettings dnsSettings;
         
         /**
-        * The custom DNS settings that are specified for deployment.
+        * Optional. The custom DNS settings that are specified for deployment.
         * @return The DnsSettings value.
         */
         public DnsSettings getDnsSettings() {
@@ -128,7 +130,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The custom DNS settings that are specified for deployment.
+        * Optional. The custom DNS settings that are specified for deployment.
         * @param dnsSettingsValue The DnsSettings value.
         */
         public void setDnsSettings(final DnsSettings dnsSettingsValue) {
@@ -174,8 +176,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String label;
         
         /**
-        * The user-supplied name of the deployment. This name can be used
-        * identify the deployment for your tracking purposes.
+        * Optional. The user-supplied name of the deployment. This name can be
+        * used identify the deployment for your tracking purposes.
         * @return The Label value.
         */
         public String getLabel() {
@@ -183,8 +185,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The user-supplied name of the deployment. This name can be used
-        * identify the deployment for your tracking purposes.
+        * Optional. The user-supplied name of the deployment. This name can be
+        * used identify the deployment for your tracking purposes.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -194,7 +196,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String lastModifiedTime;
         
         /**
-        * The last time that the deployment was modified.
+        * Optional. The last time that the deployment was modified.
         * @return The LastModifiedTime value.
         */
         public String getLastModifiedTime() {
@@ -202,7 +204,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The last time that the deployment was modified.
+        * Optional. The last time that the deployment was modified.
         * @param lastModifiedTimeValue The LastModifiedTime value.
         */
         public void setLastModifiedTime(final String lastModifiedTimeValue) {
@@ -212,9 +214,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private boolean locked;
         
         /**
-        * Indicates whether the deployment is locked for new write operations.
-        * True if the deployment is locked because an existing operation is
-        * updating the deployment; otherwise false.
+        * Optional. Indicates whether the deployment is locked for new write
+        * operations. True if the deployment is locked because an existing
+        * operation is updating the deployment; otherwise false.
         * @return The Locked value.
         */
         public boolean isLocked() {
@@ -222,9 +224,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Indicates whether the deployment is locked for new write operations.
-        * True if the deployment is locked because an existing operation is
-        * updating the deployment; otherwise false.
+        * Optional. Indicates whether the deployment is locked for new write
+        * operations. True if the deployment is locked because an existing
+        * operation is updating the deployment; otherwise false.
         * @param lockedValue The Locked value.
         */
         public void setLocked(final boolean lockedValue) {
@@ -234,6 +236,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String name;
         
         /**
+        * Optional.
         * @return The Name value.
         */
         public String getName() {
@@ -241,6 +244,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
+        * Optional.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -250,8 +254,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private PersistentVMDowntime persistentVMDowntime;
         
         /**
-        * Specifies information about when the virtual machine has been started
-        * and stopped.
+        * Optional. Specifies information about when the virtual machine has
+        * been started and stopped.
         * @return The PersistentVMDowntime value.
         */
         public PersistentVMDowntime getPersistentVMDowntime() {
@@ -259,8 +263,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Specifies information about when the virtual machine has been started
-        * and stopped.
+        * Optional. Specifies information about when the virtual machine has
+        * been started and stopped.
         * @param persistentVMDowntimeValue The PersistentVMDowntime value.
         */
         public void setPersistentVMDowntime(final PersistentVMDowntime persistentVMDowntimeValue) {
@@ -270,7 +274,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String privateId;
         
         /**
-        * The unique identifier for this deployment.
+        * Optional. The unique identifier for this deployment.
         * @return The PrivateId value.
         */
         public String getPrivateId() {
@@ -278,7 +282,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The unique identifier for this deployment.
+        * Optional. The unique identifier for this deployment.
         * @param privateIdValue The PrivateId value.
         */
         public void setPrivateId(final String privateIdValue) {
@@ -288,7 +292,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private ArrayList<RoleInstance> roleInstances;
         
         /**
-        * The list of role instances in the deployment.
+        * Optional. The list of role instances in the deployment.
         * @return The RoleInstances value.
         */
         public ArrayList<RoleInstance> getRoleInstances() {
@@ -296,7 +300,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The list of role instances in the deployment.
+        * Optional. The list of role instances in the deployment.
         * @param roleInstancesValue The RoleInstances value.
         */
         public void setRoleInstances(final ArrayList<RoleInstance> roleInstancesValue) {
@@ -306,7 +310,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private ArrayList<Role> roles;
         
         /**
-        * The list of roles in the deployment.
+        * Optional. The list of roles in the deployment.
         * @return The Roles value.
         */
         public ArrayList<Role> getRoles() {
@@ -314,7 +318,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The list of roles in the deployment.
+        * Optional. The list of roles in the deployment.
         * @param rolesValue The Roles value.
         */
         public void setRoles(final ArrayList<Role> rolesValue) {
@@ -324,8 +328,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private boolean rollbackAllowed;
         
         /**
-        * Indicates whether the Rollback Update Or Upgrade operation is allowed
-        * at this time. True if the operation is allowed; otherwise false.
+        * Optional. Indicates whether the Rollback Update Or Upgrade operation
+        * is allowed at this time. True if the operation is allowed; otherwise
+        * false.
         * @return The RollbackAllowed value.
         */
         public boolean isRollbackAllowed() {
@@ -333,8 +338,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Indicates whether the Rollback Update Or Upgrade operation is allowed
-        * at this time. True if the operation is allowed; otherwise false.
+        * Optional. Indicates whether the Rollback Update Or Upgrade operation
+        * is allowed at this time. True if the operation is allowed; otherwise
+        * false.
         * @param rollbackAllowedValue The RollbackAllowed value.
         */
         public void setRollbackAllowed(final boolean rollbackAllowedValue) {
@@ -344,10 +350,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String sdkVersion;
         
         /**
-        * The version of the Windows Azure SDK that was used to generate the
-        * .cspkg that created this deployment.  The first two numerical
-        * components of the returned version represent the version of the SDK
-        * used to create the package.
+        * Optional. The version of the Windows Azure SDK that was used to
+        * generate the .cspkg that created this deployment.  The first two
+        * numerical components of the returned version represent the version
+        * of the SDK used to create the package.
         * @return The SdkVersion value.
         */
         public String getSdkVersion() {
@@ -355,10 +361,10 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The version of the Windows Azure SDK that was used to generate the
-        * .cspkg that created this deployment.  The first two numerical
-        * components of the returned version represent the version of the SDK
-        * used to create the package.
+        * Optional. The version of the Windows Azure SDK that was used to
+        * generate the .cspkg that created this deployment.  The first two
+        * numerical components of the returned version represent the version
+        * of the SDK used to create the package.
         * @param sdkVersionValue The SdkVersion value.
         */
         public void setSdkVersion(final String sdkVersionValue) {
@@ -368,7 +374,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private DeploymentStatus status;
         
         /**
-        * The status of the deployment.
+        * Optional. The status of the deployment.
         * @return The Status value.
         */
         public DeploymentStatus getStatus() {
@@ -376,7 +382,7 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The status of the deployment.
+        * Optional. The status of the deployment.
         * @param statusValue The Status value.
         */
         public void setStatus(final DeploymentStatus statusValue) {
@@ -386,7 +392,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private int upgradeDomainCount;
         
         /**
-        * The number of upgrade domains available to this cloud service.
+        * Optional. The number of upgrade domains available to this cloud
+        * service.
         * @return The UpgradeDomainCount value.
         */
         public int getUpgradeDomainCount() {
@@ -394,7 +401,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The number of upgrade domains available to this cloud service.
+        * Optional. The number of upgrade domains available to this cloud
+        * service.
         * @param upgradeDomainCountValue The UpgradeDomainCount value.
         */
         public void setUpgradeDomainCount(final int upgradeDomainCountValue) {
@@ -404,7 +412,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private UpgradeStatus upgradeStatus;
         
         /**
-        * Specifies information about an update occurring on the deployment.
+        * Optional. Specifies information about an update occurring on the
+        * deployment.
         * @return The UpgradeStatus value.
         */
         public UpgradeStatus getUpgradeStatus() {
@@ -412,7 +421,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * Specifies information about an update occurring on the deployment.
+        * Optional. Specifies information about an update occurring on the
+        * deployment.
         * @param upgradeStatusValue The UpgradeStatus value.
         */
         public void setUpgradeStatus(final UpgradeStatus upgradeStatusValue) {
@@ -422,9 +432,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private URI uri;
         
         /**
-        * The URL used to access the hosted service.  For example, if the
-        * service name is MyService you could access the access the service by
-        * calling: http://MyService.cloudapp.net
+        * Optional. The URL used to access the hosted service.  For example, if
+        * the service name is MyService you could access the access the
+        * service by calling: http://MyService.cloudapp.net
         * @return The Uri value.
         */
         public URI getUri() {
@@ -432,9 +442,9 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The URL used to access the hosted service.  For example, if the
-        * service name is MyService you could access the access the service by
-        * calling: http://MyService.cloudapp.net
+        * Optional. The URL used to access the hosted service.  For example, if
+        * the service name is MyService you could access the access the
+        * service by calling: http://MyService.cloudapp.net
         * @param uriValue The Uri value.
         */
         public void setUri(final URI uriValue) {
@@ -444,7 +454,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private ArrayList<VirtualIPAddress> virtualIPAddresses;
         
         /**
-        * The virtual IP addresses that are specified for thedeployment.
+        * Optional. The virtual IP addresses that are specified for
+        * thedeployment.
         * @return The VirtualIPAddresses value.
         */
         public ArrayList<VirtualIPAddress> getVirtualIPAddresses() {
@@ -452,7 +463,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The virtual IP addresses that are specified for thedeployment.
+        * Optional. The virtual IP addresses that are specified for
+        * thedeployment.
         * @param virtualIPAddressesValue The VirtualIPAddresses value.
         */
         public void setVirtualIPAddresses(final ArrayList<VirtualIPAddress> virtualIPAddressesValue) {
@@ -462,7 +474,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         private String virtualNetworkName;
         
         /**
-        * The name of the Virtual Network that the virtual machine connects to.
+        * Optional. The name of the Virtual Network that the virtual machine
+        * connects to.
         * @return The VirtualNetworkName value.
         */
         public String getVirtualNetworkName() {
@@ -470,7 +483,8 @@ public class HostedServiceGetDetailedResponse extends HostedServiceGetResponse {
         }
         
         /**
-        * The name of the Virtual Network that the virtual machine connects to.
+        * Optional. The name of the Virtual Network that the virtual machine
+        * connects to.
         * @param virtualNetworkNameValue The VirtualNetworkName value.
         */
         public void setVirtualNetworkName(final String virtualNetworkNameValue) {

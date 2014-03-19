@@ -20,8 +20,7 @@ package com.microsoft.windowsazure.serviceruntime;
  * The environment changed event is encapsulated in a
  * {@link RoleEnvironmentChangedEvent} object.
  */
-public interface RoleEnvironmentChangedListener
-{
+public interface RoleEnvironmentChangedListener {
 
     /**
      * Occurs after a change to the service configuration has been applied to

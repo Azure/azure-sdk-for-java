@@ -34,7 +34,8 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     private ArrayList<StatusInfo> statusInfoList;
     
     /**
-    * Gets or sets the list of statuses relevant to this import/export request.
+    * Optional. Gets or sets the list of statuses relevant to this
+    * import/export request.
     * @return The StatusInfoList value.
     */
     public ArrayList<StatusInfo> getStatusInfoList() {
@@ -42,7 +43,8 @@ public class DacGetStatusResponse extends OperationResponse implements Iterable<
     }
     
     /**
-    * Gets or sets the list of statuses relevant to this import/export request.
+    * Optional. Gets or sets the list of statuses relevant to this
+    * import/export request.
     * @param statusInfoListValue The StatusInfoList value.
     */
     public void setStatusInfoList(final ArrayList<StatusInfo> statusInfoListValue) {

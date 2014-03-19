@@ -33,7 +33,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     private ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpoints;
     
     /**
-    * A list of load balanced InputEndpoints to update.
+    * Optional. A list of load balanced InputEndpoints to update.
     * @return The LoadBalancedEndpoints value.
     */
     public ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> getLoadBalancedEndpoints() {
@@ -41,7 +41,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
     }
     
     /**
-    * A list of load balanced InputEndpoints to update.
+    * Optional. A list of load balanced InputEndpoints to update.
     * @param loadBalancedEndpointsValue The LoadBalancedEndpoints value.
     */
     public void setLoadBalancedEndpoints(final ArrayList<VirtualMachineUpdateLoadBalancedSetParameters.InputEndpoint> loadBalancedEndpointsValue) {
@@ -85,12 +85,12 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private String loadBalancedEndpointSetName;
         
         /**
-        * Specifies whether this endpoint is part of shared LoadBalanced
-        * endpoint and served by multiple role instances. If not specified a
-        * BadRequest error will be returned. It must also be in use by the
-        * deployment (at least one role in the deployment must have an
-        * endpoint whose LoadBalancedEndpointSetName   matches this) otherwise
-        * a BadRequest error will be returned.
+        * Required. Specifies whether this endpoint is part of shared
+        * LoadBalanced endpoint and served by multiple role instances. If not
+        * specified a BadRequest error will be returned. It must also be in
+        * use by the deployment (at least one role in the deployment must have
+        * an endpoint whose LoadBalancedEndpointSetName   matches this)
+        * otherwise a BadRequest error will be returned.
         * @return The LoadBalancedEndpointSetName value.
         */
         public String getLoadBalancedEndpointSetName() {
@@ -98,12 +98,12 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * Specifies whether this endpoint is part of shared LoadBalanced
-        * endpoint and served by multiple role instances. If not specified a
-        * BadRequest error will be returned. It must also be in use by the
-        * deployment (at least one role in the deployment must have an
-        * endpoint whose LoadBalancedEndpointSetName   matches this) otherwise
-        * a BadRequest error will be returned.
+        * Required. Specifies whether this endpoint is part of shared
+        * LoadBalanced endpoint and served by multiple role instances. If not
+        * specified a BadRequest error will be returned. It must also be in
+        * use by the deployment (at least one role in the deployment must have
+        * an endpoint whose LoadBalancedEndpointSetName   matches this)
+        * otherwise a BadRequest error will be returned.
         * @param loadBalancedEndpointSetNameValue The
         * LoadBalancedEndpointSetName value.
         */
@@ -140,13 +140,14 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private Integer localPort;
         
         /**
-        * Specifies the internal port on which a service running inside the VM
-        * is listening to serve this endpoint. WARNING: If specified then ALL
-        * the endpoints of this LB set on all the roles will be updated to
-        * have THIS local port. To keep unique local ports on each role for a
-        * load balanced endpoint specify this as 0 (zero) and if you need to
-        * change those use UpdateRole. In case of port conflict with a local
-        * port (or probe port) on a role a BadRequestwill be returned.
+        * Optional. Specifies the internal port on which a service running
+        * inside the VM is listening to serve this endpoint. WARNING: If
+        * specified then ALL the endpoints of this LB set on all the roles
+        * will be updated to have THIS local port. To keep unique local ports
+        * on each role for a load balanced endpoint specify this as 0 (zero)
+        * and if you need to change those use UpdateRole. In case of port
+        * conflict with a local port (or probe port) on a role a
+        * BadRequestwill be returned.
         * @return The LocalPort value.
         */
         public Integer getLocalPort() {
@@ -154,13 +155,14 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * Specifies the internal port on which a service running inside the VM
-        * is listening to serve this endpoint. WARNING: If specified then ALL
-        * the endpoints of this LB set on all the roles will be updated to
-        * have THIS local port. To keep unique local ports on each role for a
-        * load balanced endpoint specify this as 0 (zero) and if you need to
-        * change those use UpdateRole. In case of port conflict with a local
-        * port (or probe port) on a role a BadRequestwill be returned.
+        * Optional. Specifies the internal port on which a service running
+        * inside the VM is listening to serve this endpoint. WARNING: If
+        * specified then ALL the endpoints of this LB set on all the roles
+        * will be updated to have THIS local port. To keep unique local ports
+        * on each role for a load balanced endpoint specify this as 0 (zero)
+        * and if you need to change those use UpdateRole. In case of port
+        * conflict with a local port (or probe port) on a role a
+        * BadRequestwill be returned.
         * @param localPortValue The LocalPort value.
         */
         public void setLocalPort(final Integer localPortValue) {
@@ -190,9 +192,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private Integer port;
         
         /**
-        * An integer specifying the public port for this endpoint. Allowed
-        * values are between 1 and 65535 inclusive. A unqiue Port and Protocol
-        * combination must be specified for each InputEndpoint in the list.
+        * Optional. An integer specifying the public port for this endpoint.
+        * Allowed values are between 1 and 65535 inclusive. A unqiue Port and
+        * Protocol combination must be specified for each InputEndpoint in the
+        * list.
         * @return The Port value.
         */
         public Integer getPort() {
@@ -200,9 +203,10 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * An integer specifying the public port for this endpoint. Allowed
-        * values are between 1 and 65535 inclusive. A unqiue Port and Protocol
-        * combination must be specified for each InputEndpoint in the list.
+        * Optional. An integer specifying the public port for this endpoint.
+        * Allowed values are between 1 and 65535 inclusive. A unqiue Port and
+        * Protocol combination must be specified for each InputEndpoint in the
+        * list.
         * @param portValue The Port value.
         */
         public void setPort(final Integer portValue) {
@@ -212,7 +216,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private String protocol;
         
         /**
-        * Specifies the transport protocol for the endpoint.
+        * Optional. Specifies the transport protocol for the endpoint.
         * @return The Protocol value.
         */
         public String getProtocol() {
@@ -220,7 +224,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * Specifies the transport protocol for the endpoint.
+        * Optional. Specifies the transport protocol for the endpoint.
         * @param protocolValue The Protocol value.
         */
         public void setProtocol(final String protocolValue) {
@@ -230,10 +234,11 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private ArrayList<AccessControlListRule> rules;
         
         /**
-        * A collection of access control rules which control the external
-        * network traffic reaching to this endpoint. NOTES: (1) To remove the
-        * ACLs from a load-balanced endpoint just omit this element. (2) ACLs
-        * are set as specified. There is no merge done with existing ACLs.
+        * Optional. A collection of access control rules which control the
+        * external network traffic reaching to this endpoint. NOTES: (1) To
+        * remove the ACLs from a load-balanced endpoint just omit this
+        * element. (2) ACLs are set as specified. There is no merge done with
+        * existing ACLs.
         * @return The Rules value.
         */
         public ArrayList<AccessControlListRule> getRules() {
@@ -241,10 +246,11 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * A collection of access control rules which control the external
-        * network traffic reaching to this endpoint. NOTES: (1) To remove the
-        * ACLs from a load-balanced endpoint just omit this element. (2) ACLs
-        * are set as specified. There is no merge done with existing ACLs.
+        * Optional. A collection of access control rules which control the
+        * external network traffic reaching to this endpoint. NOTES: (1) To
+        * remove the ACLs from a load-balanced endpoint just omit this
+        * element. (2) ACLs are set as specified. There is no merge done with
+        * existing ACLs.
         * @param rulesValue The Rules value.
         */
         public void setRules(final ArrayList<AccessControlListRule> rulesValue) {
@@ -254,7 +260,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         private InetAddress virtualIPAddress;
         
         /**
-        * The virtual IP address of the endpoint.
+        * Optional. The virtual IP address of the endpoint.
         * @return The VirtualIPAddress value.
         */
         public InetAddress getVirtualIPAddress() {
@@ -262,7 +268,7 @@ public class VirtualMachineUpdateLoadBalancedSetParameters {
         }
         
         /**
-        * The virtual IP address of the endpoint.
+        * Optional. The virtual IP address of the endpoint.
         * @param virtualIPAddressValue The VirtualIPAddress value.
         */
         public void setVirtualIPAddress(final InetAddress virtualIPAddressValue) {

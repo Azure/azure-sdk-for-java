@@ -34,7 +34,7 @@ public class DatabaseGetEventLogsResponse extends OperationResponse implements I
     private ArrayList<DatabaseEventLog> eventLogs;
     
     /**
-    * Gets or sets the SQL Server database event logs.
+    * Optional. Gets or sets the SQL Server database event logs.
     * @return The EventLogs value.
     */
     public ArrayList<DatabaseEventLog> getEventLogs() {
@@ -42,7 +42,7 @@ public class DatabaseGetEventLogsResponse extends OperationResponse implements I
     }
     
     /**
-    * Gets or sets the SQL Server database event logs.
+    * Optional. Gets or sets the SQL Server database event logs.
     * @param eventLogsValue The EventLogs value.
     */
     public void setEventLogs(final ArrayList<DatabaseEventLog> eventLogsValue) {

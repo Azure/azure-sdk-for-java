@@ -16,15 +16,12 @@ package com.microsoft.windowsazure.configuration.builder;
 
 import javax.inject.Inject;
 
-public class ClassWithMultipleCtorMultipleInject
-{
+public class ClassWithMultipleCtorMultipleInject {
     @Inject
-    public ClassWithMultipleCtorMultipleInject()
-    {
+    public ClassWithMultipleCtorMultipleInject() {
     }
 
     @Inject
-    public ClassWithMultipleCtorMultipleInject(String x)
-    {
+    public ClassWithMultipleCtorMultipleInject(String x) {
     }
 }

@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -34,7 +35,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     private ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensions;
     
     /**
-    * The extensions that are available to add to your cloud service.
+    * Optional. The extensions that are available to add to your cloud service.
     * @return The ResourceExtensions value.
     */
     public ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> getResourceExtensions() {
@@ -42,7 +43,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
     }
     
     /**
-    * The extensions that are available to add to your cloud service.
+    * Optional. The extensions that are available to add to your cloud service.
     * @param resourceExtensionsValue The ResourceExtensions value.
     */
     public void setResourceExtensions(final ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> resourceExtensionsValue) {
@@ -74,7 +75,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         private String description;
         
         /**
-        * The description of the extension.
+        * Optional. The description of the extension.
         * @return The Description value.
         */
         public String getDescription() {
@@ -82,17 +83,89 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The description of the extension.
+        * Optional. The description of the extension.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
             this.description = descriptionValue;
         }
         
+        private URI eula;
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Windows Azure, at the time of extension creation or update.
+        * @return The Eula value.
+        */
+        public URI getEula() {
+            return this.eula;
+        }
+        
+        /**
+        * Optional. URI string pointing to the EULA (End User License
+        * Agreement) of this version of extension. This is optionally
+        * specified by the third-party publishing the extension instead of
+        * Windows Azure, at the time of extension creation or update.
+        * @param eulaValue The Eula value.
+        */
+        public void setEula(final URI eulaValue) {
+            this.eula = eulaValue;
+        }
+        
+        private URI homepageUri;
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @return The HomepageUri value.
+        */
+        public URI getHomepageUri() {
+            return this.homepageUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the homepage of this version of
+        * extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @param homepageUriValue The HomepageUri value.
+        */
+        public void setHomepageUri(final URI homepageUriValue) {
+            this.homepageUri = homepageUriValue;
+        }
+        
+        private boolean isJsonExtension;
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based confihuration.
+        * @return The IsJsonExtension value.
+        */
+        public boolean isJsonExtension() {
+            return this.isJsonExtension;
+        }
+        
+        /**
+        * Optional. Boolean property indicating whether the extension accepts
+        * JSON or XML based configuration. If this property is 'true' then the
+        * extension accepts JSON based configuration. If this property is
+        * 'false' the extension accepts XML based confihuration.
+        * @param isJsonExtensionValue The IsJsonExtension value.
+        */
+        public void setIsJsonExtension(final boolean isJsonExtensionValue) {
+            this.isJsonExtension = isJsonExtensionValue;
+        }
+        
         private String label;
         
         /**
-        * The label that is used to identify the extension.
+        * Optional. The label that is used to identify the extension.
         * @return The Label value.
         */
         public String getLabel() {
@@ -100,7 +173,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The label that is used to identify the extension.
+        * Optional. The label that is used to identify the extension.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -110,7 +183,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         private String name;
         
         /**
-        * The name of the extension.
+        * Optional. The name of the extension.
         * @return The Name value.
         */
         public String getName() {
@@ -118,17 +191,41 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The name of the extension.
+        * Optional. The name of the extension.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
             this.name = nameValue;
         }
         
+        private URI privacyUri;
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @return The PrivacyUri value.
+        */
+        public URI getPrivacyUri() {
+            return this.privacyUri;
+        }
+        
+        /**
+        * Optional. URI string pointing to the privacy document of this version
+        * of extension. This is optionally specified by the third-party
+        * publishing the extension instead of Windows Azure, at the time of
+        * extension creation or update.
+        * @param privacyUriValue The PrivacyUri value.
+        */
+        public void setPrivacyUri(final URI privacyUriValue) {
+            this.privacyUri = privacyUriValue;
+        }
+        
         private String privateConfigurationSchema;
         
         /**
-        * The base64-encoded schema of the private configuration.
+        * Optional. The base64-encoded schema of the private configuration.
         * @return The PrivateConfigurationSchema value.
         */
         public String getPrivateConfigurationSchema() {
@@ -136,7 +233,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The base64-encoded schema of the private configuration.
+        * Optional. The base64-encoded schema of the private configuration.
         * @param privateConfigurationSchemaValue The PrivateConfigurationSchema
         * value.
         */
@@ -147,7 +244,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         private String publicConfigurationSchema;
         
         /**
-        * The base64-encoded schema of the public configuration.
+        * Optional. The base64-encoded schema of the public configuration.
         * @return The PublicConfigurationSchema value.
         */
         public String getPublicConfigurationSchema() {
@@ -155,7 +252,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The base64-encoded schema of the public configuration.
+        * Optional. The base64-encoded schema of the public configuration.
         * @param publicConfigurationSchemaValue The PublicConfigurationSchema
         * value.
         */
@@ -166,8 +263,8 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         private String publisher;
         
         /**
-        * The provider namespace of the extension. The provider namespace for
-        * Windows Azure extensions is Microsoft.Compute.
+        * Optional. The provider namespace of the extension. The provider
+        * namespace for Windows Azure extensions is Microsoft.Compute.
         * @return The Publisher value.
         */
         public String getPublisher() {
@@ -175,18 +272,48 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The provider namespace of the extension. The provider namespace for
-        * Windows Azure extensions is Microsoft.Compute.
+        * Optional. The provider namespace of the extension. The provider
+        * namespace for Windows Azure extensions is Microsoft.Compute.
         * @param publisherValue The Publisher value.
         */
         public void setPublisher(final String publisherValue) {
             this.publisher = publisherValue;
         }
         
+        private boolean replicationCompleted;
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * has been replicated to all regions or not. If true, then the given
+        * extension version can be used in creating or updating deployments.
+        * Otherwise, the given extension version might cause failure in
+        * creating or updating deployments. The typical time is 20 minutes for
+        * a newly-registered or newly-updated extension to replicate
+        * completely by Windows Azure.
+        * @return The ReplicationCompleted value.
+        */
+        public boolean isReplicationCompleted() {
+            return this.replicationCompleted;
+        }
+        
+        /**
+        * Optional. Boolean flag indicating whether this version of extension
+        * has been replicated to all regions or not. If true, then the given
+        * extension version can be used in creating or updating deployments.
+        * Otherwise, the given extension version might cause failure in
+        * creating or updating deployments. The typical time is 20 minutes for
+        * a newly-registered or newly-updated extension to replicate
+        * completely by Windows Azure.
+        * @param replicationCompletedValue The ReplicationCompleted value.
+        */
+        public void setReplicationCompleted(final boolean replicationCompletedValue) {
+            this.replicationCompleted = replicationCompletedValue;
+        }
+        
         private String sampleConfig;
         
         /**
-        * A sample configuration file for the resource extension.
+        * Optional. A sample configuration file for the resource extension.
         * @return The SampleConfig value.
         */
         public String getSampleConfig() {
@@ -194,7 +321,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * A sample configuration file for the resource extension.
+        * Optional. A sample configuration file for the resource extension.
         * @param sampleConfigValue The SampleConfig value.
         */
         public void setSampleConfig(final String sampleConfigValue) {
@@ -204,7 +331,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         private String version;
         
         /**
-        * The version of the extension.
+        * Optional. The version of the extension.
         * @return The Version value.
         */
         public String getVersion() {
@@ -212,7 +339,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         }
         
         /**
-        * The version of the extension.
+        * Optional. The version of the extension.
         * @param versionValue The Version value.
         */
         public void setVersion(final String versionValue) {

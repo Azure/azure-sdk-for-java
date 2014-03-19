@@ -44,8 +44,7 @@ import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult;
 import com.microsoft.windowsazure.services.queue.models.ServiceProperties;
 import com.microsoft.windowsazure.services.queue.models.UpdateMessageResult;
 
-public class QueueServiceIntegrationTest extends IntegrationTestBase
-{
+public class QueueServiceIntegrationTest extends IntegrationTestBase {
     private static final String testQueuesPrefix = "sdktest-";
     private static final String createableQueuesPrefix = "csdktest-";
     private static String TEST_QUEUE_FOR_MESSAGES;
@@ -69,19 +68,16 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     public ExpectedException expectedException = ExpectedException.none();
 
     @BeforeClass
-    public static void setup() throws Exception
-    {
+    public static void setup() throws Exception {
         // Setup container names array (list of container names used by
         // integration tests)
         testQueues = new String[10];
-        for (int i = 0; i < testQueues.length; i++)
-        {
+        for (int i = 0; i < testQueues.length; i++) {
             testQueues[i] = String.format("%s%d", testQueuesPrefix, i + 1);
         }
 
         creatableQueues = new String[10];
-        for (int i = 0; i < creatableQueues.length; i++)
-        {
+        for (int i = 0; i < creatableQueues.length; i++) {
             creatableQueues[i] = String.format("%s%d", createableQueuesPrefix,
                     i + 1);
         }
@@ -108,61 +104,50 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @AfterClass
-    public static void cleanup() throws Exception
-    {
+    public static void cleanup() throws Exception {
 
         deleteQueues(service, testQueuesPrefix, testQueues);
         deleteQueues(service, createableQueuesPrefix, creatableQueues);
     }
 
     private static void createQueues(QueueContract service, String prefix,
-            String[] list) throws Exception
-    {
+            String[] list) throws Exception {
         Set<String> containers = listQueues(service, prefix);
-        for (String item : list)
-        {
-            if (!containers.contains(item))
-            {
+        for (String item : list) {
+            if (!containers.contains(item)) {
                 service.createQueue(item);
             }
         }
     }
 
     private static void deleteQueues(QueueContract service, String prefix,
-            String[] list) throws Exception
-    {
+            String[] list) throws Exception {
         Set<String> containers = listQueues(service, prefix);
-        for (String item : list)
-        {
-            if (containers.contains(item))
-            {
+        for (String item : list) {
+            if (containers.contains(item)) {
                 service.deleteQueue(item);
             }
         }
     }
 
     private static Set<String> listQueues(QueueContract service, String prefix)
-            throws Exception
-    {
+            throws Exception {
         HashSet<String> result = new HashSet<String>();
         ListQueuesResult list = service.listQueues(new ListQueuesOptions()
                 .setPrefix(prefix));
-        for (Queue item : list.getQueues())
-        {
+        for (Queue item : list.getQueues()) {
             result.add(item.getName());
         }
         return result;
     }
 
     @Test
-    public void getServicePropertiesWorks() throws Exception
-    {
+    public void getServicePropertiesWorks() throws Exception {
         // Arrange
 
         // Don't run this test with emulator, as v1.6 doesn't support this
         // method
-        if (isRunningWithEmulator(config))
-        {
+        if (isRunningWithEmulator(config)) {
             return;
         }
 
@@ -179,14 +164,12 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void setServicePropertiesWorks() throws Exception
-    {
+    public void setServicePropertiesWorks() throws Exception {
         // Arrange
 
         // Don't run this test with emulator, as v1.6 doesn't support this
         // method
-        if (isRunningWithEmulator(config))
-        {
+        if (isRunningWithEmulator(config)) {
             return;
         }
 
@@ -209,8 +192,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createQueueWorks() throws Exception
-    {
+    public void createQueueWorks() throws Exception {
         // Arrange
 
         // Act
@@ -227,8 +209,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteQueueWorks() throws Exception
-    {
+    public void deleteQueueWorks() throws Exception {
         // Arrange
         expectedException.expect(ServiceException.class);
 
@@ -244,8 +225,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createQueueWithOptionsWorks() throws Exception
-    {
+    public void createQueueWithOptionsWorks() throws Exception {
         // Arrange
 
         // Act
@@ -265,8 +245,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listQueuesWorks() throws Exception
-    {
+    public void listQueuesWorks() throws Exception {
         // Arrange
 
         // Act
@@ -282,8 +261,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listQueuesWithOptionsWorks() throws Exception
-    {
+    public void listQueuesWithOptionsWorks() throws Exception {
         // Arrange
 
         // Act
@@ -318,8 +296,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void setQueueMetadataWorks() throws Exception
-    {
+    public void setQueueMetadataWorks() throws Exception {
         // Arrange
 
         // Act
@@ -345,8 +322,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createMessageWorks() throws Exception
-    {
+    public void createMessageWorks() throws Exception {
         // Arrange
 
         // Act
@@ -359,8 +335,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createNullMessageException() throws Exception
-    {
+    public void createNullMessageException() throws Exception {
         // Arrange
 
         // Act
@@ -369,8 +344,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listMessagesWorks() throws Exception
-    {
+    public void listMessagesWorks() throws Exception {
         // Arrange
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -407,8 +381,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listMessagesWithOptionsWorks() throws Exception
-    {
+    public void listMessagesWithOptionsWorks() throws Exception {
         // Arrange
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -428,8 +401,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
         // Assert
         assertNotNull(result);
         assertEquals(4, result.getQueueMessages().size());
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             QueueMessage entry = result.getQueueMessages().get(i);
 
             assertNotNull(entry.getMessageId());
@@ -449,8 +421,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekMessagesWorks() throws Exception
-    {
+    public void peekMessagesWorks() throws Exception {
         // Arrange
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -484,8 +455,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekMessagesWithOptionsWorks() throws Exception
-    {
+    public void peekMessagesWithOptionsWorks() throws Exception {
         // Arrange
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -504,8 +474,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
         // Assert
         assertNotNull(result);
         assertEquals(4, result.getQueueMessages().size());
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage entry = result
                     .getQueueMessages().get(i);
 
@@ -522,8 +491,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void clearMessagesWorks() throws Exception
-    {
+    public void clearMessagesWorks() throws Exception {
         // Arrange
 
         // Act
@@ -542,8 +510,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteMessageWorks() throws Exception
-    {
+    public void deleteMessageWorks() throws Exception {
         // Arrange
 
         // Act
@@ -567,8 +534,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateNullMessageException() throws Exception
-    {
+    public void updateNullMessageException() throws Exception {
         // Arrange
         String messageId = "messageId";
 
@@ -584,8 +550,7 @@ public class QueueServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateMessageWorks() throws Exception
-    {
+    public void updateMessageWorks() throws Exception {
         // Arrange
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getTimeZone("UTC"));

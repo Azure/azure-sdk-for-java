@@ -30,7 +30,7 @@ public class ServiceBusTopic {
     private Calendar accessedAt;
     
     /**
-    * The time the queue was last accessed.
+    * Optional. The time the queue was last accessed.
     * @return The AccessedAt value.
     */
     public Calendar getAccessedAt() {
@@ -38,7 +38,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The time the queue was last accessed.
+    * Optional. The time the queue was last accessed.
     * @param accessedAtValue The AccessedAt value.
     */
     public void setAccessedAt(final Calendar accessedAtValue) {
@@ -48,7 +48,7 @@ public class ServiceBusTopic {
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**
-    * Gets the authorization rules for the description.  (see
+    * Optional. Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The AuthorizationRules value.
@@ -58,7 +58,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Gets the authorization rules for the description.  (see
+    * Optional. Gets the authorization rules for the description.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param authorizationRulesValue The AuthorizationRules value.
@@ -70,7 +70,7 @@ public class ServiceBusTopic {
     private String autoDeleteOnIdle;
     
     /**
-    * Implemented.
+    * Optional. Implemented.
     * @return The AutoDeleteOnIdle value.
     */
     public String getAutoDeleteOnIdle() {
@@ -78,7 +78,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Implemented.
+    * Optional. Implemented.
     * @param autoDeleteOnIdleValue The AutoDeleteOnIdle value.
     */
     public void setAutoDeleteOnIdle(final String autoDeleteOnIdleValue) {
@@ -88,7 +88,7 @@ public class ServiceBusTopic {
     private CountDetails countDetails;
     
     /**
-    * Current queue statistics.
+    * Optional. Current queue statistics.
     * @return The CountDetails value.
     */
     public CountDetails getCountDetails() {
@@ -96,7 +96,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Current queue statistics.
+    * Optional. Current queue statistics.
     * @param countDetailsValue The CountDetails value.
     */
     public void setCountDetails(final CountDetails countDetailsValue) {
@@ -106,7 +106,7 @@ public class ServiceBusTopic {
     private Calendar createdAt;
     
     /**
-    * The time the queue was created at.
+    * Optional. The time the queue was created at.
     * @return The CreatedAt value.
     */
     public Calendar getCreatedAt() {
@@ -114,7 +114,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The time the queue was created at.
+    * Optional. The time the queue was created at.
     * @param createdAtValue The CreatedAt value.
     */
     public void setCreatedAt(final Calendar createdAtValue) {
@@ -124,15 +124,15 @@ public class ServiceBusTopic {
     private String defaultMessageTimeToLive;
     
     /**
-    * Determines how long a message lives in the associated subscriptions.
-    * Subscriptions inherit the TTL from the topic unless they are created
-    * explicitly with a smaller TTL. Based on whether dead-lettering is
-    * enabled, a message whose TTL has expired will either be moved to the
-    * subscription’s associated DeadLtterQueue or will be permanently deleted.
-    * The following values are settable at topic creation time:* Range: 1
-    * second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
-    * more information)
+    * Optional. Determines how long a message lives in the associated
+    * subscriptions. Subscriptions inherit the TTL from the topic unless they
+    * are created explicitly with a smaller TTL. Based on whether
+    * dead-lettering is enabled, a message whose TTL has expired will either
+    * be moved to the subscription’s associated DeadLtterQueue or will be
+    * permanently deleted. The following values are settable at topic creation
+    * time:* Range: 1 second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx
+    * for more information)
     * @return The DefaultMessageTimeToLive value.
     */
     public String getDefaultMessageTimeToLive() {
@@ -140,15 +140,15 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Determines how long a message lives in the associated subscriptions.
-    * Subscriptions inherit the TTL from the topic unless they are created
-    * explicitly with a smaller TTL. Based on whether dead-lettering is
-    * enabled, a message whose TTL has expired will either be moved to the
-    * subscription’s associated DeadLtterQueue or will be permanently deleted.
-    * The following values are settable at topic creation time:* Range: 1
-    * second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx for
-    * more information)
+    * Optional. Determines how long a message lives in the associated
+    * subscriptions. Subscriptions inherit the TTL from the topic unless they
+    * are created explicitly with a smaller TTL. Based on whether
+    * dead-lettering is enabled, a message whose TTL has expired will either
+    * be moved to the subscription’s associated DeadLtterQueue or will be
+    * permanently deleted. The following values are settable at topic creation
+    * time:* Range: 1 second - TimeSpan.MaxValue* Default: TimeSpan.MaxValue
+    * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj839740.aspx
+    * for more information)
     * @param defaultMessageTimeToLiveValue The DefaultMessageTimeToLive value.
     */
     public void setDefaultMessageTimeToLive(final String defaultMessageTimeToLiveValue) {
@@ -158,8 +158,9 @@ public class ServiceBusTopic {
     private String duplicateDetectionHistoryTimeWindow;
     
     /**
-    * Specifies the time span during which the Service Bus will detect message
-    * duplication.* Range: 1 second - 7 days* Default: 10 minutes  (see
+    * Optional. Specifies the time span during which the Service Bus will
+    * detect message duplication.* Range: 1 second - 7 days* Default: 10
+    * minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The DuplicateDetectionHistoryTimeWindow value.
@@ -169,8 +170,9 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Specifies the time span during which the Service Bus will detect message
-    * duplication.* Range: 1 second - 7 days* Default: 10 minutes  (see
+    * Optional. Specifies the time span during which the Service Bus will
+    * detect message duplication.* Range: 1 second - 7 days* Default: 10
+    * minutes  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param duplicateDetectionHistoryTimeWindowValue The
@@ -183,11 +185,11 @@ public class ServiceBusTopic {
     private boolean enableBatchedOperations;
     
     /**
-    * Enables or disables service side batching behavior when performing
-    * operations for the specific queue. When enabled, service bus will
-    * collect/batch multiple operations to the backend to be more connection
-    * efficient. If user wants lower operation latency then they can disable
-    * this feature.  (see
+    * Optional. Enables or disables service side batching behavior when
+    * performing operations for the specific queue. When enabled, service bus
+    * will collect/batch multiple operations to the backend to be more
+    * connection efficient. If user wants lower operation latency then they
+    * can disable this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The EnableBatchedOperations value.
@@ -197,11 +199,11 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Enables or disables service side batching behavior when performing
-    * operations for the specific queue. When enabled, service bus will
-    * collect/batch multiple operations to the backend to be more connection
-    * efficient. If user wants lower operation latency then they can disable
-    * this feature.  (see
+    * Optional. Enables or disables service side batching behavior when
+    * performing operations for the specific queue. When enabled, service bus
+    * will collect/batch multiple operations to the backend to be more
+    * connection efficient. If user wants lower operation latency then they
+    * can disable this feature.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param enableBatchedOperationsValue The EnableBatchedOperations value.
@@ -213,7 +215,7 @@ public class ServiceBusTopic {
     private String entityAvailabilityStatus;
     
     /**
-    * The current availability status of the topic.
+    * Optional. The current availability status of the topic.
     * @return The EntityAvailabilityStatus value.
     */
     public String getEntityAvailabilityStatus() {
@@ -221,7 +223,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The current availability status of the topic.
+    * Optional. The current availability status of the topic.
     * @param entityAvailabilityStatusValue The EntityAvailabilityStatus value.
     */
     public void setEntityAvailabilityStatus(final String entityAvailabilityStatusValue) {
@@ -231,7 +233,8 @@ public class ServiceBusTopic {
     private boolean filteringMessagesBeforePublishing;
     
     /**
-    * Gets or sets whether messages should be filtered before publishing.  (see
+    * Optional. Gets or sets whether messages should be filtered before
+    * publishing.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The FilteringMessagesBeforePublishing value.
@@ -241,7 +244,8 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Gets or sets whether messages should be filtered before publishing.  (see
+    * Optional. Gets or sets whether messages should be filtered before
+    * publishing.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param filteringMessagesBeforePublishingValue The
@@ -254,7 +258,7 @@ public class ServiceBusTopic {
     private boolean isAnonymousAccessible;
     
     /**
-    * Gets whether anonymous access is allowed.  (see
+    * Optional. Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The IsAnonymousAccessible value.
@@ -264,7 +268,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Gets whether anonymous access is allowed.  (see
+    * Optional. Gets whether anonymous access is allowed.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param isAnonymousAccessibleValue The IsAnonymousAccessible value.
@@ -276,15 +280,15 @@ public class ServiceBusTopic {
     private int maxSizeInMegabytes;
     
     /**
-    * Specifies the maximum topic size in megabytes. Any attempt to enqueue a
-    * message that will cause the topic to exceed this value will fail. All
-    * messages that are stored in the topic or any of its subscriptions count
-    * towards this value. Multiple copies of a message that reside in one or
-    * multiple subscriptions count as a single messages. For example, if
-    * message m exists once in subscription s1 and twice in subscription s2, m
-    * is counted as a single message. You can only set this parameter at topic
-    * creation time using the following values:* Range: 1 - 5*1024 MB*
-    * Default: 1*1024  (see
+    * Optional. Specifies the maximum topic size in megabytes. Any attempt to
+    * enqueue a message that will cause the topic to exceed this value will
+    * fail. All messages that are stored in the topic or any of its
+    * subscriptions count towards this value. Multiple copies of a message
+    * that reside in one or multiple subscriptions count as a single messages.
+    * For example, if message m exists once in subscription s1 and twice in
+    * subscription s2, m is counted as a single message. You can only set this
+    * parameter at topic creation time using the following values:* Range: 1 -
+    * 5*1024 MB* Default: 1*1024  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The MaxSizeInMegabytes value.
@@ -294,15 +298,15 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Specifies the maximum topic size in megabytes. Any attempt to enqueue a
-    * message that will cause the topic to exceed this value will fail. All
-    * messages that are stored in the topic or any of its subscriptions count
-    * towards this value. Multiple copies of a message that reside in one or
-    * multiple subscriptions count as a single messages. For example, if
-    * message m exists once in subscription s1 and twice in subscription s2, m
-    * is counted as a single message. You can only set this parameter at topic
-    * creation time using the following values:* Range: 1 - 5*1024 MB*
-    * Default: 1*1024  (see
+    * Optional. Specifies the maximum topic size in megabytes. Any attempt to
+    * enqueue a message that will cause the topic to exceed this value will
+    * fail. All messages that are stored in the topic or any of its
+    * subscriptions count towards this value. Multiple copies of a message
+    * that reside in one or multiple subscriptions count as a single messages.
+    * For example, if message m exists once in subscription s1 and twice in
+    * subscription s2, m is counted as a single message. You can only set this
+    * parameter at topic creation time using the following values:* Range: 1 -
+    * 5*1024 MB* Default: 1*1024  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param maxSizeInMegabytesValue The MaxSizeInMegabytes value.
@@ -314,7 +318,7 @@ public class ServiceBusTopic {
     private String name;
     
     /**
-    * The name of the topic.
+    * Optional. The name of the topic.
     * @return The Name value.
     */
     public String getName() {
@@ -322,7 +326,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The name of the topic.
+    * Optional. The name of the topic.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -332,9 +336,9 @@ public class ServiceBusTopic {
     private boolean requiresDuplicateDetection;
     
     /**
-    * If enabled, the topic will detect duplicate messages within the time span
-    * specified by the DuplicateDetectionHistoryTimeWindow property. Settable
-    * only at topic creation time.* Default: false  (see
+    * Optional. If enabled, the topic will detect duplicate messages within the
+    * time span specified by the DuplicateDetectionHistoryTimeWindow property.
+    * Settable only at topic creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The RequiresDuplicateDetection value.
@@ -344,9 +348,9 @@ public class ServiceBusTopic {
     }
     
     /**
-    * If enabled, the topic will detect duplicate messages within the time span
-    * specified by the DuplicateDetectionHistoryTimeWindow property. Settable
-    * only at topic creation time.* Default: false  (see
+    * Optional. If enabled, the topic will detect duplicate messages within the
+    * time span specified by the DuplicateDetectionHistoryTimeWindow property.
+    * Settable only at topic creation time.* Default: false  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param requiresDuplicateDetectionValue The RequiresDuplicateDetection
@@ -359,10 +363,11 @@ public class ServiceBusTopic {
     private int sizeInBytes;
     
     /**
-    * Reflects the actual bytes toward the topic quota that messages in the
-    * topic currently occupy. (read-only)* Range: 0 -MaxTopicSizeinMegaBytes
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
-    * for more information)
+    * Optional. Reflects the actual bytes toward the topic quota that messages
+    * in the topic currently occupy. (read-only)* Range: 0
+    * -MaxTopicSizeinMegaBytes  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
+    * more information)
     * @return The SizeInBytes value.
     */
     public int getSizeInBytes() {
@@ -370,10 +375,11 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Reflects the actual bytes toward the topic quota that messages in the
-    * topic currently occupy. (read-only)* Range: 0 -MaxTopicSizeinMegaBytes
-    * (see http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx
-    * for more information)
+    * Optional. Reflects the actual bytes toward the topic quota that messages
+    * in the topic currently occupy. (read-only)* Range: 0
+    * -MaxTopicSizeinMegaBytes  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
+    * more information)
     * @param sizeInBytesValue The SizeInBytes value.
     */
     public void setSizeInBytes(final int sizeInBytesValue) {
@@ -383,8 +389,9 @@ public class ServiceBusTopic {
     private String status;
     
     /**
-    * Gets or sets the current status of the topic (enabled or disabled). When
-    * a topic is disabled, that topic cannot send or receive messages.  (see
+    * Optional. Gets or sets the current status of the topic (enabled or
+    * disabled). When a topic is disabled, that topic cannot send or receive
+    * messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The Status value.
@@ -394,8 +401,9 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Gets or sets the current status of the topic (enabled or disabled). When
-    * a topic is disabled, that topic cannot send or receive messages.  (see
+    * Optional. Gets or sets the current status of the topic (enabled or
+    * disabled). When a topic is disabled, that topic cannot send or receive
+    * messages.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param statusValue The Status value.
@@ -407,7 +415,7 @@ public class ServiceBusTopic {
     private int subscriptionCount;
     
     /**
-    * The current number of subscriptions to the topic.
+    * Optional. The current number of subscriptions to the topic.
     * @return The SubscriptionCount value.
     */
     public int getSubscriptionCount() {
@@ -415,7 +423,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The current number of subscriptions to the topic.
+    * Optional. The current number of subscriptions to the topic.
     * @param subscriptionCountValue The SubscriptionCount value.
     */
     public void setSubscriptionCount(final int subscriptionCountValue) {
@@ -425,7 +433,7 @@ public class ServiceBusTopic {
     private boolean supportOrdering;
     
     /**
-    * Gets or sets whether the topics can be ordered.  (see
+    * Optional. Gets or sets whether the topics can be ordered.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @return The SupportOrdering value.
@@ -435,7 +443,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * Gets or sets whether the topics can be ordered.  (see
+    * Optional. Gets or sets whether the topics can be ordered.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780749.aspx for
     * more information)
     * @param supportOrderingValue The SupportOrdering value.
@@ -447,7 +455,7 @@ public class ServiceBusTopic {
     private Calendar updatedAt;
     
     /**
-    * The time the queue was last updated.
+    * Optional. The time the queue was last updated.
     * @return The UpdatedAt value.
     */
     public Calendar getUpdatedAt() {
@@ -455,7 +463,7 @@ public class ServiceBusTopic {
     }
     
     /**
-    * The time the queue was last updated.
+    * Optional. The time the queue was last updated.
     * @param updatedAtValue The UpdatedAt value.
     */
     public void setUpdatedAt(final Calendar updatedAtValue) {

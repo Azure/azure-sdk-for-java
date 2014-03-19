@@ -28,25 +28,20 @@ import com.microsoft.windowsazure.services.servicebus.implementation.EntityAvail
 import com.microsoft.windowsazure.services.servicebus.implementation.EntityStatus;
 import com.microsoft.windowsazure.services.servicebus.implementation.PartitioningPolicy;
 
-public class TopicInfoTest
-{
+public class TopicInfoTest {
 
-    private Duration createDuration(int milliSeconds)
-    {
+    private Duration createDuration(int milliSeconds) {
         DatatypeFactory datatypeFactory;
-        try
-        {
+        try {
             datatypeFactory = DatatypeFactory.newInstance();
-        } catch (DatatypeConfigurationException e)
-        {
+        } catch (DatatypeConfigurationException e) {
             throw new RuntimeException(e);
         }
         return datatypeFactory.newDuration(milliSeconds);
     }
 
     @Test
-    public void testGetSetDefaultMessageTimeToLive()
-    {
+    public void testGetSetDefaultMessageTimeToLive() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(1024);
         TopicInfo topicInfo = new TopicInfo();
@@ -63,8 +58,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetMaxSizeInMegabytes()
-    {
+    public void testGetSetMaxSizeInMegabytes() {
         // Arrange
         Long expectedMaxSizeInMegabytes = 1024L;
         TopicInfo topicInfo = new TopicInfo();
@@ -79,8 +73,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetRequiresDuplicateDetection()
-    {
+    public void testGetSetRequiresDuplicateDetection() {
         // Arrange
         Boolean expectedRequiresDuplicateDetection = true;
         TopicInfo topicInfo = new TopicInfo();
@@ -98,8 +91,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetDuplicateDetectionHistoryTimeWindow()
-    {
+    public void testGetSetDuplicateDetectionHistoryTimeWindow() {
         // Arrange
         Duration expectedDefaultMessageTimeToLive = createDuration(100);
         TopicInfo topicInfo = new TopicInfo();
@@ -115,8 +107,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetEnableBatchedOperations()
-    {
+    public void testGetSetEnableBatchedOperations() {
         // Arrange
         Boolean expectedEnableBatchedOperations = true;
         TopicInfo topicInfo = new TopicInfo();
@@ -132,8 +123,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetSizeInBytes()
-    {
+    public void testGetSetSizeInBytes() {
         // Arrange
         Long expectedSizeInBytes = 1024L;
         TopicInfo topicInfo = new TopicInfo();
@@ -147,8 +137,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetFilteringMessageBeforePublishing()
-    {
+    public void testGetSetFilteringMessageBeforePublishing() {
         // Arrange
         Boolean expectedFilteringMessageBeforePublishing = true;
         TopicInfo topicInfo = new TopicInfo();
@@ -165,8 +154,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetAnonymousAccessible()
-    {
+    public void testGetSetAnonymousAccessible() {
         // Arrange
         Boolean expectedAnonymousAccessible = true;
         TopicInfo topicInfo = new TopicInfo();
@@ -180,8 +168,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetStatus()
-    {
+    public void testGetSetStatus() {
         // Arrange
         EntityStatus expectedEntityStatus = EntityStatus.ACTIVE;
         TopicInfo topicInfo = new TopicInfo();
@@ -195,8 +182,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetCreatedAt()
-    {
+    public void testGetSetCreatedAt() {
         // Arrange
         Calendar expectedCreatedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
@@ -210,8 +196,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetUpdatedAt()
-    {
+    public void testGetSetUpdatedAt() {
         // Arrange
         Calendar expectedUpdatedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
@@ -225,8 +210,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetAccessedAt()
-    {
+    public void testGetSetAccessedAt() {
         // Arrange
         Calendar expectedAccessedAt = Calendar.getInstance();
         TopicInfo topicInfo = new TopicInfo();
@@ -240,8 +224,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetUserMetadata()
-    {
+    public void testGetSetUserMetadata() {
         // Arrange
         String expectedUserMetadata = "expectedUserMetaData";
         TopicInfo topicInfo = new TopicInfo();
@@ -255,8 +238,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetSupportOrdering()
-    {
+    public void testGetSetSupportOrdering() {
         // Arrange
         Boolean expectedIsSupportOrdering = true;
         TopicInfo topicInfo = new TopicInfo();
@@ -270,8 +252,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetSubscriptionCount()
-    {
+    public void testGetSetSubscriptionCount() {
         // Arrange
         Integer expectedSubscriptionCount = 1024;
         TopicInfo topicInfo = new TopicInfo();
@@ -285,8 +266,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetAutoDeleteOnIdle()
-    {
+    public void testGetSetAutoDeleteOnIdle() {
         // Arrange
         Duration expectedIsAutoDeleteOnIdle = createDuration(100);
         TopicInfo topicInfo = new TopicInfo();
@@ -300,8 +280,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetPartioningPolicy()
-    {
+    public void testGetSetPartioningPolicy() {
         // Arrange
         PartitioningPolicy expectedPartitioningPolicy = PartitioningPolicy.NO_PARTITIONING;
         TopicInfo topicInfo = new TopicInfo();
@@ -316,8 +295,7 @@ public class TopicInfoTest
     }
 
     @Test
-    public void testGetSetEntityAvailabilityStatus()
-    {
+    public void testGetSetEntityAvailabilityStatus() {
         // Arrange
         EntityAvailabilityStatus expectedEntityAvailabilityStatus = EntityAvailabilityStatus.AVAILABLE;
         TopicInfo topicInfo = new TopicInfo();

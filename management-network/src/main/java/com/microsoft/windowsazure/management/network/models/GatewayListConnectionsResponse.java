@@ -35,7 +35,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     private ArrayList<GatewayListConnectionsResponse.GatewayConnection> connections;
     
     /**
-    * The list of connections.
+    * Optional. The list of connections.
     * @return The Connections value.
     */
     public ArrayList<GatewayListConnectionsResponse.GatewayConnection> getConnections() {
@@ -43,7 +43,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
     }
     
     /**
-    * The list of connections.
+    * Optional. The list of connections.
     * @param connectionsValue The Connections value.
     */
     public void setConnections(final ArrayList<GatewayListConnectionsResponse.GatewayConnection> connectionsValue) {
@@ -71,9 +71,9 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private ArrayList<String> allocatedIPAddresses;
         
         /**
-        * If LocalNetworkSiteName is defined as VPNClientConnection, this
-        * element contains a list of IP addresses (represented as strings)
-        * that are assigned to currently connected VPN clients.
+        * Optional. If LocalNetworkSiteName is defined as VPNClientConnection,
+        * this element contains a list of IP addresses (represented as
+        * strings) that are assigned to currently connected VPN clients.
         * @return The AllocatedIPAddresses value.
         */
         public ArrayList<String> getAllocatedIPAddresses() {
@@ -81,9 +81,9 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * If LocalNetworkSiteName is defined as VPNClientConnection, this
-        * element contains a list of IP addresses (represented as strings)
-        * that are assigned to currently connected VPN clients.
+        * Optional. If LocalNetworkSiteName is defined as VPNClientConnection,
+        * this element contains a list of IP addresses (represented as
+        * strings) that are assigned to currently connected VPN clients.
         * @param allocatedIPAddressesValue The AllocatedIPAddresses value.
         */
         public void setAllocatedIPAddresses(final ArrayList<String> allocatedIPAddressesValue) {
@@ -93,8 +93,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private GatewayConnectivityState connectivityState;
         
         /**
-        * The connection state of the site. You can set the connection state to
-        * Connected, Connecting or NotConnected.
+        * Optional. The connection state of the site. You can set the
+        * connection state to Connected, Connecting or NotConnected.
         * @return The ConnectivityState value.
         */
         public GatewayConnectivityState getConnectivityState() {
@@ -102,8 +102,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * The connection state of the site. You can set the connection state to
-        * Connected, Connecting or NotConnected.
+        * Optional. The connection state of the site. You can set the
+        * connection state to Connected, Connecting or NotConnected.
         * @param connectivityStateValue The ConnectivityState value.
         */
         public void setConnectivityState(final GatewayConnectivityState connectivityStateValue) {
@@ -113,8 +113,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private long egressBytesTransferred;
         
         /**
-        * The number of bytes of data transferred out through this connection
-        * since it was started.
+        * Optional. The number of bytes of data transferred out through this
+        * connection since it was started.
         * @return The EgressBytesTransferred value.
         */
         public long getEgressBytesTransferred() {
@@ -122,8 +122,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * The number of bytes of data transferred out through this connection
-        * since it was started.
+        * Optional. The number of bytes of data transferred out through this
+        * connection since it was started.
         * @param egressBytesTransferredValue The EgressBytesTransferred value.
         */
         public void setEgressBytesTransferred(final long egressBytesTransferredValue) {
@@ -133,8 +133,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private long ingressBytesTransferred;
         
         /**
-        * The number of bytes of data transferred in through this connection
-        * since it was started.
+        * Optional. The number of bytes of data transferred in through this
+        * connection since it was started.
         * @return The IngressBytesTransferred value.
         */
         public long getIngressBytesTransferred() {
@@ -142,8 +142,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * The number of bytes of data transferred in through this connection
-        * since it was started.
+        * Optional. The number of bytes of data transferred in through this
+        * connection since it was started.
         * @param ingressBytesTransferredValue The IngressBytesTransferred value.
         */
         public void setIngressBytesTransferred(final long ingressBytesTransferredValue) {
@@ -153,6 +153,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private Calendar lastConnectionEstablished;
         
         /**
+        * Optional.
         * @return The LastConnectionEstablished value.
         */
         public Calendar getLastConnectionEstablished() {
@@ -160,6 +161,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
+        * Optional.
         * @param lastConnectionEstablishedValue The LastConnectionEstablished
         * value.
         */
@@ -170,7 +172,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private GatewayEvent lastEvent;
         
         /**
-        * A record of the last provisioning event for this connection.
+        * Optional. A record of the last provisioning event for this connection.
         * @return The LastEvent value.
         */
         public GatewayEvent getLastEvent() {
@@ -178,7 +180,7 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * A record of the last provisioning event for this connection.
+        * Optional. A record of the last provisioning event for this connection.
         * @param lastEventValue The LastEvent value.
         */
         public void setLastEvent(final GatewayEvent lastEventValue) {
@@ -188,7 +190,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         private String localNetworkSiteName;
         
         /**
-        * The name of the local network site represented by the connection.
+        * Optional. The name of the local network site represented by the
+        * connection.
         * @return The LocalNetworkSiteName value.
         */
         public String getLocalNetworkSiteName() {
@@ -196,7 +199,8 @@ public class GatewayListConnectionsResponse extends OperationResponse implements
         }
         
         /**
-        * The name of the local network site represented by the connection.
+        * Optional. The name of the local network site represented by the
+        * connection.
         * @param localNetworkSiteNameValue The LocalNetworkSiteName value.
         */
         public void setLocalNetworkSiteName(final String localNetworkSiteNameValue) {

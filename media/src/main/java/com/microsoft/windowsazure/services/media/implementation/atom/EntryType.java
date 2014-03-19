@@ -82,8 +82,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "entryType", propOrder = { "entryChildren" })
-public class EntryType
-{
+public class EntryType {
 
     @XmlElementRefs({
             @XmlElementRef(name = "category", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
@@ -143,10 +142,8 @@ public class EntryType
      * 
      * 
      */
-    public List<Object> getEntryChildren()
-    {
-        if (entryChildren == null)
-        {
+    public List<Object> getEntryChildren() {
+        if (entryChildren == null) {
             entryChildren = new ArrayList<Object>();
         }
         return this.entryChildren;
@@ -158,8 +155,7 @@ public class EntryType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -170,8 +166,7 @@ public class EntryType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -181,8 +176,7 @@ public class EntryType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -193,8 +187,7 @@ public class EntryType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -212,8 +205,7 @@ public class EntryType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

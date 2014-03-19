@@ -98,8 +98,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
+    * @param namespaceName Required. The namespace name.
+    * @param queue Required. The service bus queue.
     * @return A response to a request for a particular queue.
     */
     @Override
@@ -120,8 +120,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856295.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
+    * @param namespaceName Required. The namespace name.
+    * @param queue Required. The service bus queue.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -682,8 +682,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
+    * @param namespaceName Required. The namespace name.
+    * @param queueName Required. The queue name.
     * @return A response to a request for a particular queue.
     */
     @Override
@@ -704,8 +704,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780773.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
+    * @param namespaceName Required. The namespace name.
+    * @param queueName Required. The queue name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1062,8 +1062,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a queue.
     *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
+    * @param namespaceName Required. The namespace name.
+    * @param queueName Required. The queue name.
     * @return The set of connection details for a service bus entity.
     */
     @Override
@@ -1079,8 +1079,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a queue.
     *
-    * @param namespaceName The namespace name.
-    * @param queueName The queue name.
+    * @param namespaceName Required. The namespace name.
+    * @param queueName Required. The queue name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1230,7 +1230,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return A response to a request for a list of queues.
     */
     @Override
@@ -1251,7 +1251,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh780759.asp for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -1615,8 +1615,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
+    * @param namespaceName Required. The namespace name.
+    * @param queue Required. The service bus queue.
     * @return A response to a request for a particular queue.
     */
     @Override
@@ -1635,8 +1635,8 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856305.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param queue The service bus queue.
+    * @param namespaceName Required. The namespace name.
+    * @param queue Required. The service bus queue.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

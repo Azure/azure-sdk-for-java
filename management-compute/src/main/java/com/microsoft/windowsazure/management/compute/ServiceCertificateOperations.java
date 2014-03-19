@@ -53,9 +53,9 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
+    * @param serviceName Required. The DNS prefix name of your service.
+    * @param parameters Required. Parameters supplied to the Create Service
+    * Certificate operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -79,9 +79,9 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
+    * @param serviceName Required. The DNS prefix name of your service.
+    * @param parameters Required. Parameters supplied to the Create Service
+    * Certificate operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -96,8 +96,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Delete Service
+    * Certificate operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -116,8 +116,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Delete Service
+    * Certificate operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -132,9 +132,9 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
+    * @param serviceName Required. The DNS prefix name of your service.
+    * @param parameters Required. Parameters supplied to the Create Service
+    * Certificate operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -177,9 +177,9 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460817.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your service.
-    * @param parameters Parameters supplied to the Create Service Certificate
-    * operation.
+    * @param serviceName Required. The DNS prefix name of your service.
+    * @param parameters Required. Parameters supplied to the Create Service
+    * Certificate operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -201,8 +201,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Delete Service
+    * Certificate operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -238,8 +238,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460803.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Delete Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Delete Service
+    * Certificate operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -258,8 +258,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Get Service
+    * Certificate operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -280,8 +280,8 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460792.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Get Service Certificate
-    * operation.
+    * @param parameters Required. Parameters supplied to the Get Service
+    * Certificate operation.
     * @return The Get Service Certificate operation response.
     */
     Future<ServiceCertificateGetResponse> getAsync(ServiceCertificateGetParameters parameters);
@@ -292,7 +292,7 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your hosted service.
+    * @param serviceName Required. The DNS prefix name of your hosted service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -313,7 +313,7 @@ public interface ServiceCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154105.aspx for
     * more information)
     *
-    * @param serviceName The DNS prefix name of your hosted service.
+    * @param serviceName Required. The DNS prefix name of your hosted service.
     * @return The List Service Certificates operation response.
     */
     Future<ServiceCertificateListResponse> listAsync(String serviceName);

@@ -32,7 +32,7 @@ public class Server {
     private String administratorUserName;
     
     /**
-    * Gets or sets the name of an administrator for this server.
+    * Optional. Gets or sets the name of an administrator for this server.
     * @return The AdministratorUserName value.
     */
     public String getAdministratorUserName() {
@@ -40,7 +40,7 @@ public class Server {
     }
     
     /**
-    * Gets or sets the name of an administrator for this server.
+    * Optional. Gets or sets the name of an administrator for this server.
     * @param administratorUserNameValue The AdministratorUserName value.
     */
     public void setAdministratorUserName(final String administratorUserNameValue) {
@@ -50,8 +50,8 @@ public class Server {
     private HashMap<String, String> features;
     
     /**
-    * Gets or sets the list of features and the type of database server for an
-    * individual server.
+    * Optional. Gets or sets the list of features and the type of database
+    * server for an individual server.
     * @return The Features value.
     */
     public HashMap<String, String> getFeatures() {
@@ -59,8 +59,8 @@ public class Server {
     }
     
     /**
-    * Gets or sets the list of features and the type of database server for an
-    * individual server.
+    * Optional. Gets or sets the list of features and the type of database
+    * server for an individual server.
     * @param featuresValue The Features value.
     */
     public void setFeatures(final HashMap<String, String> featuresValue) {
@@ -70,8 +70,8 @@ public class Server {
     private String location;
     
     /**
-    * Gets or sets the name of a data center location that is valid for your
-    * subscription.
+    * Optional. Gets or sets the name of a data center location that is valid
+    * for your subscription.
     * @return The Location value.
     */
     public String getLocation() {
@@ -79,8 +79,8 @@ public class Server {
     }
     
     /**
-    * Gets or sets the name of a data center location that is valid for your
-    * subscription.
+    * Optional. Gets or sets the name of a data center location that is valid
+    * for your subscription.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
@@ -90,7 +90,8 @@ public class Server {
     private String name;
     
     /**
-    * Gets or sets the name of a SQL Server running in your subscription.
+    * Optional. Gets or sets the name of a SQL Server running in your
+    * subscription.
     * @return The Name value.
     */
     public String getName() {
@@ -98,7 +99,8 @@ public class Server {
     }
     
     /**
-    * Gets or sets the name of a SQL Server running in your subscription.
+    * Optional. Gets or sets the name of a SQL Server running in your
+    * subscription.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

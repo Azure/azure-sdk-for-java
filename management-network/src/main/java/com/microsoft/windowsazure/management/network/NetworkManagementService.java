@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  *
  */
-public final class NetworkManagementService
-{
-    private NetworkManagementService()
-    {
+public final class NetworkManagementService {
+    private NetworkManagementService() {
         // class is not instantiated
     }
 
@@ -34,8 +32,7 @@ public final class NetworkManagementService
      * @return An instance of the <code>VirtualNetworkManagementClient</code>
      * API.
      */
-    public static NetworkManagementClient create()
-    {
+    public static NetworkManagementClient create() {
         return Configuration.getInstance().create(
         		NetworkManagementClient.class);
     }
@@ -50,8 +47,7 @@ public final class NetworkManagementService
      * API.
      */
     public static NetworkManagementClient create(
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(NetworkManagementClient.class);
     }
 
@@ -64,8 +60,7 @@ public final class NetworkManagementService
      * @return An instance of the <code>VirtualNetworkManagementClient</code>
      * API.
      */
-    public static NetworkManagementClient create(final String profile)
-    {
+    public static NetworkManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
         		NetworkManagementClient.class);
     }
@@ -81,8 +76,7 @@ public final class NetworkManagementService
      * API.
      */
     public static NetworkManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, NetworkManagementClient.class);
     }
 }

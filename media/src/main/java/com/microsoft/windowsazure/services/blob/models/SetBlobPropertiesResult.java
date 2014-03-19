@@ -29,8 +29,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Blob Properties</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class SetBlobPropertiesResult
-{
+public class SetBlobPropertiesResult {
     private String etag;
     private Date lastModified;
     private Long sequenceNumber;
@@ -45,8 +44,7 @@ public class SetBlobPropertiesResult
      * @return A {@link String} containing the server-assigned ETag value for
      *         the blob.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -61,8 +59,7 @@ public class SetBlobPropertiesResult
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -78,8 +75,7 @@ public class SetBlobPropertiesResult
      * @return A {@link java.util.Date} containing the last modified time of the
      *         page blob.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -94,8 +90,7 @@ public class SetBlobPropertiesResult
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -108,8 +103,7 @@ public class SetBlobPropertiesResult
      * @return A {@link String} containing the client-assigned sequence number
      *         value for the page blob.
      */
-    public Long getSequenceNumber()
-    {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -125,8 +119,7 @@ public class SetBlobPropertiesResult
      *            A {@link String} containing the client-assigned sequence
      *            number value for the page blob.
      */
-    public void setSequenceNumber(Long sequenceNumber)
-    {
+    public void setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
     }
 }

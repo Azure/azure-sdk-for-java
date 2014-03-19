@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.services.servicebus.models;
 
-public class ListQueuesOptions extends AbstractListOptions<ListQueuesOptions>
-{
+public class ListQueuesOptions extends AbstractListOptions<ListQueuesOptions> {
     public static final ListQueuesOptions DEFAULT = new ListQueuesOptions();
 }

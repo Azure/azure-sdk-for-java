@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * for the operation, the lease ID if the blob has an active lease, and the MD5
  * hash value for the block content.
  */
-public class CreateBlobBlockOptions extends BlobServiceOptions
-{
+public class CreateBlobBlockOptions extends BlobServiceOptions {
     private String leaseId;
     private String contentMD5;
 
@@ -40,8 +39,7 @@ public class CreateBlobBlockOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobBlockOptions} instance.
      */
     @Override
-    public CreateBlobBlockOptions setTimeout(Integer timeout)
-    {
+    public CreateBlobBlockOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -52,8 +50,7 @@ public class CreateBlobBlockOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -68,8 +65,7 @@ public class CreateBlobBlockOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CreateBlobBlockOptions} instance.
      */
-    public CreateBlobBlockOptions setLeaseId(String leaseId)
-    {
+    public CreateBlobBlockOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -81,8 +77,7 @@ public class CreateBlobBlockOptions extends BlobServiceOptions
      * @return A {@link String} containing the MD5 hash value for the block
      *         content set, if any.
      */
-    public String getContentMD5()
-    {
+    public String getContentMD5() {
         return contentMD5;
     }
 
@@ -102,8 +97,7 @@ public class CreateBlobBlockOptions extends BlobServiceOptions
      *            content to set.
      * @return A reference to this {@link CreateBlobBlockOptions} instance.
      */
-    public CreateBlobBlockOptions setContentMD5(String contentMD5)
-    {
+    public CreateBlobBlockOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }

@@ -52,8 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EndpointsInfo", propOrder = { "endpoint" })
-class EndpointsInfo
-{
+class EndpointsInfo {
 
     @XmlElement(name = "Endpoint")
     protected List<EndpointInfo> endpoint;
@@ -81,10 +80,8 @@ class EndpointsInfo
      * 
      * 
      */
-    public List<EndpointInfo> getEndpoint()
-    {
-        if (endpoint == null)
-        {
+    public List<EndpointInfo> getEndpoint() {
+        if (endpoint == null) {
             endpoint = new ArrayList<EndpointInfo>();
         }
         return this.endpoint;

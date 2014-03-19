@@ -32,6 +32,7 @@ public class GatewayOperationResponse extends OperationResponse {
     private String operationId;
     
     /**
+    * Optional.
     * @return The OperationId value.
     */
     public String getOperationId() {
@@ -39,6 +40,7 @@ public class GatewayOperationResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param operationIdValue The OperationId value.
     */
     public void setOperationId(final String operationIdValue) {

@@ -25,65 +25,67 @@ package com.microsoft.windowsazure.management.scheduler.models;
 
 import java.util.Calendar;
 
-public class EntitleResourceParameters
-{
+public class EntitleResourceParameters {
     private Calendar registrationDate;
-    
+
     /**
-    * The required data when the entitlement is performed.
-    * @return The RegistrationDate value.
-    */
-    public Calendar getRegistrationDate()
-    {
+     * The required data when the entitlement is performed.
+     * 
+     * @return The RegistrationDate value.
+     */
+    public Calendar getRegistrationDate() {
         return this.registrationDate;
     }
-    
+
     /**
-    * The required data when the entitlement is performed.
-    * @param registrationDateValue The RegistrationDate value.
-    */
-    public void setRegistrationDate(final Calendar registrationDateValue)
-    {
+     * The required data when the entitlement is performed.
+     * 
+     * @param registrationDateValue
+     *            The RegistrationDate value.
+     */
+    public void setRegistrationDate(final Calendar registrationDateValue) {
         this.registrationDate = registrationDateValue;
     }
-    
+
     private String resourceNamespace;
-    
+
     /**
-    * Required NameSpace identifier for the resource provider.
-    * @return The ResourceNamespace value.
-    */
-    public String getResourceNamespace()
-    {
+     * Required NameSpace identifier for the resource provider.
+     * 
+     * @return The ResourceNamespace value.
+     */
+    public String getResourceNamespace() {
         return this.resourceNamespace;
     }
-    
+
     /**
-    * Required NameSpace identifier for the resource provider.
-    * @param resourceNamespaceValue The ResourceNamespace value.
-    */
-    public void setResourceNamespace(final String resourceNamespaceValue)
-    {
+     * Required NameSpace identifier for the resource provider.
+     * 
+     * @param resourceNamespaceValue
+     *            The ResourceNamespace value.
+     */
+    public void setResourceNamespace(final String resourceNamespaceValue) {
         this.resourceNamespace = resourceNamespaceValue;
     }
-    
+
     private String resourceType;
-    
+
     /**
-    * Required type for the resource.
-    * @return The ResourceType value.
-    */
-    public String getResourceType()
-    {
+     * Required type for the resource.
+     * 
+     * @return The ResourceType value.
+     */
+    public String getResourceType() {
         return this.resourceType;
     }
-    
+
     /**
-    * Required type for the resource.
-    * @param resourceTypeValue The ResourceType value.
-    */
-    public void setResourceType(final String resourceTypeValue)
-    {
+     * Required type for the resource.
+     * 
+     * @param resourceTypeValue
+     *            The ResourceType value.
+     */
+    public void setResourceType(final String resourceTypeValue) {
         this.resourceType = resourceTypeValue;
     }
 }

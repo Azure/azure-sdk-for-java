@@ -89,8 +89,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Export DAC into Windows Azure blob storage.
     *
-    * @param serverName The name of the server being exported from.
-    * @param parameters Export parameters.
+    * @param serverName Required. The name of the server being exported from.
+    * @param parameters Optional. Export parameters.
     * @return Response for an DAC Import/Export request.
     */
     @Override
@@ -106,8 +106,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Export DAC into Windows Azure blob storage.
     *
-    * @param serverName The name of the server being exported from.
-    * @param parameters Export parameters.
+    * @param serverName Required. The name of the server being exported from.
+    * @param parameters Optional. Export parameters.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -294,11 +294,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Gets the status of the DAC.
     *
-    * @param serverName The name of the server.
-    * @param fullyQualifiedServerName The fully qualified name of the server.
-    * @param username The server's username.
-    * @param password The server's password.
-    * @param requestId The request ID of the operation being queried.
+    * @param serverName Required. The name of the server.
+    * @param fullyQualifiedServerName Required. The fully qualified name of the
+    * server.
+    * @param username Required. The server's username.
+    * @param password Required. The server's password.
+    * @param requestId Required. The request ID of the operation being queried.
     * @return The response structure for the DAC GetStatus operation.
     */
     @Override
@@ -314,11 +315,12 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Gets the status of the DAC.
     *
-    * @param serverName The name of the server.
-    * @param fullyQualifiedServerName The fully qualified name of the server.
-    * @param username The server's username.
-    * @param password The server's password.
-    * @param requestId The request ID of the operation being queried.
+    * @param serverName Required. The name of the server.
+    * @param fullyQualifiedServerName Required. The fully qualified name of the
+    * server.
+    * @param username Required. The server's username.
+    * @param password Required. The server's password.
+    * @param requestId Required. The request ID of the operation being queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -515,8 +517,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Import DAC from Windows Azure blob storage.
     *
-    * @param serverName The name of the server being imported to.
-    * @param parameters Import parameters.
+    * @param serverName Required. The name of the server being imported to.
+    * @param parameters Optional. Import parameters.
     * @return Response for an DAC Import/Export request.
     */
     @Override
@@ -532,8 +534,8 @@ public class DacOperationsImpl implements ServiceOperations<SqlManagementClientI
     /**
     * Import DAC from Windows Azure blob storage.
     *
-    * @param serverName The name of the server being imported to.
-    * @param parameters Import parameters.
+    * @param serverName Required. The name of the server being imported to.
+    * @param parameters Optional. Import parameters.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

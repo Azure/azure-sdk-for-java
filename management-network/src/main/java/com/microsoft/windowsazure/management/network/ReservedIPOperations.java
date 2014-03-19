@@ -41,8 +41,8 @@ public interface ReservedIPOperations {
     * Preview Only. The Create Reserved IP operation creates a reserved IP from
     * your the subscription.
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Image
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -69,8 +69,8 @@ public interface ReservedIPOperations {
     * Preview Only. The Create Reserved IP operation creates a reserved IP from
     * your the subscription.
     *
-    * @param parameters Parameters supplied to the Create Virtual Machine Image
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Virtual
+    * Machine Image operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -87,7 +87,7 @@ public interface ReservedIPOperations {
     * Preview Only. The Delete Reserved IP operation removes a reserved IP from
     * your the subscription.
     *
-    * @param ipName The name of the reserved IP.
+    * @param ipName Required. The name of the reserved IP.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -105,7 +105,7 @@ public interface ReservedIPOperations {
     * Preview Only. The Delete Reserved IP operation removes a reserved IP from
     * your the subscription.
     *
-    * @param ipName The name of the reserved IP.
+    * @param ipName Required. The name of the reserved IP.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -115,7 +115,8 @@ public interface ReservedIPOperations {
     * The Create Reserved IP operation creates a reserved IP from your the
     * subscription.
     *
-    * @param parameters Parameters supplied to create a network reserved IP.
+    * @param parameters Required. Parameters supplied to create a network
+    * reserved IP.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -150,7 +151,8 @@ public interface ReservedIPOperations {
     * The Create Reserved IP operation creates a reserved IP from your the
     * subscription.
     *
-    * @param parameters Parameters supplied to create a network reserved IP.
+    * @param parameters Required. Parameters supplied to create a network
+    * reserved IP.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -167,7 +169,7 @@ public interface ReservedIPOperations {
     * The Delete Reserved IP operation removes a reserved IP from your the
     * subscription.
     *
-    * @param ipName The name of the reserved IP.
+    * @param ipName Required. The name of the reserved IP.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -202,7 +204,7 @@ public interface ReservedIPOperations {
     * The Delete Reserved IP operation removes a reserved IP from your the
     * subscription.
     *
-    * @param ipName The name of the reserved IP.
+    * @param ipName Required. The name of the reserved IP.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -219,7 +221,7 @@ public interface ReservedIPOperations {
     * Preview Only. The Get Reserved IP operation retrieves the details for
     * virtual IP reserved for the subscription.
     *
-    * @param ipName The name of the reserved IP to retrieve.
+    * @param ipName Required. The name of the reserved IP to retrieve.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -236,7 +238,7 @@ public interface ReservedIPOperations {
     * Preview Only. The Get Reserved IP operation retrieves the details for
     * virtual IP reserved for the subscription.
     *
-    * @param ipName The name of the reserved IP to retrieve.
+    * @param ipName Required. The name of the reserved IP to retrieve.
     * @return Preview Only. A reserved IP associated with your subscription.
     */
     Future<NetworkReservedIPGetResponse> getAsync(String ipName);

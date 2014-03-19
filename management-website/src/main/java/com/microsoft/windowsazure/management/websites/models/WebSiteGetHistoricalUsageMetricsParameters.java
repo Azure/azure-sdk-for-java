@@ -33,8 +33,8 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     private Calendar endTime;
     
     /**
-    * The ending time of the metrics to return. If this parameter is not
-    * specified, the current time is used.
+    * Optional. The ending time of the metrics to return. If this parameter is
+    * not specified, the current time is used.
     * @return The EndTime value.
     */
     public Calendar getEndTime() {
@@ -42,8 +42,8 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     }
     
     /**
-    * The ending time of the metrics to return. If this parameter is not
-    * specified, the current time is used.
+    * Optional. The ending time of the metrics to return. If this parameter is
+    * not specified, the current time is used.
     * @param endTimeValue The EndTime value.
     */
     public void setEndTime(final Calendar endTimeValue) {
@@ -53,9 +53,9 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     private ArrayList<String> metricNames;
     
     /**
-    * Specifies a comma-separated list of the names of the metrics to return.
-    * If the names parameter is not specified, then all available metrics are
-    * returned.
+    * Optional. Specifies a comma-separated list of the names of the metrics to
+    * return. If the names parameter is not specified, then all available
+    * metrics are returned.
     * @return The MetricNames value.
     */
     public ArrayList<String> getMetricNames() {
@@ -63,9 +63,9 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     }
     
     /**
-    * Specifies a comma-separated list of the names of the metrics to return.
-    * If the names parameter is not specified, then all available metrics are
-    * returned.
+    * Optional. Specifies a comma-separated list of the names of the metrics to
+    * return. If the names parameter is not specified, then all available
+    * metrics are returned.
     * @param metricNamesValue The MetricNames value.
     */
     public void setMetricNames(final ArrayList<String> metricNamesValue) {
@@ -75,8 +75,8 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     private Calendar startTime;
     
     /**
-    * The starting time of the metrics to return. If this parameter is not
-    * specified, the beginning of the current hour is used.
+    * Optional. The starting time of the metrics to return. If this parameter
+    * is not specified, the beginning of the current hour is used.
     * @return The StartTime value.
     */
     public Calendar getStartTime() {
@@ -84,8 +84,8 @@ public class WebSiteGetHistoricalUsageMetricsParameters {
     }
     
     /**
-    * The starting time of the metrics to return. If this parameter is not
-    * specified, the beginning of the current hour is used.
+    * Optional. The starting time of the metrics to return. If this parameter
+    * is not specified, the beginning of the current hour is used.
     * @param startTimeValue The StartTime value.
     */
     public void setStartTime(final Calendar startTimeValue) {

@@ -73,8 +73,8 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a relay.
     *
-    * @param namespaceName The namespace name.
-    * @param relayName The relay name.
+    * @param namespaceName Required. The namespace name.
+    * @param relayName Required. The relay name.
     * @return The set of connection details for a service bus entity.
     */
     @Override
@@ -90,8 +90,8 @@ public class RelayOperationsImpl implements ServiceOperations<ServiceBusManageme
     /**
     * Gets the set of connection strings for a relay.
     *
-    * @param namespaceName The namespace name.
-    * @param relayName The relay name.
+    * @param namespaceName Required. The namespace name.
+    * @param relayName Required. The relay name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

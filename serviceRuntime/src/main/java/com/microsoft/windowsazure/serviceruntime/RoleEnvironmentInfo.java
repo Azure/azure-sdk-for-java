@@ -54,8 +54,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleEnvironmentInfo", propOrder = {
 
 })
-class RoleEnvironmentInfo
-{
+class RoleEnvironmentInfo {
 
     @XmlElement(name = "Deployment", required = true)
     protected DeploymentInfo deployment;
@@ -70,8 +69,7 @@ class RoleEnvironmentInfo
      * @return possible object is {@link DeploymentInfo }
      * 
      */
-    public DeploymentInfo getDeployment()
-    {
+    public DeploymentInfo getDeployment() {
         return deployment;
     }
 
@@ -82,8 +80,7 @@ class RoleEnvironmentInfo
      *            allowed object is {@link DeploymentInfo }
      * 
      */
-    public void setDeployment(DeploymentInfo value)
-    {
+    public void setDeployment(DeploymentInfo value) {
         this.deployment = value;
     }
 
@@ -93,8 +90,7 @@ class RoleEnvironmentInfo
      * @return possible object is {@link CurrentRoleInstanceInfo }
      * 
      */
-    public CurrentRoleInstanceInfo getCurrentInstance()
-    {
+    public CurrentRoleInstanceInfo getCurrentInstance() {
         return currentInstance;
     }
 
@@ -105,8 +101,7 @@ class RoleEnvironmentInfo
      *            allowed object is {@link CurrentRoleInstanceInfo }
      * 
      */
-    public void setCurrentInstance(CurrentRoleInstanceInfo value)
-    {
+    public void setCurrentInstance(CurrentRoleInstanceInfo value) {
         this.currentInstance = value;
     }
 
@@ -116,8 +111,7 @@ class RoleEnvironmentInfo
      * @return possible object is {@link RolesInfo }
      * 
      */
-    public RolesInfo getRoles()
-    {
+    public RolesInfo getRoles() {
         return roles;
     }
 
@@ -128,8 +122,7 @@ class RoleEnvironmentInfo
      *            allowed object is {@link RolesInfo }
      * 
      */
-    public void setRoles(RolesInfo value)
-    {
+    public void setRoles(RolesInfo value) {
         this.roles = value;
     }
 

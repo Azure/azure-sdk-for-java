@@ -32,7 +32,7 @@ public class DatabaseGetEventLogsParameters {
     private String eventTypes;
     
     /**
-    * Gets or sets the event types.
+    * Required. Gets or sets the event types.
     * @return The EventTypes value.
     */
     public String getEventTypes() {
@@ -40,7 +40,7 @@ public class DatabaseGetEventLogsParameters {
     }
     
     /**
-    * Gets or sets the event types.
+    * Required. Gets or sets the event types.
     * @param eventTypesValue The EventTypes value.
     */
     public void setEventTypes(final String eventTypesValue) {
@@ -50,7 +50,7 @@ public class DatabaseGetEventLogsParameters {
     private int intervalSizeInMinutes;
     
     /**
-    * Gets or sets the interval size in minutes.
+    * Required. Gets or sets the interval size in minutes.
     * @return The IntervalSizeInMinutes value.
     */
     public int getIntervalSizeInMinutes() {
@@ -58,7 +58,7 @@ public class DatabaseGetEventLogsParameters {
     }
     
     /**
-    * Gets or sets the interval size in minutes.
+    * Required. Gets or sets the interval size in minutes.
     * @param intervalSizeInMinutesValue The IntervalSizeInMinutes value.
     */
     public void setIntervalSizeInMinutes(final int intervalSizeInMinutesValue) {
@@ -68,7 +68,7 @@ public class DatabaseGetEventLogsParameters {
     private Calendar startDate;
     
     /**
-    * Gets or sets the start date.
+    * Required. Gets or sets the start date.
     * @return The StartDate value.
     */
     public Calendar getStartDate() {
@@ -76,7 +76,7 @@ public class DatabaseGetEventLogsParameters {
     }
     
     /**
-    * Gets or sets the start date.
+    * Required. Gets or sets the start date.
     * @param startDateValue The StartDate value.
     */
     public void setStartDate(final Calendar startDateValue) {

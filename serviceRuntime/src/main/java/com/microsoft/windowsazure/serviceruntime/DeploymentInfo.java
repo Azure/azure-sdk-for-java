@@ -49,8 +49,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DeploymentInfo")
-class DeploymentInfo
-{
+class DeploymentInfo {
 
     @XmlAttribute(required = true)
     protected String id;
@@ -63,8 +62,7 @@ class DeploymentInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
@@ -75,8 +73,7 @@ class DeploymentInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setId(String value)
-    {
+    public void setId(String value) {
         this.id = value;
     }
 
@@ -84,8 +81,7 @@ class DeploymentInfo
      * Gets the value of the emulated property.
      * 
      */
-    public boolean isEmulated()
-    {
+    public boolean isEmulated() {
         return emulated;
     }
 
@@ -93,8 +89,7 @@ class DeploymentInfo
      * Sets the value of the emulated property.
      * 
      */
-    public void setEmulated(boolean value)
-    {
+    public void setEmulated(boolean value) {
         this.emulated = value;
     }
 

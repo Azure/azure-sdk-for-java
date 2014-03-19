@@ -32,7 +32,7 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     private boolean isAvailable;
     
     /**
-    * Whether the name is available.
+    * Optional. Whether the name is available.
     * @return The IsAvailable value.
     */
     public boolean isAvailable() {
@@ -40,7 +40,7 @@ public class JobCollectionCheckNameAvailabilityResponse extends OperationRespons
     }
     
     /**
-    * Whether the name is available.
+    * Optional. Whether the name is available.
     * @param isAvailableValue The IsAvailable value.
     */
     public void setIsAvailable(final boolean isAvailableValue) {

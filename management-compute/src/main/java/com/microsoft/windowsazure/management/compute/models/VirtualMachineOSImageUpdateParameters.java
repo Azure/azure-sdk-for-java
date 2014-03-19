@@ -29,7 +29,7 @@ import java.util.Calendar;
 /**
 * Parameters supplied to the Update Virtual Machine Image operation.
 */
-public class VirtualMachineImageUpdateParameters {
+public class VirtualMachineOSImageUpdateParameters {
     private String description;
     
     /**
@@ -111,8 +111,8 @@ public class VirtualMachineImageUpdateParameters {
     private boolean isPremium;
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Optional. Indicates if the image contains software or associated services
+    * that will incur charges above the core price for the virtual machine.
     * @return The IsPremium value.
     */
     public boolean isPremium() {
@@ -120,8 +120,8 @@ public class VirtualMachineImageUpdateParameters {
     }
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Optional. Indicates if the image contains software or associated services
+    * that will incur charges above the core price for the virtual machine.
     * @param isPremiumValue The IsPremium value.
     */
     public void setIsPremium(final boolean isPremiumValue) {
@@ -153,8 +153,8 @@ public class VirtualMachineImageUpdateParameters {
     private String language;
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
     public String getLanguage() {
@@ -162,8 +162,8 @@ public class VirtualMachineImageUpdateParameters {
     }
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
     public void setLanguage(final String languageValue) {
@@ -233,9 +233,10 @@ public class VirtualMachineImageUpdateParameters {
     private URI smallIconUri;
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -243,9 +244,10 @@ public class VirtualMachineImageUpdateParameters {
     }
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

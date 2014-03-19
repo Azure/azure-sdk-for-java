@@ -51,7 +51,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -72,7 +72,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj870968.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return The response to a query for the availability status of a
     * namespace name.
     */
@@ -84,8 +84,8 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param region The namespace region.
+    * @param namespaceName Required. The namespace name.
+    * @param region Required. The namespace region.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -108,8 +108,8 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856303.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
-    * @param region The namespace region.
+    * @param namespaceName Required. The namespace name.
+    * @param region Required. The namespace region.
     * @return The response to a request for a particular namespace.
     */
     Future<ServiceBusNamespaceResponse> createAsync(String namespaceName, String region);
@@ -118,8 +118,8 @@ public interface NamespaceOperations {
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param rule The shared access authorization rule.
+    * @param namespaceName Required. The namespace name.
+    * @param rule Required. The shared access authorization rule.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -138,8 +138,8 @@ public interface NamespaceOperations {
     * The create namespace authorization rule operation creates an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param rule The shared access authorization rule.
+    * @param namespaceName Required. The namespace name.
+    * @param rule Required. The shared access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> createAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);
@@ -151,7 +151,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -168,7 +168,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj856296.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -178,8 +178,8 @@ public interface NamespaceOperations {
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param ruleName The rule name.
+    * @param namespaceName Required. The namespace name.
+    * @param ruleName Required. The rule name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -193,8 +193,8 @@ public interface NamespaceOperations {
     * The delete namespace authorization rule operation deletes an
     * authorization rule for a namespace
     *
-    * @param namespaceName The namespace name.
-    * @param ruleName The rule name.
+    * @param namespaceName Required. The namespace name.
+    * @param ruleName Required. The rule name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -205,7 +205,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -225,7 +225,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn140232.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return The response to a request for a particular namespace.
     */
     Future<ServiceBusNamespaceResponse> getAsync(String namespaceName);
@@ -234,8 +234,10 @@ public interface NamespaceOperations {
     * The get authorization rule operation gets an authorization rule for a
     * namespace by name.
     *
-    * @param namespaceName The namespace to get the authorization rule for.
-    * @param entityName The entity name to get the authorization rule for.
+    * @param namespaceName Required. The namespace to get the authorization
+    * rule for.
+    * @param entityName Required. The entity name to get the authorization rule
+    * for.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -252,8 +254,10 @@ public interface NamespaceOperations {
     * The get authorization rule operation gets an authorization rule for a
     * namespace by name.
     *
-    * @param namespaceName The namespace to get the authorization rule for.
-    * @param entityName The entity name to get the authorization rule for.
+    * @param namespaceName Required. The namespace to get the authorization
+    * rule for.
+    * @param entityName Required. The entity name to get the authorization rule
+    * for.
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> getAuthorizationRuleAsync(String namespaceName, String entityName);
@@ -265,7 +269,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -285,7 +289,7 @@ public interface NamespaceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return A response to a request for a list of namespaces.
     */
     Future<ServiceBusNamespaceDescriptionResponse> getNamespaceDescriptionAsync(String namespaceName);
@@ -322,7 +326,8 @@ public interface NamespaceOperations {
     * The get authorization rules operation gets the authorization rules for a
     * namespace.
     *
-    * @param namespaceName The namespace to get the authorization rule for.
+    * @param namespaceName Required. The namespace to get the authorization
+    * rule for.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -339,7 +344,8 @@ public interface NamespaceOperations {
     * The get authorization rules operation gets the authorization rules for a
     * namespace.
     *
-    * @param namespaceName The namespace to get the authorization rule for.
+    * @param namespaceName Required. The namespace to get the authorization
+    * rule for.
     * @return A response to a request for a list of authorization rules.
     */
     Future<ServiceBusAuthorizationRulesResponse> listAuthorizationRulesAsync(String namespaceName);
@@ -348,8 +354,8 @@ public interface NamespaceOperations {
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param rule Updated access authorization rule.
+    * @param namespaceName Required. The namespace name.
+    * @param rule Optional. Updated access authorization rule.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -368,8 +374,8 @@ public interface NamespaceOperations {
     * The update authorization rule operation updates an authorization rule for
     * a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param rule Updated access authorization rule.
+    * @param namespaceName Required. The namespace name.
+    * @param rule Optional. Updated access authorization rule.
     * @return A response to a request for a particular authorization rule.
     */
     Future<ServiceBusAuthorizationRuleResponse> updateAuthorizationRuleAsync(String namespaceName, ServiceBusSharedAccessAuthorizationRule rule);

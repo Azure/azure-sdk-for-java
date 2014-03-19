@@ -52,8 +52,7 @@ import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 
-public class BlobServiceIntegrationTest extends IntegrationTestBase
-{
+public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static final String testContainersPrefix = "sdktest-";
     private static final String createableContainersPrefix = "csdktest-";
     private static String CREATEABLE_CONTAINER_1;
@@ -63,20 +62,17 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     private static boolean createdRoot;
 
     @BeforeClass
-    public static void setup() throws Exception
-    {
+    public static void setup() throws Exception {
         // Setup container names array (list of container names used by
         // integration tests)
         testContainers = new String[10];
-        for (int i = 0; i < testContainers.length; i++)
-        {
+        for (int i = 0; i < testContainers.length; i++) {
             testContainers[i] = String.format("%s%d", testContainersPrefix,
                     i + 1);
         }
 
         creatableContainers = new String[10];
-        for (int i = 0; i < creatableContainers.length; i++)
-        {
+        for (int i = 0; i < creatableContainers.length; i++) {
             creatableContainers[i] = String.format("%s%d",
                     createableContainersPrefix, i + 1);
         }
@@ -89,19 +85,16 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
 
         createContainers(service, testContainersPrefix, testContainers);
 
-        try
-        {
+        try {
             service.createContainer("$root");
             createdRoot = true;
-        } catch (ServiceException e)
-        {
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
     }
 
     @AfterClass
-    public static void cleanup() throws Exception
-    {
+    public static void cleanup() throws Exception {
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
 
@@ -110,61 +103,49 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
                 creatableContainers);
 
         // If container was created, delete it
-        if (createdRoot)
-        {
-            try
-            {
+        if (createdRoot) {
+            try {
                 service.deleteContainer("$root");
                 createdRoot = false;
-            } catch (ServiceException e)
-            {
+            } catch (ServiceException e) {
                 e.printStackTrace();
             }
         }
     }
 
     private static void createContainers(BlobContract service, String prefix,
-            String[] list) throws Exception
-    {
+            String[] list) throws Exception {
         Set<String> containers = listContainers(service, prefix);
-        for (String item : list)
-        {
-            if (!containers.contains(item))
-            {
+        for (String item : list) {
+            if (!containers.contains(item)) {
                 service.createContainer(item);
             }
         }
     }
 
     private static void deleteContainers(BlobContract service, String prefix,
-            String[] list) throws Exception
-    {
+            String[] list) throws Exception {
         Set<String> containers = listContainers(service, prefix);
-        for (String item : list)
-        {
-            if (containers.contains(item))
-            {
+        for (String item : list) {
+            if (containers.contains(item)) {
                 service.deleteContainer(item);
             }
         }
     }
 
     private static Set<String> listContainers(BlobContract service,
-            String prefix) throws Exception
-    {
+            String prefix) throws Exception {
         HashSet<String> result = new HashSet<String>();
         ListContainersResult list = service
                 .listContainers(new ListContainersOptions().setPrefix(prefix));
-        for (Container item : list.getContainers())
-        {
+        for (Container item : list.getContainers()) {
             result.add(item.getName());
         }
         return result;
     }
 
     @Test
-    public void createContainerWorks() throws Exception
-    {
+    public void createContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -176,8 +157,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createNullContainerFail() throws Exception
-    {
+    public void createNullContainerFail() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -190,8 +170,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteContainerWorks() throws Exception
-    {
+    public void deleteContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -205,15 +184,13 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
         ListContainersResult listContainerResult = service.listContainers();
 
         // Assert
-        for (Container container : listContainerResult.getContainers())
-        {
+        for (Container container : listContainerResult.getContainers()) {
             assertTrue(!container.getName().equals(containerName));
         }
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteNullContainerFail() throws Exception
-    {
+    public void deleteNullContainerFail() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -226,8 +203,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listContainersWorks() throws Exception
-    {
+    public void listContainersWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -248,8 +224,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listContainersWithPaginationWorks() throws Exception
-    {
+    public void listContainersWithPaginationWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -274,8 +249,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listContainersWithPrefixWorks() throws Exception
-    {
+    public void listContainersWithPrefixWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -312,10 +286,8 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
                 .size());
     }
 
- 
     @Test
-    public void listBlockBlobWithNoCommittedBlocksWorks() throws Exception
-    {
+    public void listBlockBlobWithNoCommittedBlocksWorks() throws Exception {
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
 
@@ -327,8 +299,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
                 new ByteArrayInputStream(new byte[] { 0x00 }));
         service.deleteBlob(container, blob);
 
-        try
-        {
+        try {
             // Note: This next two lines should give a 404, because the blob no
             // longer
             // exists. However, the service sometimes allow this improper
@@ -339,15 +310,13 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
             ListBlobBlocksResult result = service.listBlobBlocks(container,
                     blob);
             assertEquals(0, result.getCommittedBlocks().size());
-        } catch (ServiceException ex)
-        {
+        } catch (ServiceException ex) {
             assertEquals(404, ex.getHttpStatusCode());
         }
     }
 
     @Test
-    public void listBlobBlocksOnEmptyBlobWorks() throws Exception
-    {
+    public void listBlobBlocksOnEmptyBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -373,8 +342,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listBlobBlocksWorks() throws Exception
-    {
+    public void listBlobBlocksWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -412,8 +380,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listBlobBlocksWithOptionsWorks() throws Exception
-    {
+    public void listBlobBlocksWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -454,8 +421,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void commitBlobBlocksWorks() throws Exception
-    {
+    public void commitBlobBlocksWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -500,8 +466,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createBlobBlockWorks() throws Exception
-    {
+    public void createBlobBlockWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -521,8 +486,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createBlobBlockNullContainerWorks() throws Exception
-    {
+    public void createBlobBlockNullContainerWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -548,8 +512,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createBlockBlobWorks() throws Exception
-    {
+    public void createBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -562,8 +525,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createBlockBlobWithValidEtag() throws Exception
-    {
+    public void createBlockBlobWithValidEtag() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -579,8 +541,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createBlockBlobWithOptionsWorks() throws Exception
-    {
+    public void createBlockBlobWithOptionsWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -625,10 +586,9 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
         assertEquals("unlocked", props.getLeaseStatus());
         assertEquals(0, props.getSequenceNumber());
     }
-    
+
     @Test
-    public void getBlockBlobWorks() throws Exception
-    {
+    public void getBlockBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -677,8 +637,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteBlobWorks() throws Exception
-    {
+    public void deleteBlobWorks() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -693,38 +652,31 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
         // Assert
     }
 
-
-    class RetryPolicyObserver implements ServiceFilter
-    {
+    class RetryPolicyObserver implements ServiceFilter {
         public int requestCount;
 
         @Override
         public ServiceResponseContext handle(ServiceRequestContext request,
-                Next next) throws Exception
-        {
+                Next next) throws Exception {
             requestCount++;
             return next.handle(request);
         }
     }
 
-    private class NonResetableInputStream extends FilterInputStream
-    {
+    private class NonResetableInputStream extends FilterInputStream {
 
-        protected NonResetableInputStream(InputStream in)
-        {
+        protected NonResetableInputStream(InputStream in) {
             super(in);
         }
 
         @Override
-        public boolean markSupported()
-        {
+        public boolean markSupported() {
             return false;
         }
     }
 
     @Test
-    public void retryPolicyThrowsOnInvalidInputStream() throws Exception
-    {
+    public void retryPolicyThrowsOnInvalidInputStream() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -735,8 +687,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
                         3/* maximumAttempts */, new int[] { 400, 500, 503 })));
 
         Exception error = null;
-        try
-        {
+        try {
             String content = "foo";
             InputStream contentStream = new ByteArrayInputStream(
                     content.getBytes("UTF-8"));
@@ -744,8 +695,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
 
             service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS, "testretry",
                     stream);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             error = e;
         }
 
@@ -753,36 +703,30 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
         assertNotNull(error);
     }
 
-    private class ResetableInputStream extends FilterInputStream
-    {
+    private class ResetableInputStream extends FilterInputStream {
         private boolean resetCalled;
 
-        protected ResetableInputStream(InputStream in)
-        {
+        protected ResetableInputStream(InputStream in) {
             super(in);
         }
 
         @Override
-        public void reset() throws IOException
-        {
+        public void reset() throws IOException {
             super.reset();
             setResetCalled(true);
         }
 
-        public boolean isResetCalled()
-        {
+        public boolean isResetCalled() {
             return resetCalled;
         }
 
-        public void setResetCalled(boolean resetCalled)
-        {
+        public void setResetCalled(boolean resetCalled) {
             this.resetCalled = resetCalled;
         }
     }
 
     @Test
-    public void retryPolicyCallsResetOnValidInputStream() throws Exception
-    {
+    public void retryPolicyCallsResetOnValidInputStream() throws Exception {
         // Arrange
         Configuration config = createConfiguration();
         BlobContract service = BlobService.create(config);
@@ -794,8 +738,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
 
         ServiceException error = null;
         ResetableInputStream stream = null;
-        try
-        {
+        try {
             String content = "foo";
             InputStream contentStream = new ByteArrayInputStream(
                     content.getBytes("UTF-8"));
@@ -803,8 +746,7 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
 
             service.createBlockBlob(TEST_CONTAINER_FOR_BLOBS,
                     "invalidblobname @#$#@$@", stream);
-        } catch (ServiceException e)
-        {
+        } catch (ServiceException e) {
             error = e;
         }
 
@@ -816,24 +758,20 @@ public class BlobServiceIntegrationTest extends IntegrationTestBase
     }
 
     private String inputStreamToString(InputStream inputStream, String encoding)
-            throws IOException
-    {
+            throws IOException {
         Writer writer = new StringWriter();
 
         char[] buffer = new char[1024];
-        try
-        {
+        try {
             Reader reader = new BufferedReader(new InputStreamReader(
                     inputStream, encoding));
-            while (true)
-            {
+            while (true) {
                 int n = reader.read(buffer);
                 if (n == -1)
                     break;
                 writer.write(buffer, 0, n);
             }
-        } finally
-        {
+        } finally {
             inputStream.close();
         }
         return writer.toString();

@@ -82,8 +82,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sourceType", propOrder = { "authorOrCategoryOrContributor" })
-public class SourceType
-{
+public class SourceType {
 
     @XmlElementRefs({
             @XmlElementRef(name = "contributor", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
@@ -143,10 +142,8 @@ public class SourceType
      * 
      * 
      */
-    public List<Object> getAuthorOrCategoryOrContributor()
-    {
-        if (authorOrCategoryOrContributor == null)
-        {
+    public List<Object> getAuthorOrCategoryOrContributor() {
+        if (authorOrCategoryOrContributor == null) {
             authorOrCategoryOrContributor = new ArrayList<Object>();
         }
         return this.authorOrCategoryOrContributor;
@@ -158,8 +155,7 @@ public class SourceType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -170,8 +166,7 @@ public class SourceType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -181,8 +176,7 @@ public class SourceType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -193,8 +187,7 @@ public class SourceType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -212,8 +205,7 @@ public class SourceType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

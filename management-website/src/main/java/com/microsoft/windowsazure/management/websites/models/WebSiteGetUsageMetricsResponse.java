@@ -35,7 +35,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     private ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetrics;
     
     /**
-    * The usage metrics for the web site.
+    * Optional. The usage metrics for the web site.
     * @return The UsageMetrics value.
     */
     public ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> getUsageMetrics() {
@@ -43,7 +43,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
     }
     
     /**
-    * The usage metrics for the web site.
+    * Optional. The usage metrics for the web site.
     * @param usageMetricsValue The UsageMetrics value.
     */
     public void setUsageMetrics(final ArrayList<WebSiteGetUsageMetricsResponse.UsageMetric> usageMetricsValue) {
@@ -74,9 +74,9 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private WebSiteComputeMode computeMode;
         
         /**
-        * The compute mode of the web site. For web sites in Standard Mode, the
-        * return value is Dedicated. For web sites in Free or Shared mode, the
-        * return value is Shared.
+        * Optional. The compute mode of the web site. For web sites in Standard
+        * Mode, the return value is Dedicated. For web sites in Free or Shared
+        * mode, the return value is Shared.
         * @return The ComputeMode value.
         */
         public WebSiteComputeMode getComputeMode() {
@@ -84,9 +84,9 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The compute mode of the web site. For web sites in Standard Mode, the
-        * return value is Dedicated. For web sites in Free or Shared mode, the
-        * return value is Shared.
+        * Optional. The compute mode of the web site. For web sites in Standard
+        * Mode, the return value is Dedicated. For web sites in Free or Shared
+        * mode, the return value is Shared.
         * @param computeModeValue The ComputeMode value.
         */
         public void setComputeMode(final WebSiteComputeMode computeModeValue) {
@@ -96,8 +96,8 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String currentValue;
         
         /**
-        * The current value of the metric specified, expressed in terms of the
-        * measurement specified by the Unit element.
+        * Optional. The current value of the metric specified, expressed in
+        * terms of the measurement specified by the Unit element.
         * @return The CurrentValue value.
         */
         public String getCurrentValue() {
@@ -105,8 +105,8 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The current value of the metric specified, expressed in terms of the
-        * measurement specified by the Unit element.
+        * Optional. The current value of the metric specified, expressed in
+        * terms of the measurement specified by the Unit element.
         * @param currentValueValue The CurrentValue value.
         */
         public void setCurrentValue(final String currentValueValue) {
@@ -116,7 +116,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String displayName;
         
         /**
-        * The display name of the metric (includes spaces).
+        * Optional. The display name of the metric (includes spaces).
         * @return The DisplayName value.
         */
         public String getDisplayName() {
@@ -124,7 +124,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The display name of the metric (includes spaces).
+        * Optional. The display name of the metric (includes spaces).
         * @param displayNameValue The DisplayName value.
         */
         public void setDisplayName(final String displayNameValue) {
@@ -134,13 +134,14 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String limit;
         
         /**
-        * The maximum point that the given metric can reach. The limit resets
-        * at the time specified by the NextResetTime element. If the limit is
-        * reached before the reset time, the site will be stopped. A value of
-        * -1 means unlimited. Resources with limits typically include CPU
-        * Time, Memory Usage, and File System Storage. Important: Site level
-        * Limits information is only meaningful for Shared and Standard web
-        * sites. For free web sites, limits are enforced at the webspace level.
+        * Optional. The maximum point that the given metric can reach. The
+        * limit resets at the time specified by the NextResetTime element. If
+        * the limit is reached before the reset time, the site will be
+        * stopped. A value of -1 means unlimited. Resources with limits
+        * typically include CPU Time, Memory Usage, and File System Storage.
+        * Important: Site level Limits information is only meaningful for
+        * Shared and Standard web sites. For free web sites, limits are
+        * enforced at the webspace level.
         * @return The Limit value.
         */
         public String getLimit() {
@@ -148,13 +149,14 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The maximum point that the given metric can reach. The limit resets
-        * at the time specified by the NextResetTime element. If the limit is
-        * reached before the reset time, the site will be stopped. A value of
-        * -1 means unlimited. Resources with limits typically include CPU
-        * Time, Memory Usage, and File System Storage. Important: Site level
-        * Limits information is only meaningful for Shared and Standard web
-        * sites. For free web sites, limits are enforced at the webspace level.
+        * Optional. The maximum point that the given metric can reach. The
+        * limit resets at the time specified by the NextResetTime element. If
+        * the limit is reached before the reset time, the site will be
+        * stopped. A value of -1 means unlimited. Resources with limits
+        * typically include CPU Time, Memory Usage, and File System Storage.
+        * Important: Site level Limits information is only meaningful for
+        * Shared and Standard web sites. For free web sites, limits are
+        * enforced at the webspace level.
         * @param limitValue The Limit value.
         */
         public void setLimit(final String limitValue) {
@@ -164,8 +166,8 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String name;
         
         /**
-        * The name of the metric, without spaces. The value is usually the same
-        * as that of the ResourceName element.
+        * Optional. The name of the metric, without spaces. The value is
+        * usually the same as that of the ResourceName element.
         * @return The Name value.
         */
         public String getName() {
@@ -173,8 +175,8 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The name of the metric, without spaces. The value is usually the same
-        * as that of the ResourceName element.
+        * Optional. The name of the metric, without spaces. The value is
+        * usually the same as that of the ResourceName element.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -184,7 +186,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private Calendar nextResetTime;
         
         /**
-        * The time at which the metric will be reset.
+        * Optional. The time at which the metric will be reset.
         * @return The NextResetTime value.
         */
         public Calendar getNextResetTime() {
@@ -192,7 +194,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The time at which the metric will be reset.
+        * Optional. The time at which the metric will be reset.
         * @param nextResetTimeValue The NextResetTime value.
         */
         public void setNextResetTime(final Calendar nextResetTimeValue) {
@@ -202,7 +204,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String resourceName;
         
         /**
-        * The name of the resource being measured.
+        * Optional. The name of the resource being measured.
         * @return The ResourceName value.
         */
         public String getResourceName() {
@@ -210,7 +212,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The name of the resource being measured.
+        * Optional. The name of the resource being measured.
         * @param resourceNameValue The ResourceName value.
         */
         public void setResourceName(final String resourceNameValue) {
@@ -220,9 +222,9 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private WebSiteMode siteMode;
         
         /**
-        * The scaling for the web site. Web sites in Free Mode return a value
-        * of Limited. Web sites in Shared Mode return a value of Basic. Sites
-        * in Standard Mode return null.
+        * Optional. The scaling for the web site. Web sites in Free Mode return
+        * a value of Limited. Web sites in Shared Mode return a value of
+        * Basic. Sites in Standard Mode return null.
         * @return The SiteMode value.
         */
         public WebSiteMode getSiteMode() {
@@ -230,9 +232,9 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The scaling for the web site. Web sites in Free Mode return a value
-        * of Limited. Web sites in Shared Mode return a value of Basic. Sites
-        * in Standard Mode return null.
+        * Optional. The scaling for the web site. Web sites in Free Mode return
+        * a value of Limited. Web sites in Shared Mode return a value of
+        * Basic. Sites in Standard Mode return null.
         * @param siteModeValue The SiteMode value.
         */
         public void setSiteMode(final WebSiteMode siteModeValue) {
@@ -242,7 +244,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         private String unit;
         
         /**
-        * The unit of measure for the given metric.
+        * Optional. The unit of measure for the given metric.
         * @return The Unit value.
         */
         public String getUnit() {
@@ -250,7 +252,7 @@ public class WebSiteGetUsageMetricsResponse extends OperationResponse implements
         }
         
         /**
-        * The unit of measure for the given metric.
+        * Optional. The unit of measure for the given metric.
         * @param unitValue The Unit value.
         */
         public void setUnit(final String unitValue) {

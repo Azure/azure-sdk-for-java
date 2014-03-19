@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public class ServiceBusManagementService
-{
-    private ServiceBusManagementService()
-    {
+public class ServiceBusManagementService {
+    private ServiceBusManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public class ServiceBusManagementService
      * Creates an instance of the <code>ServiceBusManagementClient</code> API.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create()
-    {
+    public static ServiceBusManagementClient create() {
         return Configuration.getInstance().create(ServiceBusManagementClient.class);
     }
 
@@ -45,8 +42,7 @@ public class ServiceBusManagementService
      * configuration for the service management.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create(final Configuration config)
-    {
+    public static ServiceBusManagementClient create(final Configuration config) {
         return config.create(ServiceBusManagementClient.class);
     }
 
@@ -57,8 +53,7 @@ public class ServiceBusManagementService
      * of the service management service.
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
-    public static ServiceBusManagementClient create(final String profile)
-    {
+    public static ServiceBusManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 ServiceBusManagementClient.class);
     }
@@ -72,8 +67,7 @@ public class ServiceBusManagementService
      * @return An instance of the <code>ServiceBusManagementClient</code> API.
      */
     public static ServiceBusManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, ServiceBusManagementClient.class);
     }
 }

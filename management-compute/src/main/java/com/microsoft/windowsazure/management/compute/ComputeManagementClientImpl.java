@@ -30,7 +30,6 @@ import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.CertificateFormat;
-import com.microsoft.windowsazure.management.compute.models.HostingResources;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.tracing.CloudTracing;
@@ -165,19 +164,6 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         return this.virtualMachineExtensions;
     }
     
-    private VirtualMachineImageOperations virtualMachineImages;
-    
-    /**
-    * The Service Management API includes operations for managing the OS images
-    * in your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
-    * more information)
-    * @return The VirtualMachineImagesOperations value.
-    */
-    public VirtualMachineImageOperations getVirtualMachineImagesOperations() {
-        return this.virtualMachineImages;
-    }
-    
     private VirtualMachineOperations virtualMachines;
     
     /**
@@ -189,6 +175,30 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     */
     public VirtualMachineOperations getVirtualMachinesOperations() {
         return this.virtualMachines;
+    }
+    
+    private VirtualMachineOSImageOperations virtualMachineOSImages;
+    
+    /**
+    * The Service Management API includes operations for managing the OS images
+    * in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
+    * more information)
+    * @return The VirtualMachineOSImagesOperations value.
+    */
+    public VirtualMachineOSImageOperations getVirtualMachineOSImagesOperations() {
+        return this.virtualMachineOSImages;
+    }
+    
+    private VirtualMachineVMImageOperations virtualMachineVMImages;
+    
+    /**
+    * The Service Management API includes operations for managing the virtual
+    * machine templates in your subscription.
+    * @return The VirtualMachineVMImagesOperations value.
+    */
+    public VirtualMachineVMImageOperations getVirtualMachineVMImagesOperations() {
+        return this.virtualMachineVMImages;
     }
     
     /**
@@ -205,8 +215,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         this.serviceCertificates = new ServiceCertificateOperationsImpl(this);
         this.virtualMachineDisks = new VirtualMachineDiskOperationsImpl(this);
         this.virtualMachineExtensions = new VirtualMachineExtensionOperationsImpl(this);
-        this.virtualMachineImages = new VirtualMachineImageOperationsImpl(this);
         this.virtualMachines = new VirtualMachineOperationsImpl(this);
+        this.virtualMachineOSImages = new VirtualMachineOSImageOperationsImpl(this);
+        this.virtualMachineVMImages = new VirtualMachineVMImageOperationsImpl(this);
     }
     
     /**
@@ -214,14 +225,15 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @param baseUri The URI used as the base for all Service Management
-    * requests.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
+    * @param baseUri Required. The URI used as the base for all Service
+    * Management requests.
     */
     public ComputeManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
@@ -277,9 +289,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -308,9 +320,9 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -362,7 +374,7 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -481,44 +493,6 @@ public class ComputeManagementClientImpl extends ServiceClient<ComputeManagement
         }
         if (value == CertificateFormat.Cer) {
             return "cer";
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Parse enum values for type HostingResources.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static HostingResources parseHostingResources(String value) {
-        if ("WebRole".equalsIgnoreCase(value)) {
-            return HostingResources.WebRole;
-        }
-        if ("WorkerRole".equalsIgnoreCase(value)) {
-            return HostingResources.WorkerRole;
-        }
-        if ("WebRole|WorkerRole".equalsIgnoreCase(value)) {
-            return HostingResources.WebOrWorkerRole;
-        }
-        throw new IllegalArgumentException("value");
-    }
-    
-    /**
-    * Convert an enum of type HostingResources to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String hostingResourcesToString(HostingResources value) {
-        if (value == HostingResources.WebRole) {
-            return "WebRole";
-        }
-        if (value == HostingResources.WorkerRole) {
-            return "WorkerRole";
-        }
-        if (value == HostingResources.WebOrWorkerRole) {
-            return "WebRole|WorkerRole";
         }
         throw new IllegalArgumentException("value");
     }

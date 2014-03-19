@@ -33,8 +33,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private VirtualHardDiskHostCaching hostCaching;
     
     /**
-    * The current value of the platform caching behavior of data disk blob for
-    * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
+    * Optional. The current value of the platform caching behavior of data disk
+    * blob for read/write efficiency. Possible values are: None, ReadOnly,
+    * ReadWrite.
     * @return The HostCaching value.
     */
     public VirtualHardDiskHostCaching getHostCaching() {
@@ -42,8 +43,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The current value of the platform caching behavior of data disk blob for
-    * read/write efficiency. Possible values are: None, ReadOnly, ReadWrite.
+    * Optional. The current value of the platform caching behavior of data disk
+    * blob for read/write efficiency. Possible values are: None, ReadOnly,
+    * ReadWrite.
     * @param hostCachingValue The HostCaching value.
     */
     public void setHostCaching(final VirtualHardDiskHostCaching hostCachingValue) {
@@ -53,7 +55,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private String label;
     
     /**
-    * The description of the data disk.
+    * Optional. The description of the data disk.
     * @return The Label value.
     */
     public String getLabel() {
@@ -61,7 +63,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The description of the data disk.
+    * Optional. The description of the data disk.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -71,7 +73,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private int logicalDiskSizeInGB;
     
     /**
-    * The size, in GB, of the data disk.
+    * Optional. The size, in GB, of the data disk.
     * @return The LogicalDiskSizeInGB value.
     */
     public int getLogicalDiskSizeInGB() {
@@ -79,7 +81,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The size, in GB, of the data disk.
+    * Optional. The size, in GB, of the data disk.
     * @param logicalDiskSizeInGBValue The LogicalDiskSizeInGB value.
     */
     public void setLogicalDiskSizeInGB(final int logicalDiskSizeInGBValue) {
@@ -89,9 +91,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private Integer logicalUnitNumber;
     
     /**
-    * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
-    * which the data drive appears when mounted for usage by the virtual
-    * machine.
+    * Optional. The Logical Unit Number (LUN) for the disk. The LUN specifies
+    * the slot in which the data drive appears when mounted for usage by the
+    * virtual machine.
     * @return The LogicalUnitNumber value.
     */
     public Integer getLogicalUnitNumber() {
@@ -99,9 +101,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The Logical Unit Number (LUN) for the disk. The LUN specifies the slot in
-    * which the data drive appears when mounted for usage by the virtual
-    * machine.
+    * Optional. The Logical Unit Number (LUN) for the disk. The LUN specifies
+    * the slot in which the data drive appears when mounted for usage by the
+    * virtual machine.
     * @param logicalUnitNumberValue The LogicalUnitNumber value.
     */
     public void setLogicalUnitNumber(final Integer logicalUnitNumberValue) {
@@ -111,9 +113,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * The location of physical blob backing the data disk. The blob location is
-    * in storage account in the subscription specified by the SubscriptionId
-    * value in the operation call.
+    * Optional. The location of physical blob backing the data disk. The blob
+    * location is in storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -121,9 +123,9 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The location of physical blob backing the data disk. The blob location is
-    * in storage account in the subscription specified by the SubscriptionId
-    * value in the operation call.
+    * Optional. The location of physical blob backing the data disk. The blob
+    * location is in storage account in the subscription specified by the
+    * SubscriptionId value in the operation call.
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -133,7 +135,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     private String name;
     
     /**
-    * The name of the data disk.
+    * Optional. The name of the data disk.
     * @return The Name value.
     */
     public String getName() {
@@ -141,7 +143,7 @@ public class VirtualMachineDataDiskGetResponse extends OperationResponse {
     }
     
     /**
-    * The name of the data disk.
+    * Optional. The name of the data disk.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

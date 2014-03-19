@@ -31,8 +31,7 @@ import com.microsoft.windowsazure.services.queue.QueueContract;
  * >Update Message</a> documentation on MSDN for details of the underlying Queue
  * Service REST API operation.
  */
-public class UpdateMessageResult
-{
+public class UpdateMessageResult {
     private String popReceipt;
     private Date timeNextVisible;
 
@@ -44,8 +43,7 @@ public class UpdateMessageResult
      * @return A {@link String} containing the pop receipt value for the queue
      *         message.
      */
-    public String getPopReceipt()
-    {
+    public String getPopReceipt() {
         return popReceipt;
     }
 
@@ -59,8 +57,7 @@ public class UpdateMessageResult
      *            A {@link String} containing the pop receipt value for the
      *            queue message.
      */
-    public void setPopReceipt(String popReceipt)
-    {
+    public void setPopReceipt(String popReceipt) {
         this.popReceipt = popReceipt;
     }
 
@@ -71,8 +68,7 @@ public class UpdateMessageResult
      * @return The {@link Date} when the updated message will become visible in
      *         the queue.
      */
-    public Date getTimeNextVisible()
-    {
+    public Date getTimeNextVisible() {
         return timeNextVisible;
     }
 
@@ -86,8 +82,7 @@ public class UpdateMessageResult
      *            The {@link Date} when the updated message will become visible
      *            in the queue.
      */
-    public void setTimeNextVisible(Date timeNextVisible)
-    {
+    public void setTimeNextVisible(Date timeNextVisible) {
         this.timeNextVisible = timeNextVisible;
     }
 }

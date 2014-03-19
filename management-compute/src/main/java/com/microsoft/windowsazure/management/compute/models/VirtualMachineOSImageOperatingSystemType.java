@@ -23,10 +23,12 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
-public enum HostingResources {
-    WebRole,
+/**
+* Known values for the operating system type of the OS in a virtual machine
+* image.
+*/
+public class VirtualMachineOSImageOperatingSystemType {
+    public static final String Linux = "Linux";
     
-    WorkerRole,
-    
-    WebOrWorkerRole,
+    public static final String Windows = "Windows";
 }

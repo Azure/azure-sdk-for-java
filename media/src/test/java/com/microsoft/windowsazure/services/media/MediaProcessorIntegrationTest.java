@@ -26,12 +26,10 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
 import com.microsoft.windowsazure.services.media.models.MediaProcessor;
 import com.microsoft.windowsazure.services.media.models.MediaProcessorInfo;
 
-public class MediaProcessorIntegrationTest extends IntegrationTestBase
-{
+public class MediaProcessorIntegrationTest extends IntegrationTestBase {
 
     private void verifyMediaProcessorInfo(String message,
-            MediaProcessorInfo mediaProcessorInfo)
-    {
+            MediaProcessorInfo mediaProcessorInfo) {
         assertEquals(message + " id length", 49, mediaProcessorInfo.getId()
                 .length());
         assertTrue(message + " name length > 0", mediaProcessorInfo.getName()
@@ -47,8 +45,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase
 
     private void verifyMediaProcessorInfo(String message, String id,
             String name, String description, String sku, String vendor,
-            MediaProcessorInfo mediaProcessorInfo)
-    {
+            MediaProcessorInfo mediaProcessorInfo) {
         assertEquals(message + " id", id, mediaProcessorInfo.getId());
         assertEquals(message + " name", name, mediaProcessorInfo.getName());
         assertEquals(message + " description", description,
@@ -61,8 +58,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listMediaProcessorsSuccess() throws ServiceException
-    {
+    public void listMediaProcessorsSuccess() throws ServiceException {
         // Arrange
 
         // Act
@@ -74,8 +70,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase
         assertTrue("listMediaProcessorsResult size > 0",
                 listMediaProcessorsResult.size() > 0);
         List<MediaProcessorInfo> ps = listMediaProcessorsResult;
-        for (int i = 0; i < ps.size(); i++)
-        {
+        for (int i = 0; i < ps.size(); i++) {
             MediaProcessorInfo mediaProcessorInfo = ps.get(i);
             verifyMediaProcessorInfo("mediaProcessorInfo:" + i,
                     mediaProcessorInfo);
@@ -83,8 +78,7 @@ public class MediaProcessorIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listMediaProcessorWithOptionSuccess() throws ServiceException
-    {
+    public void listMediaProcessorWithOptionSuccess() throws ServiceException {
         ListResult<MediaProcessorInfo> listMediaProcessorsResult = service
                 .list(MediaProcessor
                         .list()

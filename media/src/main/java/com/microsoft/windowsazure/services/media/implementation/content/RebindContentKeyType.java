@@ -25,8 +25,7 @@ import javax.xml.bind.annotation.XmlValue;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "RebindContentKey", namespace = Constants.ODATA_DATA_NS)
-public class RebindContentKeyType implements MediaServiceDTO
-{
+public class RebindContentKeyType implements MediaServiceDTO {
 
     /** The rebind content key. */
     @XmlValue
@@ -37,8 +36,7 @@ public class RebindContentKeyType implements MediaServiceDTO
      * 
      * @return the content key
      */
-    public String getContentKey()
-    {
+    public String getContentKey() {
         return rebindContentKey;
     }
 
@@ -48,8 +46,7 @@ public class RebindContentKeyType implements MediaServiceDTO
      * @param rebindContentKey
      *            the new content key
      */
-    public void setContentKey(String rebindContentKey)
-    {
+    public void setContentKey(String rebindContentKey) {
         this.rebindContentKey = rebindContentKey;
     }
 

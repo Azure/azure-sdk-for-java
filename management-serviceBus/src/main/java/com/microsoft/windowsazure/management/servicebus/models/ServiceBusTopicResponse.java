@@ -32,7 +32,7 @@ public class ServiceBusTopicResponse extends OperationResponse {
     private ServiceBusTopic topic;
     
     /**
-    * The requested topic.
+    * Optional. The requested topic.
     * @return The Topic value.
     */
     public ServiceBusTopic getTopic() {
@@ -40,7 +40,7 @@ public class ServiceBusTopicResponse extends OperationResponse {
     }
     
     /**
-    * The requested topic.
+    * Optional. The requested topic.
     * @param topicValue The Topic value.
     */
     public void setTopic(final ServiceBusTopic topicValue) {

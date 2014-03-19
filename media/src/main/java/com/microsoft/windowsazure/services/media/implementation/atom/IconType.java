@@ -62,8 +62,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "iconType", propOrder = { "value" })
-public class IconType
-{
+public class IconType {
 
     @XmlValue
     @XmlSchemaType(name = "anyURI")
@@ -84,8 +83,7 @@ public class IconType
      * @return possible object is {@link String }
      * 
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
@@ -96,8 +94,7 @@ public class IconType
      *            allowed object is {@link String }
      * 
      */
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -107,8 +104,7 @@ public class IconType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -119,8 +115,7 @@ public class IconType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -130,8 +125,7 @@ public class IconType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -142,8 +136,7 @@ public class IconType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -161,8 +154,7 @@ public class IconType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

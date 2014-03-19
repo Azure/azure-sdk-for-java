@@ -34,8 +34,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.AssetTyp
 import com.microsoft.windowsazure.services.media.implementation.content.Constants;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 
-public class ODataSerializationTest
-{
+public class ODataSerializationTest {
 
     private final String sampleFeedOneAsset = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             + "<feed xml:base=\"https://wamsbayclus001rest-hs.cloudapp.net/api/\" xmlns=\"http://www.w3.org/2005/Atom\" xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\">\n"
@@ -72,8 +71,7 @@ public class ODataSerializationTest
             + "</feed>";
 
     @Test
-    public void canUnmarshallAssetFromFeed() throws Exception
-    {
+    public void canUnmarshallAssetFromFeed() throws Exception {
         ODataAtomUnmarshaller um = new ODataAtomUnmarshaller();
         InputStream input = new ByteArrayInputStream(
                 sampleFeedOneAsset.getBytes("UTF-8"));
@@ -85,8 +83,7 @@ public class ODataSerializationTest
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
-    public void canMarshalEntryFromJavaObject() throws Exception
-    {
+    public void canMarshalEntryFromJavaObject() throws Exception {
         AssetType a = new AssetType();
         a.setName("testNewAsset");
         a.setOptions(0);

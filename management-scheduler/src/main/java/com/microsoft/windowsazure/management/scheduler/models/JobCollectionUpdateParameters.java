@@ -30,8 +30,8 @@ public class JobCollectionUpdateParameters {
     private String eTag;
     
     /**
-    * The ETag of the job collection to update.  The update will fail ifthe
-    * ETag doesn't match.
+    * Required. The ETag of the job collection to update.  The update will fail
+    * ifthe ETag doesn't match.
     * @return The ETag value.
     */
     public String getETag() {
@@ -39,8 +39,8 @@ public class JobCollectionUpdateParameters {
     }
     
     /**
-    * The ETag of the job collection to update.  The update will fail ifthe
-    * ETag doesn't match.
+    * Required. The ETag of the job collection to update.  The update will fail
+    * ifthe ETag doesn't match.
     * @param eTagValue The ETag value.
     */
     public void setETag(final String eTagValue) {
@@ -50,7 +50,7 @@ public class JobCollectionUpdateParameters {
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
-    * Intrinsic settings for the scheduler job collections.
+    * Optional. Intrinsic settings for the scheduler job collections.
     * @return The IntrinsicSettings value.
     */
     public JobCollectionIntrinsicSettings getIntrinsicSettings() {
@@ -58,7 +58,7 @@ public class JobCollectionUpdateParameters {
     }
     
     /**
-    * Intrinsic settings for the scheduler job collections.
+    * Optional. Intrinsic settings for the scheduler job collections.
     * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
     public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
@@ -68,7 +68,7 @@ public class JobCollectionUpdateParameters {
     private String label;
     
     /**
-    * Label for the resource.
+    * Optional. Label for the resource.
     * @return The Label value.
     */
     public String getLabel() {
@@ -76,7 +76,7 @@ public class JobCollectionUpdateParameters {
     }
     
     /**
-    * Label for the resource.
+    * Optional. Label for the resource.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -86,8 +86,8 @@ public class JobCollectionUpdateParameters {
     private String schemaVersion;
     
     /**
-    * The version of the Intrinsic Properties for your Resource. If not
-    * specified, you must conform to the contract resource version you
+    * Optional. The version of the Intrinsic Properties for your Resource. If
+    * not specified, you must conform to the contract resource version you
     * registered as default.
     * @return The SchemaVersion value.
     */
@@ -96,8 +96,8 @@ public class JobCollectionUpdateParameters {
     }
     
     /**
-    * The version of the Intrinsic Properties for your Resource. If not
-    * specified, you must conform to the contract resource version you
+    * Optional. The version of the Intrinsic Properties for your Resource. If
+    * not specified, you must conform to the contract resource version you
     * registered as default.
     * @param schemaVersionValue The SchemaVersion value.
     */

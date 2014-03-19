@@ -32,9 +32,9 @@ public class GatewayConnectDisconnectOrTestParameters {
     private InetAddress iPAddress;
     
     /**
-    * Required if operation is set to Test; otherwise not used. Specifies the
-    * IP address of the target local network site with which the gateway will
-    * test connectivity.
+    * Optional. Required if operation is set to Test; otherwise not used.
+    * Specifies the IP address of the target local network site with which the
+    * gateway will test connectivity.
     * @return The IPAddress value.
     */
     public InetAddress getIPAddress() {
@@ -42,9 +42,9 @@ public class GatewayConnectDisconnectOrTestParameters {
     }
     
     /**
-    * Required if operation is set to Test; otherwise not used. Specifies the
-    * IP address of the target local network site with which the gateway will
-    * test connectivity.
+    * Optional. Required if operation is set to Test; otherwise not used.
+    * Specifies the IP address of the target local network site with which the
+    * gateway will test connectivity.
     * @param iPAddressValue The IPAddress value.
     */
     public void setIPAddress(final InetAddress iPAddressValue) {

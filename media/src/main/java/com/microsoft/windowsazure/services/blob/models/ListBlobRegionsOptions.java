@@ -26,8 +26,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * end offset to use to narrow the returned valid page range results, and any
  * access conditions for the request.
  */
-public class ListBlobRegionsOptions extends BlobServiceOptions
-{
+public class ListBlobRegionsOptions extends BlobServiceOptions {
     private String leaseId;
     private String snapshot;
     private Long rangeStart;
@@ -46,8 +45,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
     @Override
-    public ListBlobRegionsOptions setTimeout(Integer timeout)
-    {
+    public ListBlobRegionsOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -58,8 +56,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -75,8 +72,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
-    public ListBlobRegionsOptions setLeaseId(String leaseId)
-    {
+    public ListBlobRegionsOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -88,8 +84,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to get valid page ranges for.
      */
-    public String getSnapshot()
-    {
+    public String getSnapshot() {
         return snapshot;
     }
 
@@ -108,8 +103,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      *            the blob snapshot to get valid page ranges for.
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
-    public ListBlobRegionsOptions setSnapshot(String snapshot)
-    {
+    public ListBlobRegionsOptions setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -121,8 +115,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return The beginning offset value in bytes for the valid page ranges to
      *         return.
      */
-    public Long getRangeStart()
-    {
+    public Long getRangeStart() {
         return rangeStart;
     }
 
@@ -141,8 +134,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      *            to return, inclusive.
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
-    public ListBlobRegionsOptions setRangeStart(Long rangeStart)
-    {
+    public ListBlobRegionsOptions setRangeStart(Long rangeStart) {
         this.rangeStart = rangeStart;
         return this;
     }
@@ -154,8 +146,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return The ending offset value in bytes for the valid page ranges to
      *         return.
      */
-    public Long getRangeEnd()
-    {
+    public Long getRangeEnd() {
         return rangeEnd;
     }
 
@@ -174,8 +165,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      *            return, inclusive.
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
-    public ListBlobRegionsOptions setRangeEnd(Long rangeEnd)
-    {
+    public ListBlobRegionsOptions setRangeEnd(Long rangeEnd) {
         this.rangeEnd = rangeEnd;
         return this;
     }
@@ -187,8 +177,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -206,8 +195,7 @@ public class ListBlobRegionsOptions extends BlobServiceOptions
      * @return A reference to this {@link ListBlobRegionsOptions} instance.
      */
     public ListBlobRegionsOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

@@ -28,15 +28,12 @@ import static org.hamcrest.Matchers.*;
 /**
  *
  */
-public class FileInputChannelTests
-{
+public class FileInputChannelTests {
     @Test
-    public void getInputStreamOpensFile()
-    {
+    public void getInputStreamOpensFile() {
         InputChannel inputChannel = new FileInputChannel();
 
-        try
-        {
+        try {
             File tempFile = File
                     .createTempFile("getInputStreamOpensFile", null);
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
@@ -49,8 +46,7 @@ public class FileInputChannelTests
                     inputChannel.getInputStream(tempFile.getAbsolutePath())));
 
             assertThat(reader.readLine(), equalTo(expectedData));
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

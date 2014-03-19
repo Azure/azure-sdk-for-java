@@ -33,7 +33,7 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     private String primaryKey;
     
     /**
-    * The primary access key for the storage account.
+    * Optional. The primary access key for the storage account.
     * @return The PrimaryKey value.
     */
     public String getPrimaryKey() {
@@ -41,7 +41,7 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     }
     
     /**
-    * The primary access key for the storage account.
+    * Optional. The primary access key for the storage account.
     * @param primaryKeyValue The PrimaryKey value.
     */
     public void setPrimaryKey(final String primaryKeyValue) {
@@ -51,7 +51,7 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     private String secondaryKey;
     
     /**
-    * The secondary access key for the storage account.
+    * Optional. The secondary access key for the storage account.
     * @return The SecondaryKey value.
     */
     public String getSecondaryKey() {
@@ -59,7 +59,7 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     }
     
     /**
-    * The secondary access key for the storage account.
+    * Optional. The secondary access key for the storage account.
     * @param secondaryKeyValue The SecondaryKey value.
     */
     public void setSecondaryKey(final String secondaryKeyValue) {
@@ -69,8 +69,8 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     private URI uri;
     
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
+    * Optional. The Service Management API request URI used to perform Get
+    * Storage Account Properties requests against the storage account.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -78,8 +78,8 @@ public class StorageAccountGetKeysResponse extends OperationResponse {
     }
     
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
+    * Optional. The Service Management API request URI used to perform Get
+    * Storage Account Properties requests against the storage account.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {

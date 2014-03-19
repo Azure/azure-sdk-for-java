@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.core.utils;
 
 import java.util.Date;
 
-public interface DateFactory
-{
+public interface DateFactory {
     Date getDate();
 }

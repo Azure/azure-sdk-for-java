@@ -34,7 +34,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     private ArrayList<WebSpacesListResponse.WebSpace> webSpaces;
     
     /**
-    * The web spaces associated with the specified subscription.
+    * Optional. The web spaces associated with the specified subscription.
     * @return The WebSpaces value.
     */
     public ArrayList<WebSpacesListResponse.WebSpace> getWebSpaces() {
@@ -42,7 +42,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
     }
     
     /**
-    * The web spaces associated with the specified subscription.
+    * Optional. The web spaces associated with the specified subscription.
     * @param webSpacesValue The WebSpaces value.
     */
     public void setWebSpaces(final ArrayList<WebSpacesListResponse.WebSpace> webSpacesValue) {
@@ -73,7 +73,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private WebSpaceAvailabilityState availabilityState;
         
         /**
-        * Possible values are Normal or Limited.
+        * Optional. Possible values are Normal or Limited.
         * @return The AvailabilityState value.
         */
         public WebSpaceAvailabilityState getAvailabilityState() {
@@ -81,7 +81,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * Possible values are Normal or Limited.
+        * Optional. Possible values are Normal or Limited.
         * @param availabilityStateValue The AvailabilityState value.
         */
         public void setAvailabilityState(final WebSpaceAvailabilityState availabilityStateValue) {
@@ -91,7 +91,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private Integer currentNumberOfWorkers;
         
         /**
-        * The current number of workers.
+        * Optional. The current number of workers.
         * @return The CurrentNumberOfWorkers value.
         */
         public Integer getCurrentNumberOfWorkers() {
@@ -99,7 +99,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The current number of workers.
+        * Optional. The current number of workers.
         * @param currentNumberOfWorkersValue The CurrentNumberOfWorkers value.
         */
         public void setCurrentNumberOfWorkers(final Integer currentNumberOfWorkersValue) {
@@ -109,7 +109,8 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private WebSpaceWorkerSize currentWorkerSize;
         
         /**
-        * The current worker size. Possible values are Small, Medium, or Large.
+        * Optional. The current worker size. Possible values are Small, Medium,
+        * or Large.
         * @return The CurrentWorkerSize value.
         */
         public WebSpaceWorkerSize getCurrentWorkerSize() {
@@ -117,7 +118,8 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The current worker size. Possible values are Small, Medium, or Large.
+        * Optional. The current worker size. Possible values are Small, Medium,
+        * or Large.
         * @param currentWorkerSizeValue The CurrentWorkerSize value.
         */
         public void setCurrentWorkerSize(final WebSpaceWorkerSize currentWorkerSizeValue) {
@@ -127,7 +129,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private String geoLocation;
         
         /**
-        * The location of the datacenter for the web space.
+        * Optional. The location of the datacenter for the web space.
         * @return The GeoLocation value.
         */
         public String getGeoLocation() {
@@ -135,7 +137,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The location of the datacenter for the web space.
+        * Optional. The location of the datacenter for the web space.
         * @param geoLocationValue The GeoLocation value.
         */
         public void setGeoLocation(final String geoLocationValue) {
@@ -145,7 +147,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private String geoRegion;
         
         /**
-        * The geographical region where the webspace is located.
+        * Optional. The geographical region where the webspace is located.
         * @return The GeoRegion value.
         */
         public String getGeoRegion() {
@@ -153,7 +155,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The geographical region where the webspace is located.
+        * Optional. The geographical region where the webspace is located.
         * @param geoRegionValue The GeoRegion value.
         */
         public void setGeoRegion(final String geoRegionValue) {
@@ -163,7 +165,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private String name;
         
         /**
-        * The name of the webspace.
+        * Optional. The name of the webspace.
         * @return The Name value.
         */
         public String getName() {
@@ -171,7 +173,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The name of the webspace.
+        * Optional. The name of the webspace.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -181,7 +183,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private String plan;
         
         /**
-        * The name of the webspace.
+        * Optional. The name of the webspace.
         * @return The Plan value.
         */
         public String getPlan() {
@@ -189,7 +191,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The name of the webspace.
+        * Optional. The name of the webspace.
         * @param planValue The Plan value.
         */
         public void setPlan(final String planValue) {
@@ -199,8 +201,8 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private WebSpaceStatus status;
         
         /**
-        * The status of the Web Space. Possible values are Ready or Limited.
-        * Note: The Limited status occurs only if the datacenter is
+        * Optional. The status of the Web Space. Possible values are Ready or
+        * Limited.  Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
         * @return The Status value.
         */
@@ -209,8 +211,8 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The status of the Web Space. Possible values are Ready or Limited.
-        * Note: The Limited status occurs only if the datacenter is
+        * Optional. The status of the Web Space. Possible values are Ready or
+        * Limited.  Note: The Limited status occurs only if the datacenter is
         * encountering an operational issue.
         * @param statusValue The Status value.
         */
@@ -221,7 +223,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private String subscription;
         
         /**
-        * The subscription ID.
+        * Optional. The subscription ID.
         * @return The Subscription value.
         */
         public String getSubscription() {
@@ -229,7 +231,7 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The subscription ID.
+        * Optional. The subscription ID.
         * @param subscriptionValue The Subscription value.
         */
         public void setSubscription(final String subscriptionValue) {
@@ -239,8 +241,9 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         private WebSpaceWorkerSize workerSize;
         
         /**
-        * The worker size. Possible values are Small, Medium, and Large. For
-        * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+        * Optional. The worker size. Possible values are Small, Medium, and
+        * Large. For JSON, the equivalents are 0 = Small, 1 = Medium, 2 =
+        * Large.
         * @return The WorkerSize value.
         */
         public WebSpaceWorkerSize getWorkerSize() {
@@ -248,8 +251,9 @@ public class WebSpacesListResponse extends OperationResponse implements Iterable
         }
         
         /**
-        * The worker size. Possible values are Small, Medium, and Large. For
-        * JSON, the equivalents are 0 = Small, 1 = Medium, 2 = Large.
+        * Optional. The worker size. Possible values are Small, Medium, and
+        * Large. For JSON, the equivalents are 0 = Small, 1 = Medium, 2 =
+        * Large.
         * @param workerSizeValue The WorkerSize value.
         */
         public void setWorkerSize(final WebSpaceWorkerSize workerSizeValue) {

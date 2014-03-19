@@ -32,7 +32,7 @@ public class NamespaceDescription {
     private String authorizationType;
     
     /**
-    * The authorization type.
+    * Optional. The authorization type.
     * @return The AuthorizationType value.
     */
     public String getAuthorizationType() {
@@ -40,7 +40,7 @@ public class NamespaceDescription {
     }
     
     /**
-    * The authorization type.
+    * Optional. The authorization type.
     * @param authorizationTypeValue The AuthorizationType value.
     */
     public void setAuthorizationType(final String authorizationTypeValue) {
@@ -50,7 +50,7 @@ public class NamespaceDescription {
     private String connectionString;
     
     /**
-    * Namespace connection string.  (see
+    * Optional. Namespace connection string.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @return The ConnectionString value.
@@ -60,7 +60,7 @@ public class NamespaceDescription {
     }
     
     /**
-    * Namespace connection string.  (see
+    * Optional. Namespace connection string.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @param connectionStringValue The ConnectionString value.
@@ -72,7 +72,7 @@ public class NamespaceDescription {
     private String keyName;
     
     /**
-    * Default ACS access key to generate the access token.  (see
+    * Optional. Default ACS access key to generate the access token.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @return The KeyName value.
@@ -82,7 +82,7 @@ public class NamespaceDescription {
     }
     
     /**
-    * Default ACS access key to generate the access token.  (see
+    * Optional. Default ACS access key to generate the access token.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj873988.aspx for
     * more information)
     * @param keyNameValue The KeyName value.
@@ -94,7 +94,7 @@ public class NamespaceDescription {
     private ArrayList<AccessRight> rights;
     
     /**
-    * The rights associated with a namespace.
+    * Optional. The rights associated with a namespace.
     * @return The Rights value.
     */
     public ArrayList<AccessRight> getRights() {
@@ -102,7 +102,7 @@ public class NamespaceDescription {
     }
     
     /**
-    * The rights associated with a namespace.
+    * Optional. The rights associated with a namespace.
     * @param rightsValue The Rights value.
     */
     public void setRights(final ArrayList<AccessRight> rightsValue) {
@@ -112,7 +112,7 @@ public class NamespaceDescription {
     private String secondaryConnectionString;
     
     /**
-    * Secondary namespace connection string.
+    * Optional. Secondary namespace connection string.
     * @return The SecondaryConnectionString value.
     */
     public String getSecondaryConnectionString() {
@@ -120,7 +120,7 @@ public class NamespaceDescription {
     }
     
     /**
-    * Secondary namespace connection string.
+    * Optional. Secondary namespace connection string.
     * @param secondaryConnectionStringValue The SecondaryConnectionString value.
     */
     public void setSecondaryConnectionString(final String secondaryConnectionStringValue) {

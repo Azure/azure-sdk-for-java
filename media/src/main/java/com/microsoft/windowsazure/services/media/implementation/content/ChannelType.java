@@ -28,8 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ChannelType implements MediaServiceDTO
-{
+public class ChannelType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
@@ -76,8 +75,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return this.id;
     }
 
@@ -88,8 +86,7 @@ public class ChannelType implements MediaServiceDTO
      *            the id
      * @return the channel type
      */
-    public ChannelType setId(String id)
-    {
+    public ChannelType setId(String id) {
         this.id = id;
         return this;
     }
@@ -99,8 +96,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -111,8 +107,7 @@ public class ChannelType implements MediaServiceDTO
      *            the name to set
      * @return the channel type
      */
-    public ChannelType setName(String name)
-    {
+    public ChannelType setName(String name) {
         this.name = name;
         return this;
     }
@@ -122,8 +117,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the description
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
@@ -134,8 +128,7 @@ public class ChannelType implements MediaServiceDTO
      *            the description
      * @return the channel type
      */
-    public ChannelType setDescription(String description)
-    {
+    public ChannelType setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -145,8 +138,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return created;
     }
 
@@ -157,8 +149,7 @@ public class ChannelType implements MediaServiceDTO
      *            the created
      * @return the channel type
      */
-    public ChannelType setCreated(Date created)
-    {
+    public ChannelType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -168,8 +159,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the lastModified
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -180,8 +170,7 @@ public class ChannelType implements MediaServiceDTO
      *            the last modified
      * @return the channel type
      */
-    public ChannelType setLastModified(Date lastModified)
-    {
+    public ChannelType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -193,8 +182,7 @@ public class ChannelType implements MediaServiceDTO
      *            the preview uri
      * @return the channel type
      */
-    public ChannelType setPreviewUri(URI previewUri)
-    {
+    public ChannelType setPreviewUri(URI previewUri) {
         this.previewUri = previewUri;
         return this;
     }
@@ -204,8 +192,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the preview
      */
-    public URI getPreviewUri()
-    {
+    public URI getPreviewUri() {
         return previewUri;
     }
 
@@ -216,8 +203,7 @@ public class ChannelType implements MediaServiceDTO
      *            the ingest uri
      * @return the channel type
      */
-    public ChannelType setIngestUri(URI ingestUri)
-    {
+    public ChannelType setIngestUri(URI ingestUri) {
         this.ingestUri = ingestUri;
         return this;
     }
@@ -227,8 +213,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the ingest uri
      */
-    public URI getIngestUri()
-    {
+    public URI getIngestUri() {
         return ingestUri;
     }
 
@@ -239,8 +224,7 @@ public class ChannelType implements MediaServiceDTO
      *            the state
      * @return the channel type
      */
-    public ChannelType setState(String state)
-    {
+    public ChannelType setState(String state) {
         this.state = state;
         return this;
     }
@@ -250,8 +234,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the state
      */
-    public String getState()
-    {
+    public String getState() {
         return this.state;
     }
 
@@ -260,8 +243,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the name
      */
-    public String getSize()
-    {
+    public String getSize() {
         return this.size;
     }
 
@@ -272,8 +254,7 @@ public class ChannelType implements MediaServiceDTO
      *            the size
      * @return the channel type
      */
-    public ChannelType setSize(String size)
-    {
+    public ChannelType setSize(String size) {
         this.size = size;
         return this;
     }
@@ -283,8 +264,7 @@ public class ChannelType implements MediaServiceDTO
      * 
      * @return the settings
      */
-    public String getSettings()
-    {
+    public String getSettings() {
         return this.settings;
     }
 
@@ -295,8 +275,7 @@ public class ChannelType implements MediaServiceDTO
      *            the settings
      * @return the channel type
      */
-    public ChannelType setSettings(String settings)
-    {
+    public ChannelType setSettings(String settings) {
         this.settings = settings;
         return this;
     }

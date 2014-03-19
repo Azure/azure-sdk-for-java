@@ -57,8 +57,9 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Server Farm operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Create Server Farm
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -88,8 +89,9 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Create Server Farm operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Create Server Farm
+    * operation.
     * @return The Create Server Farm operation response.
     */
     Future<ServerFarmCreateResponse> createAsync(String webSpaceName, ServerFarmCreateParameters parameters);
@@ -107,7 +109,7 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -130,7 +132,7 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -149,8 +151,8 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param serverFarmName The name of the server farm.
+    * @param webSpaceName Required. The name of the web space.
+    * @param serverFarmName Required. The name of the server farm.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -178,8 +180,8 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param serverFarmName The name of the server farm.
+    * @param webSpaceName Required. The name of the web space.
+    * @param serverFarmName Required. The name of the server farm.
     * @return The Get Server Farm operation response.
     */
     Future<ServerFarmGetResponse> getAsync(String webSpaceName, String serverFarmName);
@@ -197,7 +199,7 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -223,7 +225,7 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
+    * @param webSpaceName Required. The name of the web space.
     * @return The List Server Farm operation response.
     */
     Future<ServerFarmListResponse> listAsync(String webSpaceName);
@@ -241,8 +243,9 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Update Server Farm operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Update Server Farm
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -272,8 +275,9 @@ public interface ServerFarmOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn194277.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the web space.
-    * @param parameters Parameters supplied to the Update Server Farm operation.
+    * @param webSpaceName Required. The name of the web space.
+    * @param parameters Required. Parameters supplied to the Update Server Farm
+    * operation.
     * @return The Update Server Farm operation response.
     */
     Future<ServerFarmUpdateResponse> updateAsync(String webSpaceName, ServerFarmUpdateParameters parameters);

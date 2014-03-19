@@ -29,27 +29,23 @@ import org.junit.Test;
  * Test for the {link ListResult<T>} type.
  * 
  */
-public class GenericListResultTest
-{
+public class GenericListResultTest {
     private final String[] expectedStrings = { "One", "Two", "Three" };
 
     @Test
-    public void emptyListResultIsEmpty() throws Exception
-    {
+    public void emptyListResultIsEmpty() throws Exception {
         assertTrue(new ListResult<String>(new ArrayList<String>()).isEmpty());
     }
 
     @Test
-    public void listWithContentsIsNotEmpty() throws Exception
-    {
+    public void listWithContentsIsNotEmpty() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertFalse(result.isEmpty());
     }
 
     @Test
-    public void createWithEmptyCollectionGivesNoResults() throws Exception
-    {
+    public void createWithEmptyCollectionGivesNoResults() throws Exception {
         List<AssetInfo> result = new ListResult<AssetInfo>(
                 new ArrayList<AssetInfo>());
 
@@ -57,8 +53,7 @@ public class GenericListResultTest
     }
 
     @Test
-    public void createWithCollectionContentsContainsContents() throws Exception
-    {
+    public void createWithCollectionContentsContainsContents() throws Exception {
         List<String> result = createStringListResult();
 
         assertEquals(expectedStrings.length, result.size());
@@ -66,48 +61,41 @@ public class GenericListResultTest
 
     @Test
     public void createWithCollectionContentsCanRetrieveContents()
-            throws Exception
-    {
+            throws Exception {
         List<String> result = createStringListResult();
 
-        for (int i = 0; i < expectedStrings.length; ++i)
-        {
+        for (int i = 0; i < expectedStrings.length; ++i) {
             assertEquals(expectedStrings[i], result.get(i));
         }
     }
 
     @Test
-    public void canIterateThroughResults() throws Exception
-    {
+    public void canIterateThroughResults() throws Exception {
         List<String> result = createStringListResult();
 
         int i = 0;
-        for (String s : result)
-        {
+        for (String s : result) {
             assertEquals(expectedStrings[i], s);
             ++i;
         }
     }
 
     @Test
-    public void canCheckContainsForObjectInList() throws Exception
-    {
+    public void canCheckContainsForObjectInList() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertTrue(result.contains(expectedStrings[1]));
     }
 
     @Test
-    public void canCheckContainsForObjectNotInList() throws Exception
-    {
+    public void canCheckContainsForObjectNotInList() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertFalse(result.contains("This is not a string in the list"));
     }
 
     @Test
-    public void canCheckContainsAllForObjectsInList() throws Exception
-    {
+    public void canCheckContainsAllForObjectsInList() throws Exception {
         ListResult<String> result = createStringListResult();
         List<String> contains = new ArrayList<String>();
         contains.add(expectedStrings[2]);
@@ -117,8 +105,7 @@ public class GenericListResultTest
     }
 
     @Test
-    public void canCheckContainsAllForObjectsNotInList() throws Exception
-    {
+    public void canCheckContainsAllForObjectsNotInList() throws Exception {
         ListResult<String> result = createStringListResult();
         List<String> contains = new ArrayList<String>();
         contains.add(expectedStrings[2]);
@@ -128,24 +115,21 @@ public class GenericListResultTest
     }
 
     @Test
-    public void canGetIndexOfItemInList() throws Exception
-    {
+    public void canGetIndexOfItemInList() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertEquals(1, result.indexOf(expectedStrings[1]));
     }
 
     @Test
-    public void indexOfItemNotInListIsMinusOne() throws Exception
-    {
+    public void indexOfItemNotInListIsMinusOne() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertEquals(-1, result.indexOf("Not in collection"));
     }
 
     @Test
-    public void lastIndexOfItemInCollectionIsCorrect() throws Exception
-    {
+    public void lastIndexOfItemInCollectionIsCorrect() throws Exception {
         ListResult<String> result = new ListResult<String>(Arrays.asList("c",
                 "b", "c", "a"));
 
@@ -153,156 +137,129 @@ public class GenericListResultTest
     }
 
     @Test
-    public void lastIndexOfItemNotInCollectionIsMinusOne() throws Exception
-    {
+    public void lastIndexOfItemNotInCollectionIsMinusOne() throws Exception {
         ListResult<String> result = createStringListResult();
 
         assertEquals(-1, result.lastIndexOf("Not in collection"));
     }
 
     @Test
-    public void optionalListMethodsAreUnsupported() throws Exception
-    {
+    public void optionalListMethodsAreUnsupported() throws Exception {
         final ListResult<String> result = createStringListResult();
 
         assertListIsImmutable(result);
     }
 
     @Test
-    public void canGetWorkingListIteratorFromResult() throws Exception
-    {
+    public void canGetWorkingListIteratorFromResult() throws Exception {
         ListResult<String> result = createStringListResult();
 
         ListIterator<String> iterator = result.listIterator();
         int i = 0;
-        for (i = 0; i < expectedStrings.length; ++i)
-        {
+        for (i = 0; i < expectedStrings.length; ++i) {
             assertIteratorAtPositionMovingForward(i, iterator);
         }
 
-        for (; i >= 0; --i)
-        {
+        for (; i >= 0; --i) {
             assertIteratorAtPositionMovingBackward(i, iterator);
         }
     }
 
     @Test
-    public void canGetWorkingListIteratorAtIndexFromResult() throws Exception
-    {
+    public void canGetWorkingListIteratorAtIndexFromResult() throws Exception {
         ListResult<String> result = createStringListResult();
 
         ListIterator<String> iterator = result.listIterator(1);
         int i = 1;
-        for (; i < expectedStrings.length; ++i)
-        {
+        for (; i < expectedStrings.length; ++i) {
             assertIteratorAtPositionMovingForward(i, iterator);
         }
 
-        for (; i >= 0; --i)
-        {
+        for (; i >= 0; --i) {
             assertIteratorAtPositionMovingBackward(i, iterator);
         }
     }
 
     @Test
-    public void listIteratorIsImmutable() throws Exception
-    {
+    public void listIteratorIsImmutable() throws Exception {
         ListResult<String> result = createStringListResult();
         final ListIterator<String> iterator = result.listIterator();
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.add("new string");
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.remove();
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.set("replace string");
             }
         });
     }
 
     @Test
-    public void listIteratorIsImmutableWhenCreatedWithIndex() throws Exception
-    {
+    public void listIteratorIsImmutableWhenCreatedWithIndex() throws Exception {
         ListResult<String> result = createStringListResult();
         final ListIterator<String> iterator = result.listIterator(1);
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.add("new string");
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.remove();
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 iterator.set("replace string");
             }
         });
     }
 
     @Test
-    public void canGetObjectArrayFromResult() throws Exception
-    {
+    public void canGetObjectArrayFromResult() throws Exception {
         ListResult<String> result = createStringListResult();
         Object[] array = result.toArray();
 
         assertNotNull(array);
         assertEquals(result.size(), array.length);
-        for (int i = 0; i < result.size(); ++i)
-        {
+        for (int i = 0; i < result.size(); ++i) {
             assertEquals(result.get(i), array[i]);
         }
     }
 
     @Test
-    public void canGetTypedArrayFromResult() throws Exception
-    {
+    public void canGetTypedArrayFromResult() throws Exception {
         ListResult<String> result = createStringListResult();
         String[] array = result.toArray(new String[0]);
 
         assertNotNull(array);
         assertEquals(result.size(), array.length);
-        for (int i = 0; i < result.size(); ++i)
-        {
+        for (int i = 0; i < result.size(); ++i) {
             assertEquals(result.get(i), array[i]);
         }
     }
 
     @Test
-    public void canGetExpectedSublistFromResult() throws Exception
-    {
+    public void canGetExpectedSublistFromResult() throws Exception {
         ListResult<String> result = createStringListResult();
         List<String> sublist = result.subList(1, 3);
 
@@ -312,16 +269,14 @@ public class GenericListResultTest
     }
 
     @Test
-    public void sublistIsImmutable() throws Exception
-    {
+    public void sublistIsImmutable() throws Exception {
         ListResult<String> result = createStringListResult();
         final List<String> sublist = result.subList(1, 3);
 
         assertListIsImmutable(sublist);
     }
 
-    private ListResult<String> createStringListResult()
-    {
+    private ListResult<String> createStringListResult() {
         ListResult<String> result = new ListResult<String>(
                 Arrays.asList(expectedStrings));
 
@@ -330,8 +285,7 @@ public class GenericListResultTest
 
     // / Assertion helpers ///
 
-    private void assertIteratorState(int position, ListIterator<String> iterator)
-    {
+    private void assertIteratorState(int position, ListIterator<String> iterator) {
         boolean expectHasNext = position < expectedStrings.length;
         boolean expectHasPrevious = position != 0;
 
@@ -341,14 +295,12 @@ public class GenericListResultTest
         assertEquals(String.format("HasPrevious at position %d", position),
                 expectHasPrevious, iterator.hasPrevious());
 
-        if (expectHasNext)
-        {
+        if (expectHasNext) {
             assertEquals(String.format("NextIndex at position %d", position),
                     position, iterator.nextIndex());
         }
 
-        if (expectHasPrevious)
-        {
+        if (expectHasPrevious) {
             assertEquals(
                     String.format("PreviousIndex at position %d", position),
                     position - 1, iterator.previousIndex());
@@ -357,152 +309,117 @@ public class GenericListResultTest
     }
 
     private void assertIteratorAtPositionMovingForward(int position,
-            ListIterator<String> iterator)
-    {
+            ListIterator<String> iterator) {
         assertIteratorState(position, iterator);
 
-        if (iterator.hasNext())
-        {
+        if (iterator.hasNext()) {
             assertEquals(expectedStrings[position], iterator.next());
-        } else
-        {
-            try
-            {
+        } else {
+            try {
                 iterator.next();
                 fail("Exception should have been thrown");
-            } catch (NoSuchElementException ex)
-            {
+            } catch (NoSuchElementException ex) {
                 // Ok, we expected this
             }
         }
     }
 
     private void assertIteratorAtPositionMovingBackward(int position,
-            ListIterator<String> iterator)
-    {
+            ListIterator<String> iterator) {
         assertIteratorState(position, iterator);
 
-        if (iterator.hasPrevious())
-        {
+        if (iterator.hasPrevious()) {
             assertEquals(expectedStrings[position - 1], iterator.previous());
-        } else
-        {
-            try
-            {
+        } else {
+            try {
                 iterator.previous();
                 fail("Exception should have been thrown");
-            } catch (NoSuchElementException ex)
-            {
+            } catch (NoSuchElementException ex) {
                 // Ok, we expected this
             }
         }
     }
 
-    private interface Action
-    {
+    private interface Action {
         void Do();
     }
 
-    private void assertUnsupported(Action action)
-    {
-        try
-        {
+    private void assertUnsupported(Action action) {
+        try {
             action.Do();
             fail("Expected UnsupportedOperationException");
-        } catch (UnsupportedOperationException ex)
-        {
+        } catch (UnsupportedOperationException ex) {
             // This is ok
         }
     }
 
-    private void assertListIsImmutable(final List<String> list)
-    {
-        assertUnsupported(new Action()
-        {
+    private void assertListIsImmutable(final List<String> list) {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.add("new string");
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.add(2, "new string");
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.addAll(Arrays.asList("a", "b"));
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.addAll(2, Arrays.asList("a", "b"));
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.clear();
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.remove(1);
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.remove(list.get(1));
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.removeAll(Arrays.asList(list.get(0), list.get(1)));
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.retainAll(Arrays.asList(list.get(1)));
             }
         });
 
-        assertUnsupported(new Action()
-        {
+        assertUnsupported(new Action() {
             @Override
-            public void Do()
-            {
+            public void Do() {
                 list.set(1, "new string");
             }
         });

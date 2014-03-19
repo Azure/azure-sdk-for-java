@@ -32,8 +32,7 @@ import com.microsoft.windowsazure.services.media.models.NotificationEndPoint.Cre
 /**
  * Tests for the methods and factories of the NotificationEndPoint entity.
  */
-public class NotificationEndPointEntityTest
-{
+public class NotificationEndPointEntityTest {
     static final String sampleNotificationEndPointId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
     private final String expectedUri = String.format(
             "NotificationEndPoints('%s')",
@@ -41,14 +40,12 @@ public class NotificationEndPointEntityTest
     private final String testNotificationEndPoint = "testNotificationEndPoint";
     private final String testQueueName = "testqueue";
 
-    public NotificationEndPointEntityTest() throws Exception
-    {
+    public NotificationEndPointEntityTest() throws Exception {
     }
 
     @Test
     public void NotificationEndPointCreateReturnsDefaultCreatePayload()
-            throws ServiceException
-    {
+            throws ServiceException {
         NotificationEndPointType payload = (NotificationEndPointType) NotificationEndPoint
                 .create(testNotificationEndPoint, EndPointType.AzureQueue,
                         testQueueName).getRequestContents();
@@ -62,8 +59,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointCreateCanSetNotificationEndPointName()
-    {
+    public void NotificationEndPointCreateCanSetNotificationEndPointName() {
         String name = "NotificationEndPointCreateCanSetNotificationEndPointName";
 
         NotificationEndPoint.Creator creator = (Creator) NotificationEndPoint
@@ -79,8 +75,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointGetReturnsExpectedUri() throws Exception
-    {
+    public void NotificationEndPointGetReturnsExpectedUri() throws Exception {
         String expectedUri = String.format("NotificationEndPoints('%s')",
                 URLEncoder.encode(sampleNotificationEndPointId, "UTF-8"));
 
@@ -91,8 +86,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointListReturnsExpectedUri()
-    {
+    public void NotificationEndPointListReturnsExpectedUri() {
         EntityListOperation<NotificationEndPointInfo> lister = NotificationEndPoint
                 .list();
 
@@ -102,8 +96,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointListCanTakeQueryParameters()
-    {
+    public void NotificationEndPointListCanTakeQueryParameters() {
         EntityListOperation<NotificationEndPointInfo> lister = NotificationEndPoint
                 .list().setTop(10).setSkip(2);
 
@@ -113,8 +106,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointListCanTakeQueryParametersChained()
-    {
+    public void NotificationEndPointListCanTakeQueryParametersChained() {
         EntityListOperation<NotificationEndPointInfo> lister = NotificationEndPoint
                 .list().setTop(10).setSkip(2).set("filter", "something");
 
@@ -126,16 +118,14 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointUpdateReturnsExpectedUri() throws Exception
-    {
+    public void NotificationEndPointUpdateReturnsExpectedUri() throws Exception {
         EntityUpdateOperation updater = NotificationEndPoint
                 .update(sampleNotificationEndPointId);
         assertEquals(expectedUri, updater.getUri());
     }
 
     @Test
-    public void NotificationEndPointUpdateCanSetNameAndAltId() throws Exception
-    {
+    public void NotificationEndPointUpdateCanSetNameAndAltId() throws Exception {
 
         String expectedName = "newNotificationEndPointName";
 
@@ -149,8 +139,7 @@ public class NotificationEndPointEntityTest
     }
 
     @Test
-    public void NotificationEndPointDeleteReturnsExpectedUri() throws Exception
-    {
+    public void NotificationEndPointDeleteReturnsExpectedUri() throws Exception {
         EntityDeleteOperation deleter = NotificationEndPoint
                 .delete(sampleNotificationEndPointId);
         assertEquals(expectedUri, deleter.getUri());

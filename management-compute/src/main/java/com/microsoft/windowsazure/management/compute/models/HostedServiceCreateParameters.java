@@ -32,12 +32,12 @@ public class HostedServiceCreateParameters {
     private String affinityGroup;
     
     /**
-    * Required if Location is not specified. The name of an existing affinity
-    * group associated with this subscription. This name is a GUID and can be
-    * retrieved by examining the name element of the response body returned by
-    * the List Affinity Groups operation.  Specify either Location or
-    * AffinityGroup, but not both. To list available affinity groups, use the
-    * List Affinity Groups operation.
+    * Optional. Required if Location is not specified. The name of an existing
+    * affinity group associated with this subscription. This name is a GUID
+    * and can be retrieved by examining the name element of the response body
+    * returned by the List Affinity Groups operation.  Specify either Location
+    * or AffinityGroup, but not both. To list available affinity groups, use
+    * the List Affinity Groups operation.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -45,12 +45,12 @@ public class HostedServiceCreateParameters {
     }
     
     /**
-    * Required if Location is not specified. The name of an existing affinity
-    * group associated with this subscription. This name is a GUID and can be
-    * retrieved by examining the name element of the response body returned by
-    * the List Affinity Groups operation.  Specify either Location or
-    * AffinityGroup, but not both. To list available affinity groups, use the
-    * List Affinity Groups operation.
+    * Optional. Required if Location is not specified. The name of an existing
+    * affinity group associated with this subscription. This name is a GUID
+    * and can be retrieved by examining the name element of the response body
+    * returned by the List Affinity Groups operation.  Specify either Location
+    * or AffinityGroup, but not both. To list available affinity groups, use
+    * the List Affinity Groups operation.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -142,9 +142,10 @@ public class HostedServiceCreateParameters {
     private String location;
     
     /**
-    * Required if AffinityGroup is not specified. The location where the cloud
-    * service will be created.  Specify either Location or AffinityGroup, but
-    * not both. To list available locations, use the List Locations operation.
+    * Optional. Required if AffinityGroup is not specified. The location where
+    * the cloud service will be created.  Specify either Location or
+    * AffinityGroup, but not both. To list available locations, use the List
+    * Locations operation.
     * @return The Location value.
     */
     public String getLocation() {
@@ -152,9 +153,10 @@ public class HostedServiceCreateParameters {
     }
     
     /**
-    * Required if AffinityGroup is not specified. The location where the cloud
-    * service will be created.  Specify either Location or AffinityGroup, but
-    * not both. To list available locations, use the List Locations operation.
+    * Optional. Required if AffinityGroup is not specified. The location where
+    * the cloud service will be created.  Specify either Location or
+    * AffinityGroup, but not both. To list available locations, use the List
+    * Locations operation.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {

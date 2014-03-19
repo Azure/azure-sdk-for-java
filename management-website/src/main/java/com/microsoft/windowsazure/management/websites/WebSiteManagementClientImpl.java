@@ -140,14 +140,15 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @param baseUri The URI used as the base for all Service Management
-    * requests.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
+    * @param baseUri Required. The URI used as the base for all Service
+    * Management requests.
     */
     public WebSiteManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
@@ -203,12 +204,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the webspace for the website where the
-    * operation was targeted.
-    * @param siteName The name of the site where the operation was targeted.
-    * @param operationId The operation ID for the operation you wish to track.
-    * The operation ID is returned in the Id field in the body of the response
-    * for long-running operations.
+    * @param webSpaceName Required. The name of the webspace for the website
+    * where the operation was targeted.
+    * @param siteName Required. The name of the site where the operation was
+    * targeted.
+    * @param operationId Required. The operation ID for the operation you wish
+    * to track. The operation ID is returned in the Id field in the body of
+    * the response for long-running operations.
     * @return The response body contains the status of the specified
     * long-running operation, indicating whether it has succeeded, is
     * inprogress, has time dout, or has failed. Note that this status is
@@ -234,12 +236,13 @@ public class WebSiteManagementClientImpl extends ServiceClient<WebSiteManagement
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param webSpaceName The name of the webspace for the website where the
-    * operation was targeted.
-    * @param siteName The name of the site where the operation was targeted.
-    * @param operationId The operation ID for the operation you wish to track.
-    * The operation ID is returned in the Id field in the body of the response
-    * for long-running operations.
+    * @param webSpaceName Required. The name of the webspace for the website
+    * where the operation was targeted.
+    * @param siteName Required. The name of the site where the operation was
+    * targeted.
+    * @param operationId Required. The operation ID for the operation you wish
+    * to track. The operation ID is returned in the Id field in the body of
+    * the response for long-running operations.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

@@ -51,7 +51,7 @@ public interface ManagementCertificateOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
     * for more information)
     *
-    * @param parameters Parameters supplied to the Create Management
+    * @param parameters Required. Parameters supplied to the Create Management
     * Certificate operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
@@ -76,7 +76,7 @@ public interface ManagementCertificateOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154123.aspx
     * for more information)
     *
-    * @param parameters Parameters supplied to the Create Management
+    * @param parameters Required. Parameters supplied to the Create Management
     * Certificate operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
@@ -91,7 +91,8 @@ public interface ManagementCertificateOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
     * for more information)
     *
-    * @param thumbprint the thumbprint value of the certificate to delete.
+    * @param thumbprint Required. the thumbprint value of the certificate to
+    * delete.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -109,7 +110,8 @@ public interface ManagementCertificateOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/jj154127.aspx
     * for more information)
     *
-    * @param thumbprint the thumbprint value of the certificate to delete.
+    * @param thumbprint Required. the thumbprint value of the certificate to
+    * delete.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -124,8 +126,8 @@ public interface ManagementCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
     * more information)
     *
-    * @param thumbprint The thumbprint value of the certificate to retrieve
-    * information about.
+    * @param thumbprint Required. The thumbprint value of the certificate to
+    * retrieve information about.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -149,8 +151,8 @@ public interface ManagementCertificateOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154131.aspx for
     * more information)
     *
-    * @param thumbprint The thumbprint value of the certificate to retrieve
-    * information about.
+    * @param thumbprint Required. The thumbprint value of the certificate to
+    * retrieve information about.
     * @return The Get Management Certificate operation response.
     */
     Future<ManagementCertificateGetResponse> getAsync(String thumbprint);

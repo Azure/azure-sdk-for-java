@@ -15,7 +15,8 @@
 package com.microsoft.windowsazure.core.utils;
 
 /**
- * RESERVED FOR INTERNAL USE. Provides Base64 encoding, decoding, and validation functionality.
+ * RESERVED FOR INTERNAL USE. Provides Base64 encoding, decoding, and validation
+ * functionality.
  */
 public final class Base64 {
     /**
@@ -26,26 +27,33 @@ public final class Base64 {
     /**
      * Decoded values, -1 is invalid character, -2 is = pad character.
      */
-    private static final byte DECODE_64[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 0-15
+    private static final byte DECODE_64[] = { -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1, -1, -1, -1, // 0-15
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, /*
-                                                                             * 16- 31
+                                                                             * 16-
+                                                                             * 31
                                                                              */
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, /*
-                                                                             * 32- 47
+                                                                             * 32-
+                                                                             * 47
                                                                              */
             52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -2, -1, -1, /*
-                                                                             * 48- 63
+                                                                             * 48-
+                                                                             * 63
                                                                              */
             -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, /* 64-79 */
             15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, /*
-                                                                             * 80- 95
+                                                                             * 80-
+                                                                             * 95
                                                                              */
             -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, /*
-                                                                             * 96- 111
+                                                                             * 96-
+                                                                             * 111
                                                                              */
             41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1 /*
-                                                                            * 112- 127
-                                                                            */
+                                                                             * 112-
+                                                                             * 127
+                                                                             */
     };
 
     /**
@@ -63,8 +71,7 @@ public final class Base64 {
 
         if (data.endsWith("==")) {
             byteArrayLength -= 2;
-        }
-        else if (data.endsWith("=")) {
+        } else if (data.endsWith("=")) {
             byteArrayLength -= 1;
         }
 
@@ -81,7 +88,8 @@ public final class Base64 {
 
             if (char1 < 0 || char2 < 0 || char3 == -1 || char4 == -1) {
                 // invalid character(-1), or bad padding (-2)
-                throw new IllegalArgumentException("The String is not a valid Base64-encoded string.");
+                throw new IllegalArgumentException(
+                        "The String is not a valid Base64-encoded string.");
             }
 
             int tVal = char1 << 18;
@@ -93,15 +101,13 @@ public final class Base64 {
                 // two "==" pad chars, check bits 12-24
                 tVal &= 0x00FFF000;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
-            }
-            else if (char4 == -2) {
+            } else if (char4 == -2) {
                 // one pad char "=" , check bits 6-24.
                 tVal &= 0x00FFFFC0;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
 
-            }
-            else {
+            } else {
                 // No pads take all 3 bytes, bits 0-24
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
@@ -126,8 +132,7 @@ public final class Base64 {
 
         if (data.endsWith("==")) {
             byteArrayLength -= 2;
-        }
-        else if (data.endsWith("=")) {
+        } else if (data.endsWith("=")) {
             byteArrayLength -= 1;
         }
 
@@ -144,7 +149,8 @@ public final class Base64 {
 
             if (char1 < 0 || char2 < 0 || char3 == -1 || char4 == -1) {
                 // invalid character(-1), or bad padding (-2)
-                throw new IllegalArgumentException("The String is not a valid Base64-encoded string.");
+                throw new IllegalArgumentException(
+                        "The String is not a valid Base64-encoded string.");
             }
 
             int tVal = char1 << 18;
@@ -156,15 +162,13 @@ public final class Base64 {
                 // two "==" pad chars, check bits 12-24
                 tVal &= 0x00FFF000;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
-            }
-            else if (char4 == -2) {
+            } else if (char4 == -2) {
                 // one pad char "=" , check bits 6-24.
                 tVal &= 0x00FFFFC0;
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
 
-            }
-            else {
+            } else {
                 // No pads take all 3 bytes, bits 0-24
                 retArray[byteDex++] = (byte) (tVal >> 16 & 0xFF);
                 retArray[byteDex++] = (byte) (tVal >> 8 & 0xFF);
@@ -190,13 +194,12 @@ public final class Base64 {
         for (; j < data.length; j += 3) {
 
             if (j < data.length - dataRemainder) {
-                n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8) + (data[j + 2] & 0xFF);
-            }
-            else {
+                n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8)
+                        + (data[j + 2] & 0xFF);
+            } else {
                 if (dataRemainder == 1) {
                     n = (data[j] & 0xFF) << 16;
-                }
-                else if (dataRemainder == 2) {
+                } else if (dataRemainder == 2) {
                     n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8);
                 }
             }
@@ -217,8 +220,7 @@ public final class Base64 {
         // append '=' to pad
         if (data.length % 3 == 1) {
             builder.replace(bLength - 2, bLength, "==");
-        }
-        else if (data.length % 3 == 2) {
+        } else if (data.length % 3 == 2) {
             builder.replace(bLength - 1, bLength, "=");
         }
 
@@ -241,13 +243,12 @@ public final class Base64 {
         for (; j < data.length; j += 3) {
 
             if (j < data.length - dataRemainder) {
-                n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8) + (data[j + 2] & 0xFF);
-            }
-            else {
+                n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8)
+                        + (data[j + 2] & 0xFF);
+            } else {
                 if (dataRemainder == 1) {
                     n = (data[j] & 0xFF) << 16;
-                }
-                else if (dataRemainder == 2) {
+                } else if (dataRemainder == 2) {
                     n = ((data[j] & 0xFF) << 16) + ((data[j + 1] & 0xFF) << 8);
                 }
             }
@@ -268,8 +269,7 @@ public final class Base64 {
         // append '=' to pad
         if (data.length % 3 == 1) {
             builder.replace(bLength - 2, bLength, "==");
-        }
-        else if (data.length % 3 == 2) {
+        } else if (data.length % 3 == 2) {
             builder.replace(bLength - 1, bLength, "=");
         }
 
@@ -281,7 +281,8 @@ public final class Base64 {
      * 
      * @param data
      *            the string, as a <code>String</code> object, to validate
-     * @return <code>true</code> if <code>data</code> is a valid Base64 string, otherwise <code>false</code>
+     * @return <code>true</code> if <code>data</code> is a valid Base64 string,
+     *         otherwise <code>false</code>
      */
     public static boolean validateIsBase64String(final String data) {
 
@@ -296,8 +297,8 @@ public final class Base64 {
             if (DECODE_64[charByte] == -2) {
                 if (m < data.length() - 2) {
                     return false;
-                }
-                else if (m == data.length() - 2 && DECODE_64[(byte) data.charAt(m + 1)] != -2) {
+                } else if (m == data.length() - 2
+                        && DECODE_64[(byte) data.charAt(m + 1)] != -2) {
                     return false;
                 }
             }

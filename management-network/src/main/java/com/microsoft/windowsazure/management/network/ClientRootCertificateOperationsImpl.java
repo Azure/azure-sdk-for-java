@@ -81,9 +81,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Upload client certificate
-    * Virtual Network Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Upload client
+    * certificate Virtual Network Gateway operation.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -103,9 +104,10 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205129.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param parameters Parameters supplied to the Upload client certificate
-    * Virtual Network Gateway operation.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param parameters Required. Parameters supplied to the Upload client
+    * certificate Virtual Network Gateway operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -237,8 +239,9 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param certificateThumbprint Required. The X509 certificate thumbprint.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -258,8 +261,9 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205128.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param certificateThumbprint Required. The X509 certificate thumbprint.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -383,8 +387,9 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param certificateThumbprint Required. The X509 certificate thumbprint.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -405,8 +410,9 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205127.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
-    * @param certificateThumbprint The X509 certificate thumbprint.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
+    * @param certificateThumbprint Required. The X509 certificate thumbprint.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -506,7 +512,8 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @return The response to the list client root certificates request.
     */
     @Override
@@ -526,7 +533,8 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn205130.aspx for
     * more information)
     *
-    * @param networkName The name of the virtual network for this gateway.
+    * @param networkName Required. The name of the virtual network for this
+    * gateway.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

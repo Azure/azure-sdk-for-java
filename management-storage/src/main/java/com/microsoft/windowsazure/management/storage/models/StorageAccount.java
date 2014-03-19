@@ -69,10 +69,10 @@ public class StorageAccount {
     private String name;
     
     /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
+    * Optional. The name of the storage account. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account.  For example, if the service name is MyStorageAccount you could
+    * access the blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
     * @return The Name value.
     */
@@ -81,10 +81,10 @@ public class StorageAccount {
     }
     
     /**
-    * The name of the storage account. This name is the DNS prefix name and can
-    * be used to access blobs, queues, and tables in the storage account.  For
-    * example, if the service name is MyStorageAccount you could access the
-    * blob containers by calling:
+    * Optional. The name of the storage account. This name is the DNS prefix
+    * name and can be used to access blobs, queues, and tables in the storage
+    * account.  For example, if the service name is MyStorageAccount you could
+    * access the blob containers by calling:
     * http://MyStorageAccount.blob.core.windows.net/mycontainer/
     * @param nameValue The Name value.
     */
@@ -95,7 +95,7 @@ public class StorageAccount {
     private StorageAccountProperties properties;
     
     /**
-    * Details about the storage account.
+    * Optional. Details about the storage account.
     * @return The Properties value.
     */
     public StorageAccountProperties getProperties() {
@@ -103,7 +103,7 @@ public class StorageAccount {
     }
     
     /**
-    * Details about the storage account.
+    * Optional. Details about the storage account.
     * @param propertiesValue The Properties value.
     */
     public void setProperties(final StorageAccountProperties propertiesValue) {
@@ -113,8 +113,8 @@ public class StorageAccount {
     private URI uri;
     
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
+    * Optional. The Service Management API request URI used to perform Get
+    * Storage Account Properties requests against the storage account.
     * @return The Uri value.
     */
     public URI getUri() {
@@ -122,8 +122,8 @@ public class StorageAccount {
     }
     
     /**
-    * The Service Management API request URI used to perform Get Storage
-    * Account Properties requests against the storage account.
+    * Optional. The Service Management API request URI used to perform Get
+    * Storage Account Properties requests against the storage account.
     * @param uriValue The Uri value.
     */
     public void setUri(final URI uriValue) {

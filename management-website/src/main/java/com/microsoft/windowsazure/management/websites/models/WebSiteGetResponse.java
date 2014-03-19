@@ -32,7 +32,7 @@ public class WebSiteGetResponse extends OperationResponse {
     private WebSite webSite;
     
     /**
-    * Details for the requested website.
+    * Optional. Details for the requested website.
     * @return The WebSite value.
     */
     public WebSite getWebSite() {
@@ -40,7 +40,7 @@ public class WebSiteGetResponse extends OperationResponse {
     }
     
     /**
-    * Details for the requested website.
+    * Optional. Details for the requested website.
     * @param webSiteValue The WebSite value.
     */
     public void setWebSite(final WebSite webSiteValue) {

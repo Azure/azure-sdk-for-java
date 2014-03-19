@@ -26,22 +26,18 @@ import static org.hamcrest.Matchers.*;
 /**
  *
  */
-public class Protocol1RuntimeCurrentStateClientTests
-{
+public class Protocol1RuntimeCurrentStateClientTests {
     @Test
-    public void setCurrentStateSerializesToEndpoint()
-    {
+    public void setCurrentStateSerializesToEndpoint() {
         final CurrentState expectedState = new AcquireCurrentState(null, null,
                 null, null);
         final OutputStream expectedStream = new ByteArrayOutputStream();
         final String expectedEndpoint = "endpoint";
         final AtomicBoolean serializeCalled = new AtomicBoolean(false);
 
-        CurrentStateSerializer serializer = new CurrentStateSerializer()
-        {
+        CurrentStateSerializer serializer = new CurrentStateSerializer() {
             @Override
-            public void serialize(CurrentState state, OutputStream stream)
-            {
+            public void serialize(CurrentState state, OutputStream stream) {
                 assertThat(state, is(expectedState));
                 assertThat(stream, is(expectedStream));
 
@@ -49,11 +45,9 @@ public class Protocol1RuntimeCurrentStateClientTests
             }
         };
 
-        OutputChannel outputChannel = new OutputChannel()
-        {
+        OutputChannel outputChannel = new OutputChannel() {
             @Override
-            public OutputStream getOutputStream(String name)
-            {
+            public OutputStream getOutputStream(String name) {
                 assertThat(name, is(expectedEndpoint));
 
                 return expectedStream;
@@ -71,20 +65,16 @@ public class Protocol1RuntimeCurrentStateClientTests
     }
 
     @Test
-    public void streamCloseFailureThrowsNotAvailableException()
-    {
+    public void streamCloseFailureThrowsNotAvailableException() {
         final CurrentState expectedState = new AcquireCurrentState(null, null,
                 null, null);
-        final OutputStream expectedStream = new OutputStream()
-        {
+        final OutputStream expectedStream = new OutputStream() {
             @Override
-            public void write(int arg0) throws IOException
-            {
+            public void write(int arg0) throws IOException {
             }
 
             @Override
-            public void close() throws IOException
-            {
+            public void close() throws IOException {
                 throw new IOException();
             }
         };
@@ -92,11 +82,9 @@ public class Protocol1RuntimeCurrentStateClientTests
         final String expectedEndpoint = "endpoint";
         final AtomicBoolean serializeCalled = new AtomicBoolean(false);
 
-        CurrentStateSerializer serializer = new CurrentStateSerializer()
-        {
+        CurrentStateSerializer serializer = new CurrentStateSerializer() {
             @Override
-            public void serialize(CurrentState state, OutputStream stream)
-            {
+            public void serialize(CurrentState state, OutputStream stream) {
                 assertThat(state, is(expectedState));
                 assertThat(stream, is(expectedStream));
 
@@ -104,11 +92,9 @@ public class Protocol1RuntimeCurrentStateClientTests
             }
         };
 
-        OutputChannel outputChannel = new OutputChannel()
-        {
+        OutputChannel outputChannel = new OutputChannel() {
             @Override
-            public OutputStream getOutputStream(String name)
-            {
+            public OutputStream getOutputStream(String name) {
                 assertThat(name, is(expectedEndpoint));
 
                 return expectedStream;
@@ -120,11 +106,9 @@ public class Protocol1RuntimeCurrentStateClientTests
 
         currentStateClient.setEndpoint(expectedEndpoint);
 
-        try
-        {
+        try {
             currentStateClient.setCurrentState(expectedState);
-        } catch (RoleEnvironmentNotAvailableException e)
-        {
+        } catch (RoleEnvironmentNotAvailableException e) {
             return;
         }
 

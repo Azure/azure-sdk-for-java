@@ -59,8 +59,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "dateTimeType", propOrder = { "value" })
-public class DateTimeType
-{
+public class DateTimeType {
 
     @XmlValue
     @XmlSchemaType(name = "dateTime")
@@ -81,8 +80,7 @@ public class DateTimeType
      * @return possible object is {@link XMLGregorianCalendar }
      * 
      */
-    public XMLGregorianCalendar getValue()
-    {
+    public XMLGregorianCalendar getValue() {
         return value;
     }
 
@@ -93,8 +91,7 @@ public class DateTimeType
      *            allowed object is {@link XMLGregorianCalendar }
      * 
      */
-    public void setValue(XMLGregorianCalendar value)
-    {
+    public void setValue(XMLGregorianCalendar value) {
         this.value = value;
     }
 
@@ -104,8 +101,7 @@ public class DateTimeType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -116,8 +112,7 @@ public class DateTimeType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -127,8 +122,7 @@ public class DateTimeType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -139,8 +133,7 @@ public class DateTimeType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -158,8 +151,7 @@ public class DateTimeType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

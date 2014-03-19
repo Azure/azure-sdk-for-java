@@ -160,13 +160,15 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @param baseUri The URI used as the base for all Service Bus requests.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
+    * @param baseUri Required. The URI used as the base for all Service Bus
+    * requests.
     */
     public ServiceBusManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);
@@ -222,9 +224,9 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -253,9 +255,9 @@ public class ServiceBusManagementClientImpl extends ServiceClient<ServiceBusMana
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
