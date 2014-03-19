@@ -28,46 +28,45 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
-* The List incidents operation response.
-*/
-public class IncidentListResponse extends OperationResponse implements Iterable<Incident>
-{
+ * The List incidents operation response.
+ */
+public class IncidentListResponse extends OperationResponse implements
+        Iterable<Incident> {
     private ArrayList<Incident> value;
-    
+
     /**
-    * Incident collection.
-    * @return The Value value.
-    */
-    public ArrayList<Incident> getValue()
-    {
+     * Incident collection.
+     * 
+     * @return The Value value.
+     */
+    public ArrayList<Incident> getValue() {
         return this.value;
     }
-    
+
     /**
-    * Incident collection.
-    * @param valueValue The Value value.
-    */
-    public void setValue(final ArrayList<Incident> valueValue)
-    {
+     * Incident collection.
+     * 
+     * @param valueValue
+     *            The Value value.
+     */
+    public void setValue(final ArrayList<Incident> valueValue) {
         this.value = valueValue;
     }
-    
+
     /**
-    * Initializes a new instance of the IncidentListResponse class.
-    *
-    */
-    public IncidentListResponse()
-    {
+     * Initializes a new instance of the IncidentListResponse class.
+     * 
+     */
+    public IncidentListResponse() {
         super();
         this.value = new ArrayList<Incident>();
     }
-    
+
     /**
-    * Gets the sequence of Value.
-    *
-    */
-    public Iterator<Incident> iterator()
-    {
+     * Gets the sequence of Value.
+     * 
+     */
+    public Iterator<Incident> iterator() {
         return this.getValue().iterator();
     }
 }

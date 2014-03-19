@@ -83,8 +83,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "feedType", propOrder = { "feedChildren" })
-public class FeedType
-{
+public class FeedType {
 
     @XmlElementRefs({
             @XmlElementRef(name = "updated", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
@@ -146,10 +145,8 @@ public class FeedType
      * 
      * 
      */
-    public List<Object> getFeedChildren()
-    {
-        if (feedChildren == null)
-        {
+    public List<Object> getFeedChildren() {
+        if (feedChildren == null) {
             feedChildren = new ArrayList<Object>();
         }
         return this.feedChildren;
@@ -161,8 +158,7 @@ public class FeedType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -173,8 +169,7 @@ public class FeedType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -184,8 +179,7 @@ public class FeedType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -196,8 +190,7 @@ public class FeedType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -215,8 +208,7 @@ public class FeedType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

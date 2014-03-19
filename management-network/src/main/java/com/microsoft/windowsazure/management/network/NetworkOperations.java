@@ -42,7 +42,7 @@ public interface NetworkOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters The updated network configuration.
+    * @param parameters Required. The updated network configuration.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -58,7 +58,7 @@ public interface NetworkOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters The updated network configuration.
+    * @param parameters Required. The updated network configuration.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -122,7 +122,7 @@ public interface NetworkOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters The updated network configuration.
+    * @param parameters Required. The updated network configuration.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -153,7 +153,7 @@ public interface NetworkOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157181.aspx for
     * more information)
     *
-    * @param parameters The updated network configuration.
+    * @param parameters Required. The updated network configuration.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

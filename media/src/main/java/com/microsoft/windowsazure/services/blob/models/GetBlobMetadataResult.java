@@ -30,8 +30,7 @@ import com.microsoft.windowsazure.services.blob.BlobContract;
  * Blob Metadata</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operation.
  */
-public class GetBlobMetadataResult
-{
+public class GetBlobMetadataResult {
     private String etag;
     private Date lastModified;
     private HashMap<String, String> metadata;
@@ -47,8 +46,7 @@ public class GetBlobMetadataResult
      * @return A {@link String} containing the server-assigned ETag value for
      *         the blob.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -63,8 +61,7 @@ public class GetBlobMetadataResult
      *            A {@link String} containing the server-assigned ETag value for
      *            the blob.
      */
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
@@ -81,8 +78,7 @@ public class GetBlobMetadataResult
      * @return A {@link java.util.Date} containing the last modified time of the
      *         blob.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -97,8 +93,7 @@ public class GetBlobMetadataResult
      *            A {@link java.util.Date} containing the last modified time of
      *            the blob.
      */
-    public void setLastModified(Date lastModified)
-    {
+    public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
     }
 
@@ -109,8 +104,7 @@ public class GetBlobMetadataResult
      * @return A {@link java.util.HashMap} of name-value pairs of {@link String}
      *         containing the names and values of the blob metadata.
      */
-    public HashMap<String, String> getMetadata()
-    {
+    public HashMap<String, String> getMetadata() {
         return metadata;
     }
 
@@ -127,8 +121,7 @@ public class GetBlobMetadataResult
      *            {@link String} containing the names and values of the blob
      *            metadata.
      */
-    public void setMetadata(HashMap<String, String> metadata)
-    {
+    public void setMetadata(HashMap<String, String> metadata) {
         this.metadata = metadata;
     }
 }

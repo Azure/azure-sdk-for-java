@@ -29,8 +29,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * the content language, the MD5 hash, a cache control value, blob metadata, a
  * blob lease ID, a sequence number, and access conditions.
  */
-public class CreateBlobOptions extends BlobServiceOptions
-{
+public class CreateBlobOptions extends BlobServiceOptions {
     private String contentType;
     private String contentEncoding;
     private String contentLanguage;
@@ -58,8 +57,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
     @Override
-    public CreateBlobOptions setTimeout(Integer timeout)
-    {
+    public CreateBlobOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -71,8 +69,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the <code>Content-Type</code> header
      *         value set, if any.
      */
-    public String getContentType()
-    {
+    public String getContentType() {
         return contentType;
     }
 
@@ -88,8 +85,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setContentType(String contentType)
-    {
+    public CreateBlobOptions setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -101,8 +97,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the <code>Content-Encoding</code>
      *         header value set, if any.
      */
-    public String getContentEncoding()
-    {
+    public String getContentEncoding() {
         return contentEncoding;
     }
 
@@ -120,8 +115,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setContentEncoding(String contentEncoding)
-    {
+    public CreateBlobOptions setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -133,8 +127,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the <code>Content-Language</code>
      *         header value set, if any.
      */
-    public String getContentLanguage()
-    {
+    public String getContentLanguage() {
         return contentLanguage;
     }
 
@@ -152,8 +145,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setContentLanguage(String contentLanguage)
-    {
+    public CreateBlobOptions setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -165,8 +157,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the <code>Content-MD5</code> header
      *         value set, if any.
      */
-    public String getContentMD5()
-    {
+    public String getContentMD5() {
         return contentMD5;
     }
 
@@ -188,8 +179,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setContentMD5(String contentMD5)
-    {
+    public CreateBlobOptions setContentMD5(String contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -201,8 +191,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the <code>Cache-Control</code> header
      *         value set, if any.
      */
-    public String getCacheControl()
-    {
+    public String getCacheControl() {
         return cacheControl;
     }
 
@@ -220,8 +209,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setCacheControl(String cacheControl)
-    {
+    public CreateBlobOptions setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -233,8 +221,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the
      *         <code>x-ms-blob-content-type</code> header value set, if any.
      */
-    public String getBlobContentType()
-    {
+    public String getBlobContentType() {
         return blobContentType;
     }
 
@@ -253,8 +240,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            <code>x-ms-blob-content-type</code> header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setBlobContentType(String blobContentType)
-    {
+    public CreateBlobOptions setBlobContentType(String blobContentType) {
         this.blobContentType = blobContentType;
         return this;
     }
@@ -266,8 +252,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the
      *         <code>x-ms-blob-content-encoding</code> header value set, if any.
      */
-    public String getBlobContentEncoding()
-    {
+    public String getBlobContentEncoding() {
         return blobContentEncoding;
     }
 
@@ -286,8 +271,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            <code>x-ms-blob-content-encoding</code> header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setBlobContentEncoding(String blobContentEncoding)
-    {
+    public CreateBlobOptions setBlobContentEncoding(String blobContentEncoding) {
         this.blobContentEncoding = blobContentEncoding;
         return this;
     }
@@ -299,8 +283,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the
      *         <code>x-ms-blob-content-language</code> header value set, if any.
      */
-    public String getBlobContentLanguage()
-    {
+    public String getBlobContentLanguage() {
         return blobContentLanguage;
     }
 
@@ -318,8 +301,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            <code>x-ms-blob-content-language</code> header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setBlobContentLanguage(String blobContentLanguage)
-    {
+    public CreateBlobOptions setBlobContentLanguage(String blobContentLanguage) {
         this.blobContentLanguage = blobContentLanguage;
         return this;
     }
@@ -331,8 +313,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the
      *         <code>x-ms-blob-content-md5</code> header value set, if any.
      */
-    public String getBlobContentMD5()
-    {
+    public String getBlobContentMD5() {
         return blobContentMD5;
     }
 
@@ -354,8 +335,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            <code>x-ms-blob-content-md5</code> header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setBlobContentMD5(String blobContentMD5)
-    {
+    public CreateBlobOptions setBlobContentMD5(String blobContentMD5) {
         this.blobContentMD5 = blobContentMD5;
         return this;
     }
@@ -367,8 +347,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the
      *         <code>x-ms-blob-cache-control</code> header value set, if any.
      */
-    public String getBlobCacheControl()
-    {
+    public String getBlobCacheControl() {
         return blobCacheControl;
     }
 
@@ -386,8 +365,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            <code>x-ms-blob-cache-control</code> header value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setBlobCacheControl(String blobCacheControl)
-    {
+    public CreateBlobOptions setBlobCacheControl(String blobCacheControl) {
         this.blobCacheControl = blobCacheControl;
         return this;
     }
@@ -399,8 +377,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A {@link HashMap} of name-value pairs of {@link String}
      *         containing the blob metadata set, if any.
      */
-    public HashMap<String, String> getMetadata()
-    {
+    public HashMap<String, String> getMetadata() {
         return metadata;
     }
 
@@ -420,8 +397,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            containing the blob metadata to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setMetadata(HashMap<String, String> metadata)
-    {
+    public CreateBlobOptions setMetadata(HashMap<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -438,8 +414,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            name-value pair to add to the metadata collection.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions addMetadata(String key, String value)
-    {
+    public CreateBlobOptions addMetadata(String key, String value) {
         this.getMetadata().put(key, value);
         return this;
     }
@@ -450,8 +425,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -463,8 +437,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setLeaseId(String leaseId)
-    {
+    public CreateBlobOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -474,8 +447,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * 
      * @return The page blob sequence number value set.
      */
-    public Long getSequenceNumber()
-    {
+    public Long getSequenceNumber() {
         return sequenceNumber;
     }
 
@@ -493,8 +465,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      *            The page blob sequence number value to set.
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
-    public CreateBlobOptions setSequenceNumber(Long sequenceNumber)
-    {
+    public CreateBlobOptions setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }
@@ -506,8 +477,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -521,8 +491,7 @@ public class CreateBlobOptions extends BlobServiceOptions
      * @return A reference to this {@link CreateBlobOptions} instance.
      */
     public CreateBlobOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

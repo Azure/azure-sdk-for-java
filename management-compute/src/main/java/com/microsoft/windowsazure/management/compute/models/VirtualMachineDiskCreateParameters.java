@@ -94,7 +94,7 @@ public class VirtualMachineDiskCreateParameters {
     private String operatingSystemType;
     
     /**
-    * Required. The operating system type of the disk. Possible values are:
+    * Optional. The operating system type of the disk. Possible values are:
     * Linux, Windows.
     * @return The OperatingSystemType value.
     */
@@ -103,7 +103,7 @@ public class VirtualMachineDiskCreateParameters {
     }
     
     /**
-    * Required. The operating system type of the disk. Possible values are:
+    * Optional. The operating system type of the disk. Possible values are:
     * Linux, Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */

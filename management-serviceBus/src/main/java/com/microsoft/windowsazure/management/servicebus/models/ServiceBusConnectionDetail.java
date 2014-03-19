@@ -32,7 +32,7 @@ public class ServiceBusConnectionDetail {
     private String authorizationType;
     
     /**
-    * The type of authorization for the connection to the entity.
+    * Optional. The type of authorization for the connection to the entity.
     * @return The AuthorizationType value.
     */
     public String getAuthorizationType() {
@@ -40,7 +40,7 @@ public class ServiceBusConnectionDetail {
     }
     
     /**
-    * The type of authorization for the connection to the entity.
+    * Optional. The type of authorization for the connection to the entity.
     * @param authorizationTypeValue The AuthorizationType value.
     */
     public void setAuthorizationType(final String authorizationTypeValue) {
@@ -50,7 +50,7 @@ public class ServiceBusConnectionDetail {
     private String connectionString;
     
     /**
-    * The connection string to the entity.
+    * Optional. The connection string to the entity.
     * @return The ConnectionString value.
     */
     public String getConnectionString() {
@@ -58,7 +58,7 @@ public class ServiceBusConnectionDetail {
     }
     
     /**
-    * The connection string to the entity.
+    * Optional. The connection string to the entity.
     * @param connectionStringValue The ConnectionString value.
     */
     public void setConnectionString(final String connectionStringValue) {
@@ -68,7 +68,7 @@ public class ServiceBusConnectionDetail {
     private String keyName;
     
     /**
-    * The name of the key used in the connection.
+    * Optional. The name of the key used in the connection.
     * @return The KeyName value.
     */
     public String getKeyName() {
@@ -76,7 +76,7 @@ public class ServiceBusConnectionDetail {
     }
     
     /**
-    * The name of the key used in the connection.
+    * Optional. The name of the key used in the connection.
     * @param keyNameValue The KeyName value.
     */
     public void setKeyName(final String keyNameValue) {
@@ -86,7 +86,8 @@ public class ServiceBusConnectionDetail {
     private ArrayList<AccessRight> rights;
     
     /**
-    * The rights connections to the entity via the connection string will have.
+    * Optional. The rights connections to the entity via the connection string
+    * will have.
     * @return The Rights value.
     */
     public ArrayList<AccessRight> getRights() {
@@ -94,7 +95,8 @@ public class ServiceBusConnectionDetail {
     }
     
     /**
-    * The rights connections to the entity via the connection string will have.
+    * Optional. The rights connections to the entity via the connection string
+    * will have.
     * @param rightsValue The Rights value.
     */
     public void setRights(final ArrayList<AccessRight> rightsValue) {

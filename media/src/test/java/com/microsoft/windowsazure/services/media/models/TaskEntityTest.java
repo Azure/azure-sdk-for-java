@@ -28,25 +28,18 @@ import com.microsoft.windowsazure.services.media.implementation.content.TaskType
 /**
  * Tests for the methods and factories of the Task entity.
  */
-public class TaskEntityTest
-{
+public class TaskEntityTest {
     static final String sampleTaskId = "nb:cid:UUID:1151b8bd-9ada-4e7f-9787-8dfa49968eab";
 
-    private TaskType getTaskType(EntryType entryType)
-    {
-        for (Object child : entryType.getEntryChildren())
-        {
-            if (child instanceof JAXBElement)
-            {
+    private TaskType getTaskType(EntryType entryType) {
+        for (Object child : entryType.getEntryChildren()) {
+            if (child instanceof JAXBElement) {
                 @SuppressWarnings("rawtypes")
                 JAXBElement element = (JAXBElement) child;
-                if (element.getDeclaredType() == ContentType.class)
-                {
+                if (element.getDeclaredType() == ContentType.class) {
                     ContentType contentType = (ContentType) element.getValue();
-                    for (Object grandChild : contentType.getContent())
-                    {
-                        if (grandChild instanceof JAXBElement)
-                        {
+                    for (Object grandChild : contentType.getContent()) {
+                        if (grandChild instanceof JAXBElement) {
                             @SuppressWarnings("rawtypes")
                             JAXBElement contentElement = (JAXBElement) grandChild;
                             TaskType taskType = (TaskType) contentElement
@@ -61,13 +54,11 @@ public class TaskEntityTest
         return null;
     }
 
-    public TaskEntityTest() throws Exception
-    {
+    public TaskEntityTest() throws Exception {
     }
 
     @Test
-    public void taskCreateReturnsDefaultCreatePayload()
-    {
+    public void taskCreateReturnsDefaultCreatePayload() {
         String expectedMediaProcessorId = "expectedMediaProcessorId";
         String expectedTaskBody = "expectedTaskBody";
 
@@ -80,8 +71,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetTaskName()
-    {
+    public void taskCreateCanSetTaskName() {
         String expectedName = "TaskCreateCanSetTaskName";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -96,8 +86,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetConfiguration()
-    {
+    public void taskCreateCanSetConfiguration() {
         String expectedConfiguration = "TaskCreateCanSetTaskCofniguration";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -112,8 +101,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetPriority()
-    {
+    public void taskCreateCanSetPriority() {
         Integer expectedPriority = 3;
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -128,8 +116,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetTaskBody()
-    {
+    public void taskCreateCanSetTaskBody() {
         String expectedTaskBodyResult = "expectedTaskBodyResult";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -144,8 +131,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetEncryptionKeyId()
-    {
+    public void taskCreateCanSetEncryptionKeyId() {
         String expectedEncryptionKeyId = "expectedEncryptionKeyId";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -160,8 +146,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetEncryptionScheme()
-    {
+    public void taskCreateCanSetEncryptionScheme() {
         String expectedEncryptionScheme = "expectedEncryptionScheme";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -176,8 +161,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetEncryptionVersion()
-    {
+    public void taskCreateCanSetEncryptionVersion() {
         String expectedEncryptionVersion = "expectedEncryptionVersion";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";
@@ -192,8 +176,7 @@ public class TaskEntityTest
     }
 
     @Test
-    public void taskCreateCanSetInitializationVector()
-    {
+    public void taskCreateCanSetInitializationVector() {
         String expectedInitializationVector = "expectedEncryptionKeyId";
 
         String expectedMediaProcessorId = "expectedMediaProcessorId";

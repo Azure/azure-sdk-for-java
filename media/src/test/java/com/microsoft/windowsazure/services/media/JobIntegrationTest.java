@@ -46,14 +46,12 @@ import com.microsoft.windowsazure.services.media.models.TaskHistoricalEvent;
 import com.microsoft.windowsazure.services.media.models.TaskInfo;
 import com.microsoft.windowsazure.services.queue.models.PeekMessagesResult.QueueMessage;
 
-public class JobIntegrationTest extends IntegrationTestBase
-{
+public class JobIntegrationTest extends IntegrationTestBase {
 
     private static AssetInfo assetInfo;
 
     private void verifyJobInfoEqual(String message, JobInfo expected,
-            JobInfo actual) throws ServiceException
-    {
+            JobInfo actual) throws ServiceException {
         verifyJobProperties(message, expected.getName(),
                 expected.getPriority(), expected.getRunningDuration(),
                 expected.getState(), expected.getTemplateId(),
@@ -65,8 +63,7 @@ public class JobIntegrationTest extends IntegrationTestBase
             Integer priority, double runningDuration, JobState state,
             String templateId, Date created, Date lastModified, Date startTime,
             Date endTime, Integer expectedTaskCount, JobInfo actualJob)
-            throws ServiceException
-    {
+            throws ServiceException {
         assertNotNull(message, actualJob);
 
         assertNotNull(message + "Id", actualJob.getId());
@@ -90,8 +87,7 @@ public class JobIntegrationTest extends IntegrationTestBase
         assertDateApproxEquals(message + " EndTime", endTime,
                 actualJob.getEndTime());
 
-        if (expectedTaskCount != null)
-        {
+        if (expectedTaskCount != null) {
             LinkInfo<TaskInfo> tasksLink = actualJob.getTasksLink();
             ListResult<TaskInfo> actualTasks = service.list(Task
                     .list(tasksLink));
@@ -101,21 +97,18 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     private JobNotificationSubscription getJobNotificationSubscription(
-            String jobNotificationSubscriptionId, TargetJobState targetJobState)
-    {
+            String jobNotificationSubscriptionId, TargetJobState targetJobState) {
         return new JobNotificationSubscription(jobNotificationSubscriptionId,
                 targetJobState);
     }
 
-    private JobInfo createJob(String name) throws ServiceException
-    {
+    private JobInfo createJob(String name) throws ServiceException {
         return service.create(Job.create().setName(name).setPriority(3)
                 .addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
     }
 
-    private CreateBatchOperation getTaskCreator(int outputAssetPosition)
-    {
+    private CreateBatchOperation getTaskCreator(int outputAssetPosition) {
         return Task
                 .create(MEDIA_ENCODER_MEDIA_PROCESSOR_ID,
                         "<taskBody>"
@@ -128,15 +121,13 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @BeforeClass
-    public static void setup() throws Exception
-    {
+    public static void setup() throws Exception {
         IntegrationTestBase.setup();
         assetInfo = setupAssetWithFile();
     }
 
     @Test
-    public void createJobSuccess() throws ServiceException
-    {
+    public void createJobSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "createJobSuccess";
         int priority = 3;
@@ -160,8 +151,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createJobWithNotificationSuccess() throws ServiceException
-    {
+    public void createJobWithNotificationSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "createJobWithNotificationSuccess";
         String queueName = testQueuePrefix + "createjobwithnotificationsuccess";
@@ -183,11 +173,9 @@ public class JobIntegrationTest extends IntegrationTestBase
                 .list(NotificationEndPoint.list());
         String notificationEndPointId = null;
 
-        for (NotificationEndPointInfo notificationEndPointInfo : listNotificationEndPointInfos)
-        {
+        for (NotificationEndPointInfo notificationEndPointInfo : listNotificationEndPointInfos) {
             if (notificationEndPointInfo.getName().equals(
-                    notificationEndPointName))
-            {
+                    notificationEndPointName)) {
                 notificationEndPointId = notificationEndPointInfo.getId();
             }
         }
@@ -213,8 +201,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createJobTwoTasksSuccess() throws ServiceException
-    {
+    public void createJobTwoTasksSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "createJobSuccess";
         int priority = 3;
@@ -241,8 +228,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getJobSuccess() throws ServiceException
-    {
+    public void getJobSuccess() throws ServiceException {
         // Arrange
         String name = testJobPrefix + "getJobSuccess";
         int priority = 3;
@@ -265,16 +251,14 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getJobInvalidIdFailed() throws ServiceException
-    {
+    public void getJobInvalidIdFailed() throws ServiceException {
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
         service.get(Job.get(invalidId));
     }
 
     @Test
-    public void listJobSuccess() throws ServiceException
-    {
+    public void listJobSuccess() throws ServiceException {
         // Arrange
         JobInfo jobInfo = createJob(testJobPrefix + "listJobSuccess");
         List<JobInfo> jobInfos = new ArrayList<JobInfo>();
@@ -287,18 +271,14 @@ public class JobIntegrationTest extends IntegrationTestBase
 
         // Assert
         verifyListResultContains("listJobs", expectedListJobsResult,
-                actualListJobResult, new ComponentDelegate()
-                {
+                actualListJobResult, new ComponentDelegate() {
                     @Override
                     public void verifyEquals(String message, Object expected,
-                            Object actual)
-                    {
-                        try
-                        {
+                            Object actual) {
+                        try {
                             verifyJobInfoEqual(message, (JobInfo) expected,
                                     (JobInfo) actual);
-                        } catch (ServiceException e)
-                        {
+                        } catch (ServiceException e) {
                             fail(e.getMessage());
                         }
                     }
@@ -306,12 +286,10 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canListJobsWithOptions() throws ServiceException
-    {
+    public void canListJobsWithOptions() throws ServiceException {
         String[] assetNameSuffixes = new String[] { "A", "B", "C", "D" };
         List<JobInfo> expectedJobs = new ArrayList<JobInfo>();
-        for (String suffix : assetNameSuffixes)
-        {
+        for (String suffix : assetNameSuffixes) {
             JobInfo jobInfo = createJob(testJobPrefix + "assetListOptions"
                     + suffix);
             expectedJobs.add(jobInfo);
@@ -324,8 +302,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void cancelJobSuccess() throws ServiceException
-    {
+    public void cancelJobSuccess() throws ServiceException {
         // Arrange
         JobInfo jobInfo = createJob(testJobPrefix + "cancelJobSuccess");
 
@@ -339,8 +316,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void cancelJobFailedWithInvalidId() throws ServiceException
-    {
+    public void cancelJobFailedWithInvalidId() throws ServiceException {
         // Arrange
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
@@ -353,16 +329,14 @@ public class JobIntegrationTest extends IntegrationTestBase
 
     @Test
     public void deleteJobSuccess() throws ServiceException,
-            InterruptedException
-    {
+            InterruptedException {
         // Arrange
         JobInfo jobInfo = createJob(testJobPrefix + "deleteJobSuccess");
         service.action(Job.cancel(jobInfo.getId()));
         JobInfo cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
         int retryCounter = 0;
         while (cancellingJobInfo.getState() == JobState.Canceling
-                && retryCounter < 10)
-        {
+                && retryCounter < 10) {
             Thread.sleep(2000);
             cancellingJobInfo = service.get(Job.get(jobInfo.getId()));
             retryCounter++;
@@ -378,8 +352,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteJobInvalidIdFail() throws ServiceException
-    {
+    public void deleteJobInvalidIdFail() throws ServiceException {
         // Arrange
         expectedException.expect(ServiceException.class);
         expectedException.expect(new ServiceExceptionMatcher(400));
@@ -391,8 +364,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetInputOutputAssetsFromJob() throws Exception
-    {
+    public void canGetInputOutputAssetsFromJob() throws Exception {
         String name = testJobPrefix + "canGetInputOutputAssetsFromJob";
         int priority = 3;
 
@@ -413,8 +385,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetTasksFromJob() throws Exception
-    {
+    public void canGetTasksFromJob() throws Exception {
         String name = testJobPrefix + "canGetTaskAssetsFromJob";
         int priority = 3;
 
@@ -429,8 +400,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetErrorDetailsFromTask() throws Exception
-    {
+    public void canGetErrorDetailsFromTask() throws Exception {
         String name = testJobPrefix + "canGetErrorDetailsFromTask";
 
         JobInfo actualJob = service.create(Job.create().setName(name)
@@ -439,8 +409,7 @@ public class JobIntegrationTest extends IntegrationTestBase
 
         JobInfo currentJobInfo = actualJob;
         int retryCounter = 0;
-        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30)
-        {
+        while (currentJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             currentJobInfo = service.get(Job.get(actualJob.getId()));
             retryCounter++;
@@ -458,8 +427,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetInputOutputAssetsFromTask() throws Exception
-    {
+    public void canGetInputOutputAssetsFromTask() throws Exception {
         String name = testJobPrefix + "canGetInputOutputAssetsFromTask";
         int priority = 3;
 
@@ -482,8 +450,7 @@ public class JobIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void canGetTaskHistoricalEventsFromTask() throws Exception
-    {
+    public void canGetTaskHistoricalEventsFromTask() throws Exception {
         // Arrange
         String jobName = testJobPrefix + "canGetTaskHistoricalEventsFromTask";
         int priority = 3;
@@ -494,8 +461,7 @@ public class JobIntegrationTest extends IntegrationTestBase
                 .setPriority(priority).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
 
-        while (actualJobInfo.getState().getCode() < 3 && retryCounter < 30)
-        {
+        while (actualJobInfo.getState().getCode() < 3 && retryCounter < 30) {
             Thread.sleep(10000);
             actualJobInfo = service.get(Job.get(actualJobInfo.getId()));
             retryCounter++;

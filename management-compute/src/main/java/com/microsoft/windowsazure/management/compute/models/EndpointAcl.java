@@ -32,7 +32,7 @@ public class EndpointAcl {
     private ArrayList<AccessControlListRule> rules;
     
     /**
-    * The set of access control rules for the endpoint.
+    * Optional. The set of access control rules for the endpoint.
     * @return The Rules value.
     */
     public ArrayList<AccessControlListRule> getRules() {
@@ -40,7 +40,7 @@ public class EndpointAcl {
     }
     
     /**
-    * The set of access control rules for the endpoint.
+    * Optional. The set of access control rules for the endpoint.
     * @param rulesValue The Rules value.
     */
     public void setRules(final ArrayList<AccessControlListRule> rulesValue) {

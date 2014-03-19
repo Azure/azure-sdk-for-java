@@ -159,13 +159,14 @@ public class SqlManagementClientImpl extends ServiceClient<SqlManagementClient> 
     *
     * @param httpBuilder The HTTP client builder.
     * @param executorService The executor service.
-    * @param credentials When you create a Windows Azure subscription, it is
-    * uniquely identified by a subscription ID. The subscription ID forms part
-    * of the URI for every call that you make to the Service Management API.
-    * The Windows Azure Service ManagementAPI use mutual authentication of
-    * management certificates over SSL to ensure that a request made to the
-    * service is secure.  No anonymous requests are allowed.
-    * @param baseUri The URI used as the base for all SQL requests.
+    * @param credentials Required. When you create a Windows Azure
+    * subscription, it is uniquely identified by a subscription ID. The
+    * subscription ID forms part of the URI for every call that you make to
+    * the Service Management API.  The Windows Azure Service ManagementAPI use
+    * mutual authentication of management certificates over SSL to ensure that
+    * a request made to the service is secure.  No anonymous requests are
+    * allowed.
+    * @param baseUri Required. The URI used as the base for all SQL requests.
     */
     public SqlManagementClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, URI baseUri) {
         this(httpBuilder, executorService);

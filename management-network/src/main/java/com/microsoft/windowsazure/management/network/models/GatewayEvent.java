@@ -32,7 +32,7 @@ public class GatewayEvent {
     private String data;
     
     /**
-    * Additional data associated with this event.
+    * Optional. Additional data associated with this event.
     * @return The Data value.
     */
     public String getData() {
@@ -40,7 +40,7 @@ public class GatewayEvent {
     }
     
     /**
-    * Additional data associated with this event.
+    * Optional. Additional data associated with this event.
     * @param dataValue The Data value.
     */
     public void setData(final String dataValue) {
@@ -50,7 +50,7 @@ public class GatewayEvent {
     private String id;
     
     /**
-    * The event ID.
+    * Optional. The event ID.
     * @return The Id value.
     */
     public String getId() {
@@ -58,7 +58,7 @@ public class GatewayEvent {
     }
     
     /**
-    * The event ID.
+    * Optional. The event ID.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -68,7 +68,7 @@ public class GatewayEvent {
     private String message;
     
     /**
-    * The event message.
+    * Optional. The event message.
     * @return The Message value.
     */
     public String getMessage() {
@@ -76,7 +76,7 @@ public class GatewayEvent {
     }
     
     /**
-    * The event message.
+    * Optional. The event message.
     * @param messageValue The Message value.
     */
     public void setMessage(final String messageValue) {
@@ -86,7 +86,7 @@ public class GatewayEvent {
     private Calendar timestamp;
     
     /**
-    * The date and time when the event occurred.
+    * Optional. The date and time when the event occurred.
     * @return The Timestamp value.
     */
     public Calendar getTimestamp() {
@@ -94,7 +94,7 @@ public class GatewayEvent {
     }
     
     /**
-    * The date and time when the event occurred.
+    * Optional. The date and time when the event occurred.
     * @param timestampValue The Timestamp value.
     */
     public void setTimestamp(final Calendar timestampValue) {

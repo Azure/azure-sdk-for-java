@@ -59,8 +59,7 @@ import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
-public class ServiceBusIntegrationTest extends IntegrationTestBase
-{
+public class ServiceBusIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusContract service;
 
@@ -69,31 +68,26 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     static ReceiveMessageOptions PEEK_LOCK_5_SECONDS = new ReceiveMessageOptions()
             .setPeekLock().setTimeout(5);
 
-    private String createLongString(int length)
-    {
+    private String createLongString(int length) {
         String result = new String();
-        for (int i = 0; i < length; i++)
-        {
+        for (int i = 0; i < length; i++) {
             result = result + "a";
         }
         return result;
     }
 
     @Before
-    public void createService() throws Exception
-    {
+    public void createService() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
         builder.alter(ServiceBusContract.class, Client.class,
-                new Alteration<Client>()
-                {
+                new Alteration<Client>() {
                     @Override
                     public Client alter(String profile, Client instance,
-                            Builder builder, Map<String, Object> properties)
-                    {
+                            Builder builder, Map<String, Object> properties) {
                         instance.addFilter(new LoggingFilter());
                         return instance;
                     }
@@ -105,8 +99,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void fetchQueueAndListQueuesWorks() throws Exception
-    {
+    public void fetchQueueAndListQueuesWorks() throws Exception {
         // Arrange
 
         // Act
@@ -119,8 +112,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createQueueWorks() throws Exception
-    {
+    public void createQueueWorks() throws Exception {
         // Arrange
 
         // Act
@@ -139,8 +131,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void updateQueueWorks() throws Exception
-    {
+    public void updateQueueWorks() throws Exception {
         // Arrange
         QueueInfo queue = new QueueInfo("TestUpdateQueueWorks")
                 .setMaxSizeInMegabytes(1024L);
@@ -157,8 +148,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getQueueWorks() throws Exception
-    {
+    public void getQueueWorks() throws Exception {
         // Arrange
         String queuePath = "TestGetQueueWorks";
         service.createQueue(new QueueInfo(queuePath));
@@ -172,8 +162,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test(expected = ServiceException.class)
-    public void getNonExistQueueFail() throws Exception
-    {
+    public void getNonExistQueueFail() throws Exception {
         // Arrange
         String queuePath = "testGetNonExistQueueFail";
 
@@ -184,8 +173,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void deleteQueueWorks() throws Exception
-    {
+    public void deleteQueueWorks() throws Exception {
         // Arrange
         service.createQueue(new QueueInfo("TestDeleteQueueWorks"));
 
@@ -196,8 +184,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void sendMessageWorks() throws Exception
-    {
+    public void sendMessageWorks() throws Exception {
         // Arrange
         BrokeredMessage message = new BrokeredMessage("sendMessageWorks");
 
@@ -208,8 +195,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getQueueMessageCountDetails() throws Exception
-    {
+    public void getQueueMessageCountDetails() throws Exception {
         // Arrange
         String queueName = "testGetQueueMessageCountDetails";
         service.createQueue(new QueueInfo(queueName));
@@ -241,8 +227,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getTopicMessageCountDetails() throws Exception
-    {
+    public void getTopicMessageCountDetails() throws Exception {
         // Arrange
         String topicName = "TestGetTopicMessageCountDetails";
         service.createTopic(new TopicInfo(topicName)).getValue();
@@ -273,8 +258,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void getSubscriptionMessageCountDetails() throws Exception
-    {
+    public void getSubscriptionMessageCountDetails() throws Exception {
         // Arrange
         String topicName = "TestGetSubscriptionMessageCountDetails";
         String subscriptionName = "TestGetSubscriptionMessageCountDetails";
@@ -310,8 +294,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void receiveMessageWorks() throws Exception
-    {
+    public void receiveMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveMessageWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -329,8 +312,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void receiveLargeMessageWorks() throws Exception
-    {
+    public void receiveLargeMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveLargeMessageWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -351,8 +333,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void renewSubscriptionMessageLockWorks() throws Exception
-    {
+    public void renewSubscriptionMessageLockWorks() throws Exception {
         // Arrange
         String topicName = "TestRenewSubscriptionLockMessageWorks";
         String subscriptionName = "renewSubscriptionMessageLockWorks";
@@ -372,8 +353,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void renewQueueMessageLockWorks() throws Exception
-    {
+    public void renewQueueMessageLockWorks() throws Exception {
         // Arrange
         String queueName = "TestRenewSubscriptionLockMessageWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -390,8 +370,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void receiveMessageEmptyQueueWorks() throws Exception
-    {
+    public void receiveMessageEmptyQueueWorks() throws Exception {
         // Arrange
         String queueName = "TestReceiveMessageEmptyQueueWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -406,8 +385,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void receiveQueueForwardToQueueMessageSuccess() throws Exception
-    {
+    public void receiveQueueForwardToQueueMessageSuccess() throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveQueueForwardToQueueMessageSuccessSource";
         String destinationQueueName = "TestReceiveQueueForwardToQueueMessageSuccessDestination";
@@ -432,8 +410,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveUpdatedQueueForwardToQueueMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessSource";
         String destinationQueueName = "TestReceiveUpdatedQueueForwardToQueueMessageSuccessDestination";
@@ -458,8 +435,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveSubscriptionForwardToQueueMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceTopicName = "TestReceiveSubForwardToQueueMessageSuccessSource";
         String sourceSubscriptionName = "TestReceiveSubForwardToQueueMessageSuccessSource";
@@ -485,8 +461,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveUpdatedSubscriptionForwardToQueueMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceTopicName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
         String sourceSubscriptionName = "TestUpdatedReceiveSubForwardToQMessageSuccessSrc";
@@ -512,8 +487,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void receiveQueueForwardToTopicMessageSuccess() throws Exception
-    {
+    public void receiveQueueForwardToTopicMessageSuccess() throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveQueueForwardToTopicMessageSuccessSource";
         String destinationTopicName = "TestReceiveQueueForwardToTopicMessageSuccessDestination";
@@ -540,8 +514,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveUpdatedQueueForwardToTopicMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceQueueName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessSource";
         String destinationTopicName = "TestReceiveUpdatedQueueForwardToTopicMessageSuccessDestination";
@@ -568,8 +541,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveSubscriptionForwardToTopicMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
         String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
@@ -599,8 +571,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void receiveUpdatedSubscriptionForwardToTopicMessageSuccess()
-            throws Exception
-    {
+            throws Exception {
         // Arrange
         String sourceTopicName = "TestReceiveSubForwardToTopMessageSuccessSrc";
         String sourceSubscriptionName = "TestReceiveSubForwardToTopMessageSuccessSrc";
@@ -632,8 +603,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekLockMessageWorks() throws Exception
-    {
+    public void peekLockMessageWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -651,8 +621,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekLockMessageEmptyQueueWorks() throws Exception
-    {
+    public void peekLockMessageEmptyQueueWorks() throws Exception {
         // Arrange
         String queueName = "TestPeekLockMessageEmptyQueueWorks";
         service.createQueue(new QueueInfo(queueName));
@@ -667,8 +636,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekLockedMessageCanBeCompleted() throws Exception
-    {
+    public void peekLockedMessageCanBeCompleted() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeCompleted";
         service.createQueue(new QueueInfo(queueName));
@@ -690,8 +658,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekLockedMessageCanBeUnlocked() throws Exception
-    {
+    public void peekLockedMessageCanBeUnlocked() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeUnlocked";
         service.createQueue(new QueueInfo(queueName));
@@ -715,8 +682,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void peekLockedMessageCanBeDeleted() throws Exception
-    {
+    public void peekLockedMessageCanBeDeleted() throws Exception {
         // Arrange
         String queueName = "TestPeekLockedMessageCanBeDeleted";
         service.createQueue(new QueueInfo(queueName));
@@ -739,8 +705,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void emptyQueueReturnsNullMessage() throws Exception
-    {
+    public void emptyQueueReturnsNullMessage() throws Exception {
         // Arrange
         String queueName = "testEmptyQueueReturnsNullMessage";
         service.createQueue(new QueueInfo(queueName));
@@ -754,8 +719,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void contentTypePassesThrough() throws Exception
-    {
+    public void contentTypePassesThrough() throws Exception {
         // Arrange
         String queueName = "TestContentTypePassesThrough";
         service.createQueue(new QueueInfo(queueName));
@@ -774,8 +738,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void topicCanBeCreatedListedFetchedAndDeleted()
-            throws ServiceException
-    {
+            throws ServiceException {
         // Arrange
         String topicName = "TestTopicCanBeCreatedListedFetchedAndDeleted";
 
@@ -797,8 +760,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listTopicsUnderASpecificPath() throws ServiceException
-    {
+    public void listTopicsUnderASpecificPath() throws ServiceException {
         // Arrange
         String topicName = "testPathA/testPathB/listTopicUnderASpecificPath";
 
@@ -815,8 +777,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listTopicsUpdatedInLastFiveMinutes() throws ServiceException
-    {
+    public void listTopicsUpdatedInLastFiveMinutes() throws ServiceException {
         String topicName = "testListTopicUpdatedInLastFiveMinutes";
 
         // Act
@@ -832,8 +793,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listTopicsAccessedSinceASpecificTime() throws ServiceException
-    {
+    public void listTopicsAccessedSinceASpecificTime() throws ServiceException {
         removeTopics();
         String topicName = "testListTopicAccessedInLastFiveMinutes";
 
@@ -850,8 +810,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void listTopicsCreatedSinceASpecificTime() throws ServiceException
-    {
+    public void listTopicsCreatedSinceASpecificTime() throws ServiceException {
         removeTopics();
         String topicName = "testListTopicCreatedInLastFiveMinutes";
 
@@ -868,8 +827,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void topicCreatedContainsMetadata() throws ServiceException
-    {
+    public void topicCreatedContainsMetadata() throws ServiceException {
         // Arrange
         String topicName = "TestTopicCreatedContainsMetadata";
 
@@ -890,8 +848,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void topicCanBeUpdated() throws ServiceException
-    {
+    public void topicCanBeUpdated() throws ServiceException {
         // Arrange
         String topicName = "testTopicCanBeUpdated";
         Long expectedMaxSizeInMegabytes = 2048L;
@@ -911,18 +868,15 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
 
     @Test
     public void filterCanSeeAndChangeRequestOrResponse()
-            throws ServiceException
-    {
+            throws ServiceException {
         // Arrange
         final List<ServiceRequestContext> requests = new ArrayList<ServiceRequestContext>();
         final List<ServiceResponseContext> responses = new ArrayList<ServiceResponseContext>();
 
-        ServiceBusContract filtered = service.withFilter(new ServiceFilter()
-        {
+        ServiceBusContract filtered = service.withFilter(new ServiceFilter() {
             @Override
             public ServiceResponseContext handle(ServiceRequestContext request,
-                    Next next) throws Exception
-            {
+                    Next next) throws Exception {
                 requests.add(request);
                 ServiceResponseContext response = next.handle(request);
                 responses.add(response);
@@ -942,8 +896,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionsCanBeCreatedOnTopics() throws Exception
-    {
+    public void subscriptionsCanBeCreatedOnTopics() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsCanBeCreatedOnTopics";
         service.createTopic(new TopicInfo(topicName));
@@ -965,8 +918,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void createSubscriptionWithCorrelationFilter() throws Exception
-    {
+    public void createSubscriptionWithCorrelationFilter() throws Exception {
         // Arrange
         String topicName = "testCreateSubscriptionWithCorrelationFilter";
         String expectedCorrelationId = "sampleCorrelationId";
@@ -1022,8 +974,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionsCanBeListed() throws Exception
-    {
+    public void subscriptionsCanBeListed() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsCanBeListed";
         service.createTopic(new TopicInfo(topicName));
@@ -1040,8 +991,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionsDetailsMayBeFetched() throws Exception
-    {
+    public void subscriptionsDetailsMayBeFetched() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsDetailsMayBeFetched";
         service.createTopic(new TopicInfo(topicName));
@@ -1058,8 +1008,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionsMayBeDeleted() throws Exception
-    {
+    public void subscriptionsMayBeDeleted() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionsMayBeDeleted";
         service.createTopic(new TopicInfo(topicName));
@@ -1079,8 +1028,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionWillReceiveMessage() throws Exception
-    {
+    public void subscriptionWillReceiveMessage() throws Exception {
         // Arrange
         String topicName = "TestSubscriptionWillReceiveMessage";
         service.createTopic(new TopicInfo(topicName));
@@ -1102,8 +1050,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void subscriptionCanBeUpdated() throws Exception
-    {
+    public void subscriptionCanBeUpdated() throws Exception {
         // Arrange
         String topicName = "testSubscriptionCanBeUpdated";
         service.createTopic(new TopicInfo(topicName));
@@ -1122,8 +1069,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void rulesCanBeCreatedOnSubscriptions() throws Exception
-    {
+    public void rulesCanBeCreatedOnSubscriptions() throws Exception {
         // Arrange
         String topicName = "TestrulesCanBeCreatedOnSubscriptions";
         service.createTopic(new TopicInfo(topicName));
@@ -1139,8 +1085,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void rulesCanBeListedAndDefaultRuleIsPrecreated() throws Exception
-    {
+    public void rulesCanBeListedAndDefaultRuleIsPrecreated() throws Exception {
         // Arrange
         String topicName = "TestrulesCanBeListedAndDefaultRuleIsPrecreated";
         service.createTopic(new TopicInfo(topicName));
@@ -1155,8 +1100,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
         assertEquals(2, result.getItems().size());
         RuleInfo rule0 = result.getItems().get(0);
         RuleInfo rule1 = result.getItems().get(1);
-        if (rule0.getName() == "MyRule2")
-        {
+        if (rule0.getName() == "MyRule2") {
             RuleInfo swap = rule1;
             rule1 = rule0;
             rule0 = swap;
@@ -1168,8 +1112,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void ruleDetailsMayBeFetched() throws Exception
-    {
+    public void ruleDetailsMayBeFetched() throws Exception {
         // Arrange
         String topicName = "TestruleDetailsMayBeFetched";
         service.createTopic(new TopicInfo(topicName));
@@ -1185,8 +1128,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void rulesMayBeDeleted() throws Exception
-    {
+    public void rulesMayBeDeleted() throws Exception {
         // Arrange
         String topicName = "TestRulesMayBeDeleted";
         service.createTopic(new TopicInfo(topicName));
@@ -1206,8 +1148,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void rulesMayHaveActionAndFilter() throws ServiceException
-    {
+    public void rulesMayHaveActionAndFilter() throws ServiceException {
         // Arrange
         String topicName = "TestRulesMayHaveAnActionAndFilter";
         service.createTopic(new TopicInfo(topicName));
@@ -1240,8 +1181,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase
     }
 
     @Test
-    public void messagesMayHaveCustomProperties() throws ServiceException
-    {
+    public void messagesMayHaveCustomProperties() throws ServiceException {
         // Arrange
         String queueName = "TestMessagesMayHaveCustomProperties";
         service.createQueue(new QueueInfo(queueName));

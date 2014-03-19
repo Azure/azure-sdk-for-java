@@ -48,8 +48,8 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Affinity Group
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Affinity
+    * Group operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -71,8 +71,8 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715317.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Affinity Group
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Affinity
+    * Group operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -84,7 +84,7 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of your affinity group.
+    * @param affinityGroupName Required. The name of your affinity group.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -100,7 +100,7 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715314.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of your affinity group.
+    * @param affinityGroupName Required. The name of your affinity group.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -112,8 +112,8 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of the desired affinity group as
-    * returned by the name element of the List Affinity Groups operation.
+    * @param affinityGroupName Required. The name of the desired affinity group
+    * as returned by the name element of the List Affinity Groups operation.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -134,8 +134,8 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460789.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of the desired affinity group as
-    * returned by the name element of the List Affinity Groups operation.
+    * @param affinityGroupName Required. The name of the desired affinity group
+    * as returned by the name element of the List Affinity Groups operation.
     * @return The Get Affinity Group operation response.
     */
     Future<AffinityGroupGetResponse> getAsync(String affinityGroupName);
@@ -174,9 +174,9 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of your affinity group.
-    * @param parameters Parameters supplied to the Update Affinity Group
-    * operation.
+    * @param affinityGroupName Required. The name of your affinity group.
+    * @param parameters Required. Parameters supplied to the Update Affinity
+    * Group operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -198,9 +198,9 @@ public interface AffinityGroupOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715316.aspx for
     * more information)
     *
-    * @param affinityGroupName The name of your affinity group.
-    * @param parameters Parameters supplied to the Update Affinity Group
-    * operation.
+    * @param affinityGroupName Required. The name of your affinity group.
+    * @param parameters Required. Parameters supplied to the Update Affinity
+    * Group operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

@@ -30,7 +30,7 @@ public class AddOnCreateParameters {
     private String plan;
     
     /**
-    * The selected plan for this store addon.
+    * Required. The selected plan for this store addon.
     * @return The Plan value.
     */
     public String getPlan() {
@@ -38,7 +38,7 @@ public class AddOnCreateParameters {
     }
     
     /**
-    * The selected plan for this store addon.
+    * Required. The selected plan for this store addon.
     * @param planValue The Plan value.
     */
     public void setPlan(final String planValue) {
@@ -48,7 +48,7 @@ public class AddOnCreateParameters {
     private String promotionCode;
     
     /**
-    * The promotion code for this store addon.
+    * Optional. The promotion code for this store addon.
     * @return The PromotionCode value.
     */
     public String getPromotionCode() {
@@ -56,7 +56,7 @@ public class AddOnCreateParameters {
     }
     
     /**
-    * The promotion code for this store addon.
+    * Optional. The promotion code for this store addon.
     * @param promotionCodeValue The PromotionCode value.
     */
     public void setPromotionCode(final String promotionCodeValue) {
@@ -66,7 +66,7 @@ public class AddOnCreateParameters {
     private String type;
     
     /**
-    * The type of store item to be created.
+    * Required. The type of store item to be created.
     * @return The Type value.
     */
     public String getType() {
@@ -74,7 +74,7 @@ public class AddOnCreateParameters {
     }
     
     /**
-    * The type of store item to be created.
+    * Required. The type of store item to be created.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {

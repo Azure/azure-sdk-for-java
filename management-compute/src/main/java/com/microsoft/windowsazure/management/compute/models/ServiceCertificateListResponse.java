@@ -35,7 +35,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     private ArrayList<ServiceCertificateListResponse.Certificate> certificates;
     
     /**
-    * The service certificates that are valid for your subscription.
+    * Optional. The service certificates that are valid for your subscription.
     * @return The Certificates value.
     */
     public ArrayList<ServiceCertificateListResponse.Certificate> getCertificates() {
@@ -43,7 +43,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
     }
     
     /**
-    * The service certificates that are valid for your subscription.
+    * Optional. The service certificates that are valid for your subscription.
     * @param certificatesValue The Certificates value.
     */
     public void setCertificates(final ArrayList<ServiceCertificateListResponse.Certificate> certificatesValue) {
@@ -74,8 +74,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         private URI certificateUri;
         
         /**
-        * The Service Management API request URI used to perform Get Service
-        * Certificate requests against the certificate store.
+        * Optional. The Service Management API request URI used to perform Get
+        * Service Certificate requests against the certificate store.
         * @return The CertificateUri value.
         */
         public URI getCertificateUri() {
@@ -83,8 +83,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         }
         
         /**
-        * The Service Management API request URI used to perform Get Service
-        * Certificate requests against the certificate store.
+        * Optional. The Service Management API request URI used to perform Get
+        * Service Certificate requests against the certificate store.
         * @param certificateUriValue The CertificateUri value.
         */
         public void setCertificateUri(final URI certificateUriValue) {
@@ -94,7 +94,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         private byte[] data;
         
         /**
-        * The public part of the service certificate as a .cer file.
+        * Optional. The public part of the service certificate as a .cer file.
         * @return The Data value.
         */
         public byte[] getData() {
@@ -102,7 +102,7 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         }
         
         /**
-        * The public part of the service certificate as a .cer file.
+        * Optional. The public part of the service certificate as a .cer file.
         * @param dataValue The Data value.
         */
         public void setData(final byte[] dataValue) {
@@ -112,7 +112,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         private String thumbprint;
         
         /**
-        * The X509 certificate thumb print property of the service certificate.
+        * Optional. The X509 certificate thumb print property of the service
+        * certificate.
         * @return The Thumbprint value.
         */
         public String getThumbprint() {
@@ -120,7 +121,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         }
         
         /**
-        * The X509 certificate thumb print property of the service certificate.
+        * Optional. The X509 certificate thumb print property of the service
+        * certificate.
         * @param thumbprintValue The Thumbprint value.
         */
         public void setThumbprint(final String thumbprintValue) {
@@ -130,8 +132,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         private String thumbprintAlgorithm;
         
         /**
-        * The algorithm that was used to hash the service certificate.
-        * Currently SHA-1 is the only supported algorithm.
+        * Optional. The algorithm that was used to hash the service
+        * certificate. Currently SHA-1 is the only supported algorithm.
         * @return The ThumbprintAlgorithm value.
         */
         public String getThumbprintAlgorithm() {
@@ -139,8 +141,8 @@ public class ServiceCertificateListResponse extends OperationResponse implements
         }
         
         /**
-        * The algorithm that was used to hash the service certificate.
-        * Currently SHA-1 is the only supported algorithm.
+        * Optional. The algorithm that was used to hash the service
+        * certificate. Currently SHA-1 is the only supported algorithm.
         * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
         */
         public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {

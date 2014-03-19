@@ -73,8 +73,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "personType", propOrder = { "nameOrUriOrEmail" })
-public class PersonType
-{
+public class PersonType {
 
     @XmlElementRefs({
             @XmlElementRef(name = "email", namespace = "http://www.w3.org/2005/Atom", type = JAXBElement.class),
@@ -117,10 +116,8 @@ public class PersonType
      * 
      * 
      */
-    public List<Object> getNameOrUriOrEmail()
-    {
-        if (nameOrUriOrEmail == null)
-        {
+    public List<Object> getNameOrUriOrEmail() {
+        if (nameOrUriOrEmail == null) {
             nameOrUriOrEmail = new ArrayList<Object>();
         }
         return this.nameOrUriOrEmail;
@@ -132,8 +129,7 @@ public class PersonType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -144,8 +140,7 @@ public class PersonType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -155,8 +150,7 @@ public class PersonType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -167,8 +161,7 @@ public class PersonType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -186,8 +179,7 @@ public class PersonType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

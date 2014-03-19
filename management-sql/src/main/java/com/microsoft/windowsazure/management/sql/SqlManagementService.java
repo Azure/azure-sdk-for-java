@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public final class SqlManagementService
-{
-    private SqlManagementService()
-    {
+public final class SqlManagementService {
+    private SqlManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public final class SqlManagementService
      * Creates an instance of the <code>SqlManagementClient</code> API.
      * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create()
-    {
+    public static SqlManagementClient create() {
         return Configuration.getInstance().create(SqlManagementClient.class);
     }
 
@@ -45,8 +42,7 @@ public final class SqlManagementService
      * configuration for the service management.
      * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create(final Configuration config)
-    {
+    public static SqlManagementClient create(final Configuration config) {
         return config.create(SqlManagementClient.class);
     }
 
@@ -57,8 +53,7 @@ public final class SqlManagementService
      * of the service management service.
      * @return An instance of the <code>SqlManagementClient</code> API.
      */
-    public static SqlManagementClient create(final String profile)
-    {
+    public static SqlManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 SqlManagementClient.class);
     }
@@ -73,8 +68,7 @@ public final class SqlManagementService
      * @return An instance of the <code>SqlManagementClient</code> API.
      */
     public static SqlManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, SqlManagementClient.class);
     }
 }

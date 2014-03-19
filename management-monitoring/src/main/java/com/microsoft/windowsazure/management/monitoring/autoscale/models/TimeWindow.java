@@ -26,67 +26,69 @@ package com.microsoft.windowsazure.management.monitoring.autoscale.models;
 import java.util.Calendar;
 
 /**
-* The action for scaling.
-*/
-public class TimeWindow
-{
+ * The action for scaling.
+ */
+public class TimeWindow {
     private Calendar end;
-    
+
     /**
-    * The end of the time window.
-    * @return The End value.
-    */
-    public Calendar getEnd()
-    {
+     * The end of the time window.
+     * 
+     * @return The End value.
+     */
+    public Calendar getEnd() {
         return this.end;
     }
-    
+
     /**
-    * The end of the time window.
-    * @param endValue The End value.
-    */
-    public void setEnd(final Calendar endValue)
-    {
+     * The end of the time window.
+     * 
+     * @param endValue
+     *            The End value.
+     */
+    public void setEnd(final Calendar endValue) {
         this.end = endValue;
     }
-    
+
     private Calendar start;
-    
+
     /**
-    * The start of the time window.
-    * @return The Start value.
-    */
-    public Calendar getStart()
-    {
+     * The start of the time window.
+     * 
+     * @return The Start value.
+     */
+    public Calendar getStart() {
         return this.start;
     }
-    
+
     /**
-    * The start of the time window.
-    * @param startValue The Start value.
-    */
-    public void setStart(final Calendar startValue)
-    {
+     * The start of the time window.
+     * 
+     * @param startValue
+     *            The Start value.
+     */
+    public void setStart(final Calendar startValue) {
         this.start = startValue;
     }
-    
+
     private String timeZone;
-    
+
     /**
-    * The time zone information.
-    * @return The TimeZone value.
-    */
-    public String getTimeZone()
-    {
+     * The time zone information.
+     * 
+     * @return The TimeZone value.
+     */
+    public String getTimeZone() {
         return this.timeZone;
     }
-    
+
     /**
-    * The time zone information.
-    * @param timeZoneValue The TimeZone value.
-    */
-    public void setTimeZone(final String timeZoneValue)
-    {
+     * The time zone information.
+     * 
+     * @param timeZoneValue
+     *            The TimeZone value.
+     */
+    public void setTimeZone(final String timeZoneValue) {
         this.timeZone = timeZoneValue;
     }
 }

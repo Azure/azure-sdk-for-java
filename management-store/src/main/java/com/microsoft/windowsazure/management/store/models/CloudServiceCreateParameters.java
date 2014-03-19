@@ -30,7 +30,7 @@ public class CloudServiceCreateParameters {
     private String description;
     
     /**
-    * The description for the cloud service to be created.
+    * Required. The description for the cloud service to be created.
     * @return The Description value.
     */
     public String getDescription() {
@@ -38,7 +38,7 @@ public class CloudServiceCreateParameters {
     }
     
     /**
-    * The description for the cloud service to be created.
+    * Required. The description for the cloud service to be created.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -48,7 +48,7 @@ public class CloudServiceCreateParameters {
     private String geoRegion;
     
     /**
-    * The geographical region to create the cloud service in.
+    * Required. The geographical region to create the cloud service in.
     * @return The GeoRegion value.
     */
     public String getGeoRegion() {
@@ -56,7 +56,7 @@ public class CloudServiceCreateParameters {
     }
     
     /**
-    * The geographical region to create the cloud service in.
+    * Required. The geographical region to create the cloud service in.
     * @param geoRegionValue The GeoRegion value.
     */
     public void setGeoRegion(final String geoRegionValue) {
@@ -66,7 +66,7 @@ public class CloudServiceCreateParameters {
     private String label;
     
     /**
-    * The label of the cloud service to be created.
+    * Required. The label of the cloud service to be created.
     * @return The Label value.
     */
     public String getLabel() {
@@ -74,7 +74,7 @@ public class CloudServiceCreateParameters {
     }
     
     /**
-    * The label of the cloud service to be created.
+    * Required. The label of the cloud service to be created.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -84,7 +84,7 @@ public class CloudServiceCreateParameters {
     private String name;
     
     /**
-    * The name of the cloud service to be created.
+    * Required. The name of the cloud service to be created.
     * @return The Name value.
     */
     public String getName() {
@@ -92,7 +92,7 @@ public class CloudServiceCreateParameters {
     }
     
     /**
-    * The name of the cloud service to be created.
+    * Required. The name of the cloud service to be created.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {

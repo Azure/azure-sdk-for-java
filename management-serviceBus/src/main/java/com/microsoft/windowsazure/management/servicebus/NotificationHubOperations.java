@@ -41,8 +41,8 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param notificationHubName The notification hub name.
+    * @param namespaceName Required. The namespace name.
+    * @param notificationHubName Required. The notification hub name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -61,8 +61,8 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param notificationHubName The notification hub name.
+    * @param namespaceName Required. The namespace name.
+    * @param notificationHubName Required. The notification hub name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
@@ -71,8 +71,8 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param notificationHubName The notification hub name.
+    * @param namespaceName Required. The namespace name.
+    * @param notificationHubName Required. The notification hub name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -88,8 +88,8 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
-    * @param notificationHubName The notification hub name.
+    * @param namespaceName Required. The namespace name.
+    * @param notificationHubName Required. The notification hub name.
     * @return The set of connection details for a service bus entity.
     */
     Future<ServiceBusConnectionDetailsResponse> getConnectionDetailsAsync(String namespaceName, String notificationHubName);
@@ -97,7 +97,7 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -116,7 +116,7 @@ public interface NotificationHubOperations {
     /**
     * Lists the notification hubs associated with a namespace.
     *
-    * @param namespaceName The namespace name.
+    * @param namespaceName Required. The namespace name.
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */

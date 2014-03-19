@@ -33,9 +33,9 @@ public class HostedServiceProperties {
     private String affinityGroup;
     
     /**
-    * The affinity group with which this cloud service is associated, if any.
-    * If the service is associated with an affinity group, the Location
-    * element is not returned.
+    * Optional. The affinity group with which this cloud service is associated,
+    * if any. If the service is associated with an affinity group, the
+    * Location element is not returned.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -43,9 +43,9 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The affinity group with which this cloud service is associated, if any.
-    * If the service is associated with an affinity group, the Location
-    * element is not returned.
+    * Optional. The affinity group with which this cloud service is associated,
+    * if any. If the service is associated with an affinity group, the
+    * Location element is not returned.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -55,7 +55,7 @@ public class HostedServiceProperties {
     private Calendar dateCreated;
     
     /**
-    * The date that the cloud service was created, in
+    * Optional. The date that the cloud service was created, in
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
     * format. The date 2011-05-11T16:15:26Z is an example that could
     * bereturned by the DateCreated or DateLastModified elements.
@@ -66,7 +66,7 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The date that the cloud service was created, in
+    * Optional. The date that the cloud service was created, in
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
     * format. The date 2011-05-11T16:15:26Z is an example that could
     * bereturned by the DateCreated or DateLastModified elements.
@@ -79,7 +79,7 @@ public class HostedServiceProperties {
     private Calendar dateLastModified;
     
     /**
-    * The date that the cloud service was last updated, in
+    * Optional. The date that the cloud service was last updated, in
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
     * format. The date 2011-05-11T16:15:26Z is an example that could be
     * returned by the DateCreated or DateLastModified elements.
@@ -90,7 +90,7 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The date that the cloud service was last updated, in
+    * Optional. The date that the cloud service was last updated, in
     * [4DigitYear]-[2DigitMonth]-[2DigitDay]T[2DigitHour]:[2DigitMinute]:[2DigitSecond]Z
     * format. The date 2011-05-11T16:15:26Z is an example that could be
     * returned by the DateCreated or DateLastModified elements.
@@ -103,7 +103,7 @@ public class HostedServiceProperties {
     private String description;
     
     /**
-    * The description for the cloud service.
+    * Optional. The description for the cloud service.
     * @return The Description value.
     */
     public String getDescription() {
@@ -111,7 +111,7 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The description for the cloud service.
+    * Optional. The description for the cloud service.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -157,8 +157,8 @@ public class HostedServiceProperties {
     private String label;
     
     /**
-    * The user-supplied name of the cloud service. This name can be used
-    * identify the service for your tracking purposes.
+    * Optional. The user-supplied name of the cloud service. This name can be
+    * used identify the service for your tracking purposes.
     * @return The Label value.
     */
     public String getLabel() {
@@ -166,8 +166,8 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The user-supplied name of the cloud service. This name can be used
-    * identify the service for your tracking purposes.
+    * Optional. The user-supplied name of the cloud service. This name can be
+    * used identify the service for your tracking purposes.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -177,9 +177,9 @@ public class HostedServiceProperties {
     private String location;
     
     /**
-    * The geo-location of the cloud service in Windows Azure, if the service is
-    * not associated with an affinity group. If a location has been specified,
-    * the AffinityGroup element is not returned.
+    * Optional. The geo-location of the cloud service in Windows Azure, if the
+    * service is not associated with an affinity group. If a location has been
+    * specified, the AffinityGroup element is not returned.
     * @return The Location value.
     */
     public String getLocation() {
@@ -187,9 +187,9 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The geo-location of the cloud service in Windows Azure, if the service is
-    * not associated with an affinity group. If a location has been specified,
-    * the AffinityGroup element is not returned.
+    * Optional. The geo-location of the cloud service in Windows Azure, if the
+    * service is not associated with an affinity group. If a location has been
+    * specified, the AffinityGroup element is not returned.
     * @param locationValue The Location value.
     */
     public void setLocation(final String locationValue) {
@@ -199,7 +199,7 @@ public class HostedServiceProperties {
     private HostedServiceStatus status;
     
     /**
-    * The status of the cloud service.
+    * Optional. The status of the cloud service.
     * @return The Status value.
     */
     public HostedServiceStatus getStatus() {
@@ -207,7 +207,7 @@ public class HostedServiceProperties {
     }
     
     /**
-    * The status of the cloud service.
+    * Optional. The status of the cloud service.
     * @param statusValue The Status value.
     */
     public void setStatus(final HostedServiceStatus statusValue) {

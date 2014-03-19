@@ -30,7 +30,7 @@ public class ServiceCertificateDeleteParameters {
     private String serviceName;
     
     /**
-    * The DNS prefix name of your service.
+    * Required. The DNS prefix name of your service.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -38,7 +38,7 @@ public class ServiceCertificateDeleteParameters {
     }
     
     /**
-    * The DNS prefix name of your service.
+    * Required. The DNS prefix name of your service.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {
@@ -48,7 +48,7 @@ public class ServiceCertificateDeleteParameters {
     private String thumbprint;
     
     /**
-    * The hexadecimal representation of the thumbprint.
+    * Required. The hexadecimal representation of the thumbprint.
     * @return The Thumbprint value.
     */
     public String getThumbprint() {
@@ -56,7 +56,7 @@ public class ServiceCertificateDeleteParameters {
     }
     
     /**
-    * The hexadecimal representation of the thumbprint.
+    * Required. The hexadecimal representation of the thumbprint.
     * @param thumbprintValue The Thumbprint value.
     */
     public void setThumbprint(final String thumbprintValue) {
@@ -66,7 +66,7 @@ public class ServiceCertificateDeleteParameters {
     private String thumbprintAlgorithm;
     
     /**
-    * The algorithm for the certificate's thumbprint.
+    * Required. The algorithm for the certificate's thumbprint.
     * @return The ThumbprintAlgorithm value.
     */
     public String getThumbprintAlgorithm() {
@@ -74,7 +74,7 @@ public class ServiceCertificateDeleteParameters {
     }
     
     /**
-    * The algorithm for the certificate's thumbprint.
+    * Required. The algorithm for the certificate's thumbprint.
     * @param thumbprintAlgorithmValue The ThumbprintAlgorithm value.
     */
     public void setThumbprintAlgorithm(final String thumbprintAlgorithmValue) {

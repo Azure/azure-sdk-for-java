@@ -68,264 +68,321 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
-* Operations for managing the autoscale settings.
-*/
-public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientImpl>, SettingOperations
-{
+ * Operations for managing the autoscale settings.
+ */
+public class SettingOperationsImpl implements
+        ServiceOperations<AutoscaleClientImpl>, SettingOperations {
     /**
-    * Initializes a new instance of the SettingOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    SettingOperationsImpl(AutoscaleClientImpl client)
-    {
+     * Initializes a new instance of the SettingOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    SettingOperationsImpl(AutoscaleClientImpl client) {
         this.client = client;
     }
-    
+
     private AutoscaleClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.management.monitoring.autoscale.AutoscaleClientImpl.
-    * @return The Client value.
-    */
-    public AutoscaleClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.management.monitoring.autoscale
+     * .AutoscaleClientImpl.
+     * 
+     * @return The Client value.
+     */
+    public AutoscaleClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @param parameters Parameters supplied to the operation.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @param parameters
+     *            Parameters supplied to the operation.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> createOrUpdateAsync(final String resourceId, final AutoscaleSettingCreateOrUpdateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return createOrUpdate(resourceId, parameters);
-            }
-         });
+    public Future<OperationResponse> createOrUpdateAsync(
+            final String resourceId,
+            final AutoscaleSettingCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return createOrUpdate(resourceId, parameters);
+                    }
+                });
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @param parameters Parameters supplied to the operation.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @param parameters
+     *            Parameters supplied to the operation.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse createOrUpdate(String resourceId, AutoscaleSettingCreateOrUpdateParameters parameters) throws IOException, ServiceException
-    {
+    public OperationResponse createOrUpdate(String resourceId,
+            AutoscaleSettingCreateOrUpdateParameters parameters)
+            throws IOException, ServiceException {
         // Validate
-        if (resourceId == null)
-        {
+        if (resourceId == null) {
             throw new NullPointerException("resourceId");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createOrUpdateAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/autoscalesettings?resourceId=" + resourceId;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/monitoring/autoscalesettings?resourceId="
+                + resourceId;
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-        
+
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-        
-        if (parameters.getSetting() != null)
-        {
+
+        if (parameters.getSetting() != null) {
             ObjectMapper objectMapper = new ObjectMapper();
             ObjectNode settingValue = objectMapper.createObjectNode();
             requestDoc = settingValue;
-            
-            if (parameters.getSetting().getProfiles() != null)
-            {
+
+            if (parameters.getSetting().getProfiles() != null) {
                 ArrayNode profilesArray = objectMapper.createArrayNode();
-                for (AutoscaleProfile profilesItem : parameters.getSetting().getProfiles())
-                {
-                    ObjectNode autoscaleProfileValue = objectMapper.createObjectNode();
+                for (AutoscaleProfile profilesItem : parameters.getSetting()
+                        .getProfiles()) {
+                    ObjectNode autoscaleProfileValue = objectMapper
+                            .createObjectNode();
                     profilesArray.add(autoscaleProfileValue);
-                    
-                    if (profilesItem.getName() != null)
-                    {
-                        autoscaleProfileValue.put("Name", profilesItem.getName());
+
+                    if (profilesItem.getName() != null) {
+                        autoscaleProfileValue.put("Name",
+                                profilesItem.getName());
                     }
-                    
-                    if (profilesItem.getCapacity() != null)
-                    {
-                        ObjectNode capacityValue = objectMapper.createObjectNode();
+
+                    if (profilesItem.getCapacity() != null) {
+                        ObjectNode capacityValue = objectMapper
+                                .createObjectNode();
                         autoscaleProfileValue.put("Capacity", capacityValue);
-                        
-                        if (profilesItem.getCapacity().getMinimum() != null)
-                        {
-                            capacityValue.put("Minimum", profilesItem.getCapacity().getMinimum());
+
+                        if (profilesItem.getCapacity().getMinimum() != null) {
+                            capacityValue.put("Minimum", profilesItem
+                                    .getCapacity().getMinimum());
                         }
-                        
-                        if (profilesItem.getCapacity().getMaximum() != null)
-                        {
-                            capacityValue.put("Maximum", profilesItem.getCapacity().getMaximum());
+
+                        if (profilesItem.getCapacity().getMaximum() != null) {
+                            capacityValue.put("Maximum", profilesItem
+                                    .getCapacity().getMaximum());
                         }
-                        
-                        if (profilesItem.getCapacity().getDefault() != null)
-                        {
-                            capacityValue.put("Default", profilesItem.getCapacity().getDefault());
+
+                        if (profilesItem.getCapacity().getDefault() != null) {
+                            capacityValue.put("Default", profilesItem
+                                    .getCapacity().getDefault());
                         }
                     }
-                    
-                    if (profilesItem.getRules() != null)
-                    {
+
+                    if (profilesItem.getRules() != null) {
                         ArrayNode rulesArray = objectMapper.createArrayNode();
-                        for (ScaleRule rulesItem : profilesItem.getRules())
-                        {
-                            ObjectNode scaleRuleValue = objectMapper.createObjectNode();
+                        for (ScaleRule rulesItem : profilesItem.getRules()) {
+                            ObjectNode scaleRuleValue = objectMapper
+                                    .createObjectNode();
                             rulesArray.add(scaleRuleValue);
-                            
-                            if (rulesItem.getMetricTrigger() != null)
-                            {
-                                ObjectNode metricTriggerValue = objectMapper.createObjectNode();
-                                scaleRuleValue.put("MetricTrigger", metricTriggerValue);
-                                
-                                if (rulesItem.getMetricTrigger().getMetricName() != null)
-                                {
-                                    metricTriggerValue.put("MetricName", rulesItem.getMetricTrigger().getMetricName());
+
+                            if (rulesItem.getMetricTrigger() != null) {
+                                ObjectNode metricTriggerValue = objectMapper
+                                        .createObjectNode();
+                                scaleRuleValue.put("MetricTrigger",
+                                        metricTriggerValue);
+
+                                if (rulesItem.getMetricTrigger()
+                                        .getMetricName() != null) {
+                                    metricTriggerValue.put("MetricName",
+                                            rulesItem.getMetricTrigger()
+                                                    .getMetricName());
                                 }
-                                
-                                if (rulesItem.getMetricTrigger().getMetricNamespace() != null)
-                                {
-                                    metricTriggerValue.put("MetricNamespace", rulesItem.getMetricTrigger().getMetricNamespace());
+
+                                if (rulesItem.getMetricTrigger()
+                                        .getMetricNamespace() != null) {
+                                    metricTriggerValue.put("MetricNamespace",
+                                            rulesItem.getMetricTrigger()
+                                                    .getMetricNamespace());
                                 }
-                                
-                                if (rulesItem.getMetricTrigger().getMetricSource() != null)
-                                {
-                                    metricTriggerValue.put("MetricSource", rulesItem.getMetricTrigger().getMetricSource());
+
+                                if (rulesItem.getMetricTrigger()
+                                        .getMetricSource() != null) {
+                                    metricTriggerValue.put("MetricSource",
+                                            rulesItem.getMetricTrigger()
+                                                    .getMetricSource());
                                 }
-                                
-                                metricTriggerValue.put("TimeGrain", TimeSpan8601Converter.format(rulesItem.getMetricTrigger().getTimeGrain()));
-                                
-                                metricTriggerValue.put("Statistic", rulesItem.getMetricTrigger().getStatistic().toString());
-                                
-                                metricTriggerValue.put("TimeWindow", TimeSpan8601Converter.format(rulesItem.getMetricTrigger().getTimeWindow()));
-                                
-                                metricTriggerValue.put("TimeAggregation", rulesItem.getMetricTrigger().getTimeAggregation().toString());
-                                
-                                metricTriggerValue.put("Operator", rulesItem.getMetricTrigger().getOperator().toString());
-                                
-                                metricTriggerValue.put("Threshold", rulesItem.getMetricTrigger().getThreshold());
+
+                                metricTriggerValue.put("TimeGrain",
+                                        TimeSpan8601Converter.format(rulesItem
+                                                .getMetricTrigger()
+                                                .getTimeGrain()));
+
+                                metricTriggerValue.put("Statistic", rulesItem
+                                        .getMetricTrigger().getStatistic()
+                                        .toString());
+
+                                metricTriggerValue.put("TimeWindow",
+                                        TimeSpan8601Converter.format(rulesItem
+                                                .getMetricTrigger()
+                                                .getTimeWindow()));
+
+                                metricTriggerValue.put("TimeAggregation",
+                                        rulesItem.getMetricTrigger()
+                                                .getTimeAggregation()
+                                                .toString());
+
+                                metricTriggerValue.put("Operator", rulesItem
+                                        .getMetricTrigger().getOperator()
+                                        .toString());
+
+                                metricTriggerValue.put("Threshold", rulesItem
+                                        .getMetricTrigger().getThreshold());
                             }
-                            
-                            if (rulesItem.getScaleAction() != null)
-                            {
-                                ObjectNode scaleActionValue = objectMapper.createObjectNode();
-                                scaleRuleValue.put("ScaleAction", scaleActionValue);
-                                
-                                scaleActionValue.put("Direction", rulesItem.getScaleAction().getDirection().toString());
-                                
-                                scaleActionValue.put("Type", rulesItem.getScaleAction().getType().toString());
-                                
-                                if (rulesItem.getScaleAction().getValue() != null)
-                                {
-                                    scaleActionValue.put("Value", rulesItem.getScaleAction().getValue());
+
+                            if (rulesItem.getScaleAction() != null) {
+                                ObjectNode scaleActionValue = objectMapper
+                                        .createObjectNode();
+                                scaleRuleValue.put("ScaleAction",
+                                        scaleActionValue);
+
+                                scaleActionValue.put("Direction", rulesItem
+                                        .getScaleAction().getDirection()
+                                        .toString());
+
+                                scaleActionValue.put("Type", rulesItem
+                                        .getScaleAction().getType().toString());
+
+                                if (rulesItem.getScaleAction().getValue() != null) {
+                                    scaleActionValue.put("Value", rulesItem
+                                            .getScaleAction().getValue());
                                 }
-                                
-                                scaleActionValue.put("Cooldown", TimeSpan8601Converter.format(rulesItem.getScaleAction().getCooldown()));
+
+                                scaleActionValue.put("Cooldown",
+                                        TimeSpan8601Converter
+                                                .format(rulesItem
+                                                        .getScaleAction()
+                                                        .getCooldown()));
                             }
                         }
                         autoscaleProfileValue.put("Rules", rulesArray);
                     }
-                    
-                    if (profilesItem.getFixedDate() != null)
-                    {
-                        ObjectNode fixedDateValue = objectMapper.createObjectNode();
+
+                    if (profilesItem.getFixedDate() != null) {
+                        ObjectNode fixedDateValue = objectMapper
+                                .createObjectNode();
                         autoscaleProfileValue.put("FixedDate", fixedDateValue);
-                        
-                        if (profilesItem.getFixedDate().getTimeZone() != null)
-                        {
-                            fixedDateValue.put("TimeZone", profilesItem.getFixedDate().getTimeZone());
+
+                        if (profilesItem.getFixedDate().getTimeZone() != null) {
+                            fixedDateValue.put("TimeZone", profilesItem
+                                    .getFixedDate().getTimeZone());
                         }
-                        
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        fixedDateValue.put("Start", simpleDateFormat.format(profilesItem.getFixedDate().getStart().getTime()));
-                        
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
-                        simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        fixedDateValue.put("End", simpleDateFormat2.format(profilesItem.getFixedDate().getEnd().getTime()));
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "yyyy-MM-dd'T'HH:mmZ");
+                        simpleDateFormat.setTimeZone(TimeZone
+                                .getTimeZone("UTC"));
+                        fixedDateValue.put(
+                                "Start",
+                                simpleDateFormat.format(profilesItem
+                                        .getFixedDate().getStart().getTime()));
+
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                "yyyy-MM-dd'T'HH:mmZ");
+                        simpleDateFormat2.setTimeZone(TimeZone
+                                .getTimeZone("UTC"));
+                        fixedDateValue.put(
+                                "End",
+                                simpleDateFormat2.format(profilesItem
+                                        .getFixedDate().getEnd().getTime()));
                     }
-                    
-                    if (profilesItem.getRecurrence() != null)
-                    {
-                        ObjectNode recurrenceValue = objectMapper.createObjectNode();
-                        autoscaleProfileValue.put("Recurrence", recurrenceValue);
-                        
-                        recurrenceValue.put("Frequency", profilesItem.getRecurrence().getFrequency().toString());
-                        
-                        if (profilesItem.getRecurrence().getSchedule() != null)
-                        {
-                            ObjectNode scheduleValue = objectMapper.createObjectNode();
+
+                    if (profilesItem.getRecurrence() != null) {
+                        ObjectNode recurrenceValue = objectMapper
+                                .createObjectNode();
+                        autoscaleProfileValue
+                                .put("Recurrence", recurrenceValue);
+
+                        recurrenceValue.put("Frequency", profilesItem
+                                .getRecurrence().getFrequency().toString());
+
+                        if (profilesItem.getRecurrence().getSchedule() != null) {
+                            ObjectNode scheduleValue = objectMapper
+                                    .createObjectNode();
                             recurrenceValue.put("Schedule", scheduleValue);
-                            
-                            if (profilesItem.getRecurrence().getSchedule().getTimeZone() != null)
-                            {
-                                scheduleValue.put("TimeZone", profilesItem.getRecurrence().getSchedule().getTimeZone());
+
+                            if (profilesItem.getRecurrence().getSchedule()
+                                    .getTimeZone() != null) {
+                                scheduleValue.put("TimeZone", profilesItem
+                                        .getRecurrence().getSchedule()
+                                        .getTimeZone());
                             }
-                            
-                            if (profilesItem.getRecurrence().getSchedule().getDays() != null)
-                            {
-                                ArrayNode daysArray = objectMapper.createArrayNode();
-                                for (String daysItem : profilesItem.getRecurrence().getSchedule().getDays())
-                                {
+
+                            if (profilesItem.getRecurrence().getSchedule()
+                                    .getDays() != null) {
+                                ArrayNode daysArray = objectMapper
+                                        .createArrayNode();
+                                for (String daysItem : profilesItem
+                                        .getRecurrence().getSchedule()
+                                        .getDays()) {
                                     daysArray.add(daysItem);
                                 }
                                 scheduleValue.put("Days", daysArray);
                             }
-                            
-                            if (profilesItem.getRecurrence().getSchedule().getHours() != null)
-                            {
-                                ArrayNode hoursArray = objectMapper.createArrayNode();
-                                for (int hoursItem : profilesItem.getRecurrence().getSchedule().getHours())
-                                {
+
+                            if (profilesItem.getRecurrence().getSchedule()
+                                    .getHours() != null) {
+                                ArrayNode hoursArray = objectMapper
+                                        .createArrayNode();
+                                for (int hoursItem : profilesItem
+                                        .getRecurrence().getSchedule()
+                                        .getHours()) {
                                     hoursArray.add(hoursItem);
                                 }
                                 scheduleValue.put("Hours", hoursArray);
                             }
-                            
-                            if (profilesItem.getRecurrence().getSchedule().getMinutes() != null)
-                            {
-                                ArrayNode minutesArray = objectMapper.createArrayNode();
-                                for (int minutesItem : profilesItem.getRecurrence().getSchedule().getMinutes())
-                                {
+
+                            if (profilesItem.getRecurrence().getSchedule()
+                                    .getMinutes() != null) {
+                                ArrayNode minutesArray = objectMapper
+                                        .createArrayNode();
+                                for (int minutesItem : profilesItem
+                                        .getRecurrence().getSchedule()
+                                        .getMinutes()) {
                                     minutesArray.add(minutesItem);
                                 }
                                 scheduleValue.put("Minutes", minutesArray);
@@ -335,10 +392,10 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
                 }
                 settingValue.put("Profiles", profilesArray);
             }
-            
+
             settingValue.put("Enabled", parameters.getSetting().isEnabled());
         }
-        
+
         ObjectMapper objectMapper2 = new ObjectMapper();
         StringWriter stringWriter = new StringWriter();
         objectMapper2.writeValue(stringWriter, requestDoc);
@@ -346,247 +403,245 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
-            {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK
+                    && statusCode != HttpStatus.SC_CREATED) {
+                ServiceException ex = ServiceException.createFromJson(
+                        httpRequest, requestContent, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String resourceId)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return delete(resourceId);
-            }
-         });
+    public Future<OperationResponse> deleteAsync(final String resourceId) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return delete(resourceId);
+                    }
+                });
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse delete(String resourceId) throws IOException, ServiceException
-    {
+    public OperationResponse delete(String resourceId) throws IOException,
+            ServiceException {
         // Validate
-        if (resourceId == null)
-        {
+        if (resourceId == null) {
             throw new NullPointerException("resourceId");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/autoscalesettings?resourceId=" + resourceId;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/monitoring/autoscalesettings?resourceId="
+                + resourceId;
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<AutoscaleSettingGetResponse> getAsync(final String resourceId)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<AutoscaleSettingGetResponse>() { 
-            @Override
-            public AutoscaleSettingGetResponse call() throws Exception
-            {
-                return get(resourceId);
-            }
-         });
+    public Future<AutoscaleSettingGetResponse> getAsync(final String resourceId) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<AutoscaleSettingGetResponse>() {
+                    @Override
+                    public AutoscaleSettingGetResponse call() throws Exception {
+                        return get(resourceId);
+                    }
+                });
     }
-    
+
     /**
-    *
-    * @param resourceId The resource ID.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * 
+     * @param resourceId
+     *            The resource ID.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws ParseException
+     *             Thrown if there was an error parsing a string in the
+     *             response.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public AutoscaleSettingGetResponse get(String resourceId) throws IOException, ServiceException, ParseException
-    {
+    public AutoscaleSettingGetResponse get(String resourceId)
+            throws IOException, ServiceException, ParseException {
         // Validate
-        if (resourceId == null)
-        {
+        if (resourceId == null) {
             throw new NullPointerException("resourceId");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("resourceId", resourceId);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/monitoring/autoscalesettings?resourceId=" + resourceId;
-        
+        String url = this.getClient().getBaseUri() + "/"
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/services/monitoring/autoscalesettings?resourceId="
+                + resourceId;
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Accept", "application/json");
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-10-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        try
-        {
-            if (shouldTrace)
-            {
+        try {
+            if (shouldTrace) {
                 CloudTracing.sendRequest(invocationId, httpRequest);
             }
-            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-            if (shouldTrace)
-            {
+            httpResponse = this.getClient().getHttpClient()
+                    .execute(httpRequest);
+            if (shouldTrace) {
                 CloudTracing.receiveResponse(invocationId, httpResponse);
             }
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != HttpStatus.SC_OK)
-            {
-                ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-                if (shouldTrace)
-                {
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromJson(
+                        httpRequest, null, httpResponse,
+                        httpResponse.getEntity());
+                if (shouldTrace) {
                     CloudTracing.error(invocationId, ex);
                 }
                 throw ex;
             }
-            
+
             // Create Result
             AutoscaleSettingGetResponse result = null;
             // Deserialize Response
@@ -594,308 +649,346 @@ public class SettingOperationsImpl implements ServiceOperations<AutoscaleClientI
             result = new AutoscaleSettingGetResponse();
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode responseDoc = objectMapper.readTree(responseContent);
-            
-            if (responseDoc != null)
-            {
+
+            if (responseDoc != null) {
                 AutoscaleSetting settingInstance = new AutoscaleSetting();
                 result.setSetting(settingInstance);
-                
-                ArrayNode profilesArray = ((ArrayNode) responseDoc.get("Profiles"));
-                if (profilesArray != null)
-                {
-                    for (JsonNode profilesValue : profilesArray)
-                    {
+
+                ArrayNode profilesArray = ((ArrayNode) responseDoc
+                        .get("Profiles"));
+                if (profilesArray != null) {
+                    for (JsonNode profilesValue : profilesArray) {
                         AutoscaleProfile autoscaleProfileInstance = new AutoscaleProfile();
-                        settingInstance.getProfiles().add(autoscaleProfileInstance);
-                        
+                        settingInstance.getProfiles().add(
+                                autoscaleProfileInstance);
+
                         JsonNode nameValue = profilesValue.get("Name");
-                        if (nameValue != null)
-                        {
+                        if (nameValue != null) {
                             String nameInstance;
                             nameInstance = nameValue.getTextValue();
                             autoscaleProfileInstance.setName(nameInstance);
                         }
-                        
+
                         JsonNode capacityValue = profilesValue.get("Capacity");
-                        if (capacityValue != null)
-                        {
+                        if (capacityValue != null) {
                             ScaleCapacity capacityInstance = new ScaleCapacity();
-                            autoscaleProfileInstance.setCapacity(capacityInstance);
-                            
-                            JsonNode minimumValue = capacityValue.get("Minimum");
-                            if (minimumValue != null)
-                            {
+                            autoscaleProfileInstance
+                                    .setCapacity(capacityInstance);
+
+                            JsonNode minimumValue = capacityValue
+                                    .get("Minimum");
+                            if (minimumValue != null) {
                                 String minimumInstance;
                                 minimumInstance = minimumValue.getTextValue();
                                 capacityInstance.setMinimum(minimumInstance);
                             }
-                            
-                            JsonNode maximumValue = capacityValue.get("Maximum");
-                            if (maximumValue != null)
-                            {
+
+                            JsonNode maximumValue = capacityValue
+                                    .get("Maximum");
+                            if (maximumValue != null) {
                                 String maximumInstance;
                                 maximumInstance = maximumValue.getTextValue();
                                 capacityInstance.setMaximum(maximumInstance);
                             }
-                            
-                            JsonNode defaultValue = capacityValue.get("Default");
-                            if (defaultValue != null)
-                            {
+
+                            JsonNode defaultValue = capacityValue
+                                    .get("Default");
+                            if (defaultValue != null) {
                                 String defaultInstance;
                                 defaultInstance = defaultValue.getTextValue();
                                 capacityInstance.setDefault(defaultInstance);
                             }
                         }
-                        
-                        ArrayNode rulesArray = ((ArrayNode) profilesValue.get("Rules"));
-                        if (rulesArray != null)
-                        {
-                            for (JsonNode rulesValue : rulesArray)
-                            {
+
+                        ArrayNode rulesArray = ((ArrayNode) profilesValue
+                                .get("Rules"));
+                        if (rulesArray != null) {
+                            for (JsonNode rulesValue : rulesArray) {
                                 ScaleRule scaleRuleInstance = new ScaleRule();
-                                autoscaleProfileInstance.getRules().add(scaleRuleInstance);
-                                
-                                JsonNode metricTriggerValue = rulesValue.get("MetricTrigger");
-                                if (metricTriggerValue != null)
-                                {
+                                autoscaleProfileInstance.getRules().add(
+                                        scaleRuleInstance);
+
+                                JsonNode metricTriggerValue = rulesValue
+                                        .get("MetricTrigger");
+                                if (metricTriggerValue != null) {
                                     MetricTrigger metricTriggerInstance = new MetricTrigger();
-                                    scaleRuleInstance.setMetricTrigger(metricTriggerInstance);
-                                    
-                                    JsonNode metricNameValue = metricTriggerValue.get("MetricName");
-                                    if (metricNameValue != null)
-                                    {
+                                    scaleRuleInstance
+                                            .setMetricTrigger(metricTriggerInstance);
+
+                                    JsonNode metricNameValue = metricTriggerValue
+                                            .get("MetricName");
+                                    if (metricNameValue != null) {
                                         String metricNameInstance;
-                                        metricNameInstance = metricNameValue.getTextValue();
-                                        metricTriggerInstance.setMetricName(metricNameInstance);
+                                        metricNameInstance = metricNameValue
+                                                .getTextValue();
+                                        metricTriggerInstance
+                                                .setMetricName(metricNameInstance);
                                     }
-                                    
-                                    JsonNode metricNamespaceValue = metricTriggerValue.get("MetricNamespace");
-                                    if (metricNamespaceValue != null)
-                                    {
+
+                                    JsonNode metricNamespaceValue = metricTriggerValue
+                                            .get("MetricNamespace");
+                                    if (metricNamespaceValue != null) {
                                         String metricNamespaceInstance;
-                                        metricNamespaceInstance = metricNamespaceValue.getTextValue();
-                                        metricTriggerInstance.setMetricNamespace(metricNamespaceInstance);
+                                        metricNamespaceInstance = metricNamespaceValue
+                                                .getTextValue();
+                                        metricTriggerInstance
+                                                .setMetricNamespace(metricNamespaceInstance);
                                     }
-                                    
-                                    JsonNode metricSourceValue = metricTriggerValue.get("MetricSource");
-                                    if (metricSourceValue != null)
-                                    {
+
+                                    JsonNode metricSourceValue = metricTriggerValue
+                                            .get("MetricSource");
+                                    if (metricSourceValue != null) {
                                         String metricSourceInstance;
-                                        metricSourceInstance = metricSourceValue.getTextValue();
-                                        metricTriggerInstance.setMetricSource(metricSourceInstance);
+                                        metricSourceInstance = metricSourceValue
+                                                .getTextValue();
+                                        metricTriggerInstance
+                                                .setMetricSource(metricSourceInstance);
                                     }
-                                    
-                                    JsonNode timeGrainValue = metricTriggerValue.get("TimeGrain");
-                                    if (timeGrainValue != null)
-                                    {
+
+                                    JsonNode timeGrainValue = metricTriggerValue
+                                            .get("TimeGrain");
+                                    if (timeGrainValue != null) {
                                         Duration timeGrainInstance;
-                                        timeGrainInstance = TimeSpan8601Converter.parse(timeGrainValue.getTextValue());
-                                        metricTriggerInstance.setTimeGrain(timeGrainInstance);
+                                        timeGrainInstance = TimeSpan8601Converter
+                                                .parse(timeGrainValue
+                                                        .getTextValue());
+                                        metricTriggerInstance
+                                                .setTimeGrain(timeGrainInstance);
                                     }
-                                    
-                                    JsonNode statisticValue = metricTriggerValue.get("Statistic");
-                                    if (statisticValue != null)
-                                    {
+
+                                    JsonNode statisticValue = metricTriggerValue
+                                            .get("Statistic");
+                                    if (statisticValue != null) {
                                         MetricStatisticType statisticInstance;
-                                        statisticInstance = MetricStatisticType.valueOf(statisticValue.getTextValue());
-                                        metricTriggerInstance.setStatistic(statisticInstance);
+                                        statisticInstance = MetricStatisticType
+                                                .valueOf(statisticValue
+                                                        .getTextValue());
+                                        metricTriggerInstance
+                                                .setStatistic(statisticInstance);
                                     }
-                                    
-                                    JsonNode timeWindowValue = metricTriggerValue.get("TimeWindow");
-                                    if (timeWindowValue != null)
-                                    {
+
+                                    JsonNode timeWindowValue = metricTriggerValue
+                                            .get("TimeWindow");
+                                    if (timeWindowValue != null) {
                                         Duration timeWindowInstance;
-                                        timeWindowInstance = TimeSpan8601Converter.parse(timeWindowValue.getTextValue());
-                                        metricTriggerInstance.setTimeWindow(timeWindowInstance);
+                                        timeWindowInstance = TimeSpan8601Converter
+                                                .parse(timeWindowValue
+                                                        .getTextValue());
+                                        metricTriggerInstance
+                                                .setTimeWindow(timeWindowInstance);
                                     }
-                                    
-                                    JsonNode timeAggregationValue = metricTriggerValue.get("TimeAggregation");
-                                    if (timeAggregationValue != null)
-                                    {
+
+                                    JsonNode timeAggregationValue = metricTriggerValue
+                                            .get("TimeAggregation");
+                                    if (timeAggregationValue != null) {
                                         TimeAggregationType timeAggregationInstance;
-                                        timeAggregationInstance = TimeAggregationType.valueOf(timeAggregationValue.getTextValue());
-                                        metricTriggerInstance.setTimeAggregation(timeAggregationInstance);
+                                        timeAggregationInstance = TimeAggregationType
+                                                .valueOf(timeAggregationValue
+                                                        .getTextValue());
+                                        metricTriggerInstance
+                                                .setTimeAggregation(timeAggregationInstance);
                                     }
-                                    
-                                    JsonNode operatorValue = metricTriggerValue.get("Operator");
-                                    if (operatorValue != null)
-                                    {
+
+                                    JsonNode operatorValue = metricTriggerValue
+                                            .get("Operator");
+                                    if (operatorValue != null) {
                                         ComparisonOperationType operatorInstance;
-                                        operatorInstance = ComparisonOperationType.valueOf(operatorValue.getTextValue());
-                                        metricTriggerInstance.setOperator(operatorInstance);
+                                        operatorInstance = ComparisonOperationType
+                                                .valueOf(operatorValue
+                                                        .getTextValue());
+                                        metricTriggerInstance
+                                                .setOperator(operatorInstance);
                                     }
-                                    
-                                    JsonNode thresholdValue = metricTriggerValue.get("Threshold");
-                                    if (thresholdValue != null)
-                                    {
+
+                                    JsonNode thresholdValue = metricTriggerValue
+                                            .get("Threshold");
+                                    if (thresholdValue != null) {
                                         double thresholdInstance;
-                                        thresholdInstance = thresholdValue.getDoubleValue();
-                                        metricTriggerInstance.setThreshold(thresholdInstance);
+                                        thresholdInstance = thresholdValue
+                                                .getDoubleValue();
+                                        metricTriggerInstance
+                                                .setThreshold(thresholdInstance);
                                     }
                                 }
-                                
-                                JsonNode scaleActionValue = rulesValue.get("ScaleAction");
-                                if (scaleActionValue != null)
-                                {
+
+                                JsonNode scaleActionValue = rulesValue
+                                        .get("ScaleAction");
+                                if (scaleActionValue != null) {
                                     ScaleAction scaleActionInstance = new ScaleAction();
-                                    scaleRuleInstance.setScaleAction(scaleActionInstance);
-                                    
-                                    JsonNode directionValue = scaleActionValue.get("Direction");
-                                    if (directionValue != null)
-                                    {
+                                    scaleRuleInstance
+                                            .setScaleAction(scaleActionInstance);
+
+                                    JsonNode directionValue = scaleActionValue
+                                            .get("Direction");
+                                    if (directionValue != null) {
                                         ScaleDirection directionInstance;
-                                        directionInstance = ScaleDirection.valueOf(directionValue.getTextValue());
-                                        scaleActionInstance.setDirection(directionInstance);
+                                        directionInstance = ScaleDirection
+                                                .valueOf(directionValue
+                                                        .getTextValue());
+                                        scaleActionInstance
+                                                .setDirection(directionInstance);
                                     }
-                                    
-                                    JsonNode typeValue = scaleActionValue.get("Type");
-                                    if (typeValue != null)
-                                    {
+
+                                    JsonNode typeValue = scaleActionValue
+                                            .get("Type");
+                                    if (typeValue != null) {
                                         ScaleType typeInstance;
-                                        typeInstance = ScaleType.valueOf(typeValue.getTextValue());
-                                        scaleActionInstance.setType(typeInstance);
+                                        typeInstance = ScaleType
+                                                .valueOf(typeValue
+                                                        .getTextValue());
+                                        scaleActionInstance
+                                                .setType(typeInstance);
                                     }
-                                    
-                                    JsonNode valueValue = scaleActionValue.get("Value");
-                                    if (valueValue != null)
-                                    {
+
+                                    JsonNode valueValue = scaleActionValue
+                                            .get("Value");
+                                    if (valueValue != null) {
                                         String valueInstance;
-                                        valueInstance = valueValue.getTextValue();
-                                        scaleActionInstance.setValue(valueInstance);
+                                        valueInstance = valueValue
+                                                .getTextValue();
+                                        scaleActionInstance
+                                                .setValue(valueInstance);
                                     }
-                                    
-                                    JsonNode cooldownValue = scaleActionValue.get("Cooldown");
-                                    if (cooldownValue != null)
-                                    {
+
+                                    JsonNode cooldownValue = scaleActionValue
+                                            .get("Cooldown");
+                                    if (cooldownValue != null) {
                                         Duration cooldownInstance;
-                                        cooldownInstance = TimeSpan8601Converter.parse(cooldownValue.getTextValue());
-                                        scaleActionInstance.setCooldown(cooldownInstance);
+                                        cooldownInstance = TimeSpan8601Converter
+                                                .parse(cooldownValue
+                                                        .getTextValue());
+                                        scaleActionInstance
+                                                .setCooldown(cooldownInstance);
                                     }
                                 }
                             }
                         }
-                        
-                        JsonNode fixedDateValue = profilesValue.get("FixedDate");
-                        if (fixedDateValue != null)
-                        {
+
+                        JsonNode fixedDateValue = profilesValue
+                                .get("FixedDate");
+                        if (fixedDateValue != null) {
                             TimeWindow fixedDateInstance = new TimeWindow();
-                            autoscaleProfileInstance.setFixedDate(fixedDateInstance);
-                            
-                            JsonNode timeZoneValue = fixedDateValue.get("TimeZone");
-                            if (timeZoneValue != null)
-                            {
+                            autoscaleProfileInstance
+                                    .setFixedDate(fixedDateInstance);
+
+                            JsonNode timeZoneValue = fixedDateValue
+                                    .get("TimeZone");
+                            if (timeZoneValue != null) {
                                 String timeZoneInstance;
                                 timeZoneInstance = timeZoneValue.getTextValue();
                                 fixedDateInstance.setTimeZone(timeZoneInstance);
                             }
-                            
+
                             JsonNode startValue = fixedDateValue.get("Start");
-                            if (startValue != null)
-                            {
+                            if (startValue != null) {
                                 Calendar startInstance;
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                        "EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.setTime(simpleDateFormat.parse(startValue.getTextValue()));
+                                calendar.setTime(simpleDateFormat
+                                        .parse(startValue.getTextValue()));
                                 startInstance = calendar;
                                 fixedDateInstance.setStart(startInstance);
                             }
-                            
+
                             JsonNode endValue = fixedDateValue.get("End");
-                            if (endValue != null)
-                            {
+                            if (endValue != null) {
                                 Calendar endInstance;
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                        "EEE MMM dd HH:mm:ss z yyyy");
                                 Calendar calendar2 = Calendar.getInstance();
-                                calendar2.setTime(simpleDateFormat2.parse(endValue.getTextValue()));
+                                calendar2.setTime(simpleDateFormat2
+                                        .parse(endValue.getTextValue()));
                                 endInstance = calendar2;
                                 fixedDateInstance.setEnd(endInstance);
                             }
                         }
-                        
-                        JsonNode recurrenceValue = profilesValue.get("Recurrence");
-                        if (recurrenceValue != null)
-                        {
+
+                        JsonNode recurrenceValue = profilesValue
+                                .get("Recurrence");
+                        if (recurrenceValue != null) {
                             Recurrence recurrenceInstance = new Recurrence();
-                            autoscaleProfileInstance.setRecurrence(recurrenceInstance);
-                            
-                            JsonNode frequencyValue = recurrenceValue.get("Frequency");
-                            if (frequencyValue != null)
-                            {
+                            autoscaleProfileInstance
+                                    .setRecurrence(recurrenceInstance);
+
+                            JsonNode frequencyValue = recurrenceValue
+                                    .get("Frequency");
+                            if (frequencyValue != null) {
                                 RecurrenceFrequency frequencyInstance;
-                                frequencyInstance = RecurrenceFrequency.valueOf(frequencyValue.getTextValue());
-                                recurrenceInstance.setFrequency(frequencyInstance);
+                                frequencyInstance = RecurrenceFrequency
+                                        .valueOf(frequencyValue.getTextValue());
+                                recurrenceInstance
+                                        .setFrequency(frequencyInstance);
                             }
-                            
-                            JsonNode scheduleValue = recurrenceValue.get("Schedule");
-                            if (scheduleValue != null)
-                            {
+
+                            JsonNode scheduleValue = recurrenceValue
+                                    .get("Schedule");
+                            if (scheduleValue != null) {
                                 RecurrentSchedule scheduleInstance = new RecurrentSchedule();
-                                recurrenceInstance.setSchedule(scheduleInstance);
-                                
-                                JsonNode timeZoneValue2 = scheduleValue.get("TimeZone");
-                                if (timeZoneValue2 != null)
-                                {
+                                recurrenceInstance
+                                        .setSchedule(scheduleInstance);
+
+                                JsonNode timeZoneValue2 = scheduleValue
+                                        .get("TimeZone");
+                                if (timeZoneValue2 != null) {
                                     String timeZoneInstance2;
-                                    timeZoneInstance2 = timeZoneValue2.getTextValue();
-                                    scheduleInstance.setTimeZone(timeZoneInstance2);
+                                    timeZoneInstance2 = timeZoneValue2
+                                            .getTextValue();
+                                    scheduleInstance
+                                            .setTimeZone(timeZoneInstance2);
                                 }
-                                
-                                ArrayNode daysArray = ((ArrayNode) scheduleValue.get("Days"));
-                                if (daysArray != null)
-                                {
-                                    for (JsonNode daysValue : daysArray)
-                                    {
-                                        scheduleInstance.getDays().add(daysValue.getTextValue());
+
+                                ArrayNode daysArray = ((ArrayNode) scheduleValue
+                                        .get("Days"));
+                                if (daysArray != null) {
+                                    for (JsonNode daysValue : daysArray) {
+                                        scheduleInstance.getDays().add(
+                                                daysValue.getTextValue());
                                     }
                                 }
-                                
-                                ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("Hours"));
-                                if (hoursArray != null)
-                                {
-                                    for (JsonNode hoursValue : hoursArray)
-                                    {
-                                        scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                                ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                        .get("Hours"));
+                                if (hoursArray != null) {
+                                    for (JsonNode hoursValue : hoursArray) {
+                                        scheduleInstance.getHours().add(
+                                                hoursValue.getIntValue());
                                     }
                                 }
-                                
-                                ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("Minutes"));
-                                if (minutesArray != null)
-                                {
-                                    for (JsonNode minutesValue : minutesArray)
-                                    {
-                                        scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                                ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                        .get("Minutes"));
+                                if (minutesArray != null) {
+                                    for (JsonNode minutesValue : minutesArray) {
+                                        scheduleInstance.getMinutes().add(
+                                                minutesValue.getIntValue());
                                     }
                                 }
                             }
                         }
                     }
                 }
-                
+
                 JsonNode enabledValue = responseDoc.get("Enabled");
-                if (enabledValue != null)
-                {
+                if (enabledValue != null) {
                     boolean enabledInstance;
                     enabledInstance = enabledValue.getBooleanValue();
                     settingInstance.setEnabled(enabledInstance);
                 }
             }
-            
+
             result.setStatusCode(statusCode);
-            if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-            {
-                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader(
+                        "x-ms-request-id").getValue());
             }
-            
-            if (shouldTrace)
-            {
+
+            if (shouldTrace) {
                 CloudTracing.exit(invocationId, result);
             }
             return result;
-        }
-        finally
-        {
-            if (httpResponse != null && httpResponse.getEntity() != null)
-            {
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
                 httpResponse.getEntity().getContent().close();
             }
         }

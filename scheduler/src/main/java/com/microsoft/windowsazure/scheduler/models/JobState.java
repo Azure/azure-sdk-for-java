@@ -23,13 +23,12 @@
 
 package com.microsoft.windowsazure.scheduler.models;
 
-public enum JobState
-{
+public enum JobState {
     Enabled,
-    
+
     Disabled,
-    
+
     Faulted,
-    
+
     Completed,
 }

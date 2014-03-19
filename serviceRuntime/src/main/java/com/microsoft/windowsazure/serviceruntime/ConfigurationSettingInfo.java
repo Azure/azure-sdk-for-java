@@ -49,8 +49,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ConfigurationSettingInfo")
-class ConfigurationSettingInfo
-{
+class ConfigurationSettingInfo {
 
     @XmlAttribute(required = true)
     protected String name;
@@ -63,8 +62,7 @@ class ConfigurationSettingInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -75,8 +73,7 @@ class ConfigurationSettingInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setName(String value)
-    {
+    public void setName(String value) {
         this.name = value;
     }
 
@@ -86,8 +83,7 @@ class ConfigurationSettingInfo
      * @return possible object is {@link String }
      * 
      */
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
@@ -98,8 +94,7 @@ class ConfigurationSettingInfo
      *            allowed object is {@link String }
      * 
      */
-    public void setValue(String value)
-    {
+    public void setValue(String value) {
         this.value = value;
     }
 

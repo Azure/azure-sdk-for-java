@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.core.pipeline.filter;
 
-public interface ServiceResponseFilter
-{
+public interface ServiceResponseFilter {
     void filter(ServiceRequestContext request, ServiceResponseContext response);
 }

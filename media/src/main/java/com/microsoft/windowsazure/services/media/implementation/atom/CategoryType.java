@@ -64,8 +64,7 @@ import javax.xml.namespace.QName;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "categoryType")
-public class CategoryType
-{
+public class CategoryType {
 
     @XmlAttribute(required = true)
     protected String term;
@@ -90,8 +89,7 @@ public class CategoryType
      * @return possible object is {@link String }
      * 
      */
-    public String getTerm()
-    {
+    public String getTerm() {
         return term;
     }
 
@@ -102,8 +100,7 @@ public class CategoryType
      *            allowed object is {@link String }
      * 
      */
-    public void setTerm(String value)
-    {
+    public void setTerm(String value) {
         this.term = value;
     }
 
@@ -113,8 +110,7 @@ public class CategoryType
      * @return possible object is {@link String }
      * 
      */
-    public String getScheme()
-    {
+    public String getScheme() {
         return scheme;
     }
 
@@ -125,8 +121,7 @@ public class CategoryType
      *            allowed object is {@link String }
      * 
      */
-    public void setScheme(String value)
-    {
+    public void setScheme(String value) {
         this.scheme = value;
     }
 
@@ -136,8 +131,7 @@ public class CategoryType
      * @return possible object is {@link String }
      * 
      */
-    public String getLabel()
-    {
+    public String getLabel() {
         return label;
     }
 
@@ -148,8 +142,7 @@ public class CategoryType
      *            allowed object is {@link String }
      * 
      */
-    public void setLabel(String value)
-    {
+    public void setLabel(String value) {
         this.label = value;
     }
 
@@ -159,8 +152,7 @@ public class CategoryType
      * @return possible object is {@link String }
      * 
      */
-    public String getBase()
-    {
+    public String getBase() {
         return base;
     }
 
@@ -171,8 +163,7 @@ public class CategoryType
      *            allowed object is {@link String }
      * 
      */
-    public void setBase(String value)
-    {
+    public void setBase(String value) {
         this.base = value;
     }
 
@@ -182,8 +173,7 @@ public class CategoryType
      * @return possible object is {@link String }
      * 
      */
-    public String getLang()
-    {
+    public String getLang() {
         return lang;
     }
 
@@ -194,8 +184,7 @@ public class CategoryType
      *            allowed object is {@link String }
      * 
      */
-    public void setLang(String value)
-    {
+    public void setLang(String value) {
         this.lang = value;
     }
 
@@ -213,8 +202,7 @@ public class CategoryType
      * 
      * @return always non-null
      */
-    public Map<QName, String> getOtherAttributes()
-    {
+    public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
 

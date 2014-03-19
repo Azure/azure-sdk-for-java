@@ -34,7 +34,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     private ArrayList<RoleSizeListResponse.RoleSize> roleSizes;
     
     /**
-    * The role sizes that are valid for your subscription.
+    * Optional. The role sizes that are valid for your subscription.
     * @return The RoleSizes value.
     */
     public ArrayList<RoleSizeListResponse.RoleSize> getRoleSizes() {
@@ -42,7 +42,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
     }
     
     /**
-    * The role sizes that are valid for your subscription.
+    * Optional. The role sizes that are valid for your subscription.
     * @param roleSizesValue The RoleSizes value.
     */
     public void setRoleSizes(final ArrayList<RoleSizeListResponse.RoleSize> roleSizesValue) {
@@ -73,7 +73,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private int cores;
         
         /**
-        * Number of cores available for the role size.
+        * Optional. Number of cores available for the role size.
         * @return The Cores value.
         */
         public int getCores() {
@@ -81,7 +81,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * Number of cores available for the role size.
+        * Optional. Number of cores available for the role size.
         * @param coresValue The Cores value.
         */
         public void setCores(final int coresValue) {
@@ -91,7 +91,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private String label;
         
         /**
-        * Localized label of the role size.
+        * Optional. Localized label of the role size.
         * @return The Label value.
         */
         public String getLabel() {
@@ -99,7 +99,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * Localized label of the role size.
+        * Optional. Localized label of the role size.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -109,7 +109,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private int memoryInMb;
         
         /**
-        * Memory available for the role size.
+        * Optional. Memory available for the role size.
         * @return The MemoryInMb value.
         */
         public int getMemoryInMb() {
@@ -117,7 +117,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * Memory available for the role size.
+        * Optional. Memory available for the role size.
         * @param memoryInMbValue The MemoryInMb value.
         */
         public void setMemoryInMb(final int memoryInMbValue) {
@@ -127,7 +127,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private String name;
         
         /**
-        * The name of a role size that is valid for your subscription.
+        * Optional. The name of a role size that is valid for your subscription.
         * @return The Name value.
         */
         public String getName() {
@@ -135,7 +135,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * The name of a role size that is valid for your subscription.
+        * Optional. The name of a role size that is valid for your subscription.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -145,7 +145,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private boolean supportedByVirtualMachines;
         
         /**
-        * Indicating if the role size is supported by VMs.
+        * Optional. Indicating if the role size is supported by VMs.
         * @return The SupportedByVirtualMachines value.
         */
         public boolean isSupportedByVirtualMachines() {
@@ -153,7 +153,7 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * Indicating if the role size is supported by VMs.
+        * Optional. Indicating if the role size is supported by VMs.
         * @param supportedByVirtualMachinesValue The SupportedByVirtualMachines
         * value.
         */
@@ -164,7 +164,8 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         private boolean supportedByWebWorkerRoles;
         
         /**
-        * Indicating if the role size is supported by web/worker roles.
+        * Optional. Indicating if the role size is supported by web/worker
+        * roles.
         * @return The SupportedByWebWorkerRoles value.
         */
         public boolean isSupportedByWebWorkerRoles() {
@@ -172,7 +173,8 @@ public class RoleSizeListResponse extends OperationResponse implements Iterable<
         }
         
         /**
-        * Indicating if the role size is supported by web/worker roles.
+        * Optional. Indicating if the role size is supported by web/worker
+        * roles.
         * @param supportedByWebWorkerRolesValue The SupportedByWebWorkerRoles
         * value.
         */

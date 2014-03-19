@@ -20,8 +20,7 @@ package com.microsoft.windowsazure.services.media.entityoperations;
  * 
  */
 public class DefaultGetOperation<T> extends EntityOperationSingleResultBase<T>
-        implements EntityGetOperation<T>
-{
+        implements EntityGetOperation<T> {
 
     /**
      * Construct a new DefaultGetOperation to return the given entity id
@@ -34,8 +33,7 @@ public class DefaultGetOperation<T> extends EntityOperationSingleResultBase<T>
      *            class to return from the get operation
      */
     public DefaultGetOperation(String entityTypeUri, String entityId,
-            Class<T> responseClass)
-    {
+            Class<T> responseClass) {
         super(new EntityOperationBase.EntityIdUriBuilder(entityTypeUri,
                 entityId), responseClass);
     }
@@ -49,8 +47,7 @@ public class DefaultGetOperation<T> extends EntityOperationSingleResultBase<T>
      * @param responseClass
      *            class to return from the get operation
      */
-    public DefaultGetOperation(String uri, Class<T> responseClass)
-    {
+    public DefaultGetOperation(String uri, Class<T> responseClass) {
         super(uri, responseClass);
     }
 }

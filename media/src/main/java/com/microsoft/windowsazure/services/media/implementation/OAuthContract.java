@@ -19,8 +19,7 @@ import java.net.URI;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public interface OAuthContract
-{
+public interface OAuthContract {
     /**
      * Gets an OAuth access token with specified OAUTH URI, client ID, client
      * secret, and scope.

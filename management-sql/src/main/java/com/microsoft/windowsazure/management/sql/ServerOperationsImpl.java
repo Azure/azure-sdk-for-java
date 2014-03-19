@@ -90,10 +90,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
     * more information)
     *
-    * @param serverName The server that will have the change made to the
-    * administrative user.
-    * @param parameters Parameters for the Manage Administrator Password
-    * operation.
+    * @param serverName Required. The server that will have the change made to
+    * the administrative user.
+    * @param parameters Required. Parameters for the Manage Administrator
+    * Password operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -113,10 +113,10 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715272.aspx for
     * more information)
     *
-    * @param serverName The server that will have the change made to the
-    * administrative user.
-    * @param parameters Parameters for the Manage Administrator Password
-    * operation.
+    * @param serverName Required. The server that will have the change made to
+    * the administrative user.
+    * @param parameters Required. Parameters for the Manage Administrator
+    * Password operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -238,7 +238,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Server operation.
+    * @param parameters Required. Parameters supplied to the Create Server
+    * operation.
     * @return The response returned from the Create Server operation.
     */
     @Override
@@ -256,7 +257,8 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715274.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Server operation.
+    * @param parameters Required. Parameters supplied to the Create Server
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -401,7 +403,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
     * more information)
     *
-    * @param serverName The name of the server to be deleted.
+    * @param serverName Required. The name of the server to be deleted.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -420,7 +422,7 @@ public class ServerOperationsImpl implements ServiceOperations<SqlManagementClie
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715285.aspx for
     * more information)
     *
-    * @param serverName The name of the server to be deleted.
+    * @param serverName Required. The name of the server to be deleted.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

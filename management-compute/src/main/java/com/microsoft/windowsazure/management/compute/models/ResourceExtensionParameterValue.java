@@ -24,13 +24,13 @@
 package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* Required. Specifies the key, value, and type of the parameter.
+* Specifies the key, value, and type of the parameter.
 */
 public class ResourceExtensionParameterValue {
     private String key;
     
     /**
-    * Key
+    * Optional. Key
     * @return The Key value.
     */
     public String getKey() {
@@ -38,7 +38,7 @@ public class ResourceExtensionParameterValue {
     }
     
     /**
-    * Key
+    * Optional. Key
     * @param keyValue The Key value.
     */
     public void setKey(final String keyValue) {
@@ -48,9 +48,10 @@ public class ResourceExtensionParameterValue {
     private String type;
     
     /**
-    * If this value is set to Private, the parameter will not be returned by
-    * Get Deployment. You can only specify one public parameter and one
-    * private parameter for a maximum of two parameters.
+    * Optional. Optional. Public | Private. If this value is set to Private,
+    * the parameter will not be returned by Get Deployment. You can only
+    * specify one public parameter and one private parameter for a maximum of
+    * two parameters.
     * @return The Type value.
     */
     public String getType() {
@@ -58,9 +59,10 @@ public class ResourceExtensionParameterValue {
     }
     
     /**
-    * If this value is set to Private, the parameter will not be returned by
-    * Get Deployment. You can only specify one public parameter and one
-    * private parameter for a maximum of two parameters.
+    * Optional. Optional. Public | Private. If this value is set to Private,
+    * the parameter will not be returned by Get Deployment. You can only
+    * specify one public parameter and one private parameter for a maximum of
+    * two parameters.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {
@@ -70,7 +72,7 @@ public class ResourceExtensionParameterValue {
     private String value;
     
     /**
-    * Value
+    * Optional. Value
     * @return The Value value.
     */
     public String getValue() {
@@ -78,7 +80,7 @@ public class ResourceExtensionParameterValue {
     }
     
     /**
-    * Value
+    * Optional. Value
     * @param valueValue The Value value.
     */
     public void setValue(final String valueValue) {

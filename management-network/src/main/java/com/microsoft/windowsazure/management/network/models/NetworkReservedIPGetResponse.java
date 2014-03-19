@@ -33,7 +33,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private InetAddress address;
     
     /**
-    * The IP address of the reserved IP.
+    * Optional. The IP address of the reserved IP.
     * @return The Address value.
     */
     public InetAddress getAddress() {
@@ -41,7 +41,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * The IP address of the reserved IP.
+    * Optional. The IP address of the reserved IP.
     * @param addressValue The Address value.
     */
     public void setAddress(final InetAddress addressValue) {
@@ -51,8 +51,8 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String affinityGroup;
     
     /**
-    * An affinity group, which indirectly refers to the location where the
-    * virtual network exists.
+    * Optional. An affinity group, which indirectly refers to the location
+    * where the virtual network exists.
     * @return The AffinityGroup value.
     */
     public String getAffinityGroup() {
@@ -60,8 +60,8 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * An affinity group, which indirectly refers to the location where the
-    * virtual network exists.
+    * Optional. An affinity group, which indirectly refers to the location
+    * where the virtual network exists.
     * @param affinityGroupValue The AffinityGroup value.
     */
     public void setAffinityGroup(final String affinityGroupValue) {
@@ -71,7 +71,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String deploymentName;
     
     /**
-    * The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if being used.
     * @return The DeploymentName value.
     */
     public String getDeploymentName() {
@@ -79,7 +79,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * The name of the deployment the IP belongs to, if being used.
+    * Optional. The name of the deployment the IP belongs to, if being used.
     * @param deploymentNameValue The DeploymentName value.
     */
     public void setDeploymentName(final String deploymentNameValue) {
@@ -89,7 +89,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String id;
     
     /**
-    * A unique string identifier that represents the reserved IP.
+    * Optional. A unique string identifier that represents the reserved IP.
     * @return The Id value.
     */
     public String getId() {
@@ -97,7 +97,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * A unique string identifier that represents the reserved IP.
+    * Optional. A unique string identifier that represents the reserved IP.
     * @param idValue The Id value.
     */
     public void setId(final String idValue) {
@@ -107,7 +107,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private boolean inUse;
     
     /**
-    * The indicator of whether the reserved IP is being used.
+    * Optional. The indicator of whether the reserved IP is being used.
     * @return The InUse value.
     */
     public boolean isInUse() {
@@ -115,7 +115,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * The indicator of whether the reserved IP is being used.
+    * Optional. The indicator of whether the reserved IP is being used.
     * @param inUseValue The InUse value.
     */
     public void setInUse(final boolean inUseValue) {
@@ -125,7 +125,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String label;
     
     /**
-    * The friendly identifier of the site.
+    * Optional. The friendly identifier of the site.
     * @return The Label value.
     */
     public String getLabel() {
@@ -133,7 +133,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * The friendly identifier of the site.
+    * Optional. The friendly identifier of the site.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -143,7 +143,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String name;
     
     /**
-    * Name of the reserved IP.
+    * Optional. Name of the reserved IP.
     * @return The Name value.
     */
     public String getName() {
@@ -151,7 +151,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * Name of the reserved IP.
+    * Optional. Name of the reserved IP.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -161,7 +161,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String serviceName;
     
     /**
-    * The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if being used.
     * @return The ServiceName value.
     */
     public String getServiceName() {
@@ -169,7 +169,7 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * The name of the service the IP belongs to, if being used.
+    * Optional. The name of the service the IP belongs to, if being used.
     * @param serviceNameValue The ServiceName value.
     */
     public void setServiceName(final String serviceNameValue) {
@@ -179,8 +179,8 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     private String state;
     
     /**
-    * Current status of the reserved IP. (Created, Creating, Updating,
-    * Deleting, Unavailable)
+    * Optional. Current status of the reserved IP. (Created, Creating,
+    * Updating, Deleting, Unavailable)
     * @return The State value.
     */
     public String getState() {
@@ -188,8 +188,8 @@ public class NetworkReservedIPGetResponse extends OperationResponse {
     }
     
     /**
-    * Current status of the reserved IP. (Created, Creating, Updating,
-    * Deleting, Unavailable)
+    * Optional. Current status of the reserved IP. (Created, Creating,
+    * Updating, Deleting, Unavailable)
     * @param stateValue The State value.
     */
     public void setState(final String stateValue) {

@@ -30,10 +30,12 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineExtens
 import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -144,7 +146,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -237,6 +239,41 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
                     }
+                    
+                    Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
+                    if (replicationCompletedElement != null) {
+                        boolean replicationCompletedInstance;
+                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent());
+                        resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
+                    }
+                    
+                    Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement != null) {
+                        URI eulaInstance;
+                        eulaInstance = new URI(eulaElement.getTextContent());
+                        resourceExtensionInstance.setEula(eulaInstance);
+                    }
+                    
+                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                        resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
+                    if (homepageUriElement != null) {
+                        URI homepageUriInstance;
+                        homepageUriInstance = new URI(homepageUriElement.getTextContent());
+                        resourceExtensionInstance.setHomepageUri(homepageUriInstance);
+                    }
+                    
+                    Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
+                    if (isJsonExtensionElement != null) {
+                        boolean isJsonExtensionInstance;
+                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent());
+                        resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
+                    }
                 }
             }
             
@@ -265,8 +302,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
     * for more information)
     *
-    * @param publisherName The name of the publisher.
-    * @param extensionName The name of the extension.
+    * @param publisherName Required. The name of the publisher.
+    * @param extensionName Required. The name of the extension.
     * @return The List Resource Extensions operation response.
     */
     @Override
@@ -288,8 +325,8 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/dn495440.aspx
     * for more information)
     *
-    * @param publisherName The name of the publisher.
-    * @param extensionName The name of the extension.
+    * @param publisherName Required. The name of the publisher.
+    * @param extensionName Required. The name of the extension.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -298,10 +335,12 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
     * configuration error with the document parser.
     * @throws SAXException Thrown if there was an error parsing the XML
     * response.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return The List Resource Extensions operation response.
     */
     @Override
-    public VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+    public VirtualMachineExtensionListResponse listVersions(String publisherName, String extensionName) throws IOException, ServiceException, ParserConfigurationException, SAXException, URISyntaxException {
         // Validate
         if (publisherName == null) {
             throw new NullPointerException("publisherName");
@@ -337,7 +376,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
         HttpGet httpRequest = new HttpGet(url);
         
         // Set Headers
-        httpRequest.setHeader("x-ms-version", "2013-11-01");
+        httpRequest.setHeader("x-ms-version", "2014-04-01");
         
         // Send Request
         HttpResponse httpResponse = null;
@@ -429,6 +468,41 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                         String sampleConfigInstance;
                         sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
                         resourceExtensionInstance.setSampleConfig(sampleConfigInstance);
+                    }
+                    
+                    Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
+                    if (replicationCompletedElement != null) {
+                        boolean replicationCompletedInstance;
+                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent());
+                        resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
+                    }
+                    
+                    Element eulaElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "Eula");
+                    if (eulaElement != null) {
+                        URI eulaInstance;
+                        eulaInstance = new URI(eulaElement.getTextContent());
+                        resourceExtensionInstance.setEula(eulaInstance);
+                    }
+                    
+                    Element privacyUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "PrivacyUri");
+                    if (privacyUriElement != null) {
+                        URI privacyUriInstance;
+                        privacyUriInstance = new URI(privacyUriElement.getTextContent());
+                        resourceExtensionInstance.setPrivacyUri(privacyUriInstance);
+                    }
+                    
+                    Element homepageUriElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "HomepageUri");
+                    if (homepageUriElement != null) {
+                        URI homepageUriInstance;
+                        homepageUriInstance = new URI(homepageUriElement.getTextContent());
+                        resourceExtensionInstance.setHomepageUri(homepageUriInstance);
+                    }
+                    
+                    Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
+                    if (isJsonExtensionElement != null) {
+                        boolean isJsonExtensionInstance;
+                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent());
+                        resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
                     }
                 }
             }

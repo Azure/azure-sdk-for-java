@@ -96,9 +96,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
     * more information)
     *
-    * @param serverName The name of the SQL database server to which this rule
-    * will be applied.
-    * @param parameters Parameters for the Create Firewall Rule operation.
+    * @param serverName Required. The name of the SQL database server to which
+    * this rule will be applied.
+    * @param parameters Required. Parameters for the Create Firewall Rule
+    * operation.
     * @return Response containing the firewall rule create response.
     */
     @Override
@@ -117,9 +118,10 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
     * more information)
     *
-    * @param serverName The name of the SQL database server to which this rule
-    * will be applied.
-    * @param parameters Parameters for the Create Firewall Rule operation.
+    * @param serverName Required. The name of the SQL database server to which
+    * this rule will be applied.
+    * @param parameters Required. Parameters for the Create Firewall Rule
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -298,9 +300,9 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
     * more information)
     *
-    * @param serverName The name of the server that will be have new firewall
-    * rule applied to it.
-    * @param ruleName The name of the new firewall rule.
+    * @param serverName Required. The name of the server that will be have new
+    * firewall rule applied to it.
+    * @param ruleName Required. The name of the new firewall rule.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -320,9 +322,9 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715277.aspx for
     * more information)
     *
-    * @param serverName The name of the server that will be have new firewall
-    * rule applied to it.
-    * @param ruleName The name of the new firewall rule.
+    * @param serverName Required. The name of the server that will be have new
+    * firewall rule applied to it.
+    * @param ruleName Required. The name of the new firewall rule.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -413,7 +415,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
     * more information)
     *
-    * @param serverName The name of the server for which the call is being made.
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -433,7 +436,8 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
     * more information)
     *
-    * @param serverName The name of the server for which the call is being made.
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -568,10 +572,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
     * more information)
     *
-    * @param serverName The name of the SQL database server to which this rule
-    * will be applied.
-    * @param ruleName The name of the firewall rule to be updated.
-    * @param parameters Parameters for the Update Firewall Rule operation.
+    * @param serverName Required. The name of the SQL database server to which
+    * this rule will be applied.
+    * @param ruleName Required. The name of the firewall rule to be updated.
+    * @param parameters Required. Parameters for the Update Firewall Rule
+    * operation.
     * @return Response containing the firewall rule update response.
     */
     @Override
@@ -590,10 +595,11 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg715280.aspx for
     * more information)
     *
-    * @param serverName The name of the SQL database server to which this rule
-    * will be applied.
-    * @param ruleName The name of the firewall rule to be updated.
-    * @param parameters Parameters for the Update Firewall Rule operation.
+    * @param serverName Required. The name of the SQL database server to which
+    * this rule will be applied.
+    * @param ruleName Required. The name of the firewall rule to be updated.
+    * @param parameters Required. Parameters for the Update Firewall Rule
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response

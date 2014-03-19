@@ -32,7 +32,8 @@ public class WebSiteGetParameters {
     private ArrayList<String> propertiesToInclude;
     
     /**
-    * Specifies a list of the names of any addtional parameters to return.
+    * Optional. Specifies a list of the names of any addtional parameters to
+    * return.
     * @return The PropertiesToInclude value.
     */
     public ArrayList<String> getPropertiesToInclude() {
@@ -40,7 +41,8 @@ public class WebSiteGetParameters {
     }
     
     /**
-    * Specifies a list of the names of any addtional parameters to return.
+    * Optional. Specifies a list of the names of any addtional parameters to
+    * return.
     * @param propertiesToIncludeValue The PropertiesToInclude value.
     */
     public void setPropertiesToInclude(final ArrayList<String> propertiesToIncludeValue) {

@@ -58,8 +58,8 @@ public class VirtualMachineUpdateParameters {
     private ArrayList<ConfigurationSet> configurationSets;
     
     /**
-    * Contains the collection of configuration sets that contain system and
-    * application configuration settings.
+    * Optional. Contains the collection of configuration sets that contain
+    * system and application configuration settings.
     * @return The ConfigurationSets value.
     */
     public ArrayList<ConfigurationSet> getConfigurationSets() {
@@ -67,8 +67,8 @@ public class VirtualMachineUpdateParameters {
     }
     
     /**
-    * Contains the collection of configuration sets that contain system and
-    * application configuration settings.
+    * Optional. Contains the collection of configuration sets that contain
+    * system and application configuration settings.
     * @param configurationSetsValue The ConfigurationSets value.
     */
     public void setConfigurationSets(final ArrayList<ConfigurationSet> configurationSetsValue) {
@@ -78,8 +78,8 @@ public class VirtualMachineUpdateParameters {
     private ArrayList<DataVirtualHardDisk> dataVirtualHardDisks;
     
     /**
-    * Contains the parameters Windows Azure used to create the data disk for
-    * the virtual machine.
+    * Optional. Contains the parameters Windows Azure used to create the data
+    * disk for the virtual machine.
     * @return The DataVirtualHardDisks value.
     */
     public ArrayList<DataVirtualHardDisk> getDataVirtualHardDisks() {
@@ -87,8 +87,8 @@ public class VirtualMachineUpdateParameters {
     }
     
     /**
-    * Contains the parameters Windows Azure used to create the data disk for
-    * the virtual machine.
+    * Optional. Contains the parameters Windows Azure used to create the data
+    * disk for the virtual machine.
     * @param dataVirtualHardDisksValue The DataVirtualHardDisks value.
     */
     public void setDataVirtualHardDisks(final ArrayList<DataVirtualHardDisk> dataVirtualHardDisksValue) {
@@ -116,8 +116,8 @@ public class VirtualMachineUpdateParameters {
     private OSVirtualHardDisk oSVirtualHardDisk;
     
     /**
-    * Contains the parameters Windows Azure used to create the operating system
-    * disk for the virtual machine.
+    * Required. Contains the parameters Windows Azure used to create the
+    * operating system disk for the virtual machine.
     * @return The OSVirtualHardDisk value.
     */
     public OSVirtualHardDisk getOSVirtualHardDisk() {
@@ -125,8 +125,8 @@ public class VirtualMachineUpdateParameters {
     }
     
     /**
-    * Contains the parameters Windows Azure used to create the operating system
-    * disk for the virtual machine.
+    * Required. Contains the parameters Windows Azure used to create the
+    * operating system disk for the virtual machine.
     * @param oSVirtualHardDiskValue The OSVirtualHardDisk value.
     */
     public void setOSVirtualHardDisk(final OSVirtualHardDisk oSVirtualHardDiskValue) {
@@ -201,7 +201,7 @@ public class VirtualMachineUpdateParameters {
     private String roleSize;
     
     /**
-    * The size of the virtual machine.
+    * Optional. The size of the virtual machine.
     * @return The RoleSize value.
     */
     public String getRoleSize() {
@@ -209,7 +209,7 @@ public class VirtualMachineUpdateParameters {
     }
     
     /**
-    * The size of the virtual machine.
+    * Optional. The size of the virtual machine.
     * @param roleSizeValue The RoleSize value.
     */
     public void setRoleSize(final String roleSizeValue) {

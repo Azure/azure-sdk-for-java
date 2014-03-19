@@ -32,7 +32,7 @@ public class Database {
     private String collationName;
     
     /**
-    * Gets or sets the database resource's collation name.
+    * Optional. Gets or sets the database resource's collation name.
     * @return The CollationName value.
     */
     public String getCollationName() {
@@ -40,7 +40,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the database resource's collation name.
+    * Optional. Gets or sets the database resource's collation name.
     * @param collationNameValue The CollationName value.
     */
     public void setCollationName(final String collationNameValue) {
@@ -50,7 +50,7 @@ public class Database {
     private Calendar creationDate;
     
     /**
-    * Gets or sets the date this database was created.
+    * Optional. Gets or sets the date this database was created.
     * @return The CreationDate value.
     */
     public Calendar getCreationDate() {
@@ -58,7 +58,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the date this database was created.
+    * Optional. Gets or sets the date this database was created.
     * @param creationDateValue The CreationDate value.
     */
     public void setCreationDate(final Calendar creationDateValue) {
@@ -68,7 +68,7 @@ public class Database {
     private String edition;
     
     /**
-    * Gets or sets the database resource's edition.
+    * Optional. Gets or sets the database resource's edition.
     * @return The Edition value.
     */
     public String getEdition() {
@@ -76,7 +76,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the database resource's edition.
+    * Optional. Gets or sets the database resource's edition.
     * @param editionValue The Edition value.
     */
     public void setEdition(final String editionValue) {
@@ -86,7 +86,7 @@ public class Database {
     private int id;
     
     /**
-    * Gets or sets the id of the database.
+    * Optional. Gets or sets the id of the database.
     * @return The Id value.
     */
     public int getId() {
@@ -94,7 +94,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the id of the database.
+    * Optional. Gets or sets the id of the database.
     * @param idValue The Id value.
     */
     public void setId(final int idValue) {
@@ -104,7 +104,8 @@ public class Database {
     private boolean isFederationRoot;
     
     /**
-    * Gets or sets a value indicating whether the database is a federation root.
+    * Optional. Gets or sets a value indicating whether the database is a
+    * federation root.
     * @return The IsFederationRoot value.
     */
     public boolean isFederationRoot() {
@@ -112,7 +113,8 @@ public class Database {
     }
     
     /**
-    * Gets or sets a value indicating whether the database is a federation root.
+    * Optional. Gets or sets a value indicating whether the database is a
+    * federation root.
     * @param isFederationRootValue The IsFederationRoot value.
     */
     public void setIsFederationRoot(final boolean isFederationRootValue) {
@@ -122,7 +124,8 @@ public class Database {
     private boolean isSystemObject;
     
     /**
-    * Gets or sets a value indicating whether the database is a system object.
+    * Optional. Gets or sets a value indicating whether the database is a
+    * system object.
     * @return The IsSystemObject value.
     */
     public boolean isSystemObject() {
@@ -130,7 +133,8 @@ public class Database {
     }
     
     /**
-    * Gets or sets a value indicating whether the database is a system object.
+    * Optional. Gets or sets a value indicating whether the database is a
+    * system object.
     * @param isSystemObjectValue The IsSystemObject value.
     */
     public void setIsSystemObject(final boolean isSystemObjectValue) {
@@ -140,7 +144,7 @@ public class Database {
     private int maximumDatabaseSizeInGB;
     
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database, in Gigabytes.
     * @return The MaximumDatabaseSizeInGB value.
     */
     public int getMaximumDatabaseSizeInGB() {
@@ -148,7 +152,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
+    * Optional. Gets or sets the maximum size of this database, in Gigabytes.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
     public void setMaximumDatabaseSizeInGB(final int maximumDatabaseSizeInGBValue) {
@@ -158,7 +162,7 @@ public class Database {
     private String name;
     
     /**
-    * Gets or sets the name of the database.
+    * Optional. Gets or sets the name of the database.
     * @return The Name value.
     */
     public String getName() {
@@ -166,7 +170,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the name of the database.
+    * Optional. Gets or sets the name of the database.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -176,7 +180,7 @@ public class Database {
     private String serviceObjectiveAssignmentErrorCode;
     
     /**
-    * Gets or sets the error code for this service objective.
+    * Optional. Gets or sets the error code for this service objective.
     * @return The ServiceObjectiveAssignmentErrorCode value.
     */
     public String getServiceObjectiveAssignmentErrorCode() {
@@ -184,7 +188,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the error code for this service objective.
+    * Optional. Gets or sets the error code for this service objective.
     * @param serviceObjectiveAssignmentErrorCodeValue The
     * ServiceObjectiveAssignmentErrorCode value.
     */
@@ -195,7 +199,7 @@ public class Database {
     private String serviceObjectiveAssignmentErrorDescription;
     
     /**
-    * Gets or sets the error description, if any.
+    * Optional. Gets or sets the error description, if any.
     * @return The ServiceObjectiveAssignmentErrorDescription value.
     */
     public String getServiceObjectiveAssignmentErrorDescription() {
@@ -203,7 +207,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the error description, if any.
+    * Optional. Gets or sets the error description, if any.
     * @param serviceObjectiveAssignmentErrorDescriptionValue The
     * ServiceObjectiveAssignmentErrorDescription value.
     */
@@ -214,7 +218,7 @@ public class Database {
     private String serviceObjectiveAssignmentState;
     
     /**
-    * Gets or sets the state of the current assignment.
+    * Optional. Gets or sets the state of the current assignment.
     * @return The ServiceObjectiveAssignmentState value.
     */
     public String getServiceObjectiveAssignmentState() {
@@ -222,7 +226,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the state of the current assignment.
+    * Optional. Gets or sets the state of the current assignment.
     * @param serviceObjectiveAssignmentStateValue The
     * ServiceObjectiveAssignmentState value.
     */
@@ -233,7 +237,7 @@ public class Database {
     private String serviceObjectiveAssignmentStateDescription;
     
     /**
-    * Gets or sets the state description.
+    * Optional. Gets or sets the state description.
     * @return The ServiceObjectiveAssignmentStateDescription value.
     */
     public String getServiceObjectiveAssignmentStateDescription() {
@@ -241,7 +245,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the state description.
+    * Optional. Gets or sets the state description.
     * @param serviceObjectiveAssignmentStateDescriptionValue The
     * ServiceObjectiveAssignmentStateDescription value.
     */
@@ -252,7 +256,7 @@ public class Database {
     private String serviceObjectiveAssignmentSuccessDate;
     
     /**
-    * Gets or sets the date the service's assignment succeeded.
+    * Optional. Gets or sets the date the service's assignment succeeded.
     * @return The ServiceObjectiveAssignmentSuccessDate value.
     */
     public String getServiceObjectiveAssignmentSuccessDate() {
@@ -260,7 +264,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the date the service's assignment succeeded.
+    * Optional. Gets or sets the date the service's assignment succeeded.
     * @param serviceObjectiveAssignmentSuccessDateValue The
     * ServiceObjectiveAssignmentSuccessDate value.
     */
@@ -271,7 +275,7 @@ public class Database {
     private String serviceObjectiveId;
     
     /**
-    * Gets or sets the id of this service objective.
+    * Optional. Gets or sets the id of this service objective.
     * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId() {
@@ -279,7 +283,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the id of this service objective.
+    * Optional. Gets or sets the id of this service objective.
     * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
     public void setServiceObjectiveId(final String serviceObjectiveIdValue) {
@@ -289,7 +293,7 @@ public class Database {
     private String sizeMB;
     
     /**
-    * Gets or sets the size of this database in megabytes (MB).
+    * Optional. Gets or sets the size of this database in megabytes (MB).
     * @return The SizeMB value.
     */
     public String getSizeMB() {
@@ -297,7 +301,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the size of this database in megabytes (MB).
+    * Optional. Gets or sets the size of this database in megabytes (MB).
     * @param sizeMBValue The SizeMB value.
     */
     public void setSizeMB(final String sizeMBValue) {
@@ -307,7 +311,7 @@ public class Database {
     private String state;
     
     /**
-    * Gets or sets the state of the database.
+    * Optional. Gets or sets the state of the database.
     * @return The State value.
     */
     public String getState() {
@@ -315,7 +319,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the state of the database.
+    * Optional. Gets or sets the state of the database.
     * @param stateValue The State value.
     */
     public void setState(final String stateValue) {
@@ -325,7 +329,7 @@ public class Database {
     private String type;
     
     /**
-    * Gets or sets the type of resource.
+    * Optional. Gets or sets the type of resource.
     * @return The Type value.
     */
     public String getType() {
@@ -333,7 +337,7 @@ public class Database {
     }
     
     /**
-    * Gets or sets the type of resource.
+    * Optional. Gets or sets the type of resource.
     * @param typeValue The Type value.
     */
     public void setType(final String typeValue) {

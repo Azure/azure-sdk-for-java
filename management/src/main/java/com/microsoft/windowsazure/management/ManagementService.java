@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  *
  */
-public final class ManagementService
-{
-    private ManagementService()
-    {
+public final class ManagementService {
+    private ManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public final class ManagementService
      * Creates an instance of the <code>ManagementClient</code> API.
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create()
-    {
+    public static ManagementClient create() {
         return Configuration.getInstance().create(ManagementClient.class);
     }
 
@@ -45,8 +42,7 @@ public final class ManagementService
      * configuration for the service management.
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create(final Configuration config)
-    {
+    public static ManagementClient create(final Configuration config) {
         return config.create(ManagementClient.class);
     }
 
@@ -57,8 +53,7 @@ public final class ManagementService
      * of the service management service.
      * @return An instance of the <code>ManagementClient</code> API.
      */
-    public static ManagementClient create(final String profile)
-    {
+    public static ManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 ManagementClient.class);
     }
@@ -73,8 +68,7 @@ public final class ManagementService
      * @return An instance of the <code>ManagementClient</code> API.
      */
     public static ManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, ManagementClient.class);
     }
 }

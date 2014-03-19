@@ -23,36 +23,30 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
-public class ResourceLocationManager
-{
+public class ResourceLocationManager {
     private URI baseURI;
 
     public ResourceLocationManager(@Named(MediaConfiguration.URI) String baseUri)
-            throws URISyntaxException
-    {
+            throws URISyntaxException {
         this.baseURI = new URI(baseUri);
     }
 
-    public URI getBaseURI()
-    {
+    public URI getBaseURI() {
         return baseURI;
     }
 
-    public URI getRedirectedURI(URI originalURI)
-    {
+    public URI getRedirectedURI(URI originalURI) {
         UriBuilder uriBuilder = UriBuilder.fromUri(baseURI).path(
                 originalURI.getPath());
         String queryString = originalURI.getRawQuery();
 
-        if (queryString != null && !queryString.isEmpty())
-        {
+        if (queryString != null && !queryString.isEmpty()) {
             uriBuilder.replaceQuery(queryString);
         }
         return uriBuilder.build();
     }
 
-    public void setRedirectedURI(String newURI) throws URISyntaxException
-    {
+    public void setRedirectedURI(String newURI) throws URISyntaxException {
         baseURI = new URI(newURI);
     }
 }

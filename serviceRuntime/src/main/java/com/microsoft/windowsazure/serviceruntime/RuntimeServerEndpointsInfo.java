@@ -52,8 +52,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "RuntimeServerEndpointsInfo", propOrder = { "runtimeServerEndpoint" })
-class RuntimeServerEndpointsInfo
-{
+class RuntimeServerEndpointsInfo {
 
     @XmlElement(name = "RuntimeServerEndpoint")
     protected List<RuntimeServerEndpointInfo> runtimeServerEndpoint;
@@ -81,10 +80,8 @@ class RuntimeServerEndpointsInfo
      * 
      * 
      */
-    public List<RuntimeServerEndpointInfo> getRuntimeServerEndpoint()
-    {
-        if (runtimeServerEndpoint == null)
-        {
+    public List<RuntimeServerEndpointInfo> getRuntimeServerEndpoint() {
+        if (runtimeServerEndpoint == null) {
             runtimeServerEndpoint = new ArrayList<RuntimeServerEndpointInfo>();
         }
         return this.runtimeServerEndpoint;

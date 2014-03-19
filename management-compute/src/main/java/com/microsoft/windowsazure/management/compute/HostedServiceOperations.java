@@ -61,8 +61,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Add Extension operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Add Extension
+    * operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -97,8 +98,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Add Extension operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Add Extension
+    * operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -121,8 +123,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Add Extension operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Add Extension
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -148,8 +151,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169558.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Add Extension operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Add Extension
+    * operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -161,7 +165,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -177,7 +181,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -189,9 +193,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -207,9 +211,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -221,7 +225,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154116.aspx for
     * more information)
     *
-    * @param serviceName The cloud service name that you would like to use.
+    * @param serviceName Required. The cloud service name that you would like
+    * to use.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -240,7 +245,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154116.aspx for
     * more information)
     *
-    * @param serviceName The cloud service name that you would like to use.
+    * @param serviceName Required. The cloud service name that you would like
+    * to use.
     * @return The Check Hosted Service Name Availability operation response.
     */
     Future<HostedServiceCheckNameAvailabilityResponse> checkNameAvailabilityAsync(String serviceName);
@@ -251,8 +257,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Hosted Service
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Hosted
+    * Service operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -285,8 +291,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441304.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Hosted Service
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Hosted
+    * Service operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -298,7 +304,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -324,7 +330,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -336,7 +342,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -367,7 +373,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441305.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -386,9 +392,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -419,9 +425,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169560.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -442,7 +448,7 @@ public interface HostedServiceOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -465,7 +471,7 @@ public interface HostedServiceOperations {
     * (see http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx
     * for more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return The Get Hosted Service operation response.
     */
     Future<HostedServiceGetResponse> getAsync(String serviceName);
@@ -479,7 +485,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -503,7 +509,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460806.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return The detailed Get Hosted Service operation response.
     */
     Future<HostedServiceGetDetailedResponse> getDetailedAsync(String serviceName);
@@ -514,9 +520,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169557.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -535,9 +541,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169557.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param extensionId The identifier that was assigned to the extension when
-    * it was added to the cloud service
+    * @param serviceName Required. The name of the cloud service.
+    * @param extensionId Required. The identifier that was assigned to the
+    * extension when it was added to the cloud service
     * @return The Get Extension operation response.
     */
     Future<HostedServiceGetExtensionResponse> getExtensionAsync(String serviceName, String extensionId);
@@ -612,7 +618,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169561.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -631,7 +637,7 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn169561.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
+    * @param serviceName Required. The name of the cloud service.
     * @return The List Extensions operation response.
     */
     Future<HostedServiceListExtensionsResponse> listExtensionsAsync(String serviceName);
@@ -645,8 +651,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
-    * @param providerNamespace The provider namespace.
-    * @param extensionType The extension type name.
+    * @param providerNamespace Required. The provider namespace.
+    * @param extensionType Required. The extension type name.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -668,8 +674,8 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/dn495437.aspx for
     * more information)
     *
-    * @param providerNamespace The provider namespace.
-    * @param extensionType The extension type name.
+    * @param providerNamespace Required. The provider namespace.
+    * @param extensionType Required. The extension type name.
     * @return The List Available Extensions operation response.
     */
     Future<HostedServiceListAvailableExtensionsResponse> listExtensionVersionsAsync(String providerNamespace, String extensionType);
@@ -680,9 +686,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Update Hosted Service
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Update Hosted
+    * Service operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -693,8 +699,6 @@ public interface HostedServiceOperations {
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
     * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -705,10 +709,12 @@ public interface HostedServiceOperations {
     * inspected using the Throwable.getCause() method.
     * @throws ServiceException Thrown if the server returned an error for the
     * request.
+    * @throws URISyntaxException Thrown if there was an error parsing a URI in
+    * the response.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
+    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException;
     
     /**
     * The Update Hosted Service operation can update the label or description
@@ -716,9 +722,9 @@ public interface HostedServiceOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/gg441303.aspx for
     * more information)
     *
-    * @param serviceName The name of the cloud service.
-    * @param parameters Parameters supplied to the Update Hosted Service
-    * operation.
+    * @param serviceName Required. The name of the cloud service.
+    * @param parameters Required. Parameters supplied to the Update Hosted
+    * Service operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

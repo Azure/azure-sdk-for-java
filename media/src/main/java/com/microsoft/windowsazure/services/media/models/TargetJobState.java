@@ -20,8 +20,7 @@ import java.security.InvalidParameterException;
 /**
  * The Enum TargetJobState.
  */
-public enum TargetJobState
-{
+public enum TargetJobState {
     /** None. */
     None(0),
 
@@ -40,8 +39,7 @@ public enum TargetJobState
      * @param targetJobStateCode
      *            the job state code
      */
-    private TargetJobState(int targetJobStateCode)
-    {
+    private TargetJobState(int targetJobStateCode) {
         this.targetJobStateCode = targetJobStateCode;
     }
 
@@ -50,8 +48,7 @@ public enum TargetJobState
      * 
      * @return the code
      */
-    public int getCode()
-    {
+    public int getCode() {
         return this.targetJobStateCode;
     }
 
@@ -62,10 +59,8 @@ public enum TargetJobState
      *            the target job state code
      * @return the job state
      */
-    public static TargetJobState fromCode(int targetJobStateCode)
-    {
-        switch (targetJobStateCode)
-        {
+    public static TargetJobState fromCode(int targetJobStateCode) {
+        switch (targetJobStateCode) {
         case 0:
             return TargetJobState.None;
         case 1:

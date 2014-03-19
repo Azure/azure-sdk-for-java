@@ -31,7 +31,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     private String oSFamily;
     
     /**
-    * The device OS Family.
+    * Optional. The device OS Family.
     * @return The OSFamily value.
     */
     public String getOSFamily() {
@@ -39,7 +39,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     }
     
     /**
-    * The device OS Family.
+    * Optional. The device OS Family.
     * @param oSFamilyValue The OSFamily value.
     */
     public void setOSFamily(final String oSFamilyValue) {
@@ -49,7 +49,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     private String platform;
     
     /**
-    * The device platform.
+    * Optional. The device platform.
     * @return The Platform value.
     */
     public String getPlatform() {
@@ -57,7 +57,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     }
     
     /**
-    * The device platform.
+    * Optional. The device platform.
     * @param platformValue The Platform value.
     */
     public void setPlatform(final String platformValue) {
@@ -67,7 +67,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     private String vendor;
     
     /**
-    * The name of the device vendor.
+    * Optional. The name of the device vendor.
     * @return The Vendor value.
     */
     public String getVendor() {
@@ -75,7 +75,7 @@ public class GatewayGetDeviceConfigurationScriptParameters {
     }
     
     /**
-    * The name of the device vendor.
+    * Optional. The name of the device vendor.
     * @param vendorValue The Vendor value.
     */
     public void setVendor(final String vendorValue) {

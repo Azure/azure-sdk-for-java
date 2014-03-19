@@ -21,13 +21,11 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  *
  */
-public final class WebSiteManagementService
-{
+public final class WebSiteManagementService {
     /**
     * The default constructor.
     */
-    private WebSiteManagementService()
-    {
+    private WebSiteManagementService() {
         // class is not instantiated
     }
 
@@ -35,8 +33,7 @@ public final class WebSiteManagementService
      * Creates an instance of the <code>WebSiteManagementClient</code> API.
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create()
-    {
+    public static WebSiteManagementClient create() {
         return Configuration.getInstance()
                 .create(WebSiteManagementClient.class);
     }
@@ -49,8 +46,7 @@ public final class WebSiteManagementService
      * configuration for the service management.
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create(final Configuration config)
-    {
+    public static WebSiteManagementClient create(final Configuration config) {
         return config.create(WebSiteManagementClient.class);
     }
 
@@ -61,8 +57,7 @@ public final class WebSiteManagementService
      * of the service management service.
      * @return The <code>WebSiteManagementClient</code>.
      */
-    public static WebSiteManagementClient create(final String profile)
-    {
+    public static WebSiteManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 WebSiteManagementClient.class);
     }
@@ -77,8 +72,7 @@ public final class WebSiteManagementService
      * @return The <code>WebSiteManagementClient</code>.
      */
     public static WebSiteManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, WebSiteManagementClient.class);
     }
 }

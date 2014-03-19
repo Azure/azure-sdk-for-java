@@ -56,8 +56,8 @@ public class WindowsRemoteManagementListener {
     private VirtualMachineWindowsRemoteManagementListenerType listenerType;
     
     /**
-    * Specifies the type of listener. This value can be Http or Https. The
-    * value is case sensitive.
+    * Required. Specifies the type of listener. This value can be Http or
+    * Https. The value is case sensitive.
     * @return The ListenerType value.
     */
     public VirtualMachineWindowsRemoteManagementListenerType getListenerType() {
@@ -65,8 +65,8 @@ public class WindowsRemoteManagementListener {
     }
     
     /**
-    * Specifies the type of listener. This value can be Http or Https. The
-    * value is case sensitive.
+    * Required. Specifies the type of listener. This value can be Http or
+    * Https. The value is case sensitive.
     * @param listenerTypeValue The ListenerType value.
     */
     public void setListenerType(final VirtualMachineWindowsRemoteManagementListenerType listenerTypeValue) {

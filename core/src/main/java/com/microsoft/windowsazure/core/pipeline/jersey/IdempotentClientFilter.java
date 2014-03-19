@@ -26,8 +26,7 @@ import com.sun.jersey.api.client.filter.ClientFilter;
  * this filter more than once.
  * 
  */
-public abstract class IdempotentClientFilter extends ClientFilter
-{
+public abstract class IdempotentClientFilter extends ClientFilter {
     /*
      * (non-Javadoc)
      * 
@@ -37,12 +36,10 @@ public abstract class IdempotentClientFilter extends ClientFilter
      */
     @Override
     public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException
-    {
+            throws ClientHandlerException {
         String key = getKey();
 
-        if (cr.getProperties().containsKey(key))
-        {
+        if (cr.getProperties().containsKey(key)) {
             return this.getNext().handle(cr);
         }
         cr.getProperties().put(key, this);
@@ -67,8 +64,7 @@ public abstract class IdempotentClientFilter extends ClientFilter
      * 
      * @return Key name as a string
      */
-    protected String getKey()
-    {
+    protected String getKey() {
         return this.getClass().getName();
     }
 }

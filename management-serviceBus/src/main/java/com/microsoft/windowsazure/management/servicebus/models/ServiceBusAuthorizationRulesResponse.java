@@ -34,7 +34,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     private ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRules;
     
     /**
-    * The list of authorization rules.
+    * Optional. The list of authorization rules.
     * @return The AuthorizationRules value.
     */
     public ArrayList<ServiceBusSharedAccessAuthorizationRule> getAuthorizationRules() {
@@ -42,7 +42,7 @@ public class ServiceBusAuthorizationRulesResponse extends OperationResponse impl
     }
     
     /**
-    * The list of authorization rules.
+    * Optional. The list of authorization rules.
     * @param authorizationRulesValue The AuthorizationRules value.
     */
     public void setAuthorizationRules(final ArrayList<ServiceBusSharedAccessAuthorizationRule> authorizationRulesValue) {

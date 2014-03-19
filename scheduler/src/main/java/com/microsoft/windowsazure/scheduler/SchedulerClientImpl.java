@@ -39,78 +39,75 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implements SchedulerClient
-{
+public class SchedulerClientImpl extends ServiceClient<SchedulerClient>
+        implements SchedulerClient {
     private URI baseUri;
-    
-    public URI getBaseUri()
-    {
+
+    public URI getBaseUri() {
         return this.baseUri;
     }
-    
+
     private String cloudServiceName;
-    
-    public String getCloudServiceName()
-    {
+
+    public String getCloudServiceName() {
         return this.cloudServiceName;
     }
-    
+
     private SubscriptionCloudCredentials credentials;
-    
-    public SubscriptionCloudCredentials getCredentials()
-    {
+
+    public SubscriptionCloudCredentials getCredentials() {
         return this.credentials;
     }
-    
+
     private String jobCollectionName;
-    
-    public String getJobCollectionName()
-    {
+
+    public String getJobCollectionName() {
         return this.jobCollectionName;
     }
-    
+
     private JobOperations jobs;
-    
-    public JobOperations getJobsOperations()
-    {
+
+    public JobOperations getJobsOperations() {
         return this.jobs;
     }
-    
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    private SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
+     * Initializes a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    private SchedulerClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService) {
         super(httpBuilder, executorService);
         this.jobs = new JobOperationsImpl(this);
     }
-    
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, SubscriptionCloudCredentials credentials, String cloudServiceName, String jobCollectionName, URI baseUri)
-    {
+     * Initializes a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    public SchedulerClientImpl(HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            SubscriptionCloudCredentials credentials, String cloudServiceName,
+            String jobCollectionName, URI baseUri) {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
-        if (baseUri == null)
-        {
+        if (baseUri == null) {
             throw new NullPointerException("baseUri");
         }
         this.credentials = credentials;
@@ -118,28 +115,31 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         this.jobCollectionName = jobCollectionName;
         this.baseUri = baseUri;
     }
-    
+
     /**
-    * Initializes a new instance of the SchedulerClientImpl class.
-    * Initializes a new instance of the SchedulerClientImpl class.
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
+     * Initializes a new instance of the SchedulerClientImpl class. Initializes
+     * a new instance of the SchedulerClientImpl class.
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
     @Inject
-    public SchedulerClientImpl(HttpClientBuilder httpBuilder, ExecutorService executorService, @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials, String cloudServiceName, String jobCollectionName) throws java.net.URISyntaxException
-    {
+    public SchedulerClientImpl(
+            HttpClientBuilder httpBuilder,
+            ExecutorService executorService,
+            @Named(ManagementConfiguration.SUBSCRIPTION_CLOUD_CREDENTIALS) SubscriptionCloudCredentials credentials,
+            String cloudServiceName, String jobCollectionName)
+            throws java.net.URISyntaxException {
         this(httpBuilder, executorService);
-        if (credentials == null)
-        {
+        if (credentials == null) {
             throw new NullPointerException("credentials");
         }
-        if (cloudServiceName == null)
-        {
+        if (cloudServiceName == null) {
             throw new NullPointerException("cloudServiceName");
         }
-        if (jobCollectionName == null)
-        {
+        if (jobCollectionName == null) {
             throw new NullPointerException("jobCollectionName");
         }
         this.credentials = credentials;
@@ -147,374 +147,326 @@ public class SchedulerClientImpl extends ServiceClient<SchedulerClient> implemen
         this.jobCollectionName = jobCollectionName;
         this.baseUri = new URI("https://management.core.windows.net/");
     }
-    
+
     /**
-    *
-    * @param httpBuilder The HTTP client builder.
-    * @param executorService The executor service.
-    */
-    protected SchedulerClientImpl newInstance(HttpClientBuilder httpBuilder, ExecutorService executorService)
-    {
-        return new SchedulerClientImpl(httpBuilder, executorService, this.getCredentials(), this.getCloudServiceName(), this.getJobCollectionName(), this.getBaseUri());
+     * 
+     * @param httpBuilder
+     *            The HTTP client builder.
+     * @param executorService
+     *            The executor service.
+     */
+    protected SchedulerClientImpl newInstance(HttpClientBuilder httpBuilder,
+            ExecutorService executorService) {
+        return new SchedulerClientImpl(httpBuilder, executorService,
+                this.getCredentials(), this.getCloudServiceName(),
+                this.getJobCollectionName(), this.getBaseUri());
     }
-    
+
     /**
-    * Parse enum values for type JobActionType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobActionType parseJobActionType(String value)
-    {
-        if (value == "http")
-        {
+     * Parse enum values for type JobActionType.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobActionType parseJobActionType(String value) {
+        if (value == "http") {
             return JobActionType.Http;
         }
-        if (value == "https")
-        {
+        if (value == "https") {
             return JobActionType.Https;
         }
-        if (value == "storageQueue")
-        {
+        if (value == "storageQueue") {
             return JobActionType.StorageQueue;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobActionType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobActionTypeToString(JobActionType value)
-    {
-        if (value == JobActionType.Http)
-        {
+     * Convert an enum of type JobActionType to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobActionTypeToString(JobActionType value) {
+        if (value == JobActionType.Http) {
             return "http";
         }
-        if (value == JobActionType.Https)
-        {
+        if (value == JobActionType.Https) {
             return "https";
         }
-        if (value == JobActionType.StorageQueue)
-        {
+        if (value == JobActionType.StorageQueue) {
             return "storageQueue";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobHistoryActionName.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobHistoryActionName parseJobHistoryActionName(String value)
-    {
-        if (value == "MainAction")
-        {
+     * Parse enum values for type JobHistoryActionName.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobHistoryActionName parseJobHistoryActionName(String value) {
+        if (value == "MainAction") {
             return JobHistoryActionName.MainAction;
         }
-        if (value == "ErrorAction")
-        {
+        if (value == "ErrorAction") {
             return JobHistoryActionName.ErrorAction;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobHistoryActionName to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobHistoryActionNameToString(JobHistoryActionName value)
-    {
-        if (value == JobHistoryActionName.MainAction)
-        {
+     * Convert an enum of type JobHistoryActionName to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobHistoryActionNameToString(JobHistoryActionName value) {
+        if (value == JobHistoryActionName.MainAction) {
             return "MainAction";
         }
-        if (value == JobHistoryActionName.ErrorAction)
-        {
+        if (value == JobHistoryActionName.ErrorAction) {
             return "ErrorAction";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobHistoryStatus.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobHistoryStatus parseJobHistoryStatus(String value)
-    {
-        if (value == "completed")
-        {
+     * Parse enum values for type JobHistoryStatus.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobHistoryStatus parseJobHistoryStatus(String value) {
+        if (value == "completed") {
             return JobHistoryStatus.Completed;
         }
-        if (value == "failed")
-        {
+        if (value == "failed") {
             return JobHistoryStatus.Failed;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobHistoryStatus to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobHistoryStatusToString(JobHistoryStatus value)
-    {
-        if (value == JobHistoryStatus.Completed)
-        {
+     * Convert an enum of type JobHistoryStatus to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobHistoryStatusToString(JobHistoryStatus value) {
+        if (value == JobHistoryStatus.Completed) {
             return "completed";
         }
-        if (value == JobHistoryStatus.Failed)
-        {
+        if (value == JobHistoryStatus.Failed) {
             return "failed";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobRecurrenceFrequency.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobRecurrenceFrequency parseJobRecurrenceFrequency(String value)
-    {
-        if (value == "minute")
-        {
+     * Parse enum values for type JobRecurrenceFrequency.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobRecurrenceFrequency parseJobRecurrenceFrequency(String value) {
+        if (value == "minute") {
             return JobRecurrenceFrequency.Minute;
         }
-        if (value == "hour")
-        {
+        if (value == "hour") {
             return JobRecurrenceFrequency.Hour;
         }
-        if (value == "day")
-        {
+        if (value == "day") {
             return JobRecurrenceFrequency.Day;
         }
-        if (value == "week")
-        {
+        if (value == "week") {
             return JobRecurrenceFrequency.Week;
         }
-        if (value == "month")
-        {
+        if (value == "month") {
             return JobRecurrenceFrequency.Month;
         }
-        if (value == "year")
-        {
+        if (value == "year") {
             return JobRecurrenceFrequency.Year;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobRecurrenceFrequency to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobRecurrenceFrequencyToString(JobRecurrenceFrequency value)
-    {
-        if (value == JobRecurrenceFrequency.Minute)
-        {
+     * Convert an enum of type JobRecurrenceFrequency to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobRecurrenceFrequencyToString(JobRecurrenceFrequency value) {
+        if (value == JobRecurrenceFrequency.Minute) {
             return "minute";
         }
-        if (value == JobRecurrenceFrequency.Hour)
-        {
+        if (value == JobRecurrenceFrequency.Hour) {
             return "hour";
         }
-        if (value == JobRecurrenceFrequency.Day)
-        {
+        if (value == JobRecurrenceFrequency.Day) {
             return "day";
         }
-        if (value == JobRecurrenceFrequency.Week)
-        {
+        if (value == JobRecurrenceFrequency.Week) {
             return "week";
         }
-        if (value == JobRecurrenceFrequency.Month)
-        {
+        if (value == JobRecurrenceFrequency.Month) {
             return "month";
         }
-        if (value == JobRecurrenceFrequency.Year)
-        {
+        if (value == JobRecurrenceFrequency.Year) {
             return "year";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobScheduleDay.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobScheduleDay parseJobScheduleDay(String value)
-    {
-        if (value == "monday")
-        {
+     * Parse enum values for type JobScheduleDay.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobScheduleDay parseJobScheduleDay(String value) {
+        if (value == "monday") {
             return JobScheduleDay.Monday;
         }
-        if (value == "tuesday")
-        {
+        if (value == "tuesday") {
             return JobScheduleDay.Tuesday;
         }
-        if (value == "wednesday")
-        {
+        if (value == "wednesday") {
             return JobScheduleDay.Wednesday;
         }
-        if (value == "thursday")
-        {
+        if (value == "thursday") {
             return JobScheduleDay.Thursday;
         }
-        if (value == "friday")
-        {
+        if (value == "friday") {
             return JobScheduleDay.Friday;
         }
-        if (value == "saturday")
-        {
+        if (value == "saturday") {
             return JobScheduleDay.Saturday;
         }
-        if (value == "sunday")
-        {
+        if (value == "sunday") {
             return JobScheduleDay.Sunday;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobScheduleDay to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobScheduleDayToString(JobScheduleDay value)
-    {
-        if (value == JobScheduleDay.Monday)
-        {
+     * Convert an enum of type JobScheduleDay to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobScheduleDayToString(JobScheduleDay value) {
+        if (value == JobScheduleDay.Monday) {
             return "monday";
         }
-        if (value == JobScheduleDay.Tuesday)
-        {
+        if (value == JobScheduleDay.Tuesday) {
             return "tuesday";
         }
-        if (value == JobScheduleDay.Wednesday)
-        {
+        if (value == JobScheduleDay.Wednesday) {
             return "wednesday";
         }
-        if (value == JobScheduleDay.Thursday)
-        {
+        if (value == JobScheduleDay.Thursday) {
             return "thursday";
         }
-        if (value == JobScheduleDay.Friday)
-        {
+        if (value == JobScheduleDay.Friday) {
             return "friday";
         }
-        if (value == JobScheduleDay.Saturday)
-        {
+        if (value == JobScheduleDay.Saturday) {
             return "saturday";
         }
-        if (value == JobScheduleDay.Sunday)
-        {
+        if (value == JobScheduleDay.Sunday) {
             return "sunday";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type JobState.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static JobState parseJobState(String value)
-    {
-        if (value == "enabled")
-        {
+     * Parse enum values for type JobState.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static JobState parseJobState(String value) {
+        if (value == "enabled") {
             return JobState.Enabled;
         }
-        if (value == "disabled")
-        {
+        if (value == "disabled") {
             return JobState.Disabled;
         }
-        if (value == "faulted")
-        {
+        if (value == "faulted") {
             return JobState.Faulted;
         }
-        if (value == "completed")
-        {
+        if (value == "completed") {
             return JobState.Completed;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type JobState to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String jobStateToString(JobState value)
-    {
-        if (value == JobState.Enabled)
-        {
+     * Convert an enum of type JobState to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String jobStateToString(JobState value) {
+        if (value == JobState.Enabled) {
             return "enabled";
         }
-        if (value == JobState.Disabled)
-        {
+        if (value == JobState.Disabled) {
             return "disabled";
         }
-        if (value == JobState.Faulted)
-        {
+        if (value == JobState.Faulted) {
             return "faulted";
         }
-        if (value == JobState.Completed)
-        {
+        if (value == JobState.Completed) {
             return "completed";
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Parse enum values for type RetryType.
-    *
-    * @param value The value to parse.
-    * @return The enum value.
-    */
-     static RetryType parseRetryType(String value)
-    {
-        if (value == "none")
-        {
+     * Parse enum values for type RetryType.
+     * 
+     * @param value
+     *            The value to parse.
+     * @return The enum value.
+     */
+    static RetryType parseRetryType(String value) {
+        if (value == "none") {
             return RetryType.None;
         }
-        if (value == "fixed")
-        {
+        if (value == "fixed") {
             return RetryType.Fixed;
         }
         throw new IllegalArgumentException("value");
     }
-    
+
     /**
-    * Convert an enum of type RetryType to a string.
-    *
-    * @param value The value to convert to a string.
-    * @return The enum value as a string.
-    */
-     static String retryTypeToString(RetryType value)
-    {
-        if (value == RetryType.None)
-        {
+     * Convert an enum of type RetryType to a string.
+     * 
+     * @param value
+     *            The value to convert to a string.
+     * @return The enum value as a string.
+     */
+    static String retryTypeToString(RetryType value) {
+        if (value == RetryType.None) {
             return "none";
         }
-        if (value == RetryType.Fixed)
-        {
+        if (value == RetryType.Fixed) {
             return "fixed";
         }
         throw new IllegalArgumentException("value");

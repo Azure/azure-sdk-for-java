@@ -39,8 +39,7 @@ import javax.xml.namespace.QName;
  * 
  */
 @XmlRegistry
-class ObjectFactory
-{
+class ObjectFactory {
 
     private final static QName _GoalState_QNAME = new QName("", "GoalState");
     private final static QName _RoleEnvironment_QNAME = new QName("",
@@ -56,16 +55,14 @@ class ObjectFactory
      * com.microsoft.windowsazure.serviceruntime
      * 
      */
-    public ObjectFactory()
-    {
+    public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link StatusLeaseInfo.Release }
      * 
      */
-    public StatusLeaseInfo.Release createStatusLeaseInfoRelease()
-    {
+    public StatusLeaseInfo.Release createStatusLeaseInfoRelease() {
         return new StatusLeaseInfo.Release();
     }
 
@@ -73,8 +70,7 @@ class ObjectFactory
      * Create an instance of {@link RuntimeServerEndpointsInfo }
      * 
      */
-    public RuntimeServerEndpointsInfo createRuntimeServerEndpointsInfo()
-    {
+    public RuntimeServerEndpointsInfo createRuntimeServerEndpointsInfo() {
         return new RuntimeServerEndpointsInfo();
     }
 
@@ -82,8 +78,7 @@ class ObjectFactory
      * Create an instance of {@link RuntimeServerEndpointInfo }
      * 
      */
-    public RuntimeServerEndpointInfo createRuntimeServerEndpointInfo()
-    {
+    public RuntimeServerEndpointInfo createRuntimeServerEndpointInfo() {
         return new RuntimeServerEndpointInfo();
     }
 
@@ -91,8 +86,7 @@ class ObjectFactory
      * Create an instance of {@link RuntimeServerDiscoveryInfo }
      * 
      */
-    public RuntimeServerDiscoveryInfo createRuntimeServerDiscoveryInfo()
-    {
+    public RuntimeServerDiscoveryInfo createRuntimeServerDiscoveryInfo() {
         return new RuntimeServerDiscoveryInfo();
     }
 
@@ -100,8 +94,7 @@ class ObjectFactory
      * Create an instance of {@link GoalStateInfo }
      * 
      */
-    public GoalStateInfo createGoalStateInfo()
-    {
+    public GoalStateInfo createGoalStateInfo() {
         return new GoalStateInfo();
     }
 
@@ -109,8 +102,7 @@ class ObjectFactory
      * Create an instance of {@link LocalResourcesInfo }
      * 
      */
-    public LocalResourcesInfo createLocalResourcesInfo()
-    {
+    public LocalResourcesInfo createLocalResourcesInfo() {
         return new LocalResourcesInfo();
     }
 
@@ -118,8 +110,7 @@ class ObjectFactory
      * Create an instance of {@link ConfigurationSettingInfo }
      * 
      */
-    public ConfigurationSettingInfo createConfigurationSettingInfo()
-    {
+    public ConfigurationSettingInfo createConfigurationSettingInfo() {
         return new ConfigurationSettingInfo();
     }
 
@@ -127,8 +118,7 @@ class ObjectFactory
      * Create an instance of {@link CurrentStateInfo }
      * 
      */
-    public CurrentStateInfo createCurrentStateInfo()
-    {
+    public CurrentStateInfo createCurrentStateInfo() {
         return new CurrentStateInfo();
     }
 
@@ -136,8 +126,7 @@ class ObjectFactory
      * Create an instance of {@link CurrentRoleInstanceInfo }
      * 
      */
-    public CurrentRoleInstanceInfo createCurrentRoleInstanceInfo()
-    {
+    public CurrentRoleInstanceInfo createCurrentRoleInstanceInfo() {
         return new CurrentRoleInstanceInfo();
     }
 
@@ -145,8 +134,7 @@ class ObjectFactory
      * Create an instance of {@link LocalResourceInfo }
      * 
      */
-    public LocalResourceInfo createLocalResourceInfo()
-    {
+    public LocalResourceInfo createLocalResourceInfo() {
         return new LocalResourceInfo();
     }
 
@@ -154,8 +142,7 @@ class ObjectFactory
      * Create an instance of {@link RolesInfo }
      * 
      */
-    public RolesInfo createRolesInfo()
-    {
+    public RolesInfo createRolesInfo() {
         return new RolesInfo();
     }
 
@@ -163,8 +150,7 @@ class ObjectFactory
      * Create an instance of {@link StatusLeaseInfo }
      * 
      */
-    public StatusLeaseInfo createStatusLeaseInfo()
-    {
+    public StatusLeaseInfo createStatusLeaseInfo() {
         return new StatusLeaseInfo();
     }
 
@@ -172,8 +158,7 @@ class ObjectFactory
      * Create an instance of {@link DeploymentInfo }
      * 
      */
-    public DeploymentInfo createDeploymentInfo()
-    {
+    public DeploymentInfo createDeploymentInfo() {
         return new DeploymentInfo();
     }
 
@@ -181,8 +166,7 @@ class ObjectFactory
      * Create an instance of {@link RoleInstancesInfo }
      * 
      */
-    public RoleInstancesInfo createRoleInstancesInfo()
-    {
+    public RoleInstancesInfo createRoleInstancesInfo() {
         return new RoleInstancesInfo();
     }
 
@@ -190,8 +174,7 @@ class ObjectFactory
      * Create an instance of {@link RoleInfo }
      * 
      */
-    public RoleInfo createRoleInfo()
-    {
+    public RoleInfo createRoleInfo() {
         return new RoleInfo();
     }
 
@@ -199,8 +182,7 @@ class ObjectFactory
      * Create an instance of {@link ConfigurationSettingsInfo }
      * 
      */
-    public ConfigurationSettingsInfo createConfigurationSettingsInfo()
-    {
+    public ConfigurationSettingsInfo createConfigurationSettingsInfo() {
         return new ConfigurationSettingsInfo();
     }
 
@@ -208,8 +190,7 @@ class ObjectFactory
      * Create an instance of {@link EndpointsInfo }
      * 
      */
-    public EndpointsInfo createEndpointsInfo()
-    {
+    public EndpointsInfo createEndpointsInfo() {
         return new EndpointsInfo();
     }
 
@@ -217,8 +198,7 @@ class ObjectFactory
      * Create an instance of {@link AcquireLeaseInfo }
      * 
      */
-    public AcquireLeaseInfo createAcquireLeaseInfo()
-    {
+    public AcquireLeaseInfo createAcquireLeaseInfo() {
         return new AcquireLeaseInfo();
     }
 
@@ -226,8 +206,7 @@ class ObjectFactory
      * Create an instance of {@link EndpointInfo }
      * 
      */
-    public EndpointInfo createEndpointInfo()
-    {
+    public EndpointInfo createEndpointInfo() {
         return new EndpointInfo();
     }
 
@@ -235,8 +214,7 @@ class ObjectFactory
      * Create an instance of {@link RoleEnvironmentInfo }
      * 
      */
-    public RoleEnvironmentInfo createRoleEnvironmentInfo()
-    {
+    public RoleEnvironmentInfo createRoleEnvironmentInfo() {
         return new RoleEnvironmentInfo();
     }
 
@@ -244,8 +222,7 @@ class ObjectFactory
      * Create an instance of {@link RoleInstanceInfo }
      * 
      */
-    public RoleInstanceInfo createRoleInstanceInfo()
-    {
+    public RoleInstanceInfo createRoleInstanceInfo() {
         return new RoleInstanceInfo();
     }
 
@@ -255,8 +232,7 @@ class ObjectFactory
      * 
      */
     @XmlElementDecl(namespace = "", name = "GoalState")
-    public JAXBElement<GoalStateInfo> createGoalState(GoalStateInfo value)
-    {
+    public JAXBElement<GoalStateInfo> createGoalState(GoalStateInfo value) {
         return new JAXBElement<GoalStateInfo>(_GoalState_QNAME,
                 GoalStateInfo.class, null, value);
     }
@@ -268,8 +244,7 @@ class ObjectFactory
      */
     @XmlElementDecl(namespace = "", name = "RoleEnvironment")
     public JAXBElement<RoleEnvironmentInfo> createRoleEnvironment(
-            RoleEnvironmentInfo value)
-    {
+            RoleEnvironmentInfo value) {
         return new JAXBElement<RoleEnvironmentInfo>(_RoleEnvironment_QNAME,
                 RoleEnvironmentInfo.class, null, value);
     }
@@ -281,8 +256,7 @@ class ObjectFactory
      */
     @XmlElementDecl(namespace = "", name = "CurrentState")
     public JAXBElement<CurrentStateInfo> createCurrentState(
-            CurrentStateInfo value)
-    {
+            CurrentStateInfo value) {
         return new JAXBElement<CurrentStateInfo>(_CurrentState_QNAME,
                 CurrentStateInfo.class, null, value);
     }
@@ -294,8 +268,7 @@ class ObjectFactory
      */
     @XmlElementDecl(namespace = "", name = "RuntimeServerDiscovery")
     public JAXBElement<RuntimeServerDiscoveryInfo> createRuntimeServerDiscovery(
-            RuntimeServerDiscoveryInfo value)
-    {
+            RuntimeServerDiscoveryInfo value) {
         return new JAXBElement<RuntimeServerDiscoveryInfo>(
                 _RuntimeServerDiscovery_QNAME,
                 RuntimeServerDiscoveryInfo.class, null, value);

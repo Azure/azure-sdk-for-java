@@ -33,6 +33,7 @@ public class ServiceObjectiveGetResponse extends OperationResponse {
     private ServiceObjective serviceObjective;
     
     /**
+    * Optional.
     * @return The ServiceObjective value.
     */
     public ServiceObjective getServiceObjective() {
@@ -40,6 +41,7 @@ public class ServiceObjectiveGetResponse extends OperationResponse {
     }
     
     /**
+    * Optional.
     * @param serviceObjectiveValue The ServiceObjective value.
     */
     public void setServiceObjective(final ServiceObjective serviceObjectiveValue) {

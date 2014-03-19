@@ -31,20 +31,17 @@ import com.microsoft.windowsazure.services.media.implementation.content.AccessPo
  * Tests for access policy entity
  * 
  */
-public class AccessPolicyEntityTest
-{
+public class AccessPolicyEntityTest {
     private static final String examplePolicyId = "nb:pid:UUID:c577052a-6c0a-45b0-bf15-3ff3a2a41802";
     private final String expectedUri;
 
-    public AccessPolicyEntityTest() throws Exception
-    {
+    public AccessPolicyEntityTest() throws Exception {
         expectedUri = String.format("AccessPolicies('%s')",
                 URLEncoder.encode(examplePolicyId, "UTF-8"));
     }
 
     @Test
-    public void createAccessPolicyProvidesExpectedPayload() throws Exception
-    {
+    public void createAccessPolicyProvidesExpectedPayload() throws Exception {
         String name = "some Access Policy";
         double duration = 10;
         EnumSet<AccessPolicyPermission> permissions = EnumSet.of(
@@ -63,8 +60,7 @@ public class AccessPolicyEntityTest
     }
 
     @Test
-    public void getReturnsExpectedUri() throws Exception
-    {
+    public void getReturnsExpectedUri() throws Exception {
         EntityGetOperation<AccessPolicyInfo> getter = AccessPolicy
                 .get(examplePolicyId);
 
@@ -72,16 +68,14 @@ public class AccessPolicyEntityTest
     }
 
     @Test
-    public void listReturnsExpectedUri() throws Exception
-    {
+    public void listReturnsExpectedUri() throws Exception {
         EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list();
 
         assertEquals("AccessPolicies", lister.getUri());
     }
 
     @Test
-    public void listWithQueryParametersReturnsThem() throws Exception
-    {
+    public void listWithQueryParametersReturnsThem() throws Exception {
         EntityListOperation<AccessPolicyInfo> lister = AccessPolicy.list()
                 .setTop(10).setSkip(2);
 
@@ -91,8 +85,7 @@ public class AccessPolicyEntityTest
     }
 
     @Test
-    public void deleteReturnsExpectedUri() throws Exception
-    {
+    public void deleteReturnsExpectedUri() throws Exception {
         assertEquals(expectedUri, AccessPolicy.delete(examplePolicyId).getUri());
     }
 }

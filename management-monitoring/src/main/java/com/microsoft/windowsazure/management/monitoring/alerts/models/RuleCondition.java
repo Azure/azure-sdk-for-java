@@ -24,8 +24,7 @@
 package com.microsoft.windowsazure.management.monitoring.alerts.models;
 
 /**
-* A rule condition.
-*/
-public abstract class RuleCondition
-{
+ * A rule condition.
+ */
+public abstract class RuleCondition {
 }

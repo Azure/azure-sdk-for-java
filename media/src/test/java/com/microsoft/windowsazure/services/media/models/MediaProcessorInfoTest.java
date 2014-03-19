@@ -20,12 +20,10 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.MediaProcessorType;
 
-public class MediaProcessorInfoTest
-{
+public class MediaProcessorInfoTest {
 
     @Test
-    public void testGetSetId()
-    {
+    public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
@@ -40,8 +38,7 @@ public class MediaProcessorInfoTest
     }
 
     @Test
-    public void testGetSetName()
-    {
+    public void testGetSetName() {
         // Arrange
         String expectedName = "testName";
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
@@ -55,8 +52,7 @@ public class MediaProcessorInfoTest
     }
 
     @Test
-    public void testGetSetDescription() throws Exception
-    {
+    public void testGetSetDescription() throws Exception {
         // Arrange
         String expectedDescription = "testDescription";
 
@@ -72,8 +68,7 @@ public class MediaProcessorInfoTest
     }
 
     @Test
-    public void testGetSetSku() throws Exception
-    {
+    public void testGetSetSku() throws Exception {
         // Arrange
         String expectedSku = "testSku";
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
@@ -87,8 +82,7 @@ public class MediaProcessorInfoTest
     }
 
     @Test
-    public void testGetSetVendor()
-    {
+    public void testGetSetVendor() {
         // Arrange
         String expectedVendor = "testVendor";
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,
@@ -102,8 +96,7 @@ public class MediaProcessorInfoTest
     }
 
     @Test
-    public void testGetSetVersion()
-    {
+    public void testGetSetVersion() {
         // Arrange
         String expectedVersion = "testVersion";
         MediaProcessorInfo mediaProcessorInfo = new MediaProcessorInfo(null,

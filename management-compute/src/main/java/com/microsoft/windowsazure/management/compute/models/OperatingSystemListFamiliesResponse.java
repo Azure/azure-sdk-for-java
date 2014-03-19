@@ -34,7 +34,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     private ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamilies;
     
     /**
-    * The operating system families that are valid for your subscription.
+    * Optional. The operating system families that are valid for your
+    * subscription.
     * @return The OperatingSystemFamilies value.
     */
     public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> getOperatingSystemFamilies() {
@@ -42,7 +43,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
     }
     
     /**
-    * The operating system families that are valid for your subscription.
+    * Optional. The operating system families that are valid for your
+    * subscription.
     * @param operatingSystemFamiliesValue The OperatingSystemFamilies value.
     */
     public void setOperatingSystemFamilies(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystemFamily> operatingSystemFamiliesValue) {
@@ -74,19 +76,19 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private boolean isActive;
         
         /**
-        * Indicates whether this operating system version is currently active
-        * for running a service. If an operating system version is active, you
-        * can manually configure your service to run on that version.  An
-        * operating system version may be inactive for one of two reasons:  1.
-        * It is not yet active as it is in the process of being rolled out to
-        * Windows Azure data centers. If your service is configured to use
-        * auto-upgrade, it will be upgraded to the new operating system
-        * version during the rollout. If you are manually configuring your
-        * operating system version, you can upgrade to the latest version once
-        * it becomes active.  2. It is no longer supported for running a
-        * service. In this case you will either need to manually configure
-        * your service to run on a newer version, or configure your service to
-        * use auto-upgrade to manage operating system upgrades.
+        * Optional. Indicates whether this operating system version is
+        * currently active for running a service. If an operating system
+        * version is active, you can manually configure your service to run on
+        * that version.  An operating system version may be inactive for one
+        * of two reasons:  1. It is not yet active as it is in the process of
+        * being rolled out to Windows Azure data centers. If your service is
+        * configured to use auto-upgrade, it will be upgraded to the new
+        * operating system version during the rollout. If you are manually
+        * configuring your operating system version, you can upgrade to the
+        * latest version once it becomes active.  2. It is no longer supported
+        * for running a service. In this case you will either need to manually
+        * configure your service to run on a newer version, or configure your
+        * service to use auto-upgrade to manage operating system upgrades.
         * @return The IsActive value.
         */
         public boolean isActive() {
@@ -94,19 +96,19 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * Indicates whether this operating system version is currently active
-        * for running a service. If an operating system version is active, you
-        * can manually configure your service to run on that version.  An
-        * operating system version may be inactive for one of two reasons:  1.
-        * It is not yet active as it is in the process of being rolled out to
-        * Windows Azure data centers. If your service is configured to use
-        * auto-upgrade, it will be upgraded to the new operating system
-        * version during the rollout. If you are manually configuring your
-        * operating system version, you can upgrade to the latest version once
-        * it becomes active.  2. It is no longer supported for running a
-        * service. In this case you will either need to manually configure
-        * your service to run on a newer version, or configure your service to
-        * use auto-upgrade to manage operating system upgrades.
+        * Optional. Indicates whether this operating system version is
+        * currently active for running a service. If an operating system
+        * version is active, you can manually configure your service to run on
+        * that version.  An operating system version may be inactive for one
+        * of two reasons:  1. It is not yet active as it is in the process of
+        * being rolled out to Windows Azure data centers. If your service is
+        * configured to use auto-upgrade, it will be upgraded to the new
+        * operating system version during the rollout. If you are manually
+        * configuring your operating system version, you can upgrade to the
+        * latest version once it becomes active.  2. It is no longer supported
+        * for running a service. In this case you will either need to manually
+        * configure your service to run on a newer version, or configure your
+        * service to use auto-upgrade to manage operating system upgrades.
         * @param isActiveValue The IsActive value.
         */
         public void setIsActive(final boolean isActiveValue) {
@@ -116,13 +118,13 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private boolean isDefault;
         
         /**
-        * Indicates whether this operating system version is the default
-        * version for a service that has not otherwise specified a particular
-        * version. The default operating system version is applied to services
-        * that are configured for auto-upgrade. An operating system family has
-        * exactly one default operating system version at any given time, for
-        * which the IsDefault element is set to true; for all other versions,
-        * IsDefault is set to false.
+        * Optional. Indicates whether this operating system version is the
+        * default version for a service that has not otherwise specified a
+        * particular version. The default operating system version is applied
+        * to services that are configured for auto-upgrade. An operating
+        * system family has exactly one default operating system version at
+        * any given time, for which the IsDefault element is set to true; for
+        * all other versions, IsDefault is set to false.
         * @return The IsDefault value.
         */
         public boolean isDefault() {
@@ -130,13 +132,13 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * Indicates whether this operating system version is the default
-        * version for a service that has not otherwise specified a particular
-        * version. The default operating system version is applied to services
-        * that are configured for auto-upgrade. An operating system family has
-        * exactly one default operating system version at any given time, for
-        * which the IsDefault element is set to true; for all other versions,
-        * IsDefault is set to false.
+        * Optional. Indicates whether this operating system version is the
+        * default version for a service that has not otherwise specified a
+        * particular version. The default operating system version is applied
+        * to services that are configured for auto-upgrade. An operating
+        * system family has exactly one default operating system version at
+        * any given time, for which the IsDefault element is set to true; for
+        * all other versions, IsDefault is set to false.
         * @param isDefaultValue The IsDefault value.
         */
         public void setIsDefault(final boolean isDefaultValue) {
@@ -146,7 +148,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private String label;
         
         /**
-        * The label of the operating system version.
+        * Optional. The label of the operating system version.
         * @return The Label value.
         */
         public String getLabel() {
@@ -154,7 +156,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * The label of the operating system version.
+        * Optional. The label of the operating system version.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -164,7 +166,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private String version;
         
         /**
-        * The operating system version. This value corresponds to the
+        * Optional. The operating system version. This value corresponds to the
         * configuration value for specifying that your service is to run on a
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
@@ -176,7 +178,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * The operating system version. This value corresponds to the
+        * Optional. The operating system version. This value corresponds to the
         * configuration value for specifying that your service is to run on a
         * particular version of the Windows Azure guest operating system. See
         * Configuring Settings for the Windows Azure Guest OS for additional
@@ -195,7 +197,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private String label;
         
         /**
-        * The label of the operating system family.
+        * Optional. The label of the operating system family.
         * @return The Label value.
         */
         public String getLabel() {
@@ -203,7 +205,7 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * The label of the operating system family.
+        * Optional. The label of the operating system family.
         * @param labelValue The Label value.
         */
         public void setLabel(final String labelValue) {
@@ -213,11 +215,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private int name;
         
         /**
-        * Indicates which operating system family this version belongs to. A
-        * value of 1 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 SP2. A
-        * value of 2 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 R2.
+        * Optional. Indicates which operating system family this version
+        * belongs to. A value of 1 corresponds to the Windows Azure guest
+        * operating system that is substantially compatible with Windows
+        * Server 2008 SP2. A value of 2 corresponds to the Windows Azure guest
+        * operating system that is substantially compatible with Windows
+        * Server 2008 R2.
         * @return The Name value.
         */
         public int getName() {
@@ -225,11 +228,12 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * Indicates which operating system family this version belongs to. A
-        * value of 1 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 SP2. A
-        * value of 2 corresponds to the Windows Azure guest operating system
-        * that is substantially compatible with Windows Server 2008 R2.
+        * Optional. Indicates which operating system family this version
+        * belongs to. A value of 1 corresponds to the Windows Azure guest
+        * operating system that is substantially compatible with Windows
+        * Server 2008 SP2. A value of 2 corresponds to the Windows Azure guest
+        * operating system that is substantially compatible with Windows
+        * Server 2008 R2.
         * @param nameValue The Name value.
         */
         public void setName(final int nameValue) {
@@ -239,8 +243,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         private ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystems;
         
         /**
-        * The available operating systems in your subscription belonging to
-        * this family.
+        * Optional. The available operating systems in your subscription
+        * belonging to this family.
         * @return The OperatingSystems value.
         */
         public ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> getOperatingSystems() {
@@ -248,8 +252,8 @@ public class OperatingSystemListFamiliesResponse extends OperationResponse imple
         }
         
         /**
-        * The available operating systems in your subscription belonging to
-        * this family.
+        * Optional. The available operating systems in your subscription
+        * belonging to this family.
         * @param operatingSystemsValue The OperatingSystems value.
         */
         public void setOperatingSystems(final ArrayList<OperatingSystemListFamiliesResponse.OperatingSystem> operatingSystemsValue) {

@@ -43,12 +43,12 @@ public interface AddOnOperations {
     * The Create Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The add on name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -75,12 +75,12 @@ public interface AddOnOperations {
     * The Create Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The add on name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -97,12 +97,13 @@ public interface AddOnOperations {
     * The Delete Store Item operation deletes Windows Azure Store entries that
     * re provisioned for a subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceProviderNamespace Required. The namespace in which this
+    * store item resides.
+    * @param resourceProviderType Required. The type of store item to be
+    * deleted.
+    * @param resourceProviderName Required. The name of this resource provider.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -123,12 +124,13 @@ public interface AddOnOperations {
     * The Delete Store Item operation deletes Windows Azure Store entries that
     * re provisioned for a subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceProviderNamespace Required. The namespace in which this
+    * store item resides.
+    * @param resourceProviderType Required. The type of store item to be
+    * deleted.
+    * @param resourceProviderName Required. The name of this resource provider.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -145,12 +147,12 @@ public interface AddOnOperations {
     * The Create Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The add on name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -179,12 +181,12 @@ public interface AddOnOperations {
     * The Create Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The add on name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The add on name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -201,12 +203,13 @@ public interface AddOnOperations {
     * The Delete Store Item operation deletes Windows Azure Storeentries that
     * are provisioned for a subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceProviderNamespace Required. The namespace in which this
+    * store item resides.
+    * @param resourceProviderType Required. The type of store item to be
+    * deleted.
+    * @param resourceProviderName Required. The name of this resource provider.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -235,12 +238,13 @@ public interface AddOnOperations {
     * The Delete Store Item operation deletes Windows Azure Storeentries that
     * are provisioned for a subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceProviderNamespace The namespace in which this store item
-    * resides.
-    * @param resourceProviderType The type of store item to be deleted.
-    * @param resourceProviderName The name of this resource provider.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceProviderNamespace Required. The namespace in which this
+    * store item resides.
+    * @param resourceProviderType Required. The type of store item to be
+    * deleted.
+    * @param resourceProviderName Required. The name of this resource provider.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -257,12 +261,12 @@ public interface AddOnOperations {
     * The Update Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The addon name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The addon name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -289,12 +293,12 @@ public interface AddOnOperations {
     * The Update Store Item operation creates Windows Azure Store entries in a
     * Windows Azure subscription.
     *
-    * @param cloudServiceName The name of the cloud service to which this store
-    * item will be assigned.
-    * @param resourceName The name of this resource.
-    * @param addOnName The addon name.
-    * @param parameters Parameters used to specify how the Create procedure
-    * will function.
+    * @param cloudServiceName Required. The name of the cloud service to which
+    * this store item will be assigned.
+    * @param resourceName Required. The name of this resource.
+    * @param addOnName Required. The addon name.
+    * @param parameters Required. Parameters used to specify how the Create
+    * procedure will function.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

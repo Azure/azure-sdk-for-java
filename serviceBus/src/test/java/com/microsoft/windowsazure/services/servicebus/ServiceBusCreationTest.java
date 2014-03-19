@@ -21,12 +21,10 @@ import org.junit.Test;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.services.servicebus.implementation.ServiceBusExceptionProcessor;
 
-public class ServiceBusCreationTest
-{
+public class ServiceBusCreationTest {
     @Test
     public void theServiceClassMayBeCreatedDirectlyViaSingletonConfig()
-            throws Exception
-    {
+            throws Exception {
         ServiceBusConfiguration.configureWithWrapAuthentication("my-namespace",
                 "my-identity", "my-shared-secret", ".servicebus.windows.net",
                 "-sb.accesscontrol.windows.net/WRAPv0.9");
@@ -36,8 +34,7 @@ public class ServiceBusCreationTest
         assertEquals(ServiceBusExceptionProcessor.class, service.getClass());
     }
 
-    public Configuration newConfiguration()
-    {
+    public Configuration newConfiguration() {
         Configuration config = new Configuration();
         ServiceBusConfiguration.configureWithWrapAuthentication(config,
                 "my-namespace", "my-identity", "my-shared-secret",
@@ -46,8 +43,7 @@ public class ServiceBusCreationTest
         return config;
     }
 
-    private Configuration newConfigurationWithProfile()
-    {
+    private Configuration newConfigurationWithProfile() {
         Configuration config = newConfiguration();
         ServiceBusConfiguration.configureWithWrapAuthentication("other",
                 config, "my-other-namespace", "my-other-identity",
@@ -56,8 +52,7 @@ public class ServiceBusCreationTest
         return config;
     }
 
-    private Configuration newConfigurationWithConnectionString()
-    {
+    private Configuration newConfigurationWithConnectionString() {
         Configuration config = newConfiguration();
         ServiceBusConfiguration.configureWithConnectionString(null, config,
                 "Endpoint=https://my-other-namespace.servicebus.windows.net/;"
@@ -68,8 +63,7 @@ public class ServiceBusCreationTest
 
     @Test
     public void theServiceClassMayBeCreatedDirectlyWithConfig()
-            throws Exception
-    {
+            throws Exception {
         Configuration config = newConfiguration();
         ServiceBusContract service = ServiceBusService.create(config);
 
@@ -78,8 +72,7 @@ public class ServiceBusCreationTest
     }
 
     @Test
-    public void theServiceClassMayAlsoBeCreatedFromConfig() throws Exception
-    {
+    public void theServiceClassMayAlsoBeCreatedFromConfig() throws Exception {
         Configuration config = newConfiguration();
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
@@ -88,8 +81,7 @@ public class ServiceBusCreationTest
     }
 
     @Test
-    public void testDefaultBuilderCreatesServiceImpl() throws Exception
-    {
+    public void testDefaultBuilderCreatesServiceImpl() throws Exception {
         Configuration config = newConfiguration();
         ServiceBusContract service = config.create(ServiceBusContract.class);
 
@@ -97,8 +89,7 @@ public class ServiceBusCreationTest
     }
 
     @Test
-    public void theServiceClassCanBeCreatedThroughAProfile() throws Exception
-    {
+    public void theServiceClassCanBeCreatedThroughAProfile() throws Exception {
         Configuration config = newConfigurationWithProfile();
         ServiceBusContract service = config.create("other",
                 ServiceBusContract.class);
@@ -109,8 +100,7 @@ public class ServiceBusCreationTest
 
     @Test
     public void theServiceClassCanBeCreatedThroughConnectionString()
-            throws Exception
-    {
+            throws Exception {
         Configuration config = newConfigurationWithConnectionString();
 
         ServiceBusContract service = config.create(ServiceBusContract.class);

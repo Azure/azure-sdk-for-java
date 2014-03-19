@@ -101,6 +101,27 @@ public class ManagementResourceStepdefs
         }
     }
 
+    @Given("^set \"([^\"]*)\" with value from path \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public void set_property_from_path(String propertyName, String valuePath, String propertyType) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        String[] propertyParts = valuePath.split("\\.");
+        Object propertyObject = getObject(propertyParts);
+ 
+        Object propertyValue = getPropertyValue(propertyObject, propertyParts[propertyParts.length - 1]);
+
+        String[] parts = propertyName.split("\\.");
+        Object object = getObject(parts);
+        if (parts.length > 1)
+        {
+            Method method = object.getClass().getMethod("set" + TextUtility.ToPascalCase(parts[parts.length - 1]), TextUtility.getJavaType(propertyType));
+            method.invoke(object, propertyValue);
+        }
+        else
+        {
+            objects.put(propertyName, propertyValue);
+        }
+    }
+
     @And("^set \"([^\"]*)\" with value from list \"([^\"]*)\" where \"([^\"]*)\" of type \"([^\"]*)\" equals \"([^\"]*)\"$")
     public void set_value_where_equals(String objectName, String path, String propertyPath, String propertyType, String value) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
@@ -232,8 +253,12 @@ public class ManagementResourceStepdefs
     @When("^I invoke \"([^\"]*)\" with parameters \"([^\"]*)\" and \"([^\"]*)\"$")
     public Object when_invoke_with_parameter(String methodName, String parameter1Name, String parameter2Name) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
-        Object parameter1 = objects.get(parameter1Name);
-        Object parameter2 = objects.get(parameter2Name);
+        String[] parts1 = parameter1Name.split("\\.");
+        Object parameter1 = getObject(parts1);
+
+        String[] parts2 = parameter2Name.split("\\.");
+        Object parameter2 = getObject(parts2);
+
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1.getClass().getName(), parameter2, parameter2.getClass().getName());
     }
 

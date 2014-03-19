@@ -23,12 +23,10 @@ import org.junit.Test;
 import com.microsoft.windowsazure.services.media.implementation.content.JobNotificationSubscriptionType;
 import com.microsoft.windowsazure.services.media.implementation.content.JobType;
 
-public class JobInfoTest
-{
+public class JobInfoTest {
 
     @Test
-    public void testGetSetId()
-    {
+    public void testGetSetId() {
         // Arrange
         String expectedId = "expectedId";
         JobInfo JobInfo = new JobInfo(null, new JobType().setId(expectedId));
@@ -42,8 +40,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetName()
-    {
+    public void testGetSetName() {
         // Arrange
         String expectedName = "testGetSetName";
         JobInfo JobInfo = new JobInfo(null, new JobType().setName(expectedName));
@@ -56,8 +53,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetCreated() throws Exception
-    {
+    public void testGetSetCreated() throws Exception {
         // Arrange
         Date expectedCreated = new Date();
 
@@ -73,8 +69,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetLastModified() throws Exception
-    {
+    public void testGetSetLastModified() throws Exception {
         // Arrange
         Date expectedLastModified = new Date();
         JobInfo JobInfo = new JobInfo(null,
@@ -88,8 +83,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetPriority()
-    {
+    public void testGetSetPriority() {
         // Arrange
         int expectedPriority = 3;
         JobInfo JobInfo = new JobInfo(null,
@@ -103,8 +97,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetRunningDuration()
-    {
+    public void testGetSetRunningDuration() {
         // Arrange
         Double expectedRunningDuration = 1234.5;
         JobInfo JobInfo = new JobInfo(null,
@@ -118,8 +111,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetStartTime()
-    {
+    public void testGetSetStartTime() {
         // Arrange
         Date expectedStartTime = new Date();
         JobInfo JobInfo = new JobInfo(null,
@@ -133,8 +125,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetState()
-    {
+    public void testGetSetState() {
         // Arrange
         JobState expectedJobState = JobState.Finished;
         JobInfo JobInfo = new JobInfo(null,
@@ -148,8 +139,7 @@ public class JobInfoTest
     }
 
     @Test
-    public void testGetSetNotificationEndPoint()
-    {
+    public void testGetSetNotificationEndPoint() {
         // Arrange
         String expectedNotificationEndPointId = "testNotificationEndPointId";
         JobNotificationSubscription expectedJobNotificationSubscription = new JobNotificationSubscription(

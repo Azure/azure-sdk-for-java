@@ -26,8 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AccessPolicyType implements MediaServiceDTO
-{
+public class AccessPolicyType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
     protected String id;
@@ -50,8 +49,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the id
      */
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
@@ -59,8 +57,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param id
      *            the id to set
      */
-    public AccessPolicyType setId(String id)
-    {
+    public AccessPolicyType setId(String id) {
         this.id = id;
         return this;
     }
@@ -68,8 +65,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the created
      */
-    public Date getCreated()
-    {
+    public Date getCreated() {
         return created;
     }
 
@@ -77,8 +73,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param created
      *            the created to set
      */
-    public AccessPolicyType setCreated(Date created)
-    {
+    public AccessPolicyType setCreated(Date created) {
         this.created = created;
         return this;
     }
@@ -86,8 +81,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the lastModified
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -95,8 +89,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param lastModified
      *            the lastModified to set
      */
-    public AccessPolicyType setLastModified(Date lastModified)
-    {
+    public AccessPolicyType setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -104,8 +97,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the name
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -113,8 +105,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param name
      *            the name to set
      */
-    public AccessPolicyType setName(String name)
-    {
+    public AccessPolicyType setName(String name) {
         this.name = name;
         return this;
     }
@@ -122,8 +113,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the durationInMinutes
      */
-    public Double getDurationInMinutes()
-    {
+    public Double getDurationInMinutes() {
         return durationInMinutes;
     }
 
@@ -131,8 +121,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param durationInMinutes
      *            the durationInMinutes to set
      */
-    public AccessPolicyType setDurationInMinutes(double durationInMinutes)
-    {
+    public AccessPolicyType setDurationInMinutes(double durationInMinutes) {
         this.durationInMinutes = durationInMinutes;
         return this;
     }
@@ -140,8 +129,7 @@ public class AccessPolicyType implements MediaServiceDTO
     /**
      * @return the permissions
      */
-    public Integer getPermissions()
-    {
+    public Integer getPermissions() {
         return permissions;
     }
 
@@ -149,8 +137,7 @@ public class AccessPolicyType implements MediaServiceDTO
      * @param permissions
      *            the permissions to set
      */
-    public AccessPolicyType setPermissions(Integer permissions)
-    {
+    public AccessPolicyType setPermissions(Integer permissions) {
         this.permissions = permissions;
         return this;
     }

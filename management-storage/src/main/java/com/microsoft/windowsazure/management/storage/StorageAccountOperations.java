@@ -55,8 +55,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Storage Account
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Storage
+    * Account operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -78,8 +78,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Storage Account
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Storage
+    * Account operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -91,8 +91,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param accountName The desired storage account name to check for
-    * availability.
+    * @param accountName Required. The desired storage account name to check
+    * for availability.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -111,8 +111,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj154125.aspx for
     * more information)
     *
-    * @param accountName The desired storage account name to check for
-    * availability.
+    * @param accountName Required. The desired storage account name to check
+    * for availability.
     * @return The response to a storage account check name availability request.
     */
     Future<CheckNameAvailabilityResponse> checkNameAvailabilityAsync(String accountName);
@@ -123,8 +123,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Storage Account
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Storage
+    * Account operation.
     * @throws InterruptedException Thrown when a thread is waiting, sleeping,
     * or otherwise occupied, and the thread is interrupted, either before or
     * during the activity. Occasionally a method may wish to test whether the
@@ -155,8 +155,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264518.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Create Storage Account
-    * operation.
+    * @param parameters Required. Parameters supplied to the Create Storage
+    * Account operation.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the
@@ -175,7 +175,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param accountName The name of the storage account.
+    * @param accountName Required. The name of the storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -191,7 +191,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264517.aspx for
     * more information)
     *
-    * @param accountName The name of the storage account.
+    * @param accountName Required. The name of the storage account.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
@@ -203,7 +203,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param accountName Name of the storage account to get.
+    * @param accountName Required. Name of the storage account to get.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -224,7 +224,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460802.aspx for
     * more information)
     *
-    * @param accountName Name of the storage account to get.
+    * @param accountName Required. Name of the storage account to get.
     * @return The Get Storage Account Properties operation response.
     */
     Future<StorageAccountGetResponse> getAsync(String accountName);
@@ -235,7 +235,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param accountName The name of the desired storage account.
+    * @param accountName Required. The name of the desired storage account.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -256,7 +256,7 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460785.aspx for
     * more information)
     *
-    * @param accountName The name of the desired storage account.
+    * @param accountName Required. The name of the desired storage account.
     * @return The primary and secondary access keys for a storage account.
     */
     Future<StorageAccountGetKeysResponse> getKeysAsync(String accountName);
@@ -297,7 +297,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Regenerate Keys operation.
+    * @param parameters Required. Parameters supplied to the Regenerate Keys
+    * operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -320,7 +321,8 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460795.aspx for
     * more information)
     *
-    * @param parameters Parameters supplied to the Regenerate Keys operation.
+    * @param parameters Required. Parameters supplied to the Regenerate Keys
+    * operation.
     * @return The primary and secondary access keys for a storage account.
     */
     Future<StorageAccountRegenerateKeysResponse> regenerateKeysAsync(StorageAccountRegenerateKeysParameters parameters);
@@ -332,9 +334,9 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param accountName Name of the storage account to update.
-    * @param parameters Parameters supplied to the Update Storage Account
-    * operation.
+    * @param accountName Required. Name of the storage account to update.
+    * @param parameters Required. Parameters supplied to the Update Storage
+    * Account operation.
     * @throws ParserConfigurationException Thrown if there was an error
     * configuring the parser for the response body.
     * @throws SAXException Thrown if there was an error parsing the response
@@ -357,9 +359,9 @@ public interface StorageAccountOperations {
     * http://msdn.microsoft.com/en-us/library/windowsazure/hh264516.aspx for
     * more information)
     *
-    * @param accountName Name of the storage account to update.
-    * @param parameters Parameters supplied to the Update Storage Account
-    * operation.
+    * @param accountName Required. Name of the storage account to update.
+    * @param parameters Required. Parameters supplied to the Update Storage
+    * Account operation.
     * @return A standard service response including an HTTP status code and
     * request ID.
     */

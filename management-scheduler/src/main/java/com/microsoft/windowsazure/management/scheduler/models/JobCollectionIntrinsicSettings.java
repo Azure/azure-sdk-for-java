@@ -30,7 +30,7 @@ public class JobCollectionIntrinsicSettings {
     private JobCollectionPlan plan;
     
     /**
-    * The plan of the resource.
+    * Optional. The plan of the resource.
     * @return The Plan value.
     */
     public JobCollectionPlan getPlan() {
@@ -38,7 +38,7 @@ public class JobCollectionIntrinsicSettings {
     }
     
     /**
-    * The plan of the resource.
+    * Optional. The plan of the resource.
     * @param planValue The Plan value.
     */
     public void setPlan(final JobCollectionPlan planValue) {
@@ -48,7 +48,7 @@ public class JobCollectionIntrinsicSettings {
     private JobCollectionQuota quota;
     
     /**
-    * Quota settings for the job collection.
+    * Optional. Quota settings for the job collection.
     * @return The Quota value.
     */
     public JobCollectionQuota getQuota() {
@@ -56,7 +56,7 @@ public class JobCollectionIntrinsicSettings {
     }
     
     /**
-    * Quota settings for the job collection.
+    * Optional. Quota settings for the job collection.
     * @param quotaValue The Quota value.
     */
     public void setQuota(final JobCollectionQuota quotaValue) {

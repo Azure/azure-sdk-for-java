@@ -35,7 +35,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     private ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificates;
     
     /**
-    * The management certificates that are valid for your subscription.
+    * Optional. The management certificates that are valid for your
+    * subscription.
     * @return The SubscriptionCertificates value.
     */
     public ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> getSubscriptionCertificates() {
@@ -43,7 +44,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
     }
     
     /**
-    * The management certificates that are valid for your subscription.
+    * Optional. The management certificates that are valid for your
+    * subscription.
     * @param subscriptionCertificatesValue The SubscriptionCertificates value.
     */
     public void setSubscriptionCertificates(final ArrayList<ManagementCertificateListResponse.SubscriptionCertificate> subscriptionCertificatesValue) {
@@ -74,7 +76,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private Calendar created;
         
         /**
-        * The time that the management certificate was created, in UTC.
+        * Optional. The time that the management certificate was created, in
+        * UTC.
         * @return The Created value.
         */
         public Calendar getCreated() {
@@ -82,7 +85,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * The time that the management certificate was created, in UTC.
+        * Optional. The time that the management certificate was created, in
+        * UTC.
         * @param createdValue The Created value.
         */
         public void setCreated(final Calendar createdValue) {
@@ -92,8 +96,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private byte[] data;
         
         /**
-        * A base64 representation of the data contained in the management
-        * certificate, in .cer format.
+        * Optional. A base64 representation of the data contained in the
+        * management certificate, in .cer format.
         * @return The Data value.
         */
         public byte[] getData() {
@@ -101,8 +105,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * A base64 representation of the data contained in the management
-        * certificate, in .cer format.
+        * Optional. A base64 representation of the data contained in the
+        * management certificate, in .cer format.
         * @param dataValue The Data value.
         */
         public void setData(final byte[] dataValue) {
@@ -112,7 +116,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private byte[] publicKey;
         
         /**
-        * A base64 representation of the management certificate public key.
+        * Optional. A base64 representation of the management certificate
+        * public key.
         * @return The PublicKey value.
         */
         public byte[] getPublicKey() {
@@ -120,7 +125,8 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * A base64 representation of the management certificate public key.
+        * Optional. A base64 representation of the management certificate
+        * public key.
         * @param publicKeyValue The PublicKey value.
         */
         public void setPublicKey(final byte[] publicKeyValue) {
@@ -130,7 +136,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         private String thumbprint;
         
         /**
-        * The X509 certificate thumb print property of the management
+        * Optional. The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
         * @return The Thumbprint value.
         */
@@ -139,7 +145,7 @@ public class ManagementCertificateListResponse extends OperationResponse impleme
         }
         
         /**
-        * The X509 certificate thumb print property of the management
+        * Optional. The X509 certificate thumb print property of the management
         * certificate. This thumb print uniquely identifies the certificate.
         * @param thumbprintValue The Thumbprint value.
         */

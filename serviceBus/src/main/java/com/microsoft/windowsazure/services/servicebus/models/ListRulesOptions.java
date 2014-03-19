@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.services.servicebus.models;
 
-public class ListRulesOptions extends AbstractListOptions<ListRulesOptions>
-{
+public class ListRulesOptions extends AbstractListOptions<ListRulesOptions> {
     public static final ListRulesOptions DEFAULT = new ListRulesOptions();
 }

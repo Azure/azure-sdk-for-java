@@ -23,8 +23,7 @@ import com.microsoft.windowsazure.services.media.models.ListResult;
  * entities.
  * 
  */
-public interface EntityContract
-{
+public interface EntityContract {
 
     /**
      * Create a new instance of an entity.

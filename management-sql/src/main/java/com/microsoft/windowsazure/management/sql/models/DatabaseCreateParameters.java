@@ -30,7 +30,7 @@ public class DatabaseCreateParameters {
     private String collationName;
     
     /**
-    * Gets or sets the collation name for the new database.
+    * Optional. Gets or sets the collation name for the new database.
     * @return The CollationName value.
     */
     public String getCollationName() {
@@ -38,7 +38,7 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Gets or sets the collation name for the new database.
+    * Optional. Gets or sets the collation name for the new database.
     * @param collationNameValue The CollationName value.
     */
     public void setCollationName(final String collationNameValue) {
@@ -48,7 +48,7 @@ public class DatabaseCreateParameters {
     private String edition;
     
     /**
-    * Gets or sets the edition for the new database.
+    * Required. Gets or sets the edition for the new database.
     * @return The Edition value.
     */
     public String getEdition() {
@@ -56,7 +56,7 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Gets or sets the edition for the new database.
+    * Required. Gets or sets the edition for the new database.
     * @param editionValue The Edition value.
     */
     public void setEdition(final String editionValue) {
@@ -66,7 +66,7 @@ public class DatabaseCreateParameters {
     private int maximumDatabaseSizeInGB;
     
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
+    * Required. Gets or sets the maximum size of this database, in Gigabytes.
     * @return The MaximumDatabaseSizeInGB value.
     */
     public int getMaximumDatabaseSizeInGB() {
@@ -74,7 +74,7 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Gets or sets the maximum size of this database, in Gigabytes.
+    * Required. Gets or sets the maximum size of this database, in Gigabytes.
     * @param maximumDatabaseSizeInGBValue The MaximumDatabaseSizeInGB value.
     */
     public void setMaximumDatabaseSizeInGB(final int maximumDatabaseSizeInGBValue) {
@@ -84,7 +84,7 @@ public class DatabaseCreateParameters {
     private String name;
     
     /**
-    * Gets or sets the name for the new database.
+    * Required. Gets or sets the name for the new database.
     * @return The Name value.
     */
     public String getName() {
@@ -92,7 +92,7 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Gets or sets the name for the new database.
+    * Required. Gets or sets the name for the new database.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -102,7 +102,7 @@ public class DatabaseCreateParameters {
     private String serviceObjectiveId;
     
     /**
-    * Gets or sets the id of this service objective.
+    * Optional. Gets or sets the id of this service objective.
     * @return The ServiceObjectiveId value.
     */
     public String getServiceObjectiveId() {
@@ -110,7 +110,7 @@ public class DatabaseCreateParameters {
     }
     
     /**
-    * Gets or sets the id of this service objective.
+    * Optional. Gets or sets the id of this service objective.
     * @param serviceObjectiveIdValue The ServiceObjectiveId value.
     */
     public void setServiceObjectiveId(final String serviceObjectiveIdValue) {

@@ -26,103 +26,92 @@ package com.microsoft.windowsazure.scheduler.models;
 import java.util.Calendar;
 
 /**
-* Current status of the job.
-*/
-public class JobStatus
-{
+ * Current status of the job.
+ */
+public class JobStatus {
     private int executionCount;
-    
+
     /**
-    * Number of times this job has executed.
-    */
-    public int getExecutionCount()
-    {
+     * Number of times this job has executed.
+     */
+    public int getExecutionCount() {
         return this.executionCount;
     }
-    
+
     /**
-    * Number of times this job has executed.
-    */
-    public void setExecutionCount(int executionCount)
-    {
+     * Number of times this job has executed.
+     */
+    public void setExecutionCount(int executionCount) {
         this.executionCount = executionCount;
     }
-    
+
     private int failureCount;
-    
+
     /**
-    * Number of times this job has failed.
-    */
-    public int getFailureCount()
-    {
+     * Number of times this job has failed.
+     */
+    public int getFailureCount() {
         return this.failureCount;
     }
-    
+
     /**
-    * Number of times this job has failed.
-    */
-    public void setFailureCount(int failureCount)
-    {
+     * Number of times this job has failed.
+     */
+    public void setFailureCount(int failureCount) {
         this.failureCount = failureCount;
     }
-    
+
     private int faultedCount;
-    
+
     /**
-    * Number of faulted occurrences (occurrences that were retried and failed
-    * as many times as the retry policy states).
-    */
-    public int getFaultedCount()
-    {
+     * Number of faulted occurrences (occurrences that were retried and failed
+     * as many times as the retry policy states).
+     */
+    public int getFaultedCount() {
         return this.faultedCount;
     }
-    
+
     /**
-    * Number of faulted occurrences (occurrences that were retried and failed
-    * as many times as the retry policy states).
-    */
-    public void setFaultedCount(int faultedCount)
-    {
+     * Number of faulted occurrences (occurrences that were retried and failed
+     * as many times as the retry policy states).
+     */
+    public void setFaultedCount(int faultedCount) {
         this.faultedCount = faultedCount;
     }
-    
+
     private Calendar lastExecutionTime;
-    
+
     /**
-    * Time the last occurrence executed in ISO-8601 format. Could be empty if
-    * job has not run yet.
-    */
-    public Calendar getLastExecutionTime()
-    {
+     * Time the last occurrence executed in ISO-8601 format. Could be empty if
+     * job has not run yet.
+     */
+    public Calendar getLastExecutionTime() {
         return this.lastExecutionTime;
     }
-    
+
     /**
-    * Time the last occurrence executed in ISO-8601 format. Could be empty if
-    * job has not run yet.
-    */
-    public void setLastExecutionTime(Calendar lastExecutionTime)
-    {
+     * Time the last occurrence executed in ISO-8601 format. Could be empty if
+     * job has not run yet.
+     */
+    public void setLastExecutionTime(Calendar lastExecutionTime) {
         this.lastExecutionTime = lastExecutionTime;
     }
-    
+
     private Calendar nextExecutionTime;
-    
+
     /**
-    * Time of the next occurrence in ISO-8601 format. Could be empty if the job
-    * is completed.
-    */
-    public Calendar getNextExecutionTime()
-    {
+     * Time of the next occurrence in ISO-8601 format. Could be empty if the job
+     * is completed.
+     */
+    public Calendar getNextExecutionTime() {
         return this.nextExecutionTime;
     }
-    
+
     /**
-    * Time of the next occurrence in ISO-8601 format. Could be empty if the job
-    * is completed.
-    */
-    public void setNextExecutionTime(Calendar nextExecutionTime)
-    {
+     * Time of the next occurrence in ISO-8601 format. Could be empty if the job
+     * is completed.
+     */
+    public void setNextExecutionTime(Calendar nextExecutionTime) {
         this.nextExecutionTime = nextExecutionTime;
     }
 }

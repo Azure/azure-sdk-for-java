@@ -32,7 +32,7 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     private boolean isAvailable;
     
     /**
-    * Whether or not the namespace is available.
+    * Optional. Whether or not the namespace is available.
     * @return The IsAvailable value.
     */
     public boolean isAvailable() {
@@ -40,7 +40,7 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     }
     
     /**
-    * Whether or not the namespace is available.
+    * Optional. Whether or not the namespace is available.
     * @param isAvailableValue The IsAvailable value.
     */
     public void setIsAvailable(final boolean isAvailableValue) {
@@ -50,7 +50,7 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     private String reasonDetails;
     
     /**
-    * The reason the namespace is unavailable.
+    * Optional. The reason the namespace is unavailable.
     * @return The ReasonDetails value.
     */
     public String getReasonDetails() {
@@ -58,7 +58,7 @@ public class CheckNamespaceAvailabilityResponse extends OperationResponse {
     }
     
     /**
-    * The reason the namespace is unavailable.
+    * Optional. The reason the namespace is unavailable.
     * @param reasonDetailsValue The ReasonDetails value.
     */
     public void setReasonDetails(final String reasonDetailsValue) {

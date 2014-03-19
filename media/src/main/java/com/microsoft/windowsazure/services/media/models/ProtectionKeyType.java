@@ -20,8 +20,7 @@ import java.security.InvalidParameterException;
 /**
  * The Enum ProtectionKeyType.
  */
-public enum ProtectionKeyType
-{
+public enum ProtectionKeyType {
 
     /** The X509 certificate thumbprint. */
     X509CertificateThumbprint(0);
@@ -35,8 +34,7 @@ public enum ProtectionKeyType
      * @param protectionKeyTypeCode
      *            the protection key type code
      */
-    private ProtectionKeyType(int protectionKeyTypeCode)
-    {
+    private ProtectionKeyType(int protectionKeyTypeCode) {
         this.protectionKeyTypeCode = protectionKeyTypeCode;
     }
 
@@ -45,8 +43,7 @@ public enum ProtectionKeyType
      * 
      * @return the code
      */
-    public int getCode()
-    {
+    public int getCode() {
         return protectionKeyTypeCode;
     }
 
@@ -57,10 +54,8 @@ public enum ProtectionKeyType
      *            protectionKeyTypeCode as integer
      * @return new ProtectionKeyType instance
      */
-    public static ProtectionKeyType fromCode(int protectionKeyTypeCode)
-    {
-        switch (protectionKeyTypeCode)
-        {
+    public static ProtectionKeyType fromCode(int protectionKeyTypeCode) {
+        switch (protectionKeyTypeCode) {
         case 0:
             return ProtectionKeyType.X509CertificateThumbprint;
         default:

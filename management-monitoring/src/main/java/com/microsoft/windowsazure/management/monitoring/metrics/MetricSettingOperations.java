@@ -32,57 +32,72 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.concurrent.Future;
 
-public interface MetricSettingOperations
-{
+public interface MetricSettingOperations {
     /**
-    * The Put Metric Settings operation creates or updates the metric settings
-    * for the resource.
-    *
-    * @param parameters Metric settings to be created or updated.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    OperationResponse createOrUpdate(MetricSettingsPutParameters parameters) throws IOException, ServiceException;
-    
+     * The Put Metric Settings operation creates or updates the metric settings
+     * for the resource.
+     * 
+     * @param parameters
+     *            Metric settings to be created or updated.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    OperationResponse createOrUpdate(MetricSettingsPutParameters parameters)
+            throws IOException, ServiceException;
+
     /**
-    * The Put Metric Settings operation creates or updates the metric settings
-    * for the resource.
-    *
-    * @param parameters Metric settings to be created or updated.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
-    Future<OperationResponse> createOrUpdateAsync(MetricSettingsPutParameters parameters);
-    
+     * The Put Metric Settings operation creates or updates the metric settings
+     * for the resource.
+     * 
+     * @param parameters
+     *            Metric settings to be created or updated.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
+    Future<OperationResponse> createOrUpdateAsync(
+            MetricSettingsPutParameters parameters);
+
     /**
-    * The List Metric Settings operation lists the metric settings for the
-    * resource.
-    *
-    * @param resourceId The id of the resource.
-    * @param metricNamespace The namespace of the metrics.
-    * @throws IOException Signals that an I/O exception of some sort has
-    * occurred. This class is the general class of exceptions produced by
-    * failed or interrupted I/O operations.
-    * @throws ServiceException Thrown if an unexpected response is found.
-    * @throws URISyntaxException Thrown if there was an error parsing a URI in
-    * the response.
-    * @throws ParseException Thrown if there was an error parsing a string in
-    * the response.
-    * @return The list metric settings operation response.
-    */
-    MetricSettingListResponse list(String resourceId, String metricNamespace) throws IOException, ServiceException, URISyntaxException, ParseException;
-    
+     * The List Metric Settings operation lists the metric settings for the
+     * resource.
+     * 
+     * @param resourceId
+     *            The id of the resource.
+     * @param metricNamespace
+     *            The namespace of the metrics.
+     * @throws IOException
+     *             Signals that an I/O exception of some sort has occurred. This
+     *             class is the general class of exceptions produced by failed
+     *             or interrupted I/O operations.
+     * @throws ServiceException
+     *             Thrown if an unexpected response is found.
+     * @throws URISyntaxException
+     *             Thrown if there was an error parsing a URI in the response.
+     * @throws ParseException
+     *             Thrown if there was an error parsing a string in the
+     *             response.
+     * @return The list metric settings operation response.
+     */
+    MetricSettingListResponse list(String resourceId, String metricNamespace)
+            throws IOException, ServiceException, URISyntaxException,
+            ParseException;
+
     /**
-    * The List Metric Settings operation lists the metric settings for the
-    * resource.
-    *
-    * @param resourceId The id of the resource.
-    * @param metricNamespace The namespace of the metrics.
-    * @return The list metric settings operation response.
-    */
-    Future<MetricSettingListResponse> listAsync(String resourceId, String metricNamespace);
+     * The List Metric Settings operation lists the metric settings for the
+     * resource.
+     * 
+     * @param resourceId
+     *            The id of the resource.
+     * @param metricNamespace
+     *            The namespace of the metrics.
+     * @return The list metric settings operation response.
+     */
+    Future<MetricSettingListResponse> listAsync(String resourceId,
+            String metricNamespace);
 }

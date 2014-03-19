@@ -34,7 +34,8 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     private ArrayList<Server> servers;
     
     /**
-    * Gets or sets the SQL Servers that are valid for your subscription.
+    * Optional. Gets or sets the SQL Servers that are valid for your
+    * subscription.
     * @return The Servers value.
     */
     public ArrayList<Server> getServers() {
@@ -42,7 +43,8 @@ public class ServerListResponse extends OperationResponse implements Iterable<Se
     }
     
     /**
-    * Gets or sets the SQL Servers that are valid for your subscription.
+    * Optional. Gets or sets the SQL Servers that are valid for your
+    * subscription.
     * @param serversValue The Servers value.
     */
     public void setServers(final ArrayList<Server> serversValue) {

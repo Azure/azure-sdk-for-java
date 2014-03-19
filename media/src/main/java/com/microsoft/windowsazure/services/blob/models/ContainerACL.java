@@ -42,8 +42,7 @@ import com.microsoft.windowsazure.services.blob.implementation.ContainerACLDateA
  * Container ACL</a> documentation on MSDN for details of the underlying Blob
  * Service REST API operations.
  */
-public class ContainerACL
-{
+public class ContainerACL {
     private String etag;
     private Date lastModified;
     private PublicAccessType publicAccess;
@@ -58,8 +57,7 @@ public class ContainerACL
      * @return A {@link String} containing the <strong>Etag</strong> value
      *         associated with this {@link ContainerACL} instance.
      */
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
@@ -78,8 +76,7 @@ public class ContainerACL
      * 
      * @return A reference to this {@link ContainerACL} instance.
      */
-    public ContainerACL setEtag(String etag)
-    {
+    public ContainerACL setEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -93,8 +90,7 @@ public class ContainerACL
      * @return A {@link Date} containing the last modified time associated with
      *         this {@link ContainerACL} instance.
      */
-    public Date getLastModified()
-    {
+    public Date getLastModified() {
         return lastModified;
     }
 
@@ -112,8 +108,7 @@ public class ContainerACL
      *            associate with this {@link ContainerACL} instance.
      * @return A reference to this {@link ContainerACL} instance.
      */
-    public ContainerACL setLastModified(Date lastModified)
-    {
+    public ContainerACL setLastModified(Date lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -127,8 +122,7 @@ public class ContainerACL
      * @return A {@link PublicAccessType} value representing the public access
      *         level associated with this {@link ContainerACL} instance.
      */
-    public PublicAccessType getPublicAccess()
-    {
+    public PublicAccessType getPublicAccess() {
         return publicAccess;
     }
 
@@ -147,8 +141,7 @@ public class ContainerACL
      *            instance.
      * @return A reference to this {@link ContainerACL} instance.
      */
-    public ContainerACL setPublicAccess(PublicAccessType publicAccess)
-    {
+    public ContainerACL setPublicAccess(PublicAccessType publicAccess) {
         this.publicAccess = publicAccess;
         return this;
     }
@@ -163,8 +156,7 @@ public class ContainerACL
      *         up to five container-level access policies associated with this
      *         {@link ContainerACL} instance.
      */
-    public List<SignedIdentifier> getSignedIdentifiers()
-    {
+    public List<SignedIdentifier> getSignedIdentifiers() {
         return signedIdentifiers;
     }
 
@@ -184,8 +176,7 @@ public class ContainerACL
      * @return A reference to this {@link ContainerACL} instance.
      */
     public ContainerACL setSignedIdentifiers(
-            List<SignedIdentifier> signedIdentifiers)
-    {
+            List<SignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
         return this;
     }
@@ -241,8 +232,7 @@ public class ContainerACL
      *            access policy.
      */
     public void addSignedIdentifier(String id, Date start, Date expiry,
-            String permission)
-    {
+            String permission) {
         AccessPolicy accessPolicy = new AccessPolicy();
         accessPolicy.setStart(start);
         accessPolicy.setExpiry(expiry);
@@ -262,8 +252,7 @@ public class ContainerACL
      * Signatures.
      */
     @XmlRootElement(name = "SignedIdentifiers")
-    public static class SignedIdentifiers
-    {
+    public static class SignedIdentifiers {
         private List<SignedIdentifier> signedIdentifiers = new ArrayList<SignedIdentifier>();
 
         /**
@@ -274,8 +263,7 @@ public class ContainerACL
          *         containing container-level access policies.
          */
         @XmlElement(name = "SignedIdentifier")
-        public List<SignedIdentifier> getSignedIdentifiers()
-        {
+        public List<SignedIdentifier> getSignedIdentifiers() {
             return signedIdentifiers;
         }
 
@@ -288,8 +276,7 @@ public class ContainerACL
          *            containing container-level access policies.
          */
         public void setSignedIdentifiers(
-                List<SignedIdentifier> signedIdentifiers)
-        {
+                List<SignedIdentifier> signedIdentifiers) {
             this.signedIdentifiers = signedIdentifiers;
         }
     }
@@ -298,8 +285,7 @@ public class ContainerACL
      * A static inner class representing a container-level access policy with a
      * unique name.
      */
-    public static class SignedIdentifier
-    {
+    public static class SignedIdentifier {
         private String id;
         private AccessPolicy accessPolicy;
 
@@ -311,8 +297,7 @@ public class ContainerACL
          * @return A {@link String} containing the name for the access policy.
          */
         @XmlElement(name = "Id")
-        public String getId()
-        {
+        public String getId() {
             return id;
         }
 
@@ -326,8 +311,7 @@ public class ContainerACL
          *            policy.
          * @return A reference to this {@link SignedIdentifier} instance.
          */
-        public SignedIdentifier setId(String id)
-        {
+        public SignedIdentifier setId(String id) {
             this.id = id;
             return this;
         }
@@ -342,8 +326,7 @@ public class ContainerACL
          *         policy.
          */
         @XmlElement(name = "AccessPolicy")
-        public AccessPolicy getAccessPolicy()
-        {
+        public AccessPolicy getAccessPolicy() {
             return accessPolicy;
         }
 
@@ -358,8 +341,7 @@ public class ContainerACL
          *            the access policy.
          * @return A reference to this {@link SignedIdentifier} instance.
          */
-        public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy)
-        {
+        public SignedIdentifier setAccessPolicy(AccessPolicy accessPolicy) {
             this.accessPolicy = accessPolicy;
             return this;
         }
@@ -369,8 +351,7 @@ public class ContainerACL
      * An inner class representing the start time, expiration time, and
      * permissions associated with an access policy.
      */
-    public static class AccessPolicy
-    {
+    public static class AccessPolicy {
         private Date start;
         private Date expiry;
         private String permission;
@@ -386,8 +367,7 @@ public class ContainerACL
          */
         @XmlElement(name = "Start")
         @XmlJavaTypeAdapter(ContainerACLDateAdapter.class)
-        public Date getStart()
-        {
+        public Date getStart() {
             return start;
         }
 
@@ -403,8 +383,7 @@ public class ContainerACL
          *            unspecified.
          * @return A reference to this {@link AccessPolicy} instance.
          */
-        public AccessPolicy setStart(Date start)
-        {
+        public AccessPolicy setStart(Date start) {
             this.start = start;
             return this;
         }
@@ -420,8 +399,7 @@ public class ContainerACL
          */
         @XmlElement(name = "Expiry")
         @XmlJavaTypeAdapter(ContainerACLDateAdapter.class)
-        public Date getExpiry()
-        {
+        public Date getExpiry() {
             return expiry;
         }
 
@@ -437,8 +415,7 @@ public class ContainerACL
          *            unspecified.
          * @return A reference to this {@link AccessPolicy} instance.
          */
-        public AccessPolicy setExpiry(Date expiry)
-        {
+        public AccessPolicy setExpiry(Date expiry) {
             this.expiry = expiry;
             return this;
         }
@@ -456,8 +433,7 @@ public class ContainerACL
          *         access policy.
          */
         @XmlElement(name = "Permission")
-        public String getPermission()
-        {
+        public String getPermission() {
             return permission;
         }
 
@@ -475,8 +451,7 @@ public class ContainerACL
          *            the access policy.
          * @return A reference to this {@link AccessPolicy} instance.
          */
-        public AccessPolicy setPermission(String permission)
-        {
+        public AccessPolicy setPermission(String permission) {
             this.permission = permission;
             return this;
         }
@@ -486,8 +461,7 @@ public class ContainerACL
      * An enumeration type for the public access levels that can be set on a
      * blob container.
      */
-    public static enum PublicAccessType
-    {
+    public static enum PublicAccessType {
         /**
          * Access to this container and its blobs is restricted to calls made
          * with the storage account private key.

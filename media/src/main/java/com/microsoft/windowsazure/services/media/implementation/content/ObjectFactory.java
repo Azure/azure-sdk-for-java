@@ -22,8 +22,7 @@ import javax.xml.bind.annotation.XmlRegistry;
  * 
  */
 @XmlRegistry
-public class ObjectFactory
-{
+public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of
@@ -31,8 +30,7 @@ public class ObjectFactory
      * com.microsoft.windowsazure.services.media.implementation.atom
      * 
      */
-    public ObjectFactory()
-    {
+    public ObjectFactory() {
     }
 
     /**
@@ -40,8 +38,7 @@ public class ObjectFactory
      * 
      * @return a new AssetType instance.
      */
-    public AssetType createAssetType()
-    {
+    public AssetType createAssetType() {
         return new AssetType();
     }
 
@@ -50,8 +47,7 @@ public class ObjectFactory
      * 
      * @return a new ODataActionType instance.
      */
-    public ODataActionType createODataActionType()
-    {
+    public ODataActionType createODataActionType() {
         return new ODataActionType();
     }
 
@@ -60,8 +56,7 @@ public class ObjectFactory
      * 
      * @return a new AccessPolicyType instance.
      */
-    public AccessPolicyType createAccessPolicyType()
-    {
+    public AccessPolicyType createAccessPolicyType() {
         return new AccessPolicyType();
     }
 
@@ -70,8 +65,7 @@ public class ObjectFactory
      * 
      * @return a new LocatorRestType instance.
      */
-    public LocatorRestType createLocatorRestType()
-    {
+    public LocatorRestType createLocatorRestType() {
         return new LocatorRestType();
     }
 
@@ -80,8 +74,7 @@ public class ObjectFactory
      * 
      * @return a new MediaProcessorType instance.
      */
-    public MediaProcessorType createMediaProcessorType()
-    {
+    public MediaProcessorType createMediaProcessorType() {
         return new MediaProcessorType();
     }
 
@@ -90,8 +83,7 @@ public class ObjectFactory
      * 
      * @return a new JobType instance.
      */
-    public JobType createJobType()
-    {
+    public JobType createJobType() {
         return new JobType();
     }
 
@@ -100,8 +92,7 @@ public class ObjectFactory
      * 
      * @return a new TaskType instance.
      */
-    public TaskType createTaskType()
-    {
+    public TaskType createTaskType() {
         return new TaskType();
     }
 
@@ -110,8 +101,7 @@ public class ObjectFactory
      * 
      * @return the content key rest type
      */
-    public ContentKeyRestType createContentKeyRestType()
-    {
+    public ContentKeyRestType createContentKeyRestType() {
         return new ContentKeyRestType();
     }
 
@@ -120,8 +110,7 @@ public class ObjectFactory
      * 
      * @return a new AssetFileType instance.
      */
-    public AssetFileType createAssetFileType()
-    {
+    public AssetFileType createAssetFileType() {
         return new AssetFileType();
     }
 
@@ -130,8 +119,7 @@ public class ObjectFactory
      * 
      * @return the rebind content key type instance.
      */
-    public RebindContentKeyType createRebindContentKeyType()
-    {
+    public RebindContentKeyType createRebindContentKeyType() {
         return new RebindContentKeyType();
     }
 
@@ -140,8 +128,7 @@ public class ObjectFactory
      * 
      * @return the channel type.
      */
-    public ChannelType createChannelType()
-    {
+    public ChannelType createChannelType() {
         return new ChannelType();
     }
 
@@ -150,8 +137,7 @@ public class ObjectFactory
      * 
      * @return the job notification subscription type.
      */
-    public JobNotificationSubscriptionType createJobNotificationSubscriptionType()
-    {
+    public JobNotificationSubscriptionType createJobNotificationSubscriptionType() {
         return new JobNotificationSubscriptionType();
     }
 
@@ -160,8 +146,7 @@ public class ObjectFactory
      * 
      * @return the notification end point type.
      */
-    public NotificationEndPointType createNotificationEndPointType()
-    {
+    public NotificationEndPointType createNotificationEndPointType() {
         return new NotificationEndPointType();
     }
 
@@ -170,8 +155,7 @@ public class ObjectFactory
      * 
      * @return the operation type
      */
-    public OperationType createOperationType()
-    {
+    public OperationType createOperationType() {
         return new OperationType();
     }
 
@@ -180,8 +164,7 @@ public class ObjectFactory
      * 
      * @return the origin type
      */
-    public OriginType createOriginType()
-    {
+    public OriginType createOriginType() {
         return new OriginType();
     }
 
@@ -190,8 +173,7 @@ public class ObjectFactory
      * 
      * @return the program type
      */
-    public ProgramType createProgramType()
-    {
+    public ProgramType createProgramType() {
         return new ProgramType();
     }
 }

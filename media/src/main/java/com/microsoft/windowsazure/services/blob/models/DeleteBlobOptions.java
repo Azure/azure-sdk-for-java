@@ -27,8 +27,7 @@ import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
  * delete all snapshots but not the blob, or both the blob and all snapshots,
  * and any access conditions to satisfy.
  */
-public class DeleteBlobOptions extends BlobServiceOptions
-{
+public class DeleteBlobOptions extends BlobServiceOptions {
     private String snapshot;
     private String leaseId;
     private Boolean deleteSnaphotsOnly;
@@ -46,8 +45,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      * @return A reference to this {@link DeleteBlobOptions} instance.
      */
     @Override
-    public DeleteBlobOptions setTimeout(Integer timeout)
-    {
+    public DeleteBlobOptions setTimeout(Integer timeout) {
         super.setTimeout(timeout);
         return this;
     }
@@ -59,8 +57,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      * @return A {@link String} containing the snapshot timestamp value of the
      *         blob snapshot to get.
      */
-    public String getSnapshot()
-    {
+    public String getSnapshot() {
         return snapshot;
     }
 
@@ -80,8 +77,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      *            the blob snapshot to get.
      * @return A reference to this {@link DeleteBlobOptions} instance.
      */
-    public DeleteBlobOptions setSnapshot(String snapshot)
-    {
+    public DeleteBlobOptions setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
     }
@@ -92,8 +88,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      * 
      * @return A {@link String} containing the lease ID set, if any.
      */
-    public String getLeaseId()
-    {
+    public String getLeaseId() {
         return leaseId;
     }
 
@@ -109,8 +104,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      *            A {@link String} containing the lease ID to set.
      * @return A reference to this {@link DeleteBlobOptions} instance.
      */
-    public DeleteBlobOptions setLeaseId(String leaseId)
-    {
+    public DeleteBlobOptions setLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -125,8 +119,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      *         the value <code>null</code> is set, x-ms-delete-snapshots in the
      *         header will not be set.
      */
-    public Boolean getDeleteSnaphotsOnly()
-    {
+    public Boolean getDeleteSnaphotsOnly() {
         return deleteSnaphotsOnly;
     }
 
@@ -153,8 +146,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      *            <code>false</code> to delete both snapshots and the blob.
      * @return A reference to this {@link DeleteBlobOptions} instance.
      */
-    public DeleteBlobOptions setDeleteSnaphotsOnly(boolean deleteSnaphotsOnly)
-    {
+    public DeleteBlobOptions setDeleteSnaphotsOnly(boolean deleteSnaphotsOnly) {
         this.deleteSnaphotsOnly = deleteSnaphotsOnly;
         return this;
     }
@@ -166,8 +158,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      * @return An {@link AccessCondition} containing the access conditions set,
      *         if any.
      */
-    public AccessConditionHeader getAccessCondition()
-    {
+    public AccessConditionHeader getAccessCondition() {
         return accessCondition;
     }
 
@@ -184,8 +175,7 @@ public class DeleteBlobOptions extends BlobServiceOptions
      * @return A reference to this {@link DeleteBlobOptions} instance.
      */
     public DeleteBlobOptions setAccessCondition(
-            AccessConditionHeader accessCondition)
-    {
+            AccessConditionHeader accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }

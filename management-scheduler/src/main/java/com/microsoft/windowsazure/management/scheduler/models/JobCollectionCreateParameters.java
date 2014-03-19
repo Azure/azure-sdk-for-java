@@ -30,7 +30,7 @@ public class JobCollectionCreateParameters {
     private JobCollectionIntrinsicSettings intrinsicSettings;
     
     /**
-    * Intrinsic settings for the scheduler job collections.
+    * Optional. Intrinsic settings for the scheduler job collections.
     * @return The IntrinsicSettings value.
     */
     public JobCollectionIntrinsicSettings getIntrinsicSettings() {
@@ -38,7 +38,7 @@ public class JobCollectionCreateParameters {
     }
     
     /**
-    * Intrinsic settings for the scheduler job collections.
+    * Optional. Intrinsic settings for the scheduler job collections.
     * @param intrinsicSettingsValue The IntrinsicSettings value.
     */
     public void setIntrinsicSettings(final JobCollectionIntrinsicSettings intrinsicSettingsValue) {
@@ -48,7 +48,7 @@ public class JobCollectionCreateParameters {
     private String label;
     
     /**
-    * Label for the resource.
+    * Optional. Label for the resource.
     * @return The Label value.
     */
     public String getLabel() {
@@ -56,7 +56,7 @@ public class JobCollectionCreateParameters {
     }
     
     /**
-    * Label for the resource.
+    * Optional. Label for the resource.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -66,8 +66,8 @@ public class JobCollectionCreateParameters {
     private String schemaVersion;
     
     /**
-    * The version of the Intrinsic Properties for your Resource. If not
-    * specified, you must conform to the contract resource version you
+    * Optional. The version of the Intrinsic Properties for your Resource. If
+    * not specified, you must conform to the contract resource version you
     * registered as default.
     * @return The SchemaVersion value.
     */
@@ -76,8 +76,8 @@ public class JobCollectionCreateParameters {
     }
     
     /**
-    * The version of the Intrinsic Properties for your Resource. If not
-    * specified, you must conform to the contract resource version you
+    * Optional. The version of the Intrinsic Properties for your Resource. If
+    * not specified, you must conform to the contract resource version you
     * registered as default.
     * @param schemaVersionValue The SchemaVersion value.
     */

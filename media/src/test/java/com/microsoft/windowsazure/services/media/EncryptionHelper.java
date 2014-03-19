@@ -36,32 +36,26 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.microsoft.windowsazure.core.utils.Base64;
 
-class EncryptionHelper
-{
-    public static boolean canUseStrongCrypto()
-    {
-        try
-        {
+class EncryptionHelper {
+    public static boolean canUseStrongCrypto() {
+        try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[32], "AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return false;
         }
         return true;
     }
 
     public static byte[] encryptSymmetricKey(String protectionKey,
-            byte[] inputData) throws Exception
-    {
+            byte[] inputData) throws Exception {
         byte[] protectionKeyBytes = Base64.decode(protectionKey);
         return encryptSymmetricKey(protectionKeyBytes, inputData);
     }
 
     public static byte[] encryptSymmetricKey(byte[] protectionKey,
-            byte[] inputData) throws Exception
-    {
+            byte[] inputData) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory
                 .getInstance("X.509");
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
@@ -72,8 +66,7 @@ class EncryptionHelper
     }
 
     public static byte[] encryptSymmetricKey(Certificate certificate,
-            byte[] inputData) throws Exception
-    {
+            byte[] inputData) throws Exception {
         Cipher cipher = Cipher.getInstance(
                 "RSA/None/OAEPWithSHA1AndMGF1Padding", "BC");
         Key publicKey = certificate.getPublicKey();
@@ -84,8 +77,7 @@ class EncryptionHelper
     }
 
     public static String calculateContentKeyChecksum(String uuid, byte[] aesKey)
-            throws Exception
-    {
+            throws Exception {
         Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
         SecretKeySpec secretKeySpec = new SecretKeySpec(aesKey, "AES");
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
@@ -97,8 +89,7 @@ class EncryptionHelper
     }
 
     public static InputStream encryptFile(InputStream inputStream, byte[] key,
-            byte[] iv) throws Exception
-    {
+            byte[] iv) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CTR/NoPadding");
         SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
@@ -109,29 +100,24 @@ class EncryptionHelper
     }
 
     public static byte[] decryptSymmetricKey(String encryptedContent,
-            PrivateKey privateKey) throws Exception
-    {
+            PrivateKey privateKey) throws Exception {
         byte[] encryptedContentByteArray = Base64.decode(encryptedContent);
         return decryptSymmetricKey(encryptedContentByteArray, privateKey);
     }
 
     public static byte[] decryptSymmetricKey(byte[] encryptedContent,
-            PrivateKey privateKey) throws Exception
-    {
-        if (encryptedContent == null)
-        {
+            PrivateKey privateKey) throws Exception {
+        if (encryptedContent == null) {
             throw new IllegalArgumentException(
                     "The encrypted content cannot be null.");
         }
 
-        if (encryptedContent.length == 0)
-        {
+        if (encryptedContent.length == 0) {
             throw new IllegalArgumentException(
                     "The encrypted content cannot be empty.");
         }
 
-        if (privateKey == null)
-        {
+        if (privateKey == null) {
             throw new IllegalArgumentException(
                     "The private key cannot be null.");
         }
@@ -144,10 +130,8 @@ class EncryptionHelper
     }
 
     public static X509Certificate loadX509Certificate(String certificateFileName)
-            throws Exception
-    {
-        if ((certificateFileName == null) || certificateFileName.isEmpty())
-        {
+            throws Exception {
+        if ((certificateFileName == null) || certificateFileName.isEmpty()) {
             throw new IllegalArgumentException(
                     "certificate file name cannot be null or empty.");
         }
@@ -162,10 +146,8 @@ class EncryptionHelper
     }
 
     public static PrivateKey getPrivateKey(String certificateFileName)
-            throws Exception
-    {
-        if ((certificateFileName == null) || certificateFileName.isEmpty())
-        {
+            throws Exception {
+        if ((certificateFileName == null) || certificateFileName.isEmpty()) {
             throw new IllegalArgumentException(
                     "certificate file name cannot be null or empty.");
         }

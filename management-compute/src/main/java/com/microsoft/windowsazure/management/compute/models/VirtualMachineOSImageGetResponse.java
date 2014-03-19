@@ -28,14 +28,40 @@ import java.net.URI;
 import java.util.Calendar;
 
 /**
-* Parameters returned from the Create Virtual Machine Image operation.
+* A virtual machine image associated with your subscription.
 */
-public class VirtualMachineImageCreateResponse extends OperationResponse {
+public class VirtualMachineOSImageGetResponse extends OperationResponse {
+    private String affinityGroup;
+    
+    /**
+    * Optional. The affinity in which the media is located. The AffinityGroup
+    * value is derived from storage account that contains the blob in which
+    * the media is located. If the storage account does not belong to an
+    * affinity group the value is NULL and the element is not displayed in the
+    * response.  This value is NULL for platform images.
+    * @return The AffinityGroup value.
+    */
+    public String getAffinityGroup() {
+        return this.affinityGroup;
+    }
+    
+    /**
+    * Optional. The affinity in which the media is located. The AffinityGroup
+    * value is derived from storage account that contains the blob in which
+    * the media is located. If the storage account does not belong to an
+    * affinity group the value is NULL and the element is not displayed in the
+    * response.  This value is NULL for platform images.
+    * @param affinityGroupValue The AffinityGroup value.
+    */
+    public void setAffinityGroup(final String affinityGroupValue) {
+        this.affinityGroup = affinityGroupValue;
+    }
+    
     private String category;
     
     /**
-    * The repository classification of the image. All user images have the
-    * category User.
+    * Optional. The repository classification of the image. All user images
+    * have the category User.
     * @return The Category value.
     */
     public String getCategory() {
@@ -43,8 +69,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * The repository classification of the image. All user images have the
-    * category User.
+    * Optional. The repository classification of the image. All user images
+    * have the category User.
     * @param categoryValue The Category value.
     */
     public void setCategory(final String categoryValue) {
@@ -54,7 +80,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String description;
     
     /**
-    * Specifies the description of the OS image.
+    * Optional. Specifies the description of the image.
     * @return The Description value.
     */
     public String getDescription() {
@@ -62,7 +88,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the description of the OS image.
+    * Optional. Specifies the description of the image.
     * @param descriptionValue The Description value.
     */
     public void setDescription(final String descriptionValue) {
@@ -72,9 +98,9 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String eula;
     
     /**
-    * Specifies the End User License Agreement that is associated with the
-    * image. The value for this element is a string, but it is recommended
-    * that the value be a URL that points to a EULA.
+    * Optional. Specifies the End User License Agreement that is associated
+    * with the image. The value for this element is a string, but it is
+    * recommended that the value be a URL that points to a EULA.
     * @return The Eula value.
     */
     public String getEula() {
@@ -82,9 +108,9 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the End User License Agreement that is associated with the
-    * image. The value for this element is a string, but it is recommended
-    * that the value be a URL that points to a EULA.
+    * Optional. Specifies the End User License Agreement that is associated
+    * with the image. The value for this element is a string, but it is
+    * recommended that the value be a URL that points to a EULA.
     * @param eulaValue The Eula value.
     */
     public void setEula(final String eulaValue) {
@@ -94,8 +120,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private URI iconUri;
     
     /**
-    * Specifies the Uri to the icon that is displayed for the image in the
-    * Management Portal.
+    * Optional. Provides the URI to the icon for this Operating System Image.
     * @return The IconUri value.
     */
     public URI getIconUri() {
@@ -103,8 +128,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the Uri to the icon that is displayed for the image in the
-    * Management Portal.
+    * Optional. Provides the URI to the icon for this Operating System Image.
     * @param iconUriValue The IconUri value.
     */
     public void setIconUri(final URI iconUriValue) {
@@ -114,7 +138,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String imageFamily;
     
     /**
-    * Specifies a value that can be used to group OS images.
+    * Optional. Specifies a value that can be used to group images.
     * @return The ImageFamily value.
     */
     public String getImageFamily() {
@@ -122,7 +146,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies a value that can be used to group OS images.
+    * Optional. Specifies a value that can be used to group images.
     * @param imageFamilyValue The ImageFamily value.
     */
     public void setImageFamily(final String imageFamilyValue) {
@@ -132,8 +156,9 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private Boolean isPremium;
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Optional. Indicates whether the image contains software or associated
+    * services that will incur charges above the core price for the virtual
+    * machine. For additional details, see the PricingDetailLink element.
     * @return The IsPremium value.
     */
     public Boolean isPremium() {
@@ -141,8 +166,9 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Indicates if the image contains software or associated services that will
-    * incur charges above the core price for the virtual machine.
+    * Optional. Indicates whether the image contains software or associated
+    * services that will incur charges above the core price for the virtual
+    * machine. For additional details, see the PricingDetailLink element.
     * @param isPremiumValue The IsPremium value.
     */
     public void setIsPremium(final Boolean isPremiumValue) {
@@ -152,7 +178,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String label;
     
     /**
-    * Specifies the friendly name of the image.
+    * Optional. An identifier for the image.
     * @return The Label value.
     */
     public String getLabel() {
@@ -160,7 +186,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the friendly name of the image.
+    * Optional. An identifier for the image.
     * @param labelValue The Label value.
     */
     public void setLabel(final String labelValue) {
@@ -170,8 +196,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String language;
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @return The Language value.
     */
     public String getLanguage() {
@@ -179,8 +205,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the language of the image.  The Language element is only
-    * available using version 2013-03-01 or higher.
+    * Optional. Specifies the language of the image.  The Language element is
+    * only available using version 2013-03-01 or higher.
     * @param languageValue The Language value.
     */
     public void setLanguage(final String languageValue) {
@@ -190,11 +216,11 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String location;
     
     /**
-    * The geo-location in which this media is located. The Location value is
-    * derived from storage account that contains the blob in which the media
-    * is located. If the storage account belongs to an affinity group the
-    * value is NULL.  If the version is set to 2012-08-01 or later, the
-    * locations are returned for platform images; otherwise, this value is
+    * Optional. The geo-location in which this media is located. The Location
+    * value is derived from storage account that contains the blob in which
+    * the media is located. If the storage account belongs to an affinity
+    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @return The Location value.
     */
@@ -203,11 +229,11 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * The geo-location in which this media is located. The Location value is
-    * derived from storage account that contains the blob in which the media
-    * is located. If the storage account belongs to an affinity group the
-    * value is NULL.  If the version is set to 2012-08-01 or later, the
-    * locations are returned for platform images; otherwise, this value is
+    * Optional. The geo-location in which this media is located. The Location
+    * value is derived from storage account that contains the blob in which
+    * the media is located. If the storage account belongs to an affinity
+    * group the value is NULL.  If the version is set to 2012-08-01 or later,
+    * the locations are returned for platform images; otherwise, this value is
     * NULL for platform images.
     * @param locationValue The Location value.
     */
@@ -218,7 +244,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private double logicalSizeInGB;
     
     /**
-    * The size, in GB, of the image.
+    * Optional. The size, in GB, of the image.
     * @return The LogicalSizeInGB value.
     */
     public double getLogicalSizeInGB() {
@@ -226,7 +252,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * The size, in GB, of the image.
+    * Optional. The size, in GB, of the image.
     * @param logicalSizeInGBValue The LogicalSizeInGB value.
     */
     public void setLogicalSizeInGB(final double logicalSizeInGBValue) {
@@ -236,10 +262,10 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private URI mediaLinkUri;
     
     /**
-    * Specifies the location of the blob in Windows Azure storage. The blob
-    * location must belong to a storage account in the subscription specified
-    * by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. The location of the blob in Windows Azure storage. The blob
+    * location belongs to a storage account in the subscription specified by
+    * the SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd
     * @return The MediaLinkUri value.
     */
     public URI getMediaLinkUri() {
@@ -247,10 +273,10 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the location of the blob in Windows Azure storage. The blob
-    * location must belong to a storage account in the subscription specified
-    * by the SubscriptionId value in the operation call.  Example:
-    * http://example.blob.core.windows.net/disks/mydisk.vhd
+    * Optional. The location of the blob in Windows Azure storage. The blob
+    * location belongs to a storage account in the subscription specified by
+    * the SubscriptionId value in the operation call.  Example:
+    * http://example.blob.core.windows.net/disks/myimage.vhd
     * @param mediaLinkUriValue The MediaLinkUri value.
     */
     public void setMediaLinkUri(final URI mediaLinkUriValue) {
@@ -260,8 +286,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String name;
     
     /**
-    * Specifies a name that Windows Azure uses to identify the image when
-    * creating one or more virtual machines.
+    * Optional. The name of the operating system image. This is the name that
+    * is used when creating one or more virtual machines using the image.
     * @return The Name value.
     */
     public String getName() {
@@ -269,8 +295,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies a name that Windows Azure uses to identify the image when
-    * creating one or more virtual machines.
+    * Optional. The name of the operating system image. This is the name that
+    * is used when creating one or more virtual machines using the image.
     * @param nameValue The Name value.
     */
     public void setName(final String nameValue) {
@@ -280,8 +306,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String operatingSystemType;
     
     /**
-    * The operating system type of the OS image. Possible values are: Linux,
-    * Windows.
+    * Optional. The operating system type of the OS image. Possible values are:
+    * Linux, Windows.
     * @return The OperatingSystemType value.
     */
     public String getOperatingSystemType() {
@@ -289,8 +315,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * The operating system type of the OS image. Possible values are: Linux,
-    * Windows.
+    * Optional. The operating system type of the OS image. Possible values are:
+    * Linux, Windows.
     * @param operatingSystemTypeValue The OperatingSystemType value.
     */
     public void setOperatingSystemType(final String operatingSystemTypeValue) {
@@ -300,8 +326,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private URI privacyUri;
     
     /**
-    * Specifies the URI that points to a document that contains the privacy
-    * policy related to the OS image.
+    * Optional. Specifies the URI that points to a document that contains the
+    * privacy policy related to the image.
     * @return The PrivacyUri value.
     */
     public URI getPrivacyUri() {
@@ -309,8 +335,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the URI that points to a document that contains the privacy
-    * policy related to the OS image.
+    * Optional. Specifies the URI that points to a document that contains the
+    * privacy policy related to the image.
     * @param privacyUriValue The PrivacyUri value.
     */
     public void setPrivacyUri(final URI privacyUriValue) {
@@ -320,7 +346,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private Calendar publishedDate;
     
     /**
-    * Specifies the date when the OS image was added to the image repository.
+    * Optional. Specifies the date when the image was added to the image
+    * repository.
     * @return The PublishedDate value.
     */
     public Calendar getPublishedDate() {
@@ -328,7 +355,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the date when the OS image was added to the image repository.
+    * Optional. Specifies the date when the image was added to the image
+    * repository.
     * @param publishedDateValue The PublishedDate value.
     */
     public void setPublishedDate(final Calendar publishedDateValue) {
@@ -338,7 +366,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String publisherName;
     
     /**
-    * Specifies the name of the publisher of the image.
+    * Optional. The name of the publisher of this OS Image in Windows Azure.
     * @return The PublisherName value.
     */
     public String getPublisherName() {
@@ -346,7 +374,7 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the name of the publisher of the image.
+    * Optional. The name of the publisher of this OS Image in Windows Azure.
     * @param publisherNameValue The PublisherName value.
     */
     public void setPublisherName(final String publisherNameValue) {
@@ -356,8 +384,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private String recommendedVMSize;
     
     /**
-    * Specifies the size to use for the virtual machine that is created from
-    * the OS image.
+    * Optional. Specifies the size to use for the virtual machine that is
+    * created from the OS image.
     * @return The RecommendedVMSize value.
     */
     public String getRecommendedVMSize() {
@@ -365,8 +393,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the size to use for the virtual machine that is created from
-    * the OS image.
+    * Optional. Specifies the size to use for the virtual machine that is
+    * created from the OS image.
     * @param recommendedVMSizeValue The RecommendedVMSize value.
     */
     public void setRecommendedVMSize(final String recommendedVMSizeValue) {
@@ -376,7 +404,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private Boolean showInGui;
     
     /**
-    * Specifies whether the image should appear in the image gallery.
+    * Optional. Indicates whther the image should be shown in the windows azure
+    * portal.
     * @return The ShowInGui value.
     */
     public Boolean isShowInGui() {
@@ -384,7 +413,8 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies whether the image should appear in the image gallery.
+    * Optional. Indicates whther the image should be shown in the windows azure
+    * portal.
     * @param showInGuiValue The ShowInGui value.
     */
     public void setShowInGui(final Boolean showInGuiValue) {
@@ -394,9 +424,10 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     private URI smallIconUri;
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @return The SmallIconUri value.
     */
     public URI getSmallIconUri() {
@@ -404,9 +435,10 @@ public class VirtualMachineImageCreateResponse extends OperationResponse {
     }
     
     /**
-    * Specifies the URI to the small icon that is displayed when the image is
-    * presented in the Windows Azure Management Portal.  The SmallIconUri
-    * element is only available using version 2013-03-01 or higher.
+    * Optional. Specifies the URI to the small icon that is displayed when the
+    * image is presented in the Windows Azure Management Portal.  The
+    * SmallIconUri element is only available using version 2013-03-01 or
+    * higher.
     * @param smallIconUriValue The SmallIconUri value.
     */
     public void setSmallIconUri(final URI smallIconUriValue) {

@@ -21,10 +21,8 @@ import com.microsoft.windowsazure.Configuration;
  * Access service management functionality.
  * 
  */
-public final class StorageManagementService
-{
-    private StorageManagementService()
-    {
+public final class StorageManagementService {
+    private StorageManagementService() {
         // class is not instantiated
     }
 
@@ -32,8 +30,7 @@ public final class StorageManagementService
      * Creates an instance of the <code>StorageManagementClient</code> API.
      * @return An instance of the <code>StorageManagementClient</code> API.
      */
-    public static StorageManagementClient create()
-    {
+    public static StorageManagementClient create() {
         return Configuration.getInstance().create(
                 StorageManagementClient.class);
     }
@@ -46,8 +43,7 @@ public final class StorageManagementService
      * configuration for the service management.
      * @return An instance of the <code>StorageManagementClient</code> API.
      */
-    public static StorageManagementClient create(final Configuration config)
-    {
+    public static StorageManagementClient create(final Configuration config) {
         return config.create(StorageManagementClient.class);
     }
 
@@ -58,8 +54,7 @@ public final class StorageManagementService
      * of the service management service.
      * @return An instance of the <code>StorageManagementClient</code> API.
      */
-    public static StorageManagementClient create(final String profile)
-    {
+    public static StorageManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
                 StorageManagementClient.class);
     }
@@ -74,8 +69,7 @@ public final class StorageManagementService
      * @return An instance of the <code>StorageManagementClient</code> API.
      */
     public static StorageManagementClient create(final String profile,
-            final Configuration config)
-    {
+            final Configuration config) {
         return config.create(profile, StorageManagementClient.class);
     }
 }

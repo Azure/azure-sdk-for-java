@@ -34,7 +34,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     private ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegions;
     
     /**
-    * The available geo regions.
+    * Optional. The available geo regions.
     * @return The GeoRegions value.
     */
     public ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> getGeoRegions() {
@@ -42,7 +42,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
     }
     
     /**
-    * The available geo regions.
+    * Optional. The available geo regions.
     * @param geoRegionsValue The GeoRegions value.
     */
     public void setGeoRegions(final ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionsValue) {
@@ -73,7 +73,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private String description;
         
         /**
-        * Geo Region description.
+        * Optional. Geo Region description.
         * @return The Description value.
         */
         public String getDescription() {
@@ -81,7 +81,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Geo Region description.
+        * Optional. Geo Region description.
         * @param descriptionValue The Description value.
         */
         public void setDescription(final String descriptionValue) {
@@ -91,7 +91,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private String name;
         
         /**
-        * Name of the region.
+        * Optional. Name of the region.
         * @return The Name value.
         */
         public String getName() {
@@ -99,7 +99,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Name of the region.
+        * Optional. Name of the region.
         * @param nameValue The Name value.
         */
         public void setName(final String nameValue) {
@@ -109,7 +109,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         private int sortOrder;
         
         /**
-        * Sort order.
+        * Optional. Sort order.
         * @return The SortOrder value.
         */
         public int getSortOrder() {
@@ -117,7 +117,7 @@ public class WebSpacesListGeoRegionsResponse extends OperationResponse implement
         }
         
         /**
-        * Sort order.
+        * Optional. Sort order.
         * @param sortOrderValue The SortOrder value.
         */
         public void setSortOrder(final int sortOrderValue) {

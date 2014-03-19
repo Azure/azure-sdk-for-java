@@ -50,8 +50,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CurrentStateInfo", propOrder = { "statusLease" })
-class CurrentStateInfo
-{
+class CurrentStateInfo {
 
     @XmlElement(name = "StatusLease")
     protected StatusLeaseInfo statusLease;
@@ -62,8 +61,7 @@ class CurrentStateInfo
      * @return possible object is {@link StatusLeaseInfo }
      * 
      */
-    public StatusLeaseInfo getStatusLease()
-    {
+    public StatusLeaseInfo getStatusLease() {
         return statusLease;
     }
 
@@ -74,8 +72,7 @@ class CurrentStateInfo
      *            allowed object is {@link StatusLeaseInfo }
      * 
      */
-    public void setStatusLease(StatusLeaseInfo value)
-    {
+    public void setStatusLease(StatusLeaseInfo value) {
         this.statusLease = value;
     }
 

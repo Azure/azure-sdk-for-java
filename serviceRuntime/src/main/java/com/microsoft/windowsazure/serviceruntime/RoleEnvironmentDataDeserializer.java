@@ -19,7 +19,6 @@ import java.io.InputStream;
 /**
  * 
  */
-interface RoleEnvironmentDataDeserializer
-{
+interface RoleEnvironmentDataDeserializer {
     public RoleEnvironmentData deserialize(InputStream stream);
 }

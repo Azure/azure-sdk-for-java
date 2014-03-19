@@ -76,9 +76,9 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -107,9 +107,9 @@ public interface StorageManagementClient extends FilterableService<StorageManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

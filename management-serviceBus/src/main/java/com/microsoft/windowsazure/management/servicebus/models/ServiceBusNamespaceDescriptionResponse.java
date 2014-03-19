@@ -34,7 +34,7 @@ public class ServiceBusNamespaceDescriptionResponse extends OperationResponse im
     private ArrayList<NamespaceDescription> namespaceDescriptions;
     
     /**
-    * The descriptions for the namespace.
+    * Optional. The descriptions for the namespace.
     * @return The NamespaceDescriptions value.
     */
     public ArrayList<NamespaceDescription> getNamespaceDescriptions() {
@@ -42,7 +42,7 @@ public class ServiceBusNamespaceDescriptionResponse extends OperationResponse im
     }
     
     /**
-    * The descriptions for the namespace.
+    * Optional. The descriptions for the namespace.
     * @param namespaceDescriptionsValue The NamespaceDescriptions value.
     */
     public void setNamespaceDescriptions(final ArrayList<NamespaceDescription> namespaceDescriptionsValue) {

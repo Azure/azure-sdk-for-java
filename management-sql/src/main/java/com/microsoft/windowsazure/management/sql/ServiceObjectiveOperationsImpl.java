@@ -74,8 +74,9 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     /**
     * Returns information about a certain Service Objective on a given Id.
     *
-    * @param serverName The name of the SQL Server to be queried.
-    * @param serviceObjectiveId The Id of the Service Objective to be obtained.
+    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param serviceObjectiveId Required. The Id of the Service Objective to be
+    * obtained.
     * @return Response containing the service objective for a given server and
     * service objective Id.
     */
@@ -92,8 +93,9 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     /**
     * Returns information about a certain Service Objective on a given Id.
     *
-    * @param serverName The name of the SQL Server to be queried.
-    * @param serviceObjectiveId The Id of the Service Objective to be obtained.
+    * @param serverName Required. The name of the SQL Server to be queried.
+    * @param serviceObjectiveId Required. The Id of the Service Objective to be
+    * obtained.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -340,7 +342,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     /**
     * Returns information about all Service Objectives on a database server.
     *
-    * @param serverName The name of the database server to be queried.
+    * @param serverName Required. The name of the database server to be queried.
     * @return Response containing the list of service objective for a given
     * server.
     */
@@ -357,7 +359,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
     /**
     * Returns information about all Service Objectives on a database server.
     *
-    * @param serverName The name of the database server to be queried.
+    * @param serverName Required. The name of the database server to be queried.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.

@@ -20,8 +20,7 @@ import java.security.InvalidParameterException;
 /**
  * The Enum JobState.
  */
-public enum JobState
-{
+public enum JobState {
     /** The Queued. */
     Queued(0),
 
@@ -52,8 +51,7 @@ public enum JobState
      * @param jobStateCode
      *            the job state code
      */
-    private JobState(int jobStateCode)
-    {
+    private JobState(int jobStateCode) {
         this.jobStateCode = jobStateCode;
     }
 
@@ -62,8 +60,7 @@ public enum JobState
      * 
      * @return the code
      */
-    public int getCode()
-    {
+    public int getCode() {
         return this.jobStateCode;
     }
 
@@ -74,10 +71,8 @@ public enum JobState
      *            the job state code
      * @return the job state
      */
-    public static JobState fromCode(int jobStateCode)
-    {
-        switch (jobStateCode)
-        {
+    public static JobState fromCode(int jobStateCode) {
+        switch (jobStateCode) {
         case 0:
             return JobState.Queued;
         case 1:

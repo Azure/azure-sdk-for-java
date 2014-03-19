@@ -27,8 +27,8 @@ public class JobCollectionMaxRecurrence {
     private JobCollectionRecurrenceFrequency frequency;
     
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
+    * Required. Defines the maximum recurrences that can be specified in any
+    * job in this job collection.
     * @return The Frequency value.
     */
     public JobCollectionRecurrenceFrequency getFrequency() {
@@ -36,8 +36,8 @@ public class JobCollectionMaxRecurrence {
     }
     
     /**
-    * Defines the maximum recurrences that can be specified in any job in this
-    * job collection.
+    * Required. Defines the maximum recurrences that can be specified in any
+    * job in this job collection.
     * @param frequencyValue The Frequency value.
     */
     public void setFrequency(final JobCollectionRecurrenceFrequency frequencyValue) {
@@ -47,7 +47,7 @@ public class JobCollectionMaxRecurrence {
     private int interval;
     
     /**
-    * Defines the interval.
+    * Required. Defines the interval.
     * @return The Interval value.
     */
     public int getInterval() {
@@ -55,7 +55,7 @@ public class JobCollectionMaxRecurrence {
     }
     
     /**
-    * Defines the interval.
+    * Required. Defines the interval.
     * @param intervalValue The Interval value.
     */
     public void setInterval(final int intervalValue) {

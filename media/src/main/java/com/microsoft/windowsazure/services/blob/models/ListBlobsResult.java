@@ -41,8 +41,7 @@ import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
  * Service REST API operation.
  */
 @XmlRootElement(name = "EnumerationResults")
-public class ListBlobsResult
-{
+public class ListBlobsResult {
     private List<BlobPrefixEntry> blobPrefixes = new ArrayList<BlobPrefixEntry>();
     private List<BlobEntry> blobs = new ArrayList<BlobEntry>();
     private String containerName;
@@ -63,8 +62,7 @@ public class ListBlobsResult
     @XmlElementRefs({
             @XmlElementRef(name = "BlobPrefix", type = BlobPrefixEntry.class),
             @XmlElementRef(name = "Blob", type = BlobEntry.class) })
-    public List<ListBlobsEntry> getEntries()
-    {
+    public List<ListBlobsEntry> getEntries() {
         ArrayList<ListBlobsEntry> result = new ArrayList<ListBlobsEntry>();
         result.addAll(this.blobPrefixes);
         result.addAll(this.blobs);
@@ -80,19 +78,15 @@ public class ListBlobsResult
      *            The {@link List} of {@link ListBlobsEntry} entries to set the
      *            lists of blob entries and blob prefix entries from.
      */
-    public void setEntries(List<ListBlobsEntry> entries)
-    {
+    public void setEntries(List<ListBlobsEntry> entries) {
         // Split collection into "blobs" and "blobPrefixes" collections
         this.blobPrefixes = new ArrayList<BlobPrefixEntry>();
         this.blobs = new ArrayList<BlobEntry>();
 
-        for (ListBlobsEntry entry : entries)
-        {
-            if (entry instanceof BlobPrefixEntry)
-            {
+        for (ListBlobsEntry entry : entries) {
+            if (entry instanceof BlobPrefixEntry) {
                 this.blobPrefixes.add((BlobPrefixEntry) entry);
-            } else if (entry instanceof BlobEntry)
-            {
+            } else if (entry instanceof BlobEntry) {
                 this.blobs.add((BlobEntry) entry);
             }
         }
@@ -135,8 +129,7 @@ public class ListBlobsResult
      * @return A {@link List} of {@link BlobEntry} instances for the blobs that
      *         satisfied the request.
      */
-    public List<BlobPrefixEntry> getBlobPrefixes()
-    {
+    public List<BlobPrefixEntry> getBlobPrefixes() {
         return this.blobPrefixes;
     }
 
@@ -157,8 +150,7 @@ public class ListBlobsResult
      * @return A {@link List} of {@link BlobEntry} instances for the blobs that
      *         satisfied the request.
      */
-    public List<BlobEntry> getBlobs()
-    {
+    public List<BlobEntry> getBlobs() {
         return this.blobs;
     }
 
@@ -171,8 +163,7 @@ public class ListBlobsResult
      *         names returned, if any.
      */
     @XmlElement(name = "Prefix")
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -188,8 +179,7 @@ public class ListBlobsResult
      *            A {@link String} containing the prefix used to filter the blob
      *            names returned, if any.
      */
-    public void setPrefix(String prefix)
-    {
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
@@ -215,8 +205,7 @@ public class ListBlobsResult
      *         beginning of the blob list returned, if any.
      */
     @XmlElement(name = "Marker")
-    public String getMarker()
-    {
+    public String getMarker() {
         return marker;
     }
 
@@ -232,8 +221,7 @@ public class ListBlobsResult
      *            A {@link String} containing the marker used to specify the
      *            beginning of the blob list returned.
      */
-    public void setMarker(String marker)
-    {
+    public void setMarker(String marker) {
         this.marker = marker;
     }
 
@@ -260,8 +248,7 @@ public class ListBlobsResult
      *         return, if any was set in the response from the server.
      */
     @XmlElement(name = "NextMarker")
-    public String getNextMarker()
-    {
+    public String getNextMarker() {
         return nextMarker;
     }
 
@@ -278,8 +265,7 @@ public class ListBlobsResult
      *            specify the beginning of the next portion of the blob list to
      *            return.
      */
-    public void setNextMarker(String nextMarker)
-    {
+    public void setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
     }
 
@@ -304,8 +290,7 @@ public class ListBlobsResult
      * @return The maximum results to return value in the response, if any.
      */
     @XmlElement(name = "MaxResults")
-    public int getMaxResults()
-    {
+    public int getMaxResults() {
         return maxResults;
     }
 
@@ -320,8 +305,7 @@ public class ListBlobsResult
      * @param maxResults
      *            The maximum results to return value in the response, if any.
      */
-    public void setMaxResults(int maxResults)
-    {
+    public void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
     }
 
@@ -336,8 +320,7 @@ public class ListBlobsResult
      *         parameter.
      */
     @XmlElement(name = "Delimiter")
-    public String getDelimiter()
-    {
+    public String getDelimiter() {
         return delimiter;
     }
 
@@ -353,8 +336,7 @@ public class ListBlobsResult
      *            A {@link String} containing the delimiter value in the
      *            response, if any.
      */
-    public void setDelimiter(String delimiter)
-    {
+    public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
     }
 
@@ -366,8 +348,7 @@ public class ListBlobsResult
      * @return A {@link String} containing the container URI.
      */
     @XmlAttribute(name = "ContainerName")
-    public String getContainerName()
-    {
+    public String getContainerName() {
         return containerName;
     }
 
@@ -382,8 +363,7 @@ public class ListBlobsResult
      * @param containerName
      *            A {@link String} containing the container URI.
      */
-    public void setContainerName(String containerName)
-    {
+    public void setContainerName(String containerName) {
         this.containerName = containerName;
     }
 
@@ -391,8 +371,7 @@ public class ListBlobsResult
      * The abstract base class for <code>Blob</code> and <code>BlobPrefix</code>
      * entries in the list of results returned in the response.
      */
-    public static abstract class ListBlobsEntry
-    {
+    public static abstract class ListBlobsEntry {
 
     }
 
@@ -404,8 +383,7 @@ public class ListBlobsResult
      * delimiter character.
      */
     @XmlRootElement(name = "BlobPrefix")
-    public static class BlobPrefixEntry extends ListBlobsEntry
-    {
+    public static class BlobPrefixEntry extends ListBlobsEntry {
         private String name;
 
         /**
@@ -421,8 +399,7 @@ public class ListBlobsResult
          *         specified in the request.
          */
         @XmlElement(name = "Name")
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
@@ -439,8 +416,7 @@ public class ListBlobsResult
          *            <strong>Name</strong> element within a
          *            <strong>BlobPrefix</strong> element.
          */
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
     }
@@ -452,8 +428,7 @@ public class ListBlobsResult
      * on the request options set.
      */
     @XmlRootElement(name = "Blob")
-    public static class BlobEntry extends ListBlobsEntry
-    {
+    public static class BlobEntry extends ListBlobsEntry {
         private String name;
         private String url;
         private String snapshot;
@@ -469,8 +444,7 @@ public class ListBlobsResult
          * @return A {@link String} containing the complete blob name.
          */
         @XmlElement(name = "Name")
-        public String getName()
-        {
+        public String getName() {
             return name;
         }
 
@@ -487,8 +461,7 @@ public class ListBlobsResult
          *            <strong>Name</strong> element within a
          *            <strong>Blob</strong> element.
          */
-        public void setName(String name)
-        {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -502,8 +475,7 @@ public class ListBlobsResult
          *         blob.
          */
         @XmlElement(name = "Url")
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
 
@@ -519,8 +491,7 @@ public class ListBlobsResult
          *            A {@link String} containing the complete URI address of
          *            the blob.
          */
-        public void setUrl(String url)
-        {
+        public void setUrl(String url) {
             this.url = url;
         }
 
@@ -532,8 +503,7 @@ public class ListBlobsResult
          *         returned in the response.
          */
         @XmlElement(name = "Properties")
-        public BlobProperties getProperties()
-        {
+        public BlobProperties getProperties() {
             return properties;
         }
 
@@ -549,8 +519,7 @@ public class ListBlobsResult
          *            A {@link BlobProperties} instance with the blob properties
          *            returned in the response.
          */
-        public void setProperties(BlobProperties properties)
-        {
+        public void setProperties(BlobProperties properties) {
             this.properties = properties;
         }
 
@@ -566,8 +535,7 @@ public class ListBlobsResult
          *         blob snapshot.
          */
         @XmlElement(name = "Snapshot")
-        public String getSnapshot()
-        {
+        public String getSnapshot() {
             return snapshot;
         }
 
@@ -583,8 +551,7 @@ public class ListBlobsResult
          *            A {@link String} containing the snapshot timestamp of the
          *            blob snapshot.
          */
-        public void setSnapshot(String snapshot)
-        {
+        public void setSnapshot(String snapshot) {
             this.snapshot = snapshot;
         }
 
@@ -600,8 +567,7 @@ public class ListBlobsResult
          */
         @XmlElement(name = "Metadata")
         @XmlJavaTypeAdapter(MetadataAdapter.class)
-        public HashMap<String, String> getMetadata()
-        {
+        public HashMap<String, String> getMetadata() {
             return metadata;
         }
 
@@ -618,8 +584,7 @@ public class ListBlobsResult
          *            {@link String} containing the names and values of the blob
          *            metadata, if present.
          */
-        public void setMetadata(HashMap<String, String> metadata)
-        {
+        public void setMetadata(HashMap<String, String> metadata) {
             this.metadata = metadata;
         }
     }

@@ -113,15 +113,6 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     VirtualMachineExtensionOperations getVirtualMachineExtensionsOperations();
     
     /**
-    * The Service Management API includes operations for managing the OS images
-    * in your subscription.  (see
-    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
-    * more information)
-    * @return The VirtualMachineImagesOperations value.
-    */
-    VirtualMachineImageOperations getVirtualMachineImagesOperations();
-    
-    /**
     * The Service Management API includes operations for managing the virtual
     * machines in your subscription.  (see
     * http://msdn.microsoft.com/en-us/library/windowsazure/jj157206.aspx for
@@ -131,6 +122,22 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     VirtualMachineOperations getVirtualMachinesOperations();
     
     /**
+    * The Service Management API includes operations for managing the OS images
+    * in your subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/jj157175.aspx for
+    * more information)
+    * @return The VirtualMachineOSImagesOperations value.
+    */
+    VirtualMachineOSImageOperations getVirtualMachineOSImagesOperations();
+    
+    /**
+    * The Service Management API includes operations for managing the virtual
+    * machine templates in your subscription.
+    * @return The VirtualMachineVMImagesOperations value.
+    */
+    VirtualMachineVMImageOperations getVirtualMachineVMImagesOperations();
+    
+    /**
     * The Get Operation Status operation returns the status of thespecified
     * operation. After calling an asynchronous operation, you can call Get
     * Operation Status to determine whether the operation has succeeded,
@@ -138,9 +145,9 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @throws IOException Signals that an I/O exception of some sort has
     * occurred. This class is the general class of exceptions produced by
     * failed or interrupted I/O operations.
@@ -169,9 +176,9 @@ public interface ComputeManagementClient extends FilterableService<ComputeManage
     * http://msdn.microsoft.com/en-us/library/windowsazure/ee460783.aspx for
     * more information)
     *
-    * @param requestId The request ID for the request you wish to track. The
-    * request ID is returned in the x-ms-request-id response header for every
-    * request.
+    * @param requestId Required. The request ID for the request you wish to
+    * track. The request ID is returned in the x-ms-request-id response header
+    * for every request.
     * @return The response body contains the status of the specified
     * asynchronous operation, indicating whether it has succeeded, is
     * inprogress, or has failed. Note that this status is distinct from the

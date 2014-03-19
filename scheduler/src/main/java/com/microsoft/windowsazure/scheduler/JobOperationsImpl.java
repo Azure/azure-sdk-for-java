@@ -90,1882 +90,1998 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
-public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>, JobOperations
-{
+public class JobOperationsImpl implements
+        ServiceOperations<SchedulerClientImpl>, JobOperations {
     /**
-    * Initializes a new instance of the JobOperationsImpl class.
-    *
-    * @param client Reference to the service client.
-    */
-    JobOperationsImpl(SchedulerClientImpl client)
-    {
+     * Initializes a new instance of the JobOperationsImpl class.
+     * 
+     * @param client
+     *            Reference to the service client.
+     */
+    JobOperationsImpl(SchedulerClientImpl client) {
         this.client = client;
     }
-    
+
     private SchedulerClientImpl client;
-    
+
     /**
-    * Gets a reference to the
-    * microsoft.windowsazure.scheduler.SchedulerClientImpl.
-    */
-    public SchedulerClientImpl getClient()
-    {
+     * Gets a reference to the
+     * microsoft.windowsazure.scheduler.SchedulerClientImpl.
+     */
+    public SchedulerClientImpl getClient() {
         return this.client;
     }
-    
+
     /**
-    * If the user wants the server to create the job id then he can use a POST
-    * request to the jobs resource.
-    *
-    * @param parameters Parameters supplied to the Create Job operation.
-    * @return The Create Job operation response.
-    */
+     * If the user wants the server to create the job id then he can use a POST
+     * request to the jobs resource.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Job operation.
+     * @return The Create Job operation response.
+     */
     @Override
-    public Future<JobCreateResponse> createAsync(final JobCreateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobCreateResponse>() { 
-            @Override
-            public JobCreateResponse call() throws Exception
-            {
-                return create(parameters);
-            }
-         });
+    public Future<JobCreateResponse> createAsync(
+            final JobCreateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobCreateResponse>() {
+                    @Override
+                    public JobCreateResponse call() throws Exception {
+                        return create(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * If the user wants the server to create the job id then he can use a POST
-    * request to the jobs resource.
-    *
-    * @param parameters Parameters supplied to the Create Job operation.
-    * @return The Create Job operation response.
-    */
+     * If the user wants the server to create the job id then he can use a POST
+     * request to the jobs resource.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Create Job operation.
+     * @return The Create Job operation response.
+     */
     @Override
-    public JobCreateResponse create(JobCreateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobCreateResponse create(JobCreateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getAction() == null)
-        {
+        if (parameters.getAction() == null) {
             throw new NullPointerException("parameters.Action");
         }
-        if (parameters.getAction().getErrorAction() != null)
-        {
-            if (parameters.getAction().getErrorAction().getQueueMessage() != null)
-            {
-                if (parameters.getAction().getErrorAction().getQueueMessage().getMessage() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.Message");
+        if (parameters.getAction().getErrorAction() != null) {
+            if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getMessage() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.Message");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getQueueName() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.QueueName");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getQueueName() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.QueueName");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getSasToken() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.SasToken");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getSasToken() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.SasToken");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getStorageAccountName() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.StorageAccountName");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getStorageAccountName() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.StorageAccountName");
                 }
             }
-            if (parameters.getAction().getErrorAction().getRequest() != null)
-            {
-                if (parameters.getAction().getErrorAction().getRequest().getMethod() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.Request.Method");
+            if (parameters.getAction().getErrorAction().getRequest() != null) {
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getMethod() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.Request.Method");
                 }
-                if (parameters.getAction().getErrorAction().getRequest().getUri() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.Request.Uri");
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getUri() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.Request.Uri");
                 }
             }
         }
-        if (parameters.getAction().getQueueMessage() != null)
-        {
-            if (parameters.getAction().getQueueMessage().getMessage() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.Message");
+        if (parameters.getAction().getQueueMessage() != null) {
+            if (parameters.getAction().getQueueMessage().getMessage() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.Message");
             }
-            if (parameters.getAction().getQueueMessage().getQueueName() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.QueueName");
+            if (parameters.getAction().getQueueMessage().getQueueName() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.QueueName");
             }
-            if (parameters.getAction().getQueueMessage().getSasToken() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.SasToken");
+            if (parameters.getAction().getQueueMessage().getSasToken() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.SasToken");
             }
-            if (parameters.getAction().getQueueMessage().getStorageAccountName() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.StorageAccountName");
+            if (parameters.getAction().getQueueMessage()
+                    .getStorageAccountName() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.StorageAccountName");
             }
         }
-        if (parameters.getAction().getRequest() != null)
-        {
-            if (parameters.getAction().getRequest().getMethod() == null)
-            {
-                throw new NullPointerException("parameters.Action.Request.Method");
+        if (parameters.getAction().getRequest() != null) {
+            if (parameters.getAction().getRequest().getMethod() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.Request.Method");
             }
-            if (parameters.getAction().getRequest().getUri() == null)
-            {
+            if (parameters.getAction().getRequest().getUri() == null) {
                 throw new NullPointerException("parameters.Action.Request.Uri");
             }
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs?api-version=" + "2013-10-31_Preview";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName()
+                + "/jobs?api-version=" + "2013-10-31_Preview";
+
         // Create HTTP transport objects
         HttpPost httpRequest = new HttpPost(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode jobCreateParametersValue = objectMapper.createObjectNode();
         requestDoc = jobCreateParametersValue;
-        
-        if (parameters.getStartTime() != null)
-        {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+
+        if (parameters.getStartTime() != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mmZ");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            jobCreateParametersValue.put("startTime", simpleDateFormat.format(parameters.getStartTime().getTime()));
+            jobCreateParametersValue.put("startTime", simpleDateFormat
+                    .format(parameters.getStartTime().getTime()));
         }
-        
+
         ObjectNode actionValue = objectMapper.createObjectNode();
         jobCreateParametersValue.put("action", actionValue);
-        
-        actionValue.put("type", SchedulerClientImpl.jobActionTypeToString(parameters.getAction().getType()));
-        
-        if (parameters.getAction().getRetryPolicy() != null)
-        {
+
+        actionValue.put("type", SchedulerClientImpl
+                .jobActionTypeToString(parameters.getAction().getType()));
+
+        if (parameters.getAction().getRetryPolicy() != null) {
             ObjectNode retryPolicyValue = objectMapper.createObjectNode();
             actionValue.put("retryPolicy", retryPolicyValue);
-            
-            retryPolicyValue.put("retryType", SchedulerClientImpl.retryTypeToString(parameters.getAction().getRetryPolicy().getRetryType()));
-            
-            if (parameters.getAction().getRetryPolicy().getRetryInterval() != null)
-            {
-                retryPolicyValue.put("retryInterval", TimeSpan8601Converter.format(parameters.getAction().getRetryPolicy().getRetryInterval()));
+
+            retryPolicyValue.put(
+                    "retryType",
+                    SchedulerClientImpl.retryTypeToString(parameters
+                            .getAction().getRetryPolicy().getRetryType()));
+
+            if (parameters.getAction().getRetryPolicy().getRetryInterval() != null) {
+                retryPolicyValue.put(
+                        "retryInterval",
+                        TimeSpan8601Converter.format(parameters.getAction()
+                                .getRetryPolicy().getRetryInterval()));
             }
-            
-            if (parameters.getAction().getRetryPolicy().getRetryCount() != null)
-            {
-                retryPolicyValue.put("retryCount", parameters.getAction().getRetryPolicy().getRetryCount());
+
+            if (parameters.getAction().getRetryPolicy().getRetryCount() != null) {
+                retryPolicyValue.put("retryCount", parameters.getAction()
+                        .getRetryPolicy().getRetryCount());
             }
         }
-        
-        if (parameters.getAction().getErrorAction() != null)
-        {
+
+        if (parameters.getAction().getErrorAction() != null) {
             ObjectNode errorActionValue = objectMapper.createObjectNode();
             actionValue.put("errorAction", errorActionValue);
-            
-            errorActionValue.put("type", SchedulerClientImpl.jobActionTypeToString(parameters.getAction().getErrorAction().getType()));
-            
-            if (parameters.getAction().getErrorAction().getRequest() != null)
-            {
+
+            errorActionValue.put(
+                    "type",
+                    SchedulerClientImpl.jobActionTypeToString(parameters
+                            .getAction().getErrorAction().getType()));
+
+            if (parameters.getAction().getErrorAction().getRequest() != null) {
                 ObjectNode requestValue = objectMapper.createObjectNode();
                 errorActionValue.put("request", requestValue);
-                
-                requestValue.put("uri", parameters.getAction().getErrorAction().getRequest().getUri().toString());
-                
-                requestValue.put("method", parameters.getAction().getErrorAction().getRequest().getMethod());
-                
+
+                requestValue.put("uri", parameters.getAction().getErrorAction()
+                        .getRequest().getUri().toString());
+
+                requestValue.put("method", parameters.getAction()
+                        .getErrorAction().getRequest().getMethod());
+
                 ObjectNode headersDictionary = objectMapper.createObjectNode();
-                if (parameters.getAction().getErrorAction().getRequest().getHeaders() != null)
-                {
-                    for (Map.Entry<String, String> entry : parameters.getAction().getErrorAction().getRequest().getHeaders().entrySet())
-                    {
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getHeaders() != null) {
+                    for (Map.Entry<String, String> entry : parameters
+                            .getAction().getErrorAction().getRequest()
+                            .getHeaders().entrySet()) {
                         String headersKey = entry.getKey();
                         String headersValue = entry.getValue();
                         headersDictionary.put(headersKey, headersValue);
                     }
                 }
                 requestValue.put("headers", headersDictionary);
-                
-                if (parameters.getAction().getErrorAction().getRequest().getBody() != null)
-                {
-                    requestValue.put("body", parameters.getAction().getErrorAction().getRequest().getBody());
+
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getBody() != null) {
+                    requestValue.put("body", parameters.getAction()
+                            .getErrorAction().getRequest().getBody());
                 }
             }
-            
-            if (parameters.getAction().getErrorAction().getQueueMessage() != null)
-            {
+
+            if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
                 ObjectNode queueMessageValue = objectMapper.createObjectNode();
                 errorActionValue.put("queueMessage", queueMessageValue);
-                
-                queueMessageValue.put("storageAccount", parameters.getAction().getErrorAction().getQueueMessage().getStorageAccountName());
-                
-                queueMessageValue.put("queueName", parameters.getAction().getErrorAction().getQueueMessage().getQueueName());
-                
-                queueMessageValue.put("sasToken", parameters.getAction().getErrorAction().getQueueMessage().getSasToken());
-                
-                queueMessageValue.put("message", parameters.getAction().getErrorAction().getQueueMessage().getMessage());
+
+                queueMessageValue.put("storageAccount", parameters.getAction()
+                        .getErrorAction().getQueueMessage()
+                        .getStorageAccountName());
+
+                queueMessageValue.put("queueName", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getQueueName());
+
+                queueMessageValue.put("sasToken", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getSasToken());
+
+                queueMessageValue.put("message", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getMessage());
             }
         }
-        
-        if (parameters.getAction().getRequest() != null)
-        {
+
+        if (parameters.getAction().getRequest() != null) {
             ObjectNode requestValue2 = objectMapper.createObjectNode();
             actionValue.put("request", requestValue2);
-            
-            requestValue2.put("uri", parameters.getAction().getRequest().getUri().toString());
-            
-            requestValue2.put("method", parameters.getAction().getRequest().getMethod());
-            
+
+            requestValue2.put("uri", parameters.getAction().getRequest()
+                    .getUri().toString());
+
+            requestValue2.put("method", parameters.getAction().getRequest()
+                    .getMethod());
+
             ObjectNode headersDictionary2 = objectMapper.createObjectNode();
-            if (parameters.getAction().getRequest().getHeaders() != null)
-            {
-                for (Map.Entry<String, String> entry2 : parameters.getAction().getRequest().getHeaders().entrySet())
-                {
+            if (parameters.getAction().getRequest().getHeaders() != null) {
+                for (Map.Entry<String, String> entry2 : parameters.getAction()
+                        .getRequest().getHeaders().entrySet()) {
                     String headersKey2 = entry2.getKey();
                     String headersValue2 = entry2.getValue();
                     headersDictionary2.put(headersKey2, headersValue2);
                 }
             }
             requestValue2.put("headers", headersDictionary2);
-            
-            if (parameters.getAction().getRequest().getBody() != null)
-            {
-                requestValue2.put("body", parameters.getAction().getRequest().getBody());
+
+            if (parameters.getAction().getRequest().getBody() != null) {
+                requestValue2.put("body", parameters.getAction().getRequest()
+                        .getBody());
             }
         }
-        
-        if (parameters.getAction().getQueueMessage() != null)
-        {
+
+        if (parameters.getAction().getQueueMessage() != null) {
             ObjectNode queueMessageValue2 = objectMapper.createObjectNode();
             actionValue.put("queueMessage", queueMessageValue2);
-            
-            queueMessageValue2.put("storageAccount", parameters.getAction().getQueueMessage().getStorageAccountName());
-            
-            queueMessageValue2.put("queueName", parameters.getAction().getQueueMessage().getQueueName());
-            
-            queueMessageValue2.put("sasToken", parameters.getAction().getQueueMessage().getSasToken());
-            
-            queueMessageValue2.put("message", parameters.getAction().getQueueMessage().getMessage());
+
+            queueMessageValue2.put("storageAccount", parameters.getAction()
+                    .getQueueMessage().getStorageAccountName());
+
+            queueMessageValue2.put("queueName", parameters.getAction()
+                    .getQueueMessage().getQueueName());
+
+            queueMessageValue2.put("sasToken", parameters.getAction()
+                    .getQueueMessage().getSasToken());
+
+            queueMessageValue2.put("message", parameters.getAction()
+                    .getQueueMessage().getMessage());
         }
-        
-        if (parameters.getRecurrence() != null)
-        {
+
+        if (parameters.getRecurrence() != null) {
             ObjectNode recurrenceValue = objectMapper.createObjectNode();
             jobCreateParametersValue.put("recurrence", recurrenceValue);
-            
-            recurrenceValue.put("frequency", SchedulerClientImpl.jobRecurrenceFrequencyToString(parameters.getRecurrence().getFrequency()));
-            
-            if (parameters.getRecurrence().getInterval() != null)
-            {
-                recurrenceValue.put("interval", parameters.getRecurrence().getInterval());
+
+            recurrenceValue.put("frequency", SchedulerClientImpl
+                    .jobRecurrenceFrequencyToString(parameters.getRecurrence()
+                            .getFrequency()));
+
+            if (parameters.getRecurrence().getInterval() != null) {
+                recurrenceValue.put("interval", parameters.getRecurrence()
+                        .getInterval());
             }
-            
-            if (parameters.getRecurrence().getCount() != null)
-            {
-                recurrenceValue.put("count", parameters.getRecurrence().getCount());
+
+            if (parameters.getRecurrence().getCount() != null) {
+                recurrenceValue.put("count", parameters.getRecurrence()
+                        .getCount());
             }
-            
-            if (parameters.getRecurrence().getEndTime() != null)
-            {
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+
+            if (parameters.getRecurrence().getEndTime() != null) {
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                        "yyyy-MM-dd'T'HH:mmZ");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                recurrenceValue.put("endTime", simpleDateFormat2.format(parameters.getRecurrence().getEndTime().getTime()));
+                recurrenceValue.put(
+                        "endTime",
+                        simpleDateFormat2.format(parameters.getRecurrence()
+                                .getEndTime().getTime()));
             }
-            
-            if (parameters.getRecurrence().getSchedule() != null)
-            {
+
+            if (parameters.getRecurrence().getSchedule() != null) {
                 ObjectNode scheduleValue = objectMapper.createObjectNode();
                 recurrenceValue.put("schedule", scheduleValue);
-                
-                if (parameters.getRecurrence().getSchedule().getMinutes() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMinutes() != null) {
                     ArrayNode minutesArray = objectMapper.createArrayNode();
-                    for (int minutesItem : parameters.getRecurrence().getSchedule().getMinutes())
-                    {
+                    for (int minutesItem : parameters.getRecurrence()
+                            .getSchedule().getMinutes()) {
                         minutesArray.add(minutesItem);
                     }
                     scheduleValue.put("minutes", minutesArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getHours() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getHours() != null) {
                     ArrayNode hoursArray = objectMapper.createArrayNode();
-                    for (int hoursItem : parameters.getRecurrence().getSchedule().getHours())
-                    {
+                    for (int hoursItem : parameters.getRecurrence()
+                            .getSchedule().getHours()) {
                         hoursArray.add(hoursItem);
                     }
                     scheduleValue.put("hours", hoursArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getDays() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getDays() != null) {
                     ArrayNode weekDaysArray = objectMapper.createArrayNode();
-                    for (JobScheduleDay weekDaysItem : parameters.getRecurrence().getSchedule().getDays())
-                    {
-                        weekDaysArray.add(SchedulerClientImpl.jobScheduleDayToString(weekDaysItem));
+                    for (JobScheduleDay weekDaysItem : parameters
+                            .getRecurrence().getSchedule().getDays()) {
+                        weekDaysArray.add(SchedulerClientImpl
+                                .jobScheduleDayToString(weekDaysItem));
                     }
                     scheduleValue.put("weekDays", weekDaysArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonths() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMonths() != null) {
                     ArrayNode monthsArray = objectMapper.createArrayNode();
-                    for (int monthsItem : parameters.getRecurrence().getSchedule().getMonths())
-                    {
+                    for (int monthsItem : parameters.getRecurrence()
+                            .getSchedule().getMonths()) {
                         monthsArray.add(monthsItem);
                     }
                     scheduleValue.put("months", monthsArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonthDays() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMonthDays() != null) {
                     ArrayNode monthDaysArray = objectMapper.createArrayNode();
-                    for (int monthDaysItem : parameters.getRecurrence().getSchedule().getMonthDays())
-                    {
+                    for (int monthDaysItem : parameters.getRecurrence()
+                            .getSchedule().getMonthDays()) {
                         monthDaysArray.add(monthDaysItem);
                     }
                     scheduleValue.put("monthDays", monthDaysArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonthlyOccurrences() != null)
-                {
-                    ArrayNode monthlyOccurrencesArray = objectMapper.createArrayNode();
-                    for (JobScheduleMonthlyOccurrence monthlyOccurrencesItem : parameters.getRecurrence().getSchedule().getMonthlyOccurrences())
-                    {
-                        ObjectNode jobScheduleMonthlyOccurrenceValue = objectMapper.createObjectNode();
-                        monthlyOccurrencesArray.add(jobScheduleMonthlyOccurrenceValue);
-                        
-                        jobScheduleMonthlyOccurrenceValue.put("day", SchedulerClientImpl.jobScheduleDayToString(monthlyOccurrencesItem.getDay()));
-                        
-                        if (monthlyOccurrencesItem.getOccurrence() != null)
-                        {
-                            jobScheduleMonthlyOccurrenceValue.put("occurrence", monthlyOccurrencesItem.getOccurrence());
+
+                if (parameters.getRecurrence().getSchedule()
+                        .getMonthlyOccurrences() != null) {
+                    ArrayNode monthlyOccurrencesArray = objectMapper
+                            .createArrayNode();
+                    for (JobScheduleMonthlyOccurrence monthlyOccurrencesItem : parameters
+                            .getRecurrence().getSchedule()
+                            .getMonthlyOccurrences()) {
+                        ObjectNode jobScheduleMonthlyOccurrenceValue = objectMapper
+                                .createObjectNode();
+                        monthlyOccurrencesArray
+                                .add(jobScheduleMonthlyOccurrenceValue);
+
+                        jobScheduleMonthlyOccurrenceValue
+                                .put("day",
+                                        SchedulerClientImpl
+                                                .jobScheduleDayToString(monthlyOccurrencesItem
+                                                        .getDay()));
+
+                        if (monthlyOccurrencesItem.getOccurrence() != null) {
+                            jobScheduleMonthlyOccurrenceValue.put("occurrence",
+                                    monthlyOccurrencesItem.getOccurrence());
                         }
                     }
-                    scheduleValue.put("monthlyOccurrences", monthlyOccurrencesArray);
+                    scheduleValue.put("monthlyOccurrences",
+                            monthlyOccurrencesArray);
                 }
             }
         }
-        
+
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_CREATED)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_CREATED) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    requestContent, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobCreateResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
         result = new JobCreateResponse();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             JsonNode jobValue = responseDoc.get("Job");
-            if (jobValue != null)
-            {
+            if (jobValue != null) {
                 Job jobInstance = new Job();
                 result.setJob(jobInstance);
-                
+
                 JsonNode idValue = jobValue.get("id");
-                if (idValue != null)
-                {
+                if (idValue != null) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     jobInstance.setId(idInstance);
                 }
-                
+
                 JsonNode startTimeValue = jobValue.get("startTime");
-                if (startTimeValue != null)
-                {
+                if (startTimeValue != null) {
                     Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                            "EEE MMM dd HH:mm:ss z yyyy");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat3.parse(startTimeValue.getTextValue()));
+                    calendar.setTime(simpleDateFormat3.parse(startTimeValue
+                            .getTextValue()));
                     startTimeInstance = calendar;
                     jobInstance.setStartTime(startTimeInstance);
                 }
-                
+
                 JsonNode actionValue2 = jobValue.get("action");
-                if (actionValue2 != null)
-                {
+                if (actionValue2 != null) {
                     JobAction actionInstance = new JobAction();
                     jobInstance.setAction(actionInstance);
-                    
+
                     JsonNode typeValue = actionValue2.get("type");
-                    if (typeValue != null)
-                    {
+                    if (typeValue != null) {
                         JobActionType typeInstance;
-                        typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                        typeInstance = SchedulerClientImpl
+                                .parseJobActionType(typeValue.getTextValue());
                         actionInstance.setType(typeInstance);
                     }
-                    
-                    JsonNode retryPolicyValue2 = actionValue2.get("retryPolicy");
-                    if (retryPolicyValue2 != null)
-                    {
+
+                    JsonNode retryPolicyValue2 = actionValue2
+                            .get("retryPolicy");
+                    if (retryPolicyValue2 != null) {
                         RetryPolicy retryPolicyInstance = new RetryPolicy();
                         actionInstance.setRetryPolicy(retryPolicyInstance);
-                        
-                        JsonNode retryTypeValue = retryPolicyValue2.get("retryType");
-                        if (retryTypeValue != null)
-                        {
+
+                        JsonNode retryTypeValue = retryPolicyValue2
+                                .get("retryType");
+                        if (retryTypeValue != null) {
                             RetryType retryTypeInstance;
-                            retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
+                            retryTypeInstance = SchedulerClientImpl
+                                    .parseRetryType(retryTypeValue
+                                            .getTextValue());
                             retryPolicyInstance.setRetryType(retryTypeInstance);
                         }
-                        
-                        JsonNode retryIntervalValue = retryPolicyValue2.get("retryInterval");
-                        if (retryIntervalValue != null)
-                        {
+
+                        JsonNode retryIntervalValue = retryPolicyValue2
+                                .get("retryInterval");
+                        if (retryIntervalValue != null) {
                             Duration retryIntervalInstance;
-                            retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                            retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                            retryIntervalInstance = TimeSpan8601Converter
+                                    .parse(retryIntervalValue.getTextValue());
+                            retryPolicyInstance
+                                    .setRetryInterval(retryIntervalInstance);
                         }
-                        
-                        JsonNode retryCountValue = retryPolicyValue2.get("retryCount");
-                        if (retryCountValue != null)
-                        {
+
+                        JsonNode retryCountValue = retryPolicyValue2
+                                .get("retryCount");
+                        if (retryCountValue != null) {
                             int retryCountInstance;
                             retryCountInstance = retryCountValue.getIntValue();
-                            retryPolicyInstance.setRetryCount(retryCountInstance);
+                            retryPolicyInstance
+                                    .setRetryCount(retryCountInstance);
                         }
                     }
-                    
-                    JsonNode errorActionValue2 = actionValue2.get("errorAction");
-                    if (errorActionValue2 != null)
-                    {
+
+                    JsonNode errorActionValue2 = actionValue2
+                            .get("errorAction");
+                    if (errorActionValue2 != null) {
                         JobErrorAction errorActionInstance = new JobErrorAction();
                         actionInstance.setErrorAction(errorActionInstance);
-                        
+
                         JsonNode typeValue2 = errorActionValue2.get("type");
-                        if (typeValue2 != null)
-                        {
+                        if (typeValue2 != null) {
                             JobActionType typeInstance2;
-                            typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                            typeInstance2 = SchedulerClientImpl
+                                    .parseJobActionType(typeValue2
+                                            .getTextValue());
                             errorActionInstance.setType(typeInstance2);
                         }
-                        
-                        JsonNode requestValue3 = errorActionValue2.get("request");
-                        if (requestValue3 != null)
-                        {
+
+                        JsonNode requestValue3 = errorActionValue2
+                                .get("request");
+                        if (requestValue3 != null) {
                             JobHttpRequest requestInstance = new JobHttpRequest();
                             errorActionInstance.setRequest(requestInstance);
-                            
+
                             JsonNode uriValue = requestValue3.get("uri");
-                            if (uriValue != null)
-                            {
+                            if (uriValue != null) {
                                 URI uriInstance;
                                 uriInstance = new URI(uriValue.getTextValue());
                                 requestInstance.setUri(uriInstance);
                             }
-                            
+
                             JsonNode methodValue = requestValue3.get("method");
-                            if (methodValue != null)
-                            {
+                            if (methodValue != null) {
                                 String methodInstance;
                                 methodInstance = methodValue.getTextValue();
                                 requestInstance.setMethod(methodInstance);
                             }
-                            
-                            JsonNode headersSequenceElement = requestValue3.get("headers");
-                            if (headersSequenceElement != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                while (itr.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property = itr.next();
+
+                            JsonNode headersSequenceElement = requestValue3
+                                    .get("headers");
+                            if (headersSequenceElement != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                        .getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr
+                                            .next();
                                     String headersKey3 = property.getKey();
-                                    String headersValue3 = property.getValue().getTextValue();
-                                    requestInstance.getHeaders().put(headersKey3, headersValue3);
+                                    String headersValue3 = property.getValue()
+                                            .getTextValue();
+                                    requestInstance.getHeaders().put(
+                                            headersKey3, headersValue3);
                                 }
                             }
-                            
+
                             JsonNode bodyValue = requestValue3.get("body");
-                            if (bodyValue != null)
-                            {
+                            if (bodyValue != null) {
                                 String bodyInstance;
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
                         }
-                        
-                        JsonNode queueMessageValue3 = errorActionValue2.get("queueMessage");
-                        if (queueMessageValue3 != null)
-                        {
+
+                        JsonNode queueMessageValue3 = errorActionValue2
+                                .get("queueMessage");
+                        if (queueMessageValue3 != null) {
                             JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                            errorActionInstance.setQueueMessage(queueMessageInstance);
-                            
-                            JsonNode storageAccountValue = queueMessageValue3.get("storageAccount");
-                            if (storageAccountValue != null)
-                            {
+                            errorActionInstance
+                                    .setQueueMessage(queueMessageInstance);
+
+                            JsonNode storageAccountValue = queueMessageValue3
+                                    .get("storageAccount");
+                            if (storageAccountValue != null) {
                                 String storageAccountInstance;
-                                storageAccountInstance = storageAccountValue.getTextValue();
-                                queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                storageAccountInstance = storageAccountValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setStorageAccountName(storageAccountInstance);
                             }
-                            
-                            JsonNode queueNameValue = queueMessageValue3.get("queueName");
-                            if (queueNameValue != null)
-                            {
+
+                            JsonNode queueNameValue = queueMessageValue3
+                                    .get("queueName");
+                            if (queueNameValue != null) {
                                 String queueNameInstance;
-                                queueNameInstance = queueNameValue.getTextValue();
-                                queueMessageInstance.setQueueName(queueNameInstance);
+                                queueNameInstance = queueNameValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setQueueName(queueNameInstance);
                             }
-                            
-                            JsonNode sasTokenValue = queueMessageValue3.get("sasToken");
-                            if (sasTokenValue != null)
-                            {
+
+                            JsonNode sasTokenValue = queueMessageValue3
+                                    .get("sasToken");
+                            if (sasTokenValue != null) {
                                 String sasTokenInstance;
                                 sasTokenInstance = sasTokenValue.getTextValue();
-                                queueMessageInstance.setSasToken(sasTokenInstance);
+                                queueMessageInstance
+                                        .setSasToken(sasTokenInstance);
                             }
-                            
-                            JsonNode messageValue = queueMessageValue3.get("message");
-                            if (messageValue != null)
-                            {
+
+                            JsonNode messageValue = queueMessageValue3
+                                    .get("message");
+                            if (messageValue != null) {
                                 String messageInstance;
                                 messageInstance = messageValue.getTextValue();
-                                queueMessageInstance.setMessage(messageInstance);
+                                queueMessageInstance
+                                        .setMessage(messageInstance);
                             }
                         }
                     }
-                    
+
                     JsonNode requestValue4 = actionValue2.get("request");
-                    if (requestValue4 != null)
-                    {
+                    if (requestValue4 != null) {
                         JobHttpRequest requestInstance2 = new JobHttpRequest();
                         actionInstance.setRequest(requestInstance2);
-                        
+
                         JsonNode uriValue2 = requestValue4.get("uri");
-                        if (uriValue2 != null)
-                        {
+                        if (uriValue2 != null) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             requestInstance2.setUri(uriInstance2);
                         }
-                        
+
                         JsonNode methodValue2 = requestValue4.get("method");
-                        if (methodValue2 != null)
-                        {
+                        if (methodValue2 != null) {
                             String methodInstance2;
                             methodInstance2 = methodValue2.getTextValue();
                             requestInstance2.setMethod(methodInstance2);
                         }
-                        
-                        JsonNode headersSequenceElement2 = requestValue4.get("headers");
-                        if (headersSequenceElement2 != null)
-                        {
-                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                            while (itr2.hasNext())
-                            {
-                                Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                        JsonNode headersSequenceElement2 = requestValue4
+                                .get("headers");
+                        if (headersSequenceElement2 != null) {
+                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                    .getFields();
+                            while (itr2.hasNext()) {
+                                Map.Entry<String, JsonNode> property2 = itr2
+                                        .next();
                                 String headersKey4 = property2.getKey();
-                                String headersValue4 = property2.getValue().getTextValue();
-                                requestInstance2.getHeaders().put(headersKey4, headersValue4);
+                                String headersValue4 = property2.getValue()
+                                        .getTextValue();
+                                requestInstance2.getHeaders().put(headersKey4,
+                                        headersValue4);
                             }
                         }
-                        
+
                         JsonNode bodyValue2 = requestValue4.get("body");
-                        if (bodyValue2 != null)
-                        {
+                        if (bodyValue2 != null) {
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
                         }
                     }
-                    
-                    JsonNode queueMessageValue4 = actionValue2.get("queueMessage");
-                    if (queueMessageValue4 != null)
-                    {
+
+                    JsonNode queueMessageValue4 = actionValue2
+                            .get("queueMessage");
+                    if (queueMessageValue4 != null) {
                         JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
                         actionInstance.setQueueMessage(queueMessageInstance2);
-                        
-                        JsonNode storageAccountValue2 = queueMessageValue4.get("storageAccount");
-                        if (storageAccountValue2 != null)
-                        {
+
+                        JsonNode storageAccountValue2 = queueMessageValue4
+                                .get("storageAccount");
+                        if (storageAccountValue2 != null) {
                             String storageAccountInstance2;
-                            storageAccountInstance2 = storageAccountValue2.getTextValue();
-                            queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                            storageAccountInstance2 = storageAccountValue2
+                                    .getTextValue();
+                            queueMessageInstance2
+                                    .setStorageAccountName(storageAccountInstance2);
                         }
-                        
-                        JsonNode queueNameValue2 = queueMessageValue4.get("queueName");
-                        if (queueNameValue2 != null)
-                        {
+
+                        JsonNode queueNameValue2 = queueMessageValue4
+                                .get("queueName");
+                        if (queueNameValue2 != null) {
                             String queueNameInstance2;
                             queueNameInstance2 = queueNameValue2.getTextValue();
-                            queueMessageInstance2.setQueueName(queueNameInstance2);
+                            queueMessageInstance2
+                                    .setQueueName(queueNameInstance2);
                         }
-                        
-                        JsonNode sasTokenValue2 = queueMessageValue4.get("sasToken");
-                        if (sasTokenValue2 != null)
-                        {
+
+                        JsonNode sasTokenValue2 = queueMessageValue4
+                                .get("sasToken");
+                        if (sasTokenValue2 != null) {
                             String sasTokenInstance2;
                             sasTokenInstance2 = sasTokenValue2.getTextValue();
-                            queueMessageInstance2.setSasToken(sasTokenInstance2);
+                            queueMessageInstance2
+                                    .setSasToken(sasTokenInstance2);
                         }
-                        
-                        JsonNode messageValue2 = queueMessageValue4.get("message");
-                        if (messageValue2 != null)
-                        {
+
+                        JsonNode messageValue2 = queueMessageValue4
+                                .get("message");
+                        if (messageValue2 != null) {
                             String messageInstance2;
                             messageInstance2 = messageValue2.getTextValue();
                             queueMessageInstance2.setMessage(messageInstance2);
                         }
                     }
                 }
-                
+
                 JsonNode recurrenceValue2 = jobValue.get("recurrence");
-                if (recurrenceValue2 != null)
-                {
+                if (recurrenceValue2 != null) {
                     JobRecurrence recurrenceInstance = new JobRecurrence();
                     jobInstance.setRecurrence(recurrenceInstance);
-                    
+
                     JsonNode frequencyValue = recurrenceValue2.get("frequency");
-                    if (frequencyValue != null)
-                    {
+                    if (frequencyValue != null) {
                         JobRecurrenceFrequency frequencyInstance;
-                        frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                        frequencyInstance = SchedulerClientImpl
+                                .parseJobRecurrenceFrequency(frequencyValue
+                                        .getTextValue());
                         recurrenceInstance.setFrequency(frequencyInstance);
                     }
-                    
+
                     JsonNode intervalValue = recurrenceValue2.get("interval");
-                    if (intervalValue != null)
-                    {
+                    if (intervalValue != null) {
                         int intervalInstance;
                         intervalInstance = intervalValue.getIntValue();
                         recurrenceInstance.setInterval(intervalInstance);
                     }
-                    
+
                     JsonNode countValue = recurrenceValue2.get("count");
-                    if (countValue != null)
-                    {
+                    if (countValue != null) {
                         int countInstance;
                         countInstance = countValue.getIntValue();
                         recurrenceInstance.setCount(countInstance);
                     }
-                    
+
                     JsonNode endTimeValue = recurrenceValue2.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat4.parse(endTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat4.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar2;
                         recurrenceInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode scheduleValue2 = recurrenceValue2.get("schedule");
-                    if (scheduleValue2 != null)
-                    {
+                    if (scheduleValue2 != null) {
                         JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                         recurrenceInstance.setSchedule(scheduleInstance);
-                        
-                        ArrayNode minutesArray2 = ((ArrayNode) scheduleValue2.get("minutes"));
-                        if (minutesArray2 != null)
-                        {
-                            for (JsonNode minutesValue : minutesArray2)
-                            {
-                                scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                        ArrayNode minutesArray2 = ((ArrayNode) scheduleValue2
+                                .get("minutes"));
+                        if (minutesArray2 != null) {
+                            for (JsonNode minutesValue : minutesArray2) {
+                                scheduleInstance.getMinutes().add(
+                                        minutesValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode hoursArray2 = ((ArrayNode) scheduleValue2.get("hours"));
-                        if (hoursArray2 != null)
-                        {
-                            for (JsonNode hoursValue : hoursArray2)
-                            {
-                                scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                        ArrayNode hoursArray2 = ((ArrayNode) scheduleValue2
+                                .get("hours"));
+                        if (hoursArray2 != null) {
+                            for (JsonNode hoursValue : hoursArray2) {
+                                scheduleInstance.getHours().add(
+                                        hoursValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode weekDaysArray2 = ((ArrayNode) scheduleValue2.get("weekDays"));
-                        if (weekDaysArray2 != null)
-                        {
-                            for (JsonNode weekDaysValue : weekDaysArray2)
-                            {
-                                scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                        ArrayNode weekDaysArray2 = ((ArrayNode) scheduleValue2
+                                .get("weekDays"));
+                        if (weekDaysArray2 != null) {
+                            for (JsonNode weekDaysValue : weekDaysArray2) {
+                                scheduleInstance
+                                        .getDays()
+                                        .add(SchedulerClientImpl
+                                                .parseJobScheduleDay(weekDaysValue
+                                                        .getTextValue()));
                             }
                         }
-                        
-                        ArrayNode monthsArray2 = ((ArrayNode) scheduleValue2.get("months"));
-                        if (monthsArray2 != null)
-                        {
-                            for (JsonNode monthsValue : monthsArray2)
-                            {
-                                scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                        ArrayNode monthsArray2 = ((ArrayNode) scheduleValue2
+                                .get("months"));
+                        if (monthsArray2 != null) {
+                            for (JsonNode monthsValue : monthsArray2) {
+                                scheduleInstance.getMonths().add(
+                                        monthsValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthDaysArray2 = ((ArrayNode) scheduleValue2.get("monthDays"));
-                        if (monthDaysArray2 != null)
-                        {
-                            for (JsonNode monthDaysValue : monthDaysArray2)
-                            {
-                                scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                        ArrayNode monthDaysArray2 = ((ArrayNode) scheduleValue2
+                                .get("monthDays"));
+                        if (monthDaysArray2 != null) {
+                            for (JsonNode monthDaysValue : monthDaysArray2) {
+                                scheduleInstance.getMonthDays().add(
+                                        monthDaysValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthlyOccurrencesArray2 = ((ArrayNode) scheduleValue2.get("monthlyOccurrences"));
-                        if (monthlyOccurrencesArray2 != null)
-                        {
-                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray2)
-                            {
+
+                        ArrayNode monthlyOccurrencesArray2 = ((ArrayNode) scheduleValue2
+                                .get("monthlyOccurrences"));
+                        if (monthlyOccurrencesArray2 != null) {
+                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray2) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                
-                                JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                if (dayValue != null)
-                                {
+                                scheduleInstance.getMonthlyOccurrences().add(
+                                        jobScheduleMonthlyOccurrenceInstance);
+
+                                JsonNode dayValue = monthlyOccurrencesValue
+                                        .get("day");
+                                if (dayValue != null) {
                                     JobScheduleDay dayInstance;
-                                    dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                    jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                    dayInstance = SchedulerClientImpl
+                                            .parseJobScheduleDay(dayValue
+                                                    .getTextValue());
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setDay(dayInstance);
                                 }
-                                
-                                JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                if (occurrenceValue != null)
-                                {
+
+                                JsonNode occurrenceValue = monthlyOccurrencesValue
+                                        .get("occurrence");
+                                if (occurrenceValue != null) {
                                     int occurrenceInstance;
-                                    occurrenceInstance = occurrenceValue.getIntValue();
-                                    jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                    occurrenceInstance = occurrenceValue
+                                            .getIntValue();
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setOccurrence(occurrenceInstance);
                                 }
                             }
                         }
                     }
                 }
-                
+
                 JsonNode statusValue = jobValue.get("status");
-                if (statusValue != null)
-                {
+                if (statusValue != null) {
                     JobStatus statusInstance = new JobStatus();
                     jobInstance.setStatus(statusInstance);
-                    
-                    JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                    if (lastExecutionTimeValue != null)
-                    {
+
+                    JsonNode lastExecutionTimeValue = statusValue
+                            .get("lastExecutionTime");
+                    if (lastExecutionTimeValue != null) {
                         Calendar lastExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat5.parse(lastExecutionTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat5
+                                .parse(lastExecutionTimeValue.getTextValue()));
                         lastExecutionTimeInstance = calendar3;
-                        statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                        statusInstance
+                                .setLastExecutionTime(lastExecutionTimeInstance);
                     }
-                    
-                    JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                    if (nextExecutionTimeValue != null)
-                    {
+
+                    JsonNode nextExecutionTimeValue = statusValue
+                            .get("nextExecutionTime");
+                    if (nextExecutionTimeValue != null) {
                         Calendar nextExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat6.parse(nextExecutionTimeValue.getTextValue()));
+                        calendar4.setTime(simpleDateFormat6
+                                .parse(nextExecutionTimeValue.getTextValue()));
                         nextExecutionTimeInstance = calendar4;
-                        statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                        statusInstance
+                                .setNextExecutionTime(nextExecutionTimeInstance);
                     }
-                    
-                    JsonNode executionCountValue = statusValue.get("executionCount");
-                    if (executionCountValue != null)
-                    {
+
+                    JsonNode executionCountValue = statusValue
+                            .get("executionCount");
+                    if (executionCountValue != null) {
                         int executionCountInstance;
-                        executionCountInstance = executionCountValue.getIntValue();
-                        statusInstance.setExecutionCount(executionCountInstance);
+                        executionCountInstance = executionCountValue
+                                .getIntValue();
+                        statusInstance
+                                .setExecutionCount(executionCountInstance);
                     }
-                    
-                    JsonNode failureCountValue = statusValue.get("failureCount");
-                    if (failureCountValue != null)
-                    {
+
+                    JsonNode failureCountValue = statusValue
+                            .get("failureCount");
+                    if (failureCountValue != null) {
                         int failureCountInstance;
                         failureCountInstance = failureCountValue.getIntValue();
                         statusInstance.setFailureCount(failureCountInstance);
                     }
-                    
-                    JsonNode faultedCountValue = statusValue.get("faultedCount");
-                    if (faultedCountValue != null)
-                    {
+
+                    JsonNode faultedCountValue = statusValue
+                            .get("faultedCount");
+                    if (faultedCountValue != null) {
                         int faultedCountInstance;
                         faultedCountInstance = faultedCountValue.getIntValue();
                         statusInstance.setFaultedCount(faultedCountInstance);
                     }
                 }
-                
+
                 JsonNode stateValue = jobValue.get("state");
-                if (stateValue != null)
-                {
+                if (stateValue != null) {
                     JobState stateInstance;
-                    stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                    stateInstance = SchedulerClientImpl
+                            .parseJobState(stateValue.getTextValue());
                     jobInstance.setState(stateInstance);
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Jobs can be created or updated with a PUT operation to a job's address.
-    * The resource name is the ID of the job. Doing a PUT operation on a jobId
-    * that already exists will completely overwrite the existing job. Putting
-    * an existing job (replace) will reset internal execution counters.
-    *
-    * @param jobId Id of the job to create or update.
-    * @param parameters Parameters supplied to the job operation.
-    * @return The Update Job operation response.
-    */
+     * Jobs can be created or updated with a PUT operation to a job's address.
+     * The resource name is the ID of the job. Doing a PUT operation on a jobId
+     * that already exists will completely overwrite the existing job. Putting
+     * an existing job (replace) will reset internal execution counters.
+     * 
+     * @param jobId
+     *            Id of the job to create or update.
+     * @param parameters
+     *            Parameters supplied to the job operation.
+     * @return The Update Job operation response.
+     */
     @Override
-    public Future<JobCreateOrUpdateResponse> createOrUpdateAsync(final String jobId, final JobCreateOrUpdateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobCreateOrUpdateResponse>() { 
-            @Override
-            public JobCreateOrUpdateResponse call() throws Exception
-            {
-                return createOrUpdate(jobId, parameters);
-            }
-         });
+    public Future<JobCreateOrUpdateResponse> createOrUpdateAsync(
+            final String jobId, final JobCreateOrUpdateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobCreateOrUpdateResponse>() {
+                    @Override
+                    public JobCreateOrUpdateResponse call() throws Exception {
+                        return createOrUpdate(jobId, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Jobs can be created or updated with a PUT operation to a job's address.
-    * The resource name is the ID of the job. Doing a PUT operation on a jobId
-    * that already exists will completely overwrite the existing job. Putting
-    * an existing job (replace) will reset internal execution counters.
-    *
-    * @param jobId Id of the job to create or update.
-    * @param parameters Parameters supplied to the job operation.
-    * @return The Update Job operation response.
-    */
+     * Jobs can be created or updated with a PUT operation to a job's address.
+     * The resource name is the ID of the job. Doing a PUT operation on a jobId
+     * that already exists will completely overwrite the existing job. Putting
+     * an existing job (replace) will reset internal execution counters.
+     * 
+     * @param jobId
+     *            Id of the job to create or update.
+     * @param parameters
+     *            Parameters supplied to the job operation.
+     * @return The Update Job operation response.
+     */
     @Override
-    public JobCreateOrUpdateResponse createOrUpdate(String jobId, JobCreateOrUpdateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobCreateOrUpdateResponse createOrUpdate(String jobId,
+            JobCreateOrUpdateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        if (parameters.getAction() == null)
-        {
+        if (parameters.getAction() == null) {
             throw new NullPointerException("parameters.Action");
         }
-        if (parameters.getAction().getErrorAction() != null)
-        {
-            if (parameters.getAction().getErrorAction().getQueueMessage() != null)
-            {
-                if (parameters.getAction().getErrorAction().getQueueMessage().getMessage() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.Message");
+        if (parameters.getAction().getErrorAction() != null) {
+            if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getMessage() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.Message");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getQueueName() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.QueueName");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getQueueName() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.QueueName");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getSasToken() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.SasToken");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getSasToken() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.SasToken");
                 }
-                if (parameters.getAction().getErrorAction().getQueueMessage().getStorageAccountName() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.QueueMessage.StorageAccountName");
+                if (parameters.getAction().getErrorAction().getQueueMessage()
+                        .getStorageAccountName() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.QueueMessage.StorageAccountName");
                 }
             }
-            if (parameters.getAction().getErrorAction().getRequest() != null)
-            {
-                if (parameters.getAction().getErrorAction().getRequest().getMethod() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.Request.Method");
+            if (parameters.getAction().getErrorAction().getRequest() != null) {
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getMethod() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.Request.Method");
                 }
-                if (parameters.getAction().getErrorAction().getRequest().getUri() == null)
-                {
-                    throw new NullPointerException("parameters.Action.ErrorAction.Request.Uri");
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getUri() == null) {
+                    throw new NullPointerException(
+                            "parameters.Action.ErrorAction.Request.Uri");
                 }
             }
         }
-        if (parameters.getAction().getQueueMessage() != null)
-        {
-            if (parameters.getAction().getQueueMessage().getMessage() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.Message");
+        if (parameters.getAction().getQueueMessage() != null) {
+            if (parameters.getAction().getQueueMessage().getMessage() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.Message");
             }
-            if (parameters.getAction().getQueueMessage().getQueueName() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.QueueName");
+            if (parameters.getAction().getQueueMessage().getQueueName() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.QueueName");
             }
-            if (parameters.getAction().getQueueMessage().getSasToken() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.SasToken");
+            if (parameters.getAction().getQueueMessage().getSasToken() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.SasToken");
             }
-            if (parameters.getAction().getQueueMessage().getStorageAccountName() == null)
-            {
-                throw new NullPointerException("parameters.Action.QueueMessage.StorageAccountName");
+            if (parameters.getAction().getQueueMessage()
+                    .getStorageAccountName() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.QueueMessage.StorageAccountName");
             }
         }
-        if (parameters.getAction().getRequest() != null)
-        {
-            if (parameters.getAction().getRequest().getMethod() == null)
-            {
-                throw new NullPointerException("parameters.Action.Request.Method");
+        if (parameters.getAction().getRequest() != null) {
+            if (parameters.getAction().getRequest().getMethod() == null) {
+                throw new NullPointerException(
+                        "parameters.Action.Request.Method");
             }
-            if (parameters.getAction().getRequest().getUri() == null)
-            {
+            if (parameters.getAction().getRequest().getUri() == null) {
                 throw new NullPointerException("parameters.Action.Request.Uri");
             }
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "createOrUpdateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "createOrUpdateAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "?api-version=" + "2013-10-31_Preview";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "?api-version=" + "2013-10-31_Preview";
+
         // Create HTTP transport objects
         HttpPut httpRequest = new HttpPut(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode jobCreateOrUpdateParametersValue = objectMapper.createObjectNode();
+        ObjectNode jobCreateOrUpdateParametersValue = objectMapper
+                .createObjectNode();
         requestDoc = jobCreateOrUpdateParametersValue;
-        
-        if (parameters.getStartTime() != null)
-        {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+
+        if (parameters.getStartTime() != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mmZ");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            jobCreateOrUpdateParametersValue.put("startTime", simpleDateFormat.format(parameters.getStartTime().getTime()));
+            jobCreateOrUpdateParametersValue.put("startTime", simpleDateFormat
+                    .format(parameters.getStartTime().getTime()));
         }
-        
+
         ObjectNode actionValue = objectMapper.createObjectNode();
         jobCreateOrUpdateParametersValue.put("action", actionValue);
-        
-        actionValue.put("type", SchedulerClientImpl.jobActionTypeToString(parameters.getAction().getType()));
-        
-        if (parameters.getAction().getRetryPolicy() != null)
-        {
+
+        actionValue.put("type", SchedulerClientImpl
+                .jobActionTypeToString(parameters.getAction().getType()));
+
+        if (parameters.getAction().getRetryPolicy() != null) {
             ObjectNode retryPolicyValue = objectMapper.createObjectNode();
             actionValue.put("retryPolicy", retryPolicyValue);
-            
-            retryPolicyValue.put("retryType", SchedulerClientImpl.retryTypeToString(parameters.getAction().getRetryPolicy().getRetryType()));
-            
-            if (parameters.getAction().getRetryPolicy().getRetryInterval() != null)
-            {
-                retryPolicyValue.put("retryInterval", TimeSpan8601Converter.format(parameters.getAction().getRetryPolicy().getRetryInterval()));
+
+            retryPolicyValue.put(
+                    "retryType",
+                    SchedulerClientImpl.retryTypeToString(parameters
+                            .getAction().getRetryPolicy().getRetryType()));
+
+            if (parameters.getAction().getRetryPolicy().getRetryInterval() != null) {
+                retryPolicyValue.put(
+                        "retryInterval",
+                        TimeSpan8601Converter.format(parameters.getAction()
+                                .getRetryPolicy().getRetryInterval()));
             }
-            
-            if (parameters.getAction().getRetryPolicy().getRetryCount() != null)
-            {
-                retryPolicyValue.put("retryCount", parameters.getAction().getRetryPolicy().getRetryCount());
+
+            if (parameters.getAction().getRetryPolicy().getRetryCount() != null) {
+                retryPolicyValue.put("retryCount", parameters.getAction()
+                        .getRetryPolicy().getRetryCount());
             }
         }
-        
-        if (parameters.getAction().getErrorAction() != null)
-        {
+
+        if (parameters.getAction().getErrorAction() != null) {
             ObjectNode errorActionValue = objectMapper.createObjectNode();
             actionValue.put("errorAction", errorActionValue);
-            
-            errorActionValue.put("type", SchedulerClientImpl.jobActionTypeToString(parameters.getAction().getErrorAction().getType()));
-            
-            if (parameters.getAction().getErrorAction().getRequest() != null)
-            {
+
+            errorActionValue.put(
+                    "type",
+                    SchedulerClientImpl.jobActionTypeToString(parameters
+                            .getAction().getErrorAction().getType()));
+
+            if (parameters.getAction().getErrorAction().getRequest() != null) {
                 ObjectNode requestValue = objectMapper.createObjectNode();
                 errorActionValue.put("request", requestValue);
-                
-                requestValue.put("uri", parameters.getAction().getErrorAction().getRequest().getUri().toString());
-                
-                requestValue.put("method", parameters.getAction().getErrorAction().getRequest().getMethod());
-                
+
+                requestValue.put("uri", parameters.getAction().getErrorAction()
+                        .getRequest().getUri().toString());
+
+                requestValue.put("method", parameters.getAction()
+                        .getErrorAction().getRequest().getMethod());
+
                 ObjectNode headersDictionary = objectMapper.createObjectNode();
-                if (parameters.getAction().getErrorAction().getRequest().getHeaders() != null)
-                {
-                    for (Map.Entry<String, String> entry : parameters.getAction().getErrorAction().getRequest().getHeaders().entrySet())
-                    {
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getHeaders() != null) {
+                    for (Map.Entry<String, String> entry : parameters
+                            .getAction().getErrorAction().getRequest()
+                            .getHeaders().entrySet()) {
                         String headersKey = entry.getKey();
                         String headersValue = entry.getValue();
                         headersDictionary.put(headersKey, headersValue);
                     }
                 }
                 requestValue.put("headers", headersDictionary);
-                
-                if (parameters.getAction().getErrorAction().getRequest().getBody() != null)
-                {
-                    requestValue.put("body", parameters.getAction().getErrorAction().getRequest().getBody());
+
+                if (parameters.getAction().getErrorAction().getRequest()
+                        .getBody() != null) {
+                    requestValue.put("body", parameters.getAction()
+                            .getErrorAction().getRequest().getBody());
                 }
             }
-            
-            if (parameters.getAction().getErrorAction().getQueueMessage() != null)
-            {
+
+            if (parameters.getAction().getErrorAction().getQueueMessage() != null) {
                 ObjectNode queueMessageValue = objectMapper.createObjectNode();
                 errorActionValue.put("queueMessage", queueMessageValue);
-                
-                queueMessageValue.put("storageAccount", parameters.getAction().getErrorAction().getQueueMessage().getStorageAccountName());
-                
-                queueMessageValue.put("queueName", parameters.getAction().getErrorAction().getQueueMessage().getQueueName());
-                
-                queueMessageValue.put("sasToken", parameters.getAction().getErrorAction().getQueueMessage().getSasToken());
-                
-                queueMessageValue.put("message", parameters.getAction().getErrorAction().getQueueMessage().getMessage());
+
+                queueMessageValue.put("storageAccount", parameters.getAction()
+                        .getErrorAction().getQueueMessage()
+                        .getStorageAccountName());
+
+                queueMessageValue.put("queueName", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getQueueName());
+
+                queueMessageValue.put("sasToken", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getSasToken());
+
+                queueMessageValue.put("message", parameters.getAction()
+                        .getErrorAction().getQueueMessage().getMessage());
             }
         }
-        
-        if (parameters.getAction().getRequest() != null)
-        {
+
+        if (parameters.getAction().getRequest() != null) {
             ObjectNode requestValue2 = objectMapper.createObjectNode();
             actionValue.put("request", requestValue2);
-            
-            requestValue2.put("uri", parameters.getAction().getRequest().getUri().toString());
-            
-            requestValue2.put("method", parameters.getAction().getRequest().getMethod());
-            
+
+            requestValue2.put("uri", parameters.getAction().getRequest()
+                    .getUri().toString());
+
+            requestValue2.put("method", parameters.getAction().getRequest()
+                    .getMethod());
+
             ObjectNode headersDictionary2 = objectMapper.createObjectNode();
-            if (parameters.getAction().getRequest().getHeaders() != null)
-            {
-                for (Map.Entry<String, String> entry2 : parameters.getAction().getRequest().getHeaders().entrySet())
-                {
+            if (parameters.getAction().getRequest().getHeaders() != null) {
+                for (Map.Entry<String, String> entry2 : parameters.getAction()
+                        .getRequest().getHeaders().entrySet()) {
                     String headersKey2 = entry2.getKey();
                     String headersValue2 = entry2.getValue();
                     headersDictionary2.put(headersKey2, headersValue2);
                 }
             }
             requestValue2.put("headers", headersDictionary2);
-            
-            if (parameters.getAction().getRequest().getBody() != null)
-            {
-                requestValue2.put("body", parameters.getAction().getRequest().getBody());
+
+            if (parameters.getAction().getRequest().getBody() != null) {
+                requestValue2.put("body", parameters.getAction().getRequest()
+                        .getBody());
             }
         }
-        
-        if (parameters.getAction().getQueueMessage() != null)
-        {
+
+        if (parameters.getAction().getQueueMessage() != null) {
             ObjectNode queueMessageValue2 = objectMapper.createObjectNode();
             actionValue.put("queueMessage", queueMessageValue2);
-            
-            queueMessageValue2.put("storageAccount", parameters.getAction().getQueueMessage().getStorageAccountName());
-            
-            queueMessageValue2.put("queueName", parameters.getAction().getQueueMessage().getQueueName());
-            
-            queueMessageValue2.put("sasToken", parameters.getAction().getQueueMessage().getSasToken());
-            
-            queueMessageValue2.put("message", parameters.getAction().getQueueMessage().getMessage());
+
+            queueMessageValue2.put("storageAccount", parameters.getAction()
+                    .getQueueMessage().getStorageAccountName());
+
+            queueMessageValue2.put("queueName", parameters.getAction()
+                    .getQueueMessage().getQueueName());
+
+            queueMessageValue2.put("sasToken", parameters.getAction()
+                    .getQueueMessage().getSasToken());
+
+            queueMessageValue2.put("message", parameters.getAction()
+                    .getQueueMessage().getMessage());
         }
-        
-        if (parameters.getRecurrence() != null)
-        {
+
+        if (parameters.getRecurrence() != null) {
             ObjectNode recurrenceValue = objectMapper.createObjectNode();
             jobCreateOrUpdateParametersValue.put("recurrence", recurrenceValue);
-            
-            recurrenceValue.put("frequency", SchedulerClientImpl.jobRecurrenceFrequencyToString(parameters.getRecurrence().getFrequency()));
-            
-            if (parameters.getRecurrence().getInterval() != null)
-            {
-                recurrenceValue.put("interval", parameters.getRecurrence().getInterval());
+
+            recurrenceValue.put("frequency", SchedulerClientImpl
+                    .jobRecurrenceFrequencyToString(parameters.getRecurrence()
+                            .getFrequency()));
+
+            if (parameters.getRecurrence().getInterval() != null) {
+                recurrenceValue.put("interval", parameters.getRecurrence()
+                        .getInterval());
             }
-            
-            if (parameters.getRecurrence().getCount() != null)
-            {
-                recurrenceValue.put("count", parameters.getRecurrence().getCount());
+
+            if (parameters.getRecurrence().getCount() != null) {
+                recurrenceValue.put("count", parameters.getRecurrence()
+                        .getCount());
             }
-            
-            if (parameters.getRecurrence().getEndTime() != null)
-            {
-                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+
+            if (parameters.getRecurrence().getEndTime() != null) {
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                        "yyyy-MM-dd'T'HH:mmZ");
                 simpleDateFormat2.setTimeZone(TimeZone.getTimeZone("UTC"));
-                recurrenceValue.put("endTime", simpleDateFormat2.format(parameters.getRecurrence().getEndTime().getTime()));
+                recurrenceValue.put(
+                        "endTime",
+                        simpleDateFormat2.format(parameters.getRecurrence()
+                                .getEndTime().getTime()));
             }
-            
-            if (parameters.getRecurrence().getSchedule() != null)
-            {
+
+            if (parameters.getRecurrence().getSchedule() != null) {
                 ObjectNode scheduleValue = objectMapper.createObjectNode();
                 recurrenceValue.put("schedule", scheduleValue);
-                
-                if (parameters.getRecurrence().getSchedule().getMinutes() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMinutes() != null) {
                     ArrayNode minutesArray = objectMapper.createArrayNode();
-                    for (int minutesItem : parameters.getRecurrence().getSchedule().getMinutes())
-                    {
+                    for (int minutesItem : parameters.getRecurrence()
+                            .getSchedule().getMinutes()) {
                         minutesArray.add(minutesItem);
                     }
                     scheduleValue.put("minutes", minutesArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getHours() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getHours() != null) {
                     ArrayNode hoursArray = objectMapper.createArrayNode();
-                    for (int hoursItem : parameters.getRecurrence().getSchedule().getHours())
-                    {
+                    for (int hoursItem : parameters.getRecurrence()
+                            .getSchedule().getHours()) {
                         hoursArray.add(hoursItem);
                     }
                     scheduleValue.put("hours", hoursArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getDays() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getDays() != null) {
                     ArrayNode weekDaysArray = objectMapper.createArrayNode();
-                    for (JobScheduleDay weekDaysItem : parameters.getRecurrence().getSchedule().getDays())
-                    {
-                        weekDaysArray.add(SchedulerClientImpl.jobScheduleDayToString(weekDaysItem));
+                    for (JobScheduleDay weekDaysItem : parameters
+                            .getRecurrence().getSchedule().getDays()) {
+                        weekDaysArray.add(SchedulerClientImpl
+                                .jobScheduleDayToString(weekDaysItem));
                     }
                     scheduleValue.put("weekDays", weekDaysArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonths() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMonths() != null) {
                     ArrayNode monthsArray = objectMapper.createArrayNode();
-                    for (int monthsItem : parameters.getRecurrence().getSchedule().getMonths())
-                    {
+                    for (int monthsItem : parameters.getRecurrence()
+                            .getSchedule().getMonths()) {
                         monthsArray.add(monthsItem);
                     }
                     scheduleValue.put("months", monthsArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonthDays() != null)
-                {
+
+                if (parameters.getRecurrence().getSchedule().getMonthDays() != null) {
                     ArrayNode monthDaysArray = objectMapper.createArrayNode();
-                    for (int monthDaysItem : parameters.getRecurrence().getSchedule().getMonthDays())
-                    {
+                    for (int monthDaysItem : parameters.getRecurrence()
+                            .getSchedule().getMonthDays()) {
                         monthDaysArray.add(monthDaysItem);
                     }
                     scheduleValue.put("monthDays", monthDaysArray);
                 }
-                
-                if (parameters.getRecurrence().getSchedule().getMonthlyOccurrences() != null)
-                {
-                    ArrayNode monthlyOccurrencesArray = objectMapper.createArrayNode();
-                    for (JobScheduleMonthlyOccurrence monthlyOccurrencesItem : parameters.getRecurrence().getSchedule().getMonthlyOccurrences())
-                    {
-                        ObjectNode jobScheduleMonthlyOccurrenceValue = objectMapper.createObjectNode();
-                        monthlyOccurrencesArray.add(jobScheduleMonthlyOccurrenceValue);
-                        
-                        jobScheduleMonthlyOccurrenceValue.put("day", SchedulerClientImpl.jobScheduleDayToString(monthlyOccurrencesItem.getDay()));
-                        
-                        if (monthlyOccurrencesItem.getOccurrence() != null)
-                        {
-                            jobScheduleMonthlyOccurrenceValue.put("occurrence", monthlyOccurrencesItem.getOccurrence());
+
+                if (parameters.getRecurrence().getSchedule()
+                        .getMonthlyOccurrences() != null) {
+                    ArrayNode monthlyOccurrencesArray = objectMapper
+                            .createArrayNode();
+                    for (JobScheduleMonthlyOccurrence monthlyOccurrencesItem : parameters
+                            .getRecurrence().getSchedule()
+                            .getMonthlyOccurrences()) {
+                        ObjectNode jobScheduleMonthlyOccurrenceValue = objectMapper
+                                .createObjectNode();
+                        monthlyOccurrencesArray
+                                .add(jobScheduleMonthlyOccurrenceValue);
+
+                        jobScheduleMonthlyOccurrenceValue
+                                .put("day",
+                                        SchedulerClientImpl
+                                                .jobScheduleDayToString(monthlyOccurrencesItem
+                                                        .getDay()));
+
+                        if (monthlyOccurrencesItem.getOccurrence() != null) {
+                            jobScheduleMonthlyOccurrenceValue.put("occurrence",
+                                    monthlyOccurrencesItem.getOccurrence());
                         }
                     }
-                    scheduleValue.put("monthlyOccurrences", monthlyOccurrencesArray);
+                    scheduleValue.put("monthlyOccurrences",
+                            monthlyOccurrencesArray);
                 }
             }
         }
-        
+
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK
+                && statusCode != HttpStatus.SC_CREATED) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    requestContent, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobCreateOrUpdateResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
         result = new JobCreateOrUpdateResponse();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             JsonNode jobValue = responseDoc.get("Job");
-            if (jobValue != null)
-            {
+            if (jobValue != null) {
                 Job jobInstance = new Job();
                 result.setJob(jobInstance);
-                
+
                 JsonNode idValue = jobValue.get("id");
-                if (idValue != null)
-                {
+                if (idValue != null) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     jobInstance.setId(idInstance);
                 }
-                
+
                 JsonNode startTimeValue = jobValue.get("startTime");
-                if (startTimeValue != null)
-                {
+                if (startTimeValue != null) {
                     Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                            "EEE MMM dd HH:mm:ss z yyyy");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat3.parse(startTimeValue.getTextValue()));
+                    calendar.setTime(simpleDateFormat3.parse(startTimeValue
+                            .getTextValue()));
                     startTimeInstance = calendar;
                     jobInstance.setStartTime(startTimeInstance);
                 }
-                
+
                 JsonNode actionValue2 = jobValue.get("action");
-                if (actionValue2 != null)
-                {
+                if (actionValue2 != null) {
                     JobAction actionInstance = new JobAction();
                     jobInstance.setAction(actionInstance);
-                    
+
                     JsonNode typeValue = actionValue2.get("type");
-                    if (typeValue != null)
-                    {
+                    if (typeValue != null) {
                         JobActionType typeInstance;
-                        typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                        typeInstance = SchedulerClientImpl
+                                .parseJobActionType(typeValue.getTextValue());
                         actionInstance.setType(typeInstance);
                     }
-                    
-                    JsonNode retryPolicyValue2 = actionValue2.get("retryPolicy");
-                    if (retryPolicyValue2 != null)
-                    {
+
+                    JsonNode retryPolicyValue2 = actionValue2
+                            .get("retryPolicy");
+                    if (retryPolicyValue2 != null) {
                         RetryPolicy retryPolicyInstance = new RetryPolicy();
                         actionInstance.setRetryPolicy(retryPolicyInstance);
-                        
-                        JsonNode retryTypeValue = retryPolicyValue2.get("retryType");
-                        if (retryTypeValue != null)
-                        {
+
+                        JsonNode retryTypeValue = retryPolicyValue2
+                                .get("retryType");
+                        if (retryTypeValue != null) {
                             RetryType retryTypeInstance;
-                            retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
+                            retryTypeInstance = SchedulerClientImpl
+                                    .parseRetryType(retryTypeValue
+                                            .getTextValue());
                             retryPolicyInstance.setRetryType(retryTypeInstance);
                         }
-                        
-                        JsonNode retryIntervalValue = retryPolicyValue2.get("retryInterval");
-                        if (retryIntervalValue != null)
-                        {
+
+                        JsonNode retryIntervalValue = retryPolicyValue2
+                                .get("retryInterval");
+                        if (retryIntervalValue != null) {
                             Duration retryIntervalInstance;
-                            retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                            retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                            retryIntervalInstance = TimeSpan8601Converter
+                                    .parse(retryIntervalValue.getTextValue());
+                            retryPolicyInstance
+                                    .setRetryInterval(retryIntervalInstance);
                         }
-                        
-                        JsonNode retryCountValue = retryPolicyValue2.get("retryCount");
-                        if (retryCountValue != null)
-                        {
+
+                        JsonNode retryCountValue = retryPolicyValue2
+                                .get("retryCount");
+                        if (retryCountValue != null) {
                             int retryCountInstance;
                             retryCountInstance = retryCountValue.getIntValue();
-                            retryPolicyInstance.setRetryCount(retryCountInstance);
+                            retryPolicyInstance
+                                    .setRetryCount(retryCountInstance);
                         }
                     }
-                    
-                    JsonNode errorActionValue2 = actionValue2.get("errorAction");
-                    if (errorActionValue2 != null)
-                    {
+
+                    JsonNode errorActionValue2 = actionValue2
+                            .get("errorAction");
+                    if (errorActionValue2 != null) {
                         JobErrorAction errorActionInstance = new JobErrorAction();
                         actionInstance.setErrorAction(errorActionInstance);
-                        
+
                         JsonNode typeValue2 = errorActionValue2.get("type");
-                        if (typeValue2 != null)
-                        {
+                        if (typeValue2 != null) {
                             JobActionType typeInstance2;
-                            typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                            typeInstance2 = SchedulerClientImpl
+                                    .parseJobActionType(typeValue2
+                                            .getTextValue());
                             errorActionInstance.setType(typeInstance2);
                         }
-                        
-                        JsonNode requestValue3 = errorActionValue2.get("request");
-                        if (requestValue3 != null)
-                        {
+
+                        JsonNode requestValue3 = errorActionValue2
+                                .get("request");
+                        if (requestValue3 != null) {
                             JobHttpRequest requestInstance = new JobHttpRequest();
                             errorActionInstance.setRequest(requestInstance);
-                            
+
                             JsonNode uriValue = requestValue3.get("uri");
-                            if (uriValue != null)
-                            {
+                            if (uriValue != null) {
                                 URI uriInstance;
                                 uriInstance = new URI(uriValue.getTextValue());
                                 requestInstance.setUri(uriInstance);
                             }
-                            
+
                             JsonNode methodValue = requestValue3.get("method");
-                            if (methodValue != null)
-                            {
+                            if (methodValue != null) {
                                 String methodInstance;
                                 methodInstance = methodValue.getTextValue();
                                 requestInstance.setMethod(methodInstance);
                             }
-                            
-                            JsonNode headersSequenceElement = requestValue3.get("headers");
-                            if (headersSequenceElement != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                while (itr.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property = itr.next();
+
+                            JsonNode headersSequenceElement = requestValue3
+                                    .get("headers");
+                            if (headersSequenceElement != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                        .getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr
+                                            .next();
                                     String headersKey3 = property.getKey();
-                                    String headersValue3 = property.getValue().getTextValue();
-                                    requestInstance.getHeaders().put(headersKey3, headersValue3);
+                                    String headersValue3 = property.getValue()
+                                            .getTextValue();
+                                    requestInstance.getHeaders().put(
+                                            headersKey3, headersValue3);
                                 }
                             }
-                            
+
                             JsonNode bodyValue = requestValue3.get("body");
-                            if (bodyValue != null)
-                            {
+                            if (bodyValue != null) {
                                 String bodyInstance;
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
                         }
-                        
-                        JsonNode queueMessageValue3 = errorActionValue2.get("queueMessage");
-                        if (queueMessageValue3 != null)
-                        {
+
+                        JsonNode queueMessageValue3 = errorActionValue2
+                                .get("queueMessage");
+                        if (queueMessageValue3 != null) {
                             JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                            errorActionInstance.setQueueMessage(queueMessageInstance);
-                            
-                            JsonNode storageAccountValue = queueMessageValue3.get("storageAccount");
-                            if (storageAccountValue != null)
-                            {
+                            errorActionInstance
+                                    .setQueueMessage(queueMessageInstance);
+
+                            JsonNode storageAccountValue = queueMessageValue3
+                                    .get("storageAccount");
+                            if (storageAccountValue != null) {
                                 String storageAccountInstance;
-                                storageAccountInstance = storageAccountValue.getTextValue();
-                                queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                storageAccountInstance = storageAccountValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setStorageAccountName(storageAccountInstance);
                             }
-                            
-                            JsonNode queueNameValue = queueMessageValue3.get("queueName");
-                            if (queueNameValue != null)
-                            {
+
+                            JsonNode queueNameValue = queueMessageValue3
+                                    .get("queueName");
+                            if (queueNameValue != null) {
                                 String queueNameInstance;
-                                queueNameInstance = queueNameValue.getTextValue();
-                                queueMessageInstance.setQueueName(queueNameInstance);
+                                queueNameInstance = queueNameValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setQueueName(queueNameInstance);
                             }
-                            
-                            JsonNode sasTokenValue = queueMessageValue3.get("sasToken");
-                            if (sasTokenValue != null)
-                            {
+
+                            JsonNode sasTokenValue = queueMessageValue3
+                                    .get("sasToken");
+                            if (sasTokenValue != null) {
                                 String sasTokenInstance;
                                 sasTokenInstance = sasTokenValue.getTextValue();
-                                queueMessageInstance.setSasToken(sasTokenInstance);
+                                queueMessageInstance
+                                        .setSasToken(sasTokenInstance);
                             }
-                            
-                            JsonNode messageValue = queueMessageValue3.get("message");
-                            if (messageValue != null)
-                            {
+
+                            JsonNode messageValue = queueMessageValue3
+                                    .get("message");
+                            if (messageValue != null) {
                                 String messageInstance;
                                 messageInstance = messageValue.getTextValue();
-                                queueMessageInstance.setMessage(messageInstance);
+                                queueMessageInstance
+                                        .setMessage(messageInstance);
                             }
                         }
                     }
-                    
+
                     JsonNode requestValue4 = actionValue2.get("request");
-                    if (requestValue4 != null)
-                    {
+                    if (requestValue4 != null) {
                         JobHttpRequest requestInstance2 = new JobHttpRequest();
                         actionInstance.setRequest(requestInstance2);
-                        
+
                         JsonNode uriValue2 = requestValue4.get("uri");
-                        if (uriValue2 != null)
-                        {
+                        if (uriValue2 != null) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             requestInstance2.setUri(uriInstance2);
                         }
-                        
+
                         JsonNode methodValue2 = requestValue4.get("method");
-                        if (methodValue2 != null)
-                        {
+                        if (methodValue2 != null) {
                             String methodInstance2;
                             methodInstance2 = methodValue2.getTextValue();
                             requestInstance2.setMethod(methodInstance2);
                         }
-                        
-                        JsonNode headersSequenceElement2 = requestValue4.get("headers");
-                        if (headersSequenceElement2 != null)
-                        {
-                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                            while (itr2.hasNext())
-                            {
-                                Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                        JsonNode headersSequenceElement2 = requestValue4
+                                .get("headers");
+                        if (headersSequenceElement2 != null) {
+                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                    .getFields();
+                            while (itr2.hasNext()) {
+                                Map.Entry<String, JsonNode> property2 = itr2
+                                        .next();
                                 String headersKey4 = property2.getKey();
-                                String headersValue4 = property2.getValue().getTextValue();
-                                requestInstance2.getHeaders().put(headersKey4, headersValue4);
+                                String headersValue4 = property2.getValue()
+                                        .getTextValue();
+                                requestInstance2.getHeaders().put(headersKey4,
+                                        headersValue4);
                             }
                         }
-                        
+
                         JsonNode bodyValue2 = requestValue4.get("body");
-                        if (bodyValue2 != null)
-                        {
+                        if (bodyValue2 != null) {
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
                         }
                     }
-                    
-                    JsonNode queueMessageValue4 = actionValue2.get("queueMessage");
-                    if (queueMessageValue4 != null)
-                    {
+
+                    JsonNode queueMessageValue4 = actionValue2
+                            .get("queueMessage");
+                    if (queueMessageValue4 != null) {
                         JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
                         actionInstance.setQueueMessage(queueMessageInstance2);
-                        
-                        JsonNode storageAccountValue2 = queueMessageValue4.get("storageAccount");
-                        if (storageAccountValue2 != null)
-                        {
+
+                        JsonNode storageAccountValue2 = queueMessageValue4
+                                .get("storageAccount");
+                        if (storageAccountValue2 != null) {
                             String storageAccountInstance2;
-                            storageAccountInstance2 = storageAccountValue2.getTextValue();
-                            queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                            storageAccountInstance2 = storageAccountValue2
+                                    .getTextValue();
+                            queueMessageInstance2
+                                    .setStorageAccountName(storageAccountInstance2);
                         }
-                        
-                        JsonNode queueNameValue2 = queueMessageValue4.get("queueName");
-                        if (queueNameValue2 != null)
-                        {
+
+                        JsonNode queueNameValue2 = queueMessageValue4
+                                .get("queueName");
+                        if (queueNameValue2 != null) {
                             String queueNameInstance2;
                             queueNameInstance2 = queueNameValue2.getTextValue();
-                            queueMessageInstance2.setQueueName(queueNameInstance2);
+                            queueMessageInstance2
+                                    .setQueueName(queueNameInstance2);
                         }
-                        
-                        JsonNode sasTokenValue2 = queueMessageValue4.get("sasToken");
-                        if (sasTokenValue2 != null)
-                        {
+
+                        JsonNode sasTokenValue2 = queueMessageValue4
+                                .get("sasToken");
+                        if (sasTokenValue2 != null) {
                             String sasTokenInstance2;
                             sasTokenInstance2 = sasTokenValue2.getTextValue();
-                            queueMessageInstance2.setSasToken(sasTokenInstance2);
+                            queueMessageInstance2
+                                    .setSasToken(sasTokenInstance2);
                         }
-                        
-                        JsonNode messageValue2 = queueMessageValue4.get("message");
-                        if (messageValue2 != null)
-                        {
+
+                        JsonNode messageValue2 = queueMessageValue4
+                                .get("message");
+                        if (messageValue2 != null) {
                             String messageInstance2;
                             messageInstance2 = messageValue2.getTextValue();
                             queueMessageInstance2.setMessage(messageInstance2);
                         }
                     }
                 }
-                
+
                 JsonNode recurrenceValue2 = jobValue.get("recurrence");
-                if (recurrenceValue2 != null)
-                {
+                if (recurrenceValue2 != null) {
                     JobRecurrence recurrenceInstance = new JobRecurrence();
                     jobInstance.setRecurrence(recurrenceInstance);
-                    
+
                     JsonNode frequencyValue = recurrenceValue2.get("frequency");
-                    if (frequencyValue != null)
-                    {
+                    if (frequencyValue != null) {
                         JobRecurrenceFrequency frequencyInstance;
-                        frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                        frequencyInstance = SchedulerClientImpl
+                                .parseJobRecurrenceFrequency(frequencyValue
+                                        .getTextValue());
                         recurrenceInstance.setFrequency(frequencyInstance);
                     }
-                    
+
                     JsonNode intervalValue = recurrenceValue2.get("interval");
-                    if (intervalValue != null)
-                    {
+                    if (intervalValue != null) {
                         int intervalInstance;
                         intervalInstance = intervalValue.getIntValue();
                         recurrenceInstance.setInterval(intervalInstance);
                     }
-                    
+
                     JsonNode countValue = recurrenceValue2.get("count");
-                    if (countValue != null)
-                    {
+                    if (countValue != null) {
                         int countInstance;
                         countInstance = countValue.getIntValue();
                         recurrenceInstance.setCount(countInstance);
                     }
-                    
+
                     JsonNode endTimeValue = recurrenceValue2.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat4.parse(endTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat4.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar2;
                         recurrenceInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode scheduleValue2 = recurrenceValue2.get("schedule");
-                    if (scheduleValue2 != null)
-                    {
+                    if (scheduleValue2 != null) {
                         JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                         recurrenceInstance.setSchedule(scheduleInstance);
-                        
-                        ArrayNode minutesArray2 = ((ArrayNode) scheduleValue2.get("minutes"));
-                        if (minutesArray2 != null)
-                        {
-                            for (JsonNode minutesValue : minutesArray2)
-                            {
-                                scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                        ArrayNode minutesArray2 = ((ArrayNode) scheduleValue2
+                                .get("minutes"));
+                        if (minutesArray2 != null) {
+                            for (JsonNode minutesValue : minutesArray2) {
+                                scheduleInstance.getMinutes().add(
+                                        minutesValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode hoursArray2 = ((ArrayNode) scheduleValue2.get("hours"));
-                        if (hoursArray2 != null)
-                        {
-                            for (JsonNode hoursValue : hoursArray2)
-                            {
-                                scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                        ArrayNode hoursArray2 = ((ArrayNode) scheduleValue2
+                                .get("hours"));
+                        if (hoursArray2 != null) {
+                            for (JsonNode hoursValue : hoursArray2) {
+                                scheduleInstance.getHours().add(
+                                        hoursValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode weekDaysArray2 = ((ArrayNode) scheduleValue2.get("weekDays"));
-                        if (weekDaysArray2 != null)
-                        {
-                            for (JsonNode weekDaysValue : weekDaysArray2)
-                            {
-                                scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                        ArrayNode weekDaysArray2 = ((ArrayNode) scheduleValue2
+                                .get("weekDays"));
+                        if (weekDaysArray2 != null) {
+                            for (JsonNode weekDaysValue : weekDaysArray2) {
+                                scheduleInstance
+                                        .getDays()
+                                        .add(SchedulerClientImpl
+                                                .parseJobScheduleDay(weekDaysValue
+                                                        .getTextValue()));
                             }
                         }
-                        
-                        ArrayNode monthsArray2 = ((ArrayNode) scheduleValue2.get("months"));
-                        if (monthsArray2 != null)
-                        {
-                            for (JsonNode monthsValue : monthsArray2)
-                            {
-                                scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                        ArrayNode monthsArray2 = ((ArrayNode) scheduleValue2
+                                .get("months"));
+                        if (monthsArray2 != null) {
+                            for (JsonNode monthsValue : monthsArray2) {
+                                scheduleInstance.getMonths().add(
+                                        monthsValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthDaysArray2 = ((ArrayNode) scheduleValue2.get("monthDays"));
-                        if (monthDaysArray2 != null)
-                        {
-                            for (JsonNode monthDaysValue : monthDaysArray2)
-                            {
-                                scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                        ArrayNode monthDaysArray2 = ((ArrayNode) scheduleValue2
+                                .get("monthDays"));
+                        if (monthDaysArray2 != null) {
+                            for (JsonNode monthDaysValue : monthDaysArray2) {
+                                scheduleInstance.getMonthDays().add(
+                                        monthDaysValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthlyOccurrencesArray2 = ((ArrayNode) scheduleValue2.get("monthlyOccurrences"));
-                        if (monthlyOccurrencesArray2 != null)
-                        {
-                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray2)
-                            {
+
+                        ArrayNode monthlyOccurrencesArray2 = ((ArrayNode) scheduleValue2
+                                .get("monthlyOccurrences"));
+                        if (monthlyOccurrencesArray2 != null) {
+                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray2) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                
-                                JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                if (dayValue != null)
-                                {
+                                scheduleInstance.getMonthlyOccurrences().add(
+                                        jobScheduleMonthlyOccurrenceInstance);
+
+                                JsonNode dayValue = monthlyOccurrencesValue
+                                        .get("day");
+                                if (dayValue != null) {
                                     JobScheduleDay dayInstance;
-                                    dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                    jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                    dayInstance = SchedulerClientImpl
+                                            .parseJobScheduleDay(dayValue
+                                                    .getTextValue());
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setDay(dayInstance);
                                 }
-                                
-                                JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                if (occurrenceValue != null)
-                                {
+
+                                JsonNode occurrenceValue = monthlyOccurrencesValue
+                                        .get("occurrence");
+                                if (occurrenceValue != null) {
                                     int occurrenceInstance;
-                                    occurrenceInstance = occurrenceValue.getIntValue();
-                                    jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                    occurrenceInstance = occurrenceValue
+                                            .getIntValue();
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setOccurrence(occurrenceInstance);
                                 }
                             }
                         }
                     }
                 }
-                
+
                 JsonNode statusValue = jobValue.get("status");
-                if (statusValue != null)
-                {
+                if (statusValue != null) {
                     JobStatus statusInstance = new JobStatus();
                     jobInstance.setStatus(statusInstance);
-                    
-                    JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                    if (lastExecutionTimeValue != null)
-                    {
+
+                    JsonNode lastExecutionTimeValue = statusValue
+                            .get("lastExecutionTime");
+                    if (lastExecutionTimeValue != null) {
                         Calendar lastExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat5 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat5.parse(lastExecutionTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat5
+                                .parse(lastExecutionTimeValue.getTextValue()));
                         lastExecutionTimeInstance = calendar3;
-                        statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                        statusInstance
+                                .setLastExecutionTime(lastExecutionTimeInstance);
                     }
-                    
-                    JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                    if (nextExecutionTimeValue != null)
-                    {
+
+                    JsonNode nextExecutionTimeValue = statusValue
+                            .get("nextExecutionTime");
+                    if (nextExecutionTimeValue != null) {
                         Calendar nextExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat6 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat6.parse(nextExecutionTimeValue.getTextValue()));
+                        calendar4.setTime(simpleDateFormat6
+                                .parse(nextExecutionTimeValue.getTextValue()));
                         nextExecutionTimeInstance = calendar4;
-                        statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                        statusInstance
+                                .setNextExecutionTime(nextExecutionTimeInstance);
                     }
-                    
-                    JsonNode executionCountValue = statusValue.get("executionCount");
-                    if (executionCountValue != null)
-                    {
+
+                    JsonNode executionCountValue = statusValue
+                            .get("executionCount");
+                    if (executionCountValue != null) {
                         int executionCountInstance;
-                        executionCountInstance = executionCountValue.getIntValue();
-                        statusInstance.setExecutionCount(executionCountInstance);
+                        executionCountInstance = executionCountValue
+                                .getIntValue();
+                        statusInstance
+                                .setExecutionCount(executionCountInstance);
                     }
-                    
-                    JsonNode failureCountValue = statusValue.get("failureCount");
-                    if (failureCountValue != null)
-                    {
+
+                    JsonNode failureCountValue = statusValue
+                            .get("failureCount");
+                    if (failureCountValue != null) {
                         int failureCountInstance;
                         failureCountInstance = failureCountValue.getIntValue();
                         statusInstance.setFailureCount(failureCountInstance);
                     }
-                    
-                    JsonNode faultedCountValue = statusValue.get("faultedCount");
-                    if (faultedCountValue != null)
-                    {
+
+                    JsonNode faultedCountValue = statusValue
+                            .get("faultedCount");
+                    if (faultedCountValue != null) {
                         int faultedCountInstance;
                         faultedCountInstance = faultedCountValue.getIntValue();
                         statusInstance.setFaultedCount(faultedCountInstance);
                     }
                 }
-                
+
                 JsonNode stateValue = jobValue.get("state");
-                if (stateValue != null)
-                {
+                if (stateValue != null) {
                     JobState stateInstance;
-                    stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                    stateInstance = SchedulerClientImpl
+                            .parseJobState(stateValue.getTextValue());
                     jobInstance.setState(stateInstance);
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Deletes a job.
-    *
-    * @param jobId Id of the job to delete.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Deletes a job.
+     * 
+     * @param jobId
+     *            Id of the job to delete.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public Future<OperationResponse> deleteAsync(final String jobId)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<OperationResponse>() { 
-            @Override
-            public OperationResponse call() throws Exception
-            {
-                return delete(jobId);
-            }
-         });
+    public Future<OperationResponse> deleteAsync(final String jobId) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<OperationResponse>() {
+                    @Override
+                    public OperationResponse call() throws Exception {
+                        return delete(jobId);
+                    }
+                });
     }
-    
+
     /**
-    * Deletes a job.
-    *
-    * @param jobId Id of the job to delete.
-    * @return A standard service response including an HTTP status code and
-    * request ID.
-    */
+     * Deletes a job.
+     * 
+     * @param jobId
+     *            Id of the job to delete.
+     * @return A standard service response including an HTTP status code and
+     *         request ID.
+     */
     @Override
-    public OperationResponse delete(String jobId) throws IOException, ServiceException
-    {
+    public OperationResponse delete(String jobId) throws IOException,
+            ServiceException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
-            CloudTracing.enter(invocationId, this, "deleteAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "deleteAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "?api-version=" + "2013-10-31_Preview";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "?api-version=" + "2013-10-31_Preview";
+
         // Create HTTP transport objects
         CustomHttpDelete httpRequest = new CustomHttpDelete(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromXml(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         OperationResponse result = null;
         result = new OperationResponse();
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * The status of an individual job can be access by a GET call to a job's
-    * address, jobId.
-    *
-    * @param jobId Id of the job to get.
-    * @return The Get Job operation response.
-    */
+     * The status of an individual job can be access by a GET call to a job's
+     * address, jobId.
+     * 
+     * @param jobId
+     *            Id of the job to get.
+     * @return The Get Job operation response.
+     */
     @Override
-    public Future<JobGetResponse> getAsync(final String jobId)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobGetResponse>() { 
-            @Override
-            public JobGetResponse call() throws Exception
-            {
-                return get(jobId);
-            }
-         });
+    public Future<JobGetResponse> getAsync(final String jobId) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobGetResponse>() {
+                    @Override
+                    public JobGetResponse call() throws Exception {
+                        return get(jobId);
+                    }
+                });
     }
-    
+
     /**
-    * The status of an individual job can be access by a GET call to a job's
-    * address, jobId.
-    *
-    * @param jobId Id of the job to get.
-    * @return The Get Job operation response.
-    */
+     * The status of an individual job can be access by a GET call to a job's
+     * address, jobId.
+     * 
+     * @param jobId
+     *            Id of the job to get.
+     * @return The Get Job operation response.
+     */
     @Override
-    public JobGetResponse get(String jobId) throws IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobGetResponse get(String jobId) throws IOException,
+            ServiceException, ParseException, URISyntaxException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
-            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "?api-version=" + "2013-10-31_Preview";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "?api-version=" + "2013-10-31_Preview";
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobGetResponse result = null;
         // Deserialize Response
@@ -1973,539 +2089,567 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         result = new JobGetResponse();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             JsonNode jobValue = responseDoc.get("Job");
-            if (jobValue != null)
-            {
+            if (jobValue != null) {
                 Job jobInstance = new Job();
                 result.setJob(jobInstance);
-                
+
                 JsonNode idValue = jobValue.get("id");
-                if (idValue != null)
-                {
+                if (idValue != null) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     jobInstance.setId(idInstance);
                 }
-                
+
                 JsonNode startTimeValue = jobValue.get("startTime");
-                if (startTimeValue != null)
-                {
+                if (startTimeValue != null) {
                     Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                            "EEE MMM dd HH:mm:ss z yyyy");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(startTimeValue.getTextValue()));
+                    calendar.setTime(simpleDateFormat.parse(startTimeValue
+                            .getTextValue()));
                     startTimeInstance = calendar;
                     jobInstance.setStartTime(startTimeInstance);
                 }
-                
+
                 JsonNode actionValue = jobValue.get("action");
-                if (actionValue != null)
-                {
+                if (actionValue != null) {
                     JobAction actionInstance = new JobAction();
                     jobInstance.setAction(actionInstance);
-                    
+
                     JsonNode typeValue = actionValue.get("type");
-                    if (typeValue != null)
-                    {
+                    if (typeValue != null) {
                         JobActionType typeInstance;
-                        typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                        typeInstance = SchedulerClientImpl
+                                .parseJobActionType(typeValue.getTextValue());
                         actionInstance.setType(typeInstance);
                     }
-                    
+
                     JsonNode retryPolicyValue = actionValue.get("retryPolicy");
-                    if (retryPolicyValue != null)
-                    {
+                    if (retryPolicyValue != null) {
                         RetryPolicy retryPolicyInstance = new RetryPolicy();
                         actionInstance.setRetryPolicy(retryPolicyInstance);
-                        
-                        JsonNode retryTypeValue = retryPolicyValue.get("retryType");
-                        if (retryTypeValue != null)
-                        {
+
+                        JsonNode retryTypeValue = retryPolicyValue
+                                .get("retryType");
+                        if (retryTypeValue != null) {
                             RetryType retryTypeInstance;
-                            retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
+                            retryTypeInstance = SchedulerClientImpl
+                                    .parseRetryType(retryTypeValue
+                                            .getTextValue());
                             retryPolicyInstance.setRetryType(retryTypeInstance);
                         }
-                        
-                        JsonNode retryIntervalValue = retryPolicyValue.get("retryInterval");
-                        if (retryIntervalValue != null)
-                        {
+
+                        JsonNode retryIntervalValue = retryPolicyValue
+                                .get("retryInterval");
+                        if (retryIntervalValue != null) {
                             Duration retryIntervalInstance;
-                            retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                            retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                            retryIntervalInstance = TimeSpan8601Converter
+                                    .parse(retryIntervalValue.getTextValue());
+                            retryPolicyInstance
+                                    .setRetryInterval(retryIntervalInstance);
                         }
-                        
-                        JsonNode retryCountValue = retryPolicyValue.get("retryCount");
-                        if (retryCountValue != null)
-                        {
+
+                        JsonNode retryCountValue = retryPolicyValue
+                                .get("retryCount");
+                        if (retryCountValue != null) {
                             int retryCountInstance;
                             retryCountInstance = retryCountValue.getIntValue();
-                            retryPolicyInstance.setRetryCount(retryCountInstance);
+                            retryPolicyInstance
+                                    .setRetryCount(retryCountInstance);
                         }
                     }
-                    
+
                     JsonNode errorActionValue = actionValue.get("errorAction");
-                    if (errorActionValue != null)
-                    {
+                    if (errorActionValue != null) {
                         JobErrorAction errorActionInstance = new JobErrorAction();
                         actionInstance.setErrorAction(errorActionInstance);
-                        
+
                         JsonNode typeValue2 = errorActionValue.get("type");
-                        if (typeValue2 != null)
-                        {
+                        if (typeValue2 != null) {
                             JobActionType typeInstance2;
-                            typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                            typeInstance2 = SchedulerClientImpl
+                                    .parseJobActionType(typeValue2
+                                            .getTextValue());
                             errorActionInstance.setType(typeInstance2);
                         }
-                        
+
                         JsonNode requestValue = errorActionValue.get("request");
-                        if (requestValue != null)
-                        {
+                        if (requestValue != null) {
                             JobHttpRequest requestInstance = new JobHttpRequest();
                             errorActionInstance.setRequest(requestInstance);
-                            
+
                             JsonNode uriValue = requestValue.get("uri");
-                            if (uriValue != null)
-                            {
+                            if (uriValue != null) {
                                 URI uriInstance;
                                 uriInstance = new URI(uriValue.getTextValue());
                                 requestInstance.setUri(uriInstance);
                             }
-                            
+
                             JsonNode methodValue = requestValue.get("method");
-                            if (methodValue != null)
-                            {
+                            if (methodValue != null) {
                                 String methodInstance;
                                 methodInstance = methodValue.getTextValue();
                                 requestInstance.setMethod(methodInstance);
                             }
-                            
-                            JsonNode headersSequenceElement = requestValue.get("headers");
-                            if (headersSequenceElement != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                while (itr.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property = itr.next();
+
+                            JsonNode headersSequenceElement = requestValue
+                                    .get("headers");
+                            if (headersSequenceElement != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                        .getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr
+                                            .next();
                                     String headersKey = property.getKey();
-                                    String headersValue = property.getValue().getTextValue();
-                                    requestInstance.getHeaders().put(headersKey, headersValue);
+                                    String headersValue = property.getValue()
+                                            .getTextValue();
+                                    requestInstance.getHeaders().put(
+                                            headersKey, headersValue);
                                 }
                             }
-                            
+
                             JsonNode bodyValue = requestValue.get("body");
-                            if (bodyValue != null)
-                            {
+                            if (bodyValue != null) {
                                 String bodyInstance;
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
                         }
-                        
-                        JsonNode queueMessageValue = errorActionValue.get("queueMessage");
-                        if (queueMessageValue != null)
-                        {
+
+                        JsonNode queueMessageValue = errorActionValue
+                                .get("queueMessage");
+                        if (queueMessageValue != null) {
                             JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                            errorActionInstance.setQueueMessage(queueMessageInstance);
-                            
-                            JsonNode storageAccountValue = queueMessageValue.get("storageAccount");
-                            if (storageAccountValue != null)
-                            {
+                            errorActionInstance
+                                    .setQueueMessage(queueMessageInstance);
+
+                            JsonNode storageAccountValue = queueMessageValue
+                                    .get("storageAccount");
+                            if (storageAccountValue != null) {
                                 String storageAccountInstance;
-                                storageAccountInstance = storageAccountValue.getTextValue();
-                                queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                storageAccountInstance = storageAccountValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setStorageAccountName(storageAccountInstance);
                             }
-                            
-                            JsonNode queueNameValue = queueMessageValue.get("queueName");
-                            if (queueNameValue != null)
-                            {
+
+                            JsonNode queueNameValue = queueMessageValue
+                                    .get("queueName");
+                            if (queueNameValue != null) {
                                 String queueNameInstance;
-                                queueNameInstance = queueNameValue.getTextValue();
-                                queueMessageInstance.setQueueName(queueNameInstance);
+                                queueNameInstance = queueNameValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setQueueName(queueNameInstance);
                             }
-                            
-                            JsonNode sasTokenValue = queueMessageValue.get("sasToken");
-                            if (sasTokenValue != null)
-                            {
+
+                            JsonNode sasTokenValue = queueMessageValue
+                                    .get("sasToken");
+                            if (sasTokenValue != null) {
                                 String sasTokenInstance;
                                 sasTokenInstance = sasTokenValue.getTextValue();
-                                queueMessageInstance.setSasToken(sasTokenInstance);
+                                queueMessageInstance
+                                        .setSasToken(sasTokenInstance);
                             }
-                            
-                            JsonNode messageValue = queueMessageValue.get("message");
-                            if (messageValue != null)
-                            {
+
+                            JsonNode messageValue = queueMessageValue
+                                    .get("message");
+                            if (messageValue != null) {
                                 String messageInstance;
                                 messageInstance = messageValue.getTextValue();
-                                queueMessageInstance.setMessage(messageInstance);
+                                queueMessageInstance
+                                        .setMessage(messageInstance);
                             }
                         }
                     }
-                    
+
                     JsonNode requestValue2 = actionValue.get("request");
-                    if (requestValue2 != null)
-                    {
+                    if (requestValue2 != null) {
                         JobHttpRequest requestInstance2 = new JobHttpRequest();
                         actionInstance.setRequest(requestInstance2);
-                        
+
                         JsonNode uriValue2 = requestValue2.get("uri");
-                        if (uriValue2 != null)
-                        {
+                        if (uriValue2 != null) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             requestInstance2.setUri(uriInstance2);
                         }
-                        
+
                         JsonNode methodValue2 = requestValue2.get("method");
-                        if (methodValue2 != null)
-                        {
+                        if (methodValue2 != null) {
                             String methodInstance2;
                             methodInstance2 = methodValue2.getTextValue();
                             requestInstance2.setMethod(methodInstance2);
                         }
-                        
-                        JsonNode headersSequenceElement2 = requestValue2.get("headers");
-                        if (headersSequenceElement2 != null)
-                        {
-                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                            while (itr2.hasNext())
-                            {
-                                Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                        JsonNode headersSequenceElement2 = requestValue2
+                                .get("headers");
+                        if (headersSequenceElement2 != null) {
+                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                    .getFields();
+                            while (itr2.hasNext()) {
+                                Map.Entry<String, JsonNode> property2 = itr2
+                                        .next();
                                 String headersKey2 = property2.getKey();
-                                String headersValue2 = property2.getValue().getTextValue();
-                                requestInstance2.getHeaders().put(headersKey2, headersValue2);
+                                String headersValue2 = property2.getValue()
+                                        .getTextValue();
+                                requestInstance2.getHeaders().put(headersKey2,
+                                        headersValue2);
                             }
                         }
-                        
+
                         JsonNode bodyValue2 = requestValue2.get("body");
-                        if (bodyValue2 != null)
-                        {
+                        if (bodyValue2 != null) {
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
                         }
                     }
-                    
-                    JsonNode queueMessageValue2 = actionValue.get("queueMessage");
-                    if (queueMessageValue2 != null)
-                    {
+
+                    JsonNode queueMessageValue2 = actionValue
+                            .get("queueMessage");
+                    if (queueMessageValue2 != null) {
                         JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
                         actionInstance.setQueueMessage(queueMessageInstance2);
-                        
-                        JsonNode storageAccountValue2 = queueMessageValue2.get("storageAccount");
-                        if (storageAccountValue2 != null)
-                        {
+
+                        JsonNode storageAccountValue2 = queueMessageValue2
+                                .get("storageAccount");
+                        if (storageAccountValue2 != null) {
                             String storageAccountInstance2;
-                            storageAccountInstance2 = storageAccountValue2.getTextValue();
-                            queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                            storageAccountInstance2 = storageAccountValue2
+                                    .getTextValue();
+                            queueMessageInstance2
+                                    .setStorageAccountName(storageAccountInstance2);
                         }
-                        
-                        JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                        if (queueNameValue2 != null)
-                        {
+
+                        JsonNode queueNameValue2 = queueMessageValue2
+                                .get("queueName");
+                        if (queueNameValue2 != null) {
                             String queueNameInstance2;
                             queueNameInstance2 = queueNameValue2.getTextValue();
-                            queueMessageInstance2.setQueueName(queueNameInstance2);
+                            queueMessageInstance2
+                                    .setQueueName(queueNameInstance2);
                         }
-                        
-                        JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
-                        if (sasTokenValue2 != null)
-                        {
+
+                        JsonNode sasTokenValue2 = queueMessageValue2
+                                .get("sasToken");
+                        if (sasTokenValue2 != null) {
                             String sasTokenInstance2;
                             sasTokenInstance2 = sasTokenValue2.getTextValue();
-                            queueMessageInstance2.setSasToken(sasTokenInstance2);
+                            queueMessageInstance2
+                                    .setSasToken(sasTokenInstance2);
                         }
-                        
-                        JsonNode messageValue2 = queueMessageValue2.get("message");
-                        if (messageValue2 != null)
-                        {
+
+                        JsonNode messageValue2 = queueMessageValue2
+                                .get("message");
+                        if (messageValue2 != null) {
                             String messageInstance2;
                             messageInstance2 = messageValue2.getTextValue();
                             queueMessageInstance2.setMessage(messageInstance2);
                         }
                     }
                 }
-                
+
                 JsonNode recurrenceValue = jobValue.get("recurrence");
-                if (recurrenceValue != null)
-                {
+                if (recurrenceValue != null) {
                     JobRecurrence recurrenceInstance = new JobRecurrence();
                     jobInstance.setRecurrence(recurrenceInstance);
-                    
+
                     JsonNode frequencyValue = recurrenceValue.get("frequency");
-                    if (frequencyValue != null)
-                    {
+                    if (frequencyValue != null) {
                         JobRecurrenceFrequency frequencyInstance;
-                        frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                        frequencyInstance = SchedulerClientImpl
+                                .parseJobRecurrenceFrequency(frequencyValue
+                                        .getTextValue());
                         recurrenceInstance.setFrequency(frequencyInstance);
                     }
-                    
+
                     JsonNode intervalValue = recurrenceValue.get("interval");
-                    if (intervalValue != null)
-                    {
+                    if (intervalValue != null) {
                         int intervalInstance;
                         intervalInstance = intervalValue.getIntValue();
                         recurrenceInstance.setInterval(intervalInstance);
                     }
-                    
+
                     JsonNode countValue = recurrenceValue.get("count");
-                    if (countValue != null)
-                    {
+                    if (countValue != null) {
                         int countInstance;
                         countInstance = countValue.getIntValue();
                         recurrenceInstance.setCount(countInstance);
                     }
-                    
+
                     JsonNode endTimeValue = recurrenceValue.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(endTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat2.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar2;
                         recurrenceInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode scheduleValue = recurrenceValue.get("schedule");
-                    if (scheduleValue != null)
-                    {
+                    if (scheduleValue != null) {
                         JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                         recurrenceInstance.setSchedule(scheduleInstance);
-                        
-                        ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("minutes"));
-                        if (minutesArray != null)
-                        {
-                            for (JsonNode minutesValue : minutesArray)
-                            {
-                                scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                        ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                .get("minutes"));
+                        if (minutesArray != null) {
+                            for (JsonNode minutesValue : minutesArray) {
+                                scheduleInstance.getMinutes().add(
+                                        minutesValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("hours"));
-                        if (hoursArray != null)
-                        {
-                            for (JsonNode hoursValue : hoursArray)
-                            {
-                                scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                        ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                .get("hours"));
+                        if (hoursArray != null) {
+                            for (JsonNode hoursValue : hoursArray) {
+                                scheduleInstance.getHours().add(
+                                        hoursValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode weekDaysArray = ((ArrayNode) scheduleValue.get("weekDays"));
-                        if (weekDaysArray != null)
-                        {
-                            for (JsonNode weekDaysValue : weekDaysArray)
-                            {
-                                scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                        ArrayNode weekDaysArray = ((ArrayNode) scheduleValue
+                                .get("weekDays"));
+                        if (weekDaysArray != null) {
+                            for (JsonNode weekDaysValue : weekDaysArray) {
+                                scheduleInstance
+                                        .getDays()
+                                        .add(SchedulerClientImpl
+                                                .parseJobScheduleDay(weekDaysValue
+                                                        .getTextValue()));
                             }
                         }
-                        
-                        ArrayNode monthsArray = ((ArrayNode) scheduleValue.get("months"));
-                        if (monthsArray != null)
-                        {
-                            for (JsonNode monthsValue : monthsArray)
-                            {
-                                scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                        ArrayNode monthsArray = ((ArrayNode) scheduleValue
+                                .get("months"));
+                        if (monthsArray != null) {
+                            for (JsonNode monthsValue : monthsArray) {
+                                scheduleInstance.getMonths().add(
+                                        monthsValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthDaysArray = ((ArrayNode) scheduleValue.get("monthDays"));
-                        if (monthDaysArray != null)
-                        {
-                            for (JsonNode monthDaysValue : monthDaysArray)
-                            {
-                                scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                        ArrayNode monthDaysArray = ((ArrayNode) scheduleValue
+                                .get("monthDays"));
+                        if (monthDaysArray != null) {
+                            for (JsonNode monthDaysValue : monthDaysArray) {
+                                scheduleInstance.getMonthDays().add(
+                                        monthDaysValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue.get("monthlyOccurrences"));
-                        if (monthlyOccurrencesArray != null)
-                        {
-                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray)
-                            {
+
+                        ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue
+                                .get("monthlyOccurrences"));
+                        if (monthlyOccurrencesArray != null) {
+                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                
-                                JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                if (dayValue != null)
-                                {
+                                scheduleInstance.getMonthlyOccurrences().add(
+                                        jobScheduleMonthlyOccurrenceInstance);
+
+                                JsonNode dayValue = monthlyOccurrencesValue
+                                        .get("day");
+                                if (dayValue != null) {
                                     JobScheduleDay dayInstance;
-                                    dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                    jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                    dayInstance = SchedulerClientImpl
+                                            .parseJobScheduleDay(dayValue
+                                                    .getTextValue());
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setDay(dayInstance);
                                 }
-                                
-                                JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                if (occurrenceValue != null)
-                                {
+
+                                JsonNode occurrenceValue = monthlyOccurrencesValue
+                                        .get("occurrence");
+                                if (occurrenceValue != null) {
                                     int occurrenceInstance;
-                                    occurrenceInstance = occurrenceValue.getIntValue();
-                                    jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                    occurrenceInstance = occurrenceValue
+                                            .getIntValue();
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setOccurrence(occurrenceInstance);
                                 }
                             }
                         }
                     }
                 }
-                
+
                 JsonNode statusValue = jobValue.get("status");
-                if (statusValue != null)
-                {
+                if (statusValue != null) {
                     JobStatus statusInstance = new JobStatus();
                     jobInstance.setStatus(statusInstance);
-                    
-                    JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                    if (lastExecutionTimeValue != null)
-                    {
+
+                    JsonNode lastExecutionTimeValue = statusValue
+                            .get("lastExecutionTime");
+                    if (lastExecutionTimeValue != null) {
                         Calendar lastExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(lastExecutionTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat3
+                                .parse(lastExecutionTimeValue.getTextValue()));
                         lastExecutionTimeInstance = calendar3;
-                        statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                        statusInstance
+                                .setLastExecutionTime(lastExecutionTimeInstance);
                     }
-                    
-                    JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                    if (nextExecutionTimeValue != null)
-                    {
+
+                    JsonNode nextExecutionTimeValue = statusValue
+                            .get("nextExecutionTime");
+                    if (nextExecutionTimeValue != null) {
                         Calendar nextExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(nextExecutionTimeValue.getTextValue()));
+                        calendar4.setTime(simpleDateFormat4
+                                .parse(nextExecutionTimeValue.getTextValue()));
                         nextExecutionTimeInstance = calendar4;
-                        statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                        statusInstance
+                                .setNextExecutionTime(nextExecutionTimeInstance);
                     }
-                    
-                    JsonNode executionCountValue = statusValue.get("executionCount");
-                    if (executionCountValue != null)
-                    {
+
+                    JsonNode executionCountValue = statusValue
+                            .get("executionCount");
+                    if (executionCountValue != null) {
                         int executionCountInstance;
-                        executionCountInstance = executionCountValue.getIntValue();
-                        statusInstance.setExecutionCount(executionCountInstance);
+                        executionCountInstance = executionCountValue
+                                .getIntValue();
+                        statusInstance
+                                .setExecutionCount(executionCountInstance);
                     }
-                    
-                    JsonNode failureCountValue = statusValue.get("failureCount");
-                    if (failureCountValue != null)
-                    {
+
+                    JsonNode failureCountValue = statusValue
+                            .get("failureCount");
+                    if (failureCountValue != null) {
                         int failureCountInstance;
                         failureCountInstance = failureCountValue.getIntValue();
                         statusInstance.setFailureCount(failureCountInstance);
                     }
-                    
-                    JsonNode faultedCountValue = statusValue.get("faultedCount");
-                    if (faultedCountValue != null)
-                    {
+
+                    JsonNode faultedCountValue = statusValue
+                            .get("faultedCount");
+                    if (faultedCountValue != null) {
                         int faultedCountInstance;
                         faultedCountInstance = faultedCountValue.getIntValue();
                         statusInstance.setFaultedCount(faultedCountInstance);
                     }
                 }
-                
+
                 JsonNode stateValue = jobValue.get("state");
-                if (stateValue != null)
-                {
+                if (stateValue != null) {
                     JobState stateInstance;
-                    stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                    stateInstance = SchedulerClientImpl
+                            .parseJobState(stateValue.getTextValue());
                     jobInstance.setState(stateInstance);
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History operation.
-    * @return The Get Job History operation response.
-    */
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History operation.
+     * @return The Get Job History operation response.
+     */
     @Override
-    public Future<JobGetHistoryResponse> getHistoryAsync(final String jobId, final JobGetHistoryParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobGetHistoryResponse>() { 
-            @Override
-            public JobGetHistoryResponse call() throws Exception
-            {
-                return getHistory(jobId, parameters);
-            }
-         });
+    public Future<JobGetHistoryResponse> getHistoryAsync(final String jobId,
+            final JobGetHistoryParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobGetHistoryResponse>() {
+                    @Override
+                    public JobGetHistoryResponse call() throws Exception {
+                        return getHistory(jobId, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History operation.
-    * @return The Get Job History operation response.
-    */
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History operation.
+     * @return The Get Job History operation response.
+     */
     @Override
-    public JobGetHistoryResponse getHistory(String jobId, JobGetHistoryParameters parameters) throws IOException, ServiceException, ParseException
-    {
+    public JobGetHistoryResponse getHistory(String jobId,
+            JobGetHistoryParameters parameters) throws IOException,
+            ServiceException, ParseException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "getHistoryAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getHistoryAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "/history?api-version=" + "2013-10-31_Preview" + "&$skip=" + parameters.getSkip() + "&$top=" + parameters.getTop();
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "/history?api-version=" + "2013-10-31_Preview" + "&$skip="
+                + parameters.getSkip() + "&$top=" + parameters.getTop();
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobGetHistoryResponse result = null;
         // Deserialize Response
@@ -2513,214 +2657,227 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         result = new JobGetHistoryResponse();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            ArrayNode jobHistoryArray = ((ArrayNode) responseDoc.get("JobHistory"));
-            if (jobHistoryArray != null)
-            {
-                for (JsonNode jobHistoryValue : jobHistoryArray)
-                {
+
+        if (responseDoc != null) {
+            ArrayNode jobHistoryArray = ((ArrayNode) responseDoc
+                    .get("JobHistory"));
+            if (jobHistoryArray != null) {
+                for (JsonNode jobHistoryValue : jobHistoryArray) {
                     JobGetHistoryResponse.JobHistoryEntry jobHistoryEntryInstance = new JobGetHistoryResponse.JobHistoryEntry();
                     result.getJobHistory().add(jobHistoryEntryInstance);
-                    
+
                     JsonNode jobIdValue = jobHistoryValue.get("jobId");
-                    if (jobIdValue != null)
-                    {
+                    if (jobIdValue != null) {
                         String jobIdInstance;
                         jobIdInstance = jobIdValue.getTextValue();
                         jobHistoryEntryInstance.setId(jobIdInstance);
                     }
-                    
-                    JsonNode recordNumberValue = jobHistoryValue.get("recordNumber");
-                    if (recordNumberValue != null)
-                    {
+
+                    JsonNode recordNumberValue = jobHistoryValue
+                            .get("recordNumber");
+                    if (recordNumberValue != null) {
                         int recordNumberInstance;
                         recordNumberInstance = recordNumberValue.getIntValue();
-                        jobHistoryEntryInstance.setRecordNumber(recordNumberInstance);
+                        jobHistoryEntryInstance
+                                .setRecordNumber(recordNumberInstance);
                     }
-                    
+
                     JsonNode timestampValue = jobHistoryValue.get("timestamp");
-                    if (timestampValue != null)
-                    {
+                    if (timestampValue != null) {
                         Calendar timestampInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(timestampValue.getTextValue()));
+                        calendar.setTime(simpleDateFormat.parse(timestampValue
+                                .getTextValue()));
                         timestampInstance = calendar;
                         jobHistoryEntryInstance.setTimestamp(timestampInstance);
                     }
-                    
+
                     JsonNode startTimeValue = jobHistoryValue.get("startTime");
-                    if (startTimeValue != null)
-                    {
+                    if (startTimeValue != null) {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(startTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat2
+                                .parse(startTimeValue.getTextValue()));
                         startTimeInstance = calendar2;
                         jobHistoryEntryInstance.setStartTime(startTimeInstance);
                     }
-                    
+
                     JsonNode endTimeValue = jobHistoryValue.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(endTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat3.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar3;
                         jobHistoryEntryInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode stateValue = jobHistoryValue.get("state");
-                    if (stateValue != null)
-                    {
+                    if (stateValue != null) {
                         JobState stateInstance;
-                        stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                        stateInstance = SchedulerClientImpl
+                                .parseJobState(stateValue.getTextValue());
                         jobHistoryEntryInstance.setState(stateInstance);
                     }
-                    
+
                     JsonNode messageValue = jobHistoryValue.get("message");
-                    if (messageValue != null)
-                    {
+                    if (messageValue != null) {
                         String messageInstance;
                         messageInstance = messageValue.getTextValue();
                         jobHistoryEntryInstance.setMessage(messageInstance);
                     }
-                    
+
                     JsonNode statusValue = jobHistoryValue.get("status");
-                    if (statusValue != null)
-                    {
+                    if (statusValue != null) {
                         JobHistoryStatus statusInstance;
-                        statusInstance = SchedulerClientImpl.parseJobHistoryStatus(statusValue.getTextValue());
+                        statusInstance = SchedulerClientImpl
+                                .parseJobHistoryStatus(statusValue
+                                        .getTextValue());
                         jobHistoryEntryInstance.setStatus(statusInstance);
                     }
-                    
-                    JsonNode actionNameValue = jobHistoryValue.get("actionName");
-                    if (actionNameValue != null)
-                    {
+
+                    JsonNode actionNameValue = jobHistoryValue
+                            .get("actionName");
+                    if (actionNameValue != null) {
                         JobHistoryActionName actionNameInstance;
-                        actionNameInstance = SchedulerClientImpl.parseJobHistoryActionName(actionNameValue.getTextValue());
-                        jobHistoryEntryInstance.setActionName(actionNameInstance);
+                        actionNameInstance = SchedulerClientImpl
+                                .parseJobHistoryActionName(actionNameValue
+                                        .getTextValue());
+                        jobHistoryEntryInstance
+                                .setActionName(actionNameInstance);
                     }
-                    
-                    JsonNode repeatCountValue = jobHistoryValue.get("repeatCount");
-                    if (repeatCountValue != null)
-                    {
+
+                    JsonNode repeatCountValue = jobHistoryValue
+                            .get("repeatCount");
+                    if (repeatCountValue != null) {
                         int repeatCountInstance;
                         repeatCountInstance = repeatCountValue.getIntValue();
-                        jobHistoryEntryInstance.setRepeatCount(repeatCountInstance);
+                        jobHistoryEntryInstance
+                                .setRepeatCount(repeatCountInstance);
                     }
-                    
-                    JsonNode retryCountValue = jobHistoryValue.get("retryCount");
-                    if (retryCountValue != null)
-                    {
+
+                    JsonNode retryCountValue = jobHistoryValue
+                            .get("retryCount");
+                    if (retryCountValue != null) {
                         int retryCountInstance;
                         retryCountInstance = retryCountValue.getIntValue();
-                        jobHistoryEntryInstance.setRetryCount(retryCountInstance);
+                        jobHistoryEntryInstance
+                                .setRetryCount(retryCountInstance);
                     }
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History With Filter
-    * operation.
-    * @return The Get Job History operation response.
-    */
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History With Filter
+     *            operation.
+     * @return The Get Job History operation response.
+     */
     @Override
-    public Future<JobGetHistoryResponse> getHistoryWithFilterAsync(final String jobId, final JobGetHistoryWithFilterParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobGetHistoryResponse>() { 
-            @Override
-            public JobGetHistoryResponse call() throws Exception
-            {
-                return getHistoryWithFilter(jobId, parameters);
-            }
-         });
+    public Future<JobGetHistoryResponse> getHistoryWithFilterAsync(
+            final String jobId,
+            final JobGetHistoryWithFilterParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobGetHistoryResponse>() {
+                    @Override
+                    public JobGetHistoryResponse call() throws Exception {
+                        return getHistoryWithFilter(jobId, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Job history tracks the updates and executions of a job.
-    *
-    * @param jobId Id of the job to get the history of.
-    * @param parameters Parameters supplied to the Get Job History With Filter
-    * operation.
-    * @return The Get Job History operation response.
-    */
+     * Job history tracks the updates and executions of a job.
+     * 
+     * @param jobId
+     *            Id of the job to get the history of.
+     * @param parameters
+     *            Parameters supplied to the Get Job History With Filter
+     *            operation.
+     * @return The Get Job History operation response.
+     */
     @Override
-    public JobGetHistoryResponse getHistoryWithFilter(String jobId, JobGetHistoryWithFilterParameters parameters) throws IOException, ServiceException, ParseException
-    {
+    public JobGetHistoryResponse getHistoryWithFilter(String jobId,
+            JobGetHistoryWithFilterParameters parameters) throws IOException,
+            ServiceException, ParseException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "getHistoryWithFilterAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "getHistoryWithFilterAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "/history?api-version=" + "2013-10-31_Preview" + "&$filter=status eq " + parameters.getStatus() + "&$skip=" + parameters.getSkip() + "&$top=" + parameters.getTop();
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "/history?api-version=" + "2013-10-31_Preview"
+                + "&$filter=status eq " + parameters.getStatus() + "&$skip="
+                + parameters.getSkip() + "&$top=" + parameters.getTop();
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobGetHistoryResponse result = null;
         // Deserialize Response
@@ -2728,213 +2885,225 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         result = new JobGetHistoryResponse();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
-            ArrayNode jobHistoryArray = ((ArrayNode) responseDoc.get("JobHistory"));
-            if (jobHistoryArray != null)
-            {
-                for (JsonNode jobHistoryValue : jobHistoryArray)
-                {
+
+        if (responseDoc != null) {
+            ArrayNode jobHistoryArray = ((ArrayNode) responseDoc
+                    .get("JobHistory"));
+            if (jobHistoryArray != null) {
+                for (JsonNode jobHistoryValue : jobHistoryArray) {
                     JobGetHistoryResponse.JobHistoryEntry jobHistoryEntryInstance = new JobGetHistoryResponse.JobHistoryEntry();
                     result.getJobHistory().add(jobHistoryEntryInstance);
-                    
+
                     JsonNode jobIdValue = jobHistoryValue.get("jobId");
-                    if (jobIdValue != null)
-                    {
+                    if (jobIdValue != null) {
                         String jobIdInstance;
                         jobIdInstance = jobIdValue.getTextValue();
                         jobHistoryEntryInstance.setId(jobIdInstance);
                     }
-                    
-                    JsonNode recordNumberValue = jobHistoryValue.get("recordNumber");
-                    if (recordNumberValue != null)
-                    {
+
+                    JsonNode recordNumberValue = jobHistoryValue
+                            .get("recordNumber");
+                    if (recordNumberValue != null) {
                         int recordNumberInstance;
                         recordNumberInstance = recordNumberValue.getIntValue();
-                        jobHistoryEntryInstance.setRecordNumber(recordNumberInstance);
+                        jobHistoryEntryInstance
+                                .setRecordNumber(recordNumberInstance);
                     }
-                    
+
                     JsonNode timestampValue = jobHistoryValue.get("timestamp");
-                    if (timestampValue != null)
-                    {
+                    if (timestampValue != null) {
                         Calendar timestampInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(timestampValue.getTextValue()));
+                        calendar.setTime(simpleDateFormat.parse(timestampValue
+                                .getTextValue()));
                         timestampInstance = calendar;
                         jobHistoryEntryInstance.setTimestamp(timestampInstance);
                     }
-                    
+
                     JsonNode startTimeValue = jobHistoryValue.get("startTime");
-                    if (startTimeValue != null)
-                    {
+                    if (startTimeValue != null) {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(startTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat2
+                                .parse(startTimeValue.getTextValue()));
                         startTimeInstance = calendar2;
                         jobHistoryEntryInstance.setStartTime(startTimeInstance);
                     }
-                    
+
                     JsonNode endTimeValue = jobHistoryValue.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(endTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat3.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar3;
                         jobHistoryEntryInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode stateValue = jobHistoryValue.get("state");
-                    if (stateValue != null)
-                    {
+                    if (stateValue != null) {
                         JobState stateInstance;
-                        stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                        stateInstance = SchedulerClientImpl
+                                .parseJobState(stateValue.getTextValue());
                         jobHistoryEntryInstance.setState(stateInstance);
                     }
-                    
+
                     JsonNode messageValue = jobHistoryValue.get("message");
-                    if (messageValue != null)
-                    {
+                    if (messageValue != null) {
                         String messageInstance;
                         messageInstance = messageValue.getTextValue();
                         jobHistoryEntryInstance.setMessage(messageInstance);
                     }
-                    
+
                     JsonNode statusValue = jobHistoryValue.get("status");
-                    if (statusValue != null)
-                    {
+                    if (statusValue != null) {
                         JobHistoryStatus statusInstance;
-                        statusInstance = SchedulerClientImpl.parseJobHistoryStatus(statusValue.getTextValue());
+                        statusInstance = SchedulerClientImpl
+                                .parseJobHistoryStatus(statusValue
+                                        .getTextValue());
                         jobHistoryEntryInstance.setStatus(statusInstance);
                     }
-                    
-                    JsonNode actionNameValue = jobHistoryValue.get("actionName");
-                    if (actionNameValue != null)
-                    {
+
+                    JsonNode actionNameValue = jobHistoryValue
+                            .get("actionName");
+                    if (actionNameValue != null) {
                         JobHistoryActionName actionNameInstance;
-                        actionNameInstance = SchedulerClientImpl.parseJobHistoryActionName(actionNameValue.getTextValue());
-                        jobHistoryEntryInstance.setActionName(actionNameInstance);
+                        actionNameInstance = SchedulerClientImpl
+                                .parseJobHistoryActionName(actionNameValue
+                                        .getTextValue());
+                        jobHistoryEntryInstance
+                                .setActionName(actionNameInstance);
                     }
-                    
-                    JsonNode repeatCountValue = jobHistoryValue.get("repeatCount");
-                    if (repeatCountValue != null)
-                    {
+
+                    JsonNode repeatCountValue = jobHistoryValue
+                            .get("repeatCount");
+                    if (repeatCountValue != null) {
                         int repeatCountInstance;
                         repeatCountInstance = repeatCountValue.getIntValue();
-                        jobHistoryEntryInstance.setRepeatCount(repeatCountInstance);
+                        jobHistoryEntryInstance
+                                .setRepeatCount(repeatCountInstance);
                     }
-                    
-                    JsonNode retryCountValue = jobHistoryValue.get("retryCount");
-                    if (retryCountValue != null)
-                    {
+
+                    JsonNode retryCountValue = jobHistoryValue
+                            .get("retryCount");
+                    if (retryCountValue != null) {
                         int retryCountInstance;
                         retryCountInstance = retryCountValue.getIntValue();
-                        jobHistoryEntryInstance.setRetryCount(retryCountInstance);
+                        jobHistoryEntryInstance
+                                .setRetryCount(retryCountInstance);
                     }
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Fetch all jobs in a job collection.
-    *
-    * @param parameters Parameters supplied to the List Jobs operation.
-    * @return The List Jobs operation response.
-    */
+     * Fetch all jobs in a job collection.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs operation.
+     * @return The List Jobs operation response.
+     */
     @Override
-    public Future<JobListResponse> listAsync(final JobListParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobListResponse>() { 
-            @Override
-            public JobListResponse call() throws Exception
-            {
-                return list(parameters);
-            }
-         });
+    public Future<JobListResponse> listAsync(final JobListParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobListResponse>() {
+                    @Override
+                    public JobListResponse call() throws Exception {
+                        return list(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Fetch all jobs in a job collection.
-    *
-    * @param parameters Parameters supplied to the List Jobs operation.
-    * @return The List Jobs operation response.
-    */
+     * Fetch all jobs in a job collection.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs operation.
+     * @return The List Jobs operation response.
+     */
     @Override
-    public JobListResponse list(JobListParameters parameters) throws IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobListResponse list(JobListParameters parameters)
+            throws IOException, ServiceException, ParseException,
+            URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "listAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs?api-version=" + "2013-10-31_Preview";
-        if (parameters.getSkip() != null)
-        {
-            url = url + "&$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName()
+                + "/jobs?api-version=" + "2013-10-31_Preview";
+        if (parameters.getSkip() != null) {
+            url = url
+                    + "&$skip="
+                    + URLEncoder.encode(Integer.toString(parameters.getSkip()),
+                            "UTF-8");
         }
-        if (parameters.getTop() != null)
-        {
-            url = url + "&$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        if (parameters.getTop() != null) {
+            url = url
+                    + "&$top="
+                    + URLEncoder.encode(Integer.toString(parameters.getTop()),
+                            "UTF-8");
         }
-        
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobListResponse result = null;
         // Deserialize Response
@@ -2942,545 +3111,598 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         result = new JobListResponse();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             ArrayNode jobsArray = ((ArrayNode) responseDoc.get("Jobs"));
-            if (jobsArray != null)
-            {
-                for (JsonNode jobsValue : jobsArray)
-                {
+            if (jobsArray != null) {
+                for (JsonNode jobsValue : jobsArray) {
                     Job jobInstance = new Job();
                     result.getJobs().add(jobInstance);
-                    
+
                     JsonNode idValue = jobsValue.get("id");
-                    if (idValue != null)
-                    {
+                    if (idValue != null) {
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         jobInstance.setId(idInstance);
                     }
-                    
+
                     JsonNode startTimeValue = jobsValue.get("startTime");
-                    if (startTimeValue != null)
-                    {
+                    if (startTimeValue != null) {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(startTimeValue.getTextValue()));
+                        calendar.setTime(simpleDateFormat.parse(startTimeValue
+                                .getTextValue()));
                         startTimeInstance = calendar;
                         jobInstance.setStartTime(startTimeInstance);
                     }
-                    
+
                     JsonNode actionValue = jobsValue.get("action");
-                    if (actionValue != null)
-                    {
+                    if (actionValue != null) {
                         JobAction actionInstance = new JobAction();
                         jobInstance.setAction(actionInstance);
-                        
+
                         JsonNode typeValue = actionValue.get("type");
-                        if (typeValue != null)
-                        {
+                        if (typeValue != null) {
                             JobActionType typeInstance;
-                            typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                            typeInstance = SchedulerClientImpl
+                                    .parseJobActionType(typeValue
+                                            .getTextValue());
                             actionInstance.setType(typeInstance);
                         }
-                        
-                        JsonNode retryPolicyValue = actionValue.get("retryPolicy");
-                        if (retryPolicyValue != null)
-                        {
+
+                        JsonNode retryPolicyValue = actionValue
+                                .get("retryPolicy");
+                        if (retryPolicyValue != null) {
                             RetryPolicy retryPolicyInstance = new RetryPolicy();
                             actionInstance.setRetryPolicy(retryPolicyInstance);
-                            
-                            JsonNode retryTypeValue = retryPolicyValue.get("retryType");
-                            if (retryTypeValue != null)
-                            {
+
+                            JsonNode retryTypeValue = retryPolicyValue
+                                    .get("retryType");
+                            if (retryTypeValue != null) {
                                 RetryType retryTypeInstance;
-                                retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
-                                retryPolicyInstance.setRetryType(retryTypeInstance);
+                                retryTypeInstance = SchedulerClientImpl
+                                        .parseRetryType(retryTypeValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryType(retryTypeInstance);
                             }
-                            
-                            JsonNode retryIntervalValue = retryPolicyValue.get("retryInterval");
-                            if (retryIntervalValue != null)
-                            {
+
+                            JsonNode retryIntervalValue = retryPolicyValue
+                                    .get("retryInterval");
+                            if (retryIntervalValue != null) {
                                 Duration retryIntervalInstance;
-                                retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                                retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                                retryIntervalInstance = TimeSpan8601Converter
+                                        .parse(retryIntervalValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryInterval(retryIntervalInstance);
                             }
-                            
-                            JsonNode retryCountValue = retryPolicyValue.get("retryCount");
-                            if (retryCountValue != null)
-                            {
+
+                            JsonNode retryCountValue = retryPolicyValue
+                                    .get("retryCount");
+                            if (retryCountValue != null) {
                                 int retryCountInstance;
-                                retryCountInstance = retryCountValue.getIntValue();
-                                retryPolicyInstance.setRetryCount(retryCountInstance);
+                                retryCountInstance = retryCountValue
+                                        .getIntValue();
+                                retryPolicyInstance
+                                        .setRetryCount(retryCountInstance);
                             }
                         }
-                        
-                        JsonNode errorActionValue = actionValue.get("errorAction");
-                        if (errorActionValue != null)
-                        {
+
+                        JsonNode errorActionValue = actionValue
+                                .get("errorAction");
+                        if (errorActionValue != null) {
                             JobErrorAction errorActionInstance = new JobErrorAction();
                             actionInstance.setErrorAction(errorActionInstance);
-                            
+
                             JsonNode typeValue2 = errorActionValue.get("type");
-                            if (typeValue2 != null)
-                            {
+                            if (typeValue2 != null) {
                                 JobActionType typeInstance2;
-                                typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                                typeInstance2 = SchedulerClientImpl
+                                        .parseJobActionType(typeValue2
+                                                .getTextValue());
                                 errorActionInstance.setType(typeInstance2);
                             }
-                            
-                            JsonNode requestValue = errorActionValue.get("request");
-                            if (requestValue != null)
-                            {
+
+                            JsonNode requestValue = errorActionValue
+                                    .get("request");
+                            if (requestValue != null) {
                                 JobHttpRequest requestInstance = new JobHttpRequest();
                                 errorActionInstance.setRequest(requestInstance);
-                                
+
                                 JsonNode uriValue = requestValue.get("uri");
-                                if (uriValue != null)
-                                {
+                                if (uriValue != null) {
                                     URI uriInstance;
-                                    uriInstance = new URI(uriValue.getTextValue());
+                                    uriInstance = new URI(
+                                            uriValue.getTextValue());
                                     requestInstance.setUri(uriInstance);
                                 }
-                                
-                                JsonNode methodValue = requestValue.get("method");
-                                if (methodValue != null)
-                                {
+
+                                JsonNode methodValue = requestValue
+                                        .get("method");
+                                if (methodValue != null) {
                                     String methodInstance;
                                     methodInstance = methodValue.getTextValue();
                                     requestInstance.setMethod(methodInstance);
                                 }
-                                
-                                JsonNode headersSequenceElement = requestValue.get("headers");
-                                if (headersSequenceElement != null)
-                                {
-                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                    while (itr.hasNext())
-                                    {
-                                        Map.Entry<String, JsonNode> property = itr.next();
+
+                                JsonNode headersSequenceElement = requestValue
+                                        .get("headers");
+                                if (headersSequenceElement != null) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                            .getFields();
+                                    while (itr.hasNext()) {
+                                        Map.Entry<String, JsonNode> property = itr
+                                                .next();
                                         String headersKey = property.getKey();
-                                        String headersValue = property.getValue().getTextValue();
-                                        requestInstance.getHeaders().put(headersKey, headersValue);
+                                        String headersValue = property
+                                                .getValue().getTextValue();
+                                        requestInstance.getHeaders().put(
+                                                headersKey, headersValue);
                                     }
                                 }
-                                
+
                                 JsonNode bodyValue = requestValue.get("body");
-                                if (bodyValue != null)
-                                {
+                                if (bodyValue != null) {
                                     String bodyInstance;
                                     bodyInstance = bodyValue.getTextValue();
                                     requestInstance.setBody(bodyInstance);
                                 }
                             }
-                            
-                            JsonNode queueMessageValue = errorActionValue.get("queueMessage");
-                            if (queueMessageValue != null)
-                            {
+
+                            JsonNode queueMessageValue = errorActionValue
+                                    .get("queueMessage");
+                            if (queueMessageValue != null) {
                                 JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                                errorActionInstance.setQueueMessage(queueMessageInstance);
-                                
-                                JsonNode storageAccountValue = queueMessageValue.get("storageAccount");
-                                if (storageAccountValue != null)
-                                {
+                                errorActionInstance
+                                        .setQueueMessage(queueMessageInstance);
+
+                                JsonNode storageAccountValue = queueMessageValue
+                                        .get("storageAccount");
+                                if (storageAccountValue != null) {
                                     String storageAccountInstance;
-                                    storageAccountInstance = storageAccountValue.getTextValue();
-                                    queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                    storageAccountInstance = storageAccountValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setStorageAccountName(storageAccountInstance);
                                 }
-                                
-                                JsonNode queueNameValue = queueMessageValue.get("queueName");
-                                if (queueNameValue != null)
-                                {
+
+                                JsonNode queueNameValue = queueMessageValue
+                                        .get("queueName");
+                                if (queueNameValue != null) {
                                     String queueNameInstance;
-                                    queueNameInstance = queueNameValue.getTextValue();
-                                    queueMessageInstance.setQueueName(queueNameInstance);
+                                    queueNameInstance = queueNameValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setQueueName(queueNameInstance);
                                 }
-                                
-                                JsonNode sasTokenValue = queueMessageValue.get("sasToken");
-                                if (sasTokenValue != null)
-                                {
+
+                                JsonNode sasTokenValue = queueMessageValue
+                                        .get("sasToken");
+                                if (sasTokenValue != null) {
                                     String sasTokenInstance;
-                                    sasTokenInstance = sasTokenValue.getTextValue();
-                                    queueMessageInstance.setSasToken(sasTokenInstance);
+                                    sasTokenInstance = sasTokenValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setSasToken(sasTokenInstance);
                                 }
-                                
-                                JsonNode messageValue = queueMessageValue.get("message");
-                                if (messageValue != null)
-                                {
+
+                                JsonNode messageValue = queueMessageValue
+                                        .get("message");
+                                if (messageValue != null) {
                                     String messageInstance;
-                                    messageInstance = messageValue.getTextValue();
-                                    queueMessageInstance.setMessage(messageInstance);
+                                    messageInstance = messageValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setMessage(messageInstance);
                                 }
                             }
                         }
-                        
+
                         JsonNode requestValue2 = actionValue.get("request");
-                        if (requestValue2 != null)
-                        {
+                        if (requestValue2 != null) {
                             JobHttpRequest requestInstance2 = new JobHttpRequest();
                             actionInstance.setRequest(requestInstance2);
-                            
+
                             JsonNode uriValue2 = requestValue2.get("uri");
-                            if (uriValue2 != null)
-                            {
+                            if (uriValue2 != null) {
                                 URI uriInstance2;
                                 uriInstance2 = new URI(uriValue2.getTextValue());
                                 requestInstance2.setUri(uriInstance2);
                             }
-                            
+
                             JsonNode methodValue2 = requestValue2.get("method");
-                            if (methodValue2 != null)
-                            {
+                            if (methodValue2 != null) {
                                 String methodInstance2;
                                 methodInstance2 = methodValue2.getTextValue();
                                 requestInstance2.setMethod(methodInstance2);
                             }
-                            
-                            JsonNode headersSequenceElement2 = requestValue2.get("headers");
-                            if (headersSequenceElement2 != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                            JsonNode headersSequenceElement2 = requestValue2
+                                    .get("headers");
+                            if (headersSequenceElement2 != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                        .getFields();
+                                while (itr2.hasNext()) {
+                                    Map.Entry<String, JsonNode> property2 = itr2
+                                            .next();
                                     String headersKey2 = property2.getKey();
-                                    String headersValue2 = property2.getValue().getTextValue();
-                                    requestInstance2.getHeaders().put(headersKey2, headersValue2);
+                                    String headersValue2 = property2.getValue()
+                                            .getTextValue();
+                                    requestInstance2.getHeaders().put(
+                                            headersKey2, headersValue2);
                                 }
                             }
-                            
+
                             JsonNode bodyValue2 = requestValue2.get("body");
-                            if (bodyValue2 != null)
-                            {
+                            if (bodyValue2 != null) {
                                 String bodyInstance2;
                                 bodyInstance2 = bodyValue2.getTextValue();
                                 requestInstance2.setBody(bodyInstance2);
                             }
                         }
-                        
-                        JsonNode queueMessageValue2 = actionValue.get("queueMessage");
-                        if (queueMessageValue2 != null)
-                        {
+
+                        JsonNode queueMessageValue2 = actionValue
+                                .get("queueMessage");
+                        if (queueMessageValue2 != null) {
                             JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
-                            actionInstance.setQueueMessage(queueMessageInstance2);
-                            
-                            JsonNode storageAccountValue2 = queueMessageValue2.get("storageAccount");
-                            if (storageAccountValue2 != null)
-                            {
+                            actionInstance
+                                    .setQueueMessage(queueMessageInstance2);
+
+                            JsonNode storageAccountValue2 = queueMessageValue2
+                                    .get("storageAccount");
+                            if (storageAccountValue2 != null) {
                                 String storageAccountInstance2;
-                                storageAccountInstance2 = storageAccountValue2.getTextValue();
-                                queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                                storageAccountInstance2 = storageAccountValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setStorageAccountName(storageAccountInstance2);
                             }
-                            
-                            JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                            if (queueNameValue2 != null)
-                            {
+
+                            JsonNode queueNameValue2 = queueMessageValue2
+                                    .get("queueName");
+                            if (queueNameValue2 != null) {
                                 String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                                queueNameInstance2 = queueNameValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setQueueName(queueNameInstance2);
                             }
-                            
-                            JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
-                            if (sasTokenValue2 != null)
-                            {
+
+                            JsonNode sasTokenValue2 = queueMessageValue2
+                                    .get("sasToken");
+                            if (sasTokenValue2 != null) {
                                 String sasTokenInstance2;
-                                sasTokenInstance2 = sasTokenValue2.getTextValue();
-                                queueMessageInstance2.setSasToken(sasTokenInstance2);
+                                sasTokenInstance2 = sasTokenValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setSasToken(sasTokenInstance2);
                             }
-                            
-                            JsonNode messageValue2 = queueMessageValue2.get("message");
-                            if (messageValue2 != null)
-                            {
+
+                            JsonNode messageValue2 = queueMessageValue2
+                                    .get("message");
+                            if (messageValue2 != null) {
                                 String messageInstance2;
                                 messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                                queueMessageInstance2
+                                        .setMessage(messageInstance2);
                             }
                         }
                     }
-                    
+
                     JsonNode recurrenceValue = jobsValue.get("recurrence");
-                    if (recurrenceValue != null)
-                    {
+                    if (recurrenceValue != null) {
                         JobRecurrence recurrenceInstance = new JobRecurrence();
                         jobInstance.setRecurrence(recurrenceInstance);
-                        
-                        JsonNode frequencyValue = recurrenceValue.get("frequency");
-                        if (frequencyValue != null)
-                        {
+
+                        JsonNode frequencyValue = recurrenceValue
+                                .get("frequency");
+                        if (frequencyValue != null) {
                             JobRecurrenceFrequency frequencyInstance;
-                            frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                            frequencyInstance = SchedulerClientImpl
+                                    .parseJobRecurrenceFrequency(frequencyValue
+                                            .getTextValue());
                             recurrenceInstance.setFrequency(frequencyInstance);
                         }
-                        
-                        JsonNode intervalValue = recurrenceValue.get("interval");
-                        if (intervalValue != null)
-                        {
+
+                        JsonNode intervalValue = recurrenceValue
+                                .get("interval");
+                        if (intervalValue != null) {
                             int intervalInstance;
                             intervalInstance = intervalValue.getIntValue();
                             recurrenceInstance.setInterval(intervalInstance);
                         }
-                        
+
                         JsonNode countValue = recurrenceValue.get("count");
-                        if (countValue != null)
-                        {
+                        if (countValue != null) {
                             int countInstance;
                             countInstance = countValue.getIntValue();
                             recurrenceInstance.setCount(countInstance);
                         }
-                        
+
                         JsonNode endTimeValue = recurrenceValue.get("endTime");
-                        if (endTimeValue != null)
-                        {
+                        if (endTimeValue != null) {
                             Calendar endTimeInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(endTimeValue.getTextValue()));
+                            calendar2.setTime(simpleDateFormat2
+                                    .parse(endTimeValue.getTextValue()));
                             endTimeInstance = calendar2;
                             recurrenceInstance.setEndTime(endTimeInstance);
                         }
-                        
-                        JsonNode scheduleValue = recurrenceValue.get("schedule");
-                        if (scheduleValue != null)
-                        {
+
+                        JsonNode scheduleValue = recurrenceValue
+                                .get("schedule");
+                        if (scheduleValue != null) {
                             JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                             recurrenceInstance.setSchedule(scheduleInstance);
-                            
-                            ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("minutes"));
-                            if (minutesArray != null)
-                            {
-                                for (JsonNode minutesValue : minutesArray)
-                                {
-                                    scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                            ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                    .get("minutes"));
+                            if (minutesArray != null) {
+                                for (JsonNode minutesValue : minutesArray) {
+                                    scheduleInstance.getMinutes().add(
+                                            minutesValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("hours"));
-                            if (hoursArray != null)
-                            {
-                                for (JsonNode hoursValue : hoursArray)
-                                {
-                                    scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                            ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                    .get("hours"));
+                            if (hoursArray != null) {
+                                for (JsonNode hoursValue : hoursArray) {
+                                    scheduleInstance.getHours().add(
+                                            hoursValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue.get("weekDays"));
-                            if (weekDaysArray != null)
-                            {
-                                for (JsonNode weekDaysValue : weekDaysArray)
-                                {
-                                    scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue
+                                    .get("weekDays"));
+                            if (weekDaysArray != null) {
+                                for (JsonNode weekDaysValue : weekDaysArray) {
+                                    scheduleInstance
+                                            .getDays()
+                                            .add(SchedulerClientImpl
+                                                    .parseJobScheduleDay(weekDaysValue
+                                                            .getTextValue()));
                                 }
                             }
-                            
-                            ArrayNode monthsArray = ((ArrayNode) scheduleValue.get("months"));
-                            if (monthsArray != null)
-                            {
-                                for (JsonNode monthsValue : monthsArray)
-                                {
-                                    scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                            ArrayNode monthsArray = ((ArrayNode) scheduleValue
+                                    .get("months"));
+                            if (monthsArray != null) {
+                                for (JsonNode monthsValue : monthsArray) {
+                                    scheduleInstance.getMonths().add(
+                                            monthsValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue.get("monthDays"));
-                            if (monthDaysArray != null)
-                            {
-                                for (JsonNode monthDaysValue : monthDaysArray)
-                                {
-                                    scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue
+                                    .get("monthDays"));
+                            if (monthDaysArray != null) {
+                                for (JsonNode monthDaysValue : monthDaysArray) {
+                                    scheduleInstance.getMonthDays().add(
+                                            monthDaysValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue.get("monthlyOccurrences"));
-                            if (monthlyOccurrencesArray != null)
-                            {
-                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray)
-                                {
+
+                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue
+                                    .get("monthlyOccurrences"));
+                            if (monthlyOccurrencesArray != null) {
+                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray) {
                                     JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                    scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                    
-                                    JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                    if (dayValue != null)
-                                    {
+                                    scheduleInstance
+                                            .getMonthlyOccurrences()
+                                            .add(jobScheduleMonthlyOccurrenceInstance);
+
+                                    JsonNode dayValue = monthlyOccurrencesValue
+                                            .get("day");
+                                    if (dayValue != null) {
                                         JobScheduleDay dayInstance;
-                                        dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                        jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                        dayInstance = SchedulerClientImpl
+                                                .parseJobScheduleDay(dayValue
+                                                        .getTextValue());
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setDay(dayInstance);
                                     }
-                                    
-                                    JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                    if (occurrenceValue != null)
-                                    {
+
+                                    JsonNode occurrenceValue = monthlyOccurrencesValue
+                                            .get("occurrence");
+                                    if (occurrenceValue != null) {
                                         int occurrenceInstance;
-                                        occurrenceInstance = occurrenceValue.getIntValue();
-                                        jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                        occurrenceInstance = occurrenceValue
+                                                .getIntValue();
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setOccurrence(occurrenceInstance);
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                     JsonNode statusValue = jobsValue.get("status");
-                    if (statusValue != null)
-                    {
+                    if (statusValue != null) {
                         JobStatus statusInstance = new JobStatus();
                         jobInstance.setStatus(statusInstance);
-                        
-                        JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                        if (lastExecutionTimeValue != null)
-                        {
+
+                        JsonNode lastExecutionTimeValue = statusValue
+                                .get("lastExecutionTime");
+                        if (lastExecutionTimeValue != null) {
                             Calendar lastExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat3.parse(lastExecutionTimeValue.getTextValue()));
+                            calendar3.setTime(simpleDateFormat3
+                                    .parse(lastExecutionTimeValue
+                                            .getTextValue()));
                             lastExecutionTimeInstance = calendar3;
-                            statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                            statusInstance
+                                    .setLastExecutionTime(lastExecutionTimeInstance);
                         }
-                        
-                        JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                        if (nextExecutionTimeValue != null)
-                        {
+
+                        JsonNode nextExecutionTimeValue = statusValue
+                                .get("nextExecutionTime");
+                        if (nextExecutionTimeValue != null) {
                             Calendar nextExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat4.parse(nextExecutionTimeValue.getTextValue()));
+                            calendar4.setTime(simpleDateFormat4
+                                    .parse(nextExecutionTimeValue
+                                            .getTextValue()));
                             nextExecutionTimeInstance = calendar4;
-                            statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                            statusInstance
+                                    .setNextExecutionTime(nextExecutionTimeInstance);
                         }
-                        
-                        JsonNode executionCountValue = statusValue.get("executionCount");
-                        if (executionCountValue != null)
-                        {
+
+                        JsonNode executionCountValue = statusValue
+                                .get("executionCount");
+                        if (executionCountValue != null) {
                             int executionCountInstance;
-                            executionCountInstance = executionCountValue.getIntValue();
-                            statusInstance.setExecutionCount(executionCountInstance);
+                            executionCountInstance = executionCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setExecutionCount(executionCountInstance);
                         }
-                        
-                        JsonNode failureCountValue = statusValue.get("failureCount");
-                        if (failureCountValue != null)
-                        {
+
+                        JsonNode failureCountValue = statusValue
+                                .get("failureCount");
+                        if (failureCountValue != null) {
                             int failureCountInstance;
-                            failureCountInstance = failureCountValue.getIntValue();
-                            statusInstance.setFailureCount(failureCountInstance);
+                            failureCountInstance = failureCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFailureCount(failureCountInstance);
                         }
-                        
-                        JsonNode faultedCountValue = statusValue.get("faultedCount");
-                        if (faultedCountValue != null)
-                        {
+
+                        JsonNode faultedCountValue = statusValue
+                                .get("faultedCount");
+                        if (faultedCountValue != null) {
                             int faultedCountInstance;
-                            faultedCountInstance = faultedCountValue.getIntValue();
-                            statusInstance.setFaultedCount(faultedCountInstance);
+                            faultedCountInstance = faultedCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFaultedCount(faultedCountInstance);
                         }
                     }
-                    
+
                     JsonNode stateValue = jobsValue.get("state");
-                    if (stateValue != null)
-                    {
+                    if (stateValue != null) {
                         JobState stateInstance;
-                        stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                        stateInstance = SchedulerClientImpl
+                                .parseJobState(stateValue.getTextValue());
                         jobInstance.setState(stateInstance);
                     }
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Fetch jobs in a job collection via a filter.
-    *
-    * @param parameters Parameters supplied to the List Jobs with filter
-    * operation.
-    * @return The List Jobs operation response.
-    */
+     * Fetch jobs in a job collection via a filter.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs with filter operation.
+     * @return The List Jobs operation response.
+     */
     @Override
-    public Future<JobListResponse> listWithFilterAsync(final JobListWithFilterParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobListResponse>() { 
-            @Override
-            public JobListResponse call() throws Exception
-            {
-                return listWithFilter(parameters);
-            }
-         });
+    public Future<JobListResponse> listWithFilterAsync(
+            final JobListWithFilterParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobListResponse>() {
+                    @Override
+                    public JobListResponse call() throws Exception {
+                        return listWithFilter(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Fetch jobs in a job collection via a filter.
-    *
-    * @param parameters Parameters supplied to the List Jobs with filter
-    * operation.
-    * @return The List Jobs operation response.
-    */
+     * Fetch jobs in a job collection via a filter.
+     * 
+     * @param parameters
+     *            Parameters supplied to the List Jobs with filter operation.
+     * @return The List Jobs operation response.
+     */
     @Override
-    public JobListResponse listWithFilter(JobListWithFilterParameters parameters) throws IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobListResponse listWithFilter(JobListWithFilterParameters parameters)
+            throws IOException, ServiceException, ParseException,
+            URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "listWithFilterAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "listWithFilterAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs?api-version=" + "2013-10-31_Preview" + "&$filter=state eq " + parameters.getState();
-        if (parameters.getSkip() != null)
-        {
-            url = url + "&$skip=" + URLEncoder.encode(Integer.toString(parameters.getSkip()), "UTF-8");
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName()
+                + "/jobs?api-version=" + "2013-10-31_Preview"
+                + "&$filter=state eq " + parameters.getState();
+        if (parameters.getSkip() != null) {
+            url = url
+                    + "&$skip="
+                    + URLEncoder.encode(Integer.toString(parameters.getSkip()),
+                            "UTF-8");
         }
-        if (parameters.getTop() != null)
-        {
-            url = url + "&$top=" + URLEncoder.encode(Integer.toString(parameters.getTop()), "UTF-8");
+        if (parameters.getTop() != null) {
+            url = url
+                    + "&$top="
+                    + URLEncoder.encode(Integer.toString(parameters.getTop()),
+                            "UTF-8");
         }
-        
+
         // Create HTTP transport objects
         HttpGet httpRequest = new HttpGet(url);
-        
+
         // Set Headers
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, null, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    null, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobListResponse result = null;
         // Deserialize Response
@@ -3488,1581 +3710,1710 @@ public class JobOperationsImpl implements ServiceOperations<SchedulerClientImpl>
         result = new JobListResponse();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             ArrayNode jobsArray = ((ArrayNode) responseDoc.get("Jobs"));
-            if (jobsArray != null)
-            {
-                for (JsonNode jobsValue : jobsArray)
-                {
+            if (jobsArray != null) {
+                for (JsonNode jobsValue : jobsArray) {
                     Job jobInstance = new Job();
                     result.getJobs().add(jobInstance);
-                    
+
                     JsonNode idValue = jobsValue.get("id");
-                    if (idValue != null)
-                    {
+                    if (idValue != null) {
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         jobInstance.setId(idInstance);
                     }
-                    
+
                     JsonNode startTimeValue = jobsValue.get("startTime");
-                    if (startTimeValue != null)
-                    {
+                    if (startTimeValue != null) {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(startTimeValue.getTextValue()));
+                        calendar.setTime(simpleDateFormat.parse(startTimeValue
+                                .getTextValue()));
                         startTimeInstance = calendar;
                         jobInstance.setStartTime(startTimeInstance);
                     }
-                    
+
                     JsonNode actionValue = jobsValue.get("action");
-                    if (actionValue != null)
-                    {
+                    if (actionValue != null) {
                         JobAction actionInstance = new JobAction();
                         jobInstance.setAction(actionInstance);
-                        
+
                         JsonNode typeValue = actionValue.get("type");
-                        if (typeValue != null)
-                        {
+                        if (typeValue != null) {
                             JobActionType typeInstance;
-                            typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                            typeInstance = SchedulerClientImpl
+                                    .parseJobActionType(typeValue
+                                            .getTextValue());
                             actionInstance.setType(typeInstance);
                         }
-                        
-                        JsonNode retryPolicyValue = actionValue.get("retryPolicy");
-                        if (retryPolicyValue != null)
-                        {
+
+                        JsonNode retryPolicyValue = actionValue
+                                .get("retryPolicy");
+                        if (retryPolicyValue != null) {
                             RetryPolicy retryPolicyInstance = new RetryPolicy();
                             actionInstance.setRetryPolicy(retryPolicyInstance);
-                            
-                            JsonNode retryTypeValue = retryPolicyValue.get("retryType");
-                            if (retryTypeValue != null)
-                            {
+
+                            JsonNode retryTypeValue = retryPolicyValue
+                                    .get("retryType");
+                            if (retryTypeValue != null) {
                                 RetryType retryTypeInstance;
-                                retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
-                                retryPolicyInstance.setRetryType(retryTypeInstance);
+                                retryTypeInstance = SchedulerClientImpl
+                                        .parseRetryType(retryTypeValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryType(retryTypeInstance);
                             }
-                            
-                            JsonNode retryIntervalValue = retryPolicyValue.get("retryInterval");
-                            if (retryIntervalValue != null)
-                            {
+
+                            JsonNode retryIntervalValue = retryPolicyValue
+                                    .get("retryInterval");
+                            if (retryIntervalValue != null) {
                                 Duration retryIntervalInstance;
-                                retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                                retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                                retryIntervalInstance = TimeSpan8601Converter
+                                        .parse(retryIntervalValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryInterval(retryIntervalInstance);
                             }
-                            
-                            JsonNode retryCountValue = retryPolicyValue.get("retryCount");
-                            if (retryCountValue != null)
-                            {
+
+                            JsonNode retryCountValue = retryPolicyValue
+                                    .get("retryCount");
+                            if (retryCountValue != null) {
                                 int retryCountInstance;
-                                retryCountInstance = retryCountValue.getIntValue();
-                                retryPolicyInstance.setRetryCount(retryCountInstance);
+                                retryCountInstance = retryCountValue
+                                        .getIntValue();
+                                retryPolicyInstance
+                                        .setRetryCount(retryCountInstance);
                             }
                         }
-                        
-                        JsonNode errorActionValue = actionValue.get("errorAction");
-                        if (errorActionValue != null)
-                        {
+
+                        JsonNode errorActionValue = actionValue
+                                .get("errorAction");
+                        if (errorActionValue != null) {
                             JobErrorAction errorActionInstance = new JobErrorAction();
                             actionInstance.setErrorAction(errorActionInstance);
-                            
+
                             JsonNode typeValue2 = errorActionValue.get("type");
-                            if (typeValue2 != null)
-                            {
+                            if (typeValue2 != null) {
                                 JobActionType typeInstance2;
-                                typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                                typeInstance2 = SchedulerClientImpl
+                                        .parseJobActionType(typeValue2
+                                                .getTextValue());
                                 errorActionInstance.setType(typeInstance2);
                             }
-                            
-                            JsonNode requestValue = errorActionValue.get("request");
-                            if (requestValue != null)
-                            {
+
+                            JsonNode requestValue = errorActionValue
+                                    .get("request");
+                            if (requestValue != null) {
                                 JobHttpRequest requestInstance = new JobHttpRequest();
                                 errorActionInstance.setRequest(requestInstance);
-                                
+
                                 JsonNode uriValue = requestValue.get("uri");
-                                if (uriValue != null)
-                                {
+                                if (uriValue != null) {
                                     URI uriInstance;
-                                    uriInstance = new URI(uriValue.getTextValue());
+                                    uriInstance = new URI(
+                                            uriValue.getTextValue());
                                     requestInstance.setUri(uriInstance);
                                 }
-                                
-                                JsonNode methodValue = requestValue.get("method");
-                                if (methodValue != null)
-                                {
+
+                                JsonNode methodValue = requestValue
+                                        .get("method");
+                                if (methodValue != null) {
                                     String methodInstance;
                                     methodInstance = methodValue.getTextValue();
                                     requestInstance.setMethod(methodInstance);
                                 }
-                                
-                                JsonNode headersSequenceElement = requestValue.get("headers");
-                                if (headersSequenceElement != null)
-                                {
-                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                    while (itr.hasNext())
-                                    {
-                                        Map.Entry<String, JsonNode> property = itr.next();
+
+                                JsonNode headersSequenceElement = requestValue
+                                        .get("headers");
+                                if (headersSequenceElement != null) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                            .getFields();
+                                    while (itr.hasNext()) {
+                                        Map.Entry<String, JsonNode> property = itr
+                                                .next();
                                         String headersKey = property.getKey();
-                                        String headersValue = property.getValue().getTextValue();
-                                        requestInstance.getHeaders().put(headersKey, headersValue);
+                                        String headersValue = property
+                                                .getValue().getTextValue();
+                                        requestInstance.getHeaders().put(
+                                                headersKey, headersValue);
                                     }
                                 }
-                                
+
                                 JsonNode bodyValue = requestValue.get("body");
-                                if (bodyValue != null)
-                                {
+                                if (bodyValue != null) {
                                     String bodyInstance;
                                     bodyInstance = bodyValue.getTextValue();
                                     requestInstance.setBody(bodyInstance);
                                 }
                             }
-                            
-                            JsonNode queueMessageValue = errorActionValue.get("queueMessage");
-                            if (queueMessageValue != null)
-                            {
+
+                            JsonNode queueMessageValue = errorActionValue
+                                    .get("queueMessage");
+                            if (queueMessageValue != null) {
                                 JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                                errorActionInstance.setQueueMessage(queueMessageInstance);
-                                
-                                JsonNode storageAccountValue = queueMessageValue.get("storageAccount");
-                                if (storageAccountValue != null)
-                                {
+                                errorActionInstance
+                                        .setQueueMessage(queueMessageInstance);
+
+                                JsonNode storageAccountValue = queueMessageValue
+                                        .get("storageAccount");
+                                if (storageAccountValue != null) {
                                     String storageAccountInstance;
-                                    storageAccountInstance = storageAccountValue.getTextValue();
-                                    queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                    storageAccountInstance = storageAccountValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setStorageAccountName(storageAccountInstance);
                                 }
-                                
-                                JsonNode queueNameValue = queueMessageValue.get("queueName");
-                                if (queueNameValue != null)
-                                {
+
+                                JsonNode queueNameValue = queueMessageValue
+                                        .get("queueName");
+                                if (queueNameValue != null) {
                                     String queueNameInstance;
-                                    queueNameInstance = queueNameValue.getTextValue();
-                                    queueMessageInstance.setQueueName(queueNameInstance);
+                                    queueNameInstance = queueNameValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setQueueName(queueNameInstance);
                                 }
-                                
-                                JsonNode sasTokenValue = queueMessageValue.get("sasToken");
-                                if (sasTokenValue != null)
-                                {
+
+                                JsonNode sasTokenValue = queueMessageValue
+                                        .get("sasToken");
+                                if (sasTokenValue != null) {
                                     String sasTokenInstance;
-                                    sasTokenInstance = sasTokenValue.getTextValue();
-                                    queueMessageInstance.setSasToken(sasTokenInstance);
+                                    sasTokenInstance = sasTokenValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setSasToken(sasTokenInstance);
                                 }
-                                
-                                JsonNode messageValue = queueMessageValue.get("message");
-                                if (messageValue != null)
-                                {
+
+                                JsonNode messageValue = queueMessageValue
+                                        .get("message");
+                                if (messageValue != null) {
                                     String messageInstance;
-                                    messageInstance = messageValue.getTextValue();
-                                    queueMessageInstance.setMessage(messageInstance);
+                                    messageInstance = messageValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setMessage(messageInstance);
                                 }
                             }
                         }
-                        
+
                         JsonNode requestValue2 = actionValue.get("request");
-                        if (requestValue2 != null)
-                        {
+                        if (requestValue2 != null) {
                             JobHttpRequest requestInstance2 = new JobHttpRequest();
                             actionInstance.setRequest(requestInstance2);
-                            
+
                             JsonNode uriValue2 = requestValue2.get("uri");
-                            if (uriValue2 != null)
-                            {
+                            if (uriValue2 != null) {
                                 URI uriInstance2;
                                 uriInstance2 = new URI(uriValue2.getTextValue());
                                 requestInstance2.setUri(uriInstance2);
                             }
-                            
+
                             JsonNode methodValue2 = requestValue2.get("method");
-                            if (methodValue2 != null)
-                            {
+                            if (methodValue2 != null) {
                                 String methodInstance2;
                                 methodInstance2 = methodValue2.getTextValue();
                                 requestInstance2.setMethod(methodInstance2);
                             }
-                            
-                            JsonNode headersSequenceElement2 = requestValue2.get("headers");
-                            if (headersSequenceElement2 != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                            JsonNode headersSequenceElement2 = requestValue2
+                                    .get("headers");
+                            if (headersSequenceElement2 != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                        .getFields();
+                                while (itr2.hasNext()) {
+                                    Map.Entry<String, JsonNode> property2 = itr2
+                                            .next();
                                     String headersKey2 = property2.getKey();
-                                    String headersValue2 = property2.getValue().getTextValue();
-                                    requestInstance2.getHeaders().put(headersKey2, headersValue2);
+                                    String headersValue2 = property2.getValue()
+                                            .getTextValue();
+                                    requestInstance2.getHeaders().put(
+                                            headersKey2, headersValue2);
                                 }
                             }
-                            
+
                             JsonNode bodyValue2 = requestValue2.get("body");
-                            if (bodyValue2 != null)
-                            {
+                            if (bodyValue2 != null) {
                                 String bodyInstance2;
                                 bodyInstance2 = bodyValue2.getTextValue();
                                 requestInstance2.setBody(bodyInstance2);
                             }
                         }
-                        
-                        JsonNode queueMessageValue2 = actionValue.get("queueMessage");
-                        if (queueMessageValue2 != null)
-                        {
+
+                        JsonNode queueMessageValue2 = actionValue
+                                .get("queueMessage");
+                        if (queueMessageValue2 != null) {
                             JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
-                            actionInstance.setQueueMessage(queueMessageInstance2);
-                            
-                            JsonNode storageAccountValue2 = queueMessageValue2.get("storageAccount");
-                            if (storageAccountValue2 != null)
-                            {
+                            actionInstance
+                                    .setQueueMessage(queueMessageInstance2);
+
+                            JsonNode storageAccountValue2 = queueMessageValue2
+                                    .get("storageAccount");
+                            if (storageAccountValue2 != null) {
                                 String storageAccountInstance2;
-                                storageAccountInstance2 = storageAccountValue2.getTextValue();
-                                queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                                storageAccountInstance2 = storageAccountValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setStorageAccountName(storageAccountInstance2);
                             }
-                            
-                            JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                            if (queueNameValue2 != null)
-                            {
+
+                            JsonNode queueNameValue2 = queueMessageValue2
+                                    .get("queueName");
+                            if (queueNameValue2 != null) {
                                 String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                                queueNameInstance2 = queueNameValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setQueueName(queueNameInstance2);
                             }
-                            
-                            JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
-                            if (sasTokenValue2 != null)
-                            {
+
+                            JsonNode sasTokenValue2 = queueMessageValue2
+                                    .get("sasToken");
+                            if (sasTokenValue2 != null) {
                                 String sasTokenInstance2;
-                                sasTokenInstance2 = sasTokenValue2.getTextValue();
-                                queueMessageInstance2.setSasToken(sasTokenInstance2);
+                                sasTokenInstance2 = sasTokenValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setSasToken(sasTokenInstance2);
                             }
-                            
-                            JsonNode messageValue2 = queueMessageValue2.get("message");
-                            if (messageValue2 != null)
-                            {
+
+                            JsonNode messageValue2 = queueMessageValue2
+                                    .get("message");
+                            if (messageValue2 != null) {
                                 String messageInstance2;
                                 messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                                queueMessageInstance2
+                                        .setMessage(messageInstance2);
                             }
                         }
                     }
-                    
+
                     JsonNode recurrenceValue = jobsValue.get("recurrence");
-                    if (recurrenceValue != null)
-                    {
+                    if (recurrenceValue != null) {
                         JobRecurrence recurrenceInstance = new JobRecurrence();
                         jobInstance.setRecurrence(recurrenceInstance);
-                        
-                        JsonNode frequencyValue = recurrenceValue.get("frequency");
-                        if (frequencyValue != null)
-                        {
+
+                        JsonNode frequencyValue = recurrenceValue
+                                .get("frequency");
+                        if (frequencyValue != null) {
                             JobRecurrenceFrequency frequencyInstance;
-                            frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                            frequencyInstance = SchedulerClientImpl
+                                    .parseJobRecurrenceFrequency(frequencyValue
+                                            .getTextValue());
                             recurrenceInstance.setFrequency(frequencyInstance);
                         }
-                        
-                        JsonNode intervalValue = recurrenceValue.get("interval");
-                        if (intervalValue != null)
-                        {
+
+                        JsonNode intervalValue = recurrenceValue
+                                .get("interval");
+                        if (intervalValue != null) {
                             int intervalInstance;
                             intervalInstance = intervalValue.getIntValue();
                             recurrenceInstance.setInterval(intervalInstance);
                         }
-                        
+
                         JsonNode countValue = recurrenceValue.get("count");
-                        if (countValue != null)
-                        {
+                        if (countValue != null) {
                             int countInstance;
                             countInstance = countValue.getIntValue();
                             recurrenceInstance.setCount(countInstance);
                         }
-                        
+
                         JsonNode endTimeValue = recurrenceValue.get("endTime");
-                        if (endTimeValue != null)
-                        {
+                        if (endTimeValue != null) {
                             Calendar endTimeInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(endTimeValue.getTextValue()));
+                            calendar2.setTime(simpleDateFormat2
+                                    .parse(endTimeValue.getTextValue()));
                             endTimeInstance = calendar2;
                             recurrenceInstance.setEndTime(endTimeInstance);
                         }
-                        
-                        JsonNode scheduleValue = recurrenceValue.get("schedule");
-                        if (scheduleValue != null)
-                        {
+
+                        JsonNode scheduleValue = recurrenceValue
+                                .get("schedule");
+                        if (scheduleValue != null) {
                             JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                             recurrenceInstance.setSchedule(scheduleInstance);
-                            
-                            ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("minutes"));
-                            if (minutesArray != null)
-                            {
-                                for (JsonNode minutesValue : minutesArray)
-                                {
-                                    scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                            ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                    .get("minutes"));
+                            if (minutesArray != null) {
+                                for (JsonNode minutesValue : minutesArray) {
+                                    scheduleInstance.getMinutes().add(
+                                            minutesValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("hours"));
-                            if (hoursArray != null)
-                            {
-                                for (JsonNode hoursValue : hoursArray)
-                                {
-                                    scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                            ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                    .get("hours"));
+                            if (hoursArray != null) {
+                                for (JsonNode hoursValue : hoursArray) {
+                                    scheduleInstance.getHours().add(
+                                            hoursValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue.get("weekDays"));
-                            if (weekDaysArray != null)
-                            {
-                                for (JsonNode weekDaysValue : weekDaysArray)
-                                {
-                                    scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue
+                                    .get("weekDays"));
+                            if (weekDaysArray != null) {
+                                for (JsonNode weekDaysValue : weekDaysArray) {
+                                    scheduleInstance
+                                            .getDays()
+                                            .add(SchedulerClientImpl
+                                                    .parseJobScheduleDay(weekDaysValue
+                                                            .getTextValue()));
                                 }
                             }
-                            
-                            ArrayNode monthsArray = ((ArrayNode) scheduleValue.get("months"));
-                            if (monthsArray != null)
-                            {
-                                for (JsonNode monthsValue : monthsArray)
-                                {
-                                    scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                            ArrayNode monthsArray = ((ArrayNode) scheduleValue
+                                    .get("months"));
+                            if (monthsArray != null) {
+                                for (JsonNode monthsValue : monthsArray) {
+                                    scheduleInstance.getMonths().add(
+                                            monthsValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue.get("monthDays"));
-                            if (monthDaysArray != null)
-                            {
-                                for (JsonNode monthDaysValue : monthDaysArray)
-                                {
-                                    scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue
+                                    .get("monthDays"));
+                            if (monthDaysArray != null) {
+                                for (JsonNode monthDaysValue : monthDaysArray) {
+                                    scheduleInstance.getMonthDays().add(
+                                            monthDaysValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue.get("monthlyOccurrences"));
-                            if (monthlyOccurrencesArray != null)
-                            {
-                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray)
-                                {
+
+                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue
+                                    .get("monthlyOccurrences"));
+                            if (monthlyOccurrencesArray != null) {
+                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray) {
                                     JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                    scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                    
-                                    JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                    if (dayValue != null)
-                                    {
+                                    scheduleInstance
+                                            .getMonthlyOccurrences()
+                                            .add(jobScheduleMonthlyOccurrenceInstance);
+
+                                    JsonNode dayValue = monthlyOccurrencesValue
+                                            .get("day");
+                                    if (dayValue != null) {
                                         JobScheduleDay dayInstance;
-                                        dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                        jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                        dayInstance = SchedulerClientImpl
+                                                .parseJobScheduleDay(dayValue
+                                                        .getTextValue());
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setDay(dayInstance);
                                     }
-                                    
-                                    JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                    if (occurrenceValue != null)
-                                    {
+
+                                    JsonNode occurrenceValue = monthlyOccurrencesValue
+                                            .get("occurrence");
+                                    if (occurrenceValue != null) {
                                         int occurrenceInstance;
-                                        occurrenceInstance = occurrenceValue.getIntValue();
-                                        jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                        occurrenceInstance = occurrenceValue
+                                                .getIntValue();
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setOccurrence(occurrenceInstance);
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                     JsonNode statusValue = jobsValue.get("status");
-                    if (statusValue != null)
-                    {
+                    if (statusValue != null) {
                         JobStatus statusInstance = new JobStatus();
                         jobInstance.setStatus(statusInstance);
-                        
-                        JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                        if (lastExecutionTimeValue != null)
-                        {
+
+                        JsonNode lastExecutionTimeValue = statusValue
+                                .get("lastExecutionTime");
+                        if (lastExecutionTimeValue != null) {
                             Calendar lastExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat3.parse(lastExecutionTimeValue.getTextValue()));
+                            calendar3.setTime(simpleDateFormat3
+                                    .parse(lastExecutionTimeValue
+                                            .getTextValue()));
                             lastExecutionTimeInstance = calendar3;
-                            statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                            statusInstance
+                                    .setLastExecutionTime(lastExecutionTimeInstance);
                         }
-                        
-                        JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                        if (nextExecutionTimeValue != null)
-                        {
+
+                        JsonNode nextExecutionTimeValue = statusValue
+                                .get("nextExecutionTime");
+                        if (nextExecutionTimeValue != null) {
                             Calendar nextExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat4.parse(nextExecutionTimeValue.getTextValue()));
+                            calendar4.setTime(simpleDateFormat4
+                                    .parse(nextExecutionTimeValue
+                                            .getTextValue()));
                             nextExecutionTimeInstance = calendar4;
-                            statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                            statusInstance
+                                    .setNextExecutionTime(nextExecutionTimeInstance);
                         }
-                        
-                        JsonNode executionCountValue = statusValue.get("executionCount");
-                        if (executionCountValue != null)
-                        {
+
+                        JsonNode executionCountValue = statusValue
+                                .get("executionCount");
+                        if (executionCountValue != null) {
                             int executionCountInstance;
-                            executionCountInstance = executionCountValue.getIntValue();
-                            statusInstance.setExecutionCount(executionCountInstance);
+                            executionCountInstance = executionCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setExecutionCount(executionCountInstance);
                         }
-                        
-                        JsonNode failureCountValue = statusValue.get("failureCount");
-                        if (failureCountValue != null)
-                        {
+
+                        JsonNode failureCountValue = statusValue
+                                .get("failureCount");
+                        if (failureCountValue != null) {
                             int failureCountInstance;
-                            failureCountInstance = failureCountValue.getIntValue();
-                            statusInstance.setFailureCount(failureCountInstance);
+                            failureCountInstance = failureCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFailureCount(failureCountInstance);
                         }
-                        
-                        JsonNode faultedCountValue = statusValue.get("faultedCount");
-                        if (faultedCountValue != null)
-                        {
+
+                        JsonNode faultedCountValue = statusValue
+                                .get("faultedCount");
+                        if (faultedCountValue != null) {
                             int faultedCountInstance;
-                            faultedCountInstance = faultedCountValue.getIntValue();
-                            statusInstance.setFaultedCount(faultedCountInstance);
+                            faultedCountInstance = faultedCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFaultedCount(faultedCountInstance);
                         }
                     }
-                    
+
                     JsonNode stateValue = jobsValue.get("state");
-                    if (stateValue != null)
-                    {
+                    if (stateValue != null) {
                         JobState stateInstance;
-                        stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                        stateInstance = SchedulerClientImpl
+                                .parseJobState(stateValue.getTextValue());
                         jobInstance.setState(stateInstance);
                     }
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Job collections can be updated through a simple PATCH operation. The
-    * format of the request is the same as that for creating a job, though if
-    * a field is unspecified we will carry forward the current value.
-    *
-    * @param parameters Parameters supplied to the Update Jobs State operation.
-    * @return The Update Jobs State operation response.
-    */
+     * Job collections can be updated through a simple PATCH operation. The
+     * format of the request is the same as that for creating a job, though if a
+     * field is unspecified we will carry forward the current value.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Update Jobs State operation.
+     * @return The Update Jobs State operation response.
+     */
     @Override
-    public Future<JobCollectionJobsUpdateStateResponse> updateJobCollectionStateAsync(final JobCollectionJobsUpdateStateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobCollectionJobsUpdateStateResponse>() { 
-            @Override
-            public JobCollectionJobsUpdateStateResponse call() throws Exception
-            {
-                return updateJobCollectionState(parameters);
-            }
-         });
+    public Future<JobCollectionJobsUpdateStateResponse> updateJobCollectionStateAsync(
+            final JobCollectionJobsUpdateStateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobCollectionJobsUpdateStateResponse>() {
+                    @Override
+                    public JobCollectionJobsUpdateStateResponse call()
+                            throws Exception {
+                        return updateJobCollectionState(parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Job collections can be updated through a simple PATCH operation. The
-    * format of the request is the same as that for creating a job, though if
-    * a field is unspecified we will carry forward the current value.
-    *
-    * @param parameters Parameters supplied to the Update Jobs State operation.
-    * @return The Update Jobs State operation response.
-    */
+     * Job collections can be updated through a simple PATCH operation. The
+     * format of the request is the same as that for creating a job, though if a
+     * field is unspecified we will carry forward the current value.
+     * 
+     * @param parameters
+     *            Parameters supplied to the Update Jobs State operation.
+     * @return The Update Jobs State operation response.
+     */
     @Override
-    public JobCollectionJobsUpdateStateResponse updateJobCollectionState(JobCollectionJobsUpdateStateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobCollectionJobsUpdateStateResponse updateJobCollectionState(
+            JobCollectionJobsUpdateStateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException {
         // Validate
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateJobCollectionStateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this,
+                    "updateJobCollectionStateAsync", tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs";
+
         // Create HTTP transport objects
         HttpPatch httpRequest = new HttpPatch(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode jobCollectionJobsUpdateStateParametersValue = objectMapper.createObjectNode();
+        ObjectNode jobCollectionJobsUpdateStateParametersValue = objectMapper
+                .createObjectNode();
         requestDoc = jobCollectionJobsUpdateStateParametersValue;
-        
-        if (parameters.isStateIsIncluded())
-        {
-            jobCollectionJobsUpdateStateParametersValue.put("state", SchedulerClientImpl.jobStateToString(parameters.getState()));
+
+        if (parameters.isStateIsIncluded()) {
+            jobCollectionJobsUpdateStateParametersValue
+                    .put("state", SchedulerClientImpl
+                            .jobStateToString(parameters.getState()));
         }
-        
+
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    requestContent, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobCollectionJobsUpdateStateResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
         result = new JobCollectionJobsUpdateStateResponse();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             ArrayNode jobsArray = ((ArrayNode) responseDoc.get("Jobs"));
-            if (jobsArray != null)
-            {
-                for (JsonNode jobsValue : jobsArray)
-                {
+            if (jobsArray != null) {
+                for (JsonNode jobsValue : jobsArray) {
                     Job jobInstance = new Job();
                     result.getJobs().add(jobInstance);
-                    
+
                     JsonNode idValue = jobsValue.get("id");
-                    if (idValue != null)
-                    {
+                    if (idValue != null) {
                         String idInstance;
                         idInstance = idValue.getTextValue();
                         jobInstance.setId(idInstance);
                     }
-                    
+
                     JsonNode startTimeValue = jobsValue.get("startTime");
-                    if (startTimeValue != null)
-                    {
+                    if (startTimeValue != null) {
                         Calendar startTimeInstance;
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(simpleDateFormat.parse(startTimeValue.getTextValue()));
+                        calendar.setTime(simpleDateFormat.parse(startTimeValue
+                                .getTextValue()));
                         startTimeInstance = calendar;
                         jobInstance.setStartTime(startTimeInstance);
                     }
-                    
+
                     JsonNode actionValue = jobsValue.get("action");
-                    if (actionValue != null)
-                    {
+                    if (actionValue != null) {
                         JobAction actionInstance = new JobAction();
                         jobInstance.setAction(actionInstance);
-                        
+
                         JsonNode typeValue = actionValue.get("type");
-                        if (typeValue != null)
-                        {
+                        if (typeValue != null) {
                             JobActionType typeInstance;
-                            typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                            typeInstance = SchedulerClientImpl
+                                    .parseJobActionType(typeValue
+                                            .getTextValue());
                             actionInstance.setType(typeInstance);
                         }
-                        
-                        JsonNode retryPolicyValue = actionValue.get("retryPolicy");
-                        if (retryPolicyValue != null)
-                        {
+
+                        JsonNode retryPolicyValue = actionValue
+                                .get("retryPolicy");
+                        if (retryPolicyValue != null) {
                             RetryPolicy retryPolicyInstance = new RetryPolicy();
                             actionInstance.setRetryPolicy(retryPolicyInstance);
-                            
-                            JsonNode retryTypeValue = retryPolicyValue.get("retryType");
-                            if (retryTypeValue != null)
-                            {
+
+                            JsonNode retryTypeValue = retryPolicyValue
+                                    .get("retryType");
+                            if (retryTypeValue != null) {
                                 RetryType retryTypeInstance;
-                                retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
-                                retryPolicyInstance.setRetryType(retryTypeInstance);
+                                retryTypeInstance = SchedulerClientImpl
+                                        .parseRetryType(retryTypeValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryType(retryTypeInstance);
                             }
-                            
-                            JsonNode retryIntervalValue = retryPolicyValue.get("retryInterval");
-                            if (retryIntervalValue != null)
-                            {
+
+                            JsonNode retryIntervalValue = retryPolicyValue
+                                    .get("retryInterval");
+                            if (retryIntervalValue != null) {
                                 Duration retryIntervalInstance;
-                                retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                                retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                                retryIntervalInstance = TimeSpan8601Converter
+                                        .parse(retryIntervalValue
+                                                .getTextValue());
+                                retryPolicyInstance
+                                        .setRetryInterval(retryIntervalInstance);
                             }
-                            
-                            JsonNode retryCountValue = retryPolicyValue.get("retryCount");
-                            if (retryCountValue != null)
-                            {
+
+                            JsonNode retryCountValue = retryPolicyValue
+                                    .get("retryCount");
+                            if (retryCountValue != null) {
                                 int retryCountInstance;
-                                retryCountInstance = retryCountValue.getIntValue();
-                                retryPolicyInstance.setRetryCount(retryCountInstance);
+                                retryCountInstance = retryCountValue
+                                        .getIntValue();
+                                retryPolicyInstance
+                                        .setRetryCount(retryCountInstance);
                             }
                         }
-                        
-                        JsonNode errorActionValue = actionValue.get("errorAction");
-                        if (errorActionValue != null)
-                        {
+
+                        JsonNode errorActionValue = actionValue
+                                .get("errorAction");
+                        if (errorActionValue != null) {
                             JobErrorAction errorActionInstance = new JobErrorAction();
                             actionInstance.setErrorAction(errorActionInstance);
-                            
+
                             JsonNode typeValue2 = errorActionValue.get("type");
-                            if (typeValue2 != null)
-                            {
+                            if (typeValue2 != null) {
                                 JobActionType typeInstance2;
-                                typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                                typeInstance2 = SchedulerClientImpl
+                                        .parseJobActionType(typeValue2
+                                                .getTextValue());
                                 errorActionInstance.setType(typeInstance2);
                             }
-                            
-                            JsonNode requestValue = errorActionValue.get("request");
-                            if (requestValue != null)
-                            {
+
+                            JsonNode requestValue = errorActionValue
+                                    .get("request");
+                            if (requestValue != null) {
                                 JobHttpRequest requestInstance = new JobHttpRequest();
                                 errorActionInstance.setRequest(requestInstance);
-                                
+
                                 JsonNode uriValue = requestValue.get("uri");
-                                if (uriValue != null)
-                                {
+                                if (uriValue != null) {
                                     URI uriInstance;
-                                    uriInstance = new URI(uriValue.getTextValue());
+                                    uriInstance = new URI(
+                                            uriValue.getTextValue());
                                     requestInstance.setUri(uriInstance);
                                 }
-                                
-                                JsonNode methodValue = requestValue.get("method");
-                                if (methodValue != null)
-                                {
+
+                                JsonNode methodValue = requestValue
+                                        .get("method");
+                                if (methodValue != null) {
                                     String methodInstance;
                                     methodInstance = methodValue.getTextValue();
                                     requestInstance.setMethod(methodInstance);
                                 }
-                                
-                                JsonNode headersSequenceElement = requestValue.get("headers");
-                                if (headersSequenceElement != null)
-                                {
-                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                    while (itr.hasNext())
-                                    {
-                                        Map.Entry<String, JsonNode> property = itr.next();
+
+                                JsonNode headersSequenceElement = requestValue
+                                        .get("headers");
+                                if (headersSequenceElement != null) {
+                                    Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                            .getFields();
+                                    while (itr.hasNext()) {
+                                        Map.Entry<String, JsonNode> property = itr
+                                                .next();
                                         String headersKey = property.getKey();
-                                        String headersValue = property.getValue().getTextValue();
-                                        requestInstance.getHeaders().put(headersKey, headersValue);
+                                        String headersValue = property
+                                                .getValue().getTextValue();
+                                        requestInstance.getHeaders().put(
+                                                headersKey, headersValue);
                                     }
                                 }
-                                
+
                                 JsonNode bodyValue = requestValue.get("body");
-                                if (bodyValue != null)
-                                {
+                                if (bodyValue != null) {
                                     String bodyInstance;
                                     bodyInstance = bodyValue.getTextValue();
                                     requestInstance.setBody(bodyInstance);
                                 }
                             }
-                            
-                            JsonNode queueMessageValue = errorActionValue.get("queueMessage");
-                            if (queueMessageValue != null)
-                            {
+
+                            JsonNode queueMessageValue = errorActionValue
+                                    .get("queueMessage");
+                            if (queueMessageValue != null) {
                                 JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                                errorActionInstance.setQueueMessage(queueMessageInstance);
-                                
-                                JsonNode storageAccountValue = queueMessageValue.get("storageAccount");
-                                if (storageAccountValue != null)
-                                {
+                                errorActionInstance
+                                        .setQueueMessage(queueMessageInstance);
+
+                                JsonNode storageAccountValue = queueMessageValue
+                                        .get("storageAccount");
+                                if (storageAccountValue != null) {
                                     String storageAccountInstance;
-                                    storageAccountInstance = storageAccountValue.getTextValue();
-                                    queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                    storageAccountInstance = storageAccountValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setStorageAccountName(storageAccountInstance);
                                 }
-                                
-                                JsonNode queueNameValue = queueMessageValue.get("queueName");
-                                if (queueNameValue != null)
-                                {
+
+                                JsonNode queueNameValue = queueMessageValue
+                                        .get("queueName");
+                                if (queueNameValue != null) {
                                     String queueNameInstance;
-                                    queueNameInstance = queueNameValue.getTextValue();
-                                    queueMessageInstance.setQueueName(queueNameInstance);
+                                    queueNameInstance = queueNameValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setQueueName(queueNameInstance);
                                 }
-                                
-                                JsonNode sasTokenValue = queueMessageValue.get("sasToken");
-                                if (sasTokenValue != null)
-                                {
+
+                                JsonNode sasTokenValue = queueMessageValue
+                                        .get("sasToken");
+                                if (sasTokenValue != null) {
                                     String sasTokenInstance;
-                                    sasTokenInstance = sasTokenValue.getTextValue();
-                                    queueMessageInstance.setSasToken(sasTokenInstance);
+                                    sasTokenInstance = sasTokenValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setSasToken(sasTokenInstance);
                                 }
-                                
-                                JsonNode messageValue = queueMessageValue.get("message");
-                                if (messageValue != null)
-                                {
+
+                                JsonNode messageValue = queueMessageValue
+                                        .get("message");
+                                if (messageValue != null) {
                                     String messageInstance;
-                                    messageInstance = messageValue.getTextValue();
-                                    queueMessageInstance.setMessage(messageInstance);
+                                    messageInstance = messageValue
+                                            .getTextValue();
+                                    queueMessageInstance
+                                            .setMessage(messageInstance);
                                 }
                             }
                         }
-                        
+
                         JsonNode requestValue2 = actionValue.get("request");
-                        if (requestValue2 != null)
-                        {
+                        if (requestValue2 != null) {
                             JobHttpRequest requestInstance2 = new JobHttpRequest();
                             actionInstance.setRequest(requestInstance2);
-                            
+
                             JsonNode uriValue2 = requestValue2.get("uri");
-                            if (uriValue2 != null)
-                            {
+                            if (uriValue2 != null) {
                                 URI uriInstance2;
                                 uriInstance2 = new URI(uriValue2.getTextValue());
                                 requestInstance2.setUri(uriInstance2);
                             }
-                            
+
                             JsonNode methodValue2 = requestValue2.get("method");
-                            if (methodValue2 != null)
-                            {
+                            if (methodValue2 != null) {
                                 String methodInstance2;
                                 methodInstance2 = methodValue2.getTextValue();
                                 requestInstance2.setMethod(methodInstance2);
                             }
-                            
-                            JsonNode headersSequenceElement2 = requestValue2.get("headers");
-                            if (headersSequenceElement2 != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                                while (itr2.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                            JsonNode headersSequenceElement2 = requestValue2
+                                    .get("headers");
+                            if (headersSequenceElement2 != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                        .getFields();
+                                while (itr2.hasNext()) {
+                                    Map.Entry<String, JsonNode> property2 = itr2
+                                            .next();
                                     String headersKey2 = property2.getKey();
-                                    String headersValue2 = property2.getValue().getTextValue();
-                                    requestInstance2.getHeaders().put(headersKey2, headersValue2);
+                                    String headersValue2 = property2.getValue()
+                                            .getTextValue();
+                                    requestInstance2.getHeaders().put(
+                                            headersKey2, headersValue2);
                                 }
                             }
-                            
+
                             JsonNode bodyValue2 = requestValue2.get("body");
-                            if (bodyValue2 != null)
-                            {
+                            if (bodyValue2 != null) {
                                 String bodyInstance2;
                                 bodyInstance2 = bodyValue2.getTextValue();
                                 requestInstance2.setBody(bodyInstance2);
                             }
                         }
-                        
-                        JsonNode queueMessageValue2 = actionValue.get("queueMessage");
-                        if (queueMessageValue2 != null)
-                        {
+
+                        JsonNode queueMessageValue2 = actionValue
+                                .get("queueMessage");
+                        if (queueMessageValue2 != null) {
                             JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
-                            actionInstance.setQueueMessage(queueMessageInstance2);
-                            
-                            JsonNode storageAccountValue2 = queueMessageValue2.get("storageAccount");
-                            if (storageAccountValue2 != null)
-                            {
+                            actionInstance
+                                    .setQueueMessage(queueMessageInstance2);
+
+                            JsonNode storageAccountValue2 = queueMessageValue2
+                                    .get("storageAccount");
+                            if (storageAccountValue2 != null) {
                                 String storageAccountInstance2;
-                                storageAccountInstance2 = storageAccountValue2.getTextValue();
-                                queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                                storageAccountInstance2 = storageAccountValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setStorageAccountName(storageAccountInstance2);
                             }
-                            
-                            JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                            if (queueNameValue2 != null)
-                            {
+
+                            JsonNode queueNameValue2 = queueMessageValue2
+                                    .get("queueName");
+                            if (queueNameValue2 != null) {
                                 String queueNameInstance2;
-                                queueNameInstance2 = queueNameValue2.getTextValue();
-                                queueMessageInstance2.setQueueName(queueNameInstance2);
+                                queueNameInstance2 = queueNameValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setQueueName(queueNameInstance2);
                             }
-                            
-                            JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
-                            if (sasTokenValue2 != null)
-                            {
+
+                            JsonNode sasTokenValue2 = queueMessageValue2
+                                    .get("sasToken");
+                            if (sasTokenValue2 != null) {
                                 String sasTokenInstance2;
-                                sasTokenInstance2 = sasTokenValue2.getTextValue();
-                                queueMessageInstance2.setSasToken(sasTokenInstance2);
+                                sasTokenInstance2 = sasTokenValue2
+                                        .getTextValue();
+                                queueMessageInstance2
+                                        .setSasToken(sasTokenInstance2);
                             }
-                            
-                            JsonNode messageValue2 = queueMessageValue2.get("message");
-                            if (messageValue2 != null)
-                            {
+
+                            JsonNode messageValue2 = queueMessageValue2
+                                    .get("message");
+                            if (messageValue2 != null) {
                                 String messageInstance2;
                                 messageInstance2 = messageValue2.getTextValue();
-                                queueMessageInstance2.setMessage(messageInstance2);
+                                queueMessageInstance2
+                                        .setMessage(messageInstance2);
                             }
                         }
                     }
-                    
+
                     JsonNode recurrenceValue = jobsValue.get("recurrence");
-                    if (recurrenceValue != null)
-                    {
+                    if (recurrenceValue != null) {
                         JobRecurrence recurrenceInstance = new JobRecurrence();
                         jobInstance.setRecurrence(recurrenceInstance);
-                        
-                        JsonNode frequencyValue = recurrenceValue.get("frequency");
-                        if (frequencyValue != null)
-                        {
+
+                        JsonNode frequencyValue = recurrenceValue
+                                .get("frequency");
+                        if (frequencyValue != null) {
                             JobRecurrenceFrequency frequencyInstance;
-                            frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                            frequencyInstance = SchedulerClientImpl
+                                    .parseJobRecurrenceFrequency(frequencyValue
+                                            .getTextValue());
                             recurrenceInstance.setFrequency(frequencyInstance);
                         }
-                        
-                        JsonNode intervalValue = recurrenceValue.get("interval");
-                        if (intervalValue != null)
-                        {
+
+                        JsonNode intervalValue = recurrenceValue
+                                .get("interval");
+                        if (intervalValue != null) {
                             int intervalInstance;
                             intervalInstance = intervalValue.getIntValue();
                             recurrenceInstance.setInterval(intervalInstance);
                         }
-                        
+
                         JsonNode countValue = recurrenceValue.get("count");
-                        if (countValue != null)
-                        {
+                        if (countValue != null) {
                             int countInstance;
                             countInstance = countValue.getIntValue();
                             recurrenceInstance.setCount(countInstance);
                         }
-                        
+
                         JsonNode endTimeValue = recurrenceValue.get("endTime");
-                        if (endTimeValue != null)
-                        {
+                        if (endTimeValue != null) {
                             Calendar endTimeInstance;
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar2 = Calendar.getInstance();
-                            calendar2.setTime(simpleDateFormat2.parse(endTimeValue.getTextValue()));
+                            calendar2.setTime(simpleDateFormat2
+                                    .parse(endTimeValue.getTextValue()));
                             endTimeInstance = calendar2;
                             recurrenceInstance.setEndTime(endTimeInstance);
                         }
-                        
-                        JsonNode scheduleValue = recurrenceValue.get("schedule");
-                        if (scheduleValue != null)
-                        {
+
+                        JsonNode scheduleValue = recurrenceValue
+                                .get("schedule");
+                        if (scheduleValue != null) {
                             JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                             recurrenceInstance.setSchedule(scheduleInstance);
-                            
-                            ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("minutes"));
-                            if (minutesArray != null)
-                            {
-                                for (JsonNode minutesValue : minutesArray)
-                                {
-                                    scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                            ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                    .get("minutes"));
+                            if (minutesArray != null) {
+                                for (JsonNode minutesValue : minutesArray) {
+                                    scheduleInstance.getMinutes().add(
+                                            minutesValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("hours"));
-                            if (hoursArray != null)
-                            {
-                                for (JsonNode hoursValue : hoursArray)
-                                {
-                                    scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                            ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                    .get("hours"));
+                            if (hoursArray != null) {
+                                for (JsonNode hoursValue : hoursArray) {
+                                    scheduleInstance.getHours().add(
+                                            hoursValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue.get("weekDays"));
-                            if (weekDaysArray != null)
-                            {
-                                for (JsonNode weekDaysValue : weekDaysArray)
-                                {
-                                    scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                            ArrayNode weekDaysArray = ((ArrayNode) scheduleValue
+                                    .get("weekDays"));
+                            if (weekDaysArray != null) {
+                                for (JsonNode weekDaysValue : weekDaysArray) {
+                                    scheduleInstance
+                                            .getDays()
+                                            .add(SchedulerClientImpl
+                                                    .parseJobScheduleDay(weekDaysValue
+                                                            .getTextValue()));
                                 }
                             }
-                            
-                            ArrayNode monthsArray = ((ArrayNode) scheduleValue.get("months"));
-                            if (monthsArray != null)
-                            {
-                                for (JsonNode monthsValue : monthsArray)
-                                {
-                                    scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                            ArrayNode monthsArray = ((ArrayNode) scheduleValue
+                                    .get("months"));
+                            if (monthsArray != null) {
+                                for (JsonNode monthsValue : monthsArray) {
+                                    scheduleInstance.getMonths().add(
+                                            monthsValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue.get("monthDays"));
-                            if (monthDaysArray != null)
-                            {
-                                for (JsonNode monthDaysValue : monthDaysArray)
-                                {
-                                    scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                            ArrayNode monthDaysArray = ((ArrayNode) scheduleValue
+                                    .get("monthDays"));
+                            if (monthDaysArray != null) {
+                                for (JsonNode monthDaysValue : monthDaysArray) {
+                                    scheduleInstance.getMonthDays().add(
+                                            monthDaysValue.getIntValue());
                                 }
                             }
-                            
-                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue.get("monthlyOccurrences"));
-                            if (monthlyOccurrencesArray != null)
-                            {
-                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray)
-                                {
+
+                            ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue
+                                    .get("monthlyOccurrences"));
+                            if (monthlyOccurrencesArray != null) {
+                                for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray) {
                                     JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                    scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                    
-                                    JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                    if (dayValue != null)
-                                    {
+                                    scheduleInstance
+                                            .getMonthlyOccurrences()
+                                            .add(jobScheduleMonthlyOccurrenceInstance);
+
+                                    JsonNode dayValue = monthlyOccurrencesValue
+                                            .get("day");
+                                    if (dayValue != null) {
                                         JobScheduleDay dayInstance;
-                                        dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                        jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                        dayInstance = SchedulerClientImpl
+                                                .parseJobScheduleDay(dayValue
+                                                        .getTextValue());
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setDay(dayInstance);
                                     }
-                                    
-                                    JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                    if (occurrenceValue != null)
-                                    {
+
+                                    JsonNode occurrenceValue = monthlyOccurrencesValue
+                                            .get("occurrence");
+                                    if (occurrenceValue != null) {
                                         int occurrenceInstance;
-                                        occurrenceInstance = occurrenceValue.getIntValue();
-                                        jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                        occurrenceInstance = occurrenceValue
+                                                .getIntValue();
+                                        jobScheduleMonthlyOccurrenceInstance
+                                                .setOccurrence(occurrenceInstance);
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                     JsonNode statusValue = jobsValue.get("status");
-                    if (statusValue != null)
-                    {
+                    if (statusValue != null) {
                         JobStatus statusInstance = new JobStatus();
                         jobInstance.setStatus(statusInstance);
-                        
-                        JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                        if (lastExecutionTimeValue != null)
-                        {
+
+                        JsonNode lastExecutionTimeValue = statusValue
+                                .get("lastExecutionTime");
+                        if (lastExecutionTimeValue != null) {
                             Calendar lastExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar3 = Calendar.getInstance();
-                            calendar3.setTime(simpleDateFormat3.parse(lastExecutionTimeValue.getTextValue()));
+                            calendar3.setTime(simpleDateFormat3
+                                    .parse(lastExecutionTimeValue
+                                            .getTextValue()));
                             lastExecutionTimeInstance = calendar3;
-                            statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                            statusInstance
+                                    .setLastExecutionTime(lastExecutionTimeInstance);
                         }
-                        
-                        JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                        if (nextExecutionTimeValue != null)
-                        {
+
+                        JsonNode nextExecutionTimeValue = statusValue
+                                .get("nextExecutionTime");
+                        if (nextExecutionTimeValue != null) {
                             Calendar nextExecutionTimeInstance;
-                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                            SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                    "EEE MMM dd HH:mm:ss z yyyy");
                             Calendar calendar4 = Calendar.getInstance();
-                            calendar4.setTime(simpleDateFormat4.parse(nextExecutionTimeValue.getTextValue()));
+                            calendar4.setTime(simpleDateFormat4
+                                    .parse(nextExecutionTimeValue
+                                            .getTextValue()));
                             nextExecutionTimeInstance = calendar4;
-                            statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                            statusInstance
+                                    .setNextExecutionTime(nextExecutionTimeInstance);
                         }
-                        
-                        JsonNode executionCountValue = statusValue.get("executionCount");
-                        if (executionCountValue != null)
-                        {
+
+                        JsonNode executionCountValue = statusValue
+                                .get("executionCount");
+                        if (executionCountValue != null) {
                             int executionCountInstance;
-                            executionCountInstance = executionCountValue.getIntValue();
-                            statusInstance.setExecutionCount(executionCountInstance);
+                            executionCountInstance = executionCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setExecutionCount(executionCountInstance);
                         }
-                        
-                        JsonNode failureCountValue = statusValue.get("failureCount");
-                        if (failureCountValue != null)
-                        {
+
+                        JsonNode failureCountValue = statusValue
+                                .get("failureCount");
+                        if (failureCountValue != null) {
                             int failureCountInstance;
-                            failureCountInstance = failureCountValue.getIntValue();
-                            statusInstance.setFailureCount(failureCountInstance);
+                            failureCountInstance = failureCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFailureCount(failureCountInstance);
                         }
-                        
-                        JsonNode faultedCountValue = statusValue.get("faultedCount");
-                        if (faultedCountValue != null)
-                        {
+
+                        JsonNode faultedCountValue = statusValue
+                                .get("faultedCount");
+                        if (faultedCountValue != null) {
                             int faultedCountInstance;
-                            faultedCountInstance = faultedCountValue.getIntValue();
-                            statusInstance.setFaultedCount(faultedCountInstance);
+                            faultedCountInstance = faultedCountValue
+                                    .getIntValue();
+                            statusInstance
+                                    .setFaultedCount(faultedCountInstance);
                         }
                     }
-                    
+
                     JsonNode stateValue = jobsValue.get("state");
-                    if (stateValue != null)
-                    {
+                    if (stateValue != null) {
                         JobState stateInstance;
-                        stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                        stateInstance = SchedulerClientImpl
+                                .parseJobState(stateValue.getTextValue());
                         jobInstance.setState(stateInstance);
                     }
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
     }
-    
+
     /**
-    * Jobs can be updated through a simple PATCH operation to a job's address.
-    * The format of the request is the same as that for creating a job, though
-    * if a field is unspecified we will carry forward the current value.
-    *
-    * @param jobId Id of the job to update.
-    * @param parameters Parameters supplied to the Update Job State operation.
-    * @return The Update Job State operation response.
-    */
+     * Jobs can be updated through a simple PATCH operation to a job's address.
+     * The format of the request is the same as that for creating a job, though
+     * if a field is unspecified we will carry forward the current value.
+     * 
+     * @param jobId
+     *            Id of the job to update.
+     * @param parameters
+     *            Parameters supplied to the Update Job State operation.
+     * @return The Update Job State operation response.
+     */
     @Override
-    public Future<JobUpdateStateResponse> updateStateAsync(final String jobId, final JobUpdateStateParameters parameters)
-    {
-        return this.getClient().getExecutorService().submit(new Callable<JobUpdateStateResponse>() { 
-            @Override
-            public JobUpdateStateResponse call() throws Exception
-            {
-                return updateState(jobId, parameters);
-            }
-         });
+    public Future<JobUpdateStateResponse> updateStateAsync(final String jobId,
+            final JobUpdateStateParameters parameters) {
+        return this.getClient().getExecutorService()
+                .submit(new Callable<JobUpdateStateResponse>() {
+                    @Override
+                    public JobUpdateStateResponse call() throws Exception {
+                        return updateState(jobId, parameters);
+                    }
+                });
     }
-    
+
     /**
-    * Jobs can be updated through a simple PATCH operation to a job's address.
-    * The format of the request is the same as that for creating a job, though
-    * if a field is unspecified we will carry forward the current value.
-    *
-    * @param jobId Id of the job to update.
-    * @param parameters Parameters supplied to the Update Job State operation.
-    * @return The Update Job State operation response.
-    */
+     * Jobs can be updated through a simple PATCH operation to a job's address.
+     * The format of the request is the same as that for creating a job, though
+     * if a field is unspecified we will carry forward the current value.
+     * 
+     * @param jobId
+     *            Id of the job to update.
+     * @param parameters
+     *            Parameters supplied to the Update Job State operation.
+     * @return The Update Job State operation response.
+     */
     @Override
-    public JobUpdateStateResponse updateState(String jobId, JobUpdateStateParameters parameters) throws UnsupportedEncodingException, IOException, ServiceException, ParseException, URISyntaxException
-    {
+    public JobUpdateStateResponse updateState(String jobId,
+            JobUpdateStateParameters parameters)
+            throws UnsupportedEncodingException, IOException, ServiceException,
+            ParseException, URISyntaxException {
         // Validate
-        if (jobId == null)
-        {
+        if (jobId == null) {
             throw new NullPointerException("jobId");
         }
-        if (parameters == null)
-        {
+        if (parameters == null) {
             throw new NullPointerException("parameters");
         }
-        
+
         // Tracing
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             invocationId = Long.toString(CloudTracing.getNextInvocationId());
             HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
             tracingParameters.put("jobId", jobId);
             tracingParameters.put("parameters", parameters);
-            CloudTracing.enter(invocationId, this, "updateStateAsync", tracingParameters);
+            CloudTracing.enter(invocationId, this, "updateStateAsync",
+                    tracingParameters);
         }
-        
+
         // Construct URL
-        String url = this.getClient().getBaseUri() + this.getClient().getCredentials().getSubscriptionId() + "/cloudservices/" + this.getClient().getCloudServiceName() + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/" + this.getClient().getJobCollectionName() + "/jobs/" + jobId + "?api-version=" + "2013-10-31_Preview";
-        
+        String url = this.getClient().getBaseUri()
+                + this.getClient().getCredentials().getSubscriptionId()
+                + "/cloudservices/" + this.getClient().getCloudServiceName()
+                + "/resources/" + "scheduler" + "/~/" + "JobCollections" + "/"
+                + this.getClient().getJobCollectionName() + "/jobs/" + jobId
+                + "?api-version=" + "2013-10-31_Preview";
+
         // Create HTTP transport objects
         HttpPatch httpRequest = new HttpPatch(url);
-        
+
         // Set Headers
         httpRequest.setHeader("Content-Type", "application/json");
         httpRequest.setHeader("x-ms-version", "2013-03-01");
-        
+
         // Serialize Request
         String requestContent = null;
         JsonNode requestDoc = null;
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode jobUpdateStateParametersValue = objectMapper.createObjectNode();
+        ObjectNode jobUpdateStateParametersValue = objectMapper
+                .createObjectNode();
         requestDoc = jobUpdateStateParametersValue;
-        
-        jobUpdateStateParametersValue.put("state", SchedulerClientImpl.jobStateToString(parameters.getState()));
-        
-        if (parameters.getUpdateStateReason() != null)
-        {
-            jobUpdateStateParametersValue.put("stateDetails", parameters.getUpdateStateReason());
+
+        jobUpdateStateParametersValue.put("state",
+                SchedulerClientImpl.jobStateToString(parameters.getState()));
+
+        if (parameters.getUpdateStateReason() != null) {
+            jobUpdateStateParametersValue.put("stateDetails",
+                    parameters.getUpdateStateReason());
         }
-        
+
         StringWriter stringWriter = new StringWriter();
         objectMapper.writeValue(stringWriter, requestDoc);
         requestContent = stringWriter.toString();
         StringEntity entity = new StringEntity(requestContent);
         httpRequest.setEntity(entity);
         httpRequest.setHeader("Content-Type", "application/json");
-        
+
         // Send Request
         HttpResponse httpResponse = null;
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.sendRequest(invocationId, httpRequest);
         }
         httpResponse = this.getClient().getHttpClient().execute(httpRequest);
-        if (shouldTrace)
-        {
+        if (shouldTrace) {
             CloudTracing.receiveResponse(invocationId, httpResponse);
         }
         int statusCode = httpResponse.getStatusLine().getStatusCode();
-        if (statusCode != HttpStatus.SC_OK)
-        {
-            ServiceException ex = ServiceException.createFromJson(httpRequest, requestContent, httpResponse, httpResponse.getEntity());
-            if (shouldTrace)
-            {
+        if (statusCode != HttpStatus.SC_OK) {
+            ServiceException ex = ServiceException.createFromJson(httpRequest,
+                    requestContent, httpResponse, httpResponse.getEntity());
+            if (shouldTrace) {
                 CloudTracing.error(invocationId, ex);
             }
             throw ex;
         }
-        
+
         // Create Result
         JobUpdateStateResponse result = null;
         // Deserialize Response
         InputStream responseContent = httpResponse.getEntity().getContent();
         result = new JobUpdateStateResponse();
         JsonNode responseDoc = objectMapper.readTree(responseContent);
-        
-        if (responseDoc != null)
-        {
+
+        if (responseDoc != null) {
             JsonNode jobValue = responseDoc.get("Job");
-            if (jobValue != null)
-            {
+            if (jobValue != null) {
                 Job jobInstance = new Job();
                 result.setJob(jobInstance);
-                
+
                 JsonNode idValue = jobValue.get("id");
-                if (idValue != null)
-                {
+                if (idValue != null) {
                     String idInstance;
                     idInstance = idValue.getTextValue();
                     jobInstance.setId(idInstance);
                 }
-                
+
                 JsonNode startTimeValue = jobValue.get("startTime");
-                if (startTimeValue != null)
-                {
+                if (startTimeValue != null) {
                     Calendar startTimeInstance;
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+                            "EEE MMM dd HH:mm:ss z yyyy");
                     Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(simpleDateFormat.parse(startTimeValue.getTextValue()));
+                    calendar.setTime(simpleDateFormat.parse(startTimeValue
+                            .getTextValue()));
                     startTimeInstance = calendar;
                     jobInstance.setStartTime(startTimeInstance);
                 }
-                
+
                 JsonNode actionValue = jobValue.get("action");
-                if (actionValue != null)
-                {
+                if (actionValue != null) {
                     JobAction actionInstance = new JobAction();
                     jobInstance.setAction(actionInstance);
-                    
+
                     JsonNode typeValue = actionValue.get("type");
-                    if (typeValue != null)
-                    {
+                    if (typeValue != null) {
                         JobActionType typeInstance;
-                        typeInstance = SchedulerClientImpl.parseJobActionType(typeValue.getTextValue());
+                        typeInstance = SchedulerClientImpl
+                                .parseJobActionType(typeValue.getTextValue());
                         actionInstance.setType(typeInstance);
                     }
-                    
+
                     JsonNode retryPolicyValue = actionValue.get("retryPolicy");
-                    if (retryPolicyValue != null)
-                    {
+                    if (retryPolicyValue != null) {
                         RetryPolicy retryPolicyInstance = new RetryPolicy();
                         actionInstance.setRetryPolicy(retryPolicyInstance);
-                        
-                        JsonNode retryTypeValue = retryPolicyValue.get("retryType");
-                        if (retryTypeValue != null)
-                        {
+
+                        JsonNode retryTypeValue = retryPolicyValue
+                                .get("retryType");
+                        if (retryTypeValue != null) {
                             RetryType retryTypeInstance;
-                            retryTypeInstance = SchedulerClientImpl.parseRetryType(retryTypeValue.getTextValue());
+                            retryTypeInstance = SchedulerClientImpl
+                                    .parseRetryType(retryTypeValue
+                                            .getTextValue());
                             retryPolicyInstance.setRetryType(retryTypeInstance);
                         }
-                        
-                        JsonNode retryIntervalValue = retryPolicyValue.get("retryInterval");
-                        if (retryIntervalValue != null)
-                        {
+
+                        JsonNode retryIntervalValue = retryPolicyValue
+                                .get("retryInterval");
+                        if (retryIntervalValue != null) {
                             Duration retryIntervalInstance;
-                            retryIntervalInstance = TimeSpan8601Converter.parse(retryIntervalValue.getTextValue());
-                            retryPolicyInstance.setRetryInterval(retryIntervalInstance);
+                            retryIntervalInstance = TimeSpan8601Converter
+                                    .parse(retryIntervalValue.getTextValue());
+                            retryPolicyInstance
+                                    .setRetryInterval(retryIntervalInstance);
                         }
-                        
-                        JsonNode retryCountValue = retryPolicyValue.get("retryCount");
-                        if (retryCountValue != null)
-                        {
+
+                        JsonNode retryCountValue = retryPolicyValue
+                                .get("retryCount");
+                        if (retryCountValue != null) {
                             int retryCountInstance;
                             retryCountInstance = retryCountValue.getIntValue();
-                            retryPolicyInstance.setRetryCount(retryCountInstance);
+                            retryPolicyInstance
+                                    .setRetryCount(retryCountInstance);
                         }
                     }
-                    
+
                     JsonNode errorActionValue = actionValue.get("errorAction");
-                    if (errorActionValue != null)
-                    {
+                    if (errorActionValue != null) {
                         JobErrorAction errorActionInstance = new JobErrorAction();
                         actionInstance.setErrorAction(errorActionInstance);
-                        
+
                         JsonNode typeValue2 = errorActionValue.get("type");
-                        if (typeValue2 != null)
-                        {
+                        if (typeValue2 != null) {
                             JobActionType typeInstance2;
-                            typeInstance2 = SchedulerClientImpl.parseJobActionType(typeValue2.getTextValue());
+                            typeInstance2 = SchedulerClientImpl
+                                    .parseJobActionType(typeValue2
+                                            .getTextValue());
                             errorActionInstance.setType(typeInstance2);
                         }
-                        
+
                         JsonNode requestValue = errorActionValue.get("request");
-                        if (requestValue != null)
-                        {
+                        if (requestValue != null) {
                             JobHttpRequest requestInstance = new JobHttpRequest();
                             errorActionInstance.setRequest(requestInstance);
-                            
+
                             JsonNode uriValue = requestValue.get("uri");
-                            if (uriValue != null)
-                            {
+                            if (uriValue != null) {
                                 URI uriInstance;
                                 uriInstance = new URI(uriValue.getTextValue());
                                 requestInstance.setUri(uriInstance);
                             }
-                            
+
                             JsonNode methodValue = requestValue.get("method");
-                            if (methodValue != null)
-                            {
+                            if (methodValue != null) {
                                 String methodInstance;
                                 methodInstance = methodValue.getTextValue();
                                 requestInstance.setMethod(methodInstance);
                             }
-                            
-                            JsonNode headersSequenceElement = requestValue.get("headers");
-                            if (headersSequenceElement != null)
-                            {
-                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement.getFields();
-                                while (itr.hasNext())
-                                {
-                                    Map.Entry<String, JsonNode> property = itr.next();
+
+                            JsonNode headersSequenceElement = requestValue
+                                    .get("headers");
+                            if (headersSequenceElement != null) {
+                                Iterator<Map.Entry<String, JsonNode>> itr = headersSequenceElement
+                                        .getFields();
+                                while (itr.hasNext()) {
+                                    Map.Entry<String, JsonNode> property = itr
+                                            .next();
                                     String headersKey = property.getKey();
-                                    String headersValue = property.getValue().getTextValue();
-                                    requestInstance.getHeaders().put(headersKey, headersValue);
+                                    String headersValue = property.getValue()
+                                            .getTextValue();
+                                    requestInstance.getHeaders().put(
+                                            headersKey, headersValue);
                                 }
                             }
-                            
+
                             JsonNode bodyValue = requestValue.get("body");
-                            if (bodyValue != null)
-                            {
+                            if (bodyValue != null) {
                                 String bodyInstance;
                                 bodyInstance = bodyValue.getTextValue();
                                 requestInstance.setBody(bodyInstance);
                             }
                         }
-                        
-                        JsonNode queueMessageValue = errorActionValue.get("queueMessage");
-                        if (queueMessageValue != null)
-                        {
+
+                        JsonNode queueMessageValue = errorActionValue
+                                .get("queueMessage");
+                        if (queueMessageValue != null) {
                             JobQueueMessage queueMessageInstance = new JobQueueMessage();
-                            errorActionInstance.setQueueMessage(queueMessageInstance);
-                            
-                            JsonNode storageAccountValue = queueMessageValue.get("storageAccount");
-                            if (storageAccountValue != null)
-                            {
+                            errorActionInstance
+                                    .setQueueMessage(queueMessageInstance);
+
+                            JsonNode storageAccountValue = queueMessageValue
+                                    .get("storageAccount");
+                            if (storageAccountValue != null) {
                                 String storageAccountInstance;
-                                storageAccountInstance = storageAccountValue.getTextValue();
-                                queueMessageInstance.setStorageAccountName(storageAccountInstance);
+                                storageAccountInstance = storageAccountValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setStorageAccountName(storageAccountInstance);
                             }
-                            
-                            JsonNode queueNameValue = queueMessageValue.get("queueName");
-                            if (queueNameValue != null)
-                            {
+
+                            JsonNode queueNameValue = queueMessageValue
+                                    .get("queueName");
+                            if (queueNameValue != null) {
                                 String queueNameInstance;
-                                queueNameInstance = queueNameValue.getTextValue();
-                                queueMessageInstance.setQueueName(queueNameInstance);
+                                queueNameInstance = queueNameValue
+                                        .getTextValue();
+                                queueMessageInstance
+                                        .setQueueName(queueNameInstance);
                             }
-                            
-                            JsonNode sasTokenValue = queueMessageValue.get("sasToken");
-                            if (sasTokenValue != null)
-                            {
+
+                            JsonNode sasTokenValue = queueMessageValue
+                                    .get("sasToken");
+                            if (sasTokenValue != null) {
                                 String sasTokenInstance;
                                 sasTokenInstance = sasTokenValue.getTextValue();
-                                queueMessageInstance.setSasToken(sasTokenInstance);
+                                queueMessageInstance
+                                        .setSasToken(sasTokenInstance);
                             }
-                            
-                            JsonNode messageValue = queueMessageValue.get("message");
-                            if (messageValue != null)
-                            {
+
+                            JsonNode messageValue = queueMessageValue
+                                    .get("message");
+                            if (messageValue != null) {
                                 String messageInstance;
                                 messageInstance = messageValue.getTextValue();
-                                queueMessageInstance.setMessage(messageInstance);
+                                queueMessageInstance
+                                        .setMessage(messageInstance);
                             }
                         }
                     }
-                    
+
                     JsonNode requestValue2 = actionValue.get("request");
-                    if (requestValue2 != null)
-                    {
+                    if (requestValue2 != null) {
                         JobHttpRequest requestInstance2 = new JobHttpRequest();
                         actionInstance.setRequest(requestInstance2);
-                        
+
                         JsonNode uriValue2 = requestValue2.get("uri");
-                        if (uriValue2 != null)
-                        {
+                        if (uriValue2 != null) {
                             URI uriInstance2;
                             uriInstance2 = new URI(uriValue2.getTextValue());
                             requestInstance2.setUri(uriInstance2);
                         }
-                        
+
                         JsonNode methodValue2 = requestValue2.get("method");
-                        if (methodValue2 != null)
-                        {
+                        if (methodValue2 != null) {
                             String methodInstance2;
                             methodInstance2 = methodValue2.getTextValue();
                             requestInstance2.setMethod(methodInstance2);
                         }
-                        
-                        JsonNode headersSequenceElement2 = requestValue2.get("headers");
-                        if (headersSequenceElement2 != null)
-                        {
-                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2.getFields();
-                            while (itr2.hasNext())
-                            {
-                                Map.Entry<String, JsonNode> property2 = itr2.next();
+
+                        JsonNode headersSequenceElement2 = requestValue2
+                                .get("headers");
+                        if (headersSequenceElement2 != null) {
+                            Iterator<Map.Entry<String, JsonNode>> itr2 = headersSequenceElement2
+                                    .getFields();
+                            while (itr2.hasNext()) {
+                                Map.Entry<String, JsonNode> property2 = itr2
+                                        .next();
                                 String headersKey2 = property2.getKey();
-                                String headersValue2 = property2.getValue().getTextValue();
-                                requestInstance2.getHeaders().put(headersKey2, headersValue2);
+                                String headersValue2 = property2.getValue()
+                                        .getTextValue();
+                                requestInstance2.getHeaders().put(headersKey2,
+                                        headersValue2);
                             }
                         }
-                        
+
                         JsonNode bodyValue2 = requestValue2.get("body");
-                        if (bodyValue2 != null)
-                        {
+                        if (bodyValue2 != null) {
                             String bodyInstance2;
                             bodyInstance2 = bodyValue2.getTextValue();
                             requestInstance2.setBody(bodyInstance2);
                         }
                     }
-                    
-                    JsonNode queueMessageValue2 = actionValue.get("queueMessage");
-                    if (queueMessageValue2 != null)
-                    {
+
+                    JsonNode queueMessageValue2 = actionValue
+                            .get("queueMessage");
+                    if (queueMessageValue2 != null) {
                         JobQueueMessage queueMessageInstance2 = new JobQueueMessage();
                         actionInstance.setQueueMessage(queueMessageInstance2);
-                        
-                        JsonNode storageAccountValue2 = queueMessageValue2.get("storageAccount");
-                        if (storageAccountValue2 != null)
-                        {
+
+                        JsonNode storageAccountValue2 = queueMessageValue2
+                                .get("storageAccount");
+                        if (storageAccountValue2 != null) {
                             String storageAccountInstance2;
-                            storageAccountInstance2 = storageAccountValue2.getTextValue();
-                            queueMessageInstance2.setStorageAccountName(storageAccountInstance2);
+                            storageAccountInstance2 = storageAccountValue2
+                                    .getTextValue();
+                            queueMessageInstance2
+                                    .setStorageAccountName(storageAccountInstance2);
                         }
-                        
-                        JsonNode queueNameValue2 = queueMessageValue2.get("queueName");
-                        if (queueNameValue2 != null)
-                        {
+
+                        JsonNode queueNameValue2 = queueMessageValue2
+                                .get("queueName");
+                        if (queueNameValue2 != null) {
                             String queueNameInstance2;
                             queueNameInstance2 = queueNameValue2.getTextValue();
-                            queueMessageInstance2.setQueueName(queueNameInstance2);
+                            queueMessageInstance2
+                                    .setQueueName(queueNameInstance2);
                         }
-                        
-                        JsonNode sasTokenValue2 = queueMessageValue2.get("sasToken");
-                        if (sasTokenValue2 != null)
-                        {
+
+                        JsonNode sasTokenValue2 = queueMessageValue2
+                                .get("sasToken");
+                        if (sasTokenValue2 != null) {
                             String sasTokenInstance2;
                             sasTokenInstance2 = sasTokenValue2.getTextValue();
-                            queueMessageInstance2.setSasToken(sasTokenInstance2);
+                            queueMessageInstance2
+                                    .setSasToken(sasTokenInstance2);
                         }
-                        
-                        JsonNode messageValue2 = queueMessageValue2.get("message");
-                        if (messageValue2 != null)
-                        {
+
+                        JsonNode messageValue2 = queueMessageValue2
+                                .get("message");
+                        if (messageValue2 != null) {
                             String messageInstance2;
                             messageInstance2 = messageValue2.getTextValue();
                             queueMessageInstance2.setMessage(messageInstance2);
                         }
                     }
                 }
-                
+
                 JsonNode recurrenceValue = jobValue.get("recurrence");
-                if (recurrenceValue != null)
-                {
+                if (recurrenceValue != null) {
                     JobRecurrence recurrenceInstance = new JobRecurrence();
                     jobInstance.setRecurrence(recurrenceInstance);
-                    
+
                     JsonNode frequencyValue = recurrenceValue.get("frequency");
-                    if (frequencyValue != null)
-                    {
+                    if (frequencyValue != null) {
                         JobRecurrenceFrequency frequencyInstance;
-                        frequencyInstance = SchedulerClientImpl.parseJobRecurrenceFrequency(frequencyValue.getTextValue());
+                        frequencyInstance = SchedulerClientImpl
+                                .parseJobRecurrenceFrequency(frequencyValue
+                                        .getTextValue());
                         recurrenceInstance.setFrequency(frequencyInstance);
                     }
-                    
+
                     JsonNode intervalValue = recurrenceValue.get("interval");
-                    if (intervalValue != null)
-                    {
+                    if (intervalValue != null) {
                         int intervalInstance;
                         intervalInstance = intervalValue.getIntValue();
                         recurrenceInstance.setInterval(intervalInstance);
                     }
-                    
+
                     JsonNode countValue = recurrenceValue.get("count");
-                    if (countValue != null)
-                    {
+                    if (countValue != null) {
                         int countInstance;
                         countInstance = countValue.getIntValue();
                         recurrenceInstance.setCount(countInstance);
                     }
-                    
+
                     JsonNode endTimeValue = recurrenceValue.get("endTime");
-                    if (endTimeValue != null)
-                    {
+                    if (endTimeValue != null) {
                         Calendar endTimeInstance;
-                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar2 = Calendar.getInstance();
-                        calendar2.setTime(simpleDateFormat2.parse(endTimeValue.getTextValue()));
+                        calendar2.setTime(simpleDateFormat2.parse(endTimeValue
+                                .getTextValue()));
                         endTimeInstance = calendar2;
                         recurrenceInstance.setEndTime(endTimeInstance);
                     }
-                    
+
                     JsonNode scheduleValue = recurrenceValue.get("schedule");
-                    if (scheduleValue != null)
-                    {
+                    if (scheduleValue != null) {
                         JobRecurrenceSchedule scheduleInstance = new JobRecurrenceSchedule();
                         recurrenceInstance.setSchedule(scheduleInstance);
-                        
-                        ArrayNode minutesArray = ((ArrayNode) scheduleValue.get("minutes"));
-                        if (minutesArray != null)
-                        {
-                            for (JsonNode minutesValue : minutesArray)
-                            {
-                                scheduleInstance.getMinutes().add(minutesValue.getIntValue());
+
+                        ArrayNode minutesArray = ((ArrayNode) scheduleValue
+                                .get("minutes"));
+                        if (minutesArray != null) {
+                            for (JsonNode minutesValue : minutesArray) {
+                                scheduleInstance.getMinutes().add(
+                                        minutesValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode hoursArray = ((ArrayNode) scheduleValue.get("hours"));
-                        if (hoursArray != null)
-                        {
-                            for (JsonNode hoursValue : hoursArray)
-                            {
-                                scheduleInstance.getHours().add(hoursValue.getIntValue());
+
+                        ArrayNode hoursArray = ((ArrayNode) scheduleValue
+                                .get("hours"));
+                        if (hoursArray != null) {
+                            for (JsonNode hoursValue : hoursArray) {
+                                scheduleInstance.getHours().add(
+                                        hoursValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode weekDaysArray = ((ArrayNode) scheduleValue.get("weekDays"));
-                        if (weekDaysArray != null)
-                        {
-                            for (JsonNode weekDaysValue : weekDaysArray)
-                            {
-                                scheduleInstance.getDays().add(SchedulerClientImpl.parseJobScheduleDay(weekDaysValue.getTextValue()));
+
+                        ArrayNode weekDaysArray = ((ArrayNode) scheduleValue
+                                .get("weekDays"));
+                        if (weekDaysArray != null) {
+                            for (JsonNode weekDaysValue : weekDaysArray) {
+                                scheduleInstance
+                                        .getDays()
+                                        .add(SchedulerClientImpl
+                                                .parseJobScheduleDay(weekDaysValue
+                                                        .getTextValue()));
                             }
                         }
-                        
-                        ArrayNode monthsArray = ((ArrayNode) scheduleValue.get("months"));
-                        if (monthsArray != null)
-                        {
-                            for (JsonNode monthsValue : monthsArray)
-                            {
-                                scheduleInstance.getMonths().add(monthsValue.getIntValue());
+
+                        ArrayNode monthsArray = ((ArrayNode) scheduleValue
+                                .get("months"));
+                        if (monthsArray != null) {
+                            for (JsonNode monthsValue : monthsArray) {
+                                scheduleInstance.getMonths().add(
+                                        monthsValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthDaysArray = ((ArrayNode) scheduleValue.get("monthDays"));
-                        if (monthDaysArray != null)
-                        {
-                            for (JsonNode monthDaysValue : monthDaysArray)
-                            {
-                                scheduleInstance.getMonthDays().add(monthDaysValue.getIntValue());
+
+                        ArrayNode monthDaysArray = ((ArrayNode) scheduleValue
+                                .get("monthDays"));
+                        if (monthDaysArray != null) {
+                            for (JsonNode monthDaysValue : monthDaysArray) {
+                                scheduleInstance.getMonthDays().add(
+                                        monthDaysValue.getIntValue());
                             }
                         }
-                        
-                        ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue.get("monthlyOccurrences"));
-                        if (monthlyOccurrencesArray != null)
-                        {
-                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray)
-                            {
+
+                        ArrayNode monthlyOccurrencesArray = ((ArrayNode) scheduleValue
+                                .get("monthlyOccurrences"));
+                        if (monthlyOccurrencesArray != null) {
+                            for (JsonNode monthlyOccurrencesValue : monthlyOccurrencesArray) {
                                 JobScheduleMonthlyOccurrence jobScheduleMonthlyOccurrenceInstance = new JobScheduleMonthlyOccurrence();
-                                scheduleInstance.getMonthlyOccurrences().add(jobScheduleMonthlyOccurrenceInstance);
-                                
-                                JsonNode dayValue = monthlyOccurrencesValue.get("day");
-                                if (dayValue != null)
-                                {
+                                scheduleInstance.getMonthlyOccurrences().add(
+                                        jobScheduleMonthlyOccurrenceInstance);
+
+                                JsonNode dayValue = monthlyOccurrencesValue
+                                        .get("day");
+                                if (dayValue != null) {
                                     JobScheduleDay dayInstance;
-                                    dayInstance = SchedulerClientImpl.parseJobScheduleDay(dayValue.getTextValue());
-                                    jobScheduleMonthlyOccurrenceInstance.setDay(dayInstance);
+                                    dayInstance = SchedulerClientImpl
+                                            .parseJobScheduleDay(dayValue
+                                                    .getTextValue());
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setDay(dayInstance);
                                 }
-                                
-                                JsonNode occurrenceValue = monthlyOccurrencesValue.get("occurrence");
-                                if (occurrenceValue != null)
-                                {
+
+                                JsonNode occurrenceValue = monthlyOccurrencesValue
+                                        .get("occurrence");
+                                if (occurrenceValue != null) {
                                     int occurrenceInstance;
-                                    occurrenceInstance = occurrenceValue.getIntValue();
-                                    jobScheduleMonthlyOccurrenceInstance.setOccurrence(occurrenceInstance);
+                                    occurrenceInstance = occurrenceValue
+                                            .getIntValue();
+                                    jobScheduleMonthlyOccurrenceInstance
+                                            .setOccurrence(occurrenceInstance);
                                 }
                             }
                         }
                     }
                 }
-                
+
                 JsonNode statusValue = jobValue.get("status");
-                if (statusValue != null)
-                {
+                if (statusValue != null) {
                     JobStatus statusInstance = new JobStatus();
                     jobInstance.setStatus(statusInstance);
-                    
-                    JsonNode lastExecutionTimeValue = statusValue.get("lastExecutionTime");
-                    if (lastExecutionTimeValue != null)
-                    {
+
+                    JsonNode lastExecutionTimeValue = statusValue
+                            .get("lastExecutionTime");
+                    if (lastExecutionTimeValue != null) {
                         Calendar lastExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat3 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar3 = Calendar.getInstance();
-                        calendar3.setTime(simpleDateFormat3.parse(lastExecutionTimeValue.getTextValue()));
+                        calendar3.setTime(simpleDateFormat3
+                                .parse(lastExecutionTimeValue.getTextValue()));
                         lastExecutionTimeInstance = calendar3;
-                        statusInstance.setLastExecutionTime(lastExecutionTimeInstance);
+                        statusInstance
+                                .setLastExecutionTime(lastExecutionTimeInstance);
                     }
-                    
-                    JsonNode nextExecutionTimeValue = statusValue.get("nextExecutionTime");
-                    if (nextExecutionTimeValue != null)
-                    {
+
+                    JsonNode nextExecutionTimeValue = statusValue
+                            .get("nextExecutionTime");
+                    if (nextExecutionTimeValue != null) {
                         Calendar nextExecutionTimeInstance;
-                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        SimpleDateFormat simpleDateFormat4 = new SimpleDateFormat(
+                                "EEE MMM dd HH:mm:ss z yyyy");
                         Calendar calendar4 = Calendar.getInstance();
-                        calendar4.setTime(simpleDateFormat4.parse(nextExecutionTimeValue.getTextValue()));
+                        calendar4.setTime(simpleDateFormat4
+                                .parse(nextExecutionTimeValue.getTextValue()));
                         nextExecutionTimeInstance = calendar4;
-                        statusInstance.setNextExecutionTime(nextExecutionTimeInstance);
+                        statusInstance
+                                .setNextExecutionTime(nextExecutionTimeInstance);
                     }
-                    
-                    JsonNode executionCountValue = statusValue.get("executionCount");
-                    if (executionCountValue != null)
-                    {
+
+                    JsonNode executionCountValue = statusValue
+                            .get("executionCount");
+                    if (executionCountValue != null) {
                         int executionCountInstance;
-                        executionCountInstance = executionCountValue.getIntValue();
-                        statusInstance.setExecutionCount(executionCountInstance);
+                        executionCountInstance = executionCountValue
+                                .getIntValue();
+                        statusInstance
+                                .setExecutionCount(executionCountInstance);
                     }
-                    
-                    JsonNode failureCountValue = statusValue.get("failureCount");
-                    if (failureCountValue != null)
-                    {
+
+                    JsonNode failureCountValue = statusValue
+                            .get("failureCount");
+                    if (failureCountValue != null) {
                         int failureCountInstance;
                         failureCountInstance = failureCountValue.getIntValue();
                         statusInstance.setFailureCount(failureCountInstance);
                     }
-                    
-                    JsonNode faultedCountValue = statusValue.get("faultedCount");
-                    if (faultedCountValue != null)
-                    {
+
+                    JsonNode faultedCountValue = statusValue
+                            .get("faultedCount");
+                    if (faultedCountValue != null) {
                         int faultedCountInstance;
                         faultedCountInstance = faultedCountValue.getIntValue();
                         statusInstance.setFaultedCount(faultedCountInstance);
                     }
                 }
-                
+
                 JsonNode stateValue = jobValue.get("state");
-                if (stateValue != null)
-                {
+                if (stateValue != null) {
                     JobState stateInstance;
-                    stateInstance = SchedulerClientImpl.parseJobState(stateValue.getTextValue());
+                    stateInstance = SchedulerClientImpl
+                            .parseJobState(stateValue.getTextValue());
                     jobInstance.setState(stateInstance);
                 }
             }
         }
-        
+
         result.setStatusCode(statusCode);
-        if (httpResponse.getHeaders("x-ms-request-id").length > 0)
-        {
-            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+        if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+            result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id")
+                    .getValue());
         }
-        
-        if (shouldTrace)
-        {
+
+        if (shouldTrace) {
             CloudTracing.exit(invocationId, result);
         }
         return result;
