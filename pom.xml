@@ -17,7 +17,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.windowsazure</groupId>
   <artifactId>microsoft-azure-api-bom</artifactId>
-  <version>0.4.6</version>
+  <version>0.5.0</version>
   <packaging>pom</packaging>
 
   <name>Microsoft Windows Azure Client API</name>
@@ -38,7 +38,7 @@
   </scm>
 
   <properties>
-    <projectVersion>0.4.6</projectVersion>
+    <projectVersion>0.5.0</projectVersion>
   </properties>
 
   <developers>
