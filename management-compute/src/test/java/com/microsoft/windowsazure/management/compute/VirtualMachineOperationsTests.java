@@ -33,7 +33,7 @@ import org.junit.Test;
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {    
 	private static String testVMPrefix = "azuresdktest";
 	//lower case only for storage account name, this is existed storage account with vhd-store container, 
-	//you can generated your own storage account and create container there to store VM images 
+	//you can create your own storage account and create container there to store VM images 
 	private static String storageAccountName = testVMPrefix + "08";	
 
     @BeforeClass
@@ -232,7 +232,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     
     @Test
     public void listVirtualMachines() throws Exception {
-    	//there is no dedecated vm list methods, has to filter through hostedservice, and deployment, rolelist to find out the vm list
+    	//there is no dedicated vm list methods, has to filter through hosted service, and deployment, rolelist to find out the vm list
     	//role that has VirtualMachineRoleType.PersistentVMRole property is a vm
     	ArrayList<Role> vmlist = new ArrayList<Role>();
     	HostedServiceListResponse hostedServiceListResponse = computeManagementClient.getHostedServicesOperations().list();
@@ -297,7 +297,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
        
-        // Assert
+        //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
         
@@ -351,9 +351,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     	Assert.assertNotNull(virtualMachinesGetResponse.getRequestId()); 
         
     	VirtualMachineUpdateParameters updateParameters = new VirtualMachineUpdateParameters(); 
-    	//get the configlist
+    	//get the configuration list
     	ArrayList<ConfigurationSet> configlist = virtualMachinesGetResponse.getConfigurationSets();
-    	//get inputendpoint list and udpat it 
+    	//get inputendpoint list and update it 
     	ArrayList<InputEndpoint> endpointlist = configlist.get(0).getInputEndpoints();    	
     	InputEndpoint inputEndpoint = new InputEndpoint();
     	inputEndpoint.setEnableDirectServerReturn(false);
@@ -381,8 +381,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
      		
     	String virtualMachineName = testVMPrefix + "vm1";
     	String serviceName = testVMPrefix + "HostedService1";
-    	String deploymentName = testVMPrefix + "deploy1";	  	     
-	   
+    	String deploymentName = testVMPrefix + "deploy1";
+    		   
    	 	//Act
     	VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
 

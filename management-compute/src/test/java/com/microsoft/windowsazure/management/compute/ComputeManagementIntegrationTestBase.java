@@ -68,12 +68,10 @@ public abstract class ComputeManagementIntegrationTestBase {
   
 
     protected static Configuration createConfiguration() throws Exception {
-//        return ManagementConfiguration.configure(
-//                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-//                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-//                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-//        );
-        
-        return PublishSettingsLoader.createManagementConfiguration("C:\\Users\\xuezhain\\Downloads\\node-Azpad057T7N4266-6-28-2013-credentials.publishsettings","00977cdb-163f-435f-9c32-39ec8ae61f4d");
+        return ManagementConfiguration.configure(
+                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+        );
     }
 }
