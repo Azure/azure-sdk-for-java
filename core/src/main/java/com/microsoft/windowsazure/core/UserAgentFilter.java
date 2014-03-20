@@ -88,6 +88,7 @@ public class UserAgentFilter implements ServiceRequestFilter {
                 inputStream.close();
             }
         } catch (IOException e) {
+            // Do nothing
         }
 
         return version;

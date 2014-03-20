@@ -225,14 +225,14 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 Element isDefaultElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                 if (isDefaultElement != null) {
                     boolean isDefaultInstance;
-                    isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
+                    isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsDefault(isDefaultInstance);
                 }
                 
                 Element isSystemElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsSystem");
                 if (isSystemElement != null) {
                     boolean isSystemInstance;
-                    isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
+                    isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsSystem(isSystemInstance);
                 }
                 
@@ -246,7 +246,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                 Element enabledElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 if (enabledElement != null) {
                     boolean enabledInstance;
-                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setEnabled(enabledInstance);
                 }
                 
@@ -316,7 +316,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                         Element isDefaultElement2 = XmlUtility.getElementByTagNameNS(dimensionSettingsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                         if (isDefaultElement2 != null) {
                             boolean isDefaultInstance2;
-                            isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
+                            isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent().toLowerCase());
                             serviceResourceInstance2.setIsDefault(isDefaultInstance2);
                         }
                     }
@@ -487,14 +487,14 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     Element isDefaultElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                     if (isDefaultElement != null) {
                         boolean isDefaultInstance;
-                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
+                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
                         serviceResourceInstance.setIsDefault(isDefaultInstance);
                     }
                     
                     Element isSystemElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsSystem");
                     if (isSystemElement != null) {
                         boolean isSystemInstance;
-                        isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent());
+                        isSystemInstance = DatatypeConverter.parseBoolean(isSystemElement.getTextContent().toLowerCase());
                         serviceResourceInstance.setIsSystem(isSystemInstance);
                     }
                     
@@ -508,7 +508,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                     Element enabledElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
                     if (enabledElement != null) {
                         boolean enabledInstance;
-                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                         serviceResourceInstance.setEnabled(enabledInstance);
                     }
                     
@@ -578,7 +578,7 @@ public class ServiceObjectiveOperationsImpl implements ServiceOperations<SqlMana
                             Element isDefaultElement2 = XmlUtility.getElementByTagNameNS(dimensionSettingsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                             if (isDefaultElement2 != null) {
                                 boolean isDefaultInstance2;
-                                isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent());
+                                isDefaultInstance2 = DatatypeConverter.parseBoolean(isDefaultElement2.getTextContent().toLowerCase());
                                 serviceResourceInstance2.setIsDefault(isDefaultInstance2);
                             }
                         }

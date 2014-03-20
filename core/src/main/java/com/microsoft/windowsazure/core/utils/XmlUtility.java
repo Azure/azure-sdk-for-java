@@ -6,7 +6,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class XmlUtility {
+public abstract class XmlUtility {
     public static Element getElementByTagNameNS(Node element, String namespace,
             String name) {
         NodeList elements = element.getChildNodes();

@@ -262,7 +262,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
      */
     @Override
     public Object processResponse(Object rawResponse) throws ServiceException {
-        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
+        PipelineHelpers.throwIfNotSuccess((ClientResponse) rawResponse);
         return rawResponse;
     }
 

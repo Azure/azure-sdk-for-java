@@ -20,8 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.util.List;
 import java.util.Map;
 
@@ -179,8 +177,9 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
 
         @Override
         public boolean hasEntity() {
-            if (method.equals("HEAD") || getEntityInputStream() == null)
+            if (method.equals("HEAD") || getEntityInputStream() == null) {
                 return false;
+            }
 
             // Length "-1" means "unknown"
             int length = urlConnection.getContentLength();
@@ -197,8 +196,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     @Override
-    public ClientResponse handle(final ClientRequest ro)
-            throws ClientHandlerException {
+    public ClientResponse handle(final ClientRequest ro) {
         try {
             return doHandle(ro);
         } catch (Exception e) {
@@ -207,7 +205,7 @@ public class HttpURLConnectionClientHandler extends TerminatingClientHandler {
     }
 
     private ClientResponse doHandle(final ClientRequest clientRequest)
-            throws IOException, MalformedURLException, ProtocolException {
+            throws IOException {
         final HttpURLConnection urlConnection = (HttpURLConnection) clientRequest
                 .getURI().toURL().openConnection();
         urlConnection.setReadTimeout(readTimeoutMillis);

@@ -31,6 +31,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.FirewallRule;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateResponse;
+import com.microsoft.windowsazure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
@@ -393,6 +394,168 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
             // Create Result
             OperationResponse result = null;
             result = new OperationResponse();
+            result.setStatusCode(statusCode);
+            if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
+                result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());
+            }
+            
+            if (shouldTrace) {
+                CloudTracing.exit(invocationId, result);
+            }
+            return result;
+        } finally {
+            if (httpResponse != null && httpResponse.getEntity() != null) {
+                httpResponse.getEntity().getContent().close();
+            }
+        }
+    }
+    
+    /**
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
+    * @param ruleName Required. The name of the rule for which the call is
+    * being made.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public Future<FirewallRuleGetResponse> getAsync(final String serverName, final String ruleName) {
+        return this.getClient().getExecutorService().submit(new Callable<FirewallRuleGetResponse>() { 
+            @Override
+            public FirewallRuleGetResponse call() throws Exception {
+                return get(serverName, ruleName);
+            }
+         });
+    }
+    
+    /**
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
+    * @param ruleName Required. The name of the rule for which the call is
+    * being made.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    @Override
+    public FirewallRuleGetResponse get(String serverName, String ruleName) throws IOException, ServiceException, ParserConfigurationException, SAXException {
+        // Validate
+        if (serverName == null) {
+            throw new NullPointerException("serverName");
+        }
+        if (ruleName == null) {
+            throw new NullPointerException("ruleName");
+        }
+        
+        // Tracing
+        boolean shouldTrace = CloudTracing.getIsEnabled();
+        String invocationId = null;
+        if (shouldTrace) {
+            invocationId = Long.toString(CloudTracing.getNextInvocationId());
+            HashMap<String, Object> tracingParameters = new HashMap<String, Object>();
+            tracingParameters.put("serverName", serverName);
+            tracingParameters.put("ruleName", ruleName);
+            CloudTracing.enter(invocationId, this, "getAsync", tracingParameters);
+        }
+        
+        // Construct URL
+        String baseUrl = this.getClient().getBaseUri().toString();
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        // Trim '/' character from the end of baseUrl and beginning of url.
+        if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
+            baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
+        }
+        if (url.charAt(0) == '/') {
+            url = url.substring(1);
+        }
+        url = baseUrl + "/" + url;
+        
+        // Create HTTP transport objects
+        HttpGet httpRequest = new HttpGet(url);
+        
+        // Set Headers
+        httpRequest.setHeader("x-ms-version", "2012-03-01");
+        
+        // Send Request
+        HttpResponse httpResponse = null;
+        try {
+            if (shouldTrace) {
+                CloudTracing.sendRequest(invocationId, httpRequest);
+            }
+            httpResponse = this.getClient().getHttpClient().execute(httpRequest);
+            if (shouldTrace) {
+                CloudTracing.receiveResponse(invocationId, httpResponse);
+            }
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
+                ServiceException ex = ServiceException.createFromXml(httpRequest, null, httpResponse, httpResponse.getEntity());
+                if (shouldTrace) {
+                    CloudTracing.error(invocationId, ex);
+                }
+                throw ex;
+            }
+            
+            // Create Result
+            FirewallRuleGetResponse result = null;
+            // Deserialize Response
+            InputStream responseContent = httpResponse.getEntity().getContent();
+            result = new FirewallRuleGetResponse();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document responseDoc = documentBuilder.parse(responseContent);
+            
+            Element serviceResourceElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/windowsazure", "ServiceResource");
+            if (serviceResourceElement != null) {
+                FirewallRule serviceResourceInstance = new FirewallRule();
+                result.setFirewallRule(serviceResourceInstance);
+                
+                Element nameElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                if (nameElement != null) {
+                    String nameInstance;
+                    nameInstance = nameElement.getTextContent();
+                    serviceResourceInstance.setName(nameInstance);
+                }
+                
+                Element typeElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "Type");
+                if (typeElement != null) {
+                    String typeInstance;
+                    typeInstance = typeElement.getTextContent();
+                    serviceResourceInstance.setType(typeInstance);
+                }
+                
+                Element startIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "StartIPAddress");
+                if (startIPAddressElement != null) {
+                    InetAddress startIPAddressInstance;
+                    startIPAddressInstance = InetAddress.getByName(startIPAddressElement.getTextContent());
+                    serviceResourceInstance.setStartIPAddress(startIPAddressInstance);
+                }
+                
+                Element endIPAddressElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "EndIPAddress");
+                if (endIPAddressElement != null) {
+                    InetAddress endIPAddressInstance;
+                    endIPAddressInstance = InetAddress.getByName(endIPAddressElement.getTextContent());
+                    serviceResourceInstance.setEndIPAddress(endIPAddressInstance);
+                }
+            }
+            
             result.setStatusCode(statusCode);
             if (httpResponse.getHeaders("x-ms-request-id").length > 0) {
                 result.setRequestId(httpResponse.getFirstHeader("x-ms-request-id").getValue());

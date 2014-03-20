@@ -197,14 +197,14 @@ public class RoleSizeOperationsImpl implements ServiceOperations<ManagementClien
                     Element supportedByWebWorkerRolesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByWebWorkerRoles");
                     if (supportedByWebWorkerRolesElement != null) {
                         boolean supportedByWebWorkerRolesInstance;
-                        supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent());
+                        supportedByWebWorkerRolesInstance = DatatypeConverter.parseBoolean(supportedByWebWorkerRolesElement.getTextContent().toLowerCase());
                         roleSizeInstance.setSupportedByWebWorkerRoles(supportedByWebWorkerRolesInstance);
                     }
                     
                     Element supportedByVirtualMachinesElement = XmlUtility.getElementByTagNameNS(roleSizesElement, "http://schemas.microsoft.com/windowsazure", "SupportedByVirtualMachines");
                     if (supportedByVirtualMachinesElement != null) {
                         boolean supportedByVirtualMachinesInstance;
-                        supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent());
+                        supportedByVirtualMachinesInstance = DatatypeConverter.parseBoolean(supportedByVirtualMachinesElement.getTextContent().toLowerCase());
                         roleSizeInstance.setSupportedByVirtualMachines(supportedByVirtualMachinesInstance);
                     }
                 }

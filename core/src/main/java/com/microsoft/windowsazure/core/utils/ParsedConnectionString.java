@@ -96,8 +96,7 @@ public abstract class ParsedConnectionString {
             }
         }
 
-        while (matchSeparator()) {
-        }
+        while (matchSeparator()) { }
 
         if (!matchEND()) {
             throw new ConnectionStringSyntaxException(String.format(
@@ -270,8 +269,8 @@ public abstract class ParsedConnectionString {
     }
 
     private boolean matchSpacing() {
-        while (matchWS()) {
-        }
+        while (matchWS()) { }
+
         return true;
     }
 

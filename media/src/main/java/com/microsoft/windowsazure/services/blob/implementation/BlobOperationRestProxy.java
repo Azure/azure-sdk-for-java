@@ -114,11 +114,11 @@ public abstract class BlobOperationRestProxy implements BlobContract {
     }
 
     private void ThrowIfError(ClientResponse r) {
-        PipelineHelpers.ThrowIfError(r);
+        PipelineHelpers.throwIfError(r);
     }
 
     private void ThrowIfNotSuccess(ClientResponse clientResponse) {
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource,

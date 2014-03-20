@@ -413,14 +413,14 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
                 Element showInGuiElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement2 != null && (showInGuiElement2.getTextContent() == null || showInGuiElement2.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement2.getTextContent().toLowerCase());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
@@ -785,7 +785,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
                     result.setShowInGui(showInGuiInstance);
                 }
                 
@@ -799,7 +799,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 Element isPremiumElement = XmlUtility.getElementByTagNameNS(oSImageElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
@@ -1052,7 +1052,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                     Element isPremiumElement = XmlUtility.getElementByTagNameNS(imagesElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
-                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                         oSImageInstance.setIsPremium(isPremiumInstance);
                     }
                     
@@ -1419,14 +1419,14 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
                 Element isPremiumElement2 = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement2 != null && (isPremiumElement2.getTextContent() == null || isPremiumElement2.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement2.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
                 
                 Element showInGuiElement = XmlUtility.getElementByTagNameNS(oSImageElement2, "http://schemas.microsoft.com/windowsazure", "ShowInGui");
                 if (showInGuiElement != null && (showInGuiElement.getTextContent() == null || showInGuiElement.getTextContent().isEmpty() == true) == false) {
                     boolean showInGuiInstance;
-                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent());
+                    showInGuiInstance = DatatypeConverter.parseBoolean(showInGuiElement.getTextContent().toLowerCase());
                     result.setShowInGui(showInGuiInstance);
                 }
                 

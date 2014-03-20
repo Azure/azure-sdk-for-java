@@ -122,8 +122,7 @@ public class JavaTracingInterceptor implements CloudTracingInterceptor {
      * @param exception
      *            The error.
      */
-    public void error(String invocationId, Exception exception)
-    {
+    public void error(String invocationId, Exception exception) {
         logger.log(Level.SEVERE, String.format("invocationId: %s", invocationId), exception);
     }
 
@@ -135,8 +134,7 @@ public class JavaTracingInterceptor implements CloudTracingInterceptor {
      * @param returnValue
      *            Method return value.
      */
-    public void exit(String invocationId, Object returnValue)
-    {
+    public void exit(String invocationId, Object returnValue) {
         logger.log(Level.INFO, String.format("Exit with invocation id %s, the return value is %s",
                 invocationId,
                 returnValue));

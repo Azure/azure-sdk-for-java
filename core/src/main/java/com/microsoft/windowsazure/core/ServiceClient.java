@@ -32,7 +32,7 @@ public abstract class ServiceClient<TClient> implements
         return this.executorService;
     }
 
-    protected CloseableHttpClient httpClient;
+    private CloseableHttpClient httpClient;
 
     public CloseableHttpClient getHttpClient() {
         if (this.httpClient == null) {

@@ -14,8 +14,12 @@
  */
 package com.microsoft.windowsazure.management.configuration;
 
-import java.io.*;
-import java.lang.IllegalArgumentException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -50,7 +54,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
  * </ul>
  * 
  */
-public final class PublishSettingsLoader {
+public abstract class PublishSettingsLoader {
 
     /**
      * Create a service management configuration using the given publishsettings

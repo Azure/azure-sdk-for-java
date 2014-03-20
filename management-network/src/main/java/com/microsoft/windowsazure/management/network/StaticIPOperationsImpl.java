@@ -178,7 +178,7 @@ public class StaticIPOperationsImpl implements ServiceOperations<NetworkManageme
                 Element isAvailableElement = XmlUtility.getElementByTagNameNS(addressAvailabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "IsAvailable");
                 if (isAvailableElement != null) {
                     boolean isAvailableInstance;
-                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent());
+                    isAvailableInstance = DatatypeConverter.parseBoolean(isAvailableElement.getTextContent().toLowerCase());
                     result.setIsAvailable(isAvailableInstance);
                 }
                 

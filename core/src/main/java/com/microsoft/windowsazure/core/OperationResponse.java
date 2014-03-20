@@ -16,7 +16,7 @@
 package com.microsoft.windowsazure.core;
 
 public class OperationResponse {
-    private int _httpStatusCode;
+    private int httpStatusCode;
 
     /**
      * Gets the HTTP status code for the request.
@@ -24,7 +24,7 @@ public class OperationResponse {
      * @return The HTTP status code.
      */
     public int getStatusCode() {
-        return this._httpStatusCode;
+        return this.httpStatusCode;
     }
 
     /**
@@ -34,10 +34,10 @@ public class OperationResponse {
      *            The HTTP status code.
      */
     public void setStatusCode(int httpStatusCode) {
-        this._httpStatusCode = httpStatusCode;
+        this.httpStatusCode = httpStatusCode;
     }
 
-    private String _requestId;
+    private String requestId;
 
     /**
      * Gets the request identifier.
@@ -45,7 +45,7 @@ public class OperationResponse {
      * @return The request identifier.
      */
     public String getRequestId() {
-        return this._requestId;
+        return this.requestId;
     }
 
     /**
@@ -55,6 +55,6 @@ public class OperationResponse {
      *            The request identifier.
      */
     public void setRequestId(String requestId) {
-        this._requestId = requestId;
+        this.requestId = requestId;
     }
 }

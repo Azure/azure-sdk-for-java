@@ -429,7 +429,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                 Element resultElement = XmlUtility.getElementByTagNameNS(availabilityResponseElement, "http://schemas.microsoft.com/windowsazure", "Result");
                 if (resultElement != null) {
                     boolean resultInstance;
-                    resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
+                    resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent().toLowerCase());
                     result.setIsAvailable(resultInstance);
                 }
                 
@@ -863,7 +863,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                     Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
                     if (geoReplicationEnabledElement != null) {
                         boolean geoReplicationEnabledInstance;
-                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                        geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
                         storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                     }
                     
@@ -1250,7 +1250,7 @@ public class StorageAccountOperationsImpl implements ServiceOperations<StorageMa
                         Element geoReplicationEnabledElement = XmlUtility.getElementByTagNameNS(storageServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "GeoReplicationEnabled");
                         if (geoReplicationEnabledElement != null) {
                             boolean geoReplicationEnabledInstance;
-                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent());
+                            geoReplicationEnabledInstance = DatatypeConverter.parseBoolean(geoReplicationEnabledElement.getTextContent().toLowerCase());
                             storageServicePropertiesInstance.setGeoReplicationEnabled(geoReplicationEnabledInstance);
                         }
                         
