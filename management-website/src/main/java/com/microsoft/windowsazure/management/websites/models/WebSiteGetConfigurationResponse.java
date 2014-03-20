@@ -315,7 +315,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     
     /**
     * Optional. The username used for publishing the web site. This is normally
-    * a dollar sign prepended to the web site name (for example, “$contoso”).
+    * a dollar sign prepended to the web site name (for example, "$contoso").
     * @return The PublishingUserName value.
     */
     public String getPublishingUserName() {
@@ -324,7 +324,7 @@ public class WebSiteGetConfigurationResponse extends OperationResponse {
     
     /**
     * Optional. The username used for publishing the web site. This is normally
-    * a dollar sign prepended to the web site name (for example, “$contoso”).
+    * a dollar sign prepended to the web site name (for example, "$contoso").
     * @param publishingUserNameValue The PublishingUserName value.
     */
     public void setPublishingUserName(final String publishingUserNameValue) {

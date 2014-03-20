@@ -35,7 +35,7 @@ public class StoredCertificateSettings {
     
     /**
     * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, “My”.
+    * certificate.  For example, "My".
     * @return The StoreName value.
     */
     public String getStoreName() {
@@ -44,7 +44,7 @@ public class StoredCertificateSettings {
     
     /**
     * Required. Specifies the name of the certificate store from which retrieve
-    * certificate.  For example, “My”.
+    * certificate.  For example, "My".
     * @param storeNameValue The StoreName value.
     */
     public void setStoreName(final String storeNameValue) {

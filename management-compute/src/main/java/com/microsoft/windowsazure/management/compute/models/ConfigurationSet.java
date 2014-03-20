@@ -32,8 +32,9 @@ public class ConfigurationSet {
     private String adminPassword;
     
     /**
-    * Required. Specifies the string representing the administrator password to
-    * use for the virtual machine.
+    * Optional. Specifies the string representing the administrator password to
+    * use for the virtual machine. If the VM will be created from a
+    * 'Specialized' VM image, the password is not required.
     * @return The AdminPassword value.
     */
     public String getAdminPassword() {
@@ -41,8 +42,9 @@ public class ConfigurationSet {
     }
     
     /**
-    * Required. Specifies the string representing the administrator password to
-    * use for the virtual machine.
+    * Optional. Specifies the string representing the administrator password to
+    * use for the virtual machine. If the VM will be created from a
+    * 'Specialized' VM image, the password is not required.
     * @param adminPasswordValue The AdminPassword value.
     */
     public void setAdminPassword(final String adminPasswordValue) {
@@ -52,8 +54,9 @@ public class ConfigurationSet {
     private String adminUserName;
     
     /**
-    * Required. Specifies the name that is used to rename the default
-    * administrator account.
+    * Optional. Specifies the name that is used to rename the default
+    * administrator account. If the VM will be created from a 'Specialized' VM
+    * image, the user name is not required.
     * @return The AdminUserName value.
     */
     public String getAdminUserName() {
@@ -61,8 +64,9 @@ public class ConfigurationSet {
     }
     
     /**
-    * Required. Specifies the name that is used to rename the default
-    * administrator account.
+    * Optional. Specifies the name that is used to rename the default
+    * administrator account. If the VM will be created from a 'Specialized' VM
+    * image, the user name is not required.
     * @param adminUserNameValue The AdminUserName value.
     */
     public void setAdminUserName(final String adminUserNameValue) {

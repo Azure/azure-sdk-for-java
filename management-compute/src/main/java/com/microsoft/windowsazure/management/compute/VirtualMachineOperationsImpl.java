@@ -205,12 +205,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             throw new NullPointerException("parameters");
         }
         if (parameters.getProvisioningConfiguration() != null) {
-            if (parameters.getProvisioningConfiguration().getAdminPassword() == null) {
-                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminPassword");
-            }
-            if (parameters.getProvisioningConfiguration().getAdminUserName() == null) {
-                throw new NullPointerException("parameters.ProvisioningConfiguration.AdminUserName");
-            }
             if (parameters.getProvisioningConfiguration().getDomainJoin() != null) {
                 if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials() != null) {
                     if (parameters.getProvisioningConfiguration().getDomainJoin().getCredentials().getPassword() == null) {
@@ -480,9 +474,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 provisioningConfigurationElement.appendChild(computerNameElement);
             }
             
-            Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-            adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
-            provisioningConfigurationElement.appendChild(adminPasswordElement);
+            if (parameters.getProvisioningConfiguration().getAdminPassword() != null) {
+                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                adminPasswordElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminPassword()));
+                provisioningConfigurationElement.appendChild(adminPasswordElement);
+            }
             
             if (parameters.getProvisioningConfiguration().isResetPasswordOnFirstLogon() != null) {
                 Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -594,9 +590,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                 }
             }
             
-            Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-            adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
-            provisioningConfigurationElement.appendChild(adminUsernameElement);
+            if (parameters.getProvisioningConfiguration().getAdminUserName() != null) {
+                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                adminUsernameElement.appendChild(requestDoc.createTextNode(parameters.getProvisioningConfiguration().getAdminUserName()));
+                provisioningConfigurationElement.appendChild(adminUsernameElement);
+            }
             
             if (parameters.getProvisioningConfiguration().getHostName() != null) {
                 Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -969,12 +967,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
-                if (configurationSetsParameterItem.getAdminPassword() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
-                }
-                if (configurationSetsParameterItem.getAdminUserName() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
-                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -1243,9 +1235,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                configurationSetElement.appendChild(adminPasswordElement);
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -1357,9 +1351,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                configurationSetElement.appendChild(adminUsernameElement);
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -1737,12 +1733,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
             for (Role rolesParameterItem : parameters.getRoles()) {
                 if (rolesParameterItem.getConfigurationSets() != null) {
                     for (ConfigurationSet configurationSetsParameterItem : rolesParameterItem.getConfigurationSets()) {
-                        if (configurationSetsParameterItem.getAdminPassword() == null) {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminPassword");
-                        }
-                        if (configurationSetsParameterItem.getAdminUserName() == null) {
-                            throw new NullPointerException("parameters.Roles.ConfigurationSets.AdminUserName");
-                        }
                         if (configurationSetsParameterItem.getDomainJoin() != null) {
                             if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                                 if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -2036,9 +2026,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         configurationSetElement.appendChild(computerNameElement);
                     }
                     
-                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                    configurationSetElement.appendChild(adminPasswordElement);
+                    if (configurationSetsItem.getAdminPassword() != null) {
+                        Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                        adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                        configurationSetElement.appendChild(adminPasswordElement);
+                    }
                     
                     if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                         Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -2150,9 +2142,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                         }
                     }
                     
-                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                    configurationSetElement.appendChild(adminUsernameElement);
+                    if (configurationSetsItem.getAdminUserName() != null) {
+                        Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                        adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                        configurationSetElement.appendChild(adminUsernameElement);
+                    }
                     
                     if (configurationSetsItem.getHostName() != null) {
                         Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");
@@ -3423,12 +3417,6 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
         }
         if (parameters.getConfigurationSets() != null) {
             for (ConfigurationSet configurationSetsParameterItem : parameters.getConfigurationSets()) {
-                if (configurationSetsParameterItem.getAdminPassword() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminPassword");
-                }
-                if (configurationSetsParameterItem.getAdminUserName() == null) {
-                    throw new NullPointerException("parameters.ConfigurationSets.AdminUserName");
-                }
                 if (configurationSetsParameterItem.getDomainJoin() != null) {
                     if (configurationSetsParameterItem.getDomainJoin().getCredentials() != null) {
                         if (configurationSetsParameterItem.getDomainJoin().getCredentials().getPassword() == null) {
@@ -3701,9 +3689,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     configurationSetElement.appendChild(computerNameElement);
                 }
                 
-                Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
-                adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
-                configurationSetElement.appendChild(adminPasswordElement);
+                if (configurationSetsItem.getAdminPassword() != null) {
+                    Element adminPasswordElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminPassword");
+                    adminPasswordElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminPassword()));
+                    configurationSetElement.appendChild(adminPasswordElement);
+                }
                 
                 if (configurationSetsItem.isResetPasswordOnFirstLogon() != null) {
                     Element resetPasswordOnFirstLogonElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
@@ -3815,9 +3805,11 @@ public class VirtualMachineOperationsImpl implements ServiceOperations<ComputeMa
                     }
                 }
                 
-                Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
-                adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
-                configurationSetElement.appendChild(adminUsernameElement);
+                if (configurationSetsItem.getAdminUserName() != null) {
+                    Element adminUsernameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "AdminUsername");
+                    adminUsernameElement.appendChild(requestDoc.createTextNode(configurationSetsItem.getAdminUserName()));
+                    configurationSetElement.appendChild(adminUsernameElement);
+                }
                 
                 if (configurationSetsItem.getHostName() != null) {
                     Element hostNameElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "HostName");

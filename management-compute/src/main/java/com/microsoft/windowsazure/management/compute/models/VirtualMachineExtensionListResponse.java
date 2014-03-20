@@ -138,7 +138,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
             this.homepageUri = homepageUriValue;
         }
         
-        private boolean isJsonExtension;
+        private Boolean isJsonExtension;
         
         /**
         * Optional. Boolean property indicating whether the extension accepts
@@ -147,7 +147,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * 'false' the extension accepts XML based confihuration.
         * @return The IsJsonExtension value.
         */
-        public boolean isJsonExtension() {
+        public Boolean isJsonExtension() {
             return this.isJsonExtension;
         }
         
@@ -158,7 +158,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * 'false' the extension accepts XML based confihuration.
         * @param isJsonExtensionValue The IsJsonExtension value.
         */
-        public void setIsJsonExtension(final boolean isJsonExtensionValue) {
+        public void setIsJsonExtension(final Boolean isJsonExtensionValue) {
             this.isJsonExtension = isJsonExtensionValue;
         }
         
@@ -280,7 +280,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
             this.publisher = publisherValue;
         }
         
-        private boolean replicationCompleted;
+        private Boolean replicationCompleted;
         
         /**
         * Optional. Boolean flag indicating whether this version of extension
@@ -292,7 +292,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * completely by Windows Azure.
         * @return The ReplicationCompleted value.
         */
-        public boolean isReplicationCompleted() {
+        public Boolean isReplicationCompleted() {
             return this.replicationCompleted;
         }
         
@@ -306,7 +306,7 @@ public class VirtualMachineExtensionListResponse extends OperationResponse imple
         * completely by Windows Azure.
         * @param replicationCompletedValue The ReplicationCompleted value.
         */
-        public void setReplicationCompleted(final boolean replicationCompletedValue) {
+        public void setReplicationCompleted(final Boolean replicationCompletedValue) {
             this.replicationCompleted = replicationCompletedValue;
         }
         
