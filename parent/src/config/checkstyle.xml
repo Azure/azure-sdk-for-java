@@ -31,6 +31,12 @@
 -->
 
 <module name="Checker">
+    <module name="SuppressionCommentFilter">
+        <property name="offCommentFormat" value="CSOFF\: ([\w\|]+)"/>
+        <property name="onCommentFormat" value="CSON\: ([\w\|]+)"/>
+        <property name="checkFormat" value="$1"/>
+    </module>
+
     <!--
         If you set the basedir property below, then all reported file
         names will be relative to the specified directory. See
@@ -42,7 +48,7 @@
     <!-- Checks that each Java package has a Javadoc file used for commenting. -->
     <!-- See http://checkstyle.sf.net/config_javadoc.html#JavadocPackage       -->
     <module name="JavadocPackage">
-      <property name="allowLegacy" value="true"/>
+        <property name="allowLegacy" value="true"/>
     </module>
 
     <!-- Checks whether files end with a new line.                        -->
@@ -211,8 +217,8 @@
         <!-- <module name="MagicNumber" /> -->
         <module name="MissingSwitchDefault"/>
         <module name="RedundantThrows"/>
-        <module name="SimplifyBooleanExpression"/>
-        <module name="SimplifyBooleanReturn"/>
+        <!-- <module name="SimplifyBooleanExpression"/> -->
+        <!-- <module name="SimplifyBooleanReturn"/> -->
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
