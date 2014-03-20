@@ -52,7 +52,8 @@ import com.microsoft.windowsazure.management.compute.models.DomainJoinProvisioni
 import com.microsoft.windowsazure.management.compute.models.DomainJoinSettings;
 import com.microsoft.windowsazure.management.compute.models.EndpointAcl;
 import com.microsoft.windowsazure.management.compute.models.ExtensionConfiguration;
-import com.microsoft.windowsazure.management.compute.models.FormattedMessage;
+import com.microsoft.windowsazure.management.compute.models.GuestAgentFormattedMessage;
+import com.microsoft.windowsazure.management.compute.models.GuestAgentMessage;
 import com.microsoft.windowsazure.management.compute.models.GuestAgentStatus;
 import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.InstanceEndpoint;
@@ -60,9 +61,11 @@ import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbe;
 import com.microsoft.windowsazure.management.compute.models.LoadBalancerProbeTransportProtocol;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.PersistentVMDowntime;
+import com.microsoft.windowsazure.management.compute.models.ResourceExtensionConfigurationStatus;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionParameterValue;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionReference;
 import com.microsoft.windowsazure.management.compute.models.ResourceExtensionStatus;
+import com.microsoft.windowsazure.management.compute.models.ResourceExtensionSubStatus;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.RoleInstance;
 import com.microsoft.windowsazure.management.compute.models.RoleInstancePowerState;
@@ -4162,9 +4165,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             Element timestampElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
-                            if (timestampElement != null) {
-                                String timestampInstance;
-                                timestampInstance = timestampElement.getTextContent();
+                            if (timestampElement != null && (timestampElement.getTextContent() == null || timestampElement.getTextContent().isEmpty() == true) == false) {
+                                Calendar timestampInstance;
+                                timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                                 guestAgentStatusInstance.setTimestamp(timestampInstance);
                             }
                             
@@ -4182,9 +4185,37 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 guestAgentStatusInstance.setStatus(statusInstance2);
                             }
                             
+                            Element codeElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                            if (codeElement != null && (codeElement.getTextContent() == null || codeElement.getTextContent().isEmpty() == true) == false) {
+                                int codeInstance;
+                                codeInstance = DatatypeConverter.parseInt(codeElement.getTextContent());
+                                guestAgentStatusInstance.setCode(codeInstance);
+                            }
+                            
+                            Element messageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                            if (messageElement != null) {
+                                GuestAgentMessage messageInstance = new GuestAgentMessage();
+                                guestAgentStatusInstance.setMessage(messageInstance);
+                                
+                                Element messageResourceIdElement = XmlUtility.getElementByTagNameNS(messageElement, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                if (messageResourceIdElement != null) {
+                                    String messageResourceIdInstance;
+                                    messageResourceIdInstance = messageResourceIdElement.getTextContent();
+                                    messageInstance.setMessageResourceId(messageResourceIdInstance);
+                                }
+                                
+                                Element paramListSequenceElement = XmlUtility.getElementByTagNameNS(messageElement, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                if (paramListSequenceElement != null) {
+                                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Param").size(); i3 = i3 + 1) {
+                                        org.w3c.dom.Element paramListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Param").get(i3));
+                                        messageInstance.getParamList().add(paramListElement.getTextContent());
+                                    }
+                                }
+                            }
+                            
                             Element formattedMessageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
                             if (formattedMessageElement != null) {
-                                FormattedMessage formattedMessageInstance = new FormattedMessage();
+                                GuestAgentFormattedMessage formattedMessageInstance = new GuestAgentFormattedMessage();
                                 guestAgentStatusInstance.setFormattedMessage(formattedMessageInstance);
                                 
                                 Element languageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Language");
@@ -4194,19 +4225,19 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     formattedMessageInstance.setLanguage(languageInstance);
                                 }
                                 
-                                Element messageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                                if (messageElement != null) {
-                                    String messageInstance;
-                                    messageInstance = messageElement.getTextContent();
-                                    formattedMessageInstance.setMessage(messageInstance);
+                                Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement2 != null) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageElement2.getTextContent();
+                                    formattedMessageInstance.setMessage(messageInstance2);
                                 }
                             }
                         }
                         
                         Element resourceExtensionStatusListSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatusList");
                         if (resourceExtensionStatusListSequenceElement != null) {
-                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i3 = i3 + 1) {
-                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i3));
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i4));
                                 ResourceExtensionStatus resourceExtensionStatusInstance = new ResourceExtensionStatus();
                                 roleInstanceInstance.getResourceExtensionStatusList().add(resourceExtensionStatusInstance);
                                 
@@ -4231,16 +4262,37 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionStatusInstance.setStatus(statusInstance3);
                                 }
                                 
-                                Element codeElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                                if (codeElement != null) {
-                                    String codeInstance;
-                                    codeInstance = codeElement.getTextContent();
-                                    resourceExtensionStatusInstance.setCode(codeInstance);
+                                Element codeElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                if (codeElement2 != null && (codeElement2.getTextContent() == null || codeElement2.getTextContent().isEmpty() == true) == false) {
+                                    int codeInstance2;
+                                    codeInstance2 = DatatypeConverter.parseInt(codeElement2.getTextContent());
+                                    resourceExtensionStatusInstance.setCode(codeInstance2);
+                                }
+                                
+                                Element messageElement3 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement3 != null) {
+                                    GuestAgentMessage messageInstance3 = new GuestAgentMessage();
+                                    resourceExtensionStatusInstance.setMessage(messageInstance3);
+                                    
+                                    Element messageResourceIdElement2 = XmlUtility.getElementByTagNameNS(messageElement3, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                    if (messageResourceIdElement2 != null) {
+                                        String messageResourceIdInstance2;
+                                        messageResourceIdInstance2 = messageResourceIdElement2.getTextContent();
+                                        messageInstance3.setMessageResourceId(messageResourceIdInstance2);
+                                    }
+                                    
+                                    Element paramListSequenceElement2 = XmlUtility.getElementByTagNameNS(messageElement3, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                    if (paramListSequenceElement2 != null) {
+                                        for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Param").size(); i5 = i5 + 1) {
+                                            org.w3c.dom.Element paramListElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Param").get(i5));
+                                            messageInstance3.getParamList().add(paramListElement2.getTextContent());
+                                        }
+                                    }
                                 }
                                 
                                 Element formattedMessageElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
                                 if (formattedMessageElement2 != null) {
-                                    FormattedMessage formattedMessageInstance2 = new FormattedMessage();
+                                    GuestAgentFormattedMessage formattedMessageInstance2 = new GuestAgentFormattedMessage();
                                     resourceExtensionStatusInstance.setFormattedMessage(formattedMessageInstance2);
                                     
                                     Element languageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
@@ -4250,11 +4302,171 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         formattedMessageInstance2.setLanguage(languageInstance2);
                                     }
                                     
-                                    Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
-                                    if (messageElement2 != null) {
-                                        String messageInstance2;
-                                        messageInstance2 = messageElement2.getTextContent();
-                                        formattedMessageInstance2.setMessage(messageInstance2);
+                                    Element messageElement4 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement4 != null) {
+                                        String messageInstance4;
+                                        messageInstance4 = messageElement4.getTextContent();
+                                        formattedMessageInstance2.setMessage(messageInstance4);
+                                    }
+                                }
+                                
+                                Element extensionSettingStatusElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "ExtensionSettingStatus");
+                                if (extensionSettingStatusElement != null) {
+                                    ResourceExtensionConfigurationStatus extensionSettingStatusInstance = new ResourceExtensionConfigurationStatus();
+                                    resourceExtensionStatusInstance.setExtensionSettingStatus(extensionSettingStatusInstance);
+                                    
+                                    Element timestampElement2 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                                    if (timestampElement2 != null && (timestampElement2.getTextContent() == null || timestampElement2.getTextContent().isEmpty() == true) == false) {
+                                        Calendar timestampInstance2;
+                                        timestampInstance2 = DatatypeConverter.parseDateTime(timestampElement2.getTextContent());
+                                        extensionSettingStatusInstance.setTimestamp(timestampInstance2);
+                                    }
+                                    
+                                    Element configurationAppliedTimeElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationAppliedTime");
+                                    if (configurationAppliedTimeElement != null && (configurationAppliedTimeElement.getTextContent() == null || configurationAppliedTimeElement.getTextContent().isEmpty() == true) == false) {
+                                        Calendar configurationAppliedTimeInstance;
+                                        configurationAppliedTimeInstance = DatatypeConverter.parseDateTime(configurationAppliedTimeElement.getTextContent());
+                                        extensionSettingStatusInstance.setConfigurationAppliedTime(configurationAppliedTimeInstance);
+                                    }
+                                    
+                                    Element nameElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                    if (nameElement3 != null) {
+                                        String nameInstance3;
+                                        nameInstance3 = nameElement3.getTextContent();
+                                        extensionSettingStatusInstance.setName(nameInstance3);
+                                    }
+                                    
+                                    Element operationElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Operation");
+                                    if (operationElement != null) {
+                                        String operationInstance;
+                                        operationInstance = operationElement.getTextContent();
+                                        extensionSettingStatusInstance.setOperation(operationInstance);
+                                    }
+                                    
+                                    Element statusElement4 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                    if (statusElement4 != null) {
+                                        String statusInstance4;
+                                        statusInstance4 = statusElement4.getTextContent();
+                                        extensionSettingStatusInstance.setStatus(statusInstance4);
+                                    }
+                                    
+                                    Element codeElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                    if (codeElement3 != null && (codeElement3.getTextContent() == null || codeElement3.getTextContent().isEmpty() == true) == false) {
+                                        int codeInstance3;
+                                        codeInstance3 = DatatypeConverter.parseInt(codeElement3.getTextContent());
+                                        extensionSettingStatusInstance.setCode(codeInstance3);
+                                    }
+                                    
+                                    Element messageElement5 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement5 != null) {
+                                        GuestAgentMessage messageInstance5 = new GuestAgentMessage();
+                                        extensionSettingStatusInstance.setMessage(messageInstance5);
+                                        
+                                        Element messageResourceIdElement3 = XmlUtility.getElementByTagNameNS(messageElement5, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                        if (messageResourceIdElement3 != null) {
+                                            String messageResourceIdInstance3;
+                                            messageResourceIdInstance3 = messageResourceIdElement3.getTextContent();
+                                            messageInstance5.setMessageResourceId(messageResourceIdInstance3);
+                                        }
+                                        
+                                        Element paramListSequenceElement3 = XmlUtility.getElementByTagNameNS(messageElement5, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                        if (paramListSequenceElement3 != null) {
+                                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement3, "http://schemas.microsoft.com/windowsazure", "Param").size(); i6 = i6 + 1) {
+                                                org.w3c.dom.Element paramListElement3 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement3, "http://schemas.microsoft.com/windowsazure", "Param").get(i6));
+                                                messageInstance5.getParamList().add(paramListElement3.getTextContent());
+                                            }
+                                        }
+                                    }
+                                    
+                                    Element formattedMessageElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                    if (formattedMessageElement3 != null) {
+                                        GuestAgentFormattedMessage formattedMessageInstance3 = new GuestAgentFormattedMessage();
+                                        extensionSettingStatusInstance.setFormattedMessage(formattedMessageInstance3);
+                                        
+                                        Element languageElement3 = XmlUtility.getElementByTagNameNS(formattedMessageElement3, "http://schemas.microsoft.com/windowsazure", "Language");
+                                        if (languageElement3 != null) {
+                                            String languageInstance3;
+                                            languageInstance3 = languageElement3.getTextContent();
+                                            formattedMessageInstance3.setLanguage(languageInstance3);
+                                        }
+                                        
+                                        Element messageElement6 = XmlUtility.getElementByTagNameNS(formattedMessageElement3, "http://schemas.microsoft.com/windowsazure", "Message");
+                                        if (messageElement6 != null) {
+                                            String messageInstance6;
+                                            messageInstance6 = messageElement6.getTextContent();
+                                            formattedMessageInstance3.setMessage(messageInstance6);
+                                        }
+                                    }
+                                    
+                                    Element subStatusListSequenceElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "SubStatusList");
+                                    if (subStatusListSequenceElement != null) {
+                                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubStatus").size(); i7 = i7 + 1) {
+                                            org.w3c.dom.Element subStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubStatus").get(i7));
+                                            ResourceExtensionSubStatus subStatusInstance = new ResourceExtensionSubStatus();
+                                            extensionSettingStatusInstance.getSubStatusList().add(subStatusInstance);
+                                            
+                                            Element nameElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                            if (nameElement4 != null) {
+                                                String nameInstance4;
+                                                nameInstance4 = nameElement4.getTextContent();
+                                                subStatusInstance.setName(nameInstance4);
+                                            }
+                                            
+                                            Element statusElement5 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                            if (statusElement5 != null) {
+                                                String statusInstance5;
+                                                statusInstance5 = statusElement5.getTextContent();
+                                                subStatusInstance.setStatus(statusInstance5);
+                                            }
+                                            
+                                            Element codeElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                            if (codeElement4 != null && (codeElement4.getTextContent() == null || codeElement4.getTextContent().isEmpty() == true) == false) {
+                                                int codeInstance4;
+                                                codeInstance4 = DatatypeConverter.parseInt(codeElement4.getTextContent());
+                                                subStatusInstance.setCode(codeInstance4);
+                                            }
+                                            
+                                            Element messageElement7 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                            if (messageElement7 != null) {
+                                                GuestAgentMessage messageInstance7 = new GuestAgentMessage();
+                                                subStatusInstance.setMessage(messageInstance7);
+                                                
+                                                Element messageResourceIdElement4 = XmlUtility.getElementByTagNameNS(messageElement7, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                                if (messageResourceIdElement4 != null) {
+                                                    String messageResourceIdInstance4;
+                                                    messageResourceIdInstance4 = messageResourceIdElement4.getTextContent();
+                                                    messageInstance7.setMessageResourceId(messageResourceIdInstance4);
+                                                }
+                                                
+                                                Element paramListSequenceElement4 = XmlUtility.getElementByTagNameNS(messageElement7, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                                if (paramListSequenceElement4 != null) {
+                                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement4, "http://schemas.microsoft.com/windowsazure", "Param").size(); i8 = i8 + 1) {
+                                                        org.w3c.dom.Element paramListElement4 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement4, "http://schemas.microsoft.com/windowsazure", "Param").get(i8));
+                                                        messageInstance7.getParamList().add(paramListElement4.getTextContent());
+                                                    }
+                                                }
+                                            }
+                                            
+                                            Element formattedMessageElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                            if (formattedMessageElement4 != null) {
+                                                GuestAgentFormattedMessage formattedMessageInstance4 = new GuestAgentFormattedMessage();
+                                                subStatusInstance.setFormattedMessage(formattedMessageInstance4);
+                                                
+                                                Element languageElement4 = XmlUtility.getElementByTagNameNS(formattedMessageElement4, "http://schemas.microsoft.com/windowsazure", "Language");
+                                                if (languageElement4 != null) {
+                                                    String languageInstance4;
+                                                    languageInstance4 = languageElement4.getTextContent();
+                                                    formattedMessageInstance4.setLanguage(languageInstance4);
+                                                }
+                                                
+                                                Element messageElement8 = XmlUtility.getElementByTagNameNS(formattedMessageElement4, "http://schemas.microsoft.com/windowsazure", "Message");
+                                                if (messageElement8 != null) {
+                                                    String messageInstance8;
+                                                    messageInstance8 = messageElement8.getTextContent();
+                                                    formattedMessageInstance4.setMessage(messageInstance8);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -4319,8 +4531,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i4 = i4 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i4));
+                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i9 = i9 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i9));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
@@ -4347,8 +4559,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i5 = i5 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i5));
+                            for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i10 = i10 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i10));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
@@ -4361,8 +4573,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i6 = i6 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i6));
+                                    for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i11 = i11 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i11));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
@@ -4380,11 +4592,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        Element nameElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                        if (nameElement3 != null) {
-                                            String nameInstance3;
-                                            nameInstance3 = nameElement3.getTextContent();
-                                            inputEndpointInstance.setName(nameInstance3);
+                                        Element nameElement5 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                        if (nameElement5 != null) {
+                                            String nameInstance5;
+                                            nameInstance5 = nameElement5.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance5);
                                         }
                                         
                                         Element portElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Port");
@@ -4463,8 +4675,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             
                                             Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i7 = i7 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i7));
+                                                for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i12 = i12 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i12));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
@@ -4503,8 +4715,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i8));
+                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i13));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
@@ -4613,8 +4825,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i9 = i9 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i9));
+                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i14 = i14 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i14));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
@@ -4645,8 +4857,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i10));
+                                        for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i15 = i15 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i15));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
@@ -4709,8 +4921,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i11));
+                                        for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i16 = i16 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i16));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
@@ -4732,8 +4944,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i12 = i12 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i12));
+                                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i17 = i17 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i17));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
@@ -4758,8 +4970,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i13 = i13 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i13));
+                            for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i18 = i18 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i18));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
@@ -4777,11 +4989,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
                                 
-                                Element nameElement4 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                if (nameElement4 != null) {
-                                    String nameInstance4;
-                                    nameInstance4 = nameElement4.getTextContent();
-                                    resourceExtensionReferenceInstance.setName(nameInstance4);
+                                Element nameElement6 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                if (nameElement6 != null) {
+                                    String nameInstance6;
+                                    nameInstance6 = nameElement6.getTextContent();
+                                    resourceExtensionReferenceInstance.setName(nameInstance6);
                                 }
                                 
                                 Element versionElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
@@ -4793,8 +5005,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i14 = i14 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i14));
+                                    for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i19 = i19 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i19));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
@@ -4846,8 +5058,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i15 = i15 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i15));
+                            for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i20 = i20 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i20));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
@@ -5024,8 +5236,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i16 = i16 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i16));
+                    for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i21 = i21 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i21));
                         String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                         String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -5051,18 +5263,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    Element statusElement4 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    if (statusElement4 != null) {
-                        String statusInstance4;
-                        statusInstance4 = statusElement4.getTextContent();
-                        persistentVMDowntimeInstance.setStatus(statusInstance4);
+                    Element statusElement6 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement6 != null) {
+                        String statusInstance6;
+                        statusInstance6 = statusElement6.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance6);
                     }
                 }
                 
                 Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i17 = i17 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i17));
+                    for (int i22 = 0; i22 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i22 = i22 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i22));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
@@ -5073,11 +5285,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             virtualIPInstance.setAddress(addressInstance);
                         }
                         
-                        Element nameElement5 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                        if (nameElement5 != null) {
-                            String nameInstance5;
-                            nameInstance5 = nameElement5.getTextContent();
-                            virtualIPInstance.setName(nameInstance5);
+                        Element nameElement7 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement7 != null) {
+                            String nameInstance7;
+                            nameInstance7 = nameElement7.getTextContent();
+                            virtualIPInstance.setName(nameInstance7);
                         }
                         
                         Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
@@ -5103,16 +5315,16 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i18 = i18 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i18));
+                        for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i23 = i23 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i23));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
-                            Element nameElement6 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                            if (nameElement6 != null) {
-                                String nameInstance6;
-                                nameInstance6 = nameElement6.getTextContent();
-                                dnsServerInstance.setName(nameInstance6);
+                            Element nameElement8 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                            if (nameElement8 != null) {
+                                String nameInstance8;
+                                nameInstance8 = nameElement8.getTextContent();
+                                dnsServerInstance.setName(nameInstance8);
                             }
                             
                             Element addressElement2 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
@@ -5132,8 +5344,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i19 = i19 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i19));
+                        for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i24 = i24 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i24));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
@@ -5148,8 +5360,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i20 = i20 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i20));
+                        for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i25 = i25 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i25));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
@@ -5162,8 +5374,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i21 = i21 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i21));
+                                for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i26 = i26 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i26));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     
@@ -5479,9 +5691,9 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             }
                             
                             Element timestampElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
-                            if (timestampElement != null) {
-                                String timestampInstance;
-                                timestampInstance = timestampElement.getTextContent();
+                            if (timestampElement != null && (timestampElement.getTextContent() == null || timestampElement.getTextContent().isEmpty() == true) == false) {
+                                Calendar timestampInstance;
+                                timestampInstance = DatatypeConverter.parseDateTime(timestampElement.getTextContent());
                                 guestAgentStatusInstance.setTimestamp(timestampInstance);
                             }
                             
@@ -5499,9 +5711,37 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 guestAgentStatusInstance.setStatus(statusInstance2);
                             }
                             
+                            Element codeElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                            if (codeElement != null && (codeElement.getTextContent() == null || codeElement.getTextContent().isEmpty() == true) == false) {
+                                int codeInstance;
+                                codeInstance = DatatypeConverter.parseInt(codeElement.getTextContent());
+                                guestAgentStatusInstance.setCode(codeInstance);
+                            }
+                            
+                            Element messageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                            if (messageElement != null) {
+                                GuestAgentMessage messageInstance = new GuestAgentMessage();
+                                guestAgentStatusInstance.setMessage(messageInstance);
+                                
+                                Element messageResourceIdElement = XmlUtility.getElementByTagNameNS(messageElement, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                if (messageResourceIdElement != null) {
+                                    String messageResourceIdInstance;
+                                    messageResourceIdInstance = messageResourceIdElement.getTextContent();
+                                    messageInstance.setMessageResourceId(messageResourceIdInstance);
+                                }
+                                
+                                Element paramListSequenceElement = XmlUtility.getElementByTagNameNS(messageElement, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                if (paramListSequenceElement != null) {
+                                    for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Param").size(); i3 = i3 + 1) {
+                                        org.w3c.dom.Element paramListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Param").get(i3));
+                                        messageInstance.getParamList().add(paramListElement.getTextContent());
+                                    }
+                                }
+                            }
+                            
                             Element formattedMessageElement = XmlUtility.getElementByTagNameNS(guestAgentStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
                             if (formattedMessageElement != null) {
-                                FormattedMessage formattedMessageInstance = new FormattedMessage();
+                                GuestAgentFormattedMessage formattedMessageInstance = new GuestAgentFormattedMessage();
                                 guestAgentStatusInstance.setFormattedMessage(formattedMessageInstance);
                                 
                                 Element languageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Language");
@@ -5511,19 +5751,19 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     formattedMessageInstance.setLanguage(languageInstance);
                                 }
                                 
-                                Element messageElement = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
-                                if (messageElement != null) {
-                                    String messageInstance;
-                                    messageInstance = messageElement.getTextContent();
-                                    formattedMessageInstance.setMessage(messageInstance);
+                                Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement2 != null) {
+                                    String messageInstance2;
+                                    messageInstance2 = messageElement2.getTextContent();
+                                    formattedMessageInstance.setMessage(messageInstance2);
                                 }
                             }
                         }
                         
                         Element resourceExtensionStatusListSequenceElement = XmlUtility.getElementByTagNameNS(roleInstanceListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatusList");
                         if (resourceExtensionStatusListSequenceElement != null) {
-                            for (int i3 = 0; i3 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i3 = i3 + 1) {
-                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i3));
+                            for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").size(); i4 = i4 + 1) {
+                                org.w3c.dom.Element resourceExtensionStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionStatus").get(i4));
                                 ResourceExtensionStatus resourceExtensionStatusInstance = new ResourceExtensionStatus();
                                 roleInstanceInstance.getResourceExtensionStatusList().add(resourceExtensionStatusInstance);
                                 
@@ -5548,16 +5788,37 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionStatusInstance.setStatus(statusInstance3);
                                 }
                                 
-                                Element codeElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
-                                if (codeElement != null) {
-                                    String codeInstance;
-                                    codeInstance = codeElement.getTextContent();
-                                    resourceExtensionStatusInstance.setCode(codeInstance);
+                                Element codeElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                if (codeElement2 != null && (codeElement2.getTextContent() == null || codeElement2.getTextContent().isEmpty() == true) == false) {
+                                    int codeInstance2;
+                                    codeInstance2 = DatatypeConverter.parseInt(codeElement2.getTextContent());
+                                    resourceExtensionStatusInstance.setCode(codeInstance2);
+                                }
+                                
+                                Element messageElement3 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                if (messageElement3 != null) {
+                                    GuestAgentMessage messageInstance3 = new GuestAgentMessage();
+                                    resourceExtensionStatusInstance.setMessage(messageInstance3);
+                                    
+                                    Element messageResourceIdElement2 = XmlUtility.getElementByTagNameNS(messageElement3, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                    if (messageResourceIdElement2 != null) {
+                                        String messageResourceIdInstance2;
+                                        messageResourceIdInstance2 = messageResourceIdElement2.getTextContent();
+                                        messageInstance3.setMessageResourceId(messageResourceIdInstance2);
+                                    }
+                                    
+                                    Element paramListSequenceElement2 = XmlUtility.getElementByTagNameNS(messageElement3, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                    if (paramListSequenceElement2 != null) {
+                                        for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Param").size(); i5 = i5 + 1) {
+                                            org.w3c.dom.Element paramListElement2 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement2, "http://schemas.microsoft.com/windowsazure", "Param").get(i5));
+                                            messageInstance3.getParamList().add(paramListElement2.getTextContent());
+                                        }
+                                    }
                                 }
                                 
                                 Element formattedMessageElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
                                 if (formattedMessageElement2 != null) {
-                                    FormattedMessage formattedMessageInstance2 = new FormattedMessage();
+                                    GuestAgentFormattedMessage formattedMessageInstance2 = new GuestAgentFormattedMessage();
                                     resourceExtensionStatusInstance.setFormattedMessage(formattedMessageInstance2);
                                     
                                     Element languageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Language");
@@ -5567,11 +5828,171 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         formattedMessageInstance2.setLanguage(languageInstance2);
                                     }
                                     
-                                    Element messageElement2 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
-                                    if (messageElement2 != null) {
-                                        String messageInstance2;
-                                        messageInstance2 = messageElement2.getTextContent();
-                                        formattedMessageInstance2.setMessage(messageInstance2);
+                                    Element messageElement4 = XmlUtility.getElementByTagNameNS(formattedMessageElement2, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement4 != null) {
+                                        String messageInstance4;
+                                        messageInstance4 = messageElement4.getTextContent();
+                                        formattedMessageInstance2.setMessage(messageInstance4);
+                                    }
+                                }
+                                
+                                Element extensionSettingStatusElement = XmlUtility.getElementByTagNameNS(resourceExtensionStatusListElement, "http://schemas.microsoft.com/windowsazure", "ExtensionSettingStatus");
+                                if (extensionSettingStatusElement != null) {
+                                    ResourceExtensionConfigurationStatus extensionSettingStatusInstance = new ResourceExtensionConfigurationStatus();
+                                    resourceExtensionStatusInstance.setExtensionSettingStatus(extensionSettingStatusInstance);
+                                    
+                                    Element timestampElement2 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Timestamp");
+                                    if (timestampElement2 != null && (timestampElement2.getTextContent() == null || timestampElement2.getTextContent().isEmpty() == true) == false) {
+                                        Calendar timestampInstance2;
+                                        timestampInstance2 = DatatypeConverter.parseDateTime(timestampElement2.getTextContent());
+                                        extensionSettingStatusInstance.setTimestamp(timestampInstance2);
+                                    }
+                                    
+                                    Element configurationAppliedTimeElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationAppliedTime");
+                                    if (configurationAppliedTimeElement != null && (configurationAppliedTimeElement.getTextContent() == null || configurationAppliedTimeElement.getTextContent().isEmpty() == true) == false) {
+                                        Calendar configurationAppliedTimeInstance;
+                                        configurationAppliedTimeInstance = DatatypeConverter.parseDateTime(configurationAppliedTimeElement.getTextContent());
+                                        extensionSettingStatusInstance.setConfigurationAppliedTime(configurationAppliedTimeInstance);
+                                    }
+                                    
+                                    Element nameElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                    if (nameElement3 != null) {
+                                        String nameInstance3;
+                                        nameInstance3 = nameElement3.getTextContent();
+                                        extensionSettingStatusInstance.setName(nameInstance3);
+                                    }
+                                    
+                                    Element operationElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Operation");
+                                    if (operationElement != null) {
+                                        String operationInstance;
+                                        operationInstance = operationElement.getTextContent();
+                                        extensionSettingStatusInstance.setOperation(operationInstance);
+                                    }
+                                    
+                                    Element statusElement4 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                    if (statusElement4 != null) {
+                                        String statusInstance4;
+                                        statusInstance4 = statusElement4.getTextContent();
+                                        extensionSettingStatusInstance.setStatus(statusInstance4);
+                                    }
+                                    
+                                    Element codeElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                    if (codeElement3 != null && (codeElement3.getTextContent() == null || codeElement3.getTextContent().isEmpty() == true) == false) {
+                                        int codeInstance3;
+                                        codeInstance3 = DatatypeConverter.parseInt(codeElement3.getTextContent());
+                                        extensionSettingStatusInstance.setCode(codeInstance3);
+                                    }
+                                    
+                                    Element messageElement5 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                    if (messageElement5 != null) {
+                                        GuestAgentMessage messageInstance5 = new GuestAgentMessage();
+                                        extensionSettingStatusInstance.setMessage(messageInstance5);
+                                        
+                                        Element messageResourceIdElement3 = XmlUtility.getElementByTagNameNS(messageElement5, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                        if (messageResourceIdElement3 != null) {
+                                            String messageResourceIdInstance3;
+                                            messageResourceIdInstance3 = messageResourceIdElement3.getTextContent();
+                                            messageInstance5.setMessageResourceId(messageResourceIdInstance3);
+                                        }
+                                        
+                                        Element paramListSequenceElement3 = XmlUtility.getElementByTagNameNS(messageElement5, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                        if (paramListSequenceElement3 != null) {
+                                            for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement3, "http://schemas.microsoft.com/windowsazure", "Param").size(); i6 = i6 + 1) {
+                                                org.w3c.dom.Element paramListElement3 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement3, "http://schemas.microsoft.com/windowsazure", "Param").get(i6));
+                                                messageInstance5.getParamList().add(paramListElement3.getTextContent());
+                                            }
+                                        }
+                                    }
+                                    
+                                    Element formattedMessageElement3 = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                    if (formattedMessageElement3 != null) {
+                                        GuestAgentFormattedMessage formattedMessageInstance3 = new GuestAgentFormattedMessage();
+                                        extensionSettingStatusInstance.setFormattedMessage(formattedMessageInstance3);
+                                        
+                                        Element languageElement3 = XmlUtility.getElementByTagNameNS(formattedMessageElement3, "http://schemas.microsoft.com/windowsazure", "Language");
+                                        if (languageElement3 != null) {
+                                            String languageInstance3;
+                                            languageInstance3 = languageElement3.getTextContent();
+                                            formattedMessageInstance3.setLanguage(languageInstance3);
+                                        }
+                                        
+                                        Element messageElement6 = XmlUtility.getElementByTagNameNS(formattedMessageElement3, "http://schemas.microsoft.com/windowsazure", "Message");
+                                        if (messageElement6 != null) {
+                                            String messageInstance6;
+                                            messageInstance6 = messageElement6.getTextContent();
+                                            formattedMessageInstance3.setMessage(messageInstance6);
+                                        }
+                                    }
+                                    
+                                    Element subStatusListSequenceElement = XmlUtility.getElementByTagNameNS(extensionSettingStatusElement, "http://schemas.microsoft.com/windowsazure", "SubStatusList");
+                                    if (subStatusListSequenceElement != null) {
+                                        for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubStatus").size(); i7 = i7 + 1) {
+                                            org.w3c.dom.Element subStatusListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subStatusListSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubStatus").get(i7));
+                                            ResourceExtensionSubStatus subStatusInstance = new ResourceExtensionSubStatus();
+                                            extensionSettingStatusInstance.getSubStatusList().add(subStatusInstance);
+                                            
+                                            Element nameElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                            if (nameElement4 != null) {
+                                                String nameInstance4;
+                                                nameInstance4 = nameElement4.getTextContent();
+                                                subStatusInstance.setName(nameInstance4);
+                                            }
+                                            
+                                            Element statusElement5 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                                            if (statusElement5 != null) {
+                                                String statusInstance5;
+                                                statusInstance5 = statusElement5.getTextContent();
+                                                subStatusInstance.setStatus(statusInstance5);
+                                            }
+                                            
+                                            Element codeElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Code");
+                                            if (codeElement4 != null && (codeElement4.getTextContent() == null || codeElement4.getTextContent().isEmpty() == true) == false) {
+                                                int codeInstance4;
+                                                codeInstance4 = DatatypeConverter.parseInt(codeElement4.getTextContent());
+                                                subStatusInstance.setCode(codeInstance4);
+                                            }
+                                            
+                                            Element messageElement7 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "Message");
+                                            if (messageElement7 != null) {
+                                                GuestAgentMessage messageInstance7 = new GuestAgentMessage();
+                                                subStatusInstance.setMessage(messageInstance7);
+                                                
+                                                Element messageResourceIdElement4 = XmlUtility.getElementByTagNameNS(messageElement7, "http://schemas.microsoft.com/windowsazure", "MessageResourceId");
+                                                if (messageResourceIdElement4 != null) {
+                                                    String messageResourceIdInstance4;
+                                                    messageResourceIdInstance4 = messageResourceIdElement4.getTextContent();
+                                                    messageInstance7.setMessageResourceId(messageResourceIdInstance4);
+                                                }
+                                                
+                                                Element paramListSequenceElement4 = XmlUtility.getElementByTagNameNS(messageElement7, "http://schemas.microsoft.com/windowsazure", "ParamList");
+                                                if (paramListSequenceElement4 != null) {
+                                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement4, "http://schemas.microsoft.com/windowsazure", "Param").size(); i8 = i8 + 1) {
+                                                        org.w3c.dom.Element paramListElement4 = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(paramListSequenceElement4, "http://schemas.microsoft.com/windowsazure", "Param").get(i8));
+                                                        messageInstance7.getParamList().add(paramListElement4.getTextContent());
+                                                    }
+                                                }
+                                            }
+                                            
+                                            Element formattedMessageElement4 = XmlUtility.getElementByTagNameNS(subStatusListElement, "http://schemas.microsoft.com/windowsazure", "FormattedMessage");
+                                            if (formattedMessageElement4 != null) {
+                                                GuestAgentFormattedMessage formattedMessageInstance4 = new GuestAgentFormattedMessage();
+                                                subStatusInstance.setFormattedMessage(formattedMessageInstance4);
+                                                
+                                                Element languageElement4 = XmlUtility.getElementByTagNameNS(formattedMessageElement4, "http://schemas.microsoft.com/windowsazure", "Language");
+                                                if (languageElement4 != null) {
+                                                    String languageInstance4;
+                                                    languageInstance4 = languageElement4.getTextContent();
+                                                    formattedMessageInstance4.setLanguage(languageInstance4);
+                                                }
+                                                
+                                                Element messageElement8 = XmlUtility.getElementByTagNameNS(formattedMessageElement4, "http://schemas.microsoft.com/windowsazure", "Message");
+                                                if (messageElement8 != null) {
+                                                    String messageInstance8;
+                                                    messageInstance8 = messageElement8.getTextContent();
+                                                    formattedMessageInstance4.setMessage(messageInstance8);
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -5636,8 +6057,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element roleListSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RoleList");
                 if (roleListSequenceElement != null) {
-                    for (int i4 = 0; i4 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i4 = i4 + 1) {
-                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i4));
+                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i9 = i9 + 1) {
+                        org.w3c.dom.Element roleListElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(roleListSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i9));
                         Role roleInstance = new Role();
                         result.getRoles().add(roleInstance);
                         
@@ -5664,8 +6085,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element configurationSetsSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSets");
                         if (configurationSetsSequenceElement != null) {
-                            for (int i5 = 0; i5 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i5 = i5 + 1) {
-                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i5));
+                            for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").size(); i10 = i10 + 1) {
+                                org.w3c.dom.Element configurationSetsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(configurationSetsSequenceElement, "http://schemas.microsoft.com/windowsazure", "ConfigurationSet").get(i10));
                                 ConfigurationSet configurationSetInstance = new ConfigurationSet();
                                 roleInstance.getConfigurationSets().add(configurationSetInstance);
                                 
@@ -5678,8 +6099,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element inputEndpointsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoints");
                                 if (inputEndpointsSequenceElement != null) {
-                                    for (int i6 = 0; i6 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i6 = i6 + 1) {
-                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i6));
+                                    for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").size(); i11 = i11 + 1) {
+                                        org.w3c.dom.Element inputEndpointsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(inputEndpointsSequenceElement, "http://schemas.microsoft.com/windowsazure", "InputEndpoint").get(i11));
                                         InputEndpoint inputEndpointInstance = new InputEndpoint();
                                         configurationSetInstance.getInputEndpoints().add(inputEndpointInstance);
                                         
@@ -5697,11 +6118,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             inputEndpointInstance.setLocalPort(localPortInstance2);
                                         }
                                         
-                                        Element nameElement3 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                        if (nameElement3 != null) {
-                                            String nameInstance3;
-                                            nameInstance3 = nameElement3.getTextContent();
-                                            inputEndpointInstance.setName(nameInstance3);
+                                        Element nameElement5 = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                        if (nameElement5 != null) {
+                                            String nameInstance5;
+                                            nameInstance5 = nameElement5.getTextContent();
+                                            inputEndpointInstance.setName(nameInstance5);
                                         }
                                         
                                         Element portElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "Port");
@@ -5780,8 +6201,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                             
                                             Element rulesSequenceElement = XmlUtility.getElementByTagNameNS(endpointAclElement, "http://schemas.microsoft.com/windowsazure", "Rules");
                                             if (rulesSequenceElement != null) {
-                                                for (int i7 = 0; i7 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i7 = i7 + 1) {
-                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i7));
+                                                for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").size(); i12 = i12 + 1) {
+                                                    org.w3c.dom.Element rulesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(rulesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Rule").get(i12));
                                                     AccessControlListRule ruleInstance = new AccessControlListRule();
                                                     endpointAclInstance.getRules().add(ruleInstance);
                                                     
@@ -5820,8 +6241,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element subnetNamesSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "SubnetNames");
                                 if (subnetNamesSequenceElement != null) {
-                                    for (int i8 = 0; i8 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i8 = i8 + 1) {
-                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i8));
+                                    for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").size(); i13 = i13 + 1) {
+                                        org.w3c.dom.Element subnetNamesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(subnetNamesSequenceElement, "http://schemas.microsoft.com/windowsazure", "SubnetName").get(i13));
                                         configurationSetInstance.getSubnetNames().add(subnetNamesElement.getTextContent());
                                     }
                                 }
@@ -5930,8 +6351,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element storedCertificateSettingsSequenceElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "StoredCertificateSettings");
                                 if (storedCertificateSettingsSequenceElement != null) {
-                                    for (int i9 = 0; i9 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i9 = i9 + 1) {
-                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i9));
+                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").size(); i14 = i14 + 1) {
+                                        org.w3c.dom.Element storedCertificateSettingsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(storedCertificateSettingsSequenceElement, "http://schemas.microsoft.com/windowsazure", "CertificateSetting").get(i14));
                                         StoredCertificateSettings certificateSettingInstance = new StoredCertificateSettings();
                                         configurationSetInstance.getStoredCertificateSettings().add(certificateSettingInstance);
                                         
@@ -5962,8 +6383,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element listenersSequenceElement = XmlUtility.getElementByTagNameNS(winRMElement, "http://schemas.microsoft.com/windowsazure", "Listeners");
                                     if (listenersSequenceElement != null) {
-                                        for (int i10 = 0; i10 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i10 = i10 + 1) {
-                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i10));
+                                        for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").size(); i15 = i15 + 1) {
+                                            org.w3c.dom.Element listenersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(listenersSequenceElement, "http://schemas.microsoft.com/windowsazure", "Listener").get(i15));
                                             WindowsRemoteManagementListener listenerInstance = new WindowsRemoteManagementListener();
                                             winRMInstance.getListeners().add(listenerInstance);
                                             
@@ -6026,8 +6447,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element publicKeysSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "PublicKeys");
                                     if (publicKeysSequenceElement != null) {
-                                        for (int i11 = 0; i11 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i11 = i11 + 1) {
-                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i11));
+                                        for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").size(); i16 = i16 + 1) {
+                                            org.w3c.dom.Element publicKeysElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(publicKeysSequenceElement, "http://schemas.microsoft.com/windowsazure", "PublicKey").get(i16));
                                             SshSettingPublicKey publicKeyInstance = new SshSettingPublicKey();
                                             sSHInstance.getPublicKeys().add(publicKeyInstance);
                                             
@@ -6049,8 +6470,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     
                                     Element keyPairsSequenceElement = XmlUtility.getElementByTagNameNS(sSHElement, "http://schemas.microsoft.com/windowsazure", "KeyPairs");
                                     if (keyPairsSequenceElement != null) {
-                                        for (int i12 = 0; i12 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i12 = i12 + 1) {
-                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i12));
+                                        for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").size(); i17 = i17 + 1) {
+                                            org.w3c.dom.Element keyPairsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(keyPairsSequenceElement, "http://schemas.microsoft.com/windowsazure", "KeyPair").get(i17));
                                             SshSettingKeyPair keyPairInstance = new SshSettingKeyPair();
                                             sSHInstance.getKeyPairs().add(keyPairInstance);
                                             
@@ -6075,8 +6496,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element resourceExtensionReferencesSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReferences");
                         if (resourceExtensionReferencesSequenceElement != null) {
-                            for (int i13 = 0; i13 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i13 = i13 + 1) {
-                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i13));
+                            for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").size(); i18 = i18 + 1) {
+                                org.w3c.dom.Element resourceExtensionReferencesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionReferencesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionReference").get(i18));
                                 ResourceExtensionReference resourceExtensionReferenceInstance = new ResourceExtensionReference();
                                 roleInstance.getResourceExtensionReferences().add(resourceExtensionReferenceInstance);
                                 
@@ -6094,11 +6515,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                     resourceExtensionReferenceInstance.setPublisher(publisherInstance);
                                 }
                                 
-                                Element nameElement4 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                                if (nameElement4 != null) {
-                                    String nameInstance4;
-                                    nameInstance4 = nameElement4.getTextContent();
-                                    resourceExtensionReferenceInstance.setName(nameInstance4);
+                                Element nameElement6 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                                if (nameElement6 != null) {
+                                    String nameInstance6;
+                                    nameInstance6 = nameElement6.getTextContent();
+                                    resourceExtensionReferenceInstance.setName(nameInstance6);
                                 }
                                 
                                 Element versionElement2 = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "Version");
@@ -6110,8 +6531,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 
                                 Element resourceExtensionParameterValuesSequenceElement = XmlUtility.getElementByTagNameNS(resourceExtensionReferencesElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValues");
                                 if (resourceExtensionParameterValuesSequenceElement != null) {
-                                    for (int i14 = 0; i14 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i14 = i14 + 1) {
-                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i14));
+                                    for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").size(); i19 = i19 + 1) {
+                                        org.w3c.dom.Element resourceExtensionParameterValuesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(resourceExtensionParameterValuesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ResourceExtensionParameterValue").get(i19));
                                         ResourceExtensionParameterValue resourceExtensionParameterValueInstance = new ResourceExtensionParameterValue();
                                         resourceExtensionReferenceInstance.getResourceExtensionParameterValues().add(resourceExtensionParameterValueInstance);
                                         
@@ -6163,8 +6584,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         
                         Element dataVirtualHardDisksSequenceElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisks");
                         if (dataVirtualHardDisksSequenceElement != null) {
-                            for (int i15 = 0; i15 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i15 = i15 + 1) {
-                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i15));
+                            for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").size(); i20 = i20 + 1) {
+                                org.w3c.dom.Element dataVirtualHardDisksElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dataVirtualHardDisksSequenceElement, "http://schemas.microsoft.com/windowsazure", "DataVirtualHardDisk").get(i20));
                                 DataVirtualHardDisk dataVirtualHardDiskInstance = new DataVirtualHardDisk();
                                 roleInstance.getDataVirtualHardDisks().add(dataVirtualHardDiskInstance);
                                 
@@ -6341,8 +6762,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 
                 Element extendedPropertiesSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperties");
                 if (extendedPropertiesSequenceElement != null) {
-                    for (int i16 = 0; i16 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i16 = i16 + 1) {
-                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i16));
+                    for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").size(); i21 = i21 + 1) {
+                        org.w3c.dom.Element extendedPropertiesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extendedPropertiesSequenceElement, "http://schemas.microsoft.com/windowsazure", "ExtendedProperty").get(i21));
                         String extendedPropertiesKey = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Name").getTextContent();
                         String extendedPropertiesValue = XmlUtility.getElementByTagNameNS(extendedPropertiesElement, "http://schemas.microsoft.com/windowsazure", "Value").getTextContent();
                         result.getExtendedProperties().put(extendedPropertiesKey, extendedPropertiesValue);
@@ -6368,18 +6789,18 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         persistentVMDowntimeInstance.setEndTime(endTimeInstance);
                     }
                     
-                    Element statusElement4 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
-                    if (statusElement4 != null) {
-                        String statusInstance4;
-                        statusInstance4 = statusElement4.getTextContent();
-                        persistentVMDowntimeInstance.setStatus(statusInstance4);
+                    Element statusElement6 = XmlUtility.getElementByTagNameNS(persistentVMDowntimeElement, "http://schemas.microsoft.com/windowsazure", "Status");
+                    if (statusElement6 != null) {
+                        String statusInstance6;
+                        statusInstance6 = statusElement6.getTextContent();
+                        persistentVMDowntimeInstance.setStatus(statusInstance6);
                     }
                 }
                 
                 Element virtualIPsSequenceElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "VirtualIPs");
                 if (virtualIPsSequenceElement != null) {
-                    for (int i17 = 0; i17 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i17 = i17 + 1) {
-                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i17));
+                    for (int i22 = 0; i22 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").size(); i22 = i22 + 1) {
+                        org.w3c.dom.Element virtualIPsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(virtualIPsSequenceElement, "http://schemas.microsoft.com/windowsazure", "VirtualIP").get(i22));
                         VirtualIPAddress virtualIPInstance = new VirtualIPAddress();
                         result.getVirtualIPAddresses().add(virtualIPInstance);
                         
@@ -6390,11 +6811,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             virtualIPInstance.setAddress(addressInstance);
                         }
                         
-                        Element nameElement5 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                        if (nameElement5 != null) {
-                            String nameInstance5;
-                            nameInstance5 = nameElement5.getTextContent();
-                            virtualIPInstance.setName(nameInstance5);
+                        Element nameElement7 = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                        if (nameElement7 != null) {
+                            String nameInstance7;
+                            nameInstance7 = nameElement7.getTextContent();
+                            virtualIPInstance.setName(nameInstance7);
                         }
                         
                         Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
@@ -6420,16 +6841,16 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element dnsServersSequenceElement = XmlUtility.getElementByTagNameNS(dnsElement, "http://schemas.microsoft.com/windowsazure", "DnsServers");
                     if (dnsServersSequenceElement != null) {
-                        for (int i18 = 0; i18 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i18 = i18 + 1) {
-                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i18));
+                        for (int i23 = 0; i23 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").size(); i23 = i23 + 1) {
+                            org.w3c.dom.Element dnsServersElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(dnsServersSequenceElement, "http://schemas.microsoft.com/windowsazure", "DnsServer").get(i23));
                             DnsServer dnsServerInstance = new DnsServer();
                             dnsInstance.getDnsServers().add(dnsServerInstance);
                             
-                            Element nameElement6 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
-                            if (nameElement6 != null) {
-                                String nameInstance6;
-                                nameInstance6 = nameElement6.getTextContent();
-                                dnsServerInstance.setName(nameInstance6);
+                            Element nameElement8 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Name");
+                            if (nameElement8 != null) {
+                                String nameInstance8;
+                                nameInstance8 = nameElement8.getTextContent();
+                                dnsServerInstance.setName(nameInstance8);
                             }
                             
                             Element addressElement2 = XmlUtility.getElementByTagNameNS(dnsServersElement, "http://schemas.microsoft.com/windowsazure", "Address");
@@ -6449,8 +6870,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element allRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "AllRoles");
                     if (allRolesSequenceElement != null) {
-                        for (int i19 = 0; i19 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i19 = i19 + 1) {
-                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i19));
+                        for (int i24 = 0; i24 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i24 = i24 + 1) {
+                            org.w3c.dom.Element allRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(allRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i24));
                             ExtensionConfiguration.Extension extensionInstance = new ExtensionConfiguration.Extension();
                             extensionConfigurationInstance.getAllRoles().add(extensionInstance);
                             
@@ -6465,8 +6886,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                     
                     Element namedRolesSequenceElement = XmlUtility.getElementByTagNameNS(extensionConfigurationElement, "http://schemas.microsoft.com/windowsazure", "NamedRoles");
                     if (namedRolesSequenceElement != null) {
-                        for (int i20 = 0; i20 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i20 = i20 + 1) {
-                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i20));
+                        for (int i25 = 0; i25 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").size(); i25 = i25 + 1) {
+                            org.w3c.dom.Element namedRolesElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(namedRolesSequenceElement, "http://schemas.microsoft.com/windowsazure", "Role").get(i25));
                             ExtensionConfiguration.NamedRole roleInstance2 = new ExtensionConfiguration.NamedRole();
                             extensionConfigurationInstance.getNamedRoles().add(roleInstance2);
                             
@@ -6479,8 +6900,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                             
                             Element extensionsSequenceElement = XmlUtility.getElementByTagNameNS(namedRolesElement, "http://schemas.microsoft.com/windowsazure", "Extensions");
                             if (extensionsSequenceElement != null) {
-                                for (int i21 = 0; i21 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i21 = i21 + 1) {
-                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i21));
+                                for (int i26 = 0; i26 < com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").size(); i26 = i26 + 1) {
+                                    org.w3c.dom.Element extensionsElement = ((org.w3c.dom.Element) com.microsoft.windowsazure.core.utils.XmlUtility.getElementsByTagNameNS(extensionsSequenceElement, "http://schemas.microsoft.com/windowsazure", "Extension").get(i26));
                                     ExtensionConfiguration.Extension extensionInstance2 = new ExtensionConfiguration.Extension();
                                     roleInstance2.getExtensions().add(extensionInstance2);
                                     

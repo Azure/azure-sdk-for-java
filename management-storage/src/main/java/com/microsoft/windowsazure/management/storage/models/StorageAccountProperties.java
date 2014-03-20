@@ -138,7 +138,7 @@ public class StorageAccountProperties {
     /**
     * Optional. Indicates the geographical region in which the storage account
     * is being replicated.  The GeoSecondaryRegion element is not returned if
-    * geo-replication is “off” for this account.
+    * geo-replication is "off" for this account.
     * @return The GeoSecondaryRegion value.
     */
     public String getGeoSecondaryRegion() {
@@ -148,7 +148,7 @@ public class StorageAccountProperties {
     /**
     * Optional. Indicates the geographical region in which the storage account
     * is being replicated.  The GeoSecondaryRegion element is not returned if
-    * geo-replication is “off” for this account.
+    * geo-replication is "off" for this account.
     * @param geoSecondaryRegionValue The GeoSecondaryRegion value.
     */
     public void setGeoSecondaryRegion(final String geoSecondaryRegionValue) {

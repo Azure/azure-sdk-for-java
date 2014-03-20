@@ -23,21 +23,43 @@
 
 package com.microsoft.windowsazure.management.compute.models;
 
+import java.util.Calendar;
+
 /**
 * Optional. This object contains status information of the Guest Agent
 * installed on a RoleInstance. Guest Agent can be installed on a role instance
-* by setting “ProvisionGuestAgent” to true in Create Deployment or Add Role
+* by setting "ProvisionGuestAgent" to true in Create Deployment or Add Role
 * API calls. Version header: Required to be "2014-04-01" or later.
 */
 public class GuestAgentStatus {
-    private FormattedMessage formattedMessage;
+    private Integer code;
+    
+    /**
+    * Optional. Integer. Status code from the result of applying the GA
+    * settings.
+    * @return The Code value.
+    */
+    public Integer getCode() {
+        return this.code;
+    }
+    
+    /**
+    * Optional. Integer. Status code from the result of applying the GA
+    * settings.
+    * @param codeValue The Code value.
+    */
+    public void setCode(final Integer codeValue) {
+        this.code = codeValue;
+    }
+    
+    private GuestAgentFormattedMessage formattedMessage;
     
     /**
     * Optional. This object encapsulates localized status message from the
     * Guest Agent.
     * @return The FormattedMessage value.
     */
-    public FormattedMessage getFormattedMessage() {
+    public GuestAgentFormattedMessage getFormattedMessage() {
         return this.formattedMessage;
     }
     
@@ -46,7 +68,7 @@ public class GuestAgentStatus {
     * Guest Agent.
     * @param formattedMessageValue The FormattedMessage value.
     */
-    public void setFormattedMessage(final FormattedMessage formattedMessageValue) {
+    public void setFormattedMessage(final GuestAgentFormattedMessage formattedMessageValue) {
         this.formattedMessage = formattedMessageValue;
     }
     
@@ -66,6 +88,26 @@ public class GuestAgentStatus {
     */
     public void setGuestAgentVersion(final String guestAgentVersionValue) {
         this.guestAgentVersion = guestAgentVersionValue;
+    }
+    
+    private GuestAgentMessage message;
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Guest Agent.
+    * @return The Message value.
+    */
+    public GuestAgentMessage getMessage() {
+        return this.message;
+    }
+    
+    /**
+    * Optional. This object encapsulates localized status message from the
+    * Guest Agent.
+    * @param messageValue The Message value.
+    */
+    public void setMessage(final GuestAgentMessage messageValue) {
+        this.message = messageValue;
     }
     
     private String protocolVersion;
@@ -104,13 +146,13 @@ public class GuestAgentStatus {
         this.status = statusValue;
     }
     
-    private String timestamp;
+    private Calendar timestamp;
     
     /**
     * Optional. UTC time at which the status was reported.
     * @return The Timestamp value.
     */
-    public String getTimestamp() {
+    public Calendar getTimestamp() {
         return this.timestamp;
     }
     
@@ -118,7 +160,7 @@ public class GuestAgentStatus {
     * Optional. UTC time at which the status was reported.
     * @param timestampValue The Timestamp value.
     */
-    public void setTimestamp(final String timestampValue) {
+    public void setTimestamp(final Calendar timestampValue) {
         this.timestamp = timestampValue;
     }
 }
