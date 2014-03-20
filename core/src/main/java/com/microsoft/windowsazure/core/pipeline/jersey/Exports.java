@@ -15,7 +15,7 @@
 package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.Configuration;
-import static com.microsoft.windowsazure.core.utils.ExportUtils.*;
+import static com.microsoft.windowsazure.core.utils.ExportUtils.getPropertyIfExists;
 
 import java.util.Map;
 

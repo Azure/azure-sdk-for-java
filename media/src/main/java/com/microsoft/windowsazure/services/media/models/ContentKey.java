@@ -304,7 +304,7 @@ public class ContentKey {
 
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
-            PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+            PipelineHelpers.throwIfNotSuccess(clientResponse);
             RebindContentKeyType rebindContentKeyType = parseResponse(clientResponse);
             return rebindContentKeyType.getContentKey();
         }

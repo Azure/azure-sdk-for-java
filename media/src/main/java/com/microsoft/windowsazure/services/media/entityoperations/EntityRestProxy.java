@@ -191,7 +191,7 @@ public abstract class EntityRestProxy implements EntityContract {
         Object rawResponse = getResource(updater).header("X-HTTP-METHOD",
                 "MERGE").post(ClientResponse.class,
                 updater.getRequestContents());
-        PipelineHelpers.ThrowIfNotSuccess((ClientResponse) rawResponse);
+        PipelineHelpers.throwIfNotSuccess((ClientResponse) rawResponse);
         updater.processResponse(rawResponse);
     }
 

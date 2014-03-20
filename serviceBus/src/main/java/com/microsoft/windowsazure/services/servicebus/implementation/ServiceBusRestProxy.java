@@ -566,7 +566,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ClientResponse clientResponse = getResource().path(queueName)
                 .path("messages").path(messageId).path(lockToken)
                 .post(ClientResponse.class, "");
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
     @Override
@@ -576,7 +576,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ClientResponse clientResponse = getResource().path(topicName)
                 .path("Subscriptions").path(subscriptionName).path("messages")
                 .path(messageId).path(lockToken).post(ClientResponse.class, "");
-        PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+        PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
 }

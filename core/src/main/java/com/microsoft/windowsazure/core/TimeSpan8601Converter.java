@@ -19,7 +19,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-public class TimeSpan8601Converter {
+public abstract class TimeSpan8601Converter {
     public static String format(Duration duration) {
         return duration.toString();
     }

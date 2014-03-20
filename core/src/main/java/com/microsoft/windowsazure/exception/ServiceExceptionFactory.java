@@ -21,7 +21,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.UniformInterfaceException;
 
-public final class ServiceExceptionFactory {
+public abstract class ServiceExceptionFactory {
     public static ServiceException process(String serviceName,
             ServiceException exception) {
         Throwable cause = exception.getCause();

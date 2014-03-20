@@ -150,7 +150,7 @@ public class QueueRestProxy implements QueueContract {
     }
 
     private void ThrowIfError(ClientResponse r) {
-        PipelineHelpers.ThrowIfError(r);
+        PipelineHelpers.throwIfError(r);
     }
 
     private WebResource addOptionalQueryParam(WebResource webResource,
