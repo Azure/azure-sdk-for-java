@@ -694,7 +694,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element isPremiumElement = XmlUtility.getElementByTagNameNS(diskElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
@@ -1325,14 +1325,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element isCorruptedElement = XmlUtility.getElementByTagNameNS(diskElement, "http://schemas.microsoft.com/windowsazure", "IsCorrupted");
                 if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
                     boolean isCorruptedInstance;
-                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
+                    isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent().toLowerCase());
                     result.setIsCorrupted(isCorruptedInstance);
                 }
                 
                 Element isPremiumElement = XmlUtility.getElementByTagNameNS(diskElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
             }
@@ -1542,14 +1542,14 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                     Element isCorruptedElement = XmlUtility.getElementByTagNameNS(disksElement, "http://schemas.microsoft.com/windowsazure", "IsCorrupted");
                     if (isCorruptedElement != null && (isCorruptedElement.getTextContent() == null || isCorruptedElement.getTextContent().isEmpty() == true) == false) {
                         boolean isCorruptedInstance;
-                        isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent());
+                        isCorruptedInstance = DatatypeConverter.parseBoolean(isCorruptedElement.getTextContent().toLowerCase());
                         diskInstance.setIsCorrupted(isCorruptedInstance);
                     }
                     
                     Element isPremiumElement = XmlUtility.getElementByTagNameNS(disksElement, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                     if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                         boolean isPremiumInstance;
-                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                        isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                         diskInstance.setIsPremium(isPremiumInstance);
                     }
                 }
@@ -1980,7 +1980,7 @@ public class VirtualMachineDiskOperationsImpl implements ServiceOperations<Compu
                 Element isPremiumElement = XmlUtility.getElementByTagNameNS(diskElement2, "http://schemas.microsoft.com/windowsazure", "IsPremium");
                 if (isPremiumElement != null && (isPremiumElement.getTextContent() == null || isPremiumElement.getTextContent().isEmpty() == true) == false) {
                     boolean isPremiumInstance;
-                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent());
+                    isPremiumInstance = DatatypeConverter.parseBoolean(isPremiumElement.getTextContent().toLowerCase());
                     result.setIsPremium(isPremiumInstance);
                 }
             }

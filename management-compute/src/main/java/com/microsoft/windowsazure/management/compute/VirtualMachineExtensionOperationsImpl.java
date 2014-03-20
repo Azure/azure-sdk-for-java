@@ -243,7 +243,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
                     if (replicationCompletedElement != null) {
                         boolean replicationCompletedInstance;
-                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent());
+                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
                     }
                     
@@ -271,7 +271,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
                     if (isJsonExtensionElement != null) {
                         boolean isJsonExtensionInstance;
-                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent());
+                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
                     }
                 }
@@ -473,7 +473,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element replicationCompletedElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "ReplicationCompleted");
                     if (replicationCompletedElement != null) {
                         boolean replicationCompletedInstance;
-                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent());
+                        replicationCompletedInstance = DatatypeConverter.parseBoolean(replicationCompletedElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setReplicationCompleted(replicationCompletedInstance);
                     }
                     
@@ -501,7 +501,7 @@ public class VirtualMachineExtensionOperationsImpl implements ServiceOperations<
                     Element isJsonExtensionElement = XmlUtility.getElementByTagNameNS(resourceExtensionsElement, "http://schemas.microsoft.com/windowsazure", "IsJsonExtension");
                     if (isJsonExtensionElement != null) {
                         boolean isJsonExtensionInstance;
-                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent());
+                        isJsonExtensionInstance = DatatypeConverter.parseBoolean(isJsonExtensionElement.getTextContent().toLowerCase());
                         resourceExtensionInstance.setIsJsonExtension(isJsonExtensionInstance);
                     }
                 }

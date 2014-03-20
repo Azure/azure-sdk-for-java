@@ -432,14 +432,14 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
                         Element requiresSessionElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresSession");
                         if (requiresSessionElement2 != null) {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -453,7 +453,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element deadLetteringOnMessageExpirationElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DeadLetteringOnMessageExpiration");
                         if (deadLetteringOnMessageExpirationElement2 != null) {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -474,7 +474,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -495,7 +495,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element isAnonymousAccessibleElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -596,7 +596,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -817,14 +817,14 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
                         Element requiresSessionElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresSession");
                         if (requiresSessionElement != null) {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -838,7 +838,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element deadLetteringOnMessageExpirationElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DeadLetteringOnMessageExpiration");
                         if (deadLetteringOnMessageExpirationElement != null) {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -859,7 +859,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -880,7 +880,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element isAnonymousAccessibleElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -981,7 +981,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent().toLowerCase());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -1365,14 +1365,14 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element requiresDuplicateDetectionElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                                 if (requiresDuplicateDetectionElement != null) {
                                     boolean requiresDuplicateDetectionInstance;
-                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent().toLowerCase());
                                     entryInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                                 }
                                 
                                 Element requiresSessionElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresSession");
                                 if (requiresSessionElement != null) {
                                     boolean requiresSessionInstance;
-                                    requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent());
+                                    requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement.getTextContent().toLowerCase());
                                     entryInstance.setRequiresSession(requiresSessionInstance);
                                 }
                                 
@@ -1386,7 +1386,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element deadLetteringOnMessageExpirationElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DeadLetteringOnMessageExpiration");
                                 if (deadLetteringOnMessageExpirationElement != null) {
                                     boolean deadLetteringOnMessageExpirationInstance;
-                                    deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent());
+                                    deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement.getTextContent().toLowerCase());
                                     entryInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                                 }
                                 
@@ -1407,7 +1407,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element enableBatchedOperationsElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                                 if (enableBatchedOperationsElement != null) {
                                     boolean enableBatchedOperationsInstance;
-                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent().toLowerCase());
                                     entryInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                                 }
                                 
@@ -1428,7 +1428,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element isAnonymousAccessibleElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                                 if (isAnonymousAccessibleElement != null) {
                                     boolean isAnonymousAccessibleInstance;
-                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent().toLowerCase());
                                     entryInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                                 }
                                 
@@ -1529,7 +1529,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element supportOrderingElement = XmlUtility.getElementByTagNameNS(queueDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                                 if (supportOrderingElement != null) {
                                     boolean supportOrderingInstance;
-                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
+                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent().toLowerCase());
                                     entryInstance.setSupportOrdering(supportOrderingInstance);
                                 }
                                 
@@ -1943,14 +1943,14 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
                         Element requiresSessionElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresSession");
                         if (requiresSessionElement2 != null) {
                             boolean requiresSessionInstance;
-                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent());
+                            requiresSessionInstance = DatatypeConverter.parseBoolean(requiresSessionElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setRequiresSession(requiresSessionInstance);
                         }
                         
@@ -1964,7 +1964,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element deadLetteringOnMessageExpirationElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "DeadLetteringOnMessageExpiration");
                         if (deadLetteringOnMessageExpirationElement2 != null) {
                             boolean deadLetteringOnMessageExpirationInstance;
-                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent());
+                            deadLetteringOnMessageExpirationInstance = DatatypeConverter.parseBoolean(deadLetteringOnMessageExpirationElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpirationInstance);
                         }
                         
@@ -1985,7 +1985,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -2006,7 +2006,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element isAnonymousAccessibleElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -2107,7 +2107,7 @@ public class QueueOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement2 = XmlUtility.getElementByTagNameNS(queueDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent().toLowerCase());
                             queueDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         

@@ -4452,7 +4452,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         Element enableDirectServerReturnElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent().toLowerCase());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
@@ -4533,14 +4533,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 Element resetPasswordOnFirstLogonElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
                                 Element enableAutomaticUpdatesElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
@@ -4698,7 +4698,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 Element disableSshPasswordAuthenticationElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
@@ -4967,7 +4967,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element provisionGuestAgentElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent().toLowerCase());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
@@ -4990,14 +4990,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element lockedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Locked");
                 if (lockedElement != null) {
                     boolean lockedInstance;
-                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent().toLowerCase());
                     result.setLocked(lockedInstance);
                 }
                 
                 Element rollbackAllowedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
-                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
+                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent().toLowerCase());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
                 
@@ -5083,7 +5083,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
                             virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }
@@ -5769,7 +5769,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         Element enableDirectServerReturnElement = XmlUtility.getElementByTagNameNS(inputEndpointsElement, "http://schemas.microsoft.com/windowsazure", "EnableDirectServerReturn");
                                         if (enableDirectServerReturnElement != null && (enableDirectServerReturnElement.getTextContent() == null || enableDirectServerReturnElement.getTextContent().isEmpty() == true) == false) {
                                             boolean enableDirectServerReturnInstance;
-                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent());
+                                            enableDirectServerReturnInstance = DatatypeConverter.parseBoolean(enableDirectServerReturnElement.getTextContent().toLowerCase());
                                             inputEndpointInstance.setEnableDirectServerReturn(enableDirectServerReturnInstance);
                                         }
                                         
@@ -5850,14 +5850,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 Element resetPasswordOnFirstLogonElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "ResetPasswordOnFirstLogon");
                                 if (resetPasswordOnFirstLogonElement != null && (resetPasswordOnFirstLogonElement.getTextContent() == null || resetPasswordOnFirstLogonElement.getTextContent().isEmpty() == true) == false) {
                                     boolean resetPasswordOnFirstLogonInstance;
-                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent());
+                                    resetPasswordOnFirstLogonInstance = DatatypeConverter.parseBoolean(resetPasswordOnFirstLogonElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setResetPasswordOnFirstLogon(resetPasswordOnFirstLogonInstance);
                                 }
                                 
                                 Element enableAutomaticUpdatesElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "EnableAutomaticUpdates");
                                 if (enableAutomaticUpdatesElement != null && (enableAutomaticUpdatesElement.getTextContent() == null || enableAutomaticUpdatesElement.getTextContent().isEmpty() == true) == false) {
                                     boolean enableAutomaticUpdatesInstance;
-                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent());
+                                    enableAutomaticUpdatesInstance = DatatypeConverter.parseBoolean(enableAutomaticUpdatesElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setEnableAutomaticUpdates(enableAutomaticUpdatesInstance);
                                 }
                                 
@@ -6015,7 +6015,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                 Element disableSshPasswordAuthenticationElement = XmlUtility.getElementByTagNameNS(configurationSetsElement, "http://schemas.microsoft.com/windowsazure", "DisableSshPasswordAuthentication");
                                 if (disableSshPasswordAuthenticationElement != null && (disableSshPasswordAuthenticationElement.getTextContent() == null || disableSshPasswordAuthenticationElement.getTextContent().isEmpty() == true) == false) {
                                     boolean disableSshPasswordAuthenticationInstance;
-                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent());
+                                    disableSshPasswordAuthenticationInstance = DatatypeConverter.parseBoolean(disableSshPasswordAuthenticationElement.getTextContent().toLowerCase());
                                     configurationSetInstance.setDisableSshPasswordAuthentication(disableSshPasswordAuthenticationInstance);
                                 }
                                 
@@ -6284,7 +6284,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element provisionGuestAgentElement = XmlUtility.getElementByTagNameNS(roleListElement, "http://schemas.microsoft.com/windowsazure", "ProvisionGuestAgent");
                         if (provisionGuestAgentElement != null && (provisionGuestAgentElement.getTextContent() == null || provisionGuestAgentElement.getTextContent().isEmpty() == true) == false) {
                             boolean provisionGuestAgentInstance;
-                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent());
+                            provisionGuestAgentInstance = DatatypeConverter.parseBoolean(provisionGuestAgentElement.getTextContent().toLowerCase());
                             roleInstance.setProvisionGuestAgent(provisionGuestAgentInstance);
                         }
                         
@@ -6307,14 +6307,14 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element lockedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Locked");
                 if (lockedElement != null) {
                     boolean lockedInstance;
-                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent());
+                    lockedInstance = DatatypeConverter.parseBoolean(lockedElement.getTextContent().toLowerCase());
                     result.setLocked(lockedInstance);
                 }
                 
                 Element rollbackAllowedElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "RollbackAllowed");
                 if (rollbackAllowedElement != null) {
                     boolean rollbackAllowedInstance;
-                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent());
+                    rollbackAllowedInstance = DatatypeConverter.parseBoolean(rollbackAllowedElement.getTextContent().toLowerCase());
                     result.setRollbackAllowed(rollbackAllowedInstance);
                 }
                 
@@ -6400,7 +6400,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                         Element isDnsProgrammedElement = XmlUtility.getElementByTagNameNS(virtualIPsElement, "http://schemas.microsoft.com/windowsazure", "IsDnsProgrammed");
                         if (isDnsProgrammedElement != null && (isDnsProgrammedElement.getTextContent() == null || isDnsProgrammedElement.getTextContent().isEmpty() == true) == false) {
                             boolean isDnsProgrammedInstance;
-                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent());
+                            isDnsProgrammedInstance = DatatypeConverter.parseBoolean(isDnsProgrammedElement.getTextContent().toLowerCase());
                             virtualIPInstance.setIsDnsProgrammed(isDnsProgrammedInstance);
                         }
                     }

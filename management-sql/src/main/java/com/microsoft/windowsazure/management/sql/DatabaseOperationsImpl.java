@@ -315,14 +315,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 Element isFederationRootElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                 }
                 
                 Element isSystemObjectElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                 }
                 
@@ -673,14 +673,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 Element isFederationRootElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                 }
                 
                 Element isSystemObjectElement = XmlUtility.getElementByTagNameNS(serviceResourceElement, "http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                 }
                 
@@ -1176,14 +1176,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                     Element isFederationRootElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                     if (isFederationRootElement != null) {
                         boolean isFederationRootInstance;
-                        isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
+                        isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent().toLowerCase());
                         serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                     }
                     
                     Element isSystemObjectElement = XmlUtility.getElementByTagNameNS(serviceResourcesElement, "http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                     if (isSystemObjectElement != null) {
                         boolean isSystemObjectInstance;
-                        isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
+                        isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent().toLowerCase());
                         serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                     }
                     
@@ -1487,14 +1487,14 @@ public class DatabaseOperationsImpl implements ServiceOperations<SqlManagementCl
                 Element isFederationRootElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsFederationRoot");
                 if (isFederationRootElement != null) {
                     boolean isFederationRootInstance;
-                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent());
+                    isFederationRootInstance = DatatypeConverter.parseBoolean(isFederationRootElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsFederationRoot(isFederationRootInstance);
                 }
                 
                 Element isSystemObjectElement = XmlUtility.getElementByTagNameNS(serviceResourceElement2, "http://schemas.microsoft.com/windowsazure", "IsSystemObject");
                 if (isSystemObjectElement != null) {
                     boolean isSystemObjectInstance;
-                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent());
+                    isSystemObjectInstance = DatatypeConverter.parseBoolean(isSystemObjectElement.getTextContent().toLowerCase());
                     serviceResourceInstance.setIsSystemObject(isSystemObjectInstance);
                 }
                 
