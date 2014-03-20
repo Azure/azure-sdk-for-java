@@ -206,14 +206,14 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                     Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                     if (isDefaultElement != null) {
                         boolean isDefaultInstance;
-                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
+                        isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
                         operatingSystemInstance.setIsDefault(isDefaultInstance);
                     }
                     
                     Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
                     if (isActiveElement != null) {
                         boolean isActiveInstance;
-                        isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
+                        isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
                         operatingSystemInstance.setIsActive(isActiveInstance);
                     }
                     
@@ -398,14 +398,14 @@ public class OperatingSystemOperationsImpl implements ServiceOperations<ComputeM
                             Element isDefaultElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsDefault");
                             if (isDefaultElement != null) {
                                 boolean isDefaultInstance;
-                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent());
+                                isDefaultInstance = DatatypeConverter.parseBoolean(isDefaultElement.getTextContent().toLowerCase());
                                 operatingSystemInstance.setIsDefault(isDefaultInstance);
                             }
                             
                             Element isActiveElement = XmlUtility.getElementByTagNameNS(operatingSystemsElement, "http://schemas.microsoft.com/windowsazure", "IsActive");
                             if (isActiveElement != null) {
                                 boolean isActiveInstance;
-                                isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent());
+                                isActiveInstance = DatatypeConverter.parseBoolean(isActiveElement.getTextContent().toLowerCase());
                                 operatingSystemInstance.setIsActive(isActiveInstance);
                             }
                         }

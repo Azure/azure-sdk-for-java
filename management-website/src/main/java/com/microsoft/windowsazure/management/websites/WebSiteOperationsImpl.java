@@ -639,7 +639,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element adminEnabledElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent().toLowerCase());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -660,7 +660,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element enabledElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 if (enabledElement != null) {
                     boolean enabledInstance;
-                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -950,7 +950,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil16 == false) {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent().toLowerCase());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -964,7 +964,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil17 == false) {
                                     boolean validInstance;
-                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent().toLowerCase());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }
@@ -1690,7 +1690,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element adminEnabledElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent().toLowerCase());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -1711,7 +1711,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element enabledElement = XmlUtility.getElementByTagNameNS(siteElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 if (enabledElement != null) {
                     boolean enabledInstance;
-                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -2001,7 +2001,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil16 == false) {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent().toLowerCase());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -2015,7 +2015,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil17 == false) {
                                     boolean validInstance;
-                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent().toLowerCase());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }
@@ -2279,7 +2279,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element detailedErrorLoggingEnabledElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "DetailedErrorLoggingEnabled");
                 if (detailedErrorLoggingEnabledElement != null && (detailedErrorLoggingEnabledElement.getTextContent() == null || detailedErrorLoggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean detailedErrorLoggingEnabledInstance;
-                    detailedErrorLoggingEnabledInstance = DatatypeConverter.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent());
+                    detailedErrorLoggingEnabledInstance = DatatypeConverter.parseBoolean(detailedErrorLoggingEnabledElement.getTextContent().toLowerCase());
                     result.setDetailedErrorLoggingEnabled(detailedErrorLoggingEnabledInstance);
                 }
                 
@@ -2323,7 +2323,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element httpLoggingEnabledElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "HttpLoggingEnabled");
                 if (httpLoggingEnabledElement != null && (httpLoggingEnabledElement.getTextContent() == null || httpLoggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean httpLoggingEnabledInstance;
-                    httpLoggingEnabledInstance = DatatypeConverter.parseBoolean(httpLoggingEnabledElement.getTextContent());
+                    httpLoggingEnabledInstance = DatatypeConverter.parseBoolean(httpLoggingEnabledElement.getTextContent().toLowerCase());
                     result.setHttpLoggingEnabled(httpLoggingEnabledInstance);
                 }
                 
@@ -2389,7 +2389,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element remoteDebuggingEnabledElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RemoteDebuggingEnabled");
                 if (remoteDebuggingEnabledElement != null && (remoteDebuggingEnabledElement.getTextContent() == null || remoteDebuggingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean remoteDebuggingEnabledInstance;
-                    remoteDebuggingEnabledInstance = DatatypeConverter.parseBoolean(remoteDebuggingEnabledElement.getTextContent());
+                    remoteDebuggingEnabledInstance = DatatypeConverter.parseBoolean(remoteDebuggingEnabledElement.getTextContent().toLowerCase());
                     result.setRemoteDebuggingEnabled(remoteDebuggingEnabledInstance);
                 }
                 
@@ -2410,7 +2410,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element requestTracingEnabledElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "RequestTracingEnabled");
                 if (requestTracingEnabledElement != null && (requestTracingEnabledElement.getTextContent() == null || requestTracingEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean requestTracingEnabledInstance;
-                    requestTracingEnabledInstance = DatatypeConverter.parseBoolean(requestTracingEnabledElement.getTextContent());
+                    requestTracingEnabledInstance = DatatypeConverter.parseBoolean(requestTracingEnabledElement.getTextContent().toLowerCase());
                     result.setRequestTracingEnabled(requestTracingEnabledInstance);
                 }
                 
@@ -2438,14 +2438,14 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element use32BitWorkerProcessElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "Use32BitWorkerProcess");
                 if (use32BitWorkerProcessElement != null && (use32BitWorkerProcessElement.getTextContent() == null || use32BitWorkerProcessElement.getTextContent().isEmpty() == true) == false) {
                     boolean use32BitWorkerProcessInstance;
-                    use32BitWorkerProcessInstance = DatatypeConverter.parseBoolean(use32BitWorkerProcessElement.getTextContent());
+                    use32BitWorkerProcessInstance = DatatypeConverter.parseBoolean(use32BitWorkerProcessElement.getTextContent().toLowerCase());
                     result.setUse32BitWorkerProcess(use32BitWorkerProcessInstance);
                 }
                 
                 Element webSocketsEnabledElement = XmlUtility.getElementByTagNameNS(siteConfigElement, "http://schemas.microsoft.com/windowsazure", "WebSocketsEnabled");
                 if (webSocketsEnabledElement != null && (webSocketsEnabledElement.getTextContent() == null || webSocketsEnabledElement.getTextContent().isEmpty() == true) == false) {
                     boolean webSocketsEnabledInstance;
-                    webSocketsEnabledInstance = DatatypeConverter.parseBoolean(webSocketsEnabledElement.getTextContent());
+                    webSocketsEnabledInstance = DatatypeConverter.parseBoolean(webSocketsEnabledElement.getTextContent().toLowerCase());
                     result.setWebSocketsEnabled(webSocketsEnabledInstance);
                 }
             }
@@ -2885,7 +2885,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                         
                         Attr ftpPassiveModeAttribute = publishProfilesElement.getAttributeNodeNS("", "ftpPassiveMode");
                         if (ftpPassiveModeAttribute != null) {
-                            publishProfileInstance.setFtpPassiveMode(DatatypeConverter.parseBoolean(ftpPassiveModeAttribute.getValue()));
+                            publishProfileInstance.setFtpPassiveMode(DatatypeConverter.parseBoolean(ftpPassiveModeAttribute.getValue().toLowerCase()));
                         }
                         
                         Attr userNameAttribute = publishProfilesElement.getAttributeNodeNS("", "userName");
@@ -3406,7 +3406,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
             Element booleanElement = XmlUtility.getElementByTagNameNS(responseDoc, "http://schemas.microsoft.com/2003/10/Serialization/", "boolean");
             if (booleanElement != null) {
                 boolean booleanInstance;
-                booleanInstance = DatatypeConverter.parseBoolean(booleanElement.getTextContent());
+                booleanInstance = DatatypeConverter.parseBoolean(booleanElement.getTextContent().toLowerCase());
                 result.setIsAvailable(booleanInstance);
             }
             
@@ -4029,7 +4029,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element adminEnabledElement = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                 if (adminEnabledElement != null) {
                     boolean adminEnabledInstance;
-                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
+                    adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent().toLowerCase());
                     webSiteInstance.setAdminEnabled(adminEnabledInstance);
                 }
                 
@@ -4050,7 +4050,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                 Element enabledElement2 = XmlUtility.getElementByTagNameNS(siteElement2, "http://schemas.microsoft.com/windowsazure", "Enabled");
                 if (enabledElement2 != null) {
                     boolean enabledInstance;
-                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement2.getTextContent());
+                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement2.getTextContent().toLowerCase());
                     webSiteInstance.setEnabled(enabledInstance);
                 }
                 
@@ -4340,7 +4340,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil16 == false) {
                                     boolean toDeleteInstance;
-                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement2.getTextContent());
+                                    toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement2.getTextContent().toLowerCase());
                                     certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                 }
                             }
@@ -4354,7 +4354,7 @@ public class WebSiteOperationsImpl implements ServiceOperations<WebSiteManagemen
                                 }
                                 if (isNil17 == false) {
                                     boolean validInstance;
-                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
+                                    validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent().toLowerCase());
                                     certificateInstance.setIsValid(validInstance);
                                 }
                             }

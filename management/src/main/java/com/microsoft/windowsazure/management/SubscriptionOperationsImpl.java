@@ -489,7 +489,7 @@ public class SubscriptionOperationsImpl implements ServiceOperations<ManagementC
                             Element usedServiceManagementApiElement = XmlUtility.getElementByTagNameNS(operationCallerElement, "http://schemas.microsoft.com/windowsazure", "UsedServiceManagementApi");
                             if (usedServiceManagementApiElement != null) {
                                 boolean usedServiceManagementApiInstance;
-                                usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent());
+                                usedServiceManagementApiInstance = DatatypeConverter.parseBoolean(usedServiceManagementApiElement.getTextContent().toLowerCase());
                                 operationCallerInstance.setUsedServiceManagementApi(usedServiceManagementApiInstance);
                             }
                             

@@ -740,7 +740,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                 Element inUseElement = XmlUtility.getElementByTagNameNS(reservedIPElement, "http://schemas.microsoft.com/windowsazure", "InUse");
                 if (inUseElement != null) {
                     boolean inUseInstance;
-                    inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
+                    inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent().toLowerCase());
                     result.setInUse(inUseInstance);
                 }
                 
@@ -917,7 +917,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
                     Element inUseElement = XmlUtility.getElementByTagNameNS(reservedIPsElement, "http://schemas.microsoft.com/windowsazure", "InUse");
                     if (inUseElement != null) {
                         boolean inUseInstance;
-                        inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent());
+                        inUseInstance = DatatypeConverter.parseBoolean(inUseElement.getTextContent().toLowerCase());
                         reservedIPInstance.setInUse(inUseInstance);
                     }
                     

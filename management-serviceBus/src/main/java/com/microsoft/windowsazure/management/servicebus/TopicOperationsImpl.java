@@ -436,7 +436,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -450,7 +450,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -464,14 +464,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element filteringMessagesBeforePublishingElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         if (filteringMessagesBeforePublishingElement2 != null) {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
                         Element isAnonymousAccessibleElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -572,7 +572,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -765,7 +765,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent().toLowerCase());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -779,7 +779,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent().toLowerCase());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -793,14 +793,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element filteringMessagesBeforePublishingElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         if (filteringMessagesBeforePublishingElement != null) {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent().toLowerCase());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
                         Element isAnonymousAccessibleElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent().toLowerCase());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -901,7 +901,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent().toLowerCase());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         
@@ -1253,7 +1253,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element requiresDuplicateDetectionElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                                 if (requiresDuplicateDetectionElement != null) {
                                     boolean requiresDuplicateDetectionInstance;
-                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent());
+                                    requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement.getTextContent().toLowerCase());
                                     entryInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                                 }
                                 
@@ -1267,7 +1267,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element enableBatchedOperationsElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                                 if (enableBatchedOperationsElement != null) {
                                     boolean enableBatchedOperationsInstance;
-                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent());
+                                    enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement.getTextContent().toLowerCase());
                                     entryInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                                 }
                                 
@@ -1281,14 +1281,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element filteringMessagesBeforePublishingElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                                 if (filteringMessagesBeforePublishingElement != null) {
                                     boolean filteringMessagesBeforePublishingInstance;
-                                    filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent());
+                                    filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement.getTextContent().toLowerCase());
                                     entryInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                                 }
                                 
                                 Element isAnonymousAccessibleElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                                 if (isAnonymousAccessibleElement != null) {
                                     boolean isAnonymousAccessibleInstance;
-                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent());
+                                    isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement.getTextContent().toLowerCase());
                                     entryInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                                 }
                                 
@@ -1389,7 +1389,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                                 Element supportOrderingElement = XmlUtility.getElementByTagNameNS(topicDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                                 if (supportOrderingElement != null) {
                                     boolean supportOrderingInstance;
-                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent());
+                                    supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement.getTextContent().toLowerCase());
                                     entryInstance.setSupportOrdering(supportOrderingInstance);
                                 }
                                 
@@ -1781,7 +1781,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element requiresDuplicateDetectionElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "RequiresDuplicateDetection");
                         if (requiresDuplicateDetectionElement2 != null) {
                             boolean requiresDuplicateDetectionInstance;
-                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent());
+                            requiresDuplicateDetectionInstance = DatatypeConverter.parseBoolean(requiresDuplicateDetectionElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setRequiresDuplicateDetection(requiresDuplicateDetectionInstance);
                         }
                         
@@ -1795,7 +1795,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element enableBatchedOperationsElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "EnableBatchedOperations");
                         if (enableBatchedOperationsElement2 != null) {
                             boolean enableBatchedOperationsInstance;
-                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent());
+                            enableBatchedOperationsInstance = DatatypeConverter.parseBoolean(enableBatchedOperationsElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setEnableBatchedOperations(enableBatchedOperationsInstance);
                         }
                         
@@ -1809,14 +1809,14 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element filteringMessagesBeforePublishingElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "FilteringMessagesBeforePublishing");
                         if (filteringMessagesBeforePublishingElement2 != null) {
                             boolean filteringMessagesBeforePublishingInstance;
-                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent());
+                            filteringMessagesBeforePublishingInstance = DatatypeConverter.parseBoolean(filteringMessagesBeforePublishingElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setFilteringMessagesBeforePublishing(filteringMessagesBeforePublishingInstance);
                         }
                         
                         Element isAnonymousAccessibleElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "IsAnonymousAccessible");
                         if (isAnonymousAccessibleElement2 != null) {
                             boolean isAnonymousAccessibleInstance;
-                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent());
+                            isAnonymousAccessibleInstance = DatatypeConverter.parseBoolean(isAnonymousAccessibleElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setIsAnonymousAccessible(isAnonymousAccessibleInstance);
                         }
                         
@@ -1917,7 +1917,7 @@ public class TopicOperationsImpl implements ServiceOperations<ServiceBusManageme
                         Element supportOrderingElement2 = XmlUtility.getElementByTagNameNS(topicDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SupportOrdering");
                         if (supportOrderingElement2 != null) {
                             boolean supportOrderingInstance;
-                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent());
+                            supportOrderingInstance = DatatypeConverter.parseBoolean(supportOrderingElement2.getTextContent().toLowerCase());
                             topicDescriptionInstance.setSupportOrdering(supportOrderingInstance);
                         }
                         

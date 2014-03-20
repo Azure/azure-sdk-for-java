@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateResponse;
+import com.microsoft.windowsazure.management.sql.models.FirewallRuleGetResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
@@ -115,6 +116,44 @@ public interface FirewallRuleOperations {
     * request ID.
     */
     Future<OperationResponse> deleteAsync(String serverName, String ruleName);
+    
+    /**
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
+    * @param ruleName Required. The name of the rule for which the call is
+    * being made.
+    * @throws IOException Signals that an I/O exception of some sort has
+    * occurred. This class is the general class of exceptions produced by
+    * failed or interrupted I/O operations.
+    * @throws ServiceException Thrown if an unexpected response is found.
+    * @throws ParserConfigurationException Thrown if there was a serious
+    * configuration error with the document parser.
+    * @throws SAXException Thrown if there was an error parsing the XML
+    * response.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    FirewallRuleGetResponse get(String serverName, String ruleName) throws IOException, ServiceException, ParserConfigurationException, SAXException;
+    
+    /**
+    * Returns a list of all the server-level firewall rules for a SQL Database
+    * server that belongs to a subscription.  (see
+    * http://msdn.microsoft.com/en-us/library/windowsazure/gg715278.aspx for
+    * more information)
+    *
+    * @param serverName Required. The name of the server for which the call is
+    * being made.
+    * @param ruleName Required. The name of the rule for which the call is
+    * being made.
+    * @return A standard service response including an HTTP status code and
+    * request ID.
+    */
+    Future<FirewallRuleGetResponse> getAsync(String serverName, String ruleName);
     
     /**
     * Returns a list of all the server-level firewall rules for a SQL Database

@@ -212,7 +212,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         Element resultElement = XmlUtility.getElementByTagNameNS(namespaceAvailabilityElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Result");
                         if (resultElement != null) {
                             boolean resultInstance;
-                            resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent());
+                            resultInstance = DatatypeConverter.parseBoolean(resultElement.getTextContent().toLowerCase());
                             result.setIsAvailable(resultInstance);
                         }
                         
@@ -449,7 +449,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         Element enabledElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement2, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                         if (enabledElement != null) {
                             boolean enabledInstance;
-                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
                     }
@@ -1134,7 +1134,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                         Element enabledElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                         if (enabledElement != null) {
                             boolean enabledInstance;
-                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                            enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                             namespaceDescriptionInstance.setEnabled(enabledInstance);
                         }
                     }
@@ -1690,7 +1690,7 @@ public class NamespaceOperationsImpl implements ServiceOperations<ServiceBusMana
                                 Element enabledElement = XmlUtility.getElementByTagNameNS(namespaceDescriptionElement, "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Enabled");
                                 if (enabledElement != null) {
                                     boolean enabledInstance;
-                                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                                    enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                                     entryInstance.setEnabled(enabledInstance);
                                 }
                             }

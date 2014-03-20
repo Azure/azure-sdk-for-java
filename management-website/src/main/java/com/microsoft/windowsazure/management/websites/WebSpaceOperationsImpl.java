@@ -1186,7 +1186,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element adminEnabledElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "AdminEnabled");
                     if (adminEnabledElement != null) {
                         boolean adminEnabledInstance;
-                        adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent());
+                        adminEnabledInstance = DatatypeConverter.parseBoolean(adminEnabledElement.getTextContent().toLowerCase());
                         siteInstance.setAdminEnabled(adminEnabledInstance);
                     }
                     
@@ -1207,7 +1207,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                     Element enabledElement = XmlUtility.getElementByTagNameNS(sitesElement, "http://schemas.microsoft.com/windowsazure", "Enabled");
                     if (enabledElement != null) {
                         boolean enabledInstance;
-                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent());
+                        enabledInstance = DatatypeConverter.parseBoolean(enabledElement.getTextContent().toLowerCase());
                         siteInstance.setEnabled(enabledInstance);
                     }
                     
@@ -1497,7 +1497,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     }
                                     if (isNil16 == false) {
                                         boolean toDeleteInstance;
-                                        toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent());
+                                        toDeleteInstance = DatatypeConverter.parseBoolean(toDeleteElement.getTextContent().toLowerCase());
                                         certificateInstance.setIsToBeDeleted(toDeleteInstance);
                                     }
                                 }
@@ -1511,7 +1511,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     }
                                     if (isNil17 == false) {
                                         boolean validInstance;
-                                        validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent());
+                                        validInstance = DatatypeConverter.parseBoolean(validElement.getTextContent().toLowerCase());
                                         certificateInstance.setIsValid(validInstance);
                                     }
                                 }
