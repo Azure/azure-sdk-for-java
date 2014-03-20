@@ -17,5 +17,5 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 import com.microsoft.windowsazure.core.FilterableService;
 
 public interface JerseyFilterableService<T> extends FilterableService<T> {
-    public T withFilter(ServiceFilter filter);
+    T withFilter(ServiceFilter filter);
 }

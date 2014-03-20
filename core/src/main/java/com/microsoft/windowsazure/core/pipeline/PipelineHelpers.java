@@ -39,7 +39,7 @@ public final class PipelineHelpers {
         return errorMessage;
     }
 
-    public static void ThrowIfNotSuccess(ClientResponse clientResponse) {
+    public static void throwIfNotSuccess(ClientResponse clientResponse) {
         int statusCode = clientResponse.getStatus();
 
         if ((statusCode < 200) || (statusCode >= 300)) {
@@ -48,7 +48,7 @@ public final class PipelineHelpers {
         }
     }
 
-    public static void ThrowIfError(ClientResponse clientResponse) {
+    public static void throwIfError(ClientResponse clientResponse) {
         if (clientResponse.getStatus() >= 400) {
             String errorMessage = createErrorMessage(clientResponse);
             throw new UniformInterfaceException(errorMessage, clientResponse);

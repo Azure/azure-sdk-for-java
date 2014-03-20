@@ -115,7 +115,7 @@ public class ProtectionKey {
          */
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
-            PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+            PipelineHelpers.throwIfNotSuccess(clientResponse);
             ProtectionKeyIdType protectionKeyIdType;
             try {
                 protectionKeyIdType = parseResponse(clientResponse);
@@ -191,7 +191,7 @@ public class ProtectionKey {
          */
         @Override
         public String processTypeResponse(ClientResponse clientResponse) {
-            PipelineHelpers.ThrowIfNotSuccess(clientResponse);
+            PipelineHelpers.throwIfNotSuccess(clientResponse);
             ProtectionKeyRestType protectionKeyRestType;
             try {
                 protectionKeyRestType = parseResponse(clientResponse);

@@ -27,34 +27,34 @@ import javax.net.ssl.SSLContext;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 
 public class CertificateCloudCredentials extends SubscriptionCloudCredentials {
-    private String _subscriptionId;
-    private KeyStoreCredential _keyStoreCredential;
+    private String subscriptionId;
+    private KeyStoreCredential keyStoreCredential;
 
     public CertificateCloudCredentials(String subscriptionId) {
-        this._subscriptionId = subscriptionId;
+        this.subscriptionId = subscriptionId;
     }
 
     public CertificateCloudCredentials(String subscriptionId,
             KeyStoreCredential keyStoreCredential) {
-        this._subscriptionId = subscriptionId;
-        this._keyStoreCredential = keyStoreCredential;
+        this.subscriptionId = subscriptionId;
+        this.keyStoreCredential = keyStoreCredential;
     }
 
     @Override
     public String getSubscriptionId() {
-        return _subscriptionId;
+        return subscriptionId;
     }
 
     public void setSubscriptionId(String subscriptionId) {
-        _subscriptionId = subscriptionId;
+        this.subscriptionId = subscriptionId;
     }
 
     public KeyStoreCredential getKeyStoreCredential() {
-        return _keyStoreCredential;
+        return keyStoreCredential;
     }
 
     public void setKeyStoreCredential(KeyStoreCredential keyStoreCredential) {
-        _keyStoreCredential = keyStoreCredential;
+        this.keyStoreCredential = keyStoreCredential;
     }
 
     @Override

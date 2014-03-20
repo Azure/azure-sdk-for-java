@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.core.pipeline.jersey;
 
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
@@ -29,8 +28,7 @@ public class ClientFilterResponseAdapter extends ClientFilter {
     }
 
     @Override
-    public ClientResponse handle(ClientRequest clientRequest)
-            throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest clientRequest) {
         ClientResponse clientResponse = getNext().handle(clientRequest);
         filter.filter(new JerseyServiceRequestContext(clientRequest),
                 new JerseyServiceResponseContext(clientResponse));

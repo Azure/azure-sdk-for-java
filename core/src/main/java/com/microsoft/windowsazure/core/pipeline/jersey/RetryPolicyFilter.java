@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class RetryPolicyFilter implements ServiceFilter {
-    private static final Log log = LogFactory.getLog(RetryPolicyFilter.class);
+    private static final Log LOG = LogFactory.getLog(RetryPolicyFilter.class);
     private final RetryPolicy retryPolicy;
 
     public RetryPolicyFilter(RetryPolicy retryPolicy) {
@@ -74,7 +74,7 @@ public class RetryPolicyFilter implements ServiceFilter {
             // Backoff for some time according to retry policy
             int backoffTime = retryPolicy.calculateBackoff(retryCount,
                     response, error);
-            log.info(String
+            LOG.info(String
                     .format("Request failed. Backing off for %1s milliseconds before retrying (retryCount=%2d)",
                             backoffTime, retryCount));
             backoff(backoffTime);

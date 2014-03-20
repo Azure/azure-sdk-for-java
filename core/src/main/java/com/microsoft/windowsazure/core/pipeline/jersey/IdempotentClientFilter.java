@@ -15,7 +15,6 @@
 
 package com.microsoft.windowsazure.core.pipeline.jersey;
 
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.filter.ClientFilter;
@@ -35,8 +34,7 @@ public abstract class IdempotentClientFilter extends ClientFilter {
      * .client.ClientRequest)
      */
     @Override
-    public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr) {
         String key = getKey();
 
         if (cr.getProperties().containsKey(key)) {
@@ -55,8 +53,7 @@ public abstract class IdempotentClientFilter extends ClientFilter {
      * @return The returned ClientResponse
      * @throws ClientHandlerException
      */
-    protected abstract ClientResponse doHandle(ClientRequest cr)
-            throws ClientHandlerException;
+    protected abstract ClientResponse doHandle(ClientRequest cr);
 
     /**
      * Get the key value used to detect multiple runs. By default, defaults to
