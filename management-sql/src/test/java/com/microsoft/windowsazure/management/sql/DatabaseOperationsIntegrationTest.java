@@ -147,9 +147,11 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     	// arrange
     	String expectedCollationName = "SQL_Latin1_General_CP1_CI_AS";
     	String expectedEdition = "Web";
+    	String updatedEdition = "Business";
     	String expectedDatabaseName = "expecteddatabasename";
     	String serverName = createServer();
     	int expectedMaxSizeInGB = 5;
+    	int updatedMaxSizeInGB = 10;
     	
     	// act 
     	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
@@ -161,11 +163,16 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     	String databaseName = databaseCreateResponse.getDatabase().getName();
     	databaseToBeRemoved.put(databaseName, serverName);
     	DatabaseUpdateParameters databaseUpdateParameters = new DatabaseUpdateParameters();
-    	databaseUpdateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
-    	DatabaseUpdateResponse databaseUpdateResponse = databaseOperations.update(serverName, databaseName, databaseUpdateParameters);
+    	databaseUpdateParameters.setName(expectedDatabaseName);
+    	databaseUpdateParameters.setMaximumDatabaseSizeInGB(updatedMaxSizeInGB);
+    	databaseUpdateParameters.setCollationName(expectedCollationName);
+    	databaseUpdateParameters.setEdition(updatedEdition);
+    	DatabaseUpdateResponse databaseUpdateResponse = databaseOperations.update(serverName, expectedDatabaseName, databaseUpdateParameters);
     	
     	// assert
-    	assertEquals(expectedMaxSizeInGB, databaseUpdateResponse.getDatabase().getMaximumDatabaseSizeInGB());
+    	assertEquals(updatedMaxSizeInGB, databaseUpdateResponse.getDatabase().getMaximumDatabaseSizeInGB());
+    	assertEquals(updatedEdition, databaseUpdateResponse.getDatabase().getEdition());
+
     }
     
     

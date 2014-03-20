@@ -69,9 +69,10 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     	// arrange
     	String serverName = createServer();
     	String azureEditionValue = "sqlazure";
-    	URI uriValue = new URI("https://blobstorage");
+    	URI uriValue = storageAccount.getUri();
+    	String accessKey = getStorageKey(storageAccount.getName());
     	DacImportParameters.BlobCredentialsParameter blobCredentialsValue = new DacImportParameters.BlobCredentialsParameter();
-    	blobCredentialsValue.setStorageAccessKey("storageaccesskey");
+    	blobCredentialsValue.setStorageAccessKey(accessKey);
     	blobCredentialsValue.setUri(uriValue);
     	
     	// act 
@@ -85,6 +86,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     }
     
     @Test
+    @Ignore("temporary disable because of long running ")
     public void exportDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException 
     {
     	// arrange

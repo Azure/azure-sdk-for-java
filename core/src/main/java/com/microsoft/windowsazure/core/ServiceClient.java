@@ -21,6 +21,9 @@ import com.microsoft.windowsazure.core.pipeline.apache.HttpResponseInterceptorAd
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
+
+import org.apache.http.HttpHost;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
@@ -34,8 +37,14 @@ public abstract class ServiceClient<TClient> implements
 
     private CloseableHttpClient httpClient;
 
-    public CloseableHttpClient getHttpClient() {
+	public CloseableHttpClient getHttpClient() {
         if (this.httpClient == null) {
+        	String proxyHost = System.getProperty("http.proxyHost");
+        	String proxyPort = System.getProperty("http.proxyPort");
+        	if ((proxyHost != null) && (proxyPort!= null)){
+        	    HttpHost proxy = new HttpHost(proxyHost, Integer.parseInt(proxyPort));
+        	    httpClientBuilder.setProxy(proxy);
+        	}
             this.httpClient = httpClientBuilder.build();
         }
 

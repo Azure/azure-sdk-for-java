@@ -38,7 +38,6 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
 	
 
 	private static FirewallRuleOperations firewallRuleOperations;
-	private static ServerOperations serverOperations;
 	
 	@Before
 	public void setup() throws Exception

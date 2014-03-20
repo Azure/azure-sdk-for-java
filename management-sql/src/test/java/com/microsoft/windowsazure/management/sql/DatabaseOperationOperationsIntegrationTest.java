@@ -42,13 +42,8 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
 	
 	private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
 	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static DatabaseOperations databaseOperations;
-	private static ServerOperations serverOperations;
 	private static DatabaseOperationOperations databaseOperationOperations;
-	private static String testAdministratorPasswordValue = "testAdminPassword!8";
-	private static String testAdministratorUserNameValue = "testadminuser";
-	private static String testLocationValue = "West US";
-	
+
 	@Before
 	public void setup() throws Exception
 	{
@@ -103,7 +98,8 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
     	
     	
     	// assert
-    	assertEquals(databaseOperation, actualDatabaseOperation);
+    	assertEquals(databaseOperation.getDatabaseName(), actualDatabaseOperation.getDatabaseName());
+    	assertEquals(databaseOperation.getId(), actualDatabaseOperation.getId());
     }   
     
 }
