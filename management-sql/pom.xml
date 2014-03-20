@@ -63,6 +63,12 @@
       <artifactId>microsoft-azure-api-core</artifactId>
       <version>0.4.6</version>
     </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-management-storage</artifactId>
+      <version>0.4.6</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>

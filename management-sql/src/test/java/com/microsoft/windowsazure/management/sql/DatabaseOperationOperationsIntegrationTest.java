@@ -73,36 +73,6 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
         }
 	}
 	
-	private String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-	{
-		ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-		serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
-		serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
-		serverCreateParameters.setLocation(testLocationValue);
-		ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
-		String serverName = serverCreateResponse.getServerName();
-		serverToBeRemoved.add(serverName);
-		return serverName; 
-	
-	}
-	
-	private String createDatabase(String serverName) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-	{
-    	String expectedCollationName = "SQL_Latin1_General_CP1_CI_AS";
-    	String expectedEdition = "Web";
-    	String expectedDatabaseName = "expecteddatabasename";
-    	int expectedMaxSizeInGB = 5; 
-    	
-    	DatabaseCreateParameters databaseCreateParameters = new DatabaseCreateParameters();
-    	databaseCreateParameters.setName(expectedDatabaseName);
-    	databaseCreateParameters.setCollationName(expectedCollationName);
-    	databaseCreateParameters.setEdition(expectedEdition);
-    	databaseCreateParameters.setMaximumDatabaseSizeInGB(expectedMaxSizeInGB);
-    	DatabaseCreateResponse databaseCreateResponse = databaseOperations.create(serverName, databaseCreateParameters);
-    	databaseToBeRemoved.put(databaseCreateResponse.getDatabase().getName(), serverName);
-    	return databaseCreateResponse.getDatabase().getName();
-	}
-	
     @Test
     public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {

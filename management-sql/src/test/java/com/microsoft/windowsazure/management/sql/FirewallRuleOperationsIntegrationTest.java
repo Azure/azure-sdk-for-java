@@ -20,10 +20,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -37,18 +33,12 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleCreateRespon
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleListResponse;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParameters;
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
-import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
-import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 
 public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 	
-	private static Map<String, String> firewallRuleToBeRemoved = new HashMap<String, String>();
-	private static List<String> serverToBeRemoved = new ArrayList<String>();
+
 	private static FirewallRuleOperations firewallRuleOperations;
 	private static ServerOperations serverOperations;
-	private static String testAdministratorPasswordValue = "testAdminPassword!8";
-	private static String testAdministratorUserNameValue = "testadminuser";
-	private static String testLocationValue = "West US";
 	
 	@Before
 	public void setup() throws Exception
@@ -74,19 +64,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
         }
         serverToBeRemoved.clear();
 	}
-	
-	private String createServer() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-	{
-		ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-		serverCreateParameters.setAdministratorPassword(testAdministratorPasswordValue);
-		serverCreateParameters.setAdministratorUserName(testAdministratorUserNameValue);
-		serverCreateParameters.setLocation(testLocationValue);
-		ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
-		String serverName = serverCreateResponse.getServerName();
-		serverToBeRemoved.add(serverName);
-		return serverName; 
-	}
-	
+
     @Test
     public void createFirewallRuleWithRequiredParametersSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {
