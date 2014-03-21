@@ -43,7 +43,6 @@ import org.xml.sax.SAXException;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.Configuration;
 import com.sun.jersey.api.client.Client;
@@ -87,7 +86,7 @@ public abstract class SqlManagementIntegrationTestBase {
 
         // add LoggingFilter to any pipeline that is created
         Registry builder = (Registry) config.getBuilder();
-        builder.alter(SqlManagementClient.class, Client.class, new Alteration<Client>() {
+        builder.alter(StorageManagementClient.class, Client.class, new Alteration<Client>() {
             @Override
             public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
                 client.addFilter(new LoggingFilter());
@@ -105,7 +104,6 @@ public abstract class SqlManagementIntegrationTestBase {
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
         createParameters.setLocation(GeoRegionNames.SouthCentralUS);
-        OperationStatusResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
         return storageAccount;

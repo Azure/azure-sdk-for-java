@@ -30,15 +30,15 @@ import org.junit.*;
 import org.xml.sax.SAXException;
 
 import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.sql.models.DatabaseOperation;
-import com.microsoft.windowsazure.management.sql.models.DatabaseOperationGetResponse;
-import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListResponse;
+import com.microsoft.windowsazure.management.sql.models.ServiceObjective;
+import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveGetResponse;
+import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResponse;
 
-public class DatabaseOperationOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
+public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTestBase {
 	
 	private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
 	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static DatabaseOperationOperations databaseOperationOperations;
+	private static ServiceObjectiveOperations serviceObjectivesOperations;
 
 	@Before
 	public void setup() throws Exception
@@ -46,7 +46,7 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
 		createService();
 		databaseOperations = sqlManagementClient.getDatabasesOperations();
 		serverOperations = sqlManagementClient.getServersOperations();
-		databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
+		serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
 	}
 
 	@After
@@ -65,37 +65,38 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
 	}
 	
     @Test
-    public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
+    public void listServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {
     	// arrange 
     	String serverName = createServer();
     	createDatabase(serverName);
     	
     	// act 
-    	DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
+    	ServiceObjectiveListResponse serviceObjectiveListResponse = serviceObjectivesOperations.list(serverName);
     	
     	// assert
-    	assertEquals(1, databaseOperationOperationsListResponse.getDatabaseOperations().size());
+    	assertEquals(6, serviceObjectiveListResponse.getServiceObjectives().size());
     	
     }
     
     @Test
-    public void getDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
+    public void getServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
     {
     	// arrange 
     	String serverName = createServer();
     	createDatabase(serverName);
     	
     	// act 
-    	DatabaseOperationListResponse databaseOperationOperationsListResponse = databaseOperationOperations.listByServer(serverName);
-    	DatabaseOperation databaseOperation = databaseOperationOperationsListResponse.getDatabaseOperations().get(0);
-    	DatabaseOperationGetResponse databaseOperationGetResponse = databaseOperationOperations.get(serverName, databaseOperation.getId());
-    	DatabaseOperation actualDatabaseOperation = databaseOperationGetResponse.getDatabaseOperation();
+    	ServiceObjectiveListResponse serviceObjectivesListResponse = serviceObjectivesOperations.list(serverName);
+    	ServiceObjective serviceObjective = serviceObjectivesListResponse.getServiceObjectives().get(0);
+    	ServiceObjectiveGetResponse serviceObjectiveGetResponse = serviceObjectivesOperations.get(serverName, serviceObjective.getId());
+    	ServiceObjective actualServiceObjective = serviceObjectiveGetResponse.getServiceObjective();
     	
     	
     	// assert
-    	assertEquals(databaseOperation.getDatabaseName(), actualDatabaseOperation.getDatabaseName());
-    	assertEquals(databaseOperation.getId(), actualDatabaseOperation.getId());
+    	assertEquals(serviceObjective.getId(), actualServiceObjective.getId());
+    	assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
+    	assertEquals(serviceObjective.getName(), actualServiceObjective.getName());
     }   
     
 }

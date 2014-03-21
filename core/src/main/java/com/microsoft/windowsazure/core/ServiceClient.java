@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.http.HttpHost;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
