@@ -37,32 +37,33 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateRespon
 public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 	
 
-	private static FirewallRuleOperations firewallRuleOperations;
+    private static FirewallRuleOperations firewallRuleOperations;
 	
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
-		serverOperations = sqlManagementClient.getServersOperations();
-	}
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+        firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
+    }
 	
-	@After
-	public void tearDown() throws Exception 
-	{
+    @After
+    public void tearDown() throws Exception 
+    {
         for (String firewallRuleName : firewallRuleToBeRemoved.keySet())
         {
-        	String serverName = firewallRuleToBeRemoved.get(firewallRuleName);
-        	firewallRuleOperations.delete(serverName, firewallRuleName);
+            String serverName = firewallRuleToBeRemoved.get(firewallRuleName);
+            firewallRuleOperations.delete(serverName, firewallRuleName);
         }
         firewallRuleToBeRemoved.clear();
         
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
+        
         serverToBeRemoved.clear();
-	}
+    }
 
     @Test
     public void createFirewallRuleWithRequiredParametersSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 

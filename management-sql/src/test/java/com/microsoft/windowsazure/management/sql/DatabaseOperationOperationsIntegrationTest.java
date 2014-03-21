@@ -36,33 +36,33 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListRes
 
 public class DatabaseOperationOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 	
-	private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
-	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static DatabaseOperationOperations databaseOperationOperations;
+    private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
+    private static List<String> serverToBeRemoved = new ArrayList<String>();
+    private static DatabaseOperationOperations databaseOperationOperations;
 
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		databaseOperations = sqlManagementClient.getDatabasesOperations();
-		serverOperations = sqlManagementClient.getServersOperations();
-		databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
-	}
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+        databaseOperations = sqlManagementClient.getDatabasesOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
+        databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
+    }
 
-	@After
-	public void tearDown() throws Exception 
-	{
+    @After
+    public void tearDown() throws Exception 
+    {
         for (String databaseName : databaseToBeRemoved.keySet())
         {
-        	String serverName = databaseToBeRemoved.get(databaseName);
-        	databaseOperations.delete(serverName, databaseName);
+            String serverName = databaseToBeRemoved.get(databaseName);
+            databaseOperations.delete(serverName, databaseName);
         }
         
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
-	}
+    }
 	
     @Test
     public void listDatabaseOperationsOperationSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 

@@ -36,33 +36,33 @@ import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResp
 
 public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTestBase {
 	
-	private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
-	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static ServiceObjectiveOperations serviceObjectivesOperations;
+    private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
+    private static List<String> serverToBeRemoved = new ArrayList<String>();
+    private static ServiceObjectiveOperations serviceObjectivesOperations;
 
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		databaseOperations = sqlManagementClient.getDatabasesOperations();
-		serverOperations = sqlManagementClient.getServersOperations();
-		serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
-	}
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+        databaseOperations = sqlManagementClient.getDatabasesOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
+        serviceObjectivesOperations = sqlManagementClient.getServiceObjectivesOperations();
+    }
 
-	@After
-	public void tearDown() throws Exception 
-	{
+    @After
+    public void tearDown() throws Exception 
+    {
         for (String databaseName : databaseToBeRemoved.keySet())
         {
-        	String serverName = databaseToBeRemoved.get(databaseName);
-        	databaseOperations.delete(serverName, databaseName);
+            String serverName = databaseToBeRemoved.get(databaseName);
+            databaseOperations.delete(serverName, databaseName);
         }
         
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
-	}
+    }
 	
     @Test
     public void listServiceObjectiveSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 

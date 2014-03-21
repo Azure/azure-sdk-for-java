@@ -31,39 +31,40 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 
 public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 	
-	private StorageAccount storageAccount;
+    private StorageAccount storageAccount;
 	
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		createStorageService();
-		databaseOperations = sqlManagementClient.getDatabasesOperations();
-		serverOperations = sqlManagementClient.getServersOperations();
-		dacOperations = sqlManagementClient.getDacOperations();
-		storageAccount = createStorageAccount("dacoperationtest");
-	}
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+	createStorageService();
+	databaseOperations = sqlManagementClient.getDatabasesOperations();
+	serverOperations = sqlManagementClient.getServersOperations();
+	dacOperations = sqlManagementClient.getDacOperations();
+	storageAccount = createStorageAccount("dacoperationtest");
+    }
 	
-	@After
-	public void tearDown() throws Exception 
-	{
-        for (String databaseName : databaseToBeRemoved.keySet())
+    @After
+    public void tearDown() throws Exception 
+    {
+	for (String databaseName : databaseToBeRemoved.keySet())
         {
-        	String serverName = databaseToBeRemoved.get(databaseName);
-        	databaseOperations.delete(serverName, databaseName);
+	    String serverName = databaseToBeRemoved.get(databaseName);
+	    databaseOperations.delete(serverName, databaseName);
         }
         databaseToBeRemoved.clear();
-        
+
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
         
         storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
-	}
+    }
 	
     @Test
+    @Ignore("temporary disable because of long running ")
     public void importDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException 
     {
     	// arrange

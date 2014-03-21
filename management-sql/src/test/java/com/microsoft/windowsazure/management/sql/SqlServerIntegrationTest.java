@@ -35,25 +35,25 @@ import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
-	private static List<String> serverToBeRemoved = new ArrayList<String>();
-	private static ServerOperations serverOperations;
+    private static List<String> serverToBeRemoved = new ArrayList<String>();
+    private static ServerOperations serverOperations;
 	
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		serverOperations = sqlManagementClient.getServersOperations();
-	}
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+	serverOperations = sqlManagementClient.getServersOperations();
+    }
 	
-	@After
-	public void tearDown() throws Exception 
-	{
+    @After
+    public void tearDown() throws Exception 
+    {
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
-	}
+    }
 	
     @Test
     public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
@@ -123,10 +123,5 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         assertNull(createdServer);
         
     }
-    
-    
-    
-    
-    
     
 }

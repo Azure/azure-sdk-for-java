@@ -52,16 +52,16 @@ public abstract class SqlManagementIntegrationTestBase {
 
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
-	protected static DatabaseOperations databaseOperations;
-	protected static ServerOperations serverOperations;
-	protected static DacOperations dacOperations;
-	protected static Map<String, String> firewallRuleToBeRemoved = new HashMap<String, String>();
-	protected static List<String> serverToBeRemoved = new ArrayList<String>();
-	protected static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
+    protected static DatabaseOperations databaseOperations;
+    protected static ServerOperations serverOperations;
+    protected static DacOperations dacOperations;
+    protected static Map<String, String> firewallRuleToBeRemoved = new HashMap<String, String>();
+    protected static List<String> serverToBeRemoved = new ArrayList<String>();
+    protected static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
 	
-	protected static String testAdministratorPasswordValue = "testAdminPassword!8";
-	protected static String testAdministratorUserNameValue = "testadminuser";
-	protected static String testLocationValue = "West US";
+    protected static String testAdministratorPasswordValue = "testAdminPassword!8";
+    protected static String testAdministratorUserNameValue = "testadminuser";
+    protected static String testLocationValue = "West US";
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state

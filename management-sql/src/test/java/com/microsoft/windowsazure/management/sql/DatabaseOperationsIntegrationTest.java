@@ -35,30 +35,30 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 
 public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 	
-	@Before
-	public void setup() throws Exception
-	{
-		createService();
-		databaseOperations = sqlManagementClient.getDatabasesOperations();
-		serverOperations = sqlManagementClient.getServersOperations();
-	}
-	
-	@After
-	public void tearDown() throws Exception 
-	{
+    @Before
+    public void setup() throws Exception
+    {
+        createService();
+        databaseOperations = sqlManagementClient.getDatabasesOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
+    }
+
+    @After
+    public void tearDown() throws Exception 
+    {
         for (String databaseName : databaseToBeRemoved.keySet())
         {
-        	String serverName = databaseToBeRemoved.get(databaseName);
-        	databaseOperations.delete(serverName, databaseName);
+            String serverName = databaseToBeRemoved.get(databaseName);
+            databaseOperations.delete(serverName, databaseName);
         }
         databaseToBeRemoved.clear();
         
         for (String serverName : serverToBeRemoved)
         {
-        	serverOperations.delete(serverName);
+            serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
-	}
+    }
 	
     @Test
     public void createDatabaseWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
@@ -136,7 +136,7 @@ public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationT
     	ArrayList<Database> databaseList = databaseListResponse.getDatabases();
     	for (Database database : databaseList)
     	{
-    		assertNotEquals(databaseName, database.getName());
+    	    assertNotEquals(databaseName, database.getName());
     	}
 
     }
