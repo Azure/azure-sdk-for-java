@@ -18,6 +18,8 @@ import java.util.Map;
 import java.lang.*;
 
 import com.microsoft.windowsazure.management.configuration.*;
+import com.microsoft.windowsazure.management.storage.StorageManagementClient;
+import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.*;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
@@ -27,7 +29,8 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class ComputeManagementIntegrationTestBase {
 
-    protected static ComputeManagementClient computeManagementClient;	
+    protected static ComputeManagementClient computeManagementClient;
+    protected static StorageManagementClient storageManagementClient;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -45,6 +48,24 @@ public abstract class ComputeManagementIntegrationTestBase {
 
         computeManagementClient = ComputeManagementService.create(config);
     }
+    
+    protected static void createStorageService() throws Exception {
+        // reinitialize configuration from known state
+        Configuration config = createConfiguration();
+
+        // add LoggingFilter to any pipeline that is created
+        Registry builder = (Registry) config.getBuilder();
+        builder.alter(StorageManagementClient.class, Client.class, new Alteration<Client>() {
+            @Override
+            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
+                client.addFilter(new LoggingFilter());
+                return client;
+            }
+        });
+
+        storageManagementClient = StorageManagementService.create(config);
+    }
+  
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
