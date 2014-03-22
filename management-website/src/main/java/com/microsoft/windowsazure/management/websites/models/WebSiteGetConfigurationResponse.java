@@ -23,10 +23,11 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Web Site Configuration operation response.

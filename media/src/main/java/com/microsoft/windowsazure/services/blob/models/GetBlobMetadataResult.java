@@ -17,6 +17,8 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.microsoft.windowsazure.services.blob.BlobContract;
+
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Blob Metadata operation. This is returned by calls to implementations of

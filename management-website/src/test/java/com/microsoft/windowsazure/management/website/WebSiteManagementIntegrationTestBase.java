@@ -16,12 +16,13 @@ package com.microsoft.windowsazure.management.website;
 
 import java.util.Map;
 
-import com.microsoft.windowsazure.management.configuration.*;
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.*;
-import com.microsoft.windowsazure.management.websites.*;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+import com.microsoft.windowsazure.management.websites.WebSiteManagementClient;
+import com.microsoft.windowsazure.management.websites.WebSiteManagementService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 

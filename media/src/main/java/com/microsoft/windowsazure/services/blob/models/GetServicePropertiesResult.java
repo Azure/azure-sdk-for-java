@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
+import com.microsoft.windowsazure.services.blob.BlobContract;
+
 /**
  * A wrapper class for the service properties returned in response to Blob
  * Service REST API operations. This is returned by calls to implementations of

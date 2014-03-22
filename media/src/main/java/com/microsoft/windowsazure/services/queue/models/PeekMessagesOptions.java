@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
+import com.microsoft.windowsazure.services.queue.QueueContract;
+
 /**
  * Represents the options that may be set on a
  * {@link QueueContract#peekMessages(String, PeekMessagesOptions) peekMessages}

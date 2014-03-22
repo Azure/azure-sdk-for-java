@@ -23,16 +23,19 @@
 
 package com.microsoft.windowsazure.management.websites;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.concurrent.Future;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
-import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web

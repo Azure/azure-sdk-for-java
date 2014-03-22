@@ -14,6 +14,9 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.services.blob.BlobContract;
+
 /**
  * Represents the options that may be set on a
  * {@link BlobContract#listBlobs(String, ListBlobsOptions)} request. These

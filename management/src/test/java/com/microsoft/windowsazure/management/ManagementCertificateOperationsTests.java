@@ -3,17 +3,12 @@ package com.microsoft.windowsazure.management;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
-import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
-import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
-import com.microsoft.windowsazure.tracing.CloudTracing;
-import com.microsoft.windowsazure.exception.ServiceException;
-
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
+import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
 
 public class ManagementCertificateOperationsTests extends ManagementIntegrationTestBase {
     @BeforeClass

@@ -16,6 +16,8 @@ package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.Date;
 
+import com.microsoft.windowsazure.services.queue.QueueContract;
+
 /**
  * A wrapper class for the results returned in response to Queue Service REST
  * API operations to update a message. This is returned by calls to

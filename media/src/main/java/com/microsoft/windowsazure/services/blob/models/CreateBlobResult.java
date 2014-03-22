@@ -16,6 +16,8 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
+import com.microsoft.windowsazure.services.blob.BlobContract;
+
 /**
  * A wrapper class for the response returned from a Blob Service REST API Create
  * Blob operation. This is returned by calls to implementations of

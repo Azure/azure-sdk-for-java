@@ -1,24 +1,14 @@
 package com.microsoft.windowsazure.management;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-import java.util.Date;
-import java.lang.*;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
+import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
 
 public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase { 

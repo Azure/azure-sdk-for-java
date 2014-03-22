@@ -14,6 +14,8 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
+import com.microsoft.windowsazure.services.queue.QueueContract;
+
 /**
  * A wrapper class for the service properties returned in response to Queue
  * Service REST API operations. This is returned by calls to implementations of

@@ -14,13 +14,13 @@
  */
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import java.util.Map;
 
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
 import com.microsoft.windowsazure.core.Builder.Registry;
-import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
