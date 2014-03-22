@@ -15,12 +15,11 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 
 /**
  * Represents the options that may be set on an
- * {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#acquireLease(String, String, AcquireLeaseOptions)
  * acquireLease} request. These options include an optional server timeout for
  * the operation and any access conditions for the operation.
  */

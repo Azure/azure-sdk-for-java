@@ -399,16 +399,16 @@ public interface QueueContract extends JerseyFilterableService<QueueContract> {
      * account. This marks the message as invisible for the default visibility
      * timeout period. When message processing is complete, the message must be
      * deleted with a call to
-     * {@link QueueContract#deleteMessage(String, String, String, QueueServiceOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#deleteMessage(String, String, String, QueueServiceOptions)
      * deleteMessage}. If message processing will take longer than the
      * visibility timeout period, use the
-     * {@link QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)
      * updateMessage} method to extend the visibility timeout. The message will
      * become visible in the queue again when the timeout completes if it is not
      * deleted.
      * <p>
      * To get a list of multiple messages from the head of the queue, call the
-     * {@link QueueContract#listMessages(String, ListMessagesOptions)} method
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listMessages(String, ListMessagesOptions)} method
      * with options set specifying the number of messages to return.
      * 
      * @param queue
@@ -428,10 +428,10 @@ public interface QueueContract extends JerseyFilterableService<QueueContract> {
      * timeout for the operation, the number of messages to retrieve, and the
      * visibility timeout to set on the retrieved messages. When message
      * processing is complete, each message must be deleted with a call to
-     * {@link QueueContract#deleteMessage(String, String, String, QueueServiceOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#deleteMessage(String, String, String, QueueServiceOptions)
      * deleteMessage}. If message processing takes longer than the default
      * timeout period, use the
-     * {@link QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)
      * updateMessage} method to extend the visibility timeout. Each message will
      * become visible in the queue again when the timeout completes if it is not
      * deleted.

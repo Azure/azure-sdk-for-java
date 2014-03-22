@@ -23,13 +23,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.core.RFC1123DateAdapter;
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * A wrapper class for the results returned in response to Queue Service REST
  * API operations to peek messages. This is returned by calls to implementations
- * of {@link QueueContract#peekMessages(String)} and
- * {@link QueueContract#peekMessages(String, PeekMessagesOptions)}.
+ * of {@link com.microsoft.windowsazure.services.queue.QueueContract#peekMessages(String)} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#peekMessages(String, PeekMessagesOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179472.aspx"
@@ -41,7 +40,7 @@ public class PeekMessagesResult {
     private List<QueueMessage> queueMessages = new ArrayList<QueueMessage>();
 
     /**
-     * Gets the list of queue messages returned by a {@link QueueContract}
+     * Gets the list of queue messages returned by a {@link com.microsoft.windowsazure.services.queue.QueueContract}
      * <em>.peekMessages</em> request. The queue messages returned do not have a
      * visibility timeout set, and they can be retrieved by other clients for
      * processing.
@@ -56,7 +55,7 @@ public class PeekMessagesResult {
 
     /**
      * Reserved for internal use. Sets the list of queue messages returned by a
-     * {@link QueueContract} <em>.peekMessages</em> request. This method is
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract} <em>.peekMessages</em> request. This method is
      * invoked by the API as part of the response generation from the Queue
      * Service REST API operation to set the value from the queue message list
      * returned by the server.

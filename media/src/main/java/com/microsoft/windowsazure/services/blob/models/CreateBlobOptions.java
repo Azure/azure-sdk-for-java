@@ -17,13 +17,12 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#createPageBlob(String, String, long, CreateBlobOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createPageBlob(String, String, long, CreateBlobOptions)
  * createPageBlob} or
- * {@link BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlockBlob(String, String, java.io.InputStream, CreateBlobOptions)
  * createBlockBlob} request. These options include an optional server timeout
  * for the operation, the MIME content type and content encoding for the blob,
  * the content language, the MD5 hash, a cache control value, blob metadata, a

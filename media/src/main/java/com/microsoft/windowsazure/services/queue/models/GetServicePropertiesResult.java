@@ -14,13 +14,12 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * A wrapper class for the service properties returned in response to Queue
  * Service REST API operations. This is returned by calls to implementations of
- * {@link QueueContract#getServiceProperties()} and
- * {@link QueueContract#getServiceProperties(QueueServiceOptions)}.
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#getServiceProperties()} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#getServiceProperties(QueueServiceOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/hh452243.aspx">Get
@@ -37,7 +36,7 @@ public class GetServicePropertiesResult {
      * Modifying the values in the {@link ServiceProperties} instance returned
      * does not affect the values associated with the storage account. To change
      * the values in the storage account, call the
-     * {@link QueueContract#setServiceProperties} method and pass the modified
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#setServiceProperties} method and pass the modified
      * {@link ServiceProperties} instance as a parameter.
      * 
      * @return A {@link ServiceProperties} instance containing the property

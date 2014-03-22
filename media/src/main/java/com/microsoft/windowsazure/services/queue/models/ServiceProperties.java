@@ -17,16 +17,14 @@ package com.microsoft.windowsazure.services.queue.models;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * A wrapper class for the Queue service properties set or retrieved with Queue
  * Service REST API operations. This is returned by calls to implementations of
- * {@link QueueContract#getServiceProperties()} and
- * {@link QueueContract#getServiceProperties(QueueServiceOptions)} and passed to
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#getServiceProperties()} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#getServiceProperties(QueueServiceOptions)} and passed to
  * the server with calls to
- * {@link QueueContract#setServiceProperties(ServiceProperties)} and
- * {@link QueueContract#setServiceProperties(ServiceProperties, QueueServiceOptions)}
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#setServiceProperties(ServiceProperties)} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#setServiceProperties(ServiceProperties, QueueServiceOptions)}
  * .
  * <p>
  * See the <a
@@ -49,12 +47,12 @@ public class ServiceProperties {
      * {@link ServiceProperties} instance.
      * <p>
      * This {@link ServiceProperties} instance holds a local copy of the Queue
-     * service properties when returned by a call to {@link QueueContract}
+     * service properties when returned by a call to {@link com.microsoft.windowsazure.services.queue.QueueContract}
      * <em>.getServiceProperties</em>.
      * <p>
      * Note that changes to this value are not reflected in the Queue service
      * properties until they have been set on the storage account with a call to
-     * {@link QueueContract}<em>.setServiceProperties</em>.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract}<em>.setServiceProperties</em>.
      * 
      * @return A reference to the {@link Logging} instance in this
      *         {@link ServiceProperties} instance.
@@ -70,7 +68,7 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service
      * properties until they have been set on the storage account with a call to
-     * {@link QueueContract}<em>.setServiceProperties</em>.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract}<em>.setServiceProperties</em>.
      * 
      * @param logging
      *            The {@link Logging} instance to set in this
@@ -87,12 +85,12 @@ public class ServiceProperties {
      * {@link ServiceProperties} instance.
      * <p>
      * This {@link ServiceProperties} instance holds a local copy of the Queue
-     * service properties when returned by a call to {@link QueueContract}
+     * service properties when returned by a call to {@link com.microsoft.windowsazure.services.queue.QueueContract}
      * <em>.getServiceProperties</em>.
      * <p>
      * Note that changes to this value are not reflected in the Queue service
      * properties until they have been set on the storage account with a call to
-     * {@link QueueContract}<em>.setServiceProperties</em>.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract}<em>.setServiceProperties</em>.
      * 
      * @return A reference to the {@link Metrics} instance in this
      *         {@link ServiceProperties} instance.
@@ -108,7 +106,7 @@ public class ServiceProperties {
      * <p>
      * Note that changes to this value are not reflected in the Queue service
      * properties until they have been set on the storage account with a call to
-     * {@link QueueContract}<em>.setServiceProperties</em>.
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract}<em>.setServiceProperties</em>.
      * 
      * @param metrics
      *            The {@link Metrics} instance to set in this

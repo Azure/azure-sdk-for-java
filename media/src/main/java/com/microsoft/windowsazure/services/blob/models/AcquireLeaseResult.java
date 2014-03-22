@@ -14,15 +14,14 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Lease
  * Blob operation. This is returned by calls to implementations of
- * {@link BlobContract#acquireLease(String, String)},
- * {@link BlobContract#acquireLease(String, String, AcquireLeaseOptions)},
- * {@link BlobContract#renewLease(String, String, String, BlobServiceOptions)},
- * and {@link BlobContract#renewLease(String, String, String)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#acquireLease(String, String)},
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#acquireLease(String, String, AcquireLeaseOptions)},
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#renewLease(String, String, String, BlobServiceOptions)},
+ * and {@link com.microsoft.windowsazure.services.blob.BlobContract#renewLease(String, String, String)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691972.aspx"

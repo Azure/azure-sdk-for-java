@@ -16,12 +16,10 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Set
  * Blob Metadata operation. This is returned by calls to implementations of
- * {@link BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setBlobMetadata(String, String, java.util.HashMap, SetBlobMetadataOptions)}
  * .
  * <p>
  * See the <a

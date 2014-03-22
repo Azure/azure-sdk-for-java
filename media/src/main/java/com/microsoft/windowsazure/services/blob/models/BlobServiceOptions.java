@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the base class for options that may be set on Blob Service REST
- * API operations invoked through the {@link BlobContract} interface. This class
+ * API operations invoked through the {@link com.microsoft.windowsazure.services.blob.BlobContract} interface. This class
  * defines a server request timeout, which can be applied to all operations.
  */
 public class BlobServiceOptions {
