@@ -37,21 +37,6 @@ def hydraSpecs = [
         generatedCodeDestinationRootDirectoryName: 'management-network'
     ],
     [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
-        clientType: 'Microsoft.WindowsAzure.Management.Scheduler.SchedulerManagementClient',
-        generatedCodeDestinationRootDirectoryName: 'management-scheduler'
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Scheduler.Specification.dll",
-        clientType: 'Microsoft.WindowsAzure.Scheduler.SchedulerManagementClient',
-        generatedCodeDestinationRootDirectoryName: 'scheduler'
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.ServiceBus.Specification.dll",
-        clientType: 'Microsoft.WindowsAzure.Management.ServiceBus.ServiceBusManagementClient',
-        generatedCodeDestinationRootDirectoryName: 'management-serviceBus'
-    ],
-    [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Sql.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Sql.SqlManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-sql"
@@ -60,11 +45,6 @@ def hydraSpecs = [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.Storage.Specification.dll",
         clientType: "Microsoft.WindowsAzure.Management.Storage.StorageManagementClient",
         generatedCodeDestinationRootDirectoryName: "management-storage"
-    ],
-    [
-        specificationDllFileName: "Microsoft.WindowsAzure.Management.Store.Specification.dll",
-        clientType: "Microsoft.WindowsAzure.Management.Store.StoreManagementClient",
-        generatedCodeDestinationRootDirectoryName: "management-store"
     ],
     [
         specificationDllFileName: "Microsoft.WindowsAzure.Management.WebSites.Specification.dll",
