@@ -20,7 +20,7 @@ package com.microsoft.windowsazure.services.servicebus.models;
  * 
  */
 public class ReceiveMessageOptions {
-    Integer timeout;
+    private Integer timeout;
     private ReceiveMode receiveMode = ReceiveMode.RECEIVE_AND_DELETE;
 
     /**

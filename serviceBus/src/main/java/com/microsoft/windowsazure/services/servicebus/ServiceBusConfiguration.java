@@ -20,37 +20,37 @@ import com.microsoft.windowsazure.Configuration;
  * Provides functionality to create a service bus configuration.
  * 
  */
-public class ServiceBusConfiguration {
+public abstract class ServiceBusConfiguration {
 
     /**
      * Defines the configuration connection string constant.
      * 
      */
-    public final static String CONNECTION_STRING = "serviceBus.connection.string";
+    public static final String CONNECTION_STRING = "serviceBus.connection.string";
 
     /**
      * Defines the configuration URI constant.
      * 
      */
-    public final static String URI = "serviceBus.uri";
+    public static final String URI = "serviceBus.uri";
 
     /**
      * Defines the configuration wrap URI constant.
      * 
      */
-    public final static String WRAP_URI = "serviceBus.wrap.uri";
+    public static final String WRAP_URI = "serviceBus.wrap.uri";
 
     /**
      * Defines the configuration wrap name constant.
      * 
      */
-    public final static String WRAP_NAME = "serviceBus.wrap.name";
+    public static final String WRAP_NAME = "serviceBus.wrap.name";
 
     /**
      * Defines the configuration wrap password constant.
      * 
      */
-    public final static String WRAP_PASSWORD = "serviceBus.wrap.password";
+    public static final String WRAP_PASSWORD = "serviceBus.wrap.password";
 
     /**
      * Creates a service bus configuration using the specified namespace, name,

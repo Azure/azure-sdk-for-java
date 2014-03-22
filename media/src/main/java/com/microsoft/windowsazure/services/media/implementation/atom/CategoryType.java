@@ -24,6 +24,7 @@ package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyAttribute;
@@ -67,19 +68,19 @@ import javax.xml.namespace.QName;
 public class CategoryType {
 
     @XmlAttribute(required = true)
-    protected String term;
+    private String term;
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
-    protected String scheme;
+    private String scheme;
     @XmlAttribute
-    protected String label;
+    private String label;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlSchemaType(name = "anyURI")
-    protected String base;
+    private String base;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "language")
-    protected String lang;
+    private String lang;
     @XmlAnyAttribute
     private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 

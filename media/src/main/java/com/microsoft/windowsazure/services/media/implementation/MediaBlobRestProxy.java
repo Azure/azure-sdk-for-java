@@ -15,17 +15,17 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
+import java.util.Arrays;
+
+import com.microsoft.windowsazure.core.RFC1123DateConverter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
 import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
-import java.util.Arrays;
-
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.implementation.BlobOperationRestProxy;
-import com.microsoft.windowsazure.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.ClientFilter;
 

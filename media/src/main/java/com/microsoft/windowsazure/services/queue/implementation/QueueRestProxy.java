@@ -14,9 +14,6 @@
  */
 package com.microsoft.windowsazure.services.queue.implementation;
 
-import com.microsoft.windowsazure.core.UserAgentFilter;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +22,16 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.microsoft.windowsazure.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
-import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterRequestAdapter;
 import com.microsoft.windowsazure.core.pipeline.jersey.ClientFilterResponseAdapter;
+import com.microsoft.windowsazure.core.pipeline.jersey.HttpURLConnectionClient;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueContract;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;

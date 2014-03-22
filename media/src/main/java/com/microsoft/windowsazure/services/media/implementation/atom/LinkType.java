@@ -25,6 +25,7 @@ package com.microsoft.windowsazure.services.media.implementation.atom;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyAttribute;
@@ -72,30 +73,30 @@ import javax.xml.namespace.QName;
 public class LinkType {
 
     @XmlValue
-    protected String content;
+    private String content;
     @XmlAttribute(required = true)
     @XmlSchemaType(name = "anyURI")
-    protected String href;
+    private String href;
     @XmlAttribute
-    protected String rel;
+    private String rel;
     @XmlAttribute
-    protected String type;
+    private String type;
     @XmlAttribute
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NMTOKEN")
-    protected String hreflang;
+    private String hreflang;
     @XmlAttribute
-    protected String title;
+    private String title;
     @XmlAttribute
     @XmlSchemaType(name = "positiveInteger")
-    protected BigInteger length;
+    private BigInteger length;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlSchemaType(name = "anyURI")
-    protected String base;
+    private String base;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "language")
-    protected String lang;
+    private String lang;
     @XmlAnyAttribute
     private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 

@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.net.URLEncoder;
 import java.util.EnumSet;

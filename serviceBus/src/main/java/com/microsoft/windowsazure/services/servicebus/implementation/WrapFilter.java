@@ -31,8 +31,7 @@ public class WrapFilter extends ClientFilter {
     }
 
     @Override
-    public ClientResponse handle(ClientRequest cr)
-            throws ClientHandlerException {
+    public ClientResponse handle(ClientRequest cr) {
         String accessToken = getWrapToken(cr.getURI());
         cr.getHeaders().add("Authorization", accessToken);
 

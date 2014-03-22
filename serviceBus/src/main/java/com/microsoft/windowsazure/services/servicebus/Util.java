@@ -18,7 +18,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.servicebus.models.QueueInfo;
 import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 
-public class Util {
+public abstract class Util {
     public static Iterable<QueueInfo> iterateQueues(ServiceBusContract service)
             throws ServiceException {
         return service.listQueues().getItems();

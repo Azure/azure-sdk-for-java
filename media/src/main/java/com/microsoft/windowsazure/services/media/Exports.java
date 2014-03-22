@@ -14,13 +14,13 @@
  */
 package com.microsoft.windowsazure.services.media;
 
-import com.microsoft.windowsazure.core.UserAgentFilter;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.core.Builder;
+import com.microsoft.windowsazure.core.UserAgentFilter;
 import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;

@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.blob.models;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * Represents the Blob service properties that can be set on a storage account,
  * including Windows Azure Storage Analytics. This class is used by the

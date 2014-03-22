@@ -15,8 +15,8 @@
 package com.microsoft.windowsazure.services.servicebus.implementation;
 
 public class WrapAccessTokenResult {
-    String accessToken;
-    long expiresIn;
+    private String accessToken;
+    private long expiresIn;
 
     /**
      * @return the accessToken

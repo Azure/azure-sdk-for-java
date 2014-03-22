@@ -29,7 +29,7 @@ import javax.management.timer.Timer;
 
 public class WrapTokenManager {
 
-    WrapContract contract;
+    private WrapContract contract;
     private final DateFactory dateFactory;
     private final String uri;
     private final String name;
@@ -101,8 +101,8 @@ public class WrapTokenManager {
     }
 
     class ActiveToken {
-        Date expiresUtc;
-        WrapAccessTokenResult wrapResponse;
+        private Date expiresUtc;
+        private WrapAccessTokenResult wrapResponse;
 
         /**
          * @return the expiresUtc

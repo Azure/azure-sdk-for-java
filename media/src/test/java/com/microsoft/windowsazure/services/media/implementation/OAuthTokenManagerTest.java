@@ -14,8 +14,13 @@
  */
 package com.microsoft.windowsazure.services.media.implementation;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,8 +34,8 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.core.utils.DateFactory;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 public class OAuthTokenManagerTest {
     private OAuthContract contract;
