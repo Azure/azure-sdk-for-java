@@ -26,7 +26,6 @@ package com.microsoft.windowsazure.management.websites;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
