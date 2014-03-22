@@ -30,81 +30,70 @@ import com.microsoft.windowsazure.management.sql.models.DacImportParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 
 public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
-	
+
     private StorageAccount storageAccount;
-	
+
     @Before
-    public void setup() throws Exception
-    {
+    public void setup() throws Exception {
         createService();
-	createStorageService();
-	databaseOperations = sqlManagementClient.getDatabasesOperations();
-	serverOperations = sqlManagementClient.getServersOperations();
-	dacOperations = sqlManagementClient.getDacOperations();
-	storageAccount = createStorageAccount("dacoperationtest");
+        createStorageService();
+        databaseOperations = sqlManagementClient.getDatabasesOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
+        dacOperations = sqlManagementClient.getDacOperations();
+        storageAccount = createStorageAccount("dacoperationtest");
     }
-	
+
     @After
-    public void cleanup() throws Exception 
-    {
-	for (String databaseName : databaseToBeRemoved.keySet())
-        {
-	    String serverName = databaseToBeRemoved.get(databaseName);
-	    databaseOperations.delete(serverName, databaseName);
+    public void cleanup() throws Exception {
+        for (String databaseName : databaseToBeRemoved.keySet()) {
+            String serverName = databaseToBeRemoved.get(databaseName);
+            databaseOperations.delete(serverName, databaseName);
         }
+
         databaseToBeRemoved.clear();
 
-        for (String serverName : serverToBeRemoved)
-        {
+        for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
+
         serverToBeRemoved.clear();
         
         storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
     }
-	
+
     @Test
     @Ignore("temporary disable because of long running ")
-    public void importDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException 
-    {
-    	// arrange
-    	String serverName = createServer();
-    	String azureEditionValue = "sqlazure";
-    	URI uriValue = storageAccount.getUri();
-    	String accessKey = getStorageKey(storageAccount.getName());
-    	DacImportParameters.BlobCredentialsParameter blobCredentialsValue = new DacImportParameters.BlobCredentialsParameter();
-    	blobCredentialsValue.setStorageAccessKey(accessKey);
-    	blobCredentialsValue.setUri(uriValue);
-    	
-    	// act 
-    	DacImportParameters dacImportParameters = new DacImportParameters();
-    	dacImportParameters.setAzureEdition(azureEditionValue);
-    	dacImportParameters.setBlobCredentials(blobCredentialsValue);
-    	dacOperations.importDatabase(serverName, dacImportParameters);
-    	
-    	// assert
-    	
+    public void importDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+        // arrange
+        String serverName = createServer();
+        String azureEditionValue = "sqlazure";
+        URI uriValue = storageAccount.getUri();
+        String accessKey = getStorageKey(storageAccount.getName());
+        DacImportParameters.BlobCredentialsParameter blobCredentialsValue = new DacImportParameters.BlobCredentialsParameter();
+        blobCredentialsValue.setStorageAccessKey(accessKey);
+        blobCredentialsValue.setUri(uriValue);
+        
+        // act 
+        DacImportParameters dacImportParameters = new DacImportParameters();
+        dacImportParameters.setAzureEdition(azureEditionValue);
+        dacImportParameters.setBlobCredentials(blobCredentialsValue);
+        dacOperations.importDatabase(serverName, dacImportParameters);
     }
-    
+
     @Test
     @Ignore("temporary disable because of long running ")
-    public void exportDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException 
-    {
-    	// arrange
-    	String serverName = createServer();
-    	URI uriValue = storageAccount.getUri();
-    	DacExportParameters.BlobCredentialsParameter blobCredentialsValue = new DacExportParameters.BlobCredentialsParameter();
-    	String accessKey = getStorageKey(storageAccount.getName());
-    	blobCredentialsValue.setStorageAccessKey(accessKey);
-    	blobCredentialsValue.setUri(uriValue);
-    	
-    	// act 
-    	DacExportParameters dacExportParameters = new DacExportParameters();
-    	dacExportParameters.setBlobCredentials(blobCredentialsValue);
-    	dacOperations.exportDatabase(serverName, dacExportParameters);
-    	
-    	// assert
-    		    
-    }   
-    
+    public void exportDatabaseSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException {
+        // arrange
+        String serverName = createServer();
+        URI uriValue = storageAccount.getUri();
+        DacExportParameters.BlobCredentialsParameter blobCredentialsValue = new DacExportParameters.BlobCredentialsParameter();
+        String accessKey = getStorageKey(storageAccount.getName());
+        blobCredentialsValue.setStorageAccessKey(accessKey);
+        blobCredentialsValue.setUri(uriValue);
+        
+        // act 
+        DacExportParameters dacExportParameters = new DacExportParameters();
+        dacExportParameters.setBlobCredentials(blobCredentialsValue);
+        dacOperations.exportDatabase(serverName, dacExportParameters);
+    }
 }

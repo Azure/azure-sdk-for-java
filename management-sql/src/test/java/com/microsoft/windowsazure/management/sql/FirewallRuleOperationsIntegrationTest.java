@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -35,123 +34,111 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateParame
 import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateResponse;
 
 public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
-	
-
     private static FirewallRuleOperations firewallRuleOperations;
-	
+
     @Before
-    public void setup() throws Exception
-    {
+    public void setup() throws Exception {
         createService();
         firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
     }
-	
+
     @After
-    public void cleanup() throws Exception 
-    {
-        for (String firewallRuleName : firewallRuleToBeRemoved.keySet())
-        {
+    public void cleanup() throws Exception {
+        for (String firewallRuleName : firewallRuleToBeRemoved.keySet()) {
             String serverName = firewallRuleToBeRemoved.get(firewallRuleName);
             firewallRuleOperations.delete(serverName, firewallRuleName);
         }
+
         firewallRuleToBeRemoved.clear();
         
-        for (String serverName : serverToBeRemoved)
-        {
+        for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
-        
+
         serverToBeRemoved.clear();
     }
 
     @Test
-    public void createFirewallRuleWithRequiredParametersSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String expectedServerName = createServer();
-    	String expectedRuleName = "AllowAll";
-    	InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
-    	InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
-    	String expectedType = "Microsoft.SqlAzure.FirewallRule";
-    			
-    	// act
-    	FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
-    	firewallRuleCreateParameters.setName(expectedRuleName);
-    	firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
-    	firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
-    	FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
-    	FirewallRule firewallRule = firewallRuleCreateResponse.getFirewallRule();
-    	String firewallRuleName = firewallRule.getName();
-    	firewallRuleToBeRemoved.put(firewallRuleName, expectedServerName);
-    	
-    	// assert
-    	assertEquals(expectedRuleName, firewallRule.getName());
-    	assertEquals(expectedStartIpAddress, firewallRule.getStartIPAddress());
-    	assertEquals(expectedEndIpAddress, firewallRule.getEndIPAddress());
-    	assertEquals(expectedType, firewallRule.getType());
-    }
-    
-    @Test
-    public void deleteFirewallRuleSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
-    	// arrange 
-    	String expectedServerName = createServer();
-    	String expectedRuleName = "AllowAll";
-    	InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
-    	InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
-    			
-    	// act
-    	FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
-    	firewallRuleCreateParameters.setName(expectedRuleName);
-    	firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
-    	firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
-    	FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
-    	FirewallRule expectedFirewallRule = firewallRuleCreateResponse.getFirewallRule();
-    	firewallRuleOperations.delete(expectedServerName, expectedRuleName);
-    	
-    	// assert
-    	FirewallRuleListResponse firewallRuleListResponse = firewallRuleOperations.list(expectedServerName);
-    	ArrayList<FirewallRule> firewallRuleList = firewallRuleListResponse.getFirewallRules();
-    	for (FirewallRule firewallRule : firewallRuleList)
-    	{
-    		assertNotEquals(expectedFirewallRule.getName(), firewallRule.getName());
-    	}
+    public void createFirewallRuleWithRequiredParametersSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String expectedServerName = createServer();
+        String expectedRuleName = "AllowAll";
+        InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
+        InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
+        String expectedType = "Microsoft.SqlAzure.FirewallRule";
 
+        // act
+        FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
+        firewallRuleCreateParameters.setName(expectedRuleName);
+        firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
+        firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
+        FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
+        FirewallRule firewallRule = firewallRuleCreateResponse.getFirewallRule();
+        String firewallRuleName = firewallRule.getName();
+        firewallRuleToBeRemoved.put(firewallRuleName, expectedServerName);
+
+        // assert
+        assertEquals(expectedRuleName, firewallRule.getName());
+        assertEquals(expectedStartIpAddress, firewallRule.getStartIPAddress());
+        assertEquals(expectedEndIpAddress, firewallRule.getEndIPAddress());
+        assertEquals(expectedType, firewallRule.getType());
     }
-    
+
     @Test
-    public void updateRuleSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	// arrange 
-    	String expectedServerName = createServer();
-    	String expectedRuleName = "AllowAll";
-    	InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
-    	InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
-    	InetAddress updatedEndIpAddress = InetAddress.getByName("255.255.255.128");
-    			
-    	// act
-    	FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
-    	firewallRuleCreateParameters.setName(expectedRuleName);
-    	firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
-    	firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
-    	FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
-    	FirewallRule firewallRule = firewallRuleCreateResponse.getFirewallRule();
-    	String firewallRuleName = firewallRule.getName();
-    	firewallRuleToBeRemoved.put(firewallRuleName, expectedServerName);
-    	FirewallRuleUpdateParameters firewallRuleUpdateParameters = new FirewallRuleUpdateParameters();
-    	firewallRuleUpdateParameters.setEndIPAddress(updatedEndIpAddress);
-    	firewallRuleUpdateParameters.setName(expectedRuleName);
-    	firewallRuleUpdateParameters.setStartIPAddress(expectedStartIpAddress);
-    	FirewallRuleUpdateResponse firewallRuleUpdateResponse = firewallRuleOperations.update(expectedServerName, expectedRuleName, firewallRuleUpdateParameters);
-    	
-    	// assert
-    	FirewallRule updatedFirewallRule = firewallRuleUpdateResponse.getFirewallRule();
-    	assertEquals(updatedEndIpAddress, updatedFirewallRule.getEndIPAddress());
-    	assertEquals(expectedStartIpAddress, updatedFirewallRule.getStartIPAddress());
-    	assertEquals(expectedRuleName, updatedFirewallRule.getName());
-    	
+    public void deleteFirewallRuleSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String expectedServerName = createServer();
+        String expectedRuleName = "AllowAll";
+        InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
+        InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
+
+        // act
+        FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
+        firewallRuleCreateParameters.setName(expectedRuleName);
+        firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
+        firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
+        FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
+        FirewallRule expectedFirewallRule = firewallRuleCreateResponse.getFirewallRule();
+        firewallRuleOperations.delete(expectedServerName, expectedRuleName);
+        
+        // assert
+        FirewallRuleListResponse firewallRuleListResponse = firewallRuleOperations.list(expectedServerName);
+        ArrayList<FirewallRule> firewallRuleList = firewallRuleListResponse.getFirewallRules();
+        for (FirewallRule firewallRule : firewallRuleList)
+        {
+            assertNotEquals(expectedFirewallRule.getName(), firewallRule.getName());
+        }
     }
-    
-    
+
+    @Test
+    public void updateRuleSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        // arrange 
+        String expectedServerName = createServer();
+        String expectedRuleName = "AllowAll";
+        InetAddress expectedStartIpAddress = InetAddress.getByName("0.0.0.0");
+        InetAddress expectedEndIpAddress = InetAddress.getByName("255.255.255.255");
+        InetAddress updatedEndIpAddress = InetAddress.getByName("255.255.255.128");
+
+        // act
+        FirewallRuleCreateParameters firewallRuleCreateParameters = new FirewallRuleCreateParameters();
+        firewallRuleCreateParameters.setName(expectedRuleName);
+        firewallRuleCreateParameters.setStartIPAddress(expectedStartIpAddress);
+        firewallRuleCreateParameters.setEndIPAddress(expectedEndIpAddress);
+        FirewallRuleCreateResponse firewallRuleCreateResponse = firewallRuleOperations.create(expectedServerName, firewallRuleCreateParameters);
+        FirewallRule firewallRule = firewallRuleCreateResponse.getFirewallRule();
+        String firewallRuleName = firewallRule.getName();
+        firewallRuleToBeRemoved.put(firewallRuleName, expectedServerName);
+        FirewallRuleUpdateParameters firewallRuleUpdateParameters = new FirewallRuleUpdateParameters();
+        firewallRuleUpdateParameters.setEndIPAddress(updatedEndIpAddress);
+        firewallRuleUpdateParameters.setName(expectedRuleName);
+        firewallRuleUpdateParameters.setStartIPAddress(expectedStartIpAddress);
+        FirewallRuleUpdateResponse firewallRuleUpdateResponse = firewallRuleOperations.update(expectedServerName, expectedRuleName, firewallRuleUpdateParameters);
+        
+        // assert
+        FirewallRule updatedFirewallRule = firewallRuleUpdateResponse.getFirewallRule();
+        assertEquals(updatedEndIpAddress, updatedFirewallRule.getEndIPAddress());
+        assertEquals(expectedStartIpAddress, updatedFirewallRule.getStartIPAddress());
+        assertEquals(expectedRuleName, updatedFirewallRule.getName());
+    }
 }

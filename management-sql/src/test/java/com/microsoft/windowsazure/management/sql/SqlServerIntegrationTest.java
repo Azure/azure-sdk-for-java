@@ -37,37 +37,33 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
     private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static ServerOperations serverOperations;
-	
+
     @Before
-    public void setup() throws Exception
-    {
+    public void setup() throws Exception {
         createService();
-	serverOperations = sqlManagementClient.getServersOperations();
+        serverOperations = sqlManagementClient.getServersOperations();
     }
-	
+
     @After
-    public void cleanup() throws Exception 
-    {
-        for (String serverName : serverToBeRemoved)
-        {
+    public void cleanup() throws Exception {
+        for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
     }
-	
+
     @Test
-    public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException 
-    {
-    	//arrange 
-    	String testAdministratorUserName = "testadminname";
-    	String testPassword = "testpassword8!";
-    	String testLocation = "West US";
-    	
-    	// act
-    	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
-    	serverCreateParameters.setAdministratorPassword(testPassword);
-    	serverCreateParameters.setLocation(testLocation);
+    public void createSqlServerWithRequiredParameters() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        //arrange 
+        String testAdministratorUserName = "testadminname";
+        String testPassword = "testpassword8!";
+        String testLocation = "West US";
+        
+        // act
+        ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+        serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+        serverCreateParameters.setAdministratorPassword(testPassword);
+        serverCreateParameters.setLocation(testLocation);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverToBeRemoved.add(serverName);
@@ -77,51 +73,43 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
         ServerListResponse serverListResponse = serverOperations.list();
         Iterator<Server> serverList = serverListResponse.iterator();
         Server createdServer = null;
-        while (serverList.hasNext())
-        {
+        while (serverList.hasNext()) {
             Server nextServer = serverList.next();
-            if (nextServer.getName().equals(serverName))
-            {
-            	createdServer = nextServer;
+            if (nextServer.getName().equals(serverName)) {
+                createdServer = nextServer;
             }
         }
         assertNotNull(createdServer);
         assertEquals(testAdministratorUserName, createdServer.getAdministratorUserName());
         assertEquals(testLocation, createdServer.getLocation());
-        
     }
-    
+
     @Test
-    public void deleteServerSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException
-    {
-    	//arrange 
-    	String testAdministratorUserName = "testadminname";
-    	String testPassword = "testpassword8!";
-    	String testLocation = "West US";
-    	
-    	// act
-    	ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
-    	serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
-    	serverCreateParameters.setAdministratorPassword(testPassword);
-    	serverCreateParameters.setLocation(testLocation);
+    public void deleteServerSuccess() throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException {
+        //arrange 
+        String testAdministratorUserName = "testadminname";
+        String testPassword = "testpassword8!";
+        String testLocation = "West US";
+
+        // act
+        ServerCreateParameters serverCreateParameters = new ServerCreateParameters();
+        serverCreateParameters.setAdministratorUserName(testAdministratorUserName);
+        serverCreateParameters.setAdministratorPassword(testPassword);
+        serverCreateParameters.setLocation(testLocation);
         ServerCreateResponse serverCreateResponse = serverOperations.create(serverCreateParameters);
         String serverName = serverCreateResponse.getServerName();
         serverOperations.delete(serverName);
-        
+
         // assert
         ServerListResponse serverListResponse = serverOperations.list();
         Iterator<Server> serverList = serverListResponse.iterator();
         Server createdServer = null;
-        while (serverList.hasNext())
-        {
+        while (serverList.hasNext()) {
             Server nextServer = serverList.next();
-            if (nextServer.getName().equals(serverName))
-            {
-            	createdServer = nextServer;
+            if (nextServer.getName().equals(serverName)) {
+                createdServer = nextServer;
             }
         }
         assertNull(createdServer);
-        
     }
-    
 }
