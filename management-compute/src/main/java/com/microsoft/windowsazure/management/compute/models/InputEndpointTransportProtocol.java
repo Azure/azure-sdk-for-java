@@ -26,10 +26,10 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * Specifies the transport protocol for an endpoint.
 */
-public class InputEndpointTransportProtocol {
-    public static final String Tcp = "tcp";
+public abstract class InputEndpointTransportProtocol {
+    public static final String TCP = "tcp";
     
-    public static final String Udp = "udp";
+    public static final String UDP = "udp";
     
-    public static final String Http = "http";
+    public static final String HTTP = "http";
 }

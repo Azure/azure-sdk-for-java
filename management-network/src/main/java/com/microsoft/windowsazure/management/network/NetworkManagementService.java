@@ -34,7 +34,7 @@ public final class NetworkManagementService {
      */
     public static NetworkManagementClient create() {
         return Configuration.getInstance().create(
-        		NetworkManagementClient.class);
+            NetworkManagementClient.class);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class NetworkManagementService {
      */
     public static NetworkManagementClient create(final String profile) {
         return Configuration.getInstance().create(profile,
-        		NetworkManagementClient.class);
+            NetworkManagementClient.class);
     }
 
     /**

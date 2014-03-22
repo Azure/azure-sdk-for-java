@@ -26,44 +26,44 @@ package com.microsoft.windowsazure.management.websites.models;
 /**
 * Supported historical usage metric names.
 */
-public class HistoricalUsageMetricNames {
-    public static final String CpuTime = "CpuTime";
+public abstract class HistoricalUsageMetricNames {
+    public static final String CPUTIME = "CpuTime";
     
-    public static final String BytesReceived = "BytesReceived";
+    public static final String BYTESRECEIVED = "BytesReceived";
     
-    public static final String BytesSent = "BytesSent";
+    public static final String BYTESSENT = "BytesSent";
     
-    public static final String IncomingRequestBytes = "IncomingRequestBytes";
+    public static final String INCOMINGREQUESTBYTES = "IncomingRequestBytes";
     
-    public static final String IncomingRequestResponseBytes = "IncomingRequestResponseBytes";
+    public static final String INCOMINGREQUESTRESPONSEBYTES = "IncomingRequestResponseBytes";
     
-    public static final String OutgoingRequestBytes = "OutgoingRequestBytes";
+    public static final String OUTGOINGREQUESTBYTES = "OutgoingRequestBytes";
     
-    public static final String OutgoingRequestResponseBytes = "OutgoingRequestResponseBytes";
+    public static final String OUTGOINGREQUESTRESPONSEBYTES = "OutgoingRequestResponseBytes";
     
-    public static final String LocalReadBytes = "LocalReadBytes";
+    public static final String LOCALREADBYTES = "LocalReadBytes";
     
-    public static final String LocalWrittenBytes = "LocalWrittenBytes";
+    public static final String LOCALWRITTENBYTES = "LocalWrittenBytes";
     
-    public static final String NetworkReadBytes = "NetworkReadBytes";
+    public static final String NETWORKREADBYTES = "NetworkReadBytes";
     
-    public static final String NetworkWrittenBytes = "NetworkWrittenBytes";
+    public static final String NETWORKWRITTENBYTES = "NetworkWrittenBytes";
     
-    public static final String Requests = "Requests";
+    public static final String REQUESTS = "Requests";
     
-    public static final String Http2xx = "Http2xx";
+    public static final String HTTP2XX = "Http2xx";
     
-    public static final String Http3xx = "Http3xx";
+    public static final String HTTP3XX = "Http3xx";
     
-    public static final String Http401 = "Http401";
+    public static final String HTTP401 = "Http401";
     
-    public static final String Http403 = "Http403";
+    public static final String HTTP403 = "Http403";
     
-    public static final String Http404 = "Http404";
+    public static final String HTTP404 = "Http404";
     
-    public static final String Http406 = "Http406";
+    public static final String HTTP406 = "Http406";
     
-    public static final String Http4xx = "Http4xx";
+    public static final String HTTP4XX = "Http4xx";
     
-    public static final String Http5xx = "Http5xx";
+    public static final String HTTP5XX = "Http5xx";
 }

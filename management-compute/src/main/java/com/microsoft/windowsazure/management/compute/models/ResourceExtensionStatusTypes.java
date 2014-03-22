@@ -27,12 +27,12 @@ package com.microsoft.windowsazure.management.compute.models;
 * The resource extension status, which can be "Installing", "Ready",
 * "NotReady", "Unresponsive"
 */
-public class ResourceExtensionStatusTypes {
-    public static final String Installing = "Installing";
+public abstract class ResourceExtensionStatusTypes {
+    public static final String INSTALLING = "Installing";
     
-    public static final String Ready = "Ready";
+    public static final String READY = "Ready";
     
-    public static final String NorReady = "NorReady";
+    public static final String NORREADY = "NorReady";
     
-    public static final String Unresponsive = "Unresponsive";
+    public static final String UNRESPONSIVE = "Unresponsive";
 }

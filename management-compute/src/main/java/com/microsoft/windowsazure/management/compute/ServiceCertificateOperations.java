@@ -166,7 +166,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationStatusResponse create(String serviceName, ServiceCertificateCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Add Service Certificate operation adds a certificate to a hosted
@@ -227,7 +227,7 @@ public interface ServiceCertificateOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse delete(ServiceCertificateDeleteParameters parameters) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Service Certificate operation deletes a service certificate

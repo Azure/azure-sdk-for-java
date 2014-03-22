@@ -66,7 +66,7 @@ public interface ClientRootCertificateOperations {
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
     
     /**
     * The Upload Client Root Certificate operation is used to upload a new
@@ -113,7 +113,7 @@ public interface ClientRootCertificateOperations {
     * @return A standard storage response including an HTTP status code and
     * request ID.
     */
-    GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Client Root Certificate operation deletes a previously

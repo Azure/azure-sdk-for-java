@@ -720,7 +720,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationStatusResponse create(String serviceName, String deploymentName, VirtualMachineCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Add Role operation adds a virtual machine to an existing deployment.
@@ -852,7 +852,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse delete(String serviceName, String deploymentName, String virtualMachineName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Role operation deletes the specified virtual machine.  (see
@@ -1248,7 +1248,7 @@ public interface VirtualMachineOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException;
+    OperationStatusResponse update(String serviceName, String deploymentName, String virtualMachineName, VirtualMachineUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException;
     
     /**
     * The Update Role operation adds a virtual machine to an existing

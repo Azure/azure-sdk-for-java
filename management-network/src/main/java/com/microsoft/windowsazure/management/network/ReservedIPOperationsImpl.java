@@ -427,7 +427,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * failure.
     */
     @Override
-    public OperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse create(NetworkReservedIPCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -543,7 +543,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String ipName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;

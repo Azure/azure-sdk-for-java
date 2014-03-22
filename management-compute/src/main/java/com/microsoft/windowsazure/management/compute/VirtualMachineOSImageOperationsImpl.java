@@ -148,7 +148,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * operation.
     */
     @Override
-    public VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public VirtualMachineOSImageCreateResponse create(VirtualMachineOSImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -525,7 +525,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * request ID.
     */
     @Override
-    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");
@@ -1175,7 +1175,7 @@ public class VirtualMachineOSImageOperationsImpl implements ServiceOperations<Co
     * operation.
     */
     @Override
-    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
+    public VirtualMachineOSImageUpdateResponse update(String imageName, VirtualMachineOSImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException {
         // Validate
         if (imageName == null) {
             throw new NullPointerException("imageName");

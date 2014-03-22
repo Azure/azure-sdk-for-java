@@ -23,16 +23,16 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-public class GeoRegionNames {
-    public static final String EastUS = "East US";
+public abstract class GeoRegionNames {
+    public static final String EASTUS = "East US";
     
-    public static final String WestUS = "West US";
+    public static final String WESTUS = "West US";
     
-    public static final String NorthCentralUS = "North Central US";
+    public static final String NORTHCENTRALUS = "North Central US";
     
-    public static final String NorthEurope = "North Europe";
+    public static final String NORTHEUROPE = "North Europe";
     
-    public static final String WestEurope = "West Europe";
+    public static final String WESTEUROPE = "West Europe";
     
-    public static final String EastAsia = "East Asia";
+    public static final String EASTASIA = "East Asia";
 }

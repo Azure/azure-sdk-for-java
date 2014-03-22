@@ -881,7 +881,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException {
+    public OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
         // Validate
         if (parameters == null) {
             throw new NullPointerException("parameters");
@@ -1078,7 +1078,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");
@@ -4236,7 +4236,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
     * request ID.
     */
     @Override
-    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException {
+    public OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException {
         // Validate
         if (serviceName == null) {
             throw new NullPointerException("serviceName");

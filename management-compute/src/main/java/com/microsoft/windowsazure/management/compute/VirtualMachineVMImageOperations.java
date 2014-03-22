@@ -89,7 +89,7 @@ public interface VirtualMachineVMImageOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete VM Image operation deletes the specified VM image.

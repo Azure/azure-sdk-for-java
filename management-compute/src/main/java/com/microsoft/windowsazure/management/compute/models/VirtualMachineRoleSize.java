@@ -26,16 +26,16 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * The size of a virtual machine.
 */
-public class VirtualMachineRoleSize {
-    public static final String Small = "Small";
+public abstract class VirtualMachineRoleSize {
+    public static final String SMALL = "Small";
     
-    public static final String ExtraSmall = "ExtraSmall";
+    public static final String EXTRASMALL = "ExtraSmall";
     
-    public static final String Large = "Large";
+    public static final String LARGE = "Large";
     
-    public static final String Medium = "Medium";
+    public static final String MEDIUM = "Medium";
     
-    public static final String ExtraLarge = "ExtraLarge";
+    public static final String EXTRALARGE = "ExtraLarge";
     
     public static final String A5 = "A5";
     

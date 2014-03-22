@@ -21,14 +21,14 @@
 // Changes to this file may cause incorrect behavior and will be lost if the
 // code is regenerated.
 
-package com.microsoft.windowsazure.management.websites.models;
+package com.microsoft.windowsazure.management.compute.models;
 
 /**
-* The state of the website.
+* Known values for the operating system type of the OS in a virtual machine
+* image.
 */
-public enum WebSiteState
-{
-    Stopped,
+public abstract class VirtualMachineImageOperatingSystemType {
+    public static final String LINUX = "Linux";
     
-    Running,
+    public static final String WINDOWS = "Windows";
 }
