@@ -18,16 +18,22 @@ package com.microsoft.windowsazure.management.website;
 
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.websites.*;
-import com.microsoft.windowsazure.management.websites.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
-import com.microsoft.windowsazure.exception.ServiceException;
-
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesGetDnsSuffixResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesGetResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesListGeoRegionsResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesListPublishingUsersResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesListResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
 
 public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBase {
     

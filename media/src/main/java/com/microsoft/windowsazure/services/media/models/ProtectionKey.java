@@ -35,7 +35,7 @@ import com.sun.jersey.api.client.ClientResponse;
  * Class for creating operations to manipulate protection key pseudo-entities.
  * 
  */
-public class ProtectionKey {
+public final class ProtectionKey {
 
     private ProtectionKey() {
     }

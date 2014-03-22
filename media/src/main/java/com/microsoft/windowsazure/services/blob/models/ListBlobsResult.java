@@ -371,7 +371,7 @@ public class ListBlobsResult {
      * The abstract base class for <code>Blob</code> and <code>BlobPrefix</code>
      * entries in the list of results returned in the response.
      */
-    public static abstract class ListBlobsEntry {
+    public abstract static class ListBlobsEntry {
 
     }
 

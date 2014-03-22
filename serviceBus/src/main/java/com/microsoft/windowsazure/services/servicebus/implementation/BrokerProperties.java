@@ -31,49 +31,49 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class BrokerProperties {
 
     @JsonProperty("CorrelationId")
-    String correlationId;
+    private String correlationId;
 
     @JsonProperty("SessionId")
-    String sessionId;
+    private String sessionId;
 
     @JsonProperty("DeliveryCount")
-    Integer deliveryCount;
+    private Integer deliveryCount;
 
     @JsonProperty("LockedUntilUtc")
-    Date lockedUntilUtc;
+    private Date lockedUntilUtc;
 
     @JsonProperty("LockToken")
-    String lockToken;
+    private String lockToken;
 
     @JsonProperty("MessageId")
-    String messageId;
+    private String messageId;
 
     @JsonProperty("Label")
-    String label;
+    private String label;
 
     @JsonProperty("ReplyTo")
-    String replyTo;
+    private String replyTo;
 
     @JsonProperty("SequenceNumber")
-    Long sequenceNumber;
+    private Long sequenceNumber;
 
     @JsonProperty("TimeToLive")
-    Double timeToLive;
+    private Double timeToLive;
 
     @JsonProperty("To")
-    String to;
+    private String to;
 
     @JsonProperty("ScheduledEnqueueTimeUtc")
-    Date scheduledEnqueueTimeUtc;
+    private Date scheduledEnqueueTimeUtc;
 
     @JsonProperty("ReplyToSessionId")
-    String replyToSessionId;
+    private String replyToSessionId;
 
     @JsonProperty("MessageLocation")
-    String messageLocation;
+    private String messageLocation;
 
     @JsonProperty("LockLocation")
-    String lockLocation;
+    private String lockLocation;
 
     @JsonIgnore
     public Integer getDeliveryCount() {

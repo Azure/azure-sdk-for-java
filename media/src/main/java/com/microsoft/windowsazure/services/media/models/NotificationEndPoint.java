@@ -31,7 +31,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate notification end point entities.
  * 
  */
-public class NotificationEndPoint {
+public final class NotificationEndPoint {
 
     private static final String ENTITY_SET = "NotificationEndPoints";
 

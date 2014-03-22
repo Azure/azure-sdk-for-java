@@ -209,6 +209,7 @@ public class ServiceException extends Exception {
 
             serviceException = new ServiceException(buildExceptionMessage(code,
                     message, content, httpResponse));
+
             serviceException.setErrorCode(code);
             serviceException.setErrorMessage(message);
         } catch (XPathExpressionException e) {

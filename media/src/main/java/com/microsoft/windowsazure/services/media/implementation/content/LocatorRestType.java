@@ -30,31 +30,31 @@ public class LocatorRestType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     /** The expiration date time. */
     @XmlElement(name = "ExpirationDateTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date expirationDateTime;
+    private Date expirationDateTime;
 
     /** The type. */
     @XmlElement(name = "Type", namespace = Constants.ODATA_DATA_NS)
-    protected Integer type;
+    private Integer type;
 
     /** The path. */
     @XmlElement(name = "Path", namespace = Constants.ODATA_DATA_NS)
-    protected String path;
+    private String path;
 
     /** The access policy id. */
     @XmlElement(name = "AccessPolicyId", namespace = Constants.ODATA_DATA_NS)
-    protected String accessPolicyId;
+    private String accessPolicyId;
 
     /** The asset id. */
     @XmlElement(name = "AssetId", namespace = Constants.ODATA_DATA_NS)
-    protected String assetId;
+    private String assetId;
 
     /** The start time. */
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date startTime;
+    private Date startTime;
 
     /** The base uri. */
     @XmlElement(name = "BaseUri", namespace = Constants.ODATA_DATA_NS)

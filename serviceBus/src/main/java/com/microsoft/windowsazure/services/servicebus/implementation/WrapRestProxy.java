@@ -29,9 +29,9 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.representation.Form;
 
 public class WrapRestProxy implements WrapContract {
-    Client channel;
+    private Client channel;
 
-    static Log log = LogFactory.getLog(WrapContract.class);
+    private static Log log = LogFactory.getLog(WrapContract.class);
 
     @Inject
     public WrapRestProxy(Client channel, UserAgentFilter userAgentFilter) {

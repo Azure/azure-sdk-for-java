@@ -54,12 +54,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RoleInfo", propOrder = {
 
 })
-class RoleInfo {
+public class RoleInfo {
 
     @XmlElement(name = "Instances", required = true)
-    protected RoleInstancesInfo instances;
+    private RoleInstancesInfo instances;
     @XmlAttribute(required = true)
-    protected String name;
+    private String name;
 
     /**
      * Gets the value of the instances property.

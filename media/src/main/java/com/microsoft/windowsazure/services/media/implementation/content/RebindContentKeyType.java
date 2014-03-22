@@ -29,7 +29,7 @@ public class RebindContentKeyType implements MediaServiceDTO {
 
     /** The rebind content key. */
     @XmlValue
-    String rebindContentKey;
+    private String rebindContentKey;
 
     /**
      * Gets the content key.

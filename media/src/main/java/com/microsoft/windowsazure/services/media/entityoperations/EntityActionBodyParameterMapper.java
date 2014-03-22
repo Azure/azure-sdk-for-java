@@ -31,7 +31,7 @@ import org.codehaus.jackson.map.SerializationConfig;
 public class EntityActionBodyParameterMapper {
 
     /** The mapper. */
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     /**
      * Instantiates a new entity action body parameter mapper.

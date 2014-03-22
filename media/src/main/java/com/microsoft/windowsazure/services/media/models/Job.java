@@ -47,7 +47,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Job entities.
  * 
  */
-public class Job {
+public final class Job {
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Jobs";
@@ -362,7 +362,7 @@ public class Job {
          */
         public CreateBatchOperation(URI serviceUri) {
             this.serviceUri = serviceUri;
-            this.verb = "POST";
+            this.setVerb("POST");
         }
 
         /**

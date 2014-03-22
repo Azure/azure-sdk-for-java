@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.Configuration;
  * Access service bus functionality.
  * 
  */
-public class ServiceBusService {
+public final class ServiceBusService {
 
     private ServiceBusService() {
         // class is not instantiated

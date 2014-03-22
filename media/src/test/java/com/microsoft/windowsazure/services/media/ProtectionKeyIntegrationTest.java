@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 

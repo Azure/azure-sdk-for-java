@@ -44,7 +44,7 @@ public class DefaultEntityTypeActionOperation<T> implements
     private final MultivaluedMap<String, String> queryParameters;
 
     /** The proxy data. */
-    protected EntityProxyData proxyData;
+    private EntityProxyData proxyData;
 
     /**
      * Instantiates a new default type action operation.
@@ -122,6 +122,10 @@ public class DefaultEntityTypeActionOperation<T> implements
         this.proxyData = proxyData;
     }
 
+    public EntityProxyData getProxyData() {
+        return this.proxyData;
+    }
+    
     /*
      * (non-Javadoc)
      * 

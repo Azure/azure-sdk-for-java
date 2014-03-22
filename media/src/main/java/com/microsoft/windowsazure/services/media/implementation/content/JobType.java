@@ -34,48 +34,48 @@ public class JobType implements MediaServiceDTO {
 
     /** The id. */
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     /** The job notification subscriptions. */
     @XmlElementWrapper(name = "JobNotificationSubscriptions", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
-    protected List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypes;
+    private List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypes;
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     /** The end time. */
     @XmlElement(name = "EndTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date endTime;
+    private Date endTime;
 
     /** The priority. */
     @XmlElement(name = "Priority", namespace = Constants.ODATA_DATA_NS)
-    protected Integer priority;
+    private Integer priority;
 
     /** The running duration. */
     @XmlElement(name = "RunningDuration", namespace = Constants.ODATA_DATA_NS)
-    protected Double runningDuration;
+    private Double runningDuration;
 
     /** The start time. */
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date startTime;
+    private Date startTime;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected Integer state;
+    private Integer state;
 
     /** The template id. */
     @XmlElement(name = "TemplateId", namespace = Constants.ODATA_DATA_NS)
-    protected String templateId;
+    private String templateId;
 
     /**
      * Gets the id.

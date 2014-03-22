@@ -23,11 +23,12 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The List Subscription Operations operation response.

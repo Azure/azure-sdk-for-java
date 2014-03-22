@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 class ConfigurationSettingsInfo {
 
     @XmlElement(name = "ConfigurationSetting")
-    protected List<ConfigurationSettingInfo> configurationSetting;
+    private List<ConfigurationSettingInfo> configurationSetting;
 
     /**
      * Gets the value of the configurationSetting property.

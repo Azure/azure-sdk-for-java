@@ -15,13 +15,18 @@
 
 package com.microsoft.windowsazure.services.blob.implementation;
 
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.windowsazure.core.RFC1123DateConverter;
+import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestFilter;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseFilter;
+import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
+import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.BlobContract;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlobServiceOptions;
@@ -41,11 +46,6 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
-import com.microsoft.windowsazure.core.RFC1123DateConverter;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
-import com.microsoft.windowsazure.core.pipeline.PipelineHelpers;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -113,11 +113,11 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         return filters;
     }
 
-    private void ThrowIfError(ClientResponse r) {
+    private void throwIfError(ClientResponse r) {
         PipelineHelpers.throwIfError(r);
     }
 
-    private void ThrowIfNotSuccess(ClientResponse clientResponse) {
+    private void throwIfNotSuccess(ClientResponse clientResponse) {
         PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
@@ -328,7 +328,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
                 : contentStream);
         ClientResponse clientResponse = builder.put(ClientResponse.class,
                 contentObject);
-        ThrowIfError(clientResponse);
+        throwIfError(clientResponse);
 
         CreateBlobResult createBlobResult = new CreateBlobResult();
         createBlobResult.setEtag(clientResponse.getHeaders().getFirst("ETag"));
@@ -426,7 +426,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
                 options.getAccessCondition());
 
         ClientResponse response = builder.method("HEAD", ClientResponse.class);
-        ThrowIfNotSuccess(response);
+        throwIfNotSuccess(response);
 
         return getBlobPropertiesResultFromResponse(response);
     }
@@ -458,7 +458,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
         }
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ThrowIfNotSuccess(response);
+        throwIfNotSuccess(response);
 
         GetBlobPropertiesResult properties = getBlobPropertiesResultFromResponse(response);
         GetBlobResult blobResult = new GetBlobResult();
@@ -537,7 +537,7 @@ public abstract class BlobOperationRestProxy implements BlobContract {
                 options.getLeaseId());
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ThrowIfError(response);
+        throwIfError(response);
 
         ListBlobBlocksResult result = response
                 .getEntity(ListBlobBlocksResult.class);

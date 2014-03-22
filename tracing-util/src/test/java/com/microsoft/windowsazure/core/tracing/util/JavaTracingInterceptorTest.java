@@ -14,14 +14,13 @@
  */
 package com.microsoft.windowsazure.core.tracing.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpPost;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.tracing.CloudTracing;

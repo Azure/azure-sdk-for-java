@@ -24,7 +24,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Task entities.
  * 
  */
-public class Task {
+public final class Task {
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Tasks";
@@ -92,7 +92,7 @@ public class Task {
          *            the task body
          */
         public CreateBatchOperation(String mediaProcessorId, String taskBody) {
-            this.verb = "POST";
+            this.setVerb("POST");
             taskType = new TaskType();
             addContentObject(taskType);
             this.taskType.setMediaProcessorId(mediaProcessorId);

@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-class RuntimeKernel {
+public final class RuntimeKernel {
     private static RuntimeKernel theKernel;
 
     private final CurrentStateSerializer currentStateSerializer;

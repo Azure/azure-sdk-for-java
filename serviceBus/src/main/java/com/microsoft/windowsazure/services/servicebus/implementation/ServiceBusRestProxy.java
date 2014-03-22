@@ -32,9 +32,6 @@ import java.util.Date;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.microsoft.windowsazure.services.servicebus.ServiceBusContract;
 import com.microsoft.windowsazure.services.servicebus.models.AbstractListOptions;
 import com.microsoft.windowsazure.services.servicebus.models.BrokeredMessage;
@@ -74,9 +71,8 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     private final String uri;
     private final BrokerPropertiesMapper mapper;
     private final CustomPropertiesMapper customPropertiesMapper;
-    static Log log = LogFactory.getLog(ServiceBusContract.class);
 
-    ClientFilter[] filters;
+    private ClientFilter[] filters;
 
     @Inject
     public ServiceBusRestProxy(Client channel, WrapFilter authFilter,
@@ -175,12 +171,14 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         Builder request = getResource().path(path).path("messages")
                 .getRequestBuilder();
 
-        if (message.getContentType() != null)
+        if (message.getContentType() != null) {
             request = request.type(message.getContentType());
+        }
 
-        if (message.getBrokerProperties() != null)
+        if (message.getBrokerProperties() != null) {
             request = request.header("BrokerProperties",
                     mapper.toString(message.getBrokerProperties()));
+        }
 
         for (java.util.Map.Entry<String, Object> entry : message
                 .getProperties().entrySet()) {
@@ -406,13 +404,13 @@ public class ServiceBusRestProxy implements ServiceBusContract {
     }
 
     @Override
-    public void deleteTopic(String TopicPath) throws ServiceException {
-        getResource().path(TopicPath).delete();
+    public void deleteTopic(String topicPath) throws ServiceException {
+        getResource().path(topicPath).delete();
     }
 
     @Override
-    public GetTopicResult getTopic(String TopicPath) throws ServiceException {
-        return new GetTopicResult(getResource().path(TopicPath).get(
+    public GetTopicResult getTopic(String topicPath) throws ServiceException {
+        return new GetTopicResult(getResource().path(topicPath).get(
                 TopicInfo.class));
     }
 
@@ -421,12 +419,12 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throws ServiceException {
         Feed feed = listOptions(options,
                 getResource().path("$Resources/Topics")).get(Feed.class);
-        ArrayList<TopicInfo> Topics = new ArrayList<TopicInfo>();
+        ArrayList<TopicInfo> topics = new ArrayList<TopicInfo>();
         for (Entry entry : feed.getEntries()) {
-            Topics.add(new TopicInfo(entry));
+            topics.add(new TopicInfo(entry));
         }
         ListTopicsResult result = new ListTopicsResult();
-        result.setItems(Topics);
+        result.setItems(topics);
         return result;
     }
 

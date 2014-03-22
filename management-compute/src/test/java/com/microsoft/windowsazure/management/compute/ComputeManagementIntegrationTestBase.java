@@ -15,7 +15,6 @@
 package com.microsoft.windowsazure.management.compute;
 
 import java.util.Map;
-import java.lang.*;
 
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
@@ -69,9 +68,9 @@ public abstract class ComputeManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
-                System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-                System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-                System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         );
     }
 }

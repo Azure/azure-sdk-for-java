@@ -29,11 +29,11 @@ public class ErrorDetailType implements MediaServiceDTO {
 
     /** The code. */
     @XmlElement(name = "Code", namespace = Constants.ODATA_DATA_NS)
-    protected String code;
+    private String code;
 
     /** The message. */
     @XmlElement(name = "Message", namespace = Constants.ODATA_DATA_NS)
-    protected String message;
+    private String message;
 
     /**
      * Gets the code.

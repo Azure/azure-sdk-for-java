@@ -52,9 +52,9 @@ import javax.xml.bind.annotation.XmlType;
 class DeploymentInfo {
 
     @XmlAttribute(required = true)
-    protected String id;
+    private String id;
     @XmlAttribute(required = true)
-    protected boolean emulated;
+    private boolean emulated;
 
     /**
      * Gets the value of the id property.

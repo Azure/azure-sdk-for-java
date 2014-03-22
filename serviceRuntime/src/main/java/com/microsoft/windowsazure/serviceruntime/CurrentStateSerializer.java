@@ -20,5 +20,5 @@ import java.io.OutputStream;
  * 
  */
 interface CurrentStateSerializer {
-    public void serialize(CurrentState state, OutputStream stream);
+    void serialize(CurrentState state, OutputStream stream);
 }

@@ -52,10 +52,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "RuntimeServerDiscoveryInfo", propOrder = {
 
 })
-class RuntimeServerDiscoveryInfo {
+public class RuntimeServerDiscoveryInfo {
 
     @XmlElement(name = "RuntimeServerEndpoints", required = true)
-    protected RuntimeServerEndpointsInfo runtimeServerEndpoints;
+    private RuntimeServerEndpointsInfo runtimeServerEndpoints;
 
     /**
      * Gets the value of the runtimeServerEndpoints property.

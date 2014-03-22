@@ -23,16 +23,6 @@
 
 package com.microsoft.windowsazure.management;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.core.ServiceOperations;
-import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
-import com.microsoft.windowsazure.core.utils.XmlUtility;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
-import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
-import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
-import com.microsoft.windowsazure.tracing.CloudTracing;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -41,6 +31,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,6 +40,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -59,6 +51,17 @@ import org.apache.http.entity.StringEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.XmlUtility;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.models.AffinityGroupCreateParameters;
+import com.microsoft.windowsazure.management.models.AffinityGroupGetResponse;
+import com.microsoft.windowsazure.management.models.AffinityGroupListResponse;
+import com.microsoft.windowsazure.management.models.AffinityGroupUpdateParameters;
+import com.microsoft.windowsazure.tracing.CloudTracing;
 
 /**
 * Operations for managing affinity groups beneath your subscription.  (see

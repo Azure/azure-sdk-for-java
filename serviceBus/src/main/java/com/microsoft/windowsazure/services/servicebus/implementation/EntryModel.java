@@ -15,8 +15,8 @@
 package com.microsoft.windowsazure.services.servicebus.implementation;
 
 public class EntryModel<T> {
-    Entry entry;
-    T model;
+    private Entry entry;
+    private T model;
 
     public EntryModel(Entry entry, T model) {
         this.entry = entry;

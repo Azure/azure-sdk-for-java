@@ -18,12 +18,12 @@ package com.microsoft.windowsazure.serviceruntime;
  * 
  */
 interface RuntimeGoalStateClient {
-    public GoalState getCurrentGoalState() throws InterruptedException;
+    GoalState getCurrentGoalState() throws InterruptedException;
 
-    public RoleEnvironmentData getRoleEnvironmentData()
+    RoleEnvironmentData getRoleEnvironmentData()
             throws InterruptedException;
 
-    public void addGoalStateChangedListener(GoalStateChangedListener listener);
+    void addGoalStateChangedListener(GoalStateChangedListener listener);
 
-    public void removeGoalStateChangedListener(GoalStateChangedListener listener);
+    void removeGoalStateChangedListener(GoalStateChangedListener listener);
 }

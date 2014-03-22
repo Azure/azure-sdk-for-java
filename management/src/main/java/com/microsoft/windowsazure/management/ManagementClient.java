@@ -23,15 +23,18 @@
 
 package com.microsoft.windowsazure.management;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.concurrent.Future;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
-import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.Future;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
 * The Service Management API provides programmatic access to much of the

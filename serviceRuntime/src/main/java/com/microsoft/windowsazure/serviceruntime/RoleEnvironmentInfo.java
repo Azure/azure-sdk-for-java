@@ -57,11 +57,11 @@ import javax.xml.bind.annotation.XmlType;
 class RoleEnvironmentInfo {
 
     @XmlElement(name = "Deployment", required = true)
-    protected DeploymentInfo deployment;
+    private DeploymentInfo deployment;
     @XmlElement(name = "CurrentInstance", required = true)
-    protected CurrentRoleInstanceInfo currentInstance;
+    private CurrentRoleInstanceInfo currentInstance;
     @XmlElement(name = "Roles")
-    protected RolesInfo roles;
+    private RolesInfo roles;
 
     /**
      * Gets the value of the deployment property.

@@ -30,46 +30,46 @@ import javax.xml.bind.annotation.XmlElement;
 public class AssetFileType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     @XmlElement(name = "ContentFileSize", namespace = Constants.ODATA_DATA_NS)
-    protected Long contentFileSize;
+    private Long contentFileSize;
 
     @XmlElement(name = "ParentAssetId", namespace = Constants.ODATA_DATA_NS)
-    protected String parentAssetId;
+    private String parentAssetId;
 
     @XmlElement(name = "EncryptionVersion", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionVersion;
+    private String encryptionVersion;
 
     @XmlElement(name = "EncryptionScheme", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionScheme;
+    private String encryptionScheme;
 
     @XmlElement(name = "IsEncrypted", namespace = Constants.ODATA_DATA_NS)
-    protected Boolean isEncrypted;
+    private Boolean isEncrypted;
 
     @XmlElement(name = "EncryptionKeyId", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionKeyId;
+    private String encryptionKeyId;
 
     @XmlElement(name = "InitializationVector", namespace = Constants.ODATA_DATA_NS)
-    protected String initializationVector;
+    private String initializationVector;
 
     @XmlElement(name = "IsPrimary", namespace = Constants.ODATA_DATA_NS)
-    protected Boolean isPrimary;
+    private Boolean isPrimary;
 
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     @XmlElement(name = "MimeType", namespace = Constants.ODATA_DATA_NS)
-    protected String mimeType;
+    private String mimeType;
 
     @XmlElement(name = "ContentChecksum", namespace = Constants.ODATA_DATA_NS)
-    protected String contentChecksum;
+    private String contentChecksum;
 
     /**
      * @return the id

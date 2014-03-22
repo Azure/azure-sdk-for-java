@@ -14,7 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -32,6 +35,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
+import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
+import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
+import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
+import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.models.BlobProperties;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
@@ -44,13 +54,6 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult.Container;
-import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceRequestContext;
-import com.microsoft.windowsazure.core.pipeline.filter.ServiceResponseContext;
-import com.microsoft.windowsazure.core.pipeline.jersey.ExponentialRetryPolicy;
-import com.microsoft.windowsazure.core.pipeline.jersey.RetryPolicyFilter;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.core.pipeline.jersey.ServiceFilter;
 
 public class BlobServiceIntegrationTest extends IntegrationTestBase {
     private static final String testContainersPrefix = "sdktest-";

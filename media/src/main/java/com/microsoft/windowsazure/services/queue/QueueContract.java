@@ -16,7 +16,6 @@ package com.microsoft.windowsazure.services.queue;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.queue.models.CreateMessageOptions;

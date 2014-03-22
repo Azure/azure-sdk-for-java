@@ -27,8 +27,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class BrokerPropertiesMapper {
 
-    public BrokerProperties fromString(String value)
-            throws IllegalArgumentException {
+    public BrokerProperties fromString(String value) {
 
         ObjectMapper mapper = new ObjectMapper();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(

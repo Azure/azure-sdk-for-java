@@ -15,7 +15,7 @@
 
 package com.microsoft.windowsazure.services.media.implementation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.core.MultivaluedMap;
 

@@ -15,15 +15,15 @@
 
 package com.microsoft.windowsazure.services.media;
 
-import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import java.io.InputStream;
 
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobResult;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * The Interface WritableBlobContainerContract.

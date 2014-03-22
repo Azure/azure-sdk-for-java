@@ -63,15 +63,15 @@ class AcquireLeaseInfo {
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
-    protected BigInteger incarnation;
+    private BigInteger incarnation;
     @XmlElement(name = "Status", required = true)
-    protected CurrentStatusEnum status;
+    private CurrentStatusEnum status;
     @XmlElement(name = "StatusDetail", required = true)
-    protected String statusDetail;
+    private String statusDetail;
     @XmlElement(name = "Expiration", required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar expiration;
+    private Calendar expiration;
 
     /**
      * Gets the value of the incarnation property.

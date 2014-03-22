@@ -14,8 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob;
 
-import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
 import java.io.InputStream;
+
+import com.microsoft.windowsazure.core.pipeline.jersey.JerseyFilterableService;
+import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.blob.models.BlockList;
 import com.microsoft.windowsazure.services.blob.models.CommitBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.CreateBlobBlockOptions;
@@ -32,7 +34,6 @@ import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
 import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
 import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
 import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
  * Defines the methods available on the Windows Azure blob storage service.

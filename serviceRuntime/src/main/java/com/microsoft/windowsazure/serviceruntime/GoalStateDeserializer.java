@@ -20,7 +20,7 @@ import java.io.InputStream;
  * 
  */
 interface GoalStateDeserializer {
-    public void initialize(InputStream inputStream);
+    void initialize(InputStream inputStream);
 
-    public GoalState deserialize();
+    GoalState deserialize();
 }

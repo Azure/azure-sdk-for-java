@@ -20,7 +20,7 @@ import com.microsoft.windowsazure.Configuration;
  * A class for static factory methods that return instances implementing
  * {@link BlobContract}.
  */
-public class BlobService {
+public final class BlobService {
     private BlobService() {
     }
 

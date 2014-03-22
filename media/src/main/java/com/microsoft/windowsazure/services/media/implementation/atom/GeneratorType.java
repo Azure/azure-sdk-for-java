@@ -24,6 +24,7 @@ package com.microsoft.windowsazure.services.media.implementation.atom;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyAttribute;
@@ -67,19 +68,19 @@ import javax.xml.namespace.QName;
 public class GeneratorType {
 
     @XmlValue
-    protected String value;
+    private String value;
     @XmlAttribute
     @XmlSchemaType(name = "anyURI")
-    protected String uri;
+    private String uri;
     @XmlAttribute
-    protected String version;
+    private String version;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlSchemaType(name = "anyURI")
-    protected String base;
+    private String base;
     @XmlAttribute(namespace = "http://www.w3.org/XML/1998/namespace")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "language")
-    protected String lang;
+    private String lang;
     @XmlAnyAttribute
     private Map<QName, String> otherAttributes = new HashMap<QName, String>();
 

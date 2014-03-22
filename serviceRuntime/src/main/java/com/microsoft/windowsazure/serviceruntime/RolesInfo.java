@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 class RolesInfo {
 
     @XmlElement(name = "Role")
-    protected List<RoleInfo> role;
+    private List<RoleInfo> role;
 
     /**
      * Gets the value of the role property.

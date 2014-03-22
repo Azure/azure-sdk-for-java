@@ -38,7 +38,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate Asset entities.
  * 
  */
-public class Asset {
+public final class Asset {
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "Assets";
