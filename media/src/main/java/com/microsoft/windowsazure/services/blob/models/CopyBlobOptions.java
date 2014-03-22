@@ -17,11 +17,10 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#copyBlob(String, String, String, String, CopyBlobOptions)
  * copyBlob} request. These options include an optional server timeout for the
  * operation, an optional source snapshot timestamp value to copy from a
  * particular snapshot of the source blob, blob metadata to set on the

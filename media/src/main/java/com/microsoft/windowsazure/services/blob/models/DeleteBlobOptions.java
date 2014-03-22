@@ -15,12 +15,10 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#deleteBlob(String, String, DeleteBlobOptions) deleteBlob}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#deleteBlob(String, String, DeleteBlobOptions) deleteBlob}
  * request. These options include an optional server timeout for the operation,
  * a snapshot timestamp to specify an individual snapshot to delete, a blob
  * lease ID to delete a blob with an active lease, a flag indicating whether to
@@ -132,7 +130,7 @@ public class DeleteBlobOptions extends BlobServiceOptions {
      * parameter is set to <code>false</code>, both the blob and all its
      * snapshots are deleted by the operation. If this option is not set on a
      * request, and the blob has associated snapshots, the Blob service returns
-     * a 409 (Conflict) status code and a {@link ServiceException} is thrown.
+     * a 409 (Conflict) status code and a {@link com.microsoft.windowsazure.exception.ServiceException} is thrown.
      * <p>
      * This option is not compatible with the snapshot option; if both are set
      * the Blob service returns status code 400 (Bad Request) and a

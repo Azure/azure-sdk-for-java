@@ -15,11 +15,10 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#getBlobMetadata(String, String, GetBlobMetadataOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getBlobMetadata(String, String, GetBlobMetadataOptions)
  * getBlobMetadata} request. These options include an optional server timeout
  * for the operation, the lease ID if the blob has an active lease, the snapshot
  * timestamp to get the properties of a snapshot, and any access conditions for

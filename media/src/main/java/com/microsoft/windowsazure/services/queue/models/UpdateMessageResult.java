@@ -16,14 +16,12 @@ package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * A wrapper class for the results returned in response to Queue Service REST
  * API operations to update a message. This is returned by calls to
  * implementations of
- * {@link QueueContract#updateMessage(String, String, String, String, int)} and
- * {@link QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)}
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#updateMessage(String, String, String, String, int)} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#updateMessage(String, String, String, String, int, QueueServiceOptions)}
  * .
  * <p>
  * See the <a

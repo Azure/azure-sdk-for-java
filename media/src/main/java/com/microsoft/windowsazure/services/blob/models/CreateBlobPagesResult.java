@@ -16,17 +16,15 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.Date;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Put
  * Page operation. This is returned by calls to implementations of
- * {@link BlobContract#clearBlobPages(String, String, PageRange)},
- * {@link BlobContract#clearBlobPages(String, String, PageRange, CreateBlobPagesOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#clearBlobPages(String, String, PageRange)},
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#clearBlobPages(String, String, PageRange, CreateBlobPagesOptions)}
  * ,
- * {@link BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream)}
  * and
- * {@link BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream, CreateBlobPagesOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobPages(String, String, PageRange, long, java.io.InputStream, CreateBlobPagesOptions)}
  * .
  * <p>
  * See the <a

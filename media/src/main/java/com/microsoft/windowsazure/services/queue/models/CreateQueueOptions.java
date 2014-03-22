@@ -16,11 +16,9 @@ package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * Represents the options that may be set on a queue when created in the storage
- * service with a {@link QueueContract#createQueue(String, CreateQueueOptions)
+ * service with a {@link com.microsoft.windowsazure.services.queue.QueueContract#createQueue(String, CreateQueueOptions)
  * createQueue} request. These options include a server response timeout for the
  * request and the metadata to associate with the created queue.
  */

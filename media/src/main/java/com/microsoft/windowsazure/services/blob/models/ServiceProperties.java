@@ -17,15 +17,13 @@ package com.microsoft.windowsazure.services.blob.models;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * Represents the Blob service properties that can be set on a storage account,
  * including Windows Azure Storage Analytics. This class is used by the
- * {@link BlobContract#getServiceProperties()} method to return the service
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getServiceProperties()} method to return the service
  * property values set on the storage account, and by the
- * {@link BlobContract#setServiceProperties(ServiceProperties)} and
- * {@link BlobContract#setServiceProperties(ServiceProperties, BlobServiceOptions)}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setServiceProperties(ServiceProperties)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#setServiceProperties(ServiceProperties, BlobServiceOptions)}
  * methods to set the values of the service properties.
  */
 @XmlRootElement(name = "StorageServiceProperties")

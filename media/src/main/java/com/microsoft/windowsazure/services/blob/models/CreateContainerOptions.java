@@ -16,11 +16,9 @@ package com.microsoft.windowsazure.services.blob.models;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#createContainer(String, CreateContainerOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createContainer(String, CreateContainerOptions)
  * createContainer} request. These options include a server response timeout for
  * the request, metadata to set on the container, and the public access level
  * for container and blob data. Options that are not set will not be passed to

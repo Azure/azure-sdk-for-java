@@ -14,13 +14,12 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Container ACL operation. This is returned by calls to implementations of
- * {@link BlobContract#getContainerACL(String)} and
- * {@link BlobContract#getContainerACL(String, BlobServiceOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getContainerACL(String)} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getContainerACL(String, BlobServiceOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179469.aspx">Get

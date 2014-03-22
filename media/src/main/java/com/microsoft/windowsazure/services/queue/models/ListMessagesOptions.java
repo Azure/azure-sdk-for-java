@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * Represents the options that may be set on a
- * {@link QueueContract#listMessages(String, ListMessagesOptions) listMessages}
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#listMessages(String, ListMessagesOptions) listMessages}
  * request. These options include a server response timeout for the request, the
  * number of messages to retrieve from the queue, and the visibility timeout to
  * set on the retrieved messages.

@@ -14,13 +14,12 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * A wrapper class for the service properties returned in response to Blob
  * Service REST API operations. This is returned by calls to implementations of
- * {@link BlobContract#getServiceProperties()} and
- * {@link BlobContract#getServiceProperties(BlobServiceOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getServiceProperties()} and
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getServiceProperties(BlobServiceOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/hh452239.aspx">Get
@@ -37,7 +36,7 @@ public class GetServicePropertiesResult {
      * Modifying the values in the {@link ServiceProperties} instance returned
      * does not affect the values associated with the storage account. To change
      * the values in the storage account, call the
-     * {@link BlobContract#setServiceProperties} method and pass the modified
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#setServiceProperties} method and pass the modified
      * {@link ServiceProperties} instance as a parameter.
      * 
      * @return A {@link ServiceProperties} instance containing the property

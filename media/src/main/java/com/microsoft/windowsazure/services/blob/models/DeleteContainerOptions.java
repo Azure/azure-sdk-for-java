@@ -15,11 +15,10 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#deleteContainer(String, DeleteContainerOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#deleteContainer(String, DeleteContainerOptions)
  * deleteContainer} request. These options include a server response timeout for
  * the request and access conditions that specify whether to perform the
  * operation or not depending on the values of the Etag or last modified time of

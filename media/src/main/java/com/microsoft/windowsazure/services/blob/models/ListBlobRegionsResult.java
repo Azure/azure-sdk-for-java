@@ -20,12 +20,10 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
-
 /**
  * A wrapper class for the response returned from a Blob Service REST API Get
  * Page Ranges operation. This is returned by calls to implementations of
- * {@link BlobContract#listBlobRegions(String, String, ListBlobRegionsOptions)}.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listBlobRegions(String, String, ListBlobRegionsOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/ee691973.aspx">Get

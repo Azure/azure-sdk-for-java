@@ -15,12 +15,10 @@
 package com.microsoft.windowsazure.services.blob.models;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.exception.ServiceException;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#getBlob(String, String, GetBlobOptions) getBlob} request.
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#getBlob(String, String, GetBlobOptions) getBlob} request.
  * These options include an optional server timeout for the operation, a
  * snapshot timestamp to specify a snapshot, a blob lease ID to get a blob with
  * an active lease, an optional start and end range for blob content to return,
@@ -130,7 +128,7 @@ public class GetBlobOptions extends BlobServiceOptions {
      * the get blob operation response includes the MD5 hash for the range. If
      * the <em>computeRangeMD5</em> parameter is set to <code>true</code> and no
      * range is specified or the range exceeds 4 MB in size, a
-     * {@link ServiceException} is thrown.
+     * {@link com.microsoft.windowsazure.exception.ServiceException} is thrown.
      * 
      * @param computeRangeMD5
      *            Reserved for future use. Set a flag value of <code>true</code>

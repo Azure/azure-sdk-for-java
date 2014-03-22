@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * Represents the options that may be set on a
- * {@link QueueContract#peekMessages(String, PeekMessagesOptions) peekMessages}
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#peekMessages(String, PeekMessagesOptions) peekMessages}
  * request. These options include a server response timeout for the request and
  * the number of messages to peek from the queue.
  */
@@ -44,7 +43,7 @@ public class PeekMessagesOptions extends QueueServiceOptions {
 
     /**
      * Gets the number of messages to return in the response to a
-     * {@link QueueContract#peekMessages(String, PeekMessagesOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#peekMessages(String, PeekMessagesOptions)
      * peekMessages} request specified in this instance.
      * 
      * @return The number of messages to return in the response.
@@ -55,7 +54,7 @@ public class PeekMessagesOptions extends QueueServiceOptions {
 
     /**
      * Sets the number of messages to return in the response to a
-     * {@link QueueContract#peekMessages(String, PeekMessagesOptions)
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#peekMessages(String, PeekMessagesOptions)
      * peekMessages} request.
      * <p>
      * The <em>numberOfMessages</em> value only affects calls made on methods

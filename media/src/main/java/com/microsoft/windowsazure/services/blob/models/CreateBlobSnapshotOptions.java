@@ -17,11 +17,10 @@ package com.microsoft.windowsazure.services.blob.models;
 import java.util.HashMap;
 
 import com.microsoft.windowsazure.core.utils.AccessConditionHeader;
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#createBlobSnapshot(String, String, CreateBlobSnapshotOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobSnapshot(String, String, CreateBlobSnapshotOptions)
  * createBlobSnapshot} request. These options include an optional server timeout
  * for the operation, blob metadata to set on the snapshot, a blob lease ID to
  * get a blob with an active lease, an optional start and end range for blob

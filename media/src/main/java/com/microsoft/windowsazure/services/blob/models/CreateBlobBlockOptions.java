@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#createBlobBlock(String, String, String, java.io.InputStream, CreateBlobBlockOptions)
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#createBlobBlock(String, String, String, java.io.InputStream, CreateBlobBlockOptions)
  * createBlobBlock} request. These options include an optional server timeout
  * for the operation, the lease ID if the blob has an active lease, and the MD5
  * hash value for the block content.

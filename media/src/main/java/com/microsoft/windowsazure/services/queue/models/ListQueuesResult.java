@@ -25,13 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.services.blob.implementation.MetadataAdapter;
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * A wrapper class for the results returned in response to Queue service REST
  * API operations to list queues. This is returned by calls to implementations
- * of {@link QueueContract#listQueues()} and
- * {@link QueueContract#listQueues(ListQueuesOptions)}.
+ * of {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues()} and
+ * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions)}.
  * <p>
  * See the <a
  * href="http://msdn.microsoft.com/en-us/library/windowsazure/dd179466.aspx"
@@ -48,7 +47,7 @@ public class ListQueuesResult {
     private int maxResults;
 
     /**
-     * Gets the list of queues returned by a {@link QueueContract}
+     * Gets the list of queues returned by a {@link com.microsoft.windowsazure.services.queue.QueueContract}
      * <em>.listQueues</em> request.
      * 
      * @return A {@link List} of {@link Queue} instances representing the queues
@@ -62,7 +61,7 @@ public class ListQueuesResult {
 
     /**
      * Reserved for internal use. Sets the list of queues returned by a
-     * {@link QueueContract}<em>.listQueues</em> request. This method is invoked
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract}<em>.listQueues</em> request. This method is invoked
      * by the API as part of the response generation from the Queue service REST
      * API operation to set the value from the queue list returned by the
      * server.
@@ -106,7 +105,7 @@ public class ListQueuesResult {
 
     /**
      * Gets the prefix {@link String} used to qualify the results returned by
-     * the {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * the {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * request. Only queues with names that start with the prefix are returned
      * by the request. By default, the prefix is empty and all queues are
      * returned.
@@ -123,7 +122,7 @@ public class ListQueuesResult {
      * Reserved for internal use. Sets the prefix {@link String} used to qualify
      * the results returned by the Queue service REST API list queues operation
      * invoked with a call to
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues}. This
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}. This
      * method is invoked by the API as part of the response generation from the
      * Queue service REST API operation to set the value from the
      * <strong>Prefix</strong> element returned by the server.
@@ -138,10 +137,10 @@ public class ListQueuesResult {
 
     /**
      * Gets the marker value for the beginning of the queue results returned by
-     * the {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * the {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * request. The marker is used by the server to specify the place to resume
      * a query for queues. The marker value is a {@link String} opaque to the
-     * client. A {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * client. A {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * request response may include a <strong>NextMarker</strong> value if there
      * are more queue results than can be returned in a single response. Call
      * the {@link ListQueuesResult#getNextMarker() getNextMarker} method to get
@@ -162,7 +161,7 @@ public class ListQueuesResult {
      * Reserved for internal use. Sets the marker value specifying the beginning
      * of the results returned by the Queue service REST API list queues
      * operation invoked with a call to
-     * {@link QueueContract#listQueues(ListQueuesOptions) listQueues}. This
+     * {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}. This
      * method is invoked by the API as part of the response generation from the
      * Queue service REST API operation to set the value from the
      * <strong>Marker</strong> element returned by the server.
@@ -211,7 +210,7 @@ public class ListQueuesResult {
 
     /**
      * Gets the value specified for the number of queue results to return for
-     * the {@link QueueContract#listQueues(ListQueuesOptions) listQueues}
+     * the {@link com.microsoft.windowsazure.services.queue.QueueContract#listQueues(ListQueuesOptions) listQueues}
      * request. The server will not return more than this number of queues in
      * the response. If the value is not specified, the server will return up to
      * 5,000 items.

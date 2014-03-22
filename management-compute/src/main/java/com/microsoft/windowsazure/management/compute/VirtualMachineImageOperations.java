@@ -78,7 +78,7 @@ public interface VirtualMachineImageOperations {
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    VirtualMachineImageCreateResponse create(VirtualMachineImageCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Add OS Image operation adds an operating system image that is stored
@@ -119,7 +119,7 @@ public interface VirtualMachineImageOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationResponse delete(String imageName, boolean deleteFromStorage) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete OS Image operation deletes the specified OS image from your
@@ -232,7 +232,7 @@ public interface VirtualMachineImageOperations {
     * @return Parameters returned from the Create Virtual Machine Image
     * operation.
     */
-    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException, ServiceException;
+    VirtualMachineImageUpdateResponse update(String imageName, VirtualMachineImageUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, URISyntaxException, InterruptedException, ExecutionException;
     
     /**
     * The Update OS Image operation updates an OS image that in your image

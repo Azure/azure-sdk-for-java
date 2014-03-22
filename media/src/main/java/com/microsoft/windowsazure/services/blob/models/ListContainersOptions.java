@@ -14,11 +14,10 @@
  */
 package com.microsoft.windowsazure.services.blob.models;
 
-import com.microsoft.windowsazure.services.blob.BlobContract;
 
 /**
  * Represents the options that may be set on a
- * {@link BlobContract#listContainers(ListContainersOptions) listContainers}
+ * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions) listContainers}
  * request. These options include a server response timeout for the request, a
  * container name prefix filter, a marker for continuing requests, the maximum
  * number of results to return in a request, and whether to include container
@@ -102,7 +101,7 @@ public class ListContainersOptions extends BlobServiceOptions {
      * on a {@link ListContainersResult} instance to get the marker value to set
      * on a {@link ListContainersOptions} instance using a call to this method.
      * Pass the {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(ListContainersOptions)} call to get
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)} call to get
      * the next portion of the container list.
      * <p>
      * The <em>marker</em> value only affects calls made on methods where this
@@ -145,7 +144,7 @@ public class ListContainersOptions extends BlobServiceOptions {
      * on a {@link ListContainersOptions} instance using a call to
      * {@link ListContainersOptions#setMarker(String)}. Pass the
      * {@link ListContainersOptions} instance as a parameter to a
-     * {@link BlobContract#listContainers(ListContainersOptions)} call to get
+     * {@link com.microsoft.windowsazure.services.blob.BlobContract#listContainers(ListContainersOptions)} call to get
      * the next portion of the container list.
      * <p>
      * The <em>maxResults</em> value only affects calls made on methods where
