@@ -43,7 +43,6 @@ This project provides a client library in Java that makes it easy to consume Win
     * Virtual Network Management
     * Storage Management
     * Sql Database Management
-    * Service Bus Management
 * Service Runtime
     * Retrieve information about the state of your Azure Compute instances
   
