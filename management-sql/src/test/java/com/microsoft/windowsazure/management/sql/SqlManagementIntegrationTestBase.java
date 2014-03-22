@@ -67,16 +67,6 @@ public abstract class SqlManagementIntegrationTestBase {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
 
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(SqlManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
         sqlManagementClient = SqlManagementService.create(config);
     }
     

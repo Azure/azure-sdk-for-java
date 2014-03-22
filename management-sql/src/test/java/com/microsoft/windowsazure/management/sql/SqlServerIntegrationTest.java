@@ -46,7 +46,7 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     }
 	
     @After
-    public void tearDown() throws Exception 
+    public void cleanup() throws Exception 
     {
         for (String serverName : serverToBeRemoved)
         {

@@ -48,7 +48,7 @@ public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrat
     }
 	
     @After
-    public void tearDown() throws Exception 
+    public void cleanup() throws Exception 
     {
         for (String firewallRuleName : firewallRuleToBeRemoved.keySet())
         {

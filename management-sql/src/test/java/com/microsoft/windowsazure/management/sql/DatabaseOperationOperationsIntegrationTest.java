@@ -50,7 +50,7 @@ public class DatabaseOperationOperationsIntegrationTest extends SqlManagementInt
     }
 
     @After
-    public void tearDown() throws Exception 
+    public void cleanup() throws Exception 
     {
         for (String databaseName : databaseToBeRemoved.keySet())
         {

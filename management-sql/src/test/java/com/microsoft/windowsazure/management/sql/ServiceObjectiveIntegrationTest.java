@@ -50,7 +50,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
     }
 
     @After
-    public void tearDown() throws Exception 
+    public void cleanup() throws Exception 
     {
         for (String databaseName : databaseToBeRemoved.keySet())
         {

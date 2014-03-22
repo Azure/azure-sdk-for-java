@@ -45,7 +45,7 @@ public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBa
     }
 	
     @After
-    public void tearDown() throws Exception 
+    public void cleanup() throws Exception 
     {
 	for (String databaseName : databaseToBeRemoved.keySet())
         {
