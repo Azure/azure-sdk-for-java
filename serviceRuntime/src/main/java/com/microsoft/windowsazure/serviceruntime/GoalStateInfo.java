@@ -64,17 +64,17 @@ class GoalStateInfo {
 
     @XmlElement(name = "Incarnation", required = true)
     @XmlSchemaType(name = "unsignedLong")
-    protected BigInteger incarnation;
+    private BigInteger incarnation;
     @XmlElement(name = "ExpectedState", required = true)
-    protected ExpectedStateEnum expectedState;
+    private ExpectedStateEnum expectedState;
     @XmlElement(name = "RoleEnvironmentPath", required = true)
-    protected String roleEnvironmentPath;
+    private String roleEnvironmentPath;
     @XmlElement(name = "CurrentStateEndpoint", required = true)
-    protected String currentStateEndpoint;
+    private String currentStateEndpoint;
     @XmlElement(name = "Deadline", required = true, type = String.class)
     @XmlJavaTypeAdapter(Adapter1.class)
     @XmlSchemaType(name = "dateTime")
-    protected Calendar deadline;
+    private Calendar deadline;
 
     /**
      * Gets the value of the incarnation property.

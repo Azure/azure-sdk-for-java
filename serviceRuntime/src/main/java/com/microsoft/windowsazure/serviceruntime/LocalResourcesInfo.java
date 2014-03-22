@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 class LocalResourcesInfo {
 
     @XmlElement(name = "LocalResource")
-    protected List<LocalResourceInfo> localResource;
+    private List<LocalResourceInfo> localResource;
 
     /**
      * Gets the value of the localResource property.

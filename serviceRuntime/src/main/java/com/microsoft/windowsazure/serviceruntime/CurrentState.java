@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.serviceruntime;
 /**
  * 
  */
-class CurrentState {
+public class CurrentState {
     private final String clientId;
 
     public CurrentState(String clientId) {

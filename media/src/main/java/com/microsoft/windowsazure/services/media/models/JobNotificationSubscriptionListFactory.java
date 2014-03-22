@@ -23,7 +23,7 @@ import com.microsoft.windowsazure.services.media.implementation.content.JobNotif
 /**
  * The Class JobNotificationSubscription factory.
  */
-public class JobNotificationSubscriptionListFactory {
+public abstract class JobNotificationSubscriptionListFactory {
 
     public static List<JobNotificationSubscription> create(
             List<JobNotificationSubscriptionType> jobNotificationSubscriptionTypeList) {

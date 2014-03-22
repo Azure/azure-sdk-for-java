@@ -32,67 +32,67 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 public class TaskType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     @XmlElement(name = "Configuration", namespace = Constants.ODATA_DATA_NS)
-    protected String configuration;
+    private String configuration;
 
     @XmlElement(name = "EndTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date endTime;
+    private Date endTime;
 
     @XmlElementWrapper(name = "ErrorDetails", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
-    protected List<ErrorDetailType> errorDetails;
+    private List<ErrorDetailType> errorDetails;
 
     @XmlElementWrapper(name = "HistoricalEvents", namespace = Constants.ODATA_DATA_NS)
     @XmlElement(name = "element", namespace = Constants.ODATA_DATA_NS)
-    protected List<TaskHistoricalEventType> historicalEventTypes;
+    private List<TaskHistoricalEventType> historicalEventTypes;
 
     @XmlElement(name = "MediaProcessorId", namespace = Constants.ODATA_DATA_NS)
-    protected String mediaProcessorId;
+    private String mediaProcessorId;
 
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     @XmlElement(name = "PerfMessage", namespace = Constants.ODATA_DATA_NS)
-    protected String perfMessage;
+    private String perfMessage;
 
     @XmlElement(name = "Priority", namespace = Constants.ODATA_DATA_NS)
-    protected Integer priority;
+    private Integer priority;
 
     @XmlElement(name = "Progress", namespace = Constants.ODATA_DATA_NS)
-    protected Double progress;
+    private Double progress;
 
     @XmlElement(name = "RunningDuration", namespace = Constants.ODATA_DATA_NS)
-    protected Double runningDuration;
+    private Double runningDuration;
 
     @XmlElement(name = "StartTime", namespace = Constants.ODATA_DATA_NS)
-    protected Date startTime;
+    private Date startTime;
 
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected Integer state;
+    private Integer state;
 
     @XmlElement(name = "TaskBody", namespace = Constants.ODATA_DATA_NS)
-    protected String taskBody;
+    private String taskBody;
 
     @XmlElement(name = "Options", namespace = Constants.ODATA_DATA_NS)
-    protected Integer options;
+    private Integer options;
 
     @XmlElement(name = "EncryptionKeyId", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionKeyId;
+    private String encryptionKeyId;
 
     @XmlElement(name = "EncryptionScheme", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionScheme;
+    private String encryptionScheme;
 
     @XmlElement(name = "EncryptionVersion", namespace = Constants.ODATA_DATA_NS)
-    protected String encryptionVersion;
+    private String encryptionVersion;
 
     @XmlElement(name = "InitializationVector", namespace = Constants.ODATA_DATA_NS)
-    protected String initializationVector;
+    private String initializationVector;
 
-    protected List<String> outputMediaAssets;
+    private List<String> outputMediaAssets;
 
-    protected List<String> inputMediaAssets;
+    private List<String> inputMediaAssets;
 
     public String getId() {
         return id;

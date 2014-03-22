@@ -28,22 +28,22 @@ import javax.xml.bind.annotation.XmlElement;
 public class MediaProcessorType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     @XmlElement(name = "Description", namespace = Constants.ODATA_DATA_NS)
-    protected String description;
+    private String description;
 
     @XmlElement(name = "Sku", namespace = Constants.ODATA_DATA_NS)
-    protected String sku;
+    private String sku;
 
     @XmlElement(name = "Vendor", namespace = Constants.ODATA_DATA_NS)
-    protected String vendor;
+    private String vendor;
 
     @XmlElement(name = "Version", namespace = Constants.ODATA_DATA_NS)
-    protected String version;
+    private String version;
 
     /**
      * @return the id

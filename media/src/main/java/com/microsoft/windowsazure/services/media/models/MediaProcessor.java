@@ -22,7 +22,7 @@ import com.sun.jersey.api.client.GenericType;
  * Entity operations for Media processors
  * 
  */
-public class MediaProcessor {
+public final class MediaProcessor {
 
     private static final String ENTITY_SET = "MediaProcessors";
 

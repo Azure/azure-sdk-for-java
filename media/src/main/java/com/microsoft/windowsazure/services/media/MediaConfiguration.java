@@ -20,7 +20,7 @@ import com.microsoft.windowsazure.Configuration;
  * Provides functionality to create a media services configuration.
  * 
  */
-public class MediaConfiguration {
+public final class MediaConfiguration {
 
     private MediaConfiguration() {
     }

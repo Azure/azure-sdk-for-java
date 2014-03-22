@@ -16,8 +16,6 @@ package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * A wrapper class for the result returned from a Queue Service REST API
  * operation to get queue metadata. This is returned by calls to implementations

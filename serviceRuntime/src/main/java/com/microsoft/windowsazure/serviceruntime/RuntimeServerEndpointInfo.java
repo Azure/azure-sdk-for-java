@@ -52,9 +52,9 @@ import javax.xml.bind.annotation.XmlType;
 class RuntimeServerEndpointInfo {
 
     @XmlAttribute(required = true)
-    protected String version;
+    private String version;
     @XmlAttribute(required = true)
-    protected String path;
+    private String path;
 
     /**
      * Gets the value of the version property.

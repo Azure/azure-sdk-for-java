@@ -29,11 +29,11 @@ public class JobNotificationSubscriptionType implements MediaServiceDTO {
 
     /** The ID of the notification end point. */
     @XmlElement(name = "NotificationEndPointId", namespace = Constants.ODATA_DATA_NS)
-    protected String notificationEndPointId;
+    private String notificationEndPointId;
 
     /** The target state of the job. */
     @XmlElement(name = "TargetJobState", namespace = Constants.ODATA_DATA_NS)
-    protected int targetJobState;
+    private int targetJobState;
 
     /**
      * Gets the ID of the notification end point.

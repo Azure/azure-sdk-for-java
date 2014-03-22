@@ -32,10 +32,10 @@ import com.sun.jersey.api.client.GenericType;
 /**
  * Implementation of Locator entity.
  */
-public class Locator {
+public final class Locator {
 
     /** The Constant ENTITY_SET. */
-    private final static String ENTITY_SET = "Locators";
+    private static final String ENTITY_SET = "Locators";
 
     /**
      * Instantiates a new locator.

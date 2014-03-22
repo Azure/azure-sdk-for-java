@@ -29,22 +29,22 @@ import javax.xml.bind.annotation.XmlElement;
 public class AccessPolicyType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     @XmlElement(name = "DurationInMinutes", namespace = Constants.ODATA_DATA_NS)
-    protected Double durationInMinutes;
+    private Double durationInMinutes;
 
     @XmlElement(name = "Permissions", namespace = Constants.ODATA_DATA_NS)
-    protected Integer permissions;
+    private Integer permissions;
 
     /**
      * @return the id

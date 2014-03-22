@@ -35,43 +35,43 @@ public class ProgramType implements MediaServiceDTO {
 
     /** The name. */
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     /** The description. */
     @XmlElement(name = "Description", namespace = Constants.ODATA_DATA_NS)
-    protected String description;
+    private String description;
 
     /** The created. */
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     /** The last modified. */
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     /** The channel id. */
     @XmlElement(name = "ChannelId", namespace = Constants.ODATA_DATA_NS)
-    protected String channelId;
+    private String channelId;
 
     /** The asset id. */
     @XmlElement(name = "AssetId", namespace = Constants.ODATA_DATA_NS)
-    protected String assetId;
+    private String assetId;
 
     /** The dvr window length seconds. */
     @XmlElement(name = "DvrWindowLengthSeconds", namespace = Constants.ODATA_DATA_NS)
-    protected int dvrWindowLengthSeconds;
+    private int dvrWindowLengthSeconds;
 
     /** The estimated duration seconds. */
     @XmlElement(name = "EstimatedDurationSeconds", namespace = Constants.ODATA_DATA_NS)
-    protected int estimatedDurationSeconds;
+    private int estimatedDurationSeconds;
 
     /** The enable archive. */
     @XmlElement(name = "EnableArchive", namespace = Constants.ODATA_DATA_NS)
-    protected boolean enableArchive;
+    private boolean enableArchive;
 
     /** The state. */
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected String state;
+    private String state;
 
     /**
      * Gets the id.

@@ -14,8 +14,6 @@
  */
 package com.microsoft.windowsazure.services.queue.models;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * Represents the base class for options that may be set on Queue Service REST
  * API operations invoked through the {@link QueueContract} interface. This

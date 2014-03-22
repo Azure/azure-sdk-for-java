@@ -41,12 +41,12 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 class ObjectFactory {
 
-    private final static QName _GoalState_QNAME = new QName("", "GoalState");
-    private final static QName _RoleEnvironment_QNAME = new QName("",
+    private static final QName GOAL_STATE_QNAME = new QName("", "GoalState");
+    private static final QName ROLE_ENVIRONMENT_QNAME = new QName("",
             "RoleEnvironment");
-    private final static QName _CurrentState_QNAME = new QName("",
+    private static final QName CURRENT_STATE_QNAME = new QName("",
             "CurrentState");
-    private final static QName _RuntimeServerDiscovery_QNAME = new QName("",
+    private static final QName RUNTIME_SERVER_DISCOVERY_QNAME = new QName("",
             "RuntimeServerDiscovery");
 
     /**
@@ -233,7 +233,7 @@ class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "GoalState")
     public JAXBElement<GoalStateInfo> createGoalState(GoalStateInfo value) {
-        return new JAXBElement<GoalStateInfo>(_GoalState_QNAME,
+        return new JAXBElement<GoalStateInfo>(GOAL_STATE_QNAME,
                 GoalStateInfo.class, null, value);
     }
 
@@ -245,7 +245,7 @@ class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "RoleEnvironment")
     public JAXBElement<RoleEnvironmentInfo> createRoleEnvironment(
             RoleEnvironmentInfo value) {
-        return new JAXBElement<RoleEnvironmentInfo>(_RoleEnvironment_QNAME,
+        return new JAXBElement<RoleEnvironmentInfo>(ROLE_ENVIRONMENT_QNAME,
                 RoleEnvironmentInfo.class, null, value);
     }
 
@@ -257,7 +257,7 @@ class ObjectFactory {
     @XmlElementDecl(namespace = "", name = "CurrentState")
     public JAXBElement<CurrentStateInfo> createCurrentState(
             CurrentStateInfo value) {
-        return new JAXBElement<CurrentStateInfo>(_CurrentState_QNAME,
+        return new JAXBElement<CurrentStateInfo>(CURRENT_STATE_QNAME,
                 CurrentStateInfo.class, null, value);
     }
 
@@ -270,7 +270,7 @@ class ObjectFactory {
     public JAXBElement<RuntimeServerDiscoveryInfo> createRuntimeServerDiscovery(
             RuntimeServerDiscoveryInfo value) {
         return new JAXBElement<RuntimeServerDiscoveryInfo>(
-                _RuntimeServerDiscovery_QNAME,
+                RUNTIME_SERVER_DISCOVERY_QNAME,
                 RuntimeServerDiscoveryInfo.class, null, value);
     }
 

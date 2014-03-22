@@ -30,25 +30,25 @@ import javax.xml.bind.annotation.XmlElement;
 public class AssetType implements MediaServiceDTO {
 
     @XmlElement(name = "Id", namespace = Constants.ODATA_DATA_NS)
-    protected String id;
+    private String id;
 
     @XmlElement(name = "State", namespace = Constants.ODATA_DATA_NS)
-    protected Integer state;
+    private Integer state;
 
     @XmlElement(name = "Created", namespace = Constants.ODATA_DATA_NS)
-    protected Date created;
+    private Date created;
 
     @XmlElement(name = "LastModified", namespace = Constants.ODATA_DATA_NS)
-    protected Date lastModified;
+    private Date lastModified;
 
     @XmlElement(name = "AlternateId", namespace = Constants.ODATA_DATA_NS)
-    protected String alternateId;
+    private String alternateId;
 
     @XmlElement(name = "Name", namespace = Constants.ODATA_DATA_NS)
-    protected String name;
+    private String name;
 
     @XmlElement(name = "Options", namespace = Constants.ODATA_DATA_NS)
-    protected Integer options;
+    private Integer options;
 
     /**
      * @return the id

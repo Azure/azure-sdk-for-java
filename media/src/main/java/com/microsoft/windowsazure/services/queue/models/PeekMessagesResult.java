@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.core.RFC1123DateAdapter;
-import com.microsoft.windowsazure.services.queue.QueueContract;
 
 /**
  * A wrapper class for the results returned in response to Queue Service REST

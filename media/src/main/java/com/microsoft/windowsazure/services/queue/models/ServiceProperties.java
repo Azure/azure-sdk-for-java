@@ -17,8 +17,6 @@ package com.microsoft.windowsazure.services.queue.models;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * A wrapper class for the Queue service properties set or retrieved with Queue
  * Service REST API operations. This is returned by calls to implementations of

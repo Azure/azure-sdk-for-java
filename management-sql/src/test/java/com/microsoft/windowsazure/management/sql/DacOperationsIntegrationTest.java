@@ -14,7 +14,6 @@
  */
 package com.microsoft.windowsazure.management.sql;
 
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;

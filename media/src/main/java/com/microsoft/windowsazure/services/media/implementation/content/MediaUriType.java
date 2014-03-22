@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "uri", namespace = Constants.ODATA_DATA_NS)
 public class MediaUriType implements MediaServiceDTO {
     @XmlValue
-    String uri;
+    private String uri;
 
     /**
      * @return the uri.

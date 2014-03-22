@@ -32,6 +32,5 @@ public interface RoleEnvironmentChangedListener {
      * 
      * @see RoleEnvironmentChangingListener#roleEnvironmentChanging
      */
-    public void roleEnvironmentChanged(RoleEnvironmentChangedEvent event);
-
+    void roleEnvironmentChanged(RoleEnvironmentChangedEvent event);
 }

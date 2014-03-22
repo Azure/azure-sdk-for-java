@@ -149,7 +149,7 @@ public class QueueRestProxy implements QueueContract {
                 this.url, this.sharedKeyFilter, this.dateMapper);
     }
 
-    private void ThrowIfError(ClientResponse r) {
+    private void throwIfError(ClientResponse r) {
         PipelineHelpers.throwIfError(r);
     }
 
@@ -234,8 +234,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public void createQueue(String queue, CreateQueueOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue);
 
@@ -254,8 +255,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public void deleteQueue(String queue, QueueServiceOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue);
 
@@ -299,8 +301,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public GetQueueMetadataResult getQueueMetadata(String queue,
             QueueServiceOptions options) throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue).queryParam(
                 "comp", "metadata");
@@ -308,7 +311,7 @@ public class QueueRestProxy implements QueueContract {
         Builder builder = webResource.header("x-ms-version", API_VERSION);
 
         ClientResponse response = builder.get(ClientResponse.class);
-        ThrowIfError(response);
+        throwIfError(response);
 
         GetQueueMetadataResult result = new GetQueueMetadataResult();
         result.setApproximateMessageCount(Integer.parseInt(response
@@ -328,8 +331,9 @@ public class QueueRestProxy implements QueueContract {
     public void setQueueMetadata(String queue,
             HashMap<String, String> metadata, QueueServiceOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue).queryParam(
                 "comp", "metadata");
@@ -350,8 +354,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public void createMessage(String queue, String messageText,
             CreateMessageOptions options) throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException("queue");
+        }
         if (messageText == null) {
             throw new NullPointerException("messageText");
         }
@@ -384,12 +389,15 @@ public class QueueRestProxy implements QueueContract {
             String popReceipt, String messageText,
             int visibilityTimeoutInSeconds, QueueServiceOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException("queue");
-        if (messageId == null)
+        }
+        if (messageId == null) {
             throw new NullPointerException("messageId");
-        if (messageText == null)
+        }
+        if (messageText == null) {
             throw new NullPointerException("messageText");
+        }
 
         WebResource webResource = getResource(options).path(queue)
                 .path("messages").path(messageId);
@@ -405,7 +413,7 @@ public class QueueRestProxy implements QueueContract {
 
         ClientResponse response = builder.put(ClientResponse.class,
                 queueMessage);
-        ThrowIfError(response);
+        throwIfError(response);
 
         UpdateMessageResult result = new UpdateMessageResult();
         result.setPopReceipt(response.getHeaders().getFirst("x-ms-popreceipt"));
@@ -423,8 +431,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public ListMessagesResult listMessages(String queue,
             ListMessagesOptions options) throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue).path(
                 "messages");
@@ -447,8 +456,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public PeekMessagesResult peekMessages(String queue,
             PeekMessagesOptions options) throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue)
                 .path("messages").queryParam("peekonly", "true");
@@ -470,10 +480,12 @@ public class QueueRestProxy implements QueueContract {
     public void deleteMessage(String queue, String messageId,
             String popReceipt, QueueServiceOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
-        if (messageId == null)
+        }
+        if (messageId == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue)
                 .path("messages").path(messageId);
@@ -493,8 +505,9 @@ public class QueueRestProxy implements QueueContract {
     @Override
     public void clearMessages(String queue, QueueServiceOptions options)
             throws ServiceException {
-        if (queue == null)
+        if (queue == null) {
             throw new NullPointerException();
+        }
 
         WebResource webResource = getResource(options).path(queue).path(
                 "messages");

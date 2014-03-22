@@ -48,7 +48,7 @@ class ChunkedGoalStateDeserializer implements GoalStateDeserializer {
             }
 
             int length = Integer.parseInt(lengthString.toString(), 16);
-            char chunkData[] = new char[length];
+            char[] chunkData = new char[length];
 
             reader.read(chunkData, 0, length);
 

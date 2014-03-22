@@ -20,5 +20,5 @@ import java.io.OutputStream;
  * 
  */
 interface OutputChannel {
-    public abstract OutputStream getOutputStream(String name);
+    OutputStream getOutputStream(String name);
 }

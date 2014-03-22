@@ -41,11 +41,11 @@ import com.sun.jersey.api.representation.Form;
  * 
  */
 public class OAuthRestProxy implements OAuthContract {
-    Client channel;
+    private Client channel;
 
     private final String grantType = "client_credentials";
 
-    static Log log = LogFactory.getLog(OAuthContract.class);
+    private static Log log = LogFactory.getLog(OAuthContract.class);
 
     @Inject
     public OAuthRestProxy(Client channel, UserAgentFilter userAgentFilter) {

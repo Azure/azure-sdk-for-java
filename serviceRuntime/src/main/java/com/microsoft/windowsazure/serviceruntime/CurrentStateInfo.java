@@ -53,7 +53,7 @@ import javax.xml.bind.annotation.XmlType;
 class CurrentStateInfo {
 
     @XmlElement(name = "StatusLease")
-    protected StatusLeaseInfo statusLease;
+    private StatusLeaseInfo statusLease;
 
     /**
      * Gets the value of the statusLease property.

@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlType;
 class EndpointsInfo {
 
     @XmlElement(name = "Endpoint")
-    protected List<EndpointInfo> endpoint;
+    private List<EndpointInfo> endpoint;
 
     /**
      * Gets the value of the endpoint property.

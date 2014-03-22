@@ -16,8 +16,6 @@ package com.microsoft.windowsazure.services.queue.models;
 
 import java.util.HashMap;
 
-import com.microsoft.windowsazure.services.queue.QueueContract;
-
 /**
  * Represents the options that may be set on a queue when created in the storage
  * service with a {@link QueueContract#createQueue(String, CreateQueueOptions)

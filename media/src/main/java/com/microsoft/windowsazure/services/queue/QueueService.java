@@ -20,7 +20,7 @@ import com.microsoft.windowsazure.Configuration;
  * A class for static factory methods that return instances implementing
  * {@link QueueContract}.
  */
-public class QueueService {
+public final class QueueService {
     /**
      * Private default constructor.
      */

@@ -45,7 +45,7 @@ import com.sun.jersey.api.client.GenericType;
  * Class for creating operations to manipulate content key entities.
  * 
  */
-public class ContentKey {
+public final class ContentKey {
 
     /** The Constant ENTITY_SET. */
     private static final String ENTITY_SET = "ContentKeys";
