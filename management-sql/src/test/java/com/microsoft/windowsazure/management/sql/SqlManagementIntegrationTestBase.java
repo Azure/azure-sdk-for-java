@@ -135,9 +135,9 @@ public abstract class SqlManagementIntegrationTestBase {
 
     protected static Configuration createConfiguration() throws Exception {
         return ManagementConfiguration.configure(
-            "db1ab6f0-4769-4b27-930e-01e2ef9c123c",
-            "c:\\sources\\certificates\\WindowsAzureKeyStore.jks",
-            "test123"
+            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         );
     }
 }
