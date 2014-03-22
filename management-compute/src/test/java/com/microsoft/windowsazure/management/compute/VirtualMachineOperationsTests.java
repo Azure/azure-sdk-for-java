@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.windowsazure.management.models.LocationNames;
 import com.microsoft.windowsazure.management.storage.models.*;
 
 import org.junit.AfterClass;
@@ -30,11 +29,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {    
+public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
     private static String testVMPrefix = "azuresdktest";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //you can create your own storage account and create container there to store VM images 
-    private static String storageAccountName = testVMPrefix + "08";    
+    private static String storageAccountName = testVMPrefix + "08";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -101,7 +100,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
         ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WindowsProvisioningConfiguration);
+        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
         //required
         configset.setComputerName(computerName);
         //required
@@ -126,7 +125,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
        //required
         createParameters.setRoleName(roleName);
-        createParameters.setRoleSize(VirtualMachineRoleSize.Medium);
+        createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         createParameters.setProvisionGuestAgent(true);
         createParameters.setConfigurationSets(configlist);
         createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
@@ -144,7 +143,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         int random = (int)(Math.random()* 100); 
         String hostedServiceName = testVMPrefix + "HostedService1";
         String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
-        String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
+        String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";
         String deploymentName = testVMPrefix + "deploy1";
         String deploymentLabel = testVMPrefix + "deployLabel1";
 
@@ -153,10 +152,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         createParameters.setLabel(hostedServiceLabel);
         //required
-        createParameters.setServiceName(hostedServiceName);        
+        createParameters.setServiceName(hostedServiceName);
         createParameters.setDescription(hostedServiceDescription);
         //required
-        createParameters.setLocation(LocationNames.WestUS);
+        createParameters.setLocation(GeoRegionNames.NORTHCENTRALUS);
         OperationResponse hostedServiceOperationResponse = computeManagementClient.getHostedServicesOperations().create(createParameters);         
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
@@ -176,14 +175,14 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String computerName = testVMPrefix + "vm1";
         String adminuserPassword = testVMPrefix + "!12";
         String adminUserName = testVMPrefix;        
-        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/vhd-store/" + testVMPrefix + random +".vhd");        
+        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/vhd-store/" + testVMPrefix + random +".vhd");
         String osVHarddiskName =testVMPrefix + "oshdname"+ random;
         String operatingSystemName ="Windows";
 
         //required
         ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
         ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WindowsProvisioningConfiguration);
+        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
         //required
         configset.setComputerName(computerName);
         //required
@@ -208,7 +207,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         role.setRoleName(roleName);
         //required
         role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
-        role.setRoleSize(VirtualMachineRoleSize.Medium);
+        role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
         role.setConfigurationSets(configlist);
         role.setOSVirtualHardDisk(oSVirtualHardDisk);
@@ -229,24 +228,21 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //role that has VirtualMachineRoleType.PersistentVMRole property is a vm
         ArrayList<Role> vmlist = new ArrayList<Role>();
         HostedServiceListResponse hostedServiceListResponse = computeManagementClient.getHostedServicesOperations().list();
-        ArrayList<HostedServiceListResponse.HostedService> hostedServicelist = hostedServiceListResponse.getHostedServices();         
+        ArrayList<HostedServiceListResponse.HostedService> hostedServicelist = hostedServiceListResponse.getHostedServices();
         Assert.assertNotNull(hostedServicelist); 
 
         for (HostedServiceListResponse.HostedService hostedService : hostedServicelist) {
             if (hostedService.getServiceName().contains(testVMPrefix)) {
                 HostedServiceGetDetailedResponse hostedServiceGetDetailedResponse = computeManagementClient.getHostedServicesOperations().getDetailed(hostedService.getServiceName());
-                ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentlist = hostedServiceGetDetailedResponse.getDeployments();                
+                ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentlist = hostedServiceGetDetailedResponse.getDeployments();
                 Assert.assertNotNull(deploymentlist);
 
-                for (HostedServiceGetDetailedResponse.Deployment deployment : deploymentlist)
-                {
+                for (HostedServiceGetDetailedResponse.Deployment deployment : deploymentlist) {
                     ArrayList<Role> rolelist = deployment.getRoles();
-                    Assert.assertNotNull(rolelist);  
-                    
-                    for (Role role : rolelist)
-                    {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())))
-                        {
+                    Assert.assertNotNull(rolelist);
+
+                    for (Role role : rolelist) {
+                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString()))) {
                              Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
                              vmlist.add(role);
                         }
@@ -348,7 +344,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         inputEndpoint.setPort(5987);
         inputEndpoint.setLocalPort(5987);
         inputEndpoint.setName("RDP");
-        inputEndpoint.setProtocol(InputEndpointTransportProtocol.Tcp);
+        inputEndpoint.setProtocol(InputEndpointTransportProtocol.TCP);
         endpointlist.add(inputEndpoint);
         updateParameters.setConfigurationSets(configlist);
 
@@ -380,7 +376,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         VirtualMachineUpdateParameters updateParameters = new VirtualMachineUpdateParameters(); 
         updateParameters.setRoleName(virtualMachinesGetResponse.getRoleName());
         //update the role size
-        updateParameters.setRoleSize(VirtualMachineRoleSize.Small);
+        updateParameters.setRoleSize(VirtualMachineRoleSize.SMALL);
 
         //this is required parameters for update
         OSVirtualHardDisk osVirtualHardDisk = virtualMachinesGetResponse.getOSVirtualHardDisk();
@@ -420,7 +416,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         createParameters.setLabel(storageAccountLabel);
         //required if no affinity group has set
-        createParameters.setLocation(GeoRegionNames.NorthCentralUS);
+        createParameters.setLocation(GeoRegionNames.NORTHCENTRALUS);
 
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
