@@ -26,66 +26,66 @@ package com.microsoft.windowsazure.management.compute.models;
 /**
 * The current status of a role instance.
 */
-public class RoleInstanceStatus {
+public abstract class RoleInstanceStatus {
     /**
     * The role state is currently unknown. The state should automatically be
     * resolved once the role state is detected, so no action is required.
     */
-    public static final String RoleStateUnknown = "RoleStateUnknown";
+    public static final String ROLESTATEUNKNOWN = "RoleStateUnknown";
     
     /**
     * The host agent is currently creating resources for the Virtual Machine.
     */
-    public static final String CreatingVM = "CreatingVM";
+    public static final String CREATINGVM = "CreatingVM";
     
     /**
     * The host agent is starting the Virtual Machine.
     */
-    public static final String StartingVM = "StartingVM";
+    public static final String STARTINGVM = "StartingVM";
     
     /**
     * Windows Azure is creating resources for the role.
     */
-    public static final String CreatingRole = "CreatingRole";
+    public static final String CREATINGROLE = "CreatingRole";
     
     /**
     * Windows Azure is starting the role.
     */
-    public static final String StartingRole = "StartingRole";
+    public static final String STARTINGROLE = "StartingRole";
     
     /**
     * The role instance has started and is ready to be used.
     */
-    public static final String ReadyRole = "ReadyRole";
+    public static final String READYROLE = "ReadyRole";
     
     /**
     * The role instance is unavailable for requests. This state is usually
     * generated while the role is being created or stopped.
     */
-    public static final String BusyRole = "BusyRole";
+    public static final String BUSYROLE = "BusyRole";
     
     /**
     * Windows Azure is stopping the role.
     */
-    public static final String StoppingRole = "StoppingRole";
+    public static final String STOPPINGROLE = "StoppingRole";
     
     /**
     * The host agent is stopping the Virtual Machine. This status also
     * indicates that the role has already been stopped.
     */
-    public static final String StoppingVM = "StoppingVM";
+    public static final String STOPPINGVM = "StoppingVM";
     
     /**
     * The Virtual Machine is being deleted by the host agent.
     */
-    public static final String DeletingVM = "DeletingVM";
+    public static final String DELETINGVM = "DeletingVM";
     
     /**
     * The Virtual Machine is not running. This is the final state of the
     * shutdown process, and no other status messages should be received after
     * StoppedVM.
     */
-    public static final String StoppedVM = "StoppedVM";
+    public static final String STOPPEDVM = "StoppedVM";
     
     /**
     * The role has unexpectedly stopped or has failed to start. This status
@@ -95,7 +95,7 @@ public class RoleInstanceStatus {
     * fields can hold information about the role error that caused this state,
     * which may be useful for identifying and debugging the problem.
     */
-    public static final String RestartingRole = "RestartingRole";
+    public static final String RESTARTINGROLE = "RestartingRole";
     
     /**
     * The role has continually crashed after being started by Windows Azure.
@@ -107,7 +107,7 @@ public class RoleInstanceStatus {
     * about the role error that caused this state, which may be useful for
     * identifying and debugging the problem.
     */
-    public static final String CyclingRole = "CyclingRole";
+    public static final String CYCLINGROLE = "CyclingRole";
     
     /**
     * The role has continually failed to start. This status indicates that
@@ -118,7 +118,7 @@ public class RoleInstanceStatus {
     * about the role error that caused this state, which may be useful for
     * identifying and debugging the problem.
     */
-    public static final String FailedStartingRole = "FailedStartingRole";
+    public static final String FAILEDSTARTINGROLE = "FailedStartingRole";
     
     /**
     * A Windows Azure or container error is preventing the Virtual Machine from
@@ -126,11 +126,11 @@ public class RoleInstanceStatus {
     * indicate an error with the role. It may be generated after the
     * StartingRole state.
     */
-    public static final String FailedStartingVM = "FailedStartingVM";
+    public static final String FAILEDSTARTINGVM = "FailedStartingVM";
     
     /**
     * The role has timed out before receiving a status message and is not
     * responding to requests.
     */
-    public static final String UnresponsiveRole = "UnresponsiveRole";
+    public static final String UNRESPONSIVEROLE = "UnresponsiveRole";
 }

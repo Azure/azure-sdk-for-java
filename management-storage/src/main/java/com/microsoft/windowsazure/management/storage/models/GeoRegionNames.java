@@ -26,16 +26,16 @@ package com.microsoft.windowsazure.management.storage.models;
 /**
 * The geographical region in which a storage account exists.
 */
-public class GeoRegionNames {
-    public static final String NorthCentralUS = "North Central US";
+public abstract class GeoRegionNames {
+    public static final String NORTHCENTRALUS = "North Central US";
     
-    public static final String SouthCentralUS = "South Central US";
+    public static final String SOUTHCENTRALUS = "South Central US";
     
-    public static final String WestEurope = "West Europe";
+    public static final String WESTEUROPE = "West Europe";
     
-    public static final String NorthEurope = "North Europe";
+    public static final String NORTHEUROPE = "North Europe";
     
-    public static final String SoutheastAsia = "Southeast Asia";
+    public static final String SOUTHEASTASIA = "Southeast Asia";
     
-    public static final String EastAsia = "East Asia";
+    public static final String EASTASIA = "East Asia";
 }

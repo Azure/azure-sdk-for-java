@@ -234,7 +234,7 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
     * failure.
     */
     @Override
-    public OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException {
+    public OperationStatusResponse delete(String vmImageName) throws IOException, ServiceException, InterruptedException, ExecutionException {
         ComputeManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;

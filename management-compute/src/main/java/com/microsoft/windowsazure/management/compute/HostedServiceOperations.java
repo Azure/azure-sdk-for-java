@@ -283,7 +283,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, ServiceException, URISyntaxException;
+    OperationResponse create(HostedServiceCreateParameters parameters) throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException;
     
     /**
     * The Create Hosted Service operation creates a new cloud service in
@@ -322,7 +322,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException, ServiceException;
+    OperationResponse delete(String serviceName) throws IOException, ServiceException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Hosted Service operation deletes the specified cloud service
@@ -718,7 +718,7 @@ public interface HostedServiceOperations {
     * @return A standard service response including an HTTP status code and
     * request ID.
     */
-    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, ServiceException, URISyntaxException;
+    OperationResponse update(String serviceName, HostedServiceUpdateParameters parameters) throws ParserConfigurationException, SAXException, TransformerException, IOException, ServiceException, InterruptedException, ExecutionException, URISyntaxException;
     
     /**
     * The Update Hosted Service operation can update the label or description

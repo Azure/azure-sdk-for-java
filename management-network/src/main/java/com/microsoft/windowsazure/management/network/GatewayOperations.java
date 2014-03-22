@@ -338,7 +338,7 @@ public interface GatewayOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
     
     /**
     * The Create Virtual network Gateway operation creates a new network
@@ -397,7 +397,7 @@ public interface GatewayOperations {
     * the failed request, and also includes error information regarding the
     * failure.
     */
-    GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException;
+    GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException;
     
     /**
     * The Delete Virtual network Gateway operation deletes a network gateway

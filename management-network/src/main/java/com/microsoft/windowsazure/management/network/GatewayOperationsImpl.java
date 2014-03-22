@@ -1074,7 +1074,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayGetOperationStatusResponse create(String networkName, GatewayCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;
@@ -1192,7 +1192,7 @@ public class GatewayOperationsImpl implements ServiceOperations<NetworkManagemen
     * failure.
     */
     @Override
-    public GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayGetOperationStatusResponse delete(String networkName) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         NetworkManagementClient client2 = this.getClient();
         boolean shouldTrace = CloudTracing.getIsEnabled();
         String invocationId = null;

@@ -27,12 +27,12 @@ package com.microsoft.windowsazure.management.compute.models;
 * The status could contain values like: Transitioning, Error, Success, or
 * Warning
 */
-public class ResourceExtensionSubStatusTypes {
-    public static final String Transitioning = "Transitioning";
+public abstract class ResourceExtensionSubStatusTypes {
+    public static final String TRANSITIONING = "Transitioning";
     
-    public static final String Error = "Error";
+    public static final String ERROR = "Error";
     
-    public static final String Success = "Success";
+    public static final String SUCCESS = "Success";
     
-    public static final String Warning = "Warning";
+    public static final String WARNING = "Warning";
 }

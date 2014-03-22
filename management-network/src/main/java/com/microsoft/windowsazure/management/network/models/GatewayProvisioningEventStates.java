@@ -26,12 +26,12 @@ package com.microsoft.windowsazure.management.network.models;
 /**
 * Standard states for Virtual Network Gateway Provisioning Events.
 */
-public class GatewayProvisioningEventStates {
-    public static final String NotProvisioned = "NotProvisioned";
+public abstract class GatewayProvisioningEventStates {
+    public static final String NOTPROVISIONED = "NotProvisioned";
     
-    public static final String Deprovisioning = "Deprovisioning";
+    public static final String DEPROVISIONING = "Deprovisioning";
     
-    public static final String Provisioning = "Provisioning";
+    public static final String PROVISIONING = "Provisioning";
     
-    public static final String Provisioned = "Provisioned";
+    public static final String PROVISIONED = "Provisioned";
 }

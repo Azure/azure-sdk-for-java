@@ -26,12 +26,12 @@ package com.microsoft.windowsazure.management.models;
 /**
 * Indicates the services available at a location.
 */
-public class LocationAvailableServiceNames {
-    public static final String Compute = "Compute";
+public abstract class LocationAvailableServiceNames {
+    public static final String COMPUTE = "Compute";
     
-    public static final String Storage = "Storage";
+    public static final String STORAGE = "Storage";
     
-    public static final String PersistentVMRole = "PersistentVMRole";
+    public static final String PERSISTENTVMROLE = "PersistentVMRole";
     
-    public static final String HighMemory = "HighMemory";
+    public static final String HIGHMEMORY = "HighMemory";
 }

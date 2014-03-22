@@ -130,7 +130,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * request ID.
     */
     @Override
-    public GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayOperationResponse create(String networkName, ClientRootCertificateCreateParameters parameters) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         // Validate
         if (networkName == null) {
             throw new NullPointerException("networkName");
@@ -286,7 +286,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
     * request ID.
     */
     @Override
-    public GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException, ServiceException {
+    public GatewayOperationResponse delete(String networkName, String certificateThumbprint) throws IOException, ServiceException, ParserConfigurationException, SAXException, InterruptedException, ExecutionException {
         // Validate
         if (networkName == null) {
             throw new NullPointerException("networkName");
