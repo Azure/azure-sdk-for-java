@@ -23,19 +23,16 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.concurrent.Future;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.SubscriptionGetResponse;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsParameters;
 import com.microsoft.windowsazure.management.models.SubscriptionListOperationsResponse;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
 * Operation for listing subscription operations and details.  (see

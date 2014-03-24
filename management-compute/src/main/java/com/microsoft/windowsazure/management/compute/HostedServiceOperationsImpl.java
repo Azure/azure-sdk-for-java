@@ -261,8 +261,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1255,8 +1255,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -1371,8 +1371,8 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

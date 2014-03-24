@@ -3361,8 +3361,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -3492,8 +3492,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -3628,8 +3628,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -3753,8 +3753,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -3873,8 +3873,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -7330,8 +7330,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -7455,8 +7455,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -7580,8 +7580,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -7705,8 +7705,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8166,8 +8166,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8295,8 +8295,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8424,8 +8424,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8593,8 +8593,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8762,8 +8762,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -8929,8 +8929,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }
@@ -9096,8 +9096,8 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

@@ -23,19 +23,17 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.Future;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.WebSiteOperationStatusResponse;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
+import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
 * The Windows Azure Web Sites management API provides a RESTful set of web
@@ -45,7 +43,7 @@ import com.microsoft.windowsazure.management.websites.models.WebSiteOperationSta
 * http://msdn.microsoft.com/en-us/library/windowsazure/dn166981.aspx for more
 * information)
 */
-public interface WebSiteManagementClient extends FilterableService<WebSiteManagementClient> {
+public interface WebSiteManagementClient extends Closeable, FilterableService<WebSiteManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.

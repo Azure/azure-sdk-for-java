@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
+import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.util.concurrent.Future;
@@ -41,7 +42,7 @@ import org.xml.sax.SAXException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface ComputeManagementClient extends FilterableService<ComputeManagementClient> {
+public interface ComputeManagementClient extends Closeable, FilterableService<ComputeManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.

@@ -282,8 +282,8 @@ public class VirtualMachineVMImageOperationsImpl implements ServiceOperations<Co
             
             return result;
         } finally {
-            if (this.getClient() != null && shouldTrace) {
-                this.getClient().close();
+            if (client2 != null && shouldTrace) {
+                client2.close();
             }
         }
     }

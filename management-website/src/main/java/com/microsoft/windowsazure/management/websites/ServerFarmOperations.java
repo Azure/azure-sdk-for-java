@@ -23,15 +23,6 @@
 
 package com.microsoft.windowsazure.management.websites;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.concurrent.Future;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmCreateParameters;
@@ -40,6 +31,12 @@ import com.microsoft.windowsazure.management.websites.models.ServerFarmGetRespon
 import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmUpdateParameters;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmUpdateResponse;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
 * Operations for managing the server farm in a web space.  (see

@@ -23,11 +23,10 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Web Site Publish Profile operation response.

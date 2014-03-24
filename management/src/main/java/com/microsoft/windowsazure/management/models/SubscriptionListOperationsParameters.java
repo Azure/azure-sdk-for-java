@@ -23,9 +23,8 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import java.util.Calendar;
-
 import com.microsoft.windowsazure.core.OperationStatus;
+import java.util.Calendar;
 
 /**
 * Parameters supplied to the List Subscription Operations operation.
