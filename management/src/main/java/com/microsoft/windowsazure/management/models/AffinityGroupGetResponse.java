@@ -23,10 +23,9 @@
 
 package com.microsoft.windowsazure.management.models;
 
+import com.microsoft.windowsazure.core.OperationResponse;
 import java.net.URI;
 import java.util.ArrayList;
-
-import com.microsoft.windowsazure.core.OperationResponse;
 
 /**
 * The Get Affinity Group operation response.

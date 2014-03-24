@@ -23,18 +23,16 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.concurrent.Future;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.FilterableService;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials;
 import com.microsoft.windowsazure.exception.ServiceException;
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.URI;
+import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 /**
 * The Service Management API provides programmatic access to much of the
@@ -44,7 +42,7 @@ import com.microsoft.windowsazure.exception.ServiceException;
 * http://msdn.microsoft.com/en-us/library/windowsazure/ee460799.aspx for more
 * information)
 */
-public interface ManagementClient extends FilterableService<ManagementClient> {
+public interface ManagementClient extends Closeable, FilterableService<ManagementClient> {
     /**
     * The URI used as the base for all Service Management requests.
     * @return The BaseUri value.

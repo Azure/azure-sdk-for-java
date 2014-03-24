@@ -23,9 +23,8 @@
 
 package com.microsoft.windowsazure.management.websites.models;
 
-import java.net.URI;
-
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.net.URI;
 
 /**
 * The Delete Web Site Repository operation response.

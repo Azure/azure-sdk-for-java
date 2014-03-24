@@ -23,9 +23,8 @@
 
 package com.microsoft.windowsazure.management.models;
 
-import java.util.Calendar;
-
 import com.microsoft.windowsazure.core.OperationResponse;
+import java.util.Calendar;
 
 /**
 * The Get Management Certificate operation response.

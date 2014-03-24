@@ -23,20 +23,17 @@
 
 package com.microsoft.windowsazure.management;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.concurrent.Future;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.xml.sax.SAXException;
-
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.ManagementCertificateCreateParameters;
 import com.microsoft.windowsazure.management.models.ManagementCertificateGetResponse;
 import com.microsoft.windowsazure.management.models.ManagementCertificateListResponse;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.concurrent.Future;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
 * You can use management certificates, which are also known as subscription
