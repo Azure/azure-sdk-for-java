@@ -51,8 +51,8 @@ public class PublishSettingsLoaderTest {
         // Assert
         assertEquals("subscriptionId", "1234",
                 config.getProperty(ManagementConfiguration.SUBSCRIPTION_ID));
-        assertEquals("keyStoreLocation", "keystore.out",
-                config.getProperty(ManagementConfiguration.KEYSTORE_PATH));
+        assertEquals("keyStoreLocation", true,
+                config.getProperty(ManagementConfiguration.KEYSTORE_PATH).toString().endsWith("1234.out"));
         assertEquals("keyStorePassword", "",
                 config.getProperty(ManagementConfiguration.KEYSTORE_PASSWORD));
     }
@@ -70,8 +70,8 @@ public class PublishSettingsLoaderTest {
         // Assert
         assertEquals("subscriptionId", "2345",
                 config.getProperty(ManagementConfiguration.SUBSCRIPTION_ID));
-        assertEquals("keyStoreLocation", "keystore.out",
-                config.getProperty(ManagementConfiguration.KEYSTORE_PATH));
+        assertEquals("keyStoreLocation", true,
+                config.getProperty(ManagementConfiguration.KEYSTORE_PATH).toString().endsWith("2345.out"));
         assertEquals("keyStorePassword", "",
                 config.getProperty(ManagementConfiguration.KEYSTORE_PASSWORD));
     }
