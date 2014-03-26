@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.servicebus.implementation.CorrelationFilter;
@@ -513,6 +514,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    @Ignore("Ignore because inconsistent server behavior.")
     public void receiveUpdatedQueueForwardToTopicMessageSuccess()
             throws Exception {
         // Arrange
