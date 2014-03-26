@@ -37,8 +37,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	    
 	    @Test
 	    public void listSubscriptionsSuccess() throws Exception {
-	    	 String  continuationToken = "testubscriptiontoken";
-	        // Arrange  
+	    	 // Arrange  
 	    	 SubscriptionListOperationsParameters parameters = new  SubscriptionListOperationsParameters();
 	    	 Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 	    	 startTime.set(2013, 11, 30);	    	
@@ -46,14 +45,12 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	    	 endTime.set(2014, 2, 1); 
 	         parameters.setStartTime(startTime);
 	    	 parameters.setEndTime(endTime);
-	    	 //parameters.setContinuationToken(continuationToken);	    	 
 	    	
 	    	 SubscriptionListOperationsResponse subscriptionListOperationsResponse = managementClient.getSubscriptionsOperations().listOperations(parameters);
 	    	
 	    	 Assert.assertEquals(200, subscriptionListOperationsResponse.getStatusCode());	    	 
 		     Assert.assertNotNull(subscriptionListOperationsResponse.getRequestId());		
 		     Assert.assertEquals(50, subscriptionListOperationsResponse.getSubscriptionOperations().size());
-		     //Assert.assertEquals(continuationToken, subscriptionListOperationsResponse.getContinuationToken());   
 	    }
 }
     
