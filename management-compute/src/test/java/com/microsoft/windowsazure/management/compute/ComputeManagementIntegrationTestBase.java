@@ -15,10 +15,13 @@
 package com.microsoft.windowsazure.management.compute;
 
 import java.util.Map;
-
 import com.microsoft.windowsazure.management.configuration.*;
+import com.microsoft.windowsazure.management.*;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
+import com.microsoft.windowsazure.services.blob.BlobConfiguration;
+import com.microsoft.windowsazure.services.blob.BlobContract;
+import com.microsoft.windowsazure.services.blob.BlobService;
 import com.microsoft.windowsazure.*;
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.Builder.Alteration;
@@ -30,6 +33,8 @@ public abstract class ComputeManagementIntegrationTestBase {
 
     protected static ComputeManagementClient computeManagementClient;
     protected static StorageManagementClient storageManagementClient;
+    protected static ManagementClient managementClient;
+    protected static BlobContract blobService;    
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
@@ -64,13 +69,33 @@ public abstract class ComputeManagementIntegrationTestBase {
 
         storageManagementClient = StorageManagementService.create(config);
     }
-  
+    
+    protected static void createManagementService() throws Exception {
+        // reinitialize configuration from known state
+        Configuration config = createConfiguration();
 
+        // add LoggingFilter to any pipeline that is created
+        Registry builder = (Registry) config.getBuilder();
+        builder.alter(ManagementClient.class, Client.class, new Alteration<Client>() {
+            @Override
+            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
+                client.addFilter(new LoggingFilter());
+                return client;
+            }
+        });
+
+       managementClient = ManagementService.create(config);
+    }
+   
+   
     protected static Configuration createConfiguration() throws Exception {
-        return ManagementConfiguration.configure(
-            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
-            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
-            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
-        );
+//        return ManagementConfiguration.configure(
+//            System.getenv(ManagementConfiguration.SUBSCRIPTION_ID),
+//            System.getenv(ManagementConfiguration.KEYSTORE_PATH),
+//            System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
+//        );
+        
+    	return PublishSettingsLoader.createManagementConfiguration("C:\\Users\\xuezhain\\Downloads\\node-Azpad057T7N4266-6-28-2013-credentials.publishsettings","00977cdb-163f-435f-9c32-39ec8ae61f4d");
+         
     }
 }

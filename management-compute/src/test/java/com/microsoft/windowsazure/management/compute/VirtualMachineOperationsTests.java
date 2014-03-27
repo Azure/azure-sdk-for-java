@@ -19,10 +19,24 @@ package com.microsoft.windowsazure.management.compute;
 import java.net.URI;
 import java.util.ArrayList;
 
+import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.models.*;
 import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.management.storage.models.*;
+import com.microsoft.windowsazure.services.blob.BlobConfiguration;
+import com.microsoft.windowsazure.services.blob.BlobContract;
+import com.microsoft.windowsazure.services.blob.BlobService;
+import com.microsoft.windowsazure.storage.*;
+import com.microsoft.windowsazure.storage.core.*;
+import com.microsoft.windowsazure.storage.blob.*;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
+import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
+import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
+import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
+import com.microsoft.windowsazure.services.blob.models.ListContainersResult.Container;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -32,68 +46,67 @@ import org.junit.Test;
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
     private static String testVMPrefix = "azuresdktest";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
-    //you can create your own storage account and create container there to store VM images 
-    private static String storageAccountName = testVMPrefix + "08";
+    //need to create your own storage account and create container there to store VM images 
+    private static String storageAccountName = testVMPrefix + "storage1";
+    private static String storageAccountKey = "";
+    private static String storageContainer = "vhd-store";    
+    private static String hostedServiceName = testVMPrefix + "HostedService1";   
+    private static String deploymentName = testVMPrefix + "deploy1";    
+    private static String virtualMachineName = testVMPrefix + "vm1";    
+    private static String vmLocation = "West US";
 
-    @BeforeClass
+    @BeforeClass    
     public static void setup() throws Exception {
+    	//create storage service for storage account creation
         createStorageService();
-        createService();
-        
-        //create a new storage account if did not use existed storage account for vm .vhd storage.
-        //createStorageAccount();
-        
+        //create management service for accessing management operation
+        createManagementService();
+        //create compute management service for all compute management operation
+        createService();      
+        //dynamic get location for vm storage/hosted service
+        getLocation();
+        //create a new storage account for vm .vhd storage.
+        createStorageAccount();        
         //create a vm first for accessing non-creation vm operation first  
-        //createVMDeployment();
+        createVMDeployment();
     }
 
-    @AfterClass
-    public static void Cleanup() throws Exception {
-        //delete all vm 
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
-        
-        HostedServiceListResponse hostedServiceListResponse = computeManagementClient.getHostedServicesOperations().list();
-        ArrayList<HostedServiceListResponse.HostedService> hostedServicelist = hostedServiceListResponse.getHostedServices();         
-        Assert.assertNotNull(hostedServicelist);
-        for (HostedServiceListResponse.HostedService hostedService : hostedServicelist) {
-            if (hostedService.getServiceName().contains(testVMPrefix)) {
-                HostedServiceGetDetailedResponse hostedServiceGetDetailedResponse = computeManagementClient.getHostedServicesOperations().getDetailed(hostedService.getServiceName());
-                ArrayList<HostedServiceGetDetailedResponse.Deployment> deploymentlist = hostedServiceGetDetailedResponse.getDeployments();
-                
-                Assert.assertNotNull(deploymentlist);
-                
-                for (HostedServiceGetDetailedResponse.Deployment deployment : deploymentlist) {
-                    ArrayList<Role> rolelist = deployment.getRoles();
-                    Assert.assertNotNull(rolelist);
-                    
-                    for (Role role : rolelist) {
-                        if ((role.getRoleType()!=null) && (role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString()))) {
-                             Assert.assertTrue(role.getRoleName().contains(testVMPrefix));
-                             OperationStatusResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations().delete(serviceName, deploymentName, role.getRoleName(), false);
-                        }
-                    }
-                }
-            } 
-        }
+    @AfterClass   
+    public static void Cleanup() throws Exception {        
+    	//clean deployment
+    	DeploymentGetResponse  deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
+    	if  (deploymentGetResponse.getName().contains(deploymentName) == true)
+    	{
+    		OperationStatusResponse  operationStatusResponse = computeManagementClient.getDeploymentsOperations().deleteByName(hostedServiceName, deploymentName, true);
+    		Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+    	}
         
         //clean host service
-        HostedServiceGetResponse hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(serviceName);
-        if (hostedServiceGetResponse.getServiceName().contains(serviceName)) {
-            computeManagementClient.getHostedServicesOperations().delete(hostedServiceGetResponse.getServiceName());
+        HostedServiceGetResponse hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(hostedServiceName); 
+        if (hostedServiceGetResponse.getServiceName().contains(hostedServiceName))
+        {        	 
+        	 OperationStatusResponse  operationStatusResponse = computeManagementClient.getHostedServicesOperations().deleteAll(hostedServiceName); 
+        	 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+        }
+        
+        //clean storage account
+        cleanBlob();
+        StorageAccountGetResponse StorageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
+        if (StorageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName))
+        {
+        	OperationResponse  operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
+        	Assert.assertEquals(200, operationResponse.getStatusCode());
         }
     }
 
     @Test
     public void createVirtualMachines() throws Exception {
-      int random = (int)(Math.random()* 100);
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
+    	int random = (int)(Math.random()* 100); 
         String roleName = testVMPrefix + "vm2";
         String computerName = testVMPrefix + "vm2";
         String adminuserPassword = testVMPrefix + "!12";
         String adminUserName = testVMPrefix;
-        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/vhd-store/" + testVMPrefix +random + ".vhd");
+        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix +random + ".vhd");
         String osVHarddiskName =testVMPrefix + "oshdname" + random;
         String operatingSystemName ="Windows";
 
@@ -131,20 +144,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setOSVirtualHardDisk(oSVirtualHardDisk);
 
         //Act
-        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(serviceName, deploymentName, createParameters);
+        OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().create(hostedServiceName, deploymentName, createParameters);
 
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());
     }
-    
-    @Test
-    public void createVMDeployment() throws Exception {
+        
+    private static void createVMDeployment() throws Exception {
         int random = (int)(Math.random()* 100); 
-        String hostedServiceName = testVMPrefix + "HostedService1";
+        
         String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
-        String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";
-        String deploymentName = testVMPrefix + "deploy1";
+        String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
         String deploymentLabel = testVMPrefix + "deployLabel1";
 
         //hosted service required for vm deployment
@@ -155,10 +166,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setServiceName(hostedServiceName);
         createParameters.setDescription(hostedServiceDescription);
         //required
-        createParameters.setLocation(GeoRegionNames.NORTHCENTRALUS);
+        createParameters.setLocation(vmLocation);
         OperationResponse hostedServiceOperationResponse = computeManagementClient.getHostedServicesOperations().create(createParameters);         
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
+        
+        System.out.println("hostedservice created: " + hostedServiceName);
 
         VirtualMachineCreateDeploymentParameters deploymentParameters = new VirtualMachineCreateDeploymentParameters();
         //required
@@ -171,11 +184,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         ArrayList<Role> rolelist = new ArrayList<Role>();
         Role role = new Role();
 
-        String roleName = testVMPrefix + "vm1";
-        String computerName = testVMPrefix + "vm1";
+        String roleName = virtualMachineName;
+        String computerName = virtualMachineName;
         String adminuserPassword = testVMPrefix + "!12";
         String adminUserName = testVMPrefix;        
-        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/vhd-store/" + testVMPrefix + random +".vhd");
+        URI mediaLinkUriValue =  new URI("http://"+ storageAccountName + ".blob.core.windows.net/"+storageContainer+ "/" + testVMPrefix + random +".vhd");
         String osVHarddiskName =testVMPrefix + "oshdname"+ random;
         String operatingSystemName ="Windows";
 
@@ -190,6 +203,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         configset.setAdminUserName(adminUserName);
         configset.setEnableAutomaticUpdates(false);
+        configset.setHostName(hostedServiceName + ".cloudapp.net");
         configlist.add(configset); 
 
         String sourceImageName = getOSSourceImage();
@@ -215,6 +229,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         rolelist.add(role);
         deploymentParameters.setRoles(rolelist);
 
+        System.out.println("try vm deployment now: " + hostedServiceName);
         // Act
         OperationResponse operationResponse = computeManagementClient.getVirtualMachinesOperations().createDeployment(hostedServiceName, deploymentParameters);        
         // Assert
@@ -253,13 +268,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @Test
-    public void getVirtualMachines() throws Exception {
-        String virtualMachineName = testVMPrefix + "vm1";
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
-
+    public void getVirtualMachines() throws Exception {       
         //Act
-        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
+        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
 
         //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
@@ -275,13 +286,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     
     @Test
     public void restartVirtualMachine() throws Exception {
-        //test for stop, start and restart
-        String virtualMachineName = testVMPrefix + "vm1";
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
-
+        //test for stop, start and restart       
         //Act
-        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
+        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
 
         //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
@@ -291,45 +298,37 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
 
         VirtualMachineShutdownParameters stopParameters = new VirtualMachineShutdownParameters();
         stopParameters.setPostShutdownAction(PostShutdownAction.Stopped);
-        OperationStatusResponse shutdownresponse = computeManagementClient.getVirtualMachinesOperations().shutdown(serviceName, deploymentName, vmName, stopParameters);
+        OperationStatusResponse shutdownresponse = computeManagementClient.getVirtualMachinesOperations().shutdown(hostedServiceName, deploymentName, vmName, stopParameters);
         Assert.assertEquals(200, shutdownresponse.getStatusCode());
         Assert.assertNotNull(shutdownresponse.getRequestId());
 
-        OperationStatusResponse startresponse = computeManagementClient.getVirtualMachinesOperations().start(serviceName, deploymentName, vmName);
+        OperationStatusResponse startresponse = computeManagementClient.getVirtualMachinesOperations().start(hostedServiceName, deploymentName, vmName);
         Assert.assertEquals(200, startresponse.getStatusCode());
         Assert.assertNotNull(startresponse.getRequestId());
 
-        OperationStatusResponse restartresponse = computeManagementClient.getVirtualMachinesOperations().restart(serviceName, deploymentName, vmName);
+        OperationStatusResponse restartresponse = computeManagementClient.getVirtualMachinesOperations().restart(hostedServiceName, deploymentName, vmName);
         Assert.assertEquals(200, restartresponse.getStatusCode());
         Assert.assertNotNull(restartresponse.getRequestId());
     }
     
     //@Test
-    private void deleteVirtualMachines() throws Exception {
-        String virtualMachineName = testVMPrefix + "vm1";
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
-
+    private void deleteVirtualMachines() throws Exception {        
         //Act
-        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
-
-        //Assert
+        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
+       //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
       
-        OperationStatusResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations().delete(serviceName, deploymentName, virtualMachinesGetResponse.getRoleName(), false);
+        OperationStatusResponse deleteResponse = computeManagementClient.getVirtualMachinesOperations().delete(hostedServiceName, deploymentName, virtualMachinesGetResponse.getRoleName(), true);
+        //Assert
         Assert.assertEquals(200, deleteResponse.getStatusCode());
         Assert.assertNotNull(deleteResponse.getRequestId());
     }
     
     @Test
-    public void updateVMInputEndPoint() throws Exception {
-        String virtualMachineName = testVMPrefix + "vm1";
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
-
+    public void updateVMInputEndPoint() throws Exception {       
         //Act
-        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
+        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
         //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId()); 
@@ -353,7 +352,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         updateParameters.setOSVirtualHardDisk(osVirtualHardDisk);
         updateParameters.setRoleName(virtualMachinesGetResponse.getRoleName());
 
-        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(serviceName, deploymentName, virtualMachinesGetResponse.getRoleName(), updateParameters);
+        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachinesGetResponse.getRoleName(), updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
@@ -361,15 +360,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     @Test
-    public void updateVMSize() throws Exception {
-        String virtualMachineName = testVMPrefix + "vm1";
-        String serviceName = testVMPrefix + "HostedService1";
-        String deploymentName = testVMPrefix + "deploy1";
+    public void updateVMSize() throws Exception {      
+        //Act
+        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
 
-            //Act
-        VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(serviceName, deploymentName, virtualMachineName);
-
-            //Assert
+        //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId()); 
 
@@ -383,13 +378,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         updateParameters.setOSVirtualHardDisk(osVirtualHardDisk);
 
         //update
-        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(serviceName, deploymentName, virtualMachineName, updateParameters);
+        OperationResponse updateoperationResponse = computeManagementClient.getVirtualMachinesOperations().update(hostedServiceName, deploymentName, virtualMachineName, updateParameters);
 
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
         Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
-
+    
     private static String getOSSourceImage() throws Exception {
         String sourceImageName = "";
         VirtualMachineOSImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
@@ -404,10 +399,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         }
         return sourceImageName;
     }
-
+   
     private static void createStorageAccount() throws Exception {
-        String storageAccountCreateName = testVMPrefix + "storage01";
-        String storageAccountLabel = testVMPrefix + "Label";
+        String storageAccountCreateName = testVMPrefix + "storage1";
+        String storageAccountLabel = testVMPrefix + "storageLabel1";
 
         //Arrange
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
@@ -416,13 +411,91 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //required
         createParameters.setLabel(storageAccountLabel);
         //required if no affinity group has set
-        createParameters.setLocation(GeoRegionNames.NORTHCENTRALUS);
+        createParameters.setLocation(vmLocation);
 
         //act
         OperationResponse operationResponse = storageManagementClient.getStorageAccountsOperations().create(createParameters); 
-
+      
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         storageAccountName = storageAccountCreateName;
+        
+        //use container inside storage account, needed for os image storage.
+        Configuration config = Configuration.getInstance();
+    	config.setProperty(BlobConfiguration.ACCOUNT_NAME, storageAccountCreateName);
+    	StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
+    	storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
+    	config.setProperty(BlobConfiguration.ACCOUNT_KEY, storageAccountKey);
+    	String uri = "http://"+storageAccountName + ".blob.core.windows.net/";
+    	config.setProperty(BlobConfiguration.URI, uri);
+    	blobService = BlobService.create(config);
+    	blobService.createContainer(storageContainer);
+    	
+    	//make sure it created and available, otherwise vm deployment will fail with storage/container still creating
+    	boolean found = false;
+    	while(found == false)
+    	{
+    		ListContainersResult list = blobService.listContainers(new ListContainersOptions().setPrefix(storageContainer));
+    		for (Container item : list.getContainers()) {
+    			 if (item.getName().contains(storageContainer) == true)
+    			 {
+    				 System.out.println("container found ");
+    				 found = true;    				
+    			 }
+    		}
+    	
+    		if (found == false)
+    		{ 
+    			System.out.println("not found yet, need to wait ");
+    			Thread.sleep(1000 * 30);
+    		}
+    		else 
+    		{
+    			System.out.println("wait a while even if it is accessible, may not complete yet");
+    			Thread.sleep(1000 * 120);
+    		}    		
+    	}    	
+    }
+    
+    private static void cleanBlob() throws Exception {
+    	    //wait for the os storage removal done first
+    	    Thread.sleep(1000 * 180);
+    	    //need to use storage client to list and delete storage blob
+    	    String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
+    	    System.out.println("conn string = " + storageconnectionstring);
+    	    CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
+
+    		// Create the blob client
+    		CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+
+    		// Retrieve reference to a previously created container
+    		CloudBlobContainer container = blobClient.getContainerReference(storageContainer);    		
+
+    		// For each item in the container
+    		for (ListBlobItem blobItem : container.listBlobs()) {
+    		    System.out.println(blobItem.getUri());
+    		    CloudBlob blob = (CloudBlob) blobItem;
+    		    blob.deleteIfExists();    		    
+    		}
+    		container.deleteIfExists();
+    }
+    
+    private static void getLocation() throws Exception {
+    	//has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
+    	ArrayList<String> serviceName = new ArrayList<String>();
+    	serviceName.add(LocationAvailableServiceNames.COMPUTE);
+    	serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
+    	serviceName.add(LocationAvailableServiceNames.STORAGE);    	
+    	
+    	LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
+    	for (LocationsListResponse.Location location : locationsListResponse)
+    	{
+    		ArrayList<String> availableServicelist = location.getAvailableServices();
+    		String locationName = location.getName();
+    		if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true))
+    		{    			 		
+    			vmLocation = locationName;    			
+    		}    		
+    	}
     }
 }
