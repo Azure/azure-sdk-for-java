@@ -69,7 +69,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
         ServiceObjectiveListResponse serviceObjectiveListResponse = serviceObjectivesOperations.list(serverName);
 
         // assert
-        assertEquals(6, serviceObjectiveListResponse.getServiceObjectives().size());
+        assertTrue(serviceObjectiveListResponse.getServiceObjectives().size() > 0);
     }
 
     @Test
