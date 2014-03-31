@@ -17,30 +17,23 @@
 package com.microsoft.windowsazure.management.compute;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
-import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.models.*;
 import com.microsoft.windowsazure.management.compute.models.*;
 import com.microsoft.windowsazure.management.storage.models.*;
-import com.microsoft.windowsazure.services.blob.BlobConfiguration;
-import com.microsoft.windowsazure.services.blob.BlobContract;
-import com.microsoft.windowsazure.services.blob.BlobService;
 import com.microsoft.windowsazure.storage.*;
-import com.microsoft.windowsazure.storage.core.*;
 import com.microsoft.windowsazure.storage.blob.*;
-import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksOptions;
-import com.microsoft.windowsazure.services.blob.models.ListBlobBlocksResult;
-import com.microsoft.windowsazure.services.blob.models.ListContainersOptions;
-import com.microsoft.windowsazure.services.blob.models.ListContainersResult;
-import com.microsoft.windowsazure.services.blob.models.ListContainersResult.Container;
+
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
@@ -311,8 +304,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertNotNull(restartresponse.getRequestId());
     }
     
-    //@Test
-    private void deleteVirtualMachines() throws Exception {        
+    @Test
+    @Ignore("Because it takes too long to run")
+    public void deleteVirtualMachines() throws Exception {        
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
        //Assert
@@ -421,63 +415,63 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         storageAccountName = storageAccountCreateName;
         
         //use container inside storage account, needed for os image storage.
-        Configuration config = Configuration.getInstance();
-    	config.setProperty(BlobConfiguration.ACCOUNT_NAME, storageAccountCreateName);
     	StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
     	storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
-    	config.setProperty(BlobConfiguration.ACCOUNT_KEY, storageAccountKey);
-    	String uri = "http://"+storageAccountName + ".blob.core.windows.net/";
-    	config.setProperty(BlobConfiguration.URI, uri);
-    	blobService = BlobService.create(config);
-    	blobService.createContainer(storageContainer);
+    	CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
+    	CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
+    	container.createIfNotExists();
     	
     	//make sure it created and available, otherwise vm deployment will fail with storage/container still creating
     	boolean found = false;
     	while(found == false)
     	{
-    		ListContainersResult list = blobService.listContainers(new ListContainersOptions().setPrefix(storageContainer));
-    		for (Container item : list.getContainers()) {
+    		Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
+    		
+    		// ListContainersResult list = blobService.listContainers(new ListContainersOptions().setPrefix(storageContainer));
+    		for (CloudBlobContainer item : listContainerResult) {
     			 if (item.getName().contains(storageContainer) == true)
     			 {
-    				 System.out.println("container found ");
     				 found = true;    				
     			 }
     		}
     	
     		if (found == false)
     		{ 
-    			System.out.println("not found yet, need to wait ");
     			Thread.sleep(1000 * 30);
     		}
     		else 
     		{
-    			System.out.println("wait a while even if it is accessible, may not complete yet");
     			Thread.sleep(1000 * 120);
     		}    		
     	}    	
     }
     
+    private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException
+    {
+    	String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
+        CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
+
+        // Create the blob client
+        CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
+        return blobClient;
+    }
+    
     private static void cleanBlob() throws Exception {
-    	    //wait for the os storage removal done first
-    	    Thread.sleep(1000 * 180);
-    	    //need to use storage client to list and delete storage blob
-    	    String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
-    	    System.out.println("conn string = " + storageconnectionstring);
-    	    CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
+        //wait for the os storage removal done first
+        Thread.sleep(1000 * 180);
+        // Create the blob client
+        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
 
-    		// Create the blob client
-    		CloudBlobClient blobClient = storageAccount.createCloudBlobClient();
 
-    		// Retrieve reference to a previously created container
-    		CloudBlobContainer container = blobClient.getContainerReference(storageContainer);    		
+        // Retrieve reference to a previously created container
+        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);    		
 
-    		// For each item in the container
-    		for (ListBlobItem blobItem : container.listBlobs()) {
-    		    System.out.println(blobItem.getUri());
-    		    CloudBlob blob = (CloudBlob) blobItem;
-    		    blob.deleteIfExists();    		    
-    		}
-    		container.deleteIfExists();
+        // For each item in the container
+        for (ListBlobItem blobItem : container.listBlobs()) {
+            CloudBlob blob = (CloudBlob) blobItem;
+            blob.deleteIfExists();    		    
+        }
+        container.deleteIfExists();
     }
     
     private static void getLocation() throws Exception {

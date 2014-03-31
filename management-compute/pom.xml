@@ -87,12 +87,18 @@
       <version>0.5.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency> 
+      <groupId>${project.groupId}</groupId>
+      <artifactId>microsoft-azure-api-management</artifactId>
+      <version>0.5.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>  
-     <groupId>com.microsoft.windowsazure.storage</groupId>
-     <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
-     <version>0.5.0</version>
-     </dependency>
-
+      <groupId>com.microsoft.windowsazure.storage</groupId>
+      <artifactId>microsoft-windowsazure-storage-sdk</artifactId>
+      <version>0.5.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.hamcrest</groupId>
       <artifactId>hamcrest-all</artifactId>
