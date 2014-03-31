@@ -33,6 +33,7 @@ import com.microsoft.windowsazure.storage.blob.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
@@ -304,6 +305,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     @Test
+    @Ignore("Because it takes too long to run")
     public void deleteVirtualMachines() throws Exception {        
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
