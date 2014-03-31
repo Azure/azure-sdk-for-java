@@ -21,7 +21,7 @@ public class LocationOperationsTest  extends ManagementIntegrationTestBase {
 	    	
 	    	 Assert.assertEquals(200, locationsListResponse.getStatusCode());	    	 
 		     Assert.assertNotNull(locationsListResponse.getRequestId());		
-		     Assert.assertEquals(8, locationsListResponse.getLocations().size());		   
+		     Assert.assertTrue(locationsListResponse.getLocations().size() > 0);
 	    }	    
 }
     

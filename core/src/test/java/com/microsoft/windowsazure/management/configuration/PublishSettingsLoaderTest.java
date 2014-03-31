@@ -16,6 +16,7 @@ package com.microsoft.windowsazure.management.configuration;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import org.junit.Test;
 import com.microsoft.windowsazure.Configuration;
@@ -43,6 +44,8 @@ public class PublishSettingsLoaderTest {
             throws Exception {
         // Arrange
         String file = getClass().getResource("v1.publishsettings").getFile();
+        String expectedKeyStoreLocation = System.getProperty("user.home") + File.separator
+                + ".azure" + File.separator + "1234.out";
 
         // Act
         Configuration config = PublishSettingsLoader
@@ -51,8 +54,8 @@ public class PublishSettingsLoaderTest {
         // Assert
         assertEquals("subscriptionId", "1234",
                 config.getProperty(ManagementConfiguration.SUBSCRIPTION_ID));
-        assertEquals("keyStoreLocation", true,
-                config.getProperty(ManagementConfiguration.KEYSTORE_PATH).toString().endsWith("1234.out"));
+        assertEquals("keyStoreLocation", expectedKeyStoreLocation,
+                config.getProperty(ManagementConfiguration.KEYSTORE_PATH));
         assertEquals("keyStorePassword", "",
                 config.getProperty(ManagementConfiguration.KEYSTORE_PASSWORD));
     }
@@ -62,6 +65,8 @@ public class PublishSettingsLoaderTest {
             throws Exception {
         // Arrange
         String file = getClass().getResource("v2.publishsettings").getFile();
+        String expectedKeyStoreLocation = System.getProperty("user.home") + File.separator
+                + ".azure" + File.separator + "2345.out";
 
         // Act
         Configuration config = PublishSettingsLoader
@@ -70,8 +75,8 @@ public class PublishSettingsLoaderTest {
         // Assert
         assertEquals("subscriptionId", "2345",
                 config.getProperty(ManagementConfiguration.SUBSCRIPTION_ID));
-        assertEquals("keyStoreLocation", true,
-                config.getProperty(ManagementConfiguration.KEYSTORE_PATH).toString().endsWith("2345.out"));
+        assertEquals("keyStoreLocation", expectedKeyStoreLocation,
+                config.getProperty(ManagementConfiguration.KEYSTORE_PATH));
         assertEquals("keyStorePassword", "",
                 config.getProperty(ManagementConfiguration.KEYSTORE_PASSWORD));
     }
