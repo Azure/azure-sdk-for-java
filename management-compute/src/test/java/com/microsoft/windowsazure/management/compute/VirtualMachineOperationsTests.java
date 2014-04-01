@@ -65,7 +65,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @AfterClass   
-    public static void Cleanup() throws Exception {        
+    public static void cleanup() throws Exception {        
     	//clean deployment
     	DeploymentGetResponse  deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
     	if  (deploymentGetResponse.getName().contains(deploymentName) == true)
