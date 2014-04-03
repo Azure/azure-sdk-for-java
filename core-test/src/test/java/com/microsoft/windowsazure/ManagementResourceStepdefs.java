@@ -36,12 +36,6 @@ public class ManagementResourceStepdefs
 {
     private HashMap<String, Object> objects = new HashMap<String, Object>();
     
-    @After
-    public void after(Scenario scenario)
-    {
-    	
-    }
-    
     @Given("^I create a \"([^\"]*)\" with name \"([^\"]*)\"$")
     public void i_create_a_with_name(String objectType, String name) throws Exception
     {
@@ -203,9 +197,6 @@ public class ManagementResourceStepdefs
     {
         Object parameter = objects.get(parameterName);
         objects.put(resultName, when_invoke_with_parameter_converted_value(methodName, parameter, parameter.getClass().getName()));
-        if (methodName.endsWith("Create"))
-        {        	
-        }
     }
 
     @When("^I invoke \"([^\"]*)\" I get the result into \"([^\"]*)\"$")
