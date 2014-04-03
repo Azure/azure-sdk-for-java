@@ -96,8 +96,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @Test
     public void createWebSiteSuccess() throws Exception {
         String webSiteName = testPrefix  + "02";
-        ArrayList<String> hostNamesValue = new ArrayList<String>();
-        
+        ArrayList<String> hostNamesValue = new ArrayList<String>();        
         hostNamesValue.add(webSiteName + hostname); 
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
@@ -198,6 +197,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @Test
     public void generatePasswordSuccess() throws Exception {    	
         OperationResponse operationResponse = webSiteManagementClient.getWebSitesOperations().generatePassword(webSpaceName, websiteName);
+        
         //Assert
         Assert.assertEquals(200, operationResponse.getStatusCode());
         Assert.assertNotNull(operationResponse.getRequestId());        
@@ -234,6 +234,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         endTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 1));
         parameters.setStartTime(startTime);
         parameters.setEndTime(endTime);
+        
         //Act           
         WebSiteGetHistoricalUsageMetricsResponse webSiteGetHistoricalUsageMetricsResponse = webSiteManagementClient.getWebSitesOperations().getHistoricalUsageMetrics(webSpaceName, websiteName, parameters);
         
