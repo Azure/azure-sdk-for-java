@@ -18,10 +18,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -35,7 +32,6 @@ import com.microsoft.windowsazure.management.sql.models.ServiceObjectiveListResp
 
 public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTestBase {
 
-    private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
     private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static ServiceObjectiveOperations serviceObjectivesOperations;
 
@@ -53,6 +49,7 @@ public class ServiceObjectiveIntegrationTest extends SqlManagementIntegrationTes
             String serverName = databaseToBeRemoved.get(databaseName);
             databaseOperations.delete(serverName, databaseName);
         }
+        databaseToBeRemoved.clear();
         
         for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
