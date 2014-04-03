@@ -134,7 +134,7 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
 	   	{ 
 	   		 // Assert	   	    
 	         Assert.assertEquals(ServerFarmWorkerSize.Large, serverFarm.getCurrentWorkerSize());
-	         Assert.assertEquals("Default0", serverFarm.getName());  
+	         Assert.assertEquals("Default1", serverFarm.getName());  
 	         Assert.assertEquals(ServerFarmStatus.Ready, serverFarm.getStatus());
 	         Assert.assertEquals(ServerFarmWorkerSize.Large, serverFarm.getWorkerSize());	         
 	   	}
