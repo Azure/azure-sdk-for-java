@@ -35,7 +35,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     private static String testPrefix = "azuresdktestwebsite";
     private static String websiteName = testPrefix + "01";
     private static String webSpaceName = WebSpaceNames.NORTHEUROPEWEBSPACE; 
-    private static String hostname = ".azurewebsites.net";
+    private static String hostName = ".azurewebsites.net";
     
     @BeforeClass
     public static void setup() throws Exception {
@@ -53,17 +53,16 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteDeleteParameters webSiteDeleteParameters = new WebSiteDeleteParameters();
         webSiteDeleteParameters.setDeleteAllSlots(true);
         webSiteDeleteParameters.setDeleteEmptyServerFarm(true);
-        webSiteDeleteParameters.setDeleteMetrics(true);        
+        webSiteDeleteParameters.setDeleteMetrics(true);
         
-        //Act
         WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
         
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
         for (WebSite  webSite : webSiteslist)
         { 
-            if (webSite.getName().contains(testPrefix ))
+            if (webSite.getName().startsWith(testPrefix ))
             {
-                String websitename = webSite.getName().replaceFirst(hostname, "");
+                String websitename = webSite.getName().replaceFirst(hostName, "");
                 webSiteManagementClient.getWebSitesOperations().delete(webSpaceName, websitename, webSiteDeleteParameters);
             }
         }       
@@ -71,7 +70,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     
     private static void createWebSite() throws Exception {
         ArrayList<String> hostNamesValue = new ArrayList<String>();        
-        hostNamesValue.add(websiteName + hostname); 
+        hostNamesValue.add(websiteName + hostName); 
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
         webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
@@ -97,7 +96,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     public void createWebSiteSuccess() throws Exception {
         String webSiteName = testPrefix  + "02";
         ArrayList<String> hostNamesValue = new ArrayList<String>();        
-        hostNamesValue.add(webSiteName + hostname); 
+        hostNamesValue.add(webSiteName + hostName); 
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
         webSpaceDetails.setGeoRegion(GeoRegionNames.NORTHCENTRALUS);
@@ -161,11 +160,13 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         Assert.assertNotNull(createResponse.getRequestId());        
         
         WebSiteGetRepositoryResponse  getResponse = webSiteManagementClient.getWebSitesOperations().getRepository(webSpaceName, websiteName);
+        
+        //Assert
         Assert.assertEquals(200, getResponse.getStatusCode());
         Assert.assertNotNull(getResponse.getRequestId());
         Assert.assertNotNull(getResponse.getUri());
     }
-    
+        
     @Test
     public void isHostnameAvailableSuccess() throws Exception {    	
         String webSiteNameInValid = websiteName;       
