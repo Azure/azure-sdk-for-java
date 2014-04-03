@@ -21,20 +21,33 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.junit.Assert;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ManagementResourceStepdefs
 {
     private HashMap<String, Object> objects = new HashMap<String, Object>();
+    private static Random random = new Random();
+    
+    @And("^I create a \"([^\"]*)\" character random String with name \"([^\"]*)\"$")
+    public void i_create_a_character_random_string_with_name(int length, String name)
+    {
+    	StringBuilder stringBuilder = new StringBuilder(length);
+    	for (int i=0; i<length; i++)
+    	{
+    		stringBuilder.append((char)('a' + random.nextInt(26)));
+    	}
+    	String randomString = stringBuilder.toString();
+    	objects.put(name, randomString);
+    }
     
     @Given("^I create a \"([^\"]*)\" with name \"([^\"]*)\"$")
     public void i_create_a_with_name(String objectType, String name) throws Exception
@@ -181,7 +194,7 @@ public class ManagementResourceStepdefs
  
         Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[parts.length - 1]));
         Object result = method.invoke(object);
-
+        
         // Assert
         Assert.assertNotEquals(TextUtility.convertStringTo(propertyValue, propertyType), result);
     }
@@ -203,7 +216,7 @@ public class ManagementResourceStepdefs
     public void when_invoke_get_result(String methodName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         objects.put(resultName, when_invoke(methodName));
-    }
+    } 
 
     @When("^I invoke \"([^\"]*)\"$")
     public Object when_invoke(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -269,8 +282,18 @@ public class ManagementResourceStepdefs
     {
         objects.put(resultName, when_invoke_with_parameter(methodName, parameter1Name, parameter2Name));
     }
+    
+    @Then("^invoke \"([^\"]*)\" with parameter \"([^\"]*)\" of type \"([^\"]*)\"$")
+    public Object then_invoke_with_parameter_of_type(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, SecurityException, ClassNotFoundException
+    {
+    	String[] parts = methodName.split("\\.");
+        Object object = getObject(parts);
+        Object parameterObject = objects.get(parameter);
+        Method method = object.getClass().getMethod(TextUtility.ToCamelCase(parts[parts.length - 1]), TextUtility.getJavaType(parameterType));
+        return method.invoke(object, parameterObject);    	
+    }
 
-    @When("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
+    @Then("^invoke \"([^\"]*)\" with parameter value \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_value(String methodName, Object parameter, String parameterType) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         return when_invoke_with_parameter_converted_value(methodName, parameter, parameterType);
@@ -281,7 +304,7 @@ public class ManagementResourceStepdefs
         objects.put(resultName, when_invoke_with_parameter_values(methodName, TextUtility.convertStringTo(parameter1, parameter1Type), parameter1Type, TextUtility.convertStringTo(parameter2, parameter2Type), parameter2Type));
     }
 
-    @When("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
+    @Then("^invoke \"([^\"]*)\" with parameter values \"([^\"]*)\" of type \"([^\"]*)\" and \"([^\"]*)\" of type \"([^\"]*)\"$")
     public Object then_invoke_with_parameter_values(String methodName, Object parameter1, String parameter1Type, Object parameter2, String parameter2Type) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, ClassNotFoundException
     {
         return when_invoke_with_parameter_values(methodName, parameter1, parameter1Type, parameter2, parameter2Type);
