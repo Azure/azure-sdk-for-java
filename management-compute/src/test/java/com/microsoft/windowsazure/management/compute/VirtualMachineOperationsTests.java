@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
@@ -38,6 +39,7 @@ import org.junit.Test;
 
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
     private static String testVMPrefix = "azuresdktest";
+    private static String testStoragePrefix = "azuresdktest";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
     private static String storageAccountName = testVMPrefix + "storage1";
@@ -395,8 +397,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
    
     private static void createStorageAccount() throws Exception {
-        String storageAccountCreateName = testVMPrefix + "storage1";
-        String storageAccountLabel = testVMPrefix + "storageLabel1";
+        String storageAccountCreateName = testStoragePrefix + "storage1";
+        String storageAccountLabel = testStoragePrefix + "storageLabel1";
 
         //Arrange
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
