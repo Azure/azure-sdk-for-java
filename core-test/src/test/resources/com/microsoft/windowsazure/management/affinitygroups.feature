@@ -5,7 +5,7 @@ Background:
 
 Scenario: Create an AffinityGroup
     Given I create a "Microsoft.WindowsAzure.Management.Models.AffinityGroupCreateParameters" with name "parameters"
-    And I create a "10" character random String with name "testAffinityGroupName1"
+    And I create a "10" character random String with name "testAffinityGroupName1" and prefix "azure-java-test-"
     And set "parameters.Name" with "testAffinityGroupName1" of type "System.String"
     And set "parameters.Location" with value "West US" of type "System.String"
     And set "parameters.Label" with value "Great AF" of type "System.String"
@@ -16,7 +16,7 @@ Scenario: Create an AffinityGroup
 
 Scenario: Get an AffinityGroup
     Given I create a "Microsoft.WindowsAzure.Management.Models.AffinityGroupCreateParameters" with name "parameters"
-    And I create a "10" character random String with name "testAffinityGroupName2"
+    And I create a "10" character random String with name "testAffinityGroupName2" and prefix "azure-java-test-"
     And set "parameters.Name" with "testAffinityGroupName2" of type "System.String"
     And set "parameters.Location" with value "West US" of type "System.String"
     And set "parameters.Label" with value "Great AF2" of type "System.String"
@@ -28,7 +28,7 @@ Scenario: Get an AffinityGroup
 
 Scenario: List AffinityGroups
     Given I create a "Microsoft.WindowsAzure.Management.Models.AffinityGroupCreateParameters" with name "parameters"
-    And I create a "10" character random String with name "testAffinityGroupName3"
+    And I create a "10" character random String with name "testAffinityGroupName3" and prefix "azure-java-test-"
     And set "parameters.Name" with "testAffinityGroupName3" of type "System.String"
     And set "parameters.Location" with value "West US" of type "System.String"
     And set "parameters.Label" with value "Great AF3" of type "System.String"

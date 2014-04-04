@@ -37,15 +37,15 @@ public class ManagementResourceStepdefs
     private HashMap<String, Object> objects = new HashMap<String, Object>();
     private static Random random = new Random();
     
-    @And("^I create a \"([^\"]*)\" character random String with name \"([^\"]*)\"$")
-    public void i_create_a_character_random_string_with_name(int length, String name)
+    @And("^I create a \"([^\"]*)\" character random String with name \"([^\"]*)\" and prefix \"([^\"]*)\"$")
+    public void i_create_a_character_random_string_with_name(int length, String name, String prefix)
     {
     	StringBuilder stringBuilder = new StringBuilder(length);
     	for (int i=0; i<length; i++)
     	{
     		stringBuilder.append((char)('a' + random.nextInt(26)));
     	}
-    	String randomString = stringBuilder.toString();
+    	String randomString = prefix + stringBuilder.toString();
     	objects.put(name, randomString);
     }
     
