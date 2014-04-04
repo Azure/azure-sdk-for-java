@@ -14,17 +14,11 @@
  */
 package com.microsoft.windowsazure.management.compute;
 
-import java.util.Map;
 import com.microsoft.windowsazure.management.configuration.*;
 import com.microsoft.windowsazure.management.*;
 import com.microsoft.windowsazure.management.storage.StorageManagementClient;
 import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.*;
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Alteration;
-import com.microsoft.windowsazure.core.Builder.Registry;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class ComputeManagementIntegrationTestBase {
 
@@ -32,55 +26,19 @@ public abstract class ComputeManagementIntegrationTestBase {
     protected static StorageManagementClient storageManagementClient;
     protected static ManagementClient managementClient;
 
-    protected static void createService() throws Exception {
-        // reinitialize configuration from known state
+    protected static void createComputeManagementClient() throws Exception {
         Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(ComputeManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
         computeManagementClient = ComputeManagementService.create(config);
     }
     
-    protected static void createStorageService() throws Exception {
-        // reinitialize configuration from known state
+    protected static void createStorageManagementClient() throws Exception {
         Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(StorageManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
         storageManagementClient = StorageManagementService.create(config);
     }
     
-    protected static void createManagementService() throws Exception {
-        // reinitialize configuration from known state
+    protected static void createManagementClient() throws Exception {
         Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(ManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
-       managementClient = ManagementService.create(config);
+        managementClient = ManagementService.create(config);
     }
    
     protected static Configuration createConfiguration() throws Exception {
