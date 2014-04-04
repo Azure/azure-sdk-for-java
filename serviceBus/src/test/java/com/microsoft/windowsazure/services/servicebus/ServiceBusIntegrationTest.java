@@ -542,6 +542,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    @Ignore("due to inconsistent server behavior.")
     public void receiveSubscriptionForwardToTopicMessageSuccess()
             throws Exception {
         // Arrange
@@ -572,6 +573,7 @@ public class ServiceBusIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    @Ignore("due to inconsistent server behavior.")
     public void receiveUpdatedSubscriptionForwardToTopicMessageSuccess()
             throws Exception {
         // Arrange

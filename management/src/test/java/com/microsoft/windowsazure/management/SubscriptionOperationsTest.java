@@ -40,7 +40,7 @@ public class SubscriptionOperationsTest  extends ManagementIntegrationTestBase {
 	    	 // Arrange  
 	    	 SubscriptionListOperationsParameters parameters = new  SubscriptionListOperationsParameters();
 	    	 Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-	    	 startTime.set(2013, 11, 30);	    	
+	    	 startTime.set(2014, 1, 1);	    	
 	    	 Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 	    	 endTime.set(2014, 2, 1); 
 	         parameters.setStartTime(startTime);
