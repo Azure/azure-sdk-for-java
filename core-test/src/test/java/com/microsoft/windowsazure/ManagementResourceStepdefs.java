@@ -194,7 +194,7 @@ public class ManagementResourceStepdefs
  
         Method method = object.getClass().getMethod("get" + TextUtility.ToPascalCase(parts[parts.length - 1]));
         Object result = method.invoke(object);
-        
+
         // Assert
         Assert.assertNotEquals(TextUtility.convertStringTo(propertyValue, propertyType), result);
     }
@@ -216,7 +216,7 @@ public class ManagementResourceStepdefs
     public void when_invoke_get_result(String methodName, String resultName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         objects.put(resultName, when_invoke(methodName));
-    } 
+    }
 
     @When("^I invoke \"([^\"]*)\"$")
     public Object when_invoke(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
