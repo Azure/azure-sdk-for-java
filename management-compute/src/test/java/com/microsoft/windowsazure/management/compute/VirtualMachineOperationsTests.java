@@ -59,7 +59,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     private static String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
     private static String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
     private static String deploymentLabel = testVMPrefix + "deployLabel1";
-    private static HostedServiceOperations hostedServicesOperations;
 
     @BeforeClass    
     public static void setup() throws Exception {
@@ -190,7 +189,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setDescription(hostedServiceDescription);
         //required
         createParameters.setLocation(vmLocation);
-        OperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);         
+        OperationResponse hostedServiceOperationResponse = computeManagementClient.getHostedServicesOperations().create(createParameters);         
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
         
