@@ -34,14 +34,13 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementInt
     }
 
     @Test
-    public void listVirtualMachineExtensionSuccess() throws Exception {
-        //Act
+    public void listVirtualMachineExtensionSuccess() throws Exception {        
         VirtualMachineExtensionListResponse virtualMachineExtensionListResponse = computeManagementClient.getVirtualMachineExtensionsOperations().list();
         ArrayList<VirtualMachineExtensionListResponse.ResourceExtension> virtualMachineExtensionResourceExtensionlist = virtualMachineExtensionListResponse.getResourceExtensions();
         Assert.assertNotNull(virtualMachineExtensionResourceExtensionlist);
         for (VirtualMachineExtensionListResponse.ResourceExtension resourceExtension : virtualMachineExtensionResourceExtensionlist)
         {
-            Assert.assertEquals(null, resourceExtension.getSampleConfig());
+            Assert.assertNull(resourceExtension.getSampleConfig());
         }
     }
 
