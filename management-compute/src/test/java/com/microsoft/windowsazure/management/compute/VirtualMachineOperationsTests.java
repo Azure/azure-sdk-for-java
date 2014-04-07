@@ -49,7 +49,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     private static String testStoragePrefix = "aztst";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
-    private static String storageAccountName = testStoragePrefix + "storage1";
+    private static String storageAccountName;
     private static String storageAccountKey = "";
     private static String storageContainer = "vhd-store";    
     private static String hostedServiceName = testVMPrefix + "HostedService1";   
@@ -63,13 +63,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
 
     @BeforeClass    
     public static void setup() throws Exception {
-    	
+    	storageAccountName = testStoragePrefix + randomString(10);
     	//create storage service for storage account creation
         createStorageManagementClient();
         //create compute management service for all compute management operation
         createComputeManagementClient();
         //create management service for accessing management operation
         createManagementClient();
+        
+        hostedServicesOperations = computeManagementClient.getHostedServicesOperations();
         
         //dynamic get location for vm storage/hosted service
         getLocation();
@@ -164,7 +166,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         oSVirtualHardDisk.setSourceImageName(sourceImageName);
       
         VirtualMachineCreateParameters createParameters = new VirtualMachineCreateParameters();
-       //required
+        //required
         createParameters.setRoleName(roleName);
         createParameters.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         createParameters.setProvisionGuestAgent(true);
@@ -211,18 +213,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         String operatingSystemName ="Windows";
 
         //required
-        ArrayList<ConfigurationSet> configlist = new ArrayList<ConfigurationSet>();
-        ConfigurationSet configset = new ConfigurationSet();
-        configset.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
+        ArrayList<ConfigurationSet> configurationSetList = new ArrayList<ConfigurationSet>();
+        ConfigurationSet configurationSet = new ConfigurationSet();
+         configurationSet.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
         //required
-        configset.setComputerName(computerName);
+        configurationSet.setComputerName(computerName);
         //required
-        configset.setAdminPassword(adminUserPassword);
+        configurationSet.setAdminPassword(adminUserPassword);
         //required
-        configset.setAdminUserName(adminUserName);
-        configset.setEnableAutomaticUpdates(false);
-        configset.setHostName(hostedServiceName + ".cloudapp.net");
-        configlist.add(configset); 
+        configurationSet.setAdminUserName(adminUserName);
+        configurationSet.setEnableAutomaticUpdates(false);
+        configurationSet.setHostName(hostedServiceName + ".cloudapp.net");
+        configurationSetList.add(configurationSet); 
 
         String sourceImageName = getOSSourceImage();
         OSVirtualHardDisk oSVirtualHardDisk = new OSVirtualHardDisk();
@@ -241,7 +243,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
         role.setRoleSize(VirtualMachineRoleSize.MEDIUM);
         role.setProvisionGuestAgent(true);
-        role.setConfigurationSets(configlist);
+        role.setConfigurationSets(configurationSetList);
         role.setOSVirtualHardDisk(oSVirtualHardDisk);
         roleList.add(role);
         return roleList; 
@@ -345,7 +347,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     public void deleteVirtualMachines() throws Exception {        
         //Act
         VirtualMachineGetResponse virtualMachinesGetResponse = computeManagementClient.getVirtualMachinesOperations().get(hostedServiceName, deploymentName, virtualMachineName);
-       //Assert
+        //Assert
         Assert.assertEquals(200, virtualMachinesGetResponse.getStatusCode());
         Assert.assertNotNull(virtualMachinesGetResponse.getRequestId());
       
@@ -415,18 +417,20 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertNotNull(updateoperationResponse.getRequestId());
     }
     
+    
     private static String getOSSourceImage() throws Exception {
-        String sourceImageName = "";
+        String sourceImageName = null;
         VirtualMachineOSImageListResponse virtualMachineImageListResponse = computeManagementClient.getVirtualMachineOSImagesOperations().list();
         ArrayList<VirtualMachineOSImageListResponse.VirtualMachineOSImage> virtualMachineOSImagelist = virtualMachineImageListResponse.getImages();
 
         Assert.assertNotNull(virtualMachineOSImagelist);
         for (VirtualMachineOSImageListResponse.VirtualMachineOSImage virtualMachineImage : virtualMachineOSImagelist) {
-            //only need one window image for testing
-            if (virtualMachineImage.getName().contains("JDK-1.6.0_71-0314-Win-GA")) {
+            if ((virtualMachineImage.getName().contains("Win-GA")) && (virtualMachineImage.getName().contains("JDK"))) {
                 sourceImageName = virtualMachineImage.getName();
+                break;
             }
         }
+        Assert.assertNotNull(sourceImageName);
         return sourceImageName;
     }
    
@@ -462,9 +466,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     	while(found == false)
     	{
     		Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
-    		
-    		// ListContainersResult list = blobService.listContainers(new ListContainersOptions().setPrefix(storageContainer));
-    		for (CloudBlobContainer item : listContainerResult) {
+    		    		for (CloudBlobContainer item : listContainerResult) {
     			 if (item.getName().contains(storageContainer) == true)
     			 {
     				 found = true;    				
@@ -493,8 +495,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     private static void cleanBlob() throws Exception {
-        //wait for the os storage removal done first
-        Thread.sleep(1000 * 180);
         // Create the blob client
         CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
 
@@ -505,7 +505,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         // For each item in the container
         for (ListBlobItem blobItem : container.listBlobs()) {
             CloudBlob blob = (CloudBlob) blobItem;
-            blob.deleteIfExists();    		    
+            blob.deleteIfExists();
         }
         container.deleteIfExists();
     }
