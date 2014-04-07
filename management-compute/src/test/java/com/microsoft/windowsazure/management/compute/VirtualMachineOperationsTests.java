@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -47,12 +46,13 @@ import org.xml.sax.SAXException;
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
     private static String testVMPrefix = "aztst";
     private static String testStoragePrefix = "aztst";
+    private static String testHostedServicePrefix = "azhst";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
     private static String storageAccountName;
     private static String storageAccountKey = "";
     private static String storageContainer = "vhd-store";    
-    private static String hostedServiceName = testVMPrefix + "HostedService1";   
+    private static String hostedServiceName;   
     private static String deploymentName = testVMPrefix + "deploy1";    
     private static String virtualMachineName = testVMPrefix + "vm1";    
     private static String vmLocation = "West US";
@@ -64,6 +64,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     @BeforeClass    
     public static void setup() throws Exception {
     	storageAccountName = testStoragePrefix + randomString(10);
+    	hostedServiceName = testHostedServicePrefix + randomString(10);
+    	
     	//create storage service for storage account creation
         createStorageManagementClient();
         //create compute management service for all compute management operation
@@ -82,53 +84,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
 
     @AfterClass   
-    public static void cleanup() throws Exception {        
-    	//clean deployment
-    	DeploymentGetResponse  deploymentGetResponse = null;
-    	try {
-    		deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
-    	}catch (ServiceException serviceException)
-    	{
-    	}
-    	
-    	if ((deploymentGetResponse != null) && (deploymentGetResponse.getName().contains(deploymentName) == true))
-    	{
-    		OperationStatusResponse  operationStatusResponse = computeManagementClient.getDeploymentsOperations().deleteByName(hostedServiceName, deploymentName, true);
-    		Assert.assertEquals(200, operationStatusResponse.getStatusCode());
-    	}
-        
-        //clean host service
-        HostedServiceGetResponse hostedServiceGetResponse = null;
-        
-        try {
-        	hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(hostedServiceName); 
-        }catch (ServiceException serviceException)
-        {
-        }
-        
-        if ((hostedServiceGetResponse != null ) &&(hostedServiceGetResponse.getServiceName().contains(hostedServiceName)))
-        {        	 
-        	 OperationStatusResponse  operationStatusResponse = computeManagementClient.getHostedServicesOperations().deleteAll(hostedServiceName); 
-        	 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
-        }
-        
-        //clean storage account
+    public static void cleanup() {        
+        cleanDeployment();
+        cleanHostedService();
         cleanBlob();
-        StorageAccountGetResponse storageAccountGetResponse = null; 
-        try 
-        {
-        	storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
-        }catch (ServiceException serviceException)
-        {
-        }
-        
-        if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName)))
-        {
-        	OperationResponse  operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
-        	Assert.assertEquals(200, operationResponse.getStatusCode());
-        }
+        cleanStorageAccount();
     }
-
+    
     @Test
     public void createVirtualMachines() throws Exception {
     	int random = (int)(Math.random()* 100); 
@@ -494,20 +456,45 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         return blobClient;
     }
     
-    private static void cleanBlob() throws Exception {
+    private static void cleanBlob() {
         // Create the blob client
-        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
+        CloudBlobClient blobClient = null;
+        try {
+            blobClient = createBlobClient(storageAccountName, storageAccountKey);
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
 
         // Retrieve reference to a previously created container
-        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);    		
+        CloudBlobContainer container = null;
+        try {
+            container = blobClient.getContainerReference(storageContainer);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (StorageException e) {
+            e.printStackTrace();
+        }    		
 
-        // For each item in the container
-        for (ListBlobItem blobItem : container.listBlobs()) {
-            CloudBlob blob = (CloudBlob) blobItem;
-            blob.deleteIfExists();
+        Iterable<ListBlobItem> listBlobsResult = null;
+        try {
+            listBlobsResult = container.listBlobs();
+        } catch (StorageException e1) {
+            e1.printStackTrace();
         }
-        container.deleteIfExists();
+		
+        if (listBlobsResult != null){
+            for (ListBlobItem blobItem : listBlobsResult) {
+                CloudBlob blob = (CloudBlob) blobItem;
+                try {
+                    blob.deleteIfExists();
+                } catch (StorageException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     
     private static void getLocation() throws Exception {
@@ -528,15 +515,120 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     		}    		
     	}
     }
-    
-    private static String randomString(int length)
+
+    private static void cleanStorageAccount()
     {
-    	Random random = new Random();
-    	StringBuilder stringBuilder = new StringBuilder(length);
-    	for (int i=0; i<length; i++)
-    	{
-    		stringBuilder.append((char)('a' + random.nextInt(26)));
-    	}
-		return stringBuilder.toString();
+        StorageAccountGetResponse storageAccountGetResponse = null; 
+        try 
+        {
+            storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
+        }catch (ServiceException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        if ((storageAccountGetResponse != null) && (storageAccountGetResponse.getStorageAccount().getName().contains(storageAccountName)))
+        {
+            OperationResponse operationResponse = null;
+            try {
+                operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
+            if (operationResponse != null)
+            {
+                Assert.assertEquals(200, operationResponse.getStatusCode());
+            }
+        }
     }
+    
+    private static void cleanHostedService()
+    {
+        HostedServiceGetResponse hostedServiceGetResponse = null;
+        
+        try {
+            hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(hostedServiceName); 
+        } catch (ServiceException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        if ((hostedServiceGetResponse != null ) &&(hostedServiceGetResponse.getServiceName().contains(hostedServiceName)))
+        {                
+            OperationStatusResponse operationStatusResponse = null;
+            try {
+                operationStatusResponse = computeManagementClient.getHostedServicesOperations().deleteAll(hostedServiceName);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } 
+            if (operationStatusResponse != null){
+                Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+            }
+        }
+    }
+    
+    private static void cleanDeployment()
+    {
+        DeploymentGetResponse  deploymentGetResponse = null;
+        try {
+                deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
+        }catch (ServiceException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        if ((deploymentGetResponse != null) && (deploymentGetResponse.getName().contains(deploymentName) == true))
+        {
+            OperationStatusResponse operationStatusResponse = null;
+            try {
+                operationStatusResponse = computeManagementClient.getDeploymentsOperations().deleteByName(hostedServiceName, deploymentName, true);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (operationStatusResponse != null)
+            {
+                Assert.assertEquals(200, operationStatusResponse.getStatusCode());
+            }
+        }
+        
+    }
+
 }
