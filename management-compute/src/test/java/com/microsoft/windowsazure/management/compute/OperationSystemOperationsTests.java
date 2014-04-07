@@ -38,15 +38,15 @@ public class OperationSystemOperationsTests extends ComputeManagementIntegration
     public void listOperationSystemSuccess() throws Exception {
         //Arrange
         OperatingSystemListResponse  operatingSystemListResponse = computeManagementClient.getOperatingSystemsOperations().list();
-        ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemlist = operatingSystemListResponse.getOperatingSystems();
         Assert.assertNotNull(operatingSystemListResponse);
-
+        
+        ArrayList<OperatingSystemListResponse.OperatingSystem> operatingSystemlist = operatingSystemListResponse.getOperatingSystems();
         for (OperatingSystemListResponse.OperatingSystem os: operatingSystemlist)
         {
             if (os.getFamilyLabel().contains("R2 SP1")==true){
                 Assert.assertEquals(2, os.getFamily());
-                Assert.assertEquals(false, os.isActive());
-                Assert.assertEquals(false, os.isDefault());
+                Assert.assertFalse(os.isActive());
+                Assert.assertFalse(os.isDefault());
             }
         }
     }
