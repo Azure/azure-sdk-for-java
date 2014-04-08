@@ -44,9 +44,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 public class VirtualMachineOperationsTests extends ComputeManagementIntegrationTestBase {
-    private static String testVMPrefix = "aztst";
-    private static String testStoragePrefix = "aztst";
-    private static String testHostedServicePrefix = "azhst";
+
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
     private static String storageAccountName;

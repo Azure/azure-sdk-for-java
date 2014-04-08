@@ -23,7 +23,10 @@ import com.microsoft.windowsazure.management.storage.StorageManagementService;
 import com.microsoft.windowsazure.*;
 
 public abstract class ComputeManagementIntegrationTestBase {
-
+    protected static String testVMPrefix = "aztst";
+    protected static String testStoragePrefix = "aztst";
+    protected static String testHostedServicePrefix = "azhst";
+    
     protected static ComputeManagementClient computeManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static ManagementClient managementClient;
