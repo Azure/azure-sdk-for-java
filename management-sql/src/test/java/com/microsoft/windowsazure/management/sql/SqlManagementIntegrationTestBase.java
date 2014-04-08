@@ -50,7 +50,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class SqlManagementIntegrationTestBase {
 
-    protected static String testStorageAccountPrefix = "aztst";
+    protected static String testStorageAccountPrefix = "azsql";
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static DatabaseOperations databaseOperations;
