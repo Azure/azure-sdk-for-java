@@ -16,44 +16,69 @@
 
 package com.microsoft.windowsazure.management.storage;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.storage.models.*;
-import com.microsoft.windowsazure.exception.ServiceException;
+import javax.xml.parsers.ParserConfigurationException;
 
+import com.microsoft.windowsazure.core.OperationResponse;
+import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.storage.models.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class StorageAccountOperationsTests extends StorageManagementIntegrationTestBase {
-    private static String testPrefix = "azuresdkteststorage";
     //lower case only for storage account name, this is existed storage account with vhd-store container, 
     //need to create your own storage account and create container there to store VM images 
-    private static String storageAccountName = testPrefix + "08";
+    private static String storageAccountName; 
 
     @BeforeClass
     public static void setup() throws Exception {
+        storageAccountName = testStorageAccountPrefix + randomString(10);
         createService();
         createStorageAccount(); 
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {       
-        StorageAccountListResponse storageServiceListResponse = storageManagementClient.getStorageAccountsOperations().list();
+    public static void cleanup() {       
+        StorageAccountListResponse storageServiceListResponse = null;
+        try {
+            storageServiceListResponse = storageManagementClient.getStorageAccountsOperations().list();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        if (storageServiceListResponse != null){
         ArrayList<StorageAccount> storageAccountlist = storageServiceListResponse.getStorageAccounts();
         for (StorageAccount storageAccount : storageAccountlist)
         { 
-            if (storageAccount.getName().contains(testPrefix))
+            if (storageAccount.getName().startsWith(testStorageAccountPrefix))
             {
-                storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
+                try {
+                    storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ServiceException e) {
+                    e.printStackTrace();
+                }
             }
+        }
         }
     }    
    
     private static void createStorageAccount() throws Exception {    	
-        String storageAccountDescription = testPrefix + "Description1";       
+        String storageAccountDescription = "Description1";       
         
         //Arrange
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
@@ -72,8 +97,8 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     
     @Test
     public void createStorageAccountSuccess() throws Exception { 
-        String storageAccountName = testPrefix + "02";
-        String storageAccountDescription = testPrefix + "Description2"; 
+        String storageAccountName = testStorageAccountPrefix + "csas";
+        String storageAccountDescription = "create storage account success"; 
 
         //Arrange
         StorageAccountCreateParameters createParameters = new StorageAccountCreateParameters();
@@ -108,7 +133,7 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
     
     @Test
     public void checkAvailabilitySuccess() throws Exception {
-        String expectedStorageAccountName = testPrefix + "07";
+        String expectedStorageAccountName = testStorageAccountPrefix + "cas";
         //Act       
         CheckNameAvailabilityResponse checkNameAvailabilityResponse = storageManagementClient.getStorageAccountsOperations().checkNameAvailability(expectedStorageAccountName);
                
@@ -149,21 +174,14 @@ public class StorageAccountOperationsTests extends StorageManagementIntegrationT
         //Arrange  
         StorageAccountListResponse storageAccountListResponse = storageManagementClient.getStorageAccountsOperations().list();
         ArrayList<StorageAccount> storageAccountlist =  storageAccountListResponse.getStorageAccounts();
-        for (StorageAccount storageAccount : storageAccountlist)
-        {    		 
-            if (storageAccount.getName().contains(testPrefix))
-            {
-                storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
-            }
-        }
         Assert.assertNotNull(storageAccountlist);       
     }    
    
     @Test
     public void updateStorageAccountSuccess() throws Exception {
         //Arrange 
-        String expectedStorageAccountName = testPrefix + "03";
-        String expectedStorageAccountLabel = testPrefix + "UpdateLabel3";
+        String expectedStorageAccountName = testStorageAccountPrefix + "03";
+        String expectedStorageAccountLabel =  "testUpdateLabel3";
         
         String expectedUpdatedStorageAccountLabel = "testStorageAccountUpdatedLabel3";	        
         String expectedUpdatedDescription = "updatedStorageAccountsuccess3";

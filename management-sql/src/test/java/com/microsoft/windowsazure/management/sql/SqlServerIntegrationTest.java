@@ -50,6 +50,17 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
             serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
+        ServerListResponse listserverresult = serverOperations.list();
+        for (Server  servers: listserverresult)
+        {
+            try {
+            serverOperations.delete(servers.getName());
+            }
+            catch (Exception e)
+            {
+                Thread.sleep(100);
+            }
+        }
     }
 
     @Test
