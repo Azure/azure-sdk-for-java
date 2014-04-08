@@ -34,14 +34,14 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
     private static ServerOperations serverOperations;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         serverOperations = sqlManagementClient.getServersOperations();
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() throws Exception {
         for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
