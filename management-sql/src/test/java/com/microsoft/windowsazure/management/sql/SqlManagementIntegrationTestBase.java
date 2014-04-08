@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -49,6 +50,7 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class SqlManagementIntegrationTestBase {
 
+    protected static String testStorageAccountPrefix = "aztst";
     protected static SqlManagementClient sqlManagementClient;
     protected static StorageManagementClient storageManagementClient;
     protected static DatabaseOperations databaseOperations;
@@ -93,6 +95,7 @@ public abstract class SqlManagementIntegrationTestBase {
         createParameters.setName(storageAccountName); 
         createParameters.setLabel(storageAccountLabel);
         createParameters.setLocation(GeoRegionNames.SOUTHCENTRALUS);
+        storageManagementClient.getStorageAccountsOperations().create(createParameters);
         StorageAccountGetResponse storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName);
         StorageAccount storageAccount = storageAccountGetResponse.getStorageAccount();
         return storageAccount;
@@ -140,4 +143,16 @@ public abstract class SqlManagementIntegrationTestBase {
             System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         );
     }
+    
+
+    protected static String randomString(int length) {
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i=0; i<length; i++)
+        {
+                stringBuilder.append((char)('a' + random.nextInt(26)));
+        }
+        return stringBuilder.toString();
+    }
+
 }

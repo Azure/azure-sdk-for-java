@@ -34,15 +34,15 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseUpdateResponse;
 
 public class DatabaseOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() throws Exception {
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             databaseOperations.delete(serverName, databaseName);

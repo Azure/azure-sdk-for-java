@@ -36,24 +36,36 @@ import com.microsoft.windowsazure.management.sql.models.FirewallRuleUpdateRespon
 public class FirewallRuleOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
     private static FirewallRuleOperations firewallRuleOperations;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         firewallRuleOperations = sqlManagementClient.getFirewallRulesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() {
         for (String firewallRuleName : firewallRuleToBeRemoved.keySet()) {
             String serverName = firewallRuleToBeRemoved.get(firewallRuleName);
-            firewallRuleOperations.delete(serverName, firewallRuleName);
+            try {
+                firewallRuleOperations.delete(serverName, firewallRuleName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
 
         firewallRuleToBeRemoved.clear();
         
         for (String serverName : serverToBeRemoved) {
-            serverOperations.delete(serverName);
+            try {
+                serverOperations.delete(serverName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
 
         serverToBeRemoved.clear();
