@@ -467,7 +467,6 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             e.printStackTrace();
         }
 
-
         // Retrieve reference to a previously created container
         CloudBlobContainer container = null;
         try {
@@ -477,24 +476,18 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         } catch (StorageException e) {
             e.printStackTrace();
         }    		
-
-        Iterable<ListBlobItem> listBlobsResult = null;
+        
         try {
-            listBlobsResult = container.listBlobs();
-        } catch (StorageException e1) {
-            e1.printStackTrace();
+            container.breakLease(300);
+        } catch (StorageException e) {
+            e.printStackTrace();
         }
-		
-        if (listBlobsResult != null){
-            for (ListBlobItem blobItem : listBlobsResult) {
-                CloudBlob blob = (CloudBlob) blobItem;
-                try {
-                    blob.deleteIfExists();
-                } catch (StorageException e) {
-                    e.printStackTrace();
-                }
-            }
+        try {
+            container.delete();
+        } catch (StorageException e) {
+            e.printStackTrace();
         }
+
     }
     
     private static void getLocation() throws Exception {
