@@ -206,7 +206,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
         for (TaskInfo taskInfo : taskInfos) {
             verifyTaskPropertiesNoEncryption("canceled task", mediaProcessorId,
                     TaskOption.None, taskBody, configuration, name, 3,
-                    new Date(), null, 0.0, 0.0, null, TaskState.Canceled,
+                    null, null, 0.0, 0.0, null, TaskState.Canceled,
                     taskInfo);
         }
     }

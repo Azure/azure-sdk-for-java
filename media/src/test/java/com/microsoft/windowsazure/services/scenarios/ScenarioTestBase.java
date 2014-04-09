@@ -27,7 +27,6 @@ import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 
-@SuppressWarnings("deprecation")
 public abstract class ScenarioTestBase {
     protected static Configuration config;
 
