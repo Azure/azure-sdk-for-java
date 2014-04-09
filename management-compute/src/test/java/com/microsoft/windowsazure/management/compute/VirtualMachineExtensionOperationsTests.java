@@ -18,11 +18,7 @@ package com.microsoft.windowsazure.management.compute;
 
 import java.util.ArrayList;
 
-import com.microsoft.windowsazure.core.OperationResponse;
 import com.microsoft.windowsazure.management.compute.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
-import com.microsoft.windowsazure.exception.ServiceException;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

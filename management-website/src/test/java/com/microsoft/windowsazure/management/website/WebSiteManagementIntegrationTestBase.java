@@ -27,7 +27,7 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class WebSiteManagementIntegrationTestBase {
-
+    protected static String testWebsitePrefix = "azuresdktestwebsite";
     protected static WebSiteManagementClient webSiteManagementClient;
 
     protected static void createService() throws Exception {
