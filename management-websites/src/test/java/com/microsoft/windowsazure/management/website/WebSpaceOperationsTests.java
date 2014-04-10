@@ -80,7 +80,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         // Assert
         Assert.assertEquals(200,  webSpaceCreateResponse.getStatusCode());
         Assert.assertNotNull( webSpaceCreateResponse.getRequestId());
-        Assert.assertEquals(webSpaceName, webSpaceCreateResponse.getName());       
+        Assert.assertEquals(webSpaceName, webSpaceCreateResponse.getName());
     }
 
     @Test

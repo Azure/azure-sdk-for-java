@@ -116,7 +116,7 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
     }
 
     @Test
-    public void listServerFarmSuccess() throws Exception {        
+    public void listServerFarmSuccess() throws Exception {
         String webSpaceName = "eastuswebspace"; 
        
         // Act
