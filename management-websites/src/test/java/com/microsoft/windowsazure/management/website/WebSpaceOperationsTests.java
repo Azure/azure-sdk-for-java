@@ -26,7 +26,9 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesGetDnsSuffixResponse;
@@ -37,32 +39,32 @@ import com.microsoft.windowsazure.management.websites.models.WebSpacesListRespon
 import com.microsoft.windowsazure.management.websites.models.WebSpacesListWebSitesResponse;
 
 public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBase {
-    
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        cleanup();       
+        cleanup();
     }
 
     @AfterClass
     public static void cleanup() throws Exception {
-    	String webSpaceName = "northcentraluswebspace"; 
-        try
-        {
+        String webSpaceName = "northcentraluswebspace"; 
+        try {
             ServerFarmListResponse ServerFarmListResponse = webSiteManagementClient.getServerFarmsOperations().list(webSpaceName);
             ArrayList<ServerFarmListResponse.ServerFarm> serverFarmlist = ServerFarmListResponse.getServerFarms();        	
-            webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);        	
+            for (ServerFarmListResponse.ServerFarm  serverFarm : serverFarmlist) {
+            	webSiteManagementClient.getServerFarmsOperations().delete(serverFarm.getName());
+            }
         }
         catch (ServiceException e) {
             e.printStackTrace();
-        }  
+        }
     }
-    
+
     @Test
     @Ignore("Currently, when there are co-admin on the subscription, this test cannot pass.")
     public void createWebSpaceSuccess() throws Exception {
-    	String webSpaceName = "northcentraluswebspace"; 
-        String webSpaceDescription = "testWebSpaceDescription";
+        String webSpaceName = "northcentraluswebspace"; 
+
         String username = "testWebSpaceUsername01";
         String userpassword = "testWebSpacePWD01";
         
@@ -78,13 +80,13 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         // Assert
         Assert.assertEquals(200,  webSpaceCreateResponse.getStatusCode());
         Assert.assertNotNull( webSpaceCreateResponse.getRequestId());
-        Assert.assertEquals(webSpaceName, webSpaceCreateResponse.getName());       
-    }    
-   
+        Assert.assertEquals(webSpaceName, webSpaceCreateResponse.getName());
+    }
+
     @Test
     public void getWebSpaceSuccess() throws Exception {
-    	String webSpaceName = "eastuswebspace";
-    	
+        String webSpaceName = "eastuswebspace";
+
         // Act
         WebSpacesGetResponse webSpaceGetResponse = webSiteManagementClient.getWebSpacesOperations().get(webSpaceName);
 
@@ -101,17 +103,17 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
 //        Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSpaceGetResponse.getAvailabilityState());  
 //        Assert.assertEquals("East US", webSpaceGetResponse.getGeoLocation());  
 //        Assert.assertEquals(3, webSpaceGetResponse.getWorkerSize());
-    }  
-    
+    }
+
     @Test
     public void getDnsSuffixSuccess() throws Exception {    	
-    	WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
+        WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
         // Assert
         Assert.assertEquals(200, webSpacesGetDnsSuffixResponse.getStatusCode());
         Assert.assertNotNull(webSpacesGetDnsSuffixResponse.getRequestId()); 
         Assert.assertEquals("azurewebsites.net", webSpacesGetDnsSuffixResponse.getDnsSuffix());
-    }  
-    
+    }
+
     @Test
     public void listPublishingUsersSuccess() throws Exception {
         // Act
@@ -120,14 +122,12 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         // Assert
         Assert.assertEquals(200,   webSpacesListPublishingUsersResponse.getStatusCode());
         Assert.assertNotNull( webSpacesListPublishingUsersResponse.getRequestId()); 
-        
-//      ArrayList< WebSpacesListPublishingUsersResponse.User> userlist =  webSpacesListPublishingUsersResponse.getUsers(); 
-//	   	for (WebSpacesListPublishingUsersResponse.User user : userlist)
-//	   	{ 
-//	   		 // Assert
-//	         Assert.assertEquals("" , user.getName());
-//	   	}        
-    } 
+
+        ArrayList< WebSpacesListPublishingUsersResponse.User> userlist =  webSpacesListPublishingUsersResponse.getUsers(); 
+        for (WebSpacesListPublishingUsersResponse.User user : userlist) { 
+             Assert.assertNotNull(user.getName());
+        }
+    }
     
     @Test
     public void listGeoRegionsSuccess() throws Exception {
@@ -136,45 +136,35 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         // Assert
         Assert.assertEquals(200,  webSpacesListGeoRegionsResponse.getStatusCode());
         Assert.assertNotNull(webSpacesListGeoRegionsResponse.getRequestId());    
-        
-//      ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionslist = webSpacesListGeoRegionsResponse.getGeoRegions(); 
-//	   	for (WebSpacesListGeoRegionsResponse.GeoRegion geoRegion : geoRegionslist)
-//	   	{ 
-//	   		 // Assert
-//	         //Assert.assertEquals("East US" , geoRegion.getName());
-//	         //Assert.assertEquals("", geoRegion.getDescription());  
-//	         //Assert.assertEquals(1, geoRegion.getSortOrder()); 
-//	   	}
+
+        ArrayList<WebSpacesListGeoRegionsResponse.GeoRegion> geoRegionslist = webSpacesListGeoRegionsResponse.getGeoRegions(); 
+        for (WebSpacesListGeoRegionsResponse.GeoRegion geoRegion : geoRegionslist) { 
+            Assert.assertNotNull(geoRegion.getName());
+        }
     }
     
     @Test
-    public void listWebSpaceSuccess() throws Exception {    	
+    public void listWebSpaceSuccess() throws Exception {
         // Act
         WebSpacesListResponse webSpacesListResponse = webSiteManagementClient.getWebSpacesOperations().list();
         // Assert
         Assert.assertEquals(200,  webSpacesListResponse.getStatusCode());
-        Assert.assertNotNull( webSpacesListResponse.getRequestId());  
-        
-//      ArrayList<WebSpacesListResponse.WebSpace> webSpacelist = webSpacesListResponse.getWebSpaces(); 
-//	   	for (WebSpacesListResponse.WebSpace  webspace : webSpacelist)
-//	   	{ 
-//	   		 //Assert
-//	   		if ((webspace!=null) && (webspace.getName()!=null))
-//	   		{
-//	   		 System.console().printf("name " +  webspace.getName());
-//	   		}
-////	         Assert.assertEquals(WebSpaceAvailabilityState.Normal, webspace.getAvailabilityState());
-////	         Assert.assertEquals("eastuswebspace", webspace.getName()); 
-//	   	}
-    } 
+        Assert.assertNotNull( webSpacesListResponse.getRequestId());
+
+        ArrayList<WebSpacesListResponse.WebSpace> webSpacelist = webSpacesListResponse.getWebSpaces(); 
+        for (WebSpacesListResponse.WebSpace  webspace : webSpacelist) {
+            Assert.assertEquals(WebSpaceAvailabilityState.Normal, webspace.getAvailabilityState());
+            Assert.assertNotNull(webspace.getName()); 
+        }
+    }
     
     @Test
     public void listWebSitesSuccess() throws Exception {
-    	String webSpaceName = "eastuswebspace"; 
-    	WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
-    	ArrayList<String> propertiesToInclude = new ArrayList<String>();
-    	webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
-    	
+        String webSpaceName = "eastuswebspace"; 
+        WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
+        ArrayList<String> propertiesToInclude = new ArrayList<String>();
+        webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
+
         // Act
         WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
 
@@ -182,12 +172,11 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         Assert.assertEquals(200, webSpacesListWebSitesResponse.getStatusCode());
         Assert.assertNotNull(webSpacesListWebSitesResponse.getRequestId());
         
-//      ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
-//	   	for (WebSite  webSite : webSiteslist)
-//	   	{ 
-//	   		 //Assert
-//	         Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
-//	         //Assert.assertEquals("", webSite.getName()); 
-//	   	}
-    } 
+        ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
+        for (WebSite  webSite : webSiteslist) { 
+             //Assert
+             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+             Assert.assertNotNull(webSite.getName()); 
+        }
+    }
 }

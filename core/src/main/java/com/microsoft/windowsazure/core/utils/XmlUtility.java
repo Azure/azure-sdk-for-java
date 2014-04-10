@@ -13,7 +13,8 @@ public abstract class XmlUtility {
         CharSequence colon = ":";
         if (elements != null) {
             for (int i = 0; i < elements.getLength(); i++) {
-                if (elements.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                if (elements.item(i).getNodeType() == Node.ELEMENT_NODE &&
+                    elements.item(i).getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "nil") == null) {
                     Element currentElement = (Element) elements.item(i);
                     String nodeName = currentElement.getNodeName();
                     String nodeNameOnly = nodeName;
@@ -24,7 +25,7 @@ public abstract class XmlUtility {
                     }
                     
                     if (currentElement.getNamespaceURI().equals(namespace)
-                            && nodeNameOnly.equals(name)) {
+                      && nodeNameOnly.equals(name)) {
                         return currentElement;
                     }
                 }

@@ -92,7 +92,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     }
     
     private static void createWebSite() throws Exception {
-        ArrayList<String> hostNamesValue = new ArrayList<String>();        
+        ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(websiteName + hostName); 
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
@@ -107,7 +107,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         createParameters.setWebSpace(webSpaceDetails);
         createParameters.setSiteMode(WebSiteMode.Basic);
         createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);        
+        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -118,7 +118,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @Test
     public void createWebSiteSuccess() throws Exception {
         String webSiteName = testWebsitePrefix  + "02";
-        ArrayList<String> hostNamesValue = new ArrayList<String>();        
+        ArrayList<String> hostNamesValue = new ArrayList<String>();
         hostNamesValue.add(webSiteName + hostName); 
         
         WebSiteCreateParameters.WebSpaceDetails webSpaceDetails = new WebSiteCreateParameters.WebSpaceDetails();
@@ -133,7 +133,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         createParameters.setWebSpace(webSpaceDetails);
         createParameters.setSiteMode(WebSiteMode.Basic);
         createParameters.setComputeMode(WebSiteComputeMode.Shared);
-        createParameters.setHostNames(hostNamesValue);        
+        createParameters.setHostNames(hostNamesValue);
         
         //Act
         WebSiteCreateResponse webSiteCreateResponse = webSiteManagementClient.getWebSitesOperations().create(webSpaceName, createParameters);
@@ -141,19 +141,19 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Assert
         Assert.assertEquals(200,  webSiteCreateResponse.getStatusCode());
         Assert.assertNotNull( webSiteCreateResponse.getRequestId());
-        Assert.assertEquals(webSiteName, webSiteCreateResponse.getWebSite().getName());       
+        Assert.assertEquals(webSiteName, webSiteCreateResponse.getWebSite().getName());
     }  
    
     @Test
     public void getWebSiteSuccess() throws Exception { 
         //Act
-        WebSiteGetParameters webSiteGetParameters = new WebSiteGetParameters();       
+        WebSiteGetParameters webSiteGetParameters = new WebSiteGetParameters();
         WebSiteGetResponse webSiteGetResponse = webSiteManagementClient.getWebSitesOperations().get(webSpaceName, websiteName, webSiteGetParameters);
         
         //Assert
         Assert.assertEquals(200, webSiteGetResponse.getStatusCode());
         Assert.assertNotNull(webSiteGetResponse.getRequestId()); 
-        Assert.assertEquals(websiteName, webSiteGetResponse.getWebSite().getName());         
+        Assert.assertEquals(websiteName, webSiteGetResponse.getWebSite().getName());
     } 
     
     @Test
@@ -168,11 +168,11 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters(); 
         updateParameters.setAvailabilityState(WebSpaceAvailabilityState.Limited);
         updateParameters.setSiteMode(WebSiteMode.Limited);
-	      
+
         OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);	        
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
-        Assert.assertNotNull(updateoperationResponse.getRequestId());	   
+        Assert.assertNotNull(updateoperationResponse.getRequestId());
     } 
     
     @Test
@@ -180,7 +180,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Act             
         OperationResponse createResponse = webSiteManagementClient.getWebSitesOperations().createRepository(webSpaceName, websiteName);
         Assert.assertEquals(200, createResponse.getStatusCode());
-        Assert.assertNotNull(createResponse.getRequestId());        
+        Assert.assertNotNull(createResponse.getRequestId());
         
         WebSiteGetRepositoryResponse  getResponse = webSiteManagementClient.getWebSitesOperations().getRepository(webSpaceName, websiteName);
         
@@ -253,7 +253,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         parameters.setMetricNames(list);
         
         Calendar now = Calendar.getInstance();
-        Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));        
+        Calendar startTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         startTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 5));	    	
         Calendar endTime = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         endTime.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH) , now.get(Calendar.DATE - 1));
@@ -266,15 +266,13 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Assert
         Assert.assertEquals(200, webSiteGetHistoricalUsageMetricsResponse.getStatusCode());
         Assert.assertNotNull(webSiteGetHistoricalUsageMetricsResponse.getRequestId());
-    }   
-    
-    protected static String randomString(int length)
-    {
+    }
+
+    protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++)
-        {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
