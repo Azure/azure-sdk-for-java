@@ -20,10 +20,7 @@ import com.microsoft.windowsazure.management.sql.models.ServerCreateParameters;
 import com.microsoft.windowsazure.management.sql.models.ServerCreateResponse;
 import com.microsoft.windowsazure.management.sql.models.ServerListResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -35,21 +32,31 @@ import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
 
-    private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static ServerOperations serverOperations;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         serverOperations = sqlManagementClient.getServersOperations();
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() throws Exception {
         for (String serverName : serverToBeRemoved) {
             serverOperations.delete(serverName);
         }
         serverToBeRemoved.clear();
+        ServerListResponse listserverresult = serverOperations.list();
+        for (Server  servers: listserverresult)
+        {
+            try {
+            serverOperations.delete(servers.getName());
+            }
+            catch (Exception e)
+            {
+                Thread.sleep(100);
+            }
+        }
     }
 
     @Test

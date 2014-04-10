@@ -14,35 +14,20 @@
  */
 package com.microsoft.windowsazure.management.storage;
 
-import java.util.Map;
+import java.util.Random;
 
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
-import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
-import com.microsoft.windowsazure.core.Builder;
-import com.microsoft.windowsazure.core.Builder.Alteration;
-import com.microsoft.windowsazure.core.Builder.Registry;
 import com.microsoft.windowsazure.Configuration;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public abstract class StorageManagementIntegrationTestBase {
+
+    protected static String testStorageAccountPrefix = "aztst";
 
     protected static StorageManagementClient storageManagementClient;
 
     protected static void createService() throws Exception {
         // reinitialize configuration from known state
         Configuration config = createConfiguration();
-
-        // add LoggingFilter to any pipeline that is created
-        Registry builder = (Registry) config.getBuilder();
-        builder.alter(StorageManagementClient.class, Client.class, new Alteration<Client>() {
-            @Override
-            public Client alter(String profile, Client client, Builder builder, Map<String, Object> properties) {
-                client.addFilter(new LoggingFilter());
-                return client;
-            }
-        });
-
         storageManagementClient = StorageManagementService.create(config);
     }
   
@@ -52,5 +37,16 @@ public abstract class StorageManagementIntegrationTestBase {
                 System.getenv(ManagementConfiguration.KEYSTORE_PATH),
                 System.getenv(ManagementConfiguration.KEYSTORE_PASSWORD)
         ); 
+    }
+    
+    protected static String randomString(int length)
+    {
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i=0; i<length; i++)
+        {
+                stringBuilder.append((char)('a' + random.nextInt(26)));
+        }
+        return stringBuilder.toString();
     }
 }

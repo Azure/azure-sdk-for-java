@@ -31,7 +31,6 @@ import com.microsoft.windowsazure.services.media.models.NotificationEndPointInfo
 
 public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
     private final String validButNonexistNotificationEndPointId = "notificationEndPointId";
-    private final String testNotificationEndPointPrefix = "testNotificationEndPointPrefix";
     private final String testEndPointAddress = "testendpointaddress";
 
     private void verifyNotificationEndPointInfosEqual(String message,
@@ -181,16 +180,16 @@ public class NotificationEndPointIntegrationTest extends IntegrationTestBase {
                 .create(NotificationEndPoint.create(
                         testNotificationEndPointName, EndPointType.AzureQueue,
                         testEndPointAddress));
-        List<NotificationEndPointInfo> listPoliciesResult = service
+        List<NotificationEndPointInfo> listNotificationEndPointsResult = service
                 .list(NotificationEndPoint.list());
-        int policyCountBaseline = listPoliciesResult.size();
+        int notificationEndPointBaseline = listNotificationEndPointsResult.size();
 
         service.delete(NotificationEndPoint
                 .delete(notificationEndPointToBeDeleted.getId()));
 
-        listPoliciesResult = service.list(NotificationEndPoint.list());
-        assertEquals("listPoliciesResult.size", policyCountBaseline - 1,
-                listPoliciesResult.size());
+        listNotificationEndPointsResult = service.list(NotificationEndPoint.list());
+        assertEquals("listNotificationEndPointResult.size", notificationEndPointBaseline - 1,
+                listNotificationEndPointsResult.size());
 
         for (NotificationEndPointInfo policy : service
                 .list(NotificationEndPoint.list())) {

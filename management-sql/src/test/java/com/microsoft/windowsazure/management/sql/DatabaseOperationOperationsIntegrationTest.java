@@ -17,9 +17,7 @@ package com.microsoft.windowsazure.management.sql;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,19 +34,18 @@ import com.microsoft.windowsazure.management.sql.models.DatabaseOperationListRes
 public class DatabaseOperationOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 
     private static Map<String, String> databaseToBeRemoved = new HashMap<String, String>();
-    private static List<String> serverToBeRemoved = new ArrayList<String>();
     private static DatabaseOperationOperations databaseOperationOperations;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         databaseOperationOperations = sqlManagementClient.getDatabaseOperationsOperations();
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() throws Exception {
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
             databaseOperations.delete(serverName, databaseName);

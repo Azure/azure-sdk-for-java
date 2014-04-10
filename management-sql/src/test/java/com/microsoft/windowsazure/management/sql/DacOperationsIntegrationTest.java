@@ -30,34 +30,52 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccount;
 
 public class DacOperationsIntegrationTest extends SqlManagementIntegrationTestBase {
 
-    private StorageAccount storageAccount;
+    private static StorageAccount storageAccount;
 
-    @Before
-    public void setup() throws Exception {
+    @BeforeClass
+    public static void setup() throws Exception {
         createService();
         createStorageService();
         databaseOperations = sqlManagementClient.getDatabasesOperations();
         serverOperations = sqlManagementClient.getServersOperations();
         dacOperations = sqlManagementClient.getDacOperations();
-        storageAccount = createStorageAccount("dacoperationtest");
+        storageAccount = createStorageAccount(testStorageAccountPrefix+randomString(10));
     }
 
-    @After
-    public void cleanup() throws Exception {
+    @AfterClass
+    public static void cleanup() {
         for (String databaseName : databaseToBeRemoved.keySet()) {
             String serverName = databaseToBeRemoved.get(databaseName);
-            databaseOperations.delete(serverName, databaseName);
+            try {
+                databaseOperations.delete(serverName, databaseName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
 
         databaseToBeRemoved.clear();
 
         for (String serverName : serverToBeRemoved) {
-            serverOperations.delete(serverName);
+            try {
+                serverOperations.delete(serverName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
 
         serverToBeRemoved.clear();
         
-        storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
+        try {
+            storageManagementClient.getStorageAccountsOperations().delete(storageAccount.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

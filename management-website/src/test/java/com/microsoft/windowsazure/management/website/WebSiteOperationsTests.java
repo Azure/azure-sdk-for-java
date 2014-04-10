@@ -16,24 +16,27 @@
 
 package com.microsoft.windowsazure.management.website;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.TimeZone;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.microsoft.windowsazure.core.OperationResponse;
-import com.microsoft.windowsazure.management.websites.*;
 import com.microsoft.windowsazure.management.websites.models.*;
-import com.microsoft.windowsazure.tracing.CloudTracing;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
 public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase {
-    private static String testPrefix = "azuresdktestwebsite";
-    private static String websiteName = testPrefix + "01";
+    private static String websiteName = testWebsitePrefix + "01";
     private static String webSpaceName = WebSpaceNames.NORTHEUROPEWEBSPACE; 
     private static String hostName = ".azurewebsites.net";
     
@@ -45,7 +48,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     }
 
     @AfterClass
-    public static void cleanup() throws Exception {             	
+    public static void cleanup() {             	
         WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
         ArrayList<String> propertiesToInclude = new ArrayList<String>();
         webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
@@ -55,17 +58,37 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         webSiteDeleteParameters.setDeleteEmptyServerFarm(true);
         webSiteDeleteParameters.setDeleteMetrics(true);
         
-        WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
-        
-        ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
-        for (WebSite  webSite : webSiteslist)
-        { 
-            if (webSite.getName().startsWith(testPrefix ))
-            {
-                String websitename = webSite.getName().replaceFirst(hostName, "");
-                webSiteManagementClient.getWebSitesOperations().delete(webSpaceName, websitename, webSiteDeleteParameters);
-            }
-        }       
+        WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = null;
+        try {
+            webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ServiceException e1) {
+            e1.printStackTrace();
+        } catch (ParserConfigurationException e1) {
+            e1.printStackTrace();
+        } catch (SAXException e1) {
+            e1.printStackTrace();
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+        if (webSpacesListWebSitesResponse != null) {
+            ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
+            for (WebSite  webSite : webSiteslist)
+            { 
+                if (webSite.getName().startsWith(testWebsitePrefix ))
+                {
+                    String websitename = webSite.getName().replaceFirst(hostName, "");
+                    try {
+                        webSiteManagementClient.getWebSitesOperations().delete(webSpaceName, websitename, webSiteDeleteParameters);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ServiceException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }  
+        }
     }
     
     private static void createWebSite() throws Exception {
@@ -94,7 +117,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     
     @Test
     public void createWebSiteSuccess() throws Exception {
-        String webSiteName = testPrefix  + "02";
+        String webSiteName = testWebsitePrefix  + "02";
         ArrayList<String> hostNamesValue = new ArrayList<String>();        
         hostNamesValue.add(webSiteName + hostName); 
         
@@ -170,7 +193,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     @Test
     public void isHostnameAvailableSuccess() throws Exception {    	
         String webSiteNameInValid = websiteName;       
-        String webSiteNameValid =testPrefix + "invalidsite"; 
+        String webSiteNameValid =testWebsitePrefix + "invalidsite"; 
       
         //Act               
         WebSiteIsHostnameAvailableResponse webSiteIsHostnameAvailableResponseInvalid = webSiteManagementClient.getWebSitesOperations().isHostnameAvailable(webSiteNameInValid);
@@ -204,6 +227,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         Assert.assertNotNull(operationResponse.getRequestId());        
     } 
     
+    @SuppressWarnings("static-access")
     @Test
     public void getConfigurationSuccess() throws Exception {
         //Act           
@@ -242,5 +266,16 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Assert
         Assert.assertEquals(200, webSiteGetHistoricalUsageMetricsResponse.getStatusCode());
         Assert.assertNotNull(webSiteGetHistoricalUsageMetricsResponse.getRequestId());
-    }       
+    }   
+    
+    protected static String randomString(int length)
+    {
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i=0; i<length; i++)
+        {
+                stringBuilder.append((char)('a' + random.nextInt(26)));
+        }
+        return stringBuilder.toString();
+    }
 }
