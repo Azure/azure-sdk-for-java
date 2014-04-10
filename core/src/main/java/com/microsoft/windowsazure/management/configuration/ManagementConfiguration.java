@@ -19,6 +19,7 @@ import com.microsoft.windowsazure.core.utils.KeyStoreType;
 import com.microsoft.windowsazure.credentials.CertificateCloudCredentials;
 import com.microsoft.windowsazure.Configuration;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Provides functionality to create a service management configuration.
@@ -81,10 +82,10 @@ public final class ManagementConfiguration {
      * @throws java.io.IOException
      *             If the key store location or its contents is invalid.
      */
-    public static Configuration configure(String subscriptionId,
+    public static Configuration configure(URI uri, String subscriptionId,
             String keyStoreLocation, String keyStorePassword)
             throws IOException {
-        return configure(null, Configuration.getInstance(), subscriptionId,
+        return configure(null, Configuration.getInstance(), uri, subscriptionId,
                 keyStoreLocation, keyStorePassword);
     }
 
@@ -109,10 +110,10 @@ public final class ManagementConfiguration {
      * @throws java.io.IOException
      *             If the key store location or its contents is invalid.
      */
-    public static Configuration configure(String subscriptionId,
+    public static Configuration configure(URI uri, String subscriptionId,
             String keyStoreLocation, String keyStorePassword, KeyStoreType type)
             throws IOException {
-        return configure(null, Configuration.getInstance(), subscriptionId,
+        return configure(null, Configuration.getInstance(), uri, subscriptionId,
                 keyStoreLocation, keyStorePassword, type);
     }
 
@@ -138,7 +139,7 @@ public final class ManagementConfiguration {
      *             If the key store location or its contents is invalid.
      */
     public static Configuration configure(String profile,
-            Configuration configuration, String subscriptionId,
+            Configuration configuration, URI uri, String subscriptionId,
             String keyStoreLocation, String keyStorePassword)
             throws IOException {
 
@@ -154,7 +155,7 @@ public final class ManagementConfiguration {
                 .setProperty(profile + KEYSTORE_PASSWORD, keyStorePassword);
 
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
-                new CertificateCloudCredentials(subscriptionId,
+                new CertificateCloudCredentials(uri, subscriptionId,
                         new KeyStoreCredential(keyStoreLocation,
                                 keyStorePassword)));
 
@@ -185,7 +186,7 @@ public final class ManagementConfiguration {
      *             If the key store location or its contents is invalid.
      */
     public static Configuration configure(String profile,
-            Configuration configuration, String subscriptionId,
+            Configuration configuration, URI uri, String subscriptionId,
             String keyStoreLocation, String keyStorePassword, KeyStoreType type)
             throws IOException {
 
@@ -202,7 +203,7 @@ public final class ManagementConfiguration {
 
         KeyStoreCredential keyStoreCredential = new KeyStoreCredential(
                 keyStoreLocation, keyStorePassword, type);
-        CertificateCloudCredentials cloudCredentials = new CertificateCloudCredentials(
+        CertificateCloudCredentials cloudCredentials = new CertificateCloudCredentials(uri,
                 subscriptionId, keyStoreCredential);
         configuration.setProperty(profile + SUBSCRIPTION_CLOUD_CREDENTIALS,
                 cloudCredentials);

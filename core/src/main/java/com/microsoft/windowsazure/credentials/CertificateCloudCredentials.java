@@ -19,6 +19,7 @@ import com.microsoft.windowsazure.core.pipeline.apache.ApacheConfigurationProper
 import com.microsoft.windowsazure.core.utils.KeyStoreCredential;
 import com.microsoft.windowsazure.core.utils.SSLContextFactory;
 import java.io.IOException;
+import java.net.URI;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,46 +27,105 @@ import java.util.logging.Logger;
 import javax.net.ssl.SSLContext;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CertificateCloudCredentials.
+ */
 public class CertificateCloudCredentials extends SubscriptionCloudCredentials {
+    
+    /** The subscription id. */
     private String subscriptionId;
+    
+    /** The key store credential. */
     private KeyStoreCredential keyStoreCredential;
+    
+    /** The uri. */
+    private URI uri; 
 
-    public CertificateCloudCredentials(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    /**
+     * Instantiates a new certificate cloud credentials.
+     */
+    public CertificateCloudCredentials() {
     }
 
-    public CertificateCloudCredentials(String subscriptionId,
+    /**
+     * Instantiates a new certificate cloud credentials.
+     *
+     * @param uri the uri
+     * @param subscriptionId the subscription id
+     * @param keyStoreCredential the key store credential
+     */
+    public CertificateCloudCredentials(URI uri, String subscriptionId,
             KeyStoreCredential keyStoreCredential) {
+        this.uri = uri;
         this.subscriptionId = subscriptionId;
         this.keyStoreCredential = keyStoreCredential;
     }
 
-    @Override
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.credentials.SubscriptionCloudCredentials#getSubscriptionId()
+     */
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
+    /**
+     * Sets the subscription id.
+     *
+     * @param subscriptionId the new subscription id
+     */
     public void setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
     }
 
+    /**
+     * Gets the key store credential.
+     *
+     * @return the key store credential
+     */
     public KeyStoreCredential getKeyStoreCredential() {
         return keyStoreCredential;
     }
 
+    /**
+     * Sets the key store credential.
+     *
+     * @param keyStoreCredential the new key store credential
+     */
     public void setKeyStoreCredential(KeyStoreCredential keyStoreCredential) {
         this.keyStoreCredential = keyStoreCredential;
     }
+    
+    /**
+     * Gets the URI.
+     *
+     * @return the URI
+     */
+    public URI getUri() {
+        return uri;
+    }
 
+    /**
+     * Sets the URI.
+     *
+     * @param uri the new URI
+     */
+    public void setUri(URI uri) {
+        this.uri = uri;
+    }
+
+    /* (non-Javadoc)
+     * @see com.microsoft.windowsazure.credentials.CloudCredentials#applyConfig(java.lang.String, java.util.Map)
+     */
     @Override
     public <T> void applyConfig(String profile, Map<String, Object> properties) {
-        SSLContext sslcontext;
+        SSLContext sslContext;
         try {
-            sslcontext = SSLContextFactory.create(this.getKeyStoreCredential());
+            sslContext = SSLContextFactory.create(this.getKeyStoreCredential());
             properties
                     .put(profile
                             + ApacheConfigurationProperties.PROPERTY_SSL_CONNECTION_SOCKET_FACTORY,
-                            new SSLConnectionSocketFactory(sslcontext));
+                            new SSLConnectionSocketFactory(sslContext));
         } catch (GeneralSecurityException ex) {
             Logger.getLogger(CertificateCloudCredentials.class.getName()).log(
                     Level.SEVERE, null, ex);
@@ -74,4 +134,5 @@ public class CertificateCloudCredentials extends SubscriptionCloudCredentials {
                     Level.SEVERE, null, ex);
         }
     }
+
 }
