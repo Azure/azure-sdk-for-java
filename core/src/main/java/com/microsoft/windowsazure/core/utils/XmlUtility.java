@@ -13,16 +13,15 @@ public abstract class XmlUtility {
         CharSequence colon = ":";
         if (elements != null) {
             for (int i = 0; i < elements.getLength(); i++) {
-                if (elements.item(i).getNodeType() == Node.ELEMENT_NODE &&
-                    (elements.item(i).getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "nil") == null ||
-                     !"true".equals(elements.item(i).getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "nil")))) {
+                if (elements.item(i).getNodeType() == Node.ELEMENT_NODE
+                    && (elements.item(i).getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "nil") == null
+                    || !"true".equals(elements.item(i).getAttributes().getNamedItemNS("http://www.w3.org/2001/XMLSchema-instance", "nil")))) {
                     Element currentElement = (Element) elements.item(i);
                     String nodeName = currentElement.getNodeName();
                     String nodeNameOnly = nodeName;
-                    if (nodeName.contains(colon))
-                    {
-                    	String[] nodeNameSplit = nodeName.split(":");
-                    	nodeNameOnly = nodeNameSplit[1];
+                    if (nodeName.contains(colon)) {
+                        String[] nodeNameSplit = nodeName.split(":");
+                        nodeNameOnly = nodeNameSplit[1];
                     }
                     
                     if (currentElement.getNamespaceURI().equals(namespace)
