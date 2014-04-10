@@ -57,12 +57,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     private static String hostedServiceLabel = testVMPrefix + "HostedServiceLabel1";
     private static String hostedServiceDescription = testVMPrefix +"HostedServiceDescription1";        
     private static String deploymentLabel = testVMPrefix + "deployLabel1";
+    private static HostedServiceOperations hostedServicesOperations;
 
     @BeforeClass    
     public static void setup() throws Exception {
         storageAccountName = testStoragePrefix + randomString(10);
         hostedServiceName = testHostedServicePrefix + randomString(10);
-
+        
         //create storage service for storage account creation
         createStorageManagementClient();
         //create compute management service for all compute management operation
@@ -75,19 +76,19 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         //dynamic get location for vm storage/hosted service
         getLocation();
         //create a new storage account for vm .vhd storage.
-        createStorageAccount();
+        createStorageAccount();        
         //create a vm first for accessing non-creation vm operation first  
         createVMDeployment();
     }
 
-    @AfterClass
-    public static void cleanup() {
+    @AfterClass   
+    public static void cleanup() {        
         cleanDeployment();
         cleanHostedService();
         cleanBlob();
         cleanStorageAccount();
     }
-
+    
     @Test
     public void createVirtualMachines() throws Exception {
         int random = (int)(Math.random()* 100); 
@@ -140,7 +141,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         Assert.assertNotNull(operationResponse.getRequestId());
     }
     
-    private static void createHostedService() throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException {
+    private static void createHostedService() throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException
+    {
         //hosted service required for vm deployment
         HostedServiceCreateParameters createParameters = new HostedServiceCreateParameters(); 
         //required
@@ -150,14 +152,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         createParameters.setDescription(hostedServiceDescription);
         //required
         createParameters.setLocation(vmLocation);
-        OperationResponse hostedServiceOperationResponse = computeManagementClient.getHostedServicesOperations().create(createParameters);         
+        OperationResponse hostedServiceOperationResponse = hostedServicesOperations.create(createParameters);         
         Assert.assertEquals(201, hostedServiceOperationResponse.getStatusCode());
         Assert.assertNotNull(hostedServiceOperationResponse.getRequestId());
         
         System.out.println("hostedservice created: " + hostedServiceName);
     }
     
-    private static ArrayList<Role> createRoleList() throws Exception {
+    private static ArrayList<Role> createRoleList() throws Exception
+    {
         int random = (int)(Math.random()* 100);
         ArrayList<Role> roleList = new ArrayList<Role>();
         Role role = new Role();
@@ -420,24 +423,29 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         
         //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
         boolean found = false;
-        while(found == false) {
+        while(found == false)
+        {
             Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
                         for (CloudBlobContainer item : listContainerResult) {
-                 if (item.getName().contains(storageContainer) == true) {
-                     found = true;
+                 if (item.getName().contains(storageContainer) == true)
+                 {
+                     found = true;                  
                  }
             }
         
-            if (found == false) {
+            if (found == false)
+            { 
                 Thread.sleep(1000 * 30);
             }
-            else {
+            else 
+            {
                 Thread.sleep(1000 * 120);
-            }
-        }
+            }           
+        }       
     }
     
-    private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException {
+    private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException
+    {
         String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
 
@@ -465,7 +473,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             e.printStackTrace();
         } catch (StorageException e) {
             e.printStackTrace();
-        }
+        }           
         
         try {
             container.breakLease(300);
@@ -477,6 +485,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         } catch (StorageException e) {
             e.printStackTrace();
         }
+
     }
     
     private static void getLocation() throws Exception {
@@ -484,37 +493,36 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         ArrayList<String> serviceName = new ArrayList<String>();
         serviceName.add(LocationAvailableServiceNames.COMPUTE);
         serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
-        serviceName.add(LocationAvailableServiceNames.STORAGE);
+        serviceName.add(LocationAvailableServiceNames.STORAGE);     
         
         LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
-        for (LocationsListResponse.Location location : locationsListResponse) {
+        for (LocationsListResponse.Location location : locationsListResponse)
+        {
             ArrayList<String> availableServicelist = location.getAvailableServices();
             String locationName = location.getName();
-            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true)) {
-                vmLocation = locationName;
-            }
+            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true))
+            {                       
+                vmLocation = locationName;              
+            }           
         }
     }
 
     private static void cleanStorageAccount()
     {
         StorageAccountGetResponse storageAccountGetResponse = null; 
-        try {
+        try 
+        {
             storageAccountGetResponse = storageManagementClient.getStorageAccountsOperations().get(storageAccountName); 
-        }
-        catch (ServiceException e) {
+        }catch (ServiceException e)
+        {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             e.printStackTrace();
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         
@@ -523,11 +531,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             OperationResponse operationResponse = null;
             try {
                 operationResponse = storageManagementClient.getStorageAccountsOperations().delete(storageAccountName);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            catch (ServiceException e) {
+            } catch (ServiceException e) {
                 e.printStackTrace();
             }
             if (operationResponse != null)
@@ -543,21 +549,16 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         
         try {
             hostedServiceGetResponse = computeManagementClient.getHostedServicesOperations().get(hostedServiceName); 
-        }
-        catch (ServiceException e)
+        } catch (ServiceException e)
         {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             e.printStackTrace();
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         
@@ -566,43 +567,36 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             OperationStatusResponse operationStatusResponse = null;
             try {
                 operationStatusResponse = computeManagementClient.getHostedServicesOperations().deleteAll(hostedServiceName);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            catch (ExecutionException e) {
+            } catch (ExecutionException e) {
                 e.printStackTrace();
-            }
-            catch (ServiceException e) {
+            } catch (ServiceException e) {
                 e.printStackTrace();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
+            } 
             if (operationStatusResponse != null){
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
             }
         }
     }
     
-    private static void cleanDeployment() {
+    private static void cleanDeployment()
+    {
         DeploymentGetResponse  deploymentGetResponse = null;
         try {
                 deploymentGetResponse = computeManagementClient.getDeploymentsOperations().getByName(hostedServiceName, deploymentName);
-        }
-        catch (ServiceException e) {
+        }catch (ServiceException e)
+        {
             e.printStackTrace();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             e.printStackTrace();
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             e.printStackTrace();
-        }
-        catch (URISyntaxException e) {
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         
@@ -611,23 +605,21 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             OperationStatusResponse operationStatusResponse = null;
             try {
                 operationStatusResponse = computeManagementClient.getDeploymentsOperations().deleteByName(hostedServiceName, deploymentName, true);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            catch (ServiceException e) {
-                e.printStackTrace();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (operationStatusResponse != null) {
+            if (operationStatusResponse != null)
+            {
                 Assert.assertEquals(200, operationStatusResponse.getStatusCode());
             }
         }
         
     }
+
 }
