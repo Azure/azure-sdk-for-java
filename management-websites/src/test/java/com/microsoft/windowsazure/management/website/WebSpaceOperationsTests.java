@@ -48,7 +48,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
 
     @AfterClass
     public static void cleanup() throws Exception {
-    	String webSpaceName = "northcentraluswebspace"; 
+        String webSpaceName = "northcentraluswebspace"; 
         try
         {
             ServerFarmListResponse ServerFarmListResponse = webSiteManagementClient.getServerFarmsOperations().list(webSpaceName);
@@ -63,7 +63,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     @Test
     @Ignore("Currently, when there are co-admin on the subscription, this test cannot pass.")
     public void createWebSpaceSuccess() throws Exception {
-    	String webSpaceName = "northcentraluswebspace"; 
+        String webSpaceName = "northcentraluswebspace"; 
         String webSpaceDescription = "testWebSpaceDescription";
         String username = "testWebSpaceUsername01";
         String userpassword = "testWebSpacePWD01";
@@ -85,8 +85,8 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
    
     @Test
     public void getWebSpaceSuccess() throws Exception {
-    	String webSpaceName = "eastuswebspace";
-    	
+        String webSpaceName = "eastuswebspace";
+
         // Act
         WebSpacesGetResponse webSpaceGetResponse = webSiteManagementClient.getWebSpacesOperations().get(webSpaceName);
 
@@ -107,7 +107,7 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     
     @Test
     public void getDnsSuffixSuccess() throws Exception {    	
-    	WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
+        WebSpacesGetDnsSuffixResponse  webSpacesGetDnsSuffixResponse = webSiteManagementClient.getWebSpacesOperations().getDnsSuffix();
         // Assert
         Assert.assertEquals(200, webSpacesGetDnsSuffixResponse.getStatusCode());
         Assert.assertNotNull(webSpacesGetDnsSuffixResponse.getRequestId()); 
@@ -172,11 +172,11 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
     
     @Test
     public void listWebSitesSuccess() throws Exception {
-    	String webSpaceName = "eastuswebspace"; 
-    	WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
-    	ArrayList<String> propertiesToInclude = new ArrayList<String>();
-    	webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
-    	
+        String webSpaceName = "eastuswebspace"; 
+        WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
+        ArrayList<String> propertiesToInclude = new ArrayList<String>();
+        webSiteListParameters.setPropertiesToInclude(propertiesToInclude);
+
         // Act
         WebSpacesListWebSitesResponse webSpacesListWebSitesResponse = webSiteManagementClient.getWebSpacesOperations().listWebSites(webSpaceName, webSiteListParameters);
 
@@ -185,10 +185,10 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         Assert.assertNotNull(webSpacesListWebSitesResponse.getRequestId());
         
         ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
-	   	for (WebSite  webSite : webSiteslist) { 
-	   		 //Assert
-	         Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
-	         Assert.assertNotNull(webSite.getName()); 
-	   	}
-    } 
+        for (WebSite  webSite : webSiteslist) { 
+             //Assert
+             Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+             Assert.assertNotNull(webSite.getName()); 
+        }
+    }
 }
