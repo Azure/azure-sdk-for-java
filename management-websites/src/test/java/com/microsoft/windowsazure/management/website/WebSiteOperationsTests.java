@@ -168,7 +168,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         WebSiteUpdateParameters updateParameters = new WebSiteUpdateParameters(); 
         updateParameters.setAvailabilityState(WebSpaceAvailabilityState.Limited);
         updateParameters.setSiteMode(WebSiteMode.Limited);
-	      
+
         OperationResponse updateoperationResponse = webSiteManagementClient.getWebSitesOperations().update(webSpaceName, websiteName, updateParameters);	        
         //Assert
         Assert.assertEquals(200, updateoperationResponse.getStatusCode());
@@ -266,15 +266,13 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
         //Assert
         Assert.assertEquals(200, webSiteGetHistoricalUsageMetricsResponse.getStatusCode());
         Assert.assertNotNull(webSiteGetHistoricalUsageMetricsResponse.getRequestId());
-    }   
-    
-    protected static String randomString(int length)
-    {
+    }
+
+    protected static String randomString(int length) {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder(length);
-        for (int i=0; i<length; i++)
-        {
-                stringBuilder.append((char)('a' + random.nextInt(26)));
+        for (int i=0; i<length; i++) {
+            stringBuilder.append((char)('a' + random.nextInt(26)));
         }
         return stringBuilder.toString();
     }
