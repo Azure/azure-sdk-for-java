@@ -61,10 +61,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
 
     @BeforeClass    
     public static void setup() throws Exception {
-    	storageAccountName = testStoragePrefix + randomString(10);
-    	hostedServiceName = testHostedServicePrefix + randomString(10);
-    	
-    	//create storage service for storage account creation
+        storageAccountName = testStoragePrefix + randomString(10);
+        hostedServiceName = testHostedServicePrefix + randomString(10);
+        
+        //create storage service for storage account creation
         createStorageManagementClient();
         //create compute management service for all compute management operation
         createComputeManagementClient();
@@ -91,7 +91,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     
     @Test
     public void createVirtualMachines() throws Exception {
-    	int random = (int)(Math.random()* 100); 
+        int random = (int)(Math.random()* 100); 
         String roleName = testVMPrefix + "vm2";
         String computerName = testVMPrefix + "vm2";
         String adminuserPassword = testVMPrefix + "!12";
@@ -143,7 +143,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     
     private static void createHostedService() throws InterruptedException, ExecutionException, ServiceException, IOException, ParserConfigurationException, SAXException, TransformerException, URISyntaxException
     {
-    	//hosted service required for vm deployment
+        //hosted service required for vm deployment
         HostedServiceCreateParameters createParameters = new HostedServiceCreateParameters(); 
         //required
         createParameters.setLabel(hostedServiceLabel);
@@ -163,7 +163,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     {
         int random = (int)(Math.random()* 100);
         ArrayList<Role> roleList = new ArrayList<Role>();
-    	Role role = new Role();
+        Role role = new Role();
         String roleName = virtualMachineName;
         String computerName = virtualMachineName;
         String adminUserPassword = testVMPrefix + "!12";
@@ -415,38 +415,38 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
         storageAccountName = storageAccountCreateName;
         
         //use container inside storage account, needed for os image storage.
-    	StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
-    	storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
-    	CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
-    	CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
-    	container.createIfNotExists();
-    	
-    	//make sure it created and available, otherwise vm deployment will fail with storage/container still creating
-    	boolean found = false;
-    	while(found == false)
-    	{
-    		Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
-    		    		for (CloudBlobContainer item : listContainerResult) {
-    			 if (item.getName().contains(storageContainer) == true)
-    			 {
-    				 found = true;    				
-    			 }
-    		}
-    	
-    		if (found == false)
-    		{ 
-    			Thread.sleep(1000 * 30);
-    		}
-    		else 
-    		{
-    			Thread.sleep(1000 * 120);
-    		}    		
-    	}    	
+        StorageAccountGetKeysResponse storageAccountGetKeysResponse = storageManagementClient.getStorageAccountsOperations().getKeys(storageAccountCreateName);
+        storageAccountKey = storageAccountGetKeysResponse.getPrimaryKey();
+        CloudBlobClient blobClient = createBlobClient(storageAccountName, storageAccountKey);
+        CloudBlobContainer container = blobClient.getContainerReference(storageContainer);
+        container.createIfNotExists();
+        
+        //make sure it created and available, otherwise vm deployment will fail with storage/container still creating
+        boolean found = false;
+        while(found == false)
+        {
+            Iterable<CloudBlobContainer> listContainerResult = blobClient.listContainers(storageContainer);
+                        for (CloudBlobContainer item : listContainerResult) {
+                 if (item.getName().contains(storageContainer) == true)
+                 {
+                     found = true;                  
+                 }
+            }
+        
+            if (found == false)
+            { 
+                Thread.sleep(1000 * 30);
+            }
+            else 
+            {
+                Thread.sleep(1000 * 120);
+            }           
+        }       
     }
     
     private static CloudBlobClient createBlobClient(String storageAccountName, String storageAccountKey) throws InvalidKeyException, URISyntaxException
     {
-    	String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
+        String storageconnectionstring = "DefaultEndpointsProtocol=http;AccountName="+ storageAccountName +";AccountKey=" + storageAccountKey ;
         CloudStorageAccount storageAccount = CloudStorageAccount.parse(storageconnectionstring);
 
         // Create the blob client
@@ -473,7 +473,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
             e.printStackTrace();
         } catch (StorageException e) {
             e.printStackTrace();
-        }    		
+        }           
         
         try {
             container.breakLease(300);
@@ -489,22 +489,22 @@ public class VirtualMachineOperationsTests extends ComputeManagementIntegrationT
     }
     
     private static void getLocation() throws Exception {
-    	//has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
-    	ArrayList<String> serviceName = new ArrayList<String>();
-    	serviceName.add(LocationAvailableServiceNames.COMPUTE);
-    	serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
-    	serviceName.add(LocationAvailableServiceNames.STORAGE);    	
-    	
-    	LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
-    	for (LocationsListResponse.Location location : locationsListResponse)
-    	{
-    		ArrayList<String> availableServicelist = location.getAvailableServices();
-    		String locationName = location.getName();
-    		if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true))
-    		{    			 		
-    			vmLocation = locationName;    			
-    		}    		
-    	}
+        //has to be a location that support compute, storage, vm, some of the locations are not, need to find out the right one
+        ArrayList<String> serviceName = new ArrayList<String>();
+        serviceName.add(LocationAvailableServiceNames.COMPUTE);
+        serviceName.add(LocationAvailableServiceNames.PERSISTENTVMROLE);
+        serviceName.add(LocationAvailableServiceNames.STORAGE);     
+        
+        LocationsListResponse locationsListResponse = managementClient.getLocationsOperations().list();
+        for (LocationsListResponse.Location location : locationsListResponse)
+        {
+            ArrayList<String> availableServicelist = location.getAvailableServices();
+            String locationName = location.getName();
+            if ((availableServicelist.containsAll(serviceName) == true) && (locationName.contains("US") == true))
+            {                       
+                vmLocation = locationName;              
+            }           
+        }
     }
 
     private static void cleanStorageAccount()
