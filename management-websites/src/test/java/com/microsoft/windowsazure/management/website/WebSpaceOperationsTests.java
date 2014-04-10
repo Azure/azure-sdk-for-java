@@ -26,7 +26,9 @@ import org.junit.Test;
 
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.websites.models.ServerFarmListResponse;
+import com.microsoft.windowsazure.management.websites.models.WebSite;
 import com.microsoft.windowsazure.management.websites.models.WebSiteListParameters;
+import com.microsoft.windowsazure.management.websites.models.WebSpaceAvailabilityState;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserParameters;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesCreatePublishingUserResponse;
 import com.microsoft.windowsazure.management.websites.models.WebSpacesGetDnsSuffixResponse;
@@ -182,12 +184,11 @@ public class WebSpaceOperationsTests extends WebSiteManagementIntegrationTestBas
         Assert.assertEquals(200, webSpacesListWebSitesResponse.getStatusCode());
         Assert.assertNotNull(webSpacesListWebSitesResponse.getRequestId());
         
-//      ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
-//	   	for (WebSite  webSite : webSiteslist)
-//	   	{ 
-//	   		 //Assert
-//	         Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
-//	         //Assert.assertEquals("", webSite.getName()); 
-//	   	}
+        ArrayList<WebSite> webSiteslist = webSpacesListWebSitesResponse.getWebSites(); 
+	   	for (WebSite  webSite : webSiteslist) { 
+	   		 //Assert
+	         Assert.assertEquals(WebSpaceAvailabilityState.Normal, webSite.getAvailabilityState());
+	         Assert.assertNotNull(webSite.getName()); 
+	   	}
     } 
 }
