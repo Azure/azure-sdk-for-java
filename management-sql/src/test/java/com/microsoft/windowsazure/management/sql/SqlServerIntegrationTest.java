@@ -43,17 +43,21 @@ public class SqlServerIntegrationTest extends SqlManagementIntegrationTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         for (String serverName : serverToBeRemoved) {
-            serverOperations.delete(serverName);
+            try {
+                serverOperations.delete(serverName);
+            }
+            catch (Exception e) {
+                Thread.sleep(100);
+            }
         }
+
         serverToBeRemoved.clear();
         ServerListResponse listserverresult = serverOperations.list();
-        for (Server  servers: listserverresult)
-        {
+        for (Server  servers: listserverresult) {
             try {
-            serverOperations.delete(servers.getName());
+                serverOperations.delete(servers.getName());
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Thread.sleep(100);
             }
         }
