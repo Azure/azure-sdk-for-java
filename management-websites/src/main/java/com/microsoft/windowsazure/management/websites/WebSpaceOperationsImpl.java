@@ -24,6 +24,7 @@
 package com.microsoft.windowsazure.management.websites;
 
 import com.microsoft.windowsazure.core.ServiceOperations;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.CommaStringBuilder;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -66,7 +67,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -171,7 +171,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingCredentials";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces" + "?" + "properties=publishingCredentials";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -350,7 +350,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -541,7 +541,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=dnssuffix";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces" + "?" + "properties=dnssuffix";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -656,7 +656,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -853,7 +853,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=georegions";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces" + "?" + "properties=georegions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -994,7 +994,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces" + "?" + "properties=publishingUsers";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces" + "?" + "properties=publishingUsers";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1128,7 +1128,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/WebSpaces/" + webSpaceName + "/sites" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/WebSpaces/" + webSpaceName.trim() + "/sites" + "?";
         if (parameters != null && parameters.getPropertiesToInclude() != null && parameters.getPropertiesToInclude().size() > 0) {
             url = url + "&" + "propertiesToInclude=" + URLEncoder.encode(CommaStringBuilder.join(parameters.getPropertiesToInclude()), "UTF-8");
         }
@@ -1427,7 +1427,7 @@ public class WebSpaceOperationsImpl implements ServiceOperations<WebSiteManageme
                                     }
                                     if (isNil11 == false) {
                                         byte[] pfxBlobInstance;
-                                        pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decodeBase64(pfxBlobElement.getTextContent().getBytes()) : null;
+                                        pfxBlobInstance = pfxBlobElement.getTextContent() != null ? Base64.decode(pfxBlobElement.getTextContent()) : null;
                                         certificateInstance.setPfxBlob(pfxBlobInstance);
                                     }
                                 }

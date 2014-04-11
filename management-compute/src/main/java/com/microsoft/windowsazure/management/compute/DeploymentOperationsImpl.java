@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
@@ -104,7 +105,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -256,7 +256,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=config";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/" + "?" + "comp=config";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -283,7 +283,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         requestDoc.appendChild(changeConfigurationElement);
         
         Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
+        configurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getConfiguration().getBytes())));
         changeConfigurationElement.appendChild(configurationElement);
         
         if (parameters.isTreatWarningsAsError() != null) {
@@ -520,7 +520,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=config";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=config";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -547,7 +547,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         requestDoc.appendChild(changeConfigurationElement);
         
         Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
+        configurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getConfiguration().getBytes())));
         changeConfigurationElement.appendChild(configurationElement);
         
         if (parameters.isTreatWarningsAsError() != null) {
@@ -792,7 +792,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -827,11 +827,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         createDeploymentElement.appendChild(packageUrlElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         createDeploymentElement.appendChild(labelElement);
         
         Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
+        configurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getConfiguration().getBytes())));
         createDeploymentElement.appendChild(configurationElement);
         
         if (parameters.isStartDeployment() != null) {
@@ -1026,7 +1026,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "?";
         if (deleteFromStorage == true) {
             url = url + "comp=" + "media";
         }
@@ -1145,7 +1145,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1272,7 +1272,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + roleInstanceName + "?" + "comp=reboot";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + roleInstanceName.trim() + "?" + "comp=reboot";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1397,7 +1397,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName + "?" + "comp=reboot";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName.trim() + "?" + "comp=reboot";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1525,7 +1525,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/roleinstances/" + roleInstanceName + "?" + "comp=reimage";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/roleinstances/" + roleInstanceName.trim() + "?" + "comp=reimage";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1650,7 +1650,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName + "?" + "comp=reimage";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/roleinstances/" + roleInstanceName.trim() + "?" + "comp=reimage";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1786,7 +1786,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1955,7 +1955,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=status";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/" + "?" + "comp=status";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2115,7 +2115,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=status";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=status";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2356,7 +2356,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=upgrade";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/" + "?" + "comp=upgrade";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2391,11 +2391,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         upgradeDeploymentElement.appendChild(packageUrlElement);
         
         Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
+        configurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getConfiguration().getBytes())));
         upgradeDeploymentElement.appendChild(configurationElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         upgradeDeploymentElement.appendChild(labelElement);
         
         if (parameters.getRoleToUpgrade() != null) {
@@ -2677,7 +2677,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=upgrade";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=upgrade";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -2712,11 +2712,11 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         upgradeDeploymentElement.appendChild(packageUrlElement);
         
         Element configurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Configuration");
-        configurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getConfiguration().getBytes()))));
+        configurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getConfiguration().getBytes())));
         upgradeDeploymentElement.appendChild(configurationElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         upgradeDeploymentElement.appendChild(labelElement);
         
         if (parameters.getRoleToUpgrade() != null) {
@@ -2960,7 +2960,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "?" + "comp=walkupgradedomain";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "?" + "comp=walkupgradedomain";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3157,7 +3157,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=walkupgradedomain";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=walkupgradedomain";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3942,7 +3942,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -4020,7 +4020,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element labelElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                     result.setLabel(labelInstance);
                 }
                 
@@ -4034,7 +4034,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element configurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Configuration");
                 if (configurationElement != null) {
                     String configurationInstance;
-                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decode(configurationElement.getTextContent())) : null;
                     result.setConfiguration(configurationInstance);
                 }
                 
@@ -5020,7 +5020,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         Element valueElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                                         if (valueElement != null) {
                                             String valueInstance;
-                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
+                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decode(valueElement.getTextContent())) : null;
                                             resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
                                         
@@ -5468,7 +5468,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot;
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -5546,7 +5546,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element labelElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Label");
                 if (labelElement != null) {
                     String labelInstance;
-                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                    labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                     result.setLabel(labelInstance);
                 }
                 
@@ -5560,7 +5560,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                 Element configurationElement = XmlUtility.getElementByTagNameNS(deploymentElement, "http://schemas.microsoft.com/windowsazure", "Configuration");
                 if (configurationElement != null) {
                     String configurationInstance;
-                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
+                    configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decode(configurationElement.getTextContent())) : null;
                     result.setConfiguration(configurationInstance);
                 }
                 
@@ -6546,7 +6546,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
                                         Element valueElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                                         if (valueElement != null) {
                                             String valueInstance;
-                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
+                                            valueInstance = valueElement.getTextContent() != null ? new String(Base64.decode(valueElement.getTextContent())) : null;
                                             resourceExtensionParameterValueInstance.setValue(valueInstance);
                                         }
                                         
@@ -7016,7 +7016,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/package" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/package" + "?";
         url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
         if (parameters.isOverwriteExisting() != null) {
             url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
@@ -7153,7 +7153,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/package" + "?";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/package" + "?";
         url = url + "containerUri=" + URLEncoder.encode(parameters.getContainerUri().toString(), "UTF-8") + " +";
         if (parameters.isOverwriteExisting() != null) {
             url = url + "&" + "overwriteExisting=" + URLEncoder.encode(Boolean.toString(parameters.isOverwriteExisting()).toLowerCase(), "UTF-8");
@@ -7797,7 +7797,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deployments/" + deploymentName + "/" + "?" + "comp=rollback";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deployments/" + deploymentName.trim() + "/" + "?" + "comp=rollback";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -7963,7 +7963,7 @@ public class DeploymentOperationsImpl implements ServiceOperations<ComputeManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=rollback";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/deploymentslots/" + deploymentSlot + "/" + "?" + "comp=rollback";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

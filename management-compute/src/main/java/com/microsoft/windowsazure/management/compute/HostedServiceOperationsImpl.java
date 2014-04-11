@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.OperationStatus;
 import com.microsoft.windowsazure.core.OperationStatusResponse;
 import com.microsoft.windowsazure.core.ServiceOperations;
 import com.microsoft.windowsazure.core.pipeline.apache.CustomHttpDelete;
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.core.utils.XmlUtility;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.compute.models.AccessControlListRule;
@@ -105,7 +106,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -349,7 +349,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/extensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -403,13 +403,13 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         if (parameters.getPublicConfiguration() != null) {
             Element publicConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PublicConfiguration");
-            publicConfigurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPublicConfiguration().getBytes()))));
+            publicConfigurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getPublicConfiguration().getBytes())));
             extensionElement.appendChild(publicConfigurationElement);
         }
         
         if (parameters.getPrivateConfiguration() != null) {
             Element privateConfigurationElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "PrivateConfiguration");
-            privateConfigurationElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getPrivateConfiguration().getBytes()))));
+            privateConfigurationElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getPrivateConfiguration().getBytes())));
             extensionElement.appendChild(privateConfigurationElement);
         }
         
@@ -521,7 +521,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "comp=media";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "?" + "comp=media";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -637,7 +637,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/extensions/" + extensionId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -749,7 +749,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/operations/isavailable/" + serviceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/operations/isavailable/" + serviceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -913,7 +913,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -944,7 +944,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         createHostedServiceElement.appendChild(serviceNameElement);
         
         Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-        labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+        labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
         createHostedServiceElement.appendChild(labelElement);
         
         if (parameters.getDescription() != null) {
@@ -1096,7 +1096,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1438,7 +1438,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1528,7 +1528,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element labelElement = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement != null) {
                         String labelInstance;
-                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                        labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                         hostedServicePropertiesInstance.setLabel(labelInstance);
                     }
                     
@@ -1644,7 +1644,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "?" + "embed-detail=true";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "?" + "embed-detail=true";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -1729,7 +1729,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element labelElement = XmlUtility.getElementByTagNameNS(deploymentsElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement != null) {
                             String labelInstance;
-                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                             deploymentInstance.setLabel(labelInstance);
                         }
                         
@@ -1743,7 +1743,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element configurationElement = XmlUtility.getElementByTagNameNS(deploymentsElement, "http://schemas.microsoft.com/windowsazure", "Configuration");
                         if (configurationElement != null) {
                             String configurationInstance;
-                            configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decodeBase64(configurationElement.getTextContent().getBytes())) : null;
+                            configurationInstance = configurationElement.getTextContent() != null ? new String(Base64.decode(configurationElement.getTextContent())) : null;
                             deploymentInstance.setConfiguration(configurationInstance);
                         }
                         
@@ -2729,7 +2729,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                                                 Element valueElement = XmlUtility.getElementByTagNameNS(resourceExtensionParameterValuesElement, "http://schemas.microsoft.com/windowsazure", "Value");
                                                 if (valueElement != null) {
                                                     String valueInstance;
-                                                    valueInstance = valueElement.getTextContent() != null ? new String(Base64.decodeBase64(valueElement.getTextContent().getBytes())) : null;
+                                                    valueInstance = valueElement.getTextContent() != null ? new String(Base64.decode(valueElement.getTextContent())) : null;
                                                     resourceExtensionParameterValueInstance.setValue(valueInstance);
                                                 }
                                                 
@@ -3084,7 +3084,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element labelElement3 = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                     if (labelElement3 != null) {
                         String labelInstance3;
-                        labelInstance3 = labelElement3.getTextContent() != null ? new String(Base64.decodeBase64(labelElement3.getTextContent().getBytes())) : null;
+                        labelInstance3 = labelElement3.getTextContent() != null ? new String(Base64.decode(labelElement3.getTextContent())) : null;
                         hostedServicePropertiesInstance.setLabel(labelInstance3);
                     }
                     
@@ -3201,7 +3201,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions/" + extensionId;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/extensions/" + extensionId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3293,7 +3293,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                 Element publicConfigurationElement = XmlUtility.getElementByTagNameNS(extensionElement, "http://schemas.microsoft.com/windowsazure", "PublicConfiguration");
                 if (publicConfigurationElement != null) {
                     String publicConfigurationInstance;
-                    publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationElement.getTextContent().getBytes())) : null;
+                    publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationElement.getTextContent())) : null;
                     result.setPublicConfiguration(publicConfigurationInstance);
                 }
             }
@@ -3365,7 +3365,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3460,7 +3460,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                         Element labelElement = XmlUtility.getElementByTagNameNS(hostedServicePropertiesElement, "http://schemas.microsoft.com/windowsazure", "Label");
                         if (labelElement != null) {
                             String labelInstance;
-                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decodeBase64(labelElement.getTextContent().getBytes())) : null;
+                            labelInstance = labelElement.getTextContent() != null ? new String(Base64.decode(labelElement.getTextContent())) : null;
                             hostedServicePropertiesInstance.setLabel(labelInstance);
                         }
                         
@@ -3571,7 +3571,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/extensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3675,14 +3675,14 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
                         extensionImageInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
                     Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
                         extensionImageInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
@@ -3696,7 +3696,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element sampleConfigElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
+                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
                         extensionImageInstance.setSampleConfig(sampleConfigInstance);
                     }
                     
@@ -3809,7 +3809,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName + "/extensions";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim() + "/extensions";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -3906,7 +3906,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element publicConfigurationElement = XmlUtility.getElementByTagNameNS(extensionsElement, "http://schemas.microsoft.com/windowsazure", "PublicConfiguration");
                     if (publicConfigurationElement != null) {
                         String publicConfigurationInstance;
-                        publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationElement.getTextContent().getBytes())) : null;
+                        publicConfigurationInstance = publicConfigurationElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationElement.getTextContent())) : null;
                         extensionInstance.setPublicConfiguration(publicConfigurationInstance);
                     }
                 }
@@ -3997,7 +3997,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/extensions/" + providerNamespace + "/" + extensionType;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/extensions/" + providerNamespace.trim() + "/" + extensionType.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -4101,14 +4101,14 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element publicConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "PublicConfigurationSchema");
                     if (publicConfigurationSchemaElement != null) {
                         String publicConfigurationSchemaInstance;
-                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(publicConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        publicConfigurationSchemaInstance = publicConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(publicConfigurationSchemaElement.getTextContent())) : null;
                         extensionImageInstance.setPublicConfigurationSchema(publicConfigurationSchemaInstance);
                     }
                     
                     Element privateConfigurationSchemaElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "PrivateConfigurationSchema");
                     if (privateConfigurationSchemaElement != null) {
                         String privateConfigurationSchemaInstance;
-                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decodeBase64(privateConfigurationSchemaElement.getTextContent().getBytes())) : null;
+                        privateConfigurationSchemaInstance = privateConfigurationSchemaElement.getTextContent() != null ? new String(Base64.decode(privateConfigurationSchemaElement.getTextContent())) : null;
                         extensionImageInstance.setPrivateConfigurationSchema(privateConfigurationSchemaInstance);
                     }
                     
@@ -4122,7 +4122,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
                     Element sampleConfigElement = XmlUtility.getElementByTagNameNS(extensionImagesElement, "http://schemas.microsoft.com/windowsazure", "SampleConfig");
                     if (sampleConfigElement != null) {
                         String sampleConfigInstance;
-                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decodeBase64(sampleConfigElement.getTextContent().getBytes())) : null;
+                        sampleConfigInstance = sampleConfigElement.getTextContent() != null ? new String(Base64.decode(sampleConfigElement.getTextContent())) : null;
                         extensionImageInstance.setSampleConfig(sampleConfigInstance);
                     }
                     
@@ -4266,7 +4266,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/hostedservices/" + serviceName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/hostedservices/" + serviceName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -4294,7 +4294,7 @@ public class HostedServiceOperationsImpl implements ServiceOperations<ComputeMan
         
         if (parameters.getLabel() != null) {
             Element labelElement = requestDoc.createElementNS("http://schemas.microsoft.com/windowsazure", "Label");
-            labelElement.appendChild(requestDoc.createTextNode(new String(Base64.encodeBase64(parameters.getLabel().getBytes()))));
+            labelElement.appendChild(requestDoc.createTextNode(Base64.encode(parameters.getLabel().getBytes())));
             updateHostedServiceElement.appendChild(labelElement);
         }
         

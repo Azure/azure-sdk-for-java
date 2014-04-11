@@ -302,7 +302,7 @@ public class ManagementClientImpl extends ServiceClient<ManagementClient> implem
         
         // Construct URL
         String baseUrl = this.getBaseUri().toString();
-        String url = "/" + this.getCredentials().getSubscriptionId() + "/operations/" + requestId;
+        String url = "/" + this.getCredentials().getSubscriptionId().trim() + "/operations/" + requestId.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

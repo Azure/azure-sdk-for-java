@@ -153,7 +153,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -311,7 +311,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -648,7 +648,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips/" + ipName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips/" + ipName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -820,7 +820,7 @@ public class ReservedIPOperationsImpl implements ServiceOperations<NetworkManage
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/reservedips";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/reservedips";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

@@ -48,7 +48,7 @@ public class WebSiteOperationsTests extends WebSiteManagementIntegrationTestBase
     }
 
     @AfterClass
-    public static void cleanup() {             	
+    public static void cleanup() {
         WebSiteListParameters  webSiteListParameters = new  WebSiteListParameters();
         ArrayList<String> propertiesToInclude = new ArrayList<String>();
         webSiteListParameters.setPropertiesToInclude(propertiesToInclude);

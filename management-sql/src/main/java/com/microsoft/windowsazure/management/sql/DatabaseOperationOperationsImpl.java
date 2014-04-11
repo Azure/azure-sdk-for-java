@@ -134,7 +134,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations/" + operationGuid;
+        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations/" + operationGuid.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -370,8 +370,8 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?";
-        url = url + "databaseName=" + URLEncoder.encode(databaseName, "UTF-8");
+        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?";
+        url = url + "databaseName=" + URLEncoder.encode(databaseName.trim(), "UTF-8");
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -604,7 +604,7 @@ public class DatabaseOperationOperationsImpl implements ServiceOperations<SqlMan
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/databaseoperations" + "?" + "contentview=generic";
+        String url = this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/databaseoperations" + "?" + "contentview=generic";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

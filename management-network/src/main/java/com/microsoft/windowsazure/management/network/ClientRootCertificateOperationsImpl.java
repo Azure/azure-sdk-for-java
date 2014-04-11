@@ -155,7 +155,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/clientrootcertificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -308,7 +308,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/clientrootcertificates/" + certificateThumbprint;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates/" + certificateThumbprint.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -447,7 +447,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/clientrootcertificates/" + certificateThumbprint;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates/" + certificateThumbprint.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -564,7 +564,7 @@ public class ClientRootCertificateOperationsImpl implements ServiceOperations<Ne
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/networking/" + networkName + "/gateway/clientrootcertificates";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/networking/" + networkName.trim() + "/gateway/clientrootcertificates";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);

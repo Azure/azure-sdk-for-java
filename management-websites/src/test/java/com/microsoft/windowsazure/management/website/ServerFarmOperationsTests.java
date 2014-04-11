@@ -44,7 +44,7 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
     @BeforeClass
     public static void setup() throws Exception {
         createService();
-        cleanup();       
+        cleanup();
     }
 
     @AfterClass
@@ -55,11 +55,7 @@ public class ServerFarmOperationsTests extends WebSiteManagementIntegrationTestB
     
     private static void deleteServerFarm(String webSpaceName) throws IOException, ParserConfigurationException, SAXException {
         try {
-             ServerFarmListResponse ServerFarmListResponse = webSiteManagementClient.getServerFarmsOperations().list(webSpaceName);
-             ArrayList<ServerFarmListResponse.ServerFarm> serverFarmlist = ServerFarmListResponse.getServerFarms();
-             for (ServerFarmListResponse.ServerFarm  serverFarm : serverFarmlist) {
-                 webSiteManagementClient.getServerFarmsOperations().delete(serverFarm.getName());
-             }
+            webSiteManagementClient.getServerFarmsOperations().delete(webSpaceName);
         }
         catch (ServiceException e) {
             e.printStackTrace();

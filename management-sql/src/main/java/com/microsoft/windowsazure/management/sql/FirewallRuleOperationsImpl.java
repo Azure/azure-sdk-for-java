@@ -167,7 +167,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -356,7 +356,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -477,7 +477,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -631,7 +631,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules";
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules";
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
@@ -811,7 +811,7 @@ public class FirewallRuleOperationsImpl implements ServiceOperations<SqlManageme
         
         // Construct URL
         String baseUrl = this.getClient().getBaseUri().toString();
-        String url = "/" + this.getClient().getCredentials().getSubscriptionId() + "/services/sqlservers/servers/" + serverName + "/firewallrules/" + ruleName;
+        String url = "/" + this.getClient().getCredentials().getSubscriptionId().trim() + "/services/sqlservers/servers/" + serverName.trim() + "/firewallrules/" + ruleName.trim();
         // Trim '/' character from the end of baseUrl and beginning of url.
         if (baseUrl.charAt(baseUrl.length() - 1) == '/') {
             baseUrl = baseUrl.substring(0, (baseUrl.length() - 1) + 0);
